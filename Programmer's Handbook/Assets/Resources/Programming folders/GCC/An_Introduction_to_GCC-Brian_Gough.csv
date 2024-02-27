@@ -1,0 +1,3989 @@
+Larger Text,Smaller Text,Symbol
+An Introduction to GCC ,for the GNU Compilers gcc and g++,NA
+Brian Gough ,NA,NA
+Foreword by Richard M. Stallman,NA,NA
+Table of Contents,NA,NA
+Foreword . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1,NA,NA
+1,NA,NA
+2,NA,NA
+3,NA,NA
+Introduction . . . . . . . . . . . . . . . . . . . . . . . . . 3,"1.1
+  
+ A brief history of GCC . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+  
+ 1.2
+  
+ Major features of GCC . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+  
+ 1.3
+  
+ Programming in C and C++ . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+  
+ 1.4
+  
+ Conventions used in this manual. . . . . . . . . . . . . . . . . . . . . . . 5",NA
+Compiling a C program . . . . . . . . . . . . . . 7,"2.1
+  
+ Compiling a simple C program . . . . . . . . . . . . . . . . . . . . . . . . 7
+  
+ 2.2
+  
+ Finding errors in a simple program . . . . . . . . . . . . . . . . . . . . 8
+  
+ 2.3
+  
+ Compiling multiple source files . . . . . . . . . . . . . . . . . . . . . . . . 9
+  
+ 2.4
+  
+ Compiling files independently . . . . . . . . . . . . . . . . . . . . . . . . 10
+  
+ 2.4.1
+  
+ Creating object files from source files . . . . . . . . 11
+  
+ 2.4.2
+  
+ Creating executables from object files. . . . . . . . 11
+  
+ 2.4.3
+  
+ Link order of object files. . . . . . . . . . . . . . . . . . . . 12
+  
+ 2.5
+  
+ Recompiling and relinking . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+  
+ 2.6
+  
+ Linking with external libraries . . . . . . . . . . . . . . . . . . . . . . . 14
+  
+ 2.6.1
+  
+ Link order of libraries . . . . . . . . . . . . . . . . . . . . . . 15
+  
+ 2.7
+  
+ Using library header files . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16",NA
+Compilation options. . . . . . . . . . . . . . . . . 19,"3.1
+  
+ Setting search paths . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+  
+ 3.1.1
+  
+ Search path example . . . . . . . . . . . . . . . . . . . . . . . 20
+  
+ 3.1.2
+  
+ Environment variables. . . . . . . . . . . . . . . . . . . . . . 21
+  
+ 3.1.3
+  
+ Extended search paths . . . . . . . . . . . . . . . . . . . . . 22
+  
+ 3.2
+  
+ Shared libraries and static libraries . . . . . . . . . . . . . . . . . . . 23
+  
+ 3.3
+  
+ C language standards. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+  
+ 3.3.1
+  
+ ANSI/ISO. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 26
+  
+ 3.3.2
+  
+ Strict ANSI/ISO. . . . . . . . . . . . . . . . . . . . . . . . . . . 28
+  
+ 3.3.3
+  
+ Selecting specific standards . . . . . . . . . . . . . . . . . 28
+  
+ 3.4
+  
+ Warning options in -Wall. . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+  
+ 3.5
+  
+ Additional warning options . . . . . . . . . . . . . . . . . . . . . . . . . . 30",NA
+4,NA,NA
+5,NA,NA
+6,NA,NA
+7,NA,NA
+8,NA,NA
+9,An Introduction to GCC,NA
+Using the preprocessor . . . . . . . . . . . . . . 35,"4.1
+  
+ Defining macros. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 35
+  
+ 4.2
+  
+ Macros with values . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 36
+  
+ 4.3
+  
+ Preprocessing source files . . . . . . . . . . . . . . . . . . . . . . . . . . . . 38",NA
+Compiling for debugging . . . . . . . . . . . . 41,"5.1
+  
+ Examining core files . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 41
+  
+ 5.2
+  
+ Displaying a backtrace. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 43",NA
+Compiling with optimization. . . . . . . . . 45,"6.1
+  
+ Source-level optimization . . . . . . . . . . . . . . . . . . . . . . . . . . . . 45
+  
+ 6.1.1
+  
+ Common subexpression elimination. . . . . . . . . . 45
+  
+ 6.1.2
+  
+ Function inlining. . . . . . . . . . . . . . . . . . . . . . . . . . . 46
+  
+ 6.2
+  
+ Speed-space tradeoffs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47
+  
+ 6.2.1
+  
+ Loop unrolling. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47
+  
+ 6.3
+  
+ Scheduling. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49
+  
+ 6.4
+  
+ Optimization levels. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49
+  
+ 6.5
+  
+ Examples. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 50
+  
+ 6.6
+  
+ Optimization and debugging . . . . . . . . . . . . . . . . . . . . . . . . . 52
+  
+ 6.7
+  
+ Optimization and compiler warnings . . . . . . . . . . . . . . . . . . 53",NA
+Compiling a C++ program . . . . . . . . . . . 55,"7.1
+  
+ Compiling a simple C++ program . . . . . . . . . . . . . . . . . . . . . 55
+  
+ 7.2
+  
+ Using the C++ standard library. . . . . . . . . . . . . . . . . . . . . . . 56
+  
+ 7.3
+  
+ Templates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 57
+  
+ 7.3.1
+  
+ Using C++ standard library templates . . . . . . . 57
+  
+ 7.3.2
+  
+ Providing your own templates. . . . . . . . . . . . . . . 58
+  
+ 7.3.3
+  
+ Explicit template instantiation . . . . . . . . . . . . . . 60
+  
+ 7.3.4
+  
+ The export keyword . . . . . . . . . . . . . . . . . . . . . . . 61",NA
+Platform-specific options . . . . . . . . . . . . 63,"8.1
+  
+ Intel and AMD x86 options . . . . . . . . . . . . . . . . . . . . . . . . . . 63
+  
+ 8.2
+  
+ DEC Alpha options . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 64
+  
+ 8.3
+  
+ SPARC options . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 65
+  
+ 8.4
+  
+ POWER/PowerPC options . . . . . . . . . . . . . . . . . . . . . . . . . . 65
+  
+ 8.5
+  
+ Multi-architecture support . . . . . . . . . . . . . . . . . . . . . . . . . . . 66",NA
+Troubleshooting. . . . . . . . . . . . . . . . . . . . . 69,"9.1
+  
+ Help for command-line options . . . . . . . . . . . . . . . . . . . . . . . 69
+  
+ 9.2
+  
+ Version numbers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 69
+  
+ 9.3
+  
+ Verbose compilation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 70",NA
+10,NA,NA
+11,NA,NA
+12,NA,NA
+13,NA,NA
+Compiler-related tools. . . . . . . . . . . . . . 73,"10.1
+  
+ Creating a library with the GNU archiver . . . . . . . . . . . . 73
+  
+ 10.2
+  
+ Using the profiler gprof . . . . . . . . . . . . . . . . . . . . . . . . . . . . 75
+  
+ 10.3
+  
+ Coverage testing with gcov . . . . . . . . . . . . . . . . . . . . . . . . . 77",NA
+How the compiler works. . . . . . . . . . . . 81,"11.1
+  
+ An overview of the compilation process . . . . . . . . . . . . . . 81
+  
+ 11.2
+  
+ The preprocessor. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 81
+  
+ 11.3
+  
+ The compiler . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 82
+  
+ 11.4
+  
+ The assembler . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 83
+  
+ 11.5
+  
+ The linker . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 83",NA
+Examining compiled files . . . . . . . . . . . 85,"12.1
+  
+ Identifying files . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 85
+  
+ 12.2
+  
+ Examining the symbol table . . . . . . . . . . . . . . . . . . . . . . . . 86
+  
+ 12.3
+  
+ Finding dynamically linked libraries . . . . . . . . . . . . . . . . . 86",NA
+Getting help . . . . . . . . . . . . . . . . . . . . . . . 89,NA,NA
+Further reading . . . . . . . . . . . . . . . . . . . . . . . . 91 ,NA,NA
+Acknowledgements . . . . . . . . . . . . . . . . . . . . . 93 Other ,NA,NA
+books from the publisher . . . . . . . . . 95 Free software ,NA,NA
+organizations . . . . . . . . . . . . . 97 GNU Free ,NA,NA
+Documentation License . . . . . . 99 ,"ADDENDUM: How to 
+ use this License for your 
+  
+  
+  
+ documents. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 104",NA
+Index. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 105,NA,NA
+Foreword,"This foreword has been kindly contributed by Richard M. Stallman, the 
+ principal author of GCC and founder of the GNU Project.
+  
+ This book is a guide to getting started with GCC, the GNU Compiler 
+ Collection. It will tell you how to use GCC as a programming tool. GCC is a 
+ programming tool, that’s true—but it is also something more. It is part of a 
+ 20-year campaign for freedom for computer users.
+  
+ We all want good software, but what does it mean for software to be 
+ “good”? Convenient features and reliability are what it means to be 
+ technically good, but that is not enough. Good software must also be 
+ ethically good: it has to respect the users’ freedom.
+  
+ As a user of software, you should have the right to run it as you see fit, 
+ the right to study the source code and then change it as you see fit, the 
+ right to redistribute copies of it to others, and the right to publish a 
+ modified version so that you can contribute to building the community. 
+ When a program respects your freedom in this way, we call it free 
+ software. Before GCC, there were other compilers for C, Fortran, Ada, etc. 
+ But they were not free software; you could not use them in freedom. I 
+ wrote GCC so we could use a compiler without giving up our freedom.
+  
+ A compiler alone is not enough—to use a computer system, you need a 
+ whole operating system. In 1983, all operating system for modern com-
+ puters were non-free. To remedy this, in 1984 I began developing the GNU 
+ operating system, a Unix-like system that would be free software. 
+ Developing GCC was one part of developing GNU.
+  
+ By the early 90s, the nearly-finished GNU operating system was com-
+ pleted by the addition of a kernel, Linux, that became free software in 
+ 1992. The combined GNU/Linux operating system has achieved the goal of 
+ making it possible to use a computer in freedom. But freedom is never 
+ automatically secure, and we need to work to defend it. The Free Software 
+ Movement needs your support.
+  
+ Richard M. Stallman 
+  
+ February 
+ 2004",NA
+1 Introduction,"The purpose of this book is to explain the use of the GNU C and C++ 
+ compilers, gcc and g++. After reading this book you should understand 
+ how to compile a program, and how to use basic compiler options for 
+ optimization and debugging. This book does not attempt to teach the C or 
+ C++ languages themselves, since this material can be found in many other 
+ places (see [Further reading], page 91).
+  
+ Experienced programmers who are familiar with other systems, but 
+ new to the GNU compilers, can skip the early sections of the 
+ chapters“Compiling a C program”, “Using the preprocessor” and 
+ “Compiling a C++ program”. The remaining sections and chapters should 
+ provide a good overview of the features of GCC for those already know 
+ how to use other compilers.",NA
+1.1 A brief history of GCC,"The original author of the GNU C Compiler (GCC) is Richard Stallman, the 
+ founder of the GNU Project.
+  
+ The GNU project was started in 1984 to create a complete Unix-like 
+ operating system as free software, in order to promote freedom and coop-
+ eration among computer users and programmers. Every Unix-like oper-
+ ating system needs a C compiler, and as there were no free compilers in 
+ existence at that time, the GNU Project had to develop one from scratch. 
+ The work was funded by donations from individuals and companies to the 
+ Free Software Foundation, a non-profit organization set up to support the 
+ work of the GNU Project.
+  
+ The first release of GCC was made in 1987. This was a significant 
+ breakthrough, being the first portable ANSI C optimizing compiler re-
+ leased as free software. Since that time GCC has become one of the most 
+ important tools in the development of free software.
+  
+ A major revision of the compiler came with the 2.0 series in 1992, 
+ which added the ability to compile C++. In 1997 an experimental branch 
+ of the compiler (EGCS) was created, to improve optimization and C++ 
+ support. Following this work, EGCS was adopted as the new main-line of 
+ GCC development, and these features became widely available in the 3.0 
+ release of GCC in 2001.
+  
+ Over time GCC has been extended to support many additional lan-
+ guages, including Fortran, ADA, Java and Objective-C. The acronym",NA
+1.2 Major features of GCC,"This section describes some of the most important features of GCC.
+  
+ First of all, GCC is a portable compiler—it runs on most platforms 
+ available today, and can produce output for many types of processors. In 
+ addition to the processors used in personal computers, it also supports 
+ microcontrollers, DSPs and 64-bit CPUs.
+  
+ GCC is not only a native compiler—it can also cross-compile any pro-
+ gram, producing executable files for a different system from the one used 
+ by GCC itself. This allows software to be compiled for embedded systems 
+ which are not capable of running a compiler. GCC is written in C with a 
+ strong focus on portability, and can compile itself, so it can be adapted to 
+ new systems easily.
+  
+ GCC has multiple language frontends, for parsing different languages. 
+ Programs in each language can be compiled, or cross-compiled, for any 
+ architecture. For example, an ADA program can be compiled for a mi-
+ crocontroller, or a C program for a supercomputer.
+  
+ GCC has a modular design, allowing support for new languages and 
+ architectures to be added. 
+  
+ Adding a new language front-end to GCC 
+ enables the use of that language on any architecture, provided that the 
+ necessary run-time facilities (such as libraries) are available. Similarly, 
+ adding support for a new architecture makes it available to all languages.
+  
+ Finally, and most importantly, GCC is free software, distributed under 
+ the GNU General Public License (GNU GPL).
+ (1)
+ This means you have the 
+ freedom to use and to modify GCC, as with all GNU software. If you need 
+ support for a new type of CPU, a new language, or a new feature you can 
+ add it yourself, or hire someone to enhance GCC for you. You can hire 
+ someone to fix a bug if it is important for your work.
+  
+ Furthermore, you have the freedom to share any enhancements you 
+ make to GCC. As a result of this freedom you can also make use of 
+ enhancements to GCC developed by others. The many features offered by 
+ GCC today show how this freedom to cooperate works to benefit you, and 
+ everyone else who uses GCC.
+  
+ (1)
+  For details see the license file ‘COPYING’ distributed with GCC.",NA
+1.3 Programming in C and C++,"C and C++ are languages that allow direct access to the computer’s mem-
+ ory. Historically, they have been used for writing low-level systems soft-
+ ware, and applications where high-performance or control over resource 
+ usage are critical. However, great care is required to ensure that mem-ory 
+ is accessed correctly, to avoid corrupting other data-structures. This book 
+ describes techniques that will help in detecting potential errors dur-ing 
+ compilation, but the risk in using languages like C or C++ can never be 
+ eliminated.
+  
+ In addition to C and C++ the GNU Project also provides other high-level 
+ languages, such as GNU Common Lisp (gcl), GNU Smalltalk (gst), the GNU 
+ Scheme extension language (guile) and the GNU Compiler for Java (gcj). 
+  
+ These languages do not allow the user to access memory directly, 
+ eliminating the possibility of memory access errors. They are a safer 
+ alternative to C and C++ for many applications.",NA
+1.4 Conventions used in this manual,"This manual contains many examples which can be typed at the keyboard. 
+ A command entered at the terminal is shown like this,
+  
+ $ command
+  
+ followed by its output. For example:
+  
+ $ echo ""hello world"" 
+  
+ hello world
+  
+ The first character on the line is the terminal prompt, and should not be 
+ typed. The dollar sign ‘$’ is used as the standard prompt in this manual, 
+ although some systems may use a different character.
+  
+ When a command in an example is too long to fit in a single line it is 
+ wrapped and then indented on subsequent lines, like this:
+  
+ $ echo ""an example of a line which is too long to fit 
+  
+ in this 
+ manual""
+  
+ When entered at the keyboard, the entire command should be typed on a 
+ single line.
+  
+ The example source files used in this manual can be downloaded from 
+ the publisher’s website,
+ (2)
+ or entered by hand using any text editor, such as 
+ the standard GNU editor, emacs. The example compilation commands use 
+ gcc and g++ as the names of the GNU C and C++ compilers, and cc to refer 
+ to other compilers. The example programs should work with any
+  
+ (2)
+  See http://www.network-theory.co.uk/gcc/intro/",NA
+2 Compiling a C program,"This chapter describes how to compile C programs using gcc. Programs 
+ can be compiled from a single source file or from multiple source files, and 
+ may use system libraries and header files.
+  
+ Compilation refers to the process of converting a program from the 
+ textual source code, in a programming language such as C or C++, into 
+ machine code, the sequence of 1’s and 0’s used to control the central 
+ processing unit (CPU) of the computer. This machine code is then stored 
+ in a file known as an executable file, sometimes referred to as a binary file.",NA
+2.1 Compiling a simple C program,"The classic example program for the C language is Hello World. Here is the 
+ source code for our version of the program:
+  
+ #include <stdio.h>
+  
+ int 
+  
+ main (void) 
+  
+ { 
+  
+  
+ printf (""Hello, world!\n""); 
+  
+  
+ return 0; 
+  
+ }
+  
+ We will assume that the source code is stored in a file called ‘hello.c’. To 
+ compile the file ‘hello.c’ with gcc, use the following command:
+  
+ $ gcc -Wall hello.c -o hello
+  
+ This compiles the source code in ‘hello.c’ to machine code and stores it in 
+ an executable file ‘hello’. The output file for the machine code is specified 
+ using the ‘-o’ option. This option is usually given as the last argument on 
+ the command line. If it is omitted, the output is written to a default file 
+ called ‘a.out’.
+  
+ Note that if a file with the same name as the executable file already exists 
+ in the current directory it will be overwritten.
+  
+ The option ‘-Wall’ turns on all the most commonly-used compiler 
+ warnings—it is recommended that you always use this option! There are 
+ many other warning options which will be discussed in later chapters, 
+ but‘-Wall’ is the most important. GCC will not produce any warnings 
+ unless",NA
+2.2 Finding errors in a simple program,"As mentioned above, compiler warnings are an essential aid when pro-
+ gramming in C and C++. To demonstrate this, the program below con-tains 
+ a subtle error: it uses the function printf incorrectly, by specifying a 
+ floating-point format ‘%f’ for an integer value:
+  
+ #include <stdio.h>
+  
+ int 
+  
+ main (void) 
+  
+ { 
+  
+  
+ printf (""Two plus two is %f\n"", 4); 
+  
+ return 0; 
+  
+ }
+  
+ This error is not obvious at first sight, but can be detected by the compiler 
+ if the warning option ‘-Wall’ has been enabled.
+  
+ Compiling the program above, ‘bad.c’, with the warning option‘-Wall’ 
+ produces the following message:
+  
+ $ gcc -Wall bad.c -o bad 
+  
+ bad.c: In function ‘main’: 
+  
+ bad.c:6: warning: double format, different 
+  
+ type 
+ arg (arg 2)
+  
+ This indicates that a format string has been used incorrectly in the 
+ file‘bad.c’ at line 6. The messages produced by GCC always have the form 
+ file:line-number:message. The compiler distinguishes between error mes-
+ sages, which prevent successful compilation, and warning messages which 
+ indicate possible problems (but do not stop the program from compiling).
+  
+ In this case, the correct format specifier would have been ‘%d’ (the 
+ allowed format specifiers for printf can be found in any general book on",NA
+2.3 Compiling multiple source files,"A program can be split up into multiple files. This makes it easier to edit 
+ and understand, especially in the case of large programs—it also allows 
+ the individual parts to be compiled independently.
+  
+ In the following example we will split up the program Hello World into 
+ three files: ‘main.c’, ‘hello_fn.c’ and the header file ‘hello.h’. Here is the 
+ main program ‘main.c’:
+  
+ #include ""hello.h""
+  
+ int 
+  
+ main (void) 
+  
+ { 
+  
+  
+ hello (""world""); 
+  
+  
+ return 0; 
+  
+ }
+  
+ The original call to the printf system function in the previous 
+ program‘hello.c’ has been replaced by a call to a new external function 
+ hello, which we will define in a separate file ‘hello_fn.c’.
+  
+ The main program also includes the header file ‘hello.h’ which will 
+ contain the declaration of the function hello. The declaration is used to 
+ ensure that the types of the arguments and return value match up 
+ correctly between the function call and the function definition. We no",NA
+2.4 Compiling files independently,"If a program is stored in a single file then any change to an individual 
+ function requires the whole program to be recompiled to produce a new 
+ executable. The recompilation of large source files can be very time-
+ consuming.
+  
+ When programs are stored in independent source files, only the files 
+ which have changed need to be recompiled after the source code has been 
+ modified. In this approach, the source files are compiled separately and 
+ then linked together—a two stage process. In the first stage, a file is 
+ compiled without creating an executable. The result is referred to as an 
+ object file, and has the extension ‘.o’ when using GCC.
+  
+ In the second stage, the object files are merged together by a separate 
+ program called the linker. The linker combines all the object files together 
+ to create a single executable.
+  
+ An object file contains machine code where any references to the 
+ mem-ory addresses of functions (or variables) in other files are left 
+ undefined. This allows source files to be compiled without direct 
+ reference to each other. The linker fills in these missing addresses when it 
+ produces the executable.",NA
+2.4.1 Creating object files from source files,"The command-line option ‘-c’ is used to compile a source file to an object 
+ file. 
+  
+ For example, the following command will compile the source 
+ file‘main.c’ to an object file:
+  
+ $ gcc -Wall -c main.c
+  
+ This produces an object file ‘main.o’ containing the machine code for the 
+ main function. It contains a reference to the external function hello, but 
+ the corresponding memory address is left undefined in the object file at 
+ this stage (it will be filled in later by linking).
+  
+ The corresponding command for compiling the hello function in the 
+ source file ‘hello_fn.c’ is:
+  
+ $ gcc -Wall -c hello_fn.c
+  
+ This produces the object file ‘hello_fn.o’.
+  
+ Note that there is no need to use the option ‘-o’ to specify the name of 
+ the output file in this case. When compiling with ‘-c’ the compiler 
+ automatically creates an object file whose name is the same as the source 
+ file, with ‘.o’ instead of the original extension.
+  
+ There is no need to put the header file ‘hello.h’ on the command line, 
+ since it is automatically included by the #include statements in 
+ ‘main.c’and ‘hello_fn.c’.",NA
+2.4.2 Creating executables from object files,"The final step in creating an executable file is to use gcc to link the object 
+ files together and fill in the missing addresses of external functions. To 
+ link object files together, they are simply listed on the command line:
+  
+ $ gcc main.o hello_fn.o -o hello
+  
+ This is one of the few occasions where there is no need to use the ‘-
+ Wall’warning option, since the individual source files have already been 
+ success-fully compiled to object code. Once the source files have been 
+ compiled, linking is an unambiguous process which either succeeds or 
+ fails (it fails only if there are references which cannot be resolved).
+  
+ To perform the linking step gcc uses the linker ld, which is a separate 
+ program. On GNU systems the GNU linker, GNU ld, is used. Other systems 
+ may use the GNU linker with GCC, or may have their own linkers. The 
+ linker itself will be discussed later (see Chapter 11 [How the compiler 
+ works], page 81). By running the linker, gcc creates an executable file from 
+ the object files.
+  
+ The resulting executable file can now be run:
+  
+ $ ./hello 
+  
+ Hello, world!
+  
+ It produces the same output as the version of the program using a single 
+ source file in the previous section.",NA
+2.4.3 Link order of object files,"On Unix-like systems, the traditional behavior of compilers and linkers is 
+ to search for external functions from left to right in the object files 
+ specified on the command line. This means that the object file which 
+ contains the definition of a function should appear after any files which 
+ call that function.
+  
+ In this case, the file ‘hello_fn.o’ containing the function hello should be 
+ specified after ‘main.o’ itself, since main calls hello:
+  
+ $ gcc main.o hello_fn.o -o hello (correct order)
+  
+ With some compilers or linkers the opposite ordering would result in an 
+ error,
+  
+ $ cc hello_fn.o main.o -o hello main.o: 
+ In function ‘main’:
+  
+ (incorrect order)
+  
+ main.o(.text+0xf): undefined reference to ‘hello’because there is 
+ no object file containing hello after ‘main.o’.
+  
+ Most current compilers and linkers will search all object files, regard-
+ less of order, but since not all compilers do this it is best to follow the 
+ convention of ordering object files from left to right.",NA
+2.5 Recompiling and relinking,"To show how source files can be compiled independently we will edit the 
+ main program ‘main.c’ and modify it to print a greeting to everyone 
+ instead of world:
+  
+ #include ""hello.h""
+  
+ int 
+  
+ main (void) 
+  
+ {
+  
+ }
+  
+ hello (""everyone""); 
+  
+ /* changed from ""world"" */
+  
+ return 0;
+  
+ The updated file ‘main.c’ can now be recompiled with the following com-
+ mand:
+  
+ $ gcc -Wall -c main.c
+  
+ This produces a new object file ‘main.o’. There is no need to create a new 
+ object file for ‘hello_fn.c’, since that file and the related files that it depends 
+ on, such as header files, have not changed.
+  
+ The new object file can be relinked with the hello function to create a new 
+ executable file:
+  
+ $ gcc main.o hello_fn.o -o hello
+  
+ The resulting executable ‘hello’ now uses the new main function to pro-
+ duce the following output:
+  
+ $ ./hello 
+  
+ Hello, everyone!
+  
+ Note that only the file ‘main.c’ has been recompiled, and then relinked 
+ with the existing object file for the hello function. If the file ‘hello_fn.c’had 
+ been modified instead, we could have recompiled ‘hello_fn.c’ to create a 
+ new object file ‘hello_fn.o’ and relinked this with the existing file 
+ ‘main.o’.
+ (1)
+  
+ In general, linking is faster than compilation—in a large project with 
+ many source files, recompiling only those that have been modified can 
+ make a significant saving. The process of recompiling only the modified",NA
+2.6 Linking with external libraries,"A library is a collection of precompiled object files which can be linked 
+ into programs. The most common use of libraries is to provide system 
+ functions, such as the square root function sqrt found in the C math 
+ library.
+  
+ Libraries are typically stored in special archive files with the 
+ extension‘.a’, referred to as static libraries. They are created from object 
+ files with a separate tool, the GNU archiver ar, and used by the linker to 
+ resolve references to functions at compile-time. We will see later how to 
+ create libraries using the ar command (see Chapter 10 [Compiler-related 
+ tools], page 73). For simplicity, only static libraries are covered in this 
+ section—dynamic linking at runtime using shared libraries will be 
+ described in the next chapter.
+  
+ The 
+ standard 
+ system 
+ libraries 
+ are 
+ usually 
+ found 
+ in 
+ the 
+ directories‘/usr/lib’ and ‘/lib’.
+ (2)
+ For example, the C math library is 
+ typically stored in the file ‘/usr/lib/libm.a’ on Unix-like systems. The 
+ corre-sponding prototype declarations for the functions in this library are 
+ given in the header file ‘/usr/include/math.h’. The C standard library itself 
+ is stored in ‘/usr/lib/libc.a’ and contains functions specified in the 
+ ANSI/ISO C standard, such as ‘printf’—this library is linked by default for 
+ every C program.
+  
+ Here is an example program which makes a call to the external function 
+ sqrt in the math library ‘libm.a’:
+  
+ #include <math.h> 
+  
+ #include <stdio.h>
+  
+ int 
+  
+ main (void) 
+  
+ { 
+  
+  
+ double x = sqrt (2.0); 
+  
+  
+ printf (""The square root of 2.0 is %f\n"", x); 
+  
+ return 0; 
+  
+ }
+  
+ Trying to create an executable from this source file alone causes the com-
+ piler to give an error at the link stage:
+  
+ (2)
+  On systems supporting both 64 and 32-bit executables the 64-bit versions of 
+ the libraries will often be stored in ‘/usr/lib64’ and ‘/lib64’, with the 32-bit 
+ versions in ‘/usr/lib’ and ‘/lib’.",NA
+2.6.1 Link order of libraries,"The ordering of libraries on the command line follows the same convec-
+ tion as for object files: they are searched from left to right—a library",NA
+2.7 Using library header files,"When using a library it is essential to include the appropriate header files, 
+ in order to declare the function arguments and return values with the 
+ correct types. Without declarations, the arguments of a function can be 
+ passed with the wrong type, causing corrupted results.
+  
+ The following example shows another program which makes a 
+ function call to the C math library. In this case, the function pow is used to 
+ compute the cube of two (2 raised to the power of 3):
+  
+ #include <stdio.h>
+  
+ int 
+  
+ main (void) 
+  
+ { 
+  
+  
+ double x = pow (2.0, 3.0); 
+  
+  
+ printf (""Two cubed is %f\n"", x); 
+  
+ return 
+ 0;",NA
+3 Compilation options,"This chapter describes other commonly-used compiler options available 
+ in GCC. These options control features such as the search paths used for 
+ locating libraries and include files, the use of additional warnings and 
+ diagnostics, preprocessor macros and C language dialects.",NA
+3.1 Setting search paths,"In the last chapter, we saw how to link to a program with functions in the 
+ C math library ‘libm.a’, using the short-cut option ‘-lm’ and the header file 
+ ‘math.h’.
+  
+ A common problem when compiling a program using library header files 
+ is the error:
+  
+ FILE.h: No such file or directory
+  
+ This occurs if a header file is not present in the standard include file 
+ directories used by gcc. A similar problem can occur for libraries:
+  
+ /usr/bin/ld: cannot find library
+  
+ This happens if a library used for linking is not present in the standard 
+ library directories used by gcc.
+  
+ By default, gcc searches the following directories for header files:
+  
+ /usr/local/include/ 
+  
+ /usr/include/
+  
+ and the following directories for libraries:
+  
+ /usr/local/lib/ 
+  
+ /usr/lib/
+  
+ The list of directories for header files is often referred to as the include 
+ path, and the list of directories for libraries as the library search path or 
+ link path.
+  
+ The directories on these paths are searched in order, from first to last in 
+ the two lists above.
+ (1) 
+  
+ For example, a header file found 
+ in‘/usr/local/include’ takes precedence over a file with the same name in 
+ ‘/usr/include’. Similarly, a library found in ‘/usr/local/lib’ takes 
+ precedence over a library with the same name in ‘/usr/lib’.
+  
+ (1)
+  The default search paths may also include additional system-dependent or site-
+ specific directories, and directories in the GCC installation itself. For example, 
+ on 64-bit platforms additional ‘lib64’ directories may also be searched by 
+ default.",NA
+3.1.1 Search path example,"The following example program uses a library that might be installed as 
+ an additional package on a system—the GNU Database Management 
+ Library (GDBM). The GDBM Library stores key-value pairs in a DBM file, a 
+ type of data file which allows values to be stored and indexed by a key (an 
+ arbitrary sequence of characters). Here is the example program‘dbmain.c’, 
+ which creates a DBM file containing a key ‘testkey’ with the value 
+ ‘testvalue’:
+  
+ #include <stdio.h> 
+  
+ #include <gdbm.h>
+  
+ int 
+  
+ main (void) 
+  
+ { 
+  
+  
+ GDBM_FILE dbf; 
+  
+  
+ datum key = { ""testkey"", 7 }; 
+  
+ /* key, length */ 
+  
+ datum value = { ""testvalue"", 9 }; /* value, length */
+  
+  
+ printf (""Storing key-value pair... ""); 
+  
+  
+ dbf = gdbm_open (""test"", 0, GDBM_NEWDB, 0644, 0); 
+  
+ gdbm_store (dbf, key, value, GDBM_INSERT); 
+  
+  
+ gdbm_close (dbf); 
+  
+  
+ printf (""done.\n""); 
+  
+  
+ return 0; 
+  
+ }
+  
+ The program uses the header file ‘gdbm.h’ and the library ‘libgdbm.a’. If 
+ the library has been installed in the default location of ‘/usr/local/lib’, 
+ with the header file in ‘/usr/local/include’, then the program can be 
+ compiled with the following simple command:
+  
+ $ gcc -Wall dbmain.c -lgdbm
+  
+ Both these directories are part of the default gcc include and link paths.
+  
+ However, if GDBM has been installed in a different location, trying to 
+ compile the program will give the following error:
+  
+ $ gcc -Wall dbmain.c -lgdbm 
+  
+ dbmain.c:1: gdbm.h: No such file or directory",NA
+3.1.2 Environment variables,"The search paths for header files and libraries can also be controlled 
+ through environment variables in the shell. 
+  
+ These may be set au-
+ tomatically for each session using the appropriate login file, such 
+ as‘.bash_profile’.
+  
+ Additional directories can be added to the include path using the envi-
+ ronment 
+ variable 
+ C_INCLUDE_PATH 
+ (for 
+ C 
+ header 
+ files) 
+ or 
+ CPLUS_INCLUDE_ PATH (for C++ header files). For example, the following 
+ commands will add ‘/opt/gdbm-1.8.3/include’ to the include path when 
+ compiling C programs:
+  
+ $ C_INCLUDE_PATH=/opt/gdbm-1.8.3/include $ 
+ export C_INCLUDE_PATH
+  
+ This directory will be searched after any directories specified on the com-
+ mand line with the option ‘-I’, and before the standard default 
+ directories‘/usr/local/include’ and ‘/usr/include’. The shell command 
+ export is needed to make the environment variable available to programs",NA
+3.1.3 Extended search paths,"Following the standard Unix convention for search paths, several direc-
+ tories can be specified together in an environment variable as a colon 
+ separated list:
+  
+ DIR1:DIR2:DIR3:...
+  
+ The directories are then searched in order from left to right. A single dot‘.’ 
+ can be used to specify the current directory.
+ (2)
+  
+ For example, the following settings create default include and link 
+ paths for packages installed in the current directory ‘.’ and the 
+ ‘include’and 
+ ‘lib’ 
+ directories 
+ under 
+ ‘/opt/gdbm-1.8.3’ 
+ and 
+ ‘/net’ 
+ respectively:
+  
+ $ C_INCLUDE_PATH=.:/opt/gdbm-1.8.3/include:/net/include $ 
+ LIBRARY_PATH=.:/opt/gdbm-1.8.3/lib:/net/lib
+  
+ To specify multiple search path directories on the command line, the op-
+ tions ‘-I’ and ‘-L’ can be repeated. For example, the following command,
+  
+ $ gcc -I. -I/opt/gdbm-1.8.3/include -I/net/include
+  
+ -L. -
+ L/opt/gdbm-1.8.3/lib -L/net/lib .....
+  
+ is equivalent to the environment variable settings given above.
+  
+ When environment variables and command-line options are used to-
+ gether the compiler searches the directories in the following order:
+  
+ 1. command-line options ‘-I’ and ‘-L’, from left to right
+  
+ (2)
+  The current directory can also be specified using an empty path element. For 
+ example, :DIR1:DIR2 is equivalent to .:DIR1:DIR2.",NA
+3.2 Shared libraries and static libraries,"Although the example program above has been successfully compiled and 
+ linked, a final step is needed before being able to load and run the exe-
+ cutable file.
+  
+ If an attempt is made to start the executable directly, the following error 
+ will occur on most systems:
+  
+ $ ./a.out 
+  
+ ./a.out: error while loading shared libraries: 
+ libgdbm.so.3: cannot open shared object file: No such file 
+ or directory
+  
+ This is because the GDBM package provides a shared library. This type of 
+ library requires special treatment—it must be loaded from disk before the 
+ executable will run.
+  
+ External libraries are usually provided in two forms: static libraries 
+ and shared libraries. Static libraries are the ‘.a’ files seen earlier. When a 
+ program is linked against a static library, the machine code from the 
+ object files for any external functions used by the program is copied from 
+ the library into the final executable.
+  
+ Shared libraries are handled with a more advanced form of linking, 
+ which makes the executable file smaller. They use the extension ‘.so’, 
+ which stands for shared object.
+  
+ An executable file linked against a shared library contains only a small 
+ table of the functions it requires, instead of the complete machine code 
+ from the object files for the external functions. Before the executable file 
+ starts running, the machine code for the external functions is copied into 
+ memory from the shared library file on disk by the operating system—a 
+ process referred to as dynamic linking.
+  
+ Dynamic linking makes executable files smaller and saves disk space, 
+ because one copy of a library can be shared between multiple programs. 
+ Most operating systems also provide a virtual memory mechanism which 
+ allows one copy of a shared library in physical memory to be used by all 
+ running programs, saving memory as well as disk space.",NA
+3.3 C language standards,"By default, gcc compiles programs using the GNU dialect of the C language, 
+ referred to as GNU C. This dialect incorporates the official",NA
+3.3.1 ANSI/ISO,"Occasionally a valid ANSI/ISO program may be incompatible with the 
+ extensions in GNU C. To deal with this situation, the compiler option‘-ansi’ 
+ disables those GNU extensions which conflict with the ANSI/ISO standard. 
+ On systems using the GNU C Library (glibc) it also disables extensions to 
+ the C standard library. This allows programs written for ANSI/ISO C to be 
+ compiled without any unwanted effects from GNU extensions.
+  
+ For example, here is a valid ANSI/ISO C program which uses a variable 
+ called asm:
+  
+ #include <stdio.h>
+  
+ int 
+  
+ main (void) 
+  
+ { 
+  
+  
+ const char asm[] = ""6502""; 
+  
+  
+ printf (""the string asm is ’%s’\n"", asm); 
+  
+ return 0; 
+  
+ }
+  
+ The variable name asm is valid under the ANSI/ISO standard, but this 
+ program will not compile in GNU C because asm is a GNU C keyword 
+ extension (it allows native assembly instructions to be used in C func-
+ tions). Consequently, it cannot be used as a variable name without giving a 
+ compilation error:
+  
+ $ gcc -Wall ansi.c 
+  
+ ansi.c: In function ‘main’: 
+  
+ ansi.c:6: parse error before ‘asm’ansi.c:7: 
+ parse error before ‘asm’
+  
+ In contrast, using the ‘-ansi’ option disables the asm keyword extension, 
+ and allows the program above to be compiled correctly:
+  
+ $ gcc -Wall -ansi ansi.c 
+  
+ $ ./a.out 
+  
+ the string asm is ’6502’",NA
+3.3.2 Strict ANSI/ISO,"The command-line option ‘-pedantic’ in combination with ‘-ansi’ will cause 
+ gcc to reject all GNU C extensions, not just those that are incom-patible 
+ with the ANSI/ISO standard. This helps you to write portable programs 
+ which follow the ANSI/ISO standard.
+  
+ Here is a program which uses variable-size arrays, a GNU C extension. 
+ The array x[n] is declared with a length specified by the integer variable n.
+  
+ int 
+  
+ main (int argc, char *argv[]) 
+  
+ { 
+  
+  
+ int i, n = argc; 
+  
+  
+ double x[n];
+  
+ for (i = 0; i < n; i++) 
+  
+  
+ x[i] = i;
+  
+  
+ return 0; 
+  
+ }
+  
+ This program will compile with ‘-ansi’, because support for variable length 
+ arrays does not interfere with the compilation of valid ANSI/ISO 
+ programs—it is a backwards-compatible extension:
+  
+ $ gcc -Wall -ansi gnuarray.c
+  
+ However, compiling with ‘-ansi -pedantic’ reports warnings about vio-
+ lations of the ANSI/ISO standard:
+  
+ $ gcc -Wall -ansi -pedantic gnuarray.c 
+  
+ gnuarray.c: In function ‘main’: 
+  
+ gnuarray.c:5: warning: ISO C90 forbids variable-size 
+  
+ array ‘x’
+  
+ Note that an absence of warnings from ‘-ansi -pedantic’ does not guar-
+ antee that a program strictly conforms to the ANSI/ISO standard. The 
+ standard itself specifies only a limited set of circumstances that should 
+ generate diagnostics, and these are what ‘-ansi -pedantic’ reports.",NA
+3.3.3 Selecting specific standards,"The specific language standard used by GCC can be controlled with the‘-
+ std’ option. The following C language standards are supported:
+  
+ ‘-std=c89’ or ‘-std=iso9899:1990’
+  
+ The original ANSI/ISO C language standard (ANSI X3.159-1989, 
+ ISO/IEC 9899:1990). GCC incorporates the corrections in the two 
+ ISO Technical Corrigenda to the original standard.
+  
+ ‘-std=iso9899:199409’
+  
+ The ISO C language standard with ISO Amendment 1, published in 
+ 1994. This amendment was mainly concerned with internation-
+ alization, such as adding support for multibyte characters to the C 
+ library.
+  
+ ‘-std=c99’ or ‘-std=iso9899:1999’
+  
+ The revised ISO C language standard, published in 1999 (ISO/IEC 
+ 9899:1999).
+  
+ The C language standards with GNU extensions can be selected with the 
+ options ‘-std=gnu89’ and ‘-std=gnu99’.",NA
+3.4 Warning options in -Wall,"As described earlier (see Section 2.1 [Compiling a simple C program], page 
+ 7), the warning option ‘-Wall’ enables warnings for many common errors, 
+ and should always be used. It combines a large number of other, more 
+ specific, warning options which can also be selected individually.
+  
+ Here is a summary of these options:
+  
+ ‘-Wcomment’ (included in ‘-Wall’) 
+  
+ This option warns about nested comments. Nested comments typ-
+ ically arise when a section of code containing comments is later 
+ commented out:
+  
+ /* commented out 
+  
+ double x = 1.23 ; /* x-position */ */
+  
+ Nested comments can be a source of confusion—the safe way 
+ to“comment out” a section of code containing comments is to sur-
+ round it with the preprocessor directive #if 0 ... #endif:
+  
+ /* commented out */ 
+  
+ #if 0 
+  
+ double x = 1.23 ; /* x-position */ #endif",NA
+3.5 Additional warning options,"GCC provides many other warning options that are not included in‘-Wall’, 
+ but are often useful. Typically these produce warnings for source code 
+ which may be technically valid but is very likely to cause prob-lems. The 
+ criteria for these options are based on experience of common errors—
+ they are not included in ‘-Wall’ because they only indicate pos-sibly 
+ problematic or “suspicious” code.
+  
+ Since these warnings can be issued for valid code it is not necessary to 
+ compile with them all the time. It is more appropriate to use them 
+ periodically and review the results, checking for anything unexpected, or 
+ to enable them for some programs or files.
+  
+ ‘-W’This is a general option similar to ‘-Wall’ which warns about a 
+ selection of common programming errors, such as functions which can 
+ return without a value (also known as “falling off the end of the function 
+ body”), and comparisons between signed and unsigned values. For 
+ example, the following function tests whether an un-signed integer is 
+ negative (which is impossible, of course):
+  
+ int 
+  
+ foo (unsigned int x) 
+  
+ { 
+  
+  
+ if (x < 0)
+  
+ }
+   
+ return 0; 
+  
+ /* cannot occur */ 
+ else 
+  
+  
+ return 1;
+  
+ Compiling this function with ‘-Wall’ does not produce a warning,
+  
+ $ gcc -Wall -c w.c
+  
+ but does give a warning with ‘-W’:
+  
+ $ gcc -W -c w.c 
+  
+ w.c: In function ‘foo’: 
+  
+ w.c:4: warning: comparison of unsigned 
+  
+ expression < 0 is always false
+  
+ In practice, the options ‘-W’ and ‘-Wall’ are normally used together.
+  
+ ‘-Wconversion’
+  
+ This option warns about implicit type conversions that could cause 
+ unexpected results. For example, the assignment of a negative value to an 
+ unsigned variable, as in the following code,
+  
+ unsigned int x = -1;",NA
+4 Using the preprocessor,"This chapter describes the use of the GNU C preprocessor cpp, which is 
+ part of the GCC package. The preprocessor expands macros in source files 
+ before they are compiled. It is automatically called whenever GCC 
+ processes a C or C++ program.
+ (1)",NA
+4.1 Defining macros,"The following program demonstrates the most common use of the C pre-
+ processor. It uses the preprocessor conditional #ifdef to check whether a 
+ macro is defined.
+  
+ When the macro is defined, the preprocessor includes the correspond-
+ ing code up to the closing #endif command. In this example, the macro 
+ which is tested is called TEST, and the conditional part of the source code 
+ is a printf statement which prints the message “Test mode”:
+  
+ #include <stdio.h>
+  
+ int 
+  
+ main (void) 
+  
+ { 
+  
+ #ifdef TEST 
+  
+  
+ printf (""Test mode\n""); 
+  
+ #endif 
+  
+  
+ printf (""Running...\n""); 
+  
+  
+ return 0; 
+  
+ }
+  
+ The gcc option ‘-DNAME’ defines a preprocessor macro NAME from the 
+ command line. 
+  
+ If the program above is compiled with the command-line 
+ option ‘-DTEST’, the macro TEST will be defined and the resulting 
+ executable will print both messages:
+  
+ $ gcc -Wall -DTEST dtest.c 
+  
+ $ ./a.out 
+  
+ Test mode 
+  
+ Running...
+  
+ (1)
+  In recent versions of GCC the preprocessor is integrated into the compiler, 
+ although a separate cpp command is also provided.",NA
+4.2 Macros with values,"In addition to being defined, a macro can also be given a concrete value. 
+ This value is inserted into the source code at each point where the macro 
+ occurs. The following program uses a macro NUM, to represent a number 
+ which will be printed:
+  
+ #include <stdio.h>
+  
+ int 
+  
+ main (void) 
+  
+ { 
+  
+  
+ printf(""Value of NUM is %d\n"", NUM); 
+  
+ return 0; 
+  
+ }
+  
+ Note that macros are not expanded inside strings—only the occurrence of 
+ NUM outside the string is substituted by the preprocessor.",NA
+4.3 Preprocessing source files,"It is possible to see the effect of the preprocessor on source files directly, 
+ using the ‘-E’ option of gcc. For example, the file below defines and uses a 
+ macro TEST:
+  
+ #define TEST ""Hello, World!"" 
+  
+ const char str[] = TEST;
+  
+ If this file is called ‘test.c’ the effect of the preprocessor can be seen with 
+ the following command line:
+  
+ $ gcc -E test.c 
+  
+ # 1 ""test.c""
+  
+ const char str[] = ""Hello, World!"" ;
+  
+ The ‘-E’ option causes gcc to run the preprocessor, display the expanded 
+ output, and then exit without compiling the resulting source code. The 
+ value of the macro TEST is substituted directly into the output, producing 
+ the sequence of characters const char str[] = ""Hello, World!"" ;.
+  
+ The preprocessor also inserts lines recording the source file and line 
+ numbers in the form # line-number ""source-file"", to aid in debugging and 
+ allow the compiler to issue error messages referring to this informa-tion. 
+ These lines do not affect the program itself.
+  
+ The ability to see the preprocessed source files can be useful for exam-
+ ining the effect of system header files, and finding declarations of system",NA
+5 Compiling for debugging,"Normally, an executable file does not contain any references to the 
+ original program source code, such as variable names or line-numbers—
+ the exe-cutable file is simply the sequence of machine code instructions 
+ produced by the compiler. This is insufficient for debugging, since there is 
+ no easy way to find the cause of an error if the program crashes.
+  
+ GCC provides the ‘-g’ debug option to store additional debugging 
+ information in object files and executables. This debugging information 
+ allows errors to be traced back from a specific machine instruction to the 
+ corresponding line in the original source file. It also allows the execution 
+ of a program to be traced in a debugger, such as the GNU Debugger gdb 
+ (for more information, see “Debugging with GDB: The GNU Source-Level 
+ Debugger”, [Further reading], page 91). Using a debugger also allows the 
+ values of variables to be examined while the program is running.
+  
+ The debug option works by storing the names of functions and vari-
+ ables (and all the references to them), with their corresponding source 
+ code line-numbers, in a symbol table in object files and executables.",NA
+5.1 Examining core files,"In addition to allowing a program to be run under the debugger, another 
+ helpful application of the ‘-g’ option is to find the circumstances of a 
+ program crash.
+  
+ When a program exits abnormally the operating system can write out 
+ a core file, usually named ‘core’, which contains the in-memory state of the 
+ program at the time it crashed. Combined with information from the 
+ symbol table produced by ‘-g’, the core file can be used to find the line 
+ where the program stopped, and the values of its variables at that point.
+  
+ This is useful both during the development of software, and after 
+ deployment—it allows problems to be investigated when a program has 
+ crashed “in the field”.
+  
+ Here is a simple program containing an invalid memory access bug, which 
+ we will use to produce a core file:
+  
+ int a (int *p);
+  
+ int 
+  
+ main (void) 
+  
+ {",NA
+5.2 Displaying a backtrace,"The debugger can also show the function calls and arguments up to the 
+ current point of execution—this is called a stack backtrace and is dis-
+ played with the command backtrace:
+  
+ (gdb) backtrace 
+  
+ #0 
+  
+ 0x080483ed in a (p=0x0) at null.c:13 #1 
+  
+ 0x080483d9 in main () at null.c:7
+  
+ In this case, the backtrace shows that the crash at line 13 occurred when 
+ the function a() was called with an argument of p=0x0, from line 7 in 
+ main(). It is possible to move to different levels in the stack trace, and 
+ examine their variables, using the debugger commands up and down.
+  
+ A complete description of all the commands available in gdb can be 
+ found in the manual “Debugging with GDB: The GNU Source-Level De-
+ bugger” (see [Further reading], page 91).",NA
+6 Compiling with optimization,"GCC is an optimizing compiler. It provides a wide range of options which 
+ aim to increase the speed, or reduce the size, of the executable files it 
+ generates.
+  
+ Optimization is a complex process. For each high-level command in the 
+ source code there are usually many possible combinations of machine 
+ instructions that can be used to achieve the appropriate final result. The 
+ compiler must consider these possibilities and choose among them.
+  
+ In general, different code must be generated for different processors, 
+ as they use incompatible assembly and machine languages. Each type of 
+ processor also has its own characteristics—some CPUs provide a large 
+ number of registers for holding intermediate results of calculations, while 
+ others must store and fetch intermediate results from memory. Appropri-
+ ate code must be generated in each case.
+  
+ Furthermore, different amounts of time are needed for different 
+ instruc-tions, depending on how they are ordered. GCC takes all these 
+ factors into account and tries to produce the fastest executable for a given 
+ system when compiling with optimization.",NA
+6.1 Source-level optimization,"The first form of optimization used by GCC occurs at the source-code level, 
+ and does not require any knowledge of the machine instructions. There 
+ are many source-level optimization techniques—this section de-scribes 
+ two common types: common subexpression elimination and func-tion 
+ inlining.",NA
+6.1.1 Common subexpression elimination,"One method of source-level optimization which is easy to understand in-
+ volves computing an expression in the source code with fewer 
+ instructions, by reusing already-computed results. For example, the 
+ following assign-ment:
+  
+ x = cos(v)*(1+sin(u/2)) + sin(w)*(1-sin(u/2))
+  
+ can be rewritten with a temporary variable t to eliminate an unnecessary 
+ extra evaluation of the term sin(u/2):
+  
+ t = sin(u/2) 
+  
+ x = cos(v)*(1+t) + sin(w)*(1-t)",NA
+6.1.2 Function inlining,"Another type of source-level optimization, called function inlining, in-
+ creases the efficiency of frequently-called functions.
+  
+ Whenever a function is used, a certain amount of extra time is required 
+ for the CPU to carry out the call: it must store the function arguments in 
+ the appropriate registers and memory locations, jump to the start of the 
+ function (bringing the appropriate virtual memory pages into physical 
+ memory or the CPU cache if necessary), begin executing the code, and 
+ then return to the original point of execution when the function call is 
+ complete. This additional work is referred to as function-call overhead. 
+ Function inlining eliminates this overhead by replacing calls to a function 
+ by the code of the function itself (known as placing the code in-line).
+  
+ In most cases, function-call overhead is a negligible fraction of the total 
+ run-time of a program. It can become significant only when there are 
+ functions which contain relatively few instructions, and these func-tions 
+ account for a substantial fraction of the run-time—in this case the 
+ overhead then becomes a large proportion of the total run-time.
+  
+ Inlining is always favorable if there is only one point of invocation of a 
+ function. It is also unconditionally better if the invocation of a function 
+ requires more instructions (memory) than moving the body of the func-
+ tion in-line. This is a common situation for simple accessor functions in 
+ C++, which can benefit greatly from inlining. Moreover, inlining may fa-
+ cilitate further optimizations, such as common subexpression elimination, 
+ by merging several separate functions into a single large function.
+  
+ The following function sq(x) is a typical example of a function that 
+ would benefit from being inlined. It computes x
+ 2
+ , the square of its argu-
+ ment x:
+  
+ double 
+  
+ sq (double x) 
+  
+ { 
+  
+  
+ return x * x; 
+  
+ }
+  
+ (1)
+  Temporary values introduced by the compiler during common subexpres-sion 
+ elimination are only used internally, and do not affect real variables. The name 
+ of the temporary variable ‘t’ shown above is only used as an illustration.",NA
+6.2 Speed-space tradeoffs,"While some forms of optimization, such as common subexpression elim-
+ ination, are able to increase the speed and reduce the size of a program 
+ simultaneously, other types of optimization produce faster code at the ex-
+ pense of increasing the size of the executable. This choice between speed 
+ and memory is referred to as a speed-space tradeoff. Optimizations with a 
+ speed-space tradeoff can also be used to make an executable smaller, at 
+ the expense of making it run slower.",NA
+6.2.1 Loop unrolling,"A prime example of an optimization with a speed-space tradeoff is loop 
+ unrolling. This form of optimization increases the speed of loops by elim-",NA
+6.3 Scheduling,"The lowest level of optimization is scheduling, in which the compiler de-
+ termines the best ordering of individual instructions. Most CPUs allow one 
+ or more new instructions to start executing before others have fin-ished. 
+ Many CPUs also support pipelining, where multiple instructions execute in 
+ parallel on the same CPU.
+  
+ When scheduling is enabled, instructions must be arranged so that 
+ their results become available to later instructions at the right time, and to 
+ allow for maximum parallel execution. Scheduling improves the speed of 
+ an executable without increasing its size, but requires additional memory 
+ and time in the compilation process itself (due to its complexity).",NA
+6.4 Optimization levels,"In order to control compilation-time and compiler memory usage, and the 
+ trade-offs between speed and space for the resulting executable, GCC 
+ provides a range of general optimization levels, numbered from 0–3, as 
+ well as individual options for specific types of optimization.
+  
+ An optimization level is chosen with the command line option‘-OLEVEL’, 
+ where LEVEL is a number from 0 to 3. 
+  
+ The effects of the 
+ different optimization levels are described below:
+  
+ ‘-O0’ or no ‘-O’ option (default) 
+  
+ At this optimization level GCC does not perform any optimiza-tion 
+ and compiles the source code in the most straightforward way 
+ possible. Each command in the source code is converted directly to 
+ the corresponding instructions in the executable file, without 
+ rearrangement. This is the best option to use when debugging a 
+ program.
+  
+ The option ‘-O0’ is equivalent to not specifying a ‘-O’ option.
+  
+ ‘-O1’ or ‘-O’
+  
+ This level turns on the most common forms of optimization that do not 
+ require any speed-space tradeoffs. 
+  
+ With this option the 
+ resulting executables should be smaller and faster than with ‘-O0’.",NA
+6.5 Examples,"The following program will be used to demonstrate the effects of different 
+ optimization levels:",NA
+6.6 Optimization and debugging,"With GCC it is possible to use optimization in combination with the 
+ debugging option ‘-g’. Many other compilers do not allow this.
+  
+ When using debugging and optimization together, the internal rear-
+ rangements carried out by the optimizer can make it difficult to see what 
+ is going on when examining an optimized program in the debugger. For 
+ example, temporary variables are often eliminated, and the ordering of 
+ statements may be changed.
+  
+ However, when a program crashes unexpectedly, any debugging infor-
+ mation is better than none—so the use of ‘-g’ is recommended for opti-
+ mized programs, both for development and deployment. The debugging 
+ option ‘-g’ is enabled by default for releases of GNU packages, together 
+ with the optimization option ‘-O2’.",NA
+6.7 Optimization and compiler warnings,"When optimization is turned on, GCC can produce additional warnings 
+ that do not appear when compiling without optimization.
+  
+ As part of the optimization process, the compiler examines the use of 
+ all variables and their initial values—this is referred to as data-flow analy-
+ sis. It forms the basis for other optimization strategies, such as instruction 
+ scheduling. A side-effect of data-flow analysis is that the compiler can de-
+ tect the use of uninitialized variables.
+  
+ The ‘-Wuninitialized’ option (which is included in ‘-Wall’) warns about 
+ variables that are read without being initialized. It only works when the 
+ program is compiled with optimization to enable data-flow analysis.
+  
+ The following function contains an example of such a variable:
+  
+ int 
+  
+ sign (int x) 
+  
+ { 
+  
+  
+ int s;
+  
+ if (x > 0) 
+  
+  
+ s = 1; 
+  
+ else if (x < 0) 
+  
+  
+ s = -1;
+  
+  
+ return s; 
+  
+ }
+  
+ The function works correctly for most arguments, but has a bug when x is 
+ zero—in this case the return value of the variable s will be undefined.",NA
+7 Compiling a C++ program,"This chapter describes how to use GCC to compile programs written in 
+ C++, and the command-line options specific to that language.
+  
+ The GNU C++ compiler provided by GCC is a true C++ compiler—it 
+ compiles C++ source code directly into assembly language. Some other 
+ C++ “compilers” are translators which convert C++ programs into C, and 
+ then compile the resulting C program using an existing C compiler. A true 
+ C++ compiler, such as GCC, is able to provide better support for error 
+ reporting, debugging and optimization.",NA
+7.1 Compiling a simple C++ program,"The procedure for compiling a C++ program is the same as for a C pro-
+ gram, but uses the command g++ instead of gcc. Both compilers are part of 
+ the GNU Compiler Collection.
+  
+ To demonstrate the use of g++, here is a version of the Hello World 
+ program written in C++:
+  
+ #include <iostream>
+  
+ int 
+  
+ main () 
+  
+ { 
+  
+  
+ std::cout << ""Hello, world!"" << std::endl; 
+  
+ return 0; 
+  
+ }
+  
+ The program can be compiled with the following command line:
+  
+ $ g++ -Wall hello.cc -o hello
+  
+ The C++ frontend of GCC uses many of the same the same options as the C 
+ compiler gcc. It also supports some additional options for controlling C++ 
+ language features, which will be described in this chapter. Note that C++ 
+ source code should be given one of the valid C++ file extensions ‘.cc’,‘.cpp’, 
+ ‘.cxx’ or ‘.C’ rather than the ‘.c’ extension used for C programs.
+  
+ The resulting executable can be run in exactly same way as the C version, 
+ simply by typing its filename:
+  
+ $ ./hello 
+  
+ Hello, world!
+  
+ The executable produces the same output as the C version of the program, 
+ using std::cout instead of the C printf function. All the options used in",NA
+7.2 Using the C++ standard library,"An implementation of the C++ standard library is provided as a part of 
+ GCC. The following program uses the standard library string class to 
+ reimplement the Hello World program:
+  
+ #include <string> 
+  
+ #include <iostream>
+  
+ using namespace std;
+  
+ int",NA
+7.3 Templates,"Templates provide the ability to define C++ classes which support generic 
+ programming techniques. Templates can be considered as a powerful kind 
+ of macro facility. When a templated class or function is used with a specific 
+ class or type, such as float or int, the corresponding template code is 
+ compiled with that type substituted in the appropriate places.",NA
+7.3.1 Using C++ standard library templates,"The C++ standard library ‘libstdc++’ supplied with GCC provides a wide 
+ range of generic container classes such as lists and queues, in addition to 
+ generic algorithms such as sorting. These classes were originally part of 
+ the Standard Template Library (STL), which was a separate package, but 
+ are now included in the C++ standard library itself.
+  
+ The following program demonstrates the use of the template library by 
+ creating a list of strings with the template list<string>:
+  
+ #include <list> 
+  
+ #include <string> 
+  
+ #include <iostream>
+  
+ using namespace std;
+  
+ int 
+  
+ main () 
+  
+ {",NA
+7.3.2 Providing your own templates,"In addition to the template classes provided by the C++ standard library 
+ you can define your own templates. The recommended way to use tem-
+ plates with g++ is to follow the inclusion compilation model, where tem-
+ plate definitions are placed in header files. This is the method used by the 
+ C++ standard library supplied with GCC itself. The header files can then be 
+ included with ‘#include’ in each source file where they are needed.
+  
+ For example, the following template file creates a simple Buffer<T> class 
+ which represents a circular buffer holding objects of type T.
+  
+ #ifndef BUFFER_H 
+  
+ #define BUFFER_H
+  
+ template <class T> 
+  
+ class Buffer 
+  
+ { 
+  
+ public: 
+  
+  
+ Buffer (unsigned int n); 
+  
+  
+ void insert (const T & x); 
+  
+ T 
+ get (unsigned int k) const; private: 
+  
+  
+ unsigned int i; 
+  
+  
+ unsigned int size; 
+  
+  
+ T *pT;",NA
+7.3.3 Explicit template instantiation,"To achieve complete control over the compilation of templates with g++ it 
+ is possible to require explicit instantiation of each occurrence of a tem-
+ plate, using the option ‘-fno-implicit-templates’. This method is not 
+ needed when using the GNU Linker—it is an alternative to the inclu-sion 
+ compilation model for systems with linkers which cannot eliminate 
+ duplicate definitions of template functions in object files.
+  
+ In this approach, template functions are no longer compiled at the 
+ point where they are used, as a result of the ‘-fno-implicit-
+ templates’option. Instead, the compiler looks for an explicit instantiation 
+ of the template using the template keyword with a specific type to force 
+ its compilation (this is a GNU extension to the standard behavior). These 
+ instantiations are typically placed in a separate source file, which is then 
+ compiled to make an object file containing all the template functions 
+ required by a program. This ensures that each template appears in only 
+ one object file, and is compatible with linkers which cannot eliminate 
+ duplicate definitions in object files.
+  
+ For example, the following file ‘templates.cc’ contains an explicit 
+ instantiation of the Buffer<float> class used 
+ by the 
+ program 
+ ‘tprog.cc’given above:",NA
+7.3.4 The export keyword,"At the time of writing, GCC does not support the new C++ export key-word 
+ (GCC 3.3.2).
+  
+ This keyword was proposed as a way of separating the interface of 
+ templates from their implementation. However it adds its own complexity 
+ to the linking process, which can detract from any advantages in practice.",NA
+8 Platform-specific options,"GCC provides a range of platform-specific options for different types of 
+ CPUs. These options control features such as hardware floating-point 
+ modes, and the use of special instructions for different CPUs. They can be 
+ selected with the ‘-m’ option on the command line, and work with all the 
+ GCC language frontends, such as gcc and g++.
+  
+ The following sections describe some of the options available for com-mon 
+ platforms. A complete list of all platform-specific options can be found in 
+ the GCC Reference Manual, “Using GCC” (see [Further read-ing], page 91). 
+  
+ Support for new processors is added to GCC as they become available, 
+ therefore some of the options described in this chapter may not be found 
+ in older versions of GCC.",NA
+8.1 Intel and AMD x86 options,"The features of the widely used Intel and AMD x86 families of processors 
+ (386, 486, Pentium, etc) can be controlled with GCC platform-specific 
+ options.
+  
+ On these platforms, GCC produces executable code which is compat-
+ ible with all the processors in the x86 family by default—going all the way 
+ back to the 386. However, it is also possible to compile for a specific 
+ processor to obtain better performance.
+ (1)
+  
+ For example, recent versions of GCC have specific support for newer 
+ processors such as the Pentium 4 and AMD Athlon. These can be selected 
+ with the following option for the Pentium 4,
+  
+ $ gcc -Wall -march=pentium4 hello.c
+  
+ and for the Athlon:
+  
+ $ gcc -Wall -march=athlon hello.c
+  
+ A complete list of supported CPU types can be found in the GCC Refer-ence 
+ Manual.
+  
+ Code produced with a specific ‘-march=CPU’ option will be faster but 
+ will not run on other processors in the x86 family. If you plan to distribute 
+ executable files for general use on Intel and AMD processors they should 
+ be compiled without any ‘-march’ options.
+  
+ As an alternative, the ‘-mcpu=CPU’ option provides a compromise be-
+ tween speed and portability—it generates code that is tuned for a specific
+  
+ (1)
+  Also referred to as “targeting” a specific processor.",NA
+8.2 DEC Alpha options,"The DEC Alpha processor has default settings which maximize floating-
+ point performance, at the expense of full support for IEEE arithmetic 
+ features.
+  
+ Support for infinity arithmetic and gradual underflow (denormalized 
+ numbers) is not enabled in the default configuration on the DEC Alpha 
+ processor. Operations which produce infinities or underflows will 
+ generate floating-point exceptions (also known as traps), and cause the 
+ program to terminate, unless the operating system catches and handles 
+ the exceptions (which is, in general, inefficient). The IEEE standard 
+ specifies that these operations should produce special results to represent 
+ the quantities in the IEEE numeric format.
+  
+ In most cases the DEC Alpha default behavior is acceptable, since the 
+ majority of programs do not produce infinities or underflows. For appli-
+  
+ (2)
+  Intel has added support for this instruction set as the “Intel 64-bit enhance-
+ ments” on their Xeon CPUs.",NA
+8.3 SPARC options,"On the SPARC range of processors the ‘-mcpu=CPU’ option generates 
+ processor-specific code. The valid options for CPU are v7, v8 (Super-
+ SPARC), Sparclite, Sparclet and v9 (UltraSPARC). Code produced with a 
+ specific ‘-mcpu’ option will not run on other processors in the SPARC 
+ family, except where supported by the backwards-compatibility of the 
+ processor itself.
+  
+ On 64-bit UltraSPARC systems the options ‘-m32’ and ‘-m64’ control 
+ code generation for 32-bit or 64-bit environments. The 32-bit 
+ environment selected by ‘-m32’ uses int, long and pointer types with a size 
+ of 32 bits. The 64-bit environment selected by ‘-m64’ uses a 32-bit int type 
+ and 64-bit long and pointer types.",NA
+8.4 POWER/PowerPC options,"On systems using the POWER/PowerPC family of processors the op-tion ‘-
+ mcpu=CPU’ selects code generation for specific CPU models. The possible 
+ values of CPU include ‘power’, ‘power2’, ‘powerpc’, ‘powerpc64’and 
+ ‘common’, in addition to other more specific model numbers. Code 
+ generated with the option ‘-mcpu=common’ will run on any of the proces-
+ sors. The option ‘-maltivec’ enables use of the Altivec vector processing 
+ instructions, if the appropriate hardware support is available.
+  
+ The POWER/PowerPC processors include a combined “multiply and 
+ add” instruction a ∗ x + b, which performs the two operations simultane-
+ ously for speed—this is referred to as a fused multiply and add, and is 
+ used by GCC by default. Due to differences in the way intermediate val-ues 
+ are rounded, the result of a fused instruction may not be exactly the same 
+ as performing the two operations separately. In cases where strict IEEE 
+ arithmetic is required, the use of the combined instructions can be 
+ disabled with the option ‘-mno-fused-madd’.
+  
+ On AIX systems, the option ‘-mminimal-toc’ decreases the number of 
+ entries GCC puts in the global table of contents (TOC) in executables, to 
+ avoid “TOC overflow” errors at link time. The option ‘-mxl-call’makes the 
+ linking of object files from GCC compatible with those from IBM’s XL 
+ compilers. For applications using POSIX threads, AIX always requires the 
+ option ‘-pthread’ when compiling, even when the program will only run in 
+ single-threaded mode.",NA
+8.5 Multi-architecture support,"A number of platforms can execute code for more than one architecture. 
+ For example, 64-bit platforms such as AMD64, MIPS64, Sparc64, and 
+ PowerPC64 support the execution of both 32-bit and 64-bit code. Simi-
+ larly, ARM processors support both ARM code and a more compact code 
+ called “Thumb”. 
+  
+ GCC can be built to support multiple architectures on 
+ these platforms. By default, the compiler will generate 64-bit object files, 
+ but giving the ‘-m32’ option will generate a 32-bit object file for the 
+ corresponding architecture.
+ (3)
+  
+ Note that support for multiple architectures depends on the corre-
+ sponding libraries being available. On 64-bit platforms supporting both 64 
+ and 32-bit executables, the 64-bit libraries are often placed in 
+ ‘lib64’directories instead of ‘lib’ directories, e.g. in ‘/usr/lib64’ and 
+ ‘/lib64’. The 32-bit libraries are then found in the default ‘lib’ directories 
+ as on other platforms. This allows both a 32-bit and a 64-bit library with 
+ the
+  
+ (3)
+  The options ‘-maix64’ and ‘-maix32’ are used on AIX.",NA
+9 Troubleshooting,"GCC provides several help and diagnostic options to assist in trou-
+ bleshooting problems with the compilation process. All the options de-
+ scribed in this chapter work with both gcc and g++.",NA
+9.1 Help for command-line options,"To obtain a brief reminder of various command-line options, GCC provides 
+ a help option which displays a summary of the top-level GCC command-
+ line options:
+  
+ $ gcc --help
+  
+ To display a complete list of options for gcc and its associated programs, 
+ such as the GNU Linker and GNU Assembler, use the help option above 
+ with the verbose (‘-v’) option:
+  
+ $ gcc -v --help
+  
+ The complete list of options produced by this command is extremely 
+ long—you may wish to page through it using the more command, or 
+ redirect the output to a file for reference:
+  
+ $ gcc -v --help 2>&1 | more",NA
+9.2 Version numbers,"You can find the version number of gcc using the version option:
+  
+ $ gcc --version 
+  
+ gcc (GCC) 3.3.1
+  
+ The version number is important when investigating compilation prob-
+ lems, since older versions of GCC may be missing some features that a pro-
+ gram uses. The version number has the form major-version.minor-version 
+ or major-version.minor-version.micro-version, where the additional 
+ third“micro” version number (as shown above) is used for subsequent 
+ bug-fix releases in a release series.
+  
+ More details about the version can be found using ‘-v’:
+  
+ $ gcc -v 
+  
+ Reading specs from /usr/lib/gcc-lib/i686/3.3.1/specs 
+ Configured with: ../configure --prefix=/usr 
+  
+ Thread model: posix 
+  
+ gcc version 3.3.1",NA
+9.3 Verbose compilation,"The ‘-v’ option can also be used to display detailed information about the 
+ exact sequence of commands used to compile and link a program. Here is 
+ an example which shows the verbose compilation of the Hello World 
+ program:
+  
+ $ gcc -v -Wall hello.c 
+  
+ Reading specs from /usr/lib/gcc-lib/i686/3.3.1/specs Configured 
+ with: ../configure --prefix=/usr 
+  
+ Thread model: posix 
+  
+ gcc version 3.3.1 
+  
+  
+ /usr/lib/gcc-lib/i686/3.3.1/cc1 -quiet -v -D__GNUC__=3
+  
+ -
+ D__GNUC_MINOR__=3 -D__GNUC_PATCHLEVEL__=1 
+  
+  
+ hello.c -quiet -dumpbase hello.c -auxbase hello -Wall
+  
+ -version -o 
+ /tmp/cceCee26.s 
+  
+ GNU C version 3.3.1 (i686-pc-linux-gnu) 
+  
+  
+ compiled by GNU C version 3.3.1 (i686-pc-linux-gnu) GGC 
+ heuristics: --param ggc-min-expand=51
+  
+  
+ --param ggc-min-heapsize=40036 
+  
+ ignoring nonexistent directory ""/usr/i686/include"" #include ""..."" 
+ search starts here: 
+  
+ #include <...> search starts here: 
+  
+  
+ /usr/local/include 
+  
+  
+ /usr/include 
+  
+  
+ /usr/lib/gcc-lib/i686/3.3.1/include 
+  
+  
+ /usr/include 
+  
+ End of search list.
+  
+  
+ as -V -Qy -o /tmp/ccQynbTm.o /tmp/cceCee26.s 
+  
+ GNU assembler version 2.12.90.0.1 (i386-linux) 
+  
+ using BFD version 2.12.90.0.1 20020307 Debian/GNU 
+  
+ Linux 
+  
+ /usr/lib/gcc-lib/i686/3.3.1/collect2
+  
+  
+ --eh-frame-hdr -m elf_i386 -dynamic-linker 
+  
+  
+ /lib/ld-linux.so.2 /usr/lib/crt1.o /usr/lib/crti.o 
+  
+ /usr/lib/gcc-
+ lib/i686/3.3.1/crtbegin.o
+  
+  
+ -L/usr/lib/gcc-lib/i686/3.3.1
+  
+  
+ -L/usr/lib/gcc-lib/i686/3.3.1/../../.. /tmp/ccQynbTm.o
+  
+ -lgcc 
+ -lgcc_eh -lc -lgcc -lgcc_eh 
+  
+  
+ /usr/lib/gcc-lib/i686/3.3.1/crtend.o 
+  
+  
+ /usr/lib/crtn.o",NA
+10 Compiler-related tools,"This chapter describes a number of tools which are useful in combination 
+ with GCC. These include the GNU archiver ar, for creating libraries, and 
+ the GNU profiling and coverage testing programs, gprof and gcov.",NA
+10.1 Creating a library with the GNU ,NA,NA
+archiver,"The GNU archiver ar combines a collection of object files into a single 
+ archive file, also known as a library. An archive file is simply a convenient 
+ way of distributing a large number of related object files together (as 
+ described earlier in Section 2.6 [Linking with external libraries], page 14).
+  
+ To demonstrate the use of the GNU archiver we will create a small library 
+ ‘libhello.a’ containing two functions hello and bye.
+  
+ The first object file will be generated from the source code for the hello 
+ function, in the file ‘hello_fn.c’ seen earlier:
+  
+ #include <stdio.h> 
+  
+ #include ""hello.h""
+  
+ void 
+  
+ hello (const char * name) 
+  
+ { 
+  
+  
+ printf (""Hello, %s!\n"", name); }
+  
+ The second object file will be generated from the source file ‘bye_fn.c’, 
+ which contains the new function bye:
+  
+ #include <stdio.h> 
+  
+ #include ""hello.h""
+  
+ void 
+  
+ bye (void) 
+  
+ { 
+  
+  
+ printf (""Goodbye!\n""); 
+  
+ }
+  
+ Both functions use the header file ‘hello.h’, now with a prototype for the 
+ function bye():
+  
+ void hello (const char * name); void 
+ bye (void);",NA
+10.2 Using the profiler gprof,"The GNU profiler gprof is a useful tool for measuring the performance of a 
+ program—it records the number of calls to each function and the amount 
+ of time spent there, on a per-function basis. 
+  
+ Functions which 
+ consume a large fraction of the run-time can be identified easily from the 
+ output of gprof. Efforts to speed up a program should concentrate first on 
+ those functions which dominate the total run-time.
+  
+ We will use gprof to examine the performance of a small numeri-cal 
+ program which computes the lengths of sequences occurring in the
+  
+ unsolved Collatz conjecture in mathematics.
+ (2) 
+ involves sequences defined by the rule:
+  
+ The Collatz conjecture
+  
+ x
+ n+1
+  ←
+  
+ x
+ n
+ /2
+  
+ if x
+ n
+  is even
+  
+ 3x
+ n
+  + 1
+  
+ if x
+ n
+  is odd
+  
+ The sequence is iterated from an initial value x
+ 0
+  until it terminates with 
+ the value 1. 
+  
+ According to the conjecture, all sequences do terminate 
+ eventually—the program below displays the longest sequences as x
+ 0
+  in-
+ creases. The source file ‘collatz.c’ contains three functions: main, nseq and 
+ step:
+  
+ #include <stdio.h>
+  
+ /* Computes the length of Collatz sequences */
+  
+ unsigned int 
+  
+ step (unsigned int x) 
+  
+ { 
+  
+ if (x % 2 == 0) 
+  
+  
+ {
+  
+ (2)
+  American Mathematical Monthly, Volume 92 (1985), 3–23",NA
+10.3 Coverage testing with gcov,"The GNU coverage testing tool gcov analyses the number of times each 
+ line of a program is executed during a run. This makes it possible to find 
+ areas of the code which are not used, or which are not exercised in testing. 
+ When combined with profiling information from gprof the information 
+ from coverage testing allows efforts to speed up a program to be 
+ concentrated on specific lines of the source code.",NA
+11 How the compiler works,"This chapter describes in more detail how GCC transforms source files to 
+ an executable file. Compilation is a multi-stage process involving several 
+ tools, including the GNU Compiler itself (through the gcc or g++ fron-
+ tends), the GNU Assembler as, and the GNU Linker ld. The complete set of 
+ tools used in the compilation process is referred to as a toolchain.",NA
+11.1 An overview of the compilation process,"The sequence of commands executed by a single invocation of GCC con-
+ sists of the following stages:
+  
+ • preprocessing (to expand macros)
+  
+ • compilation (from source code to assembly language)
+  
+ • assembly (from assembly language to machine code)
+  
+ • linking (to create the final executable)
+  
+ As an example, we will examine these compilation stages individually 
+ using the Hello World program ‘hello.c’:
+  
+ #include <stdio.h>
+  
+ int 
+  
+ main (void) 
+  
+ { 
+  
+  
+ printf (""Hello, world!\n""); 
+  
+  
+ return 0; 
+  
+ }
+  
+ Note that it is not necessary to use any of the individual commands de-
+ scribed in this section to compile a program. All the commands are exe-
+ cuted automatically and transparently by GCC internally, and can be seen 
+ using the ‘-v’ option described earlier (see Section 9.3 [Verbose compila-
+ tion], page 70). The purpose of this chapter is to provide an understanding 
+ of how the compiler works.
+  
+ Although the Hello World program is very simple it uses external 
+ header files and libraries, and so exercises all the major steps of the com-
+ pilation process.",NA
+11.2 The preprocessor,"The first stage of the compilation process is the use of the preprocessor to 
+ expand macros and included header files. To perform this stage, GCC 
+ executes the following command:
+ (1)
+  
+ $ cpp hello.c > hello.i
+  
+ The result is a file ‘hello.i’ which contains the source code with all macros 
+ expanded. By convention, preprocessed files are given the file extension ‘.i’ 
+ for C programs and ‘.ii’ for C++ programs. In practice, the preprocessed file 
+ is not saved to disk unless the ‘-save-temps’ option is used.",NA
+11.3 The compiler,"The next stage of the process is the actual compilation of preprocessed 
+ source code to assembly language, for a specific processor. The command-
+ line option ‘-S’ instructs gcc to convert the preprocessed C source code to 
+ assembly language without creating an object file:
+  
+ $ gcc -Wall -S hello.i
+  
+ The resulting assembly language is stored in the file ‘hello.s’. Here is what 
+ the Hello World assembly language for an Intel x86 (i686) processor looks 
+ like:
+  
+ $ cat hello.s 
+  
+  
+ .file 
+  
+ ""hello.c"" 
+  
+  
+ .section 
+   
+ .rodata 
+  
+ .LC0: 
+  
+  
+ .string 
+  
+ ""Hello, world!\n"" 
+  
+  
+ .text 
+  
+ .globl main 
+  
+  
+ .type 
+  
+ main, @function 
+  
+ main:
+  
+ pushl 
+  
+ movl 
+  
+ subl 
+  
+ andl 
+  
+ movl 
+  
+ subl 
+  
+ movl 
+  
+ call
+  
+ %ebp 
+  
+ %esp, %ebp 
+  
+ $8, %esp 
+  
+ $-16, %esp 
+  
+ $0, %eax 
+  
+ %eax, %esp 
+  
+ $.LC0, (%esp) 
+ printf
+  
+ (1)
+  As mentioned earlier, the preprocessor is integrated into the compiler in recent 
+ versions of GCC. Conceptually, the compilation process is the same as running 
+ the preprocessor as separate application.",NA
+11.4 The assembler,"The purpose of the assembler is to convert assembly language into ma-
+ chine code and generate an object file. When there are calls to external 
+ functions in the assembly source file, the assembler leaves the addresses 
+ of the external functions undefined, to be filled in later by the linker. The 
+ assembler can be invoked with the following command line:
+  
+ $ as hello.s -o hello.o
+  
+ As with GCC, the output file is specified with the ‘-o’ option. The result-ing 
+ file ‘hello.o’ contains the machine instructions for the Hello World 
+ program, with an undefined reference to printf.",NA
+11.5 The linker,"The final stage of compilation is the linking of object files to create an 
+ executable. In practice, an executable requires many external functions 
+ from system and C run-time (crt) libraries. Consequently, the actual link 
+ commands used internally by GCC are complicated. For example, the full 
+ command for linking the Hello World program is:
+  
+ $ ld -dynamic-linker /lib/ld-linux.so.2 /usr/lib/crt1.o /usr/lib/crti.o 
+ /usr/lib/gcc-lib/i686/3.3.1/crtbegin.o-L/usr/lib/gcc-lib/i686/3.3.1 
+ hello.o -lgcc -lgcc_eh-lc -lgcc -lgcc_eh /usr/lib/gcc-
+ lib/i686/3.3.1/crtend.o /usr/lib/crtn.o
+  
+ Fortunately there is never any need to type the command above directly—
+ the entire linking process is handled transparently by gcc when invoked 
+ as follows:
+  
+ $ gcc hello.o
+  
+ This links the object file ‘hello.o’ to the C standard library, and produces an 
+ executable file ‘a.out’:
+  
+ $ ./a.out 
+  
+ Hello, world!
+  
+ An object file for a C++ program can be linked to the C++ standard library 
+ in the same way with a single g++ command.",NA
+12 Examining compiled files,"This chapter describes several useful tools for examining the contents of 
+ executable files and object files.",NA
+12.1 Identifying files,"When a source file has been compiled to an object file or executable the 
+ options used to compile it are no longer obvious. The file command looks 
+ at the contents of an object file or executable and determines some of its 
+ characteristics, such as whether it was compiled with dynamic or static 
+ linking.
+  
+ For example, here is the result of the file command for a typical 
+ executable:
+  
+ $ file a.out 
+  
+ a.out: ELF 32-bit LSB executable, Intel 80386, 
+  
+ version 
+ 1 (SYSV), dynamically linked (uses shared 
+  
+ libs), not 
+ stripped
+  
+ The output shows that the executable file is dynamically linked, and com-
+ piled for the Intel 386 and compatible processors. A full explanation of the 
+ output is shown below:
+  
+ ELF The internal format of the executable file (ELF stands for “Exe-cutable 
+ and Linking Format”, other formats such as COFF “Com-mon Object File 
+ Format” are used on some older operating systems (e.g. MS-DOS)).
+  
+ 32-bit 
+  
+ The word size (for some platforms this would be 64-bit).
+  
+ LSB Compiled for a platform with least significant byte first word-
+ ordering, such as Intel and AMD x86 processors (the alternative MSB most 
+ significant byte first is used by other processors, such as the Motorola 
+ 680x0)
+ (1)
+ . Some processors such as Itanium and MIPS support both LSB 
+ and MSB orderings.
+  
+ Intel 80386 
+  
+ The processor the executable file was compiled for.
+  
+ (1)
+  The MSB and LSB orderings are also known as big-endian and little-endian 
+ respectively (the terms originate from Jonathan Swift’s satire “Gulliver’s 
+ Travels”, 1727).",NA
+12.2 Examining the symbol table,"As described earlier in the discussion of debugging, executables and object 
+ files can contain a symbol table (see Chapter 5 [Compiling for debugging], 
+ page 41). This table stores the location of functions and variables by name, 
+ and can be displayed with the nm command:
+  
+ $ nm a.out 
+  
+ 08048334 t Letext 
+  
+ 08049498 ? _DYNAMIC 
+  
+ 08049570 ? _GLOBAL_OFFSET_TABLE_ 
+ ........
+  
+ 080483f0 T main 
+  
+ 08049590 b object.11 
+  
+ 0804948c d p.3 
+  
+  
+ U printf@GLIBC_2.0
+  
+ Among the contents of the symbol table, the output shows that the start of 
+ the main function has the hexadecimal offset 080483f0. Most of the 
+ symbols are for internal use by the compiler and operating system. A ‘T’in 
+ the second column indicates a function that is defined in the object file, 
+ while a ‘U’ indicates a function which is undefined (and should be resolved 
+ by linking against another object file). A complete explanation of the 
+ output of nm can be found in the GNU Binutils manual.
+  
+ The most common use of the nm command is to check whether a 
+ library contains the definition of a specific function, by looking for a ‘T’ 
+ entry in the second column against the function name.
+  
+ (2)
+  POSIX.1 (2003 edition), IEEE Std 1003.1-2003.",NA
+12.3 Finding dynamically linked libraries,"When a program has been compiled using shared libraries it needs to load 
+ those libraries dynamically at run-time in order to call external functions. 
+ The command ldd examines an executable and displays a list of the shared 
+ libraries that it needs. These libraries are referred to as the shared library 
+ dependencies of the executable.
+  
+ For example, the following commands demonstrate how to find the shared 
+ library dependencies of the Hello World program:
+  
+ $ gcc -Wall hello.c 
+  
+ $ ldd a.out 
+  
+ libc.so.6 => /lib/libc.so.6 (0x40020000) 
+  
+ /lib/ld-linux.so.2 => /lib/ld-linux.so.2 (0x40000000)
+  
+ The output shows that the Hello World program depends on the C library 
+ libc (shared library version 6) and the dynamic loader library ld-linux 
+ (shared library version 2).
+  
+ If the program uses external libraries, such as the math library, these 
+ are also displayed. For example, the calc program (which uses the sqrt 
+ function) generates the following output:
+  
+ $ gcc -Wall calc.c -lm -o calc 
+  
+ $ ldd calc 
+  
+ libm.so.6 => /lib/libm.so.6 (0x40020000) 
+  
+ libc.so.6 => /lib/libc.so.6 (0x40041000) 
+  
+ /lib/ld-linux.so.2 => /lib/ld-linux.so.2 (0x40000000)
+  
+ The first line shows that this program depends on the math library libm 
+ (shared library version 6), in addition to the C library and dynamic loader 
+ library.
+  
+ The ldd command can also be used to examine shared libraries them-
+ selves, in order to follow a chain of shared library dependencies.",NA
+13 Getting help,"If you encounter a problem not covered by this manual, there are sev-eral 
+ reference manuals which describe GCC and language-related topics in 
+ more detail (see [Further reading], page 91). These manuals contain 
+ answers to common questions, and careful study of them will usually yield 
+ a solution. If the manuals are unclear, the most appropriate way to obtain 
+ help is to ask a knowledgeable colleague for assistance.
+  
+ Alternatively, there are many companies and consultants who offer 
+ commercial support for programming matters related to GCC on an hourly 
+ or ongoing basis. For businesses this can be a cost-effective way to obtain 
+ high-quality support.
+  
+ A directory of free software support companies and their current rates 
+ can be found on the GNU Project website.
+ (1)
+ With free software, com-
+ mercial support is available in a free market—service companies compete 
+ in quality and price, and users are not tied to any particular one. In con-
+ trast, support for proprietary software is usually only available from the 
+ original vendor.
+  
+ A higher-level of commercial support for GCC is available from compa-
+ nies involved in the development of the GNU compiler toolchain itself. A 
+ listing of these companies can be found in the “Development 
+ Companies”section of the publisher’s webpage for this book.
+ (2)
+ These 
+ companies can provide services such as extending GCC to generate code 
+ for new CPUs or fixing bugs in the compiler.
+  
+ (1)
+  http://www.gnu.org/prep/service.html 
+  
+ (2)
+  http://www.network-theory.co.uk/gcc/intro/",NA
+Further reading,"The definitive guide to GCC is the official reference manual, “Using GCC”, 
+ published by GNU Press:
+  
+ Using GCC (for GCC version 3.3.1) by Richard M. Stallman and the 
+ GCC Developer Community (Published by GNU Press, ISBN 1-
+ 882114-39-6)
+  
+ This manual is essential for anyone working with GCC because it describes 
+ every option in detail. Note that the manual is updated when new releases 
+ of GCC become available, so the ISBN number may change in the future.
+  
+ If you are new to programming with GCC you will also want to learn 
+ how to use the GNU Debugger GDB, and how to compile large programs 
+ easily with GNU Make. These tools are described in the following manu-
+ als:
+  
+ Debugging with GDB: The GNU Source-Level Debugger by Richard M. 
+ Stallman, Roland Pesch, Stan Shebs, et al. (Published by GNU Press, 
+ ISBN 1-882114-88-4)
+  
+ GNU Make: A Program for Directing Recompilation by Richard M. 
+ Stallman and Roland McGrath (Published by GNU Press, ISBN 1-
+ 882114-82-5)
+  
+ For effective C programming it is also essential to have a good knowl-edge 
+ of the C standard library. The following manual documents all the 
+ functions in the GNU C Library:
+  
+ The GNU C Library Reference Manual by Sandra Loosemore with 
+ Richard M. Stallman, et al (2 vols) (Published by GNU Press, ISBN 1-
+ 882114-22-1 and 1-882114-24-8)
+  
+ Be sure to check the website http://www.gnupress.org/ for the latest 
+ printed editions of manuals published by GNU Press. The manuals can be 
+ purchased online using a credit card at the FSF website
+ (1)
+ in addition to 
+ being available for order through most bookstores using the ISBNs. Man-
+ uals published by GNU Press raise funds for the Free Software Foundation 
+ and the GNU Project.
+  
+ Information about shell commands, environment variables and shell-
+ quoting rules can be found in the following book:
+  
+ The GNU Bash Reference Manual by Chet Ramey and Brian Fox 
+ (Published by Network Theory Ltd, ISBN 0-9541617-7-7)
+  
+ (1)
+  http://order.fsf.org/",NA
+Acknowledgements,"Many people have contributed to this book, and it is important to record 
+ their names here: 
+  
+ Thanks to Gerald Pfeifer, for his careful reviewing and numerous sug-
+ gestions for improving the book.
+  
+ Thanks to Andreas Jaeger, for information on AMD64 and multi-
+ architecture support, and many helpful comments.
+  
+ Thanks to David Edelsohn, for information on the POWER/PowerPC series 
+ of processors.
+  
+ Thanks to Jamie Lokier, for research.
+  
+ Thanks to Stephen Compall, for helpful corrections.
+  
+ Thanks to Gerard Jungman, for useful comments.
+  
+ Thanks to Steven Rubin, for generating the chip layout for the cover with 
+ Electric.
+  
+ And most importantly, thanks to Richard Stallman, founder of the GNU 
+ Project, for writing GCC and making it free software.",NA
+Other books from the publisher,"Network Theory publishes books about free software under free 
+ documen-tation licenses. Our current catalogue includes the following 
+ titles:
+  
+ • Comparing and Merging Files with GNU diff and patch by David 
+ MacKenzie, Paul Eggert, and Richard Stallman (ISBN 0-9541617-5-0) 
+ $19.95 (£12.95)
+  
+ • Version Management with CVS by Per Cederqvist et al. (ISBN 0-
+  
+ 9541617-1-8) $29.95 (£19.95)
+  
+ • GNU Bash Reference Manual by Chet Ramey and Brian Fox (ISBN 
+  
+ 0-9541617-7-7) $29.95 (£19.95)
+  
+ • An Introduction to R by W.N. Venables, D.M. Smith and the R 
+  
+ Development Core Team (ISBN 0-9541617-4-2) $19.95 (£12.95)
+  
+ • GNU Octave Manual by John W. Eaton (ISBN 0-9541617-2-6) $29.99 
+  
+ (£19.99)
+  
+ • GNU Scientific Library Reference Manual—Second Edition by M. 
+ Galassi, J. Davies, J. Theiler, B. Gough, G. Jungman, M. Booth, F.
+  
+ Rossi (ISBN 0-9541617-3-4) $39.99 (£24.99)
+  
+ • An Introduction to Python by Guido van Rossum and Fred L. Drake, 
+  
+ Jr. (ISBN 0-9541617-6-9) $19.95 (£12.95)
+  
+ • Python Language Reference Manual by Guido van Rossum and Fred 
+  
+ L. Drake, Jr. (ISBN 0-9541617-8-5) $19.95 (£12.95)
+  
+ • The R Reference Manual—Base Package (Volume 1) by the R De-
+  
+ velopment Core Team (ISBN 0-9546120-0-0) $69.95 (£39.95)
+  
+ • The R Reference Manual—Base Package (Volume 2) by the R De-
+  
+ velopment Core Team (ISBN 0-9546120-1-9) $69.95 (£39.95)
+  
+ All titles are available for order from bookstores worldwide.
+  
+ Sales of the manuals fund the development of more free software and 
+ documentation.
+  
+ For details, visit the website http://www.network-theory.co.uk/",NA
+Free software organizations,"The GNU Compiler Collection is part of the GNU Project, launched in 1984 
+ to develop a complete Unix-like operating system which is free soft-ware: 
+ the GNU system.
+  
+ The Free Software Foundation (FSF) is a tax-exempt charity that raises 
+ funds for continuing work on the GNU Project. It is dedicated to promoting 
+ your right to use, study, copy, modify, and redistribute com-puter 
+ programs. One of the best ways to help the development of free software 
+ is to become an associate member of the Free Software Founda-tion, and 
+ pay regular dues to support their efforts—for more information visit the 
+ FSF website:
+  
+ Free Software Foundation (FSF) 
+  
+ United States — http://www.fsf.org/
+  
+ Around the world there are many other local free software membership 
+ organizations which support the aims of the Free Software Foundation, 
+ including:
+  
+ Free Software Foundation Europe (FSF Europe) 
+ Europe — http://www.fsfeurope.org/
+  
+ Association for Free Software (AFFS) 
+  
+ United Kingdom — http://www.affs.org.uk/
+  
+ Irish Free Software Organisation (IFSO) 
+ Ireland — http://www.ifso.info/
+  
+ Association for Promotion and Research in Libre Computing (APRIL) 
+ France — http://www.april.org/
+  
+ Associazione Software Libero 
+  
+ Italy — http://www.softwarelibero.it/
+  
+ Verein zur F¨orderung Freier Software (FFIS) 
+ Germany — http://www.ffis.de/
+  
+ Verein zur F¨orderung Freier Software 
+  
+ Austria — http://www.ffs.or.at/
+  
+ Association Electronique Libre (AEL) 
+ Belgium — http://www.ael.be/
+  
+ National Association for Free Software (ANSOL) 
+ Portugal — http://www.ansol.org/",NA
+GNU Free Documentation License,"Version 1.2, November 2002
+  
+ Copyright c⃝ 2000,2001,2002 Free Software Foundation, Inc. 59 
+ Temple Place, Suite 330, Boston, MA 02111-1307, USA
+  
+ Everyone is permitted to copy and distribute verbatim copies of 
+ this license document, but changing it is not allowed.
+  
+ 0. PREAMBLE
+  
+ The purpose of this License is to make a manual, textbook, or other functional and 
+ useful document free in the sense of freedom: to assure everyone the effec-tive 
+ freedom to copy and redistribute it, with or without modifying it, either commercially 
+ or noncommercially. Secondarily, this License preserves for the au-thor and publisher 
+ a way to get credit for their work, while not being considered responsible for 
+ modifications made by others.
+  
+ This License is a kind of “copyleft”, which means that derivative works of the 
+ document must themselves be free in the same sense. It complements the GNU General 
+ Public License, which is a copyleft license designed for free software.
+  
+ We have designed this License in order to use it for manuals for free software, because 
+ free software needs free documentation: a free program should come with manuals 
+ providing the same freedoms that the software does. But this License is not limited to 
+ software manuals; it can be used for any textual work, regardless of subject matter or 
+ whether it is published as a printed book. We recommend this License principally for 
+ works whose purpose is instruction or reference.
+  
+ 1. APPLICABILITY AND DEFINITIONS
+  
+ This License applies to any manual or other work, in any medium, that contains a 
+ notice placed by the copyright holder saying it can be distributed under the terms of 
+ this License. Such a notice grants a world-wide, royalty-free license, unlimited in 
+ duration, to use that work under the conditions stated herein. The“Document”, below, 
+ refers to any such manual or work. Any member of the public is a licensee, and is 
+ addressed as “you”. You accept the license if you copy, modify or distribute the work in 
+ a way requiring permission under copyright law.
+  
+ A “Modified Version” of the Document means any work containing the Document or a 
+ portion of it, either copied verbatim, or with modifications and/or translated into 
+ another language.
+  
+ A “Secondary Section” is a named appendix or a front-matter section of the Document 
+ that deals exclusively with the relationship of the publishers or authors of the 
+ Document to the Document’s overall subject (or to related matters) and contains 
+ nothing that could fall directly within that overall subject. (Thus, if the Document is in 
+ part a textbook of mathematics, a Secondary Section may not explain any 
+ mathematics.) The relationship could be a matter of historical connection with the 
+ subject or with related matters, or of legal, commercial, philosophical, ethical or 
+ political position regarding them.
+  
+ The “Invariant Sections” are certain Secondary Sections whose titles are des-ignated, 
+ as being those of Invariant Sections, in the notice that says that the Document is 
+ released under this License. If a section does not fit the above def-inition of Secondary 
+ then it is not allowed to be designated as Invariant. The",NA
+ADDENDUM: How to use this License for your ,NA,NA
+documents,"To use this License in a document you have written, include a copy of the License in the 
+ document and put the following copyright and license notices just after the title page:
+  
+ Copyright (C) year your name.
+  
+ Permission is granted to copy, distribute and/or modify this 
+ document under the terms of the GNU Free 
+  
+ Documentation License, Version 1.2 or any later version published 
+ by the Free Software Foundation; with no 
+  
+ Invariant Sections, no Front-Cover Texts, and no 
+  
+ Back-Cover Texts. A copy of the license is included in the section 
+ entitled ‘‘GNU Free Documentation License’’.
+  
+ If you have Invariant Sections, Front-Cover Texts and Back-Cover Texts, replace the 
+ “with...Texts.” line with this:
+  
+ with the Invariant Sections being list their 
+  
+ titles, with the Front-Cover Texts being list, and with the 
+ Back-Cover Texts being list.
+  
+ If you have Invariant Sections without Cover Texts, or some other combination of the three, 
+ merge those two alternatives to suit the situation.
+  
+ If your document contains nontrivial examples of program code, we recommend 
+ releasing these examples in parallel under your choice of free software license, such as the 
+ GNU General Public License, to permit their use in free software.",NA
+Index,NA,NA
+#,"‘-lm’ option, link with math library
+  
+ #define, preprocessor directive. . . 35 
+ #if, preprocessor directive . . . . . . . 29 
+ #ifdef, preprocessor directive. . . . 35 
+ #include, preprocessor directive. . 10",NA
+$,"$, shell prompt. . . . . . . . . . . . . . . . . . . 5",NA
+-,"‘--help’ option, display 
+  
+ command-line options . . . . . . . 69‘--
+ version’ option, display version number . 
+ . . . . . . . . . . . . . . . . . . . 69‘-ansi’ option, 
+ disable language 
+  
+ extensions . . . . . . . . . . . . . . . . . . 25‘-ansi’ 
+ option, used with g++ . . . . 55‘-c’ option, 
+ compile to object file 
+  
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 11‘-D’ 
+ option, define macro. . . . . . . . . 35‘-dM’ 
+ option, list predefined macros 
+  
+ . . . . 
+ . . . . . . . . . . . . . . . . . . . . . . . 36‘-E’ option, 
+ preprocess source files 
+  
+ . . . . . . . . . . . . . 
+ . . . . . . . . . . . . . . 38‘-fno-implicit-templates’ 
+ option, disable implicit instantiation 
+  
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 60‘-
+ fprofile-arcs’ option, instrument 
+ branches . . . . . . . . . . . . . . . . . . . 78‘-ftest-
+ coverage’ option, record 
+  
+ coverage. . . . . . . . . . . . . . . . . . . . 78‘-funroll-
+ loops’ option, 
+  
+ optimization by loop unrolling 
+  
+ . . . . 
+ . . . . . . . . . . . . . . . . . . . . . . . 50‘-g’ option, 
+ enable debugging . . . . 41‘-I’ option, 
+ include path . . . . . . . . . 19‘-L’ option, 
+ library search path . . . 19‘-l’ option, 
+ linking with libraries 
+  
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+  
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 15‘-m’ 
+ option, platform-specific settings 
+  
+ . . . . 
+ . . . . . . . . . . . . . . . . . . . . . . . 63‘-m32’ and ‘-
+ m64’ options, compile for 
+  
+ 32 or 64-bit 
+ environment . . . . 65‘-maltivec’ option, 
+ enables use of 
+  
+ Altivec processor on 
+ PowerPC 
+  
+ . . . . . . . . . . . . . . . . . . . . . . . 
+ . . . . 66‘-march’ option, compile for 
+ specific 
+  
+ CPU . . . . . . . . . . . . . . . . . . 
+ . . . . . 63‘-mcmodel’ option, for AMD64 . . 
+ . 64‘-mcpu’ option, compile for specific 
+  
+ CPU . . . . . . . . . . . . . . . . . . . . . . . 65‘-
+ mieee’ option, floating-point 
+  
+  
+ support on DEC Alpha. . . . . . 64‘-
+ mminimal-toc’ option, on AIX. . 66‘-
+ mno-fused-madd’ option, on 
+  
+  
+ PowerPC . . . . . . . . . . . . . . . . . . . 66‘-
+ mxl-call’ option, compatibility 
+  
+  
+ with IBM XL compilers on AIX 
+  
+ . . . . 
+ . . . . . . . . . . . . . . . . . . . . . . . 66‘-o’ option, set 
+ output filename. . . . 7‘-O0’ option, 
+ optimization level zero 
+  
+ . . . . . . . . . . . . . . 
+ . . . . . . . . . . . . . 49‘-O1’ option, 
+ optimization level one 
+  
+ . . . . . . . . . . . . . . 
+ . . . . . . . . . . . . . 49‘-O2’ option, 
+ optimization level two 
+  
+ . . . . . . . . . . . . . . 
+ . . . . . . . . . . . . . 50‘-O3’ option, 
+ optimization level three 
+  
+ . . . . . . . . . . . . . . 
+ . . . . . . . . . . . . . 50‘-Os’ option, 
+ optimization for size 
+  
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 50‘-
+ pedantic’ option, conform to the 
+  
+ ANSI standard (with ‘-ansi’) 
+  
+ . . . . 
+ . . . . . . . . . . . . . . . . . . . . . . . 25‘-pg’ option, 
+ enable profiling . . . . . 76‘-pthread’ 
+ option, on AIX . . . . . . . 66‘-rpath’ option, 
+ set run-time shared 
+  
+ library 
+ search path . . . . . . . . . . 24‘-S’ option, 
+ create assembly code 
+  
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 82",NA
+/,"‘/tmp’ directory, temporary files . . 15
+  
+ warnings . . . . . . . . . . . . . . . . . . . . 7
+  
+ ‘-Wcast-qual’ option, warn about
+  
+ casts removing qualifiers. . . . . 32‘-
+ Wcomment’ option, warn about
+  
+ nested comments. . . . . . . . . . . . 29‘-
+ Wconversion’ option, warn about
+  
+ type conversions . . . . . . . . . . . . 31‘-
+ Werror’ option, convert warnings to
+  
+ __gxx_personality_v0, undefined 
+  
+ reference error . . . . . . . . . . . . . . 56 
+ _GNU_SOURCE macro, enables 
+  
+  
+ extensions to GNU C Library 
+  
+ . . . . 
+ . . . . . . . . . . . . . . . . . . . . . . . 27
+  
+ ‘-Wformat’ option, warn about errors . . . . . . . . . . . . . . . . . . . . . . 33",NA
+6,"incorrect format strings. . . . . . 30‘-
+ Wimplicit’ option, warn about
+  
+ missing declarations . . . . . . . . . 30‘-
+ Wreturn-type’ option, warn about
+  
+ incorrect return types . . . . . . . 30‘-
+ Wshadow’ option, warn about
+  
+ shadowed variables . . . . . . . . . . 32‘-
+ Wtraditional’ option, warn about
+  
+ traditional C . . . . . . . . . . . . . . . 33‘-
+ Wuninitialized’ option, warn
+  
+ about uninitialized variables
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 53‘-Wunused’ 
+ option, unused variable
+  
+ warning . . . . . . . . . . . . . . . . . . . . 30‘-Wwrite-
+ strings’ option, warning
+  
+ for modified string constants
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 33",NA
+.,".a, archive file extension . . . . . . . . . 14 .c, 
+ C source file extension . . . . . . . . 7 .cc, 
+ C++ file extension. . . . . . . . . . . 55 .cpp, 
+ C++ file extension. . . . . . . . . . 55 .cxx, C++ 
+ file extension. . . . . . . . . . 55 .h, header 
+ file extension . . . . . . . . . . 9 .i, 
+ preprocessed file extension for C
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 82
+  
+ 64-bit platforms, additional library
+  
+  
+ directories . . . . . . . . . . . . . . . . . . 19 
+ 64-bit processor specific options,
+  
+ AMD64 and Intel . . . . . . . . . . . 64",NA
+A,"a, archive file extension . . . . . . . . . . 14 
+ a.out, default executable filename
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7 ACCU, 
+ Association of C and C++
+  
+ users. . . . . . . . . . . . . . . . . . . . . . . 92 
+ ADA, gnat compiler. . . . . . . . . . . . . . 3 
+ additional warning options . . . . . . . 31 
+ AIX, compatibility with IBM XL
+  
+ compilers. . . . . . . . . . . . . . . . . . . 66 
+ AIX, platform-specific options. . . . 66 
+ AIX, TOC overflow error . . . . . . . . 66 
+ Alpha, platform-specific options . . 64 
+ Altivec, on PowerPC . . . . . . . . . . . . 66 
+ AMD x86, platform-specific options
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 63 AMD64, 
+ 64-bit processor specific
+  
+  
+ options. . . . . . . . . . . . . . . . . . . . . 
+ 64‘ansi’ option, disable language
+  
+ extensions . . . . . . . . . . . . . . . . . . 
+ 25‘ansi’ option, used with g++ . . . . . 55 
+ ANSI standards for C/C++ languages,
+  
+ available as books. . . . . . . . . . . 92",NA
+B,"backtrace, debugger command. . . 44 
+ backtrace, displaying . . . . . . . . . . . . 44 
+ bash profile file, login settings . . . 21, 
+ 24, 43
+  
+ benchmarking, with time command
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 51 big-
+ endian, word-ordering . . . . . . . . 85 
+ binary file, also called executable file
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7 
+ Binutils, GNU Binary Tools. . . . . . 86 
+ bits, 32 vs 64 on UltraSPARC. . . . 65 
+ books, further reading . . . . . . . . . . . 92 
+ branches, instrumenting for coverage
+  
+ testing . . . . . . . . . . . . . . . . . . . . . 78 BSD 
+ extensions, GNU C Library
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 27 
+ buffer, template example. . . . . . . . . 58 
+ bug, example of . . . . . . . . . . . 9, 17, 42",NA
+C,"C language, dialects of. . . . . . . . . . . 25 C 
+ language, further reading . . . . . . 92 C 
+ library, standard . . . . . . . . . . . . . . 14 C 
+ math library. . . . . . . . . . . . . . . . . . 14
+  
+ ‘c’ option, compile to object file . . 11 C 
+ programs, recompiling after
+  
+ modification . . . . . . . . . . . . . . . . 13 C 
+ source file, .c extension . . . . . . . . 7 C 
+ standard library . . . . . . . . . . . . . . 14 C++, 
+ compiling a simple program
+  
+  
+ with g++ . . . . . . . . . . . . . . . . . . . 55 
+ C++, creating libraries with explicit
+  
+ instantiation. . . . . . . . . . . . . . . . 61 
+ C++, file extensions. . . . . . . . . . . . . . 55 
+ C++, g++ as a true compiler . . . . . . 55 
+ C++, g++ compiler . . . . . . . . . . . . . . . . 3 
+ C++, instantiation of templates . . . 58 
+ C++, namespace std . . . . . . . . . . . . . 57 
+ C++, standard library. . . . . . . . . . . . 56 
+ C++, standard library libstdc++
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 58 
+ C++, standard library templates . . 57 
+ C++, templates. . . . . . . . . . . . . . . . . . 57 c, C 
+ source file extension. . . . . . . . . . 7 C, 
+ compiling with gcc . . . . . . . . . . . . 7 C, gcc 
+ compiler . . . . . . . . . . . . . . . . . . 3 C/C++ 
+ languages, standards in
+  
+ printed form. . . . . . . . . . . . . . . . 92 
+  
+ C/C++, risks of using . . . . . . . . . . . . . 5 
+ C/C++, risks of using, example . . . 9, 17, 
+ 53
+  
+ C_INCLUDE_PATH . . . . . . . . . . . . . . . . 21 
+ c89/c99, selected with ‘-std’. . . . . 29 
+ cannot find -llibrary error,
+  
+  
+ example of . . . . . . . . . . . . . . . . . 21 
+ cannot find library, linker error
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 19 cannot 
+ open shared object file
+  
+  
+ error . . . . . . . . . . . . . . . . . . . . . . . 23 
+ casts, used to avoid conversion
+  
+ warnings . . . . . . . . . . . . . . . . . . . 31 cc, 
+ C++ file extension. . . . . . . . . . . . 55 
+ circular buffer, template example
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 58 
+ COFF format . . . . . . . . . . . . . . . . . . . 85 
+ Collatz sequence . . . . . . . . . . . . . . . . 75 
+ combined multiply and add
+  
+ instruction . . . . . . . . . . . . . . . . . 66 
+ command-line help option. . . . . . . . 
+ 69‘comment’ warning option, warn
+  
+ about nested comments . . . . . 29 
+ comments, nested . . . . . . . . . . . . . . . 29",NA
+D,"‘D’ option, define macro. . . . . . . . . . 35 
+ data-flow analysis . . . . . . . . . . . . . . . 53 
+ DBM file, created with gdbm . . . . . 20 
+ debugging, compilation flags . . . . . 41 
+ debugging, with gdb . . . . . . . . . . . . . 41 
+ debugging, with optimization . . . . 53 
+ DEC Alpha, platform-specific options
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 64 
+ declaration, in header file . . . . . . . . . 9 
+ declaration, missing . . . . . . . . . . . . . 16 
+ default directories, linking and
+  
+  
+ header files . . . . . . . . . . . . . . . . . 19 
+ default executable filename, a.out
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7 default 
+ value, of macro defined with
+  
+ ‘-D’ . . . . . . . . . . . . . . . . . . . . . . . . 38 
+ defining macros . . . . . . . . . . . . . . . . . 35 
+ denormalized numbers, on DEC
+  
+ Alpha . . . . . . . . . . . . . . . . . . . . . . 64 
+ dependencies, of shared libraries. . 87 
+ deployment, options for . . . 41, 50, 53 
+ dereferencing, null pointer . . . . . . . 42 
+ dialects of C language . . . . . . . . . . . 25 
+ different type arg, format warning
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8 disk 
+ space, reduced usage by shared
+  
+ libraries . . . . . . . . . . . . . . . . . . . . 23 
+ displaying a backtrace . . . . . . . . . . . 44 
+ division by zero . . . . . . . . . . . . . . . . . 65 
+ DLL (dynamically linked library), see
+  
+  
+ shared libraries . . . . . . . . . . . . . 
+ 23‘dM’ option, list predefined macros
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 36 
+ dollar sign $, shell prompt . . . . . . . . 5 
+ dynamic loader . . . . . . . . . . . . . . . . . 23 
+ dynamically linked libraries,
+  
+ examining with ldd . . . . . . . . . 87 
+ dynamically linked library, see shared
+  
+ libraries . . . . . . . . . . . . . . . . . . . . 23",NA
+E,"‘E’ option, preprocess source files 
+  
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 38 EGCS 
+ (Experimental GNU Compiler Suite) . . . . . 
+ . . . . . . . . . . . . . . . . . . 3 ELF format. . . . . . . . . . 
+ . . . . . . . . . . . 85 elimination, of common 
+  
+ subexpressions . . . . . . . . . . . . . . 45 
+ embedded systems, cross-compilation 
+ for . . . . . . . . . . . . . . . . . . . . . . . . . . 4 empty 
+ macro, compared with 
+  
+ undefined macro . . . . . . . . . . . . 38 empty 
+ return, incorrect use of . . . 30 enable 
+ profiling, ‘-pg’ option . . . . . 76 
+ endianness, word-ordering. . . . . . . . 85 
+ enhancements, to GCC . . . . . . . . . . 89 
+ environment variables . . . . . . . . . 6, 24 
+ environment variables, extending an 
+ existing path . . . . . . . . . . . . . . . 25 
+ environment variables, for default 
+  
+ search paths . . . . . . . . . . . . . . . . 21 
+ environment variables, setting 
+  
+ permanently . . . . . . . . . . . . . . . . 24 error, 
+ undefined reference due to 
+  
+ library link order . . . . . . . . . . . 16 error, 
+ undefined reference due to 
+  
+ order of object files . . . . . . . . . 12 error, 
+ while loading shared libraries 
+  
+ . . . . 
+ . . . . . . . . . . . . . . . . . . . . . . . 23 examining 
+ compiled files . . . . . . . . . 85 examining 
+ core files . . . . . . . . . . . . . 41 examples, 
+ conventions used in . . . . . 5 examples, of 
+ optimization . . . . . . . . 50 executable file. . . 
+ . . . . . . . . . . . . . . . . . 7 executable, creating 
+ from object files by linking . . . . . . . . . . . . . . 
+ . . . . 12 executable, default filename a.out 
+  
+   
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7 
+ executable, examining with file 
+  
+ command . . . . . . . . . . . . . . . . . . 85 
+ executable, running . . . . . . . . . . . . . . 8 
+ executable, symbol table stored in 
+  
+ . . . . 
+ . . . . . . . . . . . . . . . . . . . . . . . 41 explicit 
+ instantiation of templates 
+  
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 60 
+ export keyword, not supported in GCC. . . 
+ . . . . . . . . . . . . . . . . . . . . 61 extended search 
+ paths, for include and link directories. . . . 
+ . . . . . . 22
+  
+ extension, .a archive file . . . . . . . . . 14 
+ extension, .c source file. . . . . . . . . . . 7 
+ extension, .C, C++ file . . . . . . . . . . . 55 
+ extension, .cc, C++ file . . . . . . . . . . 55 
+ extension, .cpp, C++ file . . . . . . . . . 55 
+ extension, .cxx, C++ file . . . . . . . . . 55 
+ extension, .h header file . . . . . . . . . . 9 
+ extension, .i preprocessed file. . . . 82 
+ extension, .ii preprocessed file. . . 82 
+ extension, .o object file. . . . . . . . . . 11 
+ extension, .s assembly file . . . . . . . 82 
+ extension, .so shared object file . . 23 
+ external libraries, linking with. . . . 14",NA
+F,"FDL, GNU Free Documentation
+  
+  
+ License. . . . . . . . . . . . . . . . . . . . . 99 
+ feature test macros, GNU C Library
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 27 
+ features, of GCC . . . . . . . . . . . . . . . . . 4 file 
+ command, for identifying files
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 85 file 
+ extension, .a archive file . . . . . 14 file 
+ extension, .c source file . . . . . . . 7 file 
+ extension, .C, C++ file. . . . . . . . 55 file 
+ extension, .cc, C++ file. . . . . . . 55 file 
+ extension, .cpp, C++ file. . . . . . 55 file 
+ extension, .cxx, C++ file. . . . . . 55 file 
+ extension, .h header file . . . . . . . 9 file 
+ extension, .i preprocessed file
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 82 file 
+ extension, .ii preprocessed file
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 82 file 
+ extension, .o object file . . . . . . 11 file 
+ extension, .s assembly file. . . . 82 file 
+ extension, .so shared object file
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 23 Floating 
+ point exception, on DEC
+  
+  
+ Alpha . . . . . . . . . . . . . . . . . . . . . . 65 
+ fno-implicit-templates option,
+  
+ disable implicit instantiation
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 60 format 
+ strings, incorrect usage
+  
+  
+ warning . . . . . . . . . . . . . . . . . . . . 30 
+ format, ‘different type arg’
+  
+ warning . . . . . . . . . . . . . . . . . . . . . 8 
+ Fortran, g77 compiler. . . . . . . . . . . . . 3",NA
+G,"‘g’ option, enable debugging . . . . . 41 
+ g++, compiling C++ programs . . . . 55 
+ g++, GNU C++ Compiler. . . . . . . . . . 3 g77, 
+ Fortran compiler. . . . . . . . . . . . . 3 gcc, 
+ GNU C Compiler . . . . . . . . . . . . 3 gcc, 
+ simple example . . . . . . . . . . . . . . 7 gcc, 
+ used inconsistently with g++
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 56 gcj, 
+ GNU Compiler for Java . . . . . . 3 gcov, 
+ GNU coverage testing tool. . 77 gdb, 
+ debugging core file with . . . . . 43 gdb, 
+ GNU debugger . . . . . . . . . . . . . 41 gdbm, 
+ GNU DBM library. . . . . . . . . 20 generic 
+ programming, in C++. . . . . 57 getting 
+ help. . . . . . . . . . . . . . . . . . . . . 89 gmon.out, 
+ data file for gprof . . . . . 77 gnat, GNU 
+ ADA compiler . . . . . . . . 3 GNU archiver, 
+ ar . . . . . . . . . . . . . . . 14 GNU C extensions, 
+ compared with
+  
+ GNU_SOURCE macro (_GNU_SOURCE),
+  
+ enables extensions to GNU C
+  
+  
+ Library . . . . . . . . . . . . . . . . . . . . 27 
+ gnu89/gnu99, selected with ‘-std’
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 29 
+ gprof, GNU Profiler. . . . . . . . . . . . . 75 
+ gradual underflow, on DEC Alpha
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 64 
+ gxx_personality_v0, undefined
+  
+ reference error . . . . . . . . . . . . . . 56",NA
+H,"h, header file extension . . . . . . . . . . . 9 
+ header file, .h extension . . . . . . . . . . 9 
+ header file, declarations in . . . . . . . . 9 
+ header file, default directories . . . . 19 
+ header file, include path—extending
+  
+ with ‘-I’ . . . . . . . . . . . . . . . . . . . 19 
+ header file, missing . . . . . . . . . . . . . . 16 
+ header file, missing header causes
+  
+ implicit declaration . . . . . . . . . 17 
+ header file, not compiled . . . . . . . . . 11 
+ header file, not found—compilation
+  
+ error no such file or directory
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 19 
+ header file, with include guards. . . 59 
+ header file, without .h extension for
+  
+ C++. . . . . . . . . . . . . . . . . . . . . . . . 57 
+ Hello World program, in C . . . . . . . . 7 
+ Hello World program, in C++. . . . . 
+ 55‘help’ option, display command-line
+  
+ options. . . . . . . . . . . . . . . . . . . . . 69 
+ help options . . . . . . . . . . . . . . . . . . . . 69 
+ history, of GCC . . . . . . . . . . . . . . . . . . 3
+  
+ ANSI/ISO C . . . . . . . . . . . . . . . 25 GNU C 
+ Library Reference Manual",NA
+I,". . . . . . . . . . . . . . . . . . . . . . . . . . . 91 GNU C 
+ Library, feature test macros
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 27 
+ GNU Compilers, major features . . . 4 
+ GNU Compilers, Reference Manual
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 91 
+ GNU GDB Manual. . . . . . . . . . . . . . 91 GNU 
+ Make Manual . . . . . . . . . . . . . 91 GNU 
+ Press, manuals . . . . . . . . . . . . 91 GNU 
+ Project, history of . . . . . . . . . . 3
+  
+ ‘I’ option, include path . . . . . . . . . . 19 i, 
+ preprocessed file extension for C
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 82 IBM XL 
+ compilers, compatibility on
+  
+  
+ AIX . . . . . . . . . . . . . . . . . . . . . . . 66 
+ identifying files, with file command
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 85 IEEE 
+ arithmetic standard, printed
+  
+ form . . . . . . . . . . . . . . . . . . . . . . . 92 
+ IEEE options, on DEC Alpha . . . . 64",NA
+K,"111
+  
+ ii, preprocessed file extension for
+  
+  
+ C++. . . . . . . . . . . . . . . . . . . . . . . . 82 implicit 
+ declaration of function warning, due to 
+ missing header file. . . . . . . . . . . . . . . . . . . . . . . 
+ . . 17 implicit declaration warning. . . . . . 
+ 30 include guards, in header file . . . . . 59 
+ include path, extending with ‘-I’
+  
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 19 
+ include path, setting with 
+  
+ environment variables . . . . . . . 21 
+ inclusion compilation model, in C++ 
+  
+ . . . . 
+ . . . . . . . . . . . . . . . . . . . . . . . 58 independent 
+ compilation of files . . 11 Inf, infinity, on 
+ DEC Alpha . . . . . . 64 inlining, example of 
+ optimization 
+  
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 46 
+ instantiation, explicit vs implicit in C++. . 
+ . . . . . . . . . . . . . . . . . . . . . . 60 instantiation, of 
+ templates in C++ 
+  
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 58 
+ instruction scheduling, optimization 
+  
+ . . . . 
+ . . . . . . . . . . . . . . . . . . . . . . . 49 instrumented 
+ executable, for coverage testing . . . . . . . . . 
+ . . . . . . . . . . . . 78 instrumented executable, 
+ for profiling 
+  
+ . . . . . . . . . . . . . . . . . . . . . . . 
+ . . . . 77 Intel x86, platform-specific 
+ options 
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 63 
+ intermediate files, keeping. . . . . . . . 39 ISO 
+ C++, controlled with ‘-ansi’
+  
+ option . . . . . . . . . . . . . . . . . . . . . 55 ISO C, 
+ compared with GNU C 
+  
+ extensions . . . . . . . . . . . . . . . . . . 25 ISO C, 
+ controlled with ‘-ansi’ option 
+  
+ . . . . 
+ . . . . . . . . . . . . . . . . . . . . . . . 26 ISO standards 
+ for C/C++ languages, available as books. . 
+ . . . . . . . . . 92 
+ iso9899:1990/iso9899:1999, 
+  
+ selected with ‘-std’ . . . . . . . . . 29 Itanium, 
+ multi-architecture support 
+  
+ . . . . . . . . . . . . . 
+ . . . . . . . . . . . . . . 66",NA
+J,"Java, compared with C/C++ . . . . . . 5 Java, 
+ gcj compiler . . . . . . . . . . . . . . . 3 journals, 
+ about C and C++ 
+  
+ programming . . . . . . . . . . . . . . . 92
+  
+ K&R dialect of C, warnings of
+  
+ different behavior . . . . . . . . . . . 33 
+ kernel mode, on AMD64 . . . . . . . . . 64 
+ Kernighan and Ritchie, The C
+  
+  
+ Programming Language . . . . . 92 
+ key-value pairs, stored with GDBM
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 20 
+ keywords, additional in GNU C . . 26",NA
+L,"‘L’ option, library search path . . . . 19‘l’ 
+ option, linking with libraries . . 15 
+ language standards, selecting with
+  
+  
+ ‘-std’ . . . . . . . . . . . . . . . . . . . . . . 29 
+ ld.so.conf, loader configuration file
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 25 ld: 
+ cannot find library error . . . . . . 19 
+ LD_LIBRARY_PATH, shared library load
+  
+ path . . . . . . . . . . . . . . . . . . . . . . . 24 
+ ldd, dynamical loader . . . . . . . . . . . 87 
+ levels of optimization . . . . . . . . . . . . 49 
+ libraries, creating with ar . . . . . . . . 73 
+ libraries, creating with explicit
+  
+  
+ instantiation in C++ . . . . . . . . . 61 
+ libraries, error while loading shared
+  
+  
+ library . . . . . . . . . . . . . . . . . . . . . 23 
+ libraries, extending search path with
+  
+  
+ ‘-L’ . . . . . . . . . . . . . . . . . . . . . . . . 19 
+ libraries, finding shared library
+  
+  
+ dependencies . . . . . . . . . . . . . . . 87 
+ libraries, link error due to undefined
+  
+ reference . . . . . . . . . . . . . . . . . . . 14 
+ libraries, link order . . . . . . . . . . 15, 16 
+ libraries, linking with . . . . . . . . . . . . 14 
+ libraries, linking with using ‘-l’ . . 15 
+ libraries, on 64-bit platforms . . . . . 19 
+ libraries, stored in archive files . . . 14 
+ library header files, using . . . . . . . . 16 
+ library, C math library . . . . . . . . . . 14 
+ library, C standard library . . . . . . . 14 
+ library, C++ standard library . . . . . 56 
+ libstdc++, C++ standard library
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 58 line 
+ numbers, recorded in
+  
+ preprocessed files . . . . . . . . . . . 38 
+ link error, cannot find library . . . . 19",NA
+M,"‘m’ option, platform-specific settings
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 63‘m32’ and 
+ ‘m64’ options, compile for
+  
+ 32 or 64-bit environment . . . . 65 
+ machine code . . . . . . . . . . . . . . . . . . . . 7 
+ machine-specific options . . . . . . . . . 63 
+ macros, default value of. . . . . . . . . . 38 
+ macros, defined with value . . . . . . . 36 
+ macros, defining in preprocessor . . 35 
+ macros, predefined . . . . . . . . . . . . . . 36 
+ major features, of GCC . . . . . . . . . . . 4 
+ major version number, of GCC . . . 
+ 69‘maltivec’ option, enables use of
+  
+ Altivec processor on PowerPC
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 66
+  
+ manuals, for GNU software . . . . . . 
+ 91‘march’ option, compile for specific
+  
+ CPU . . . . . . . . . . . . . . . . . . . . . . . 63 
+ math library . . . . . . . . . . . . . . . . . . . . 14 
+ math library, linking with ‘-lm’. . . 
+ 15‘mcmodel’ option, for AMD64 . . . . 
+ 64‘mcpu’ option, compile for specific
+  
+ CPU . . . . . . . . . . . . . . . . . . . . . . . 
+ 65‘mieee’ option, floating-point support
+  
+ on DEC Alpha. . . . . . . . . . . . . . 64 
+ minor version number, of GCC . . . 69 
+ MIPS64, multi-architecture support
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 66 missing 
+ header file, causes implicit
+  
+ declaration . . . . . . . . . . . . . . . . . 17 
+ missing header files. . . . . . . . . . . . . . 16 
+ missing prototypes warning . . . . . . 
+ 30‘mminimal-toc’ option, on AIX. . . 
+ 66‘mno-fused-madd’ option, on
+  
+  
+ PowerPC . . . . . . . . . . . . . . . . . . . 66 
+ modified source files, recompiling
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 13 
+ Motorola 680x0 . . . . . . . . . . . . . . . . . 85 
+ MSB, most significant byte . . . . . . 85 
+ multi-architecture support, discussion
+  
+  
+ of. . . . . . . . . . . . . . . . . . . . . . . . . . 66 
+ multiple directories, on include and
+  
+ link paths . . . . . . . . . . . . . . . . . . 22 
+ multiple files, compiling. . . . . . . . . . . 9 
+ multiply and add instruction . . . . . 66 
+ multiply defined symbol error, with
+  
+ C++. . . . . . . . . . . . . . . . . . . . . . . . 
+ 60‘mxl-call’ option, compatibility with
+  
+ IBM XL compilers on AIX. . . 66",NA
+N,"Namespace std in C++ . . . . . . . . . . 57 
+ namespace, reserved prefix for
+  
+  
+ preprocessor . . . . . . . . . . . . . . . . 36 
+ NaN, not a number, on DEC Alpha
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 64 
+ nested comments, warning of. . . . . 29 
+ nm command . . . . . . . . . . . . . . . . . . . . 86 
+ No such file or directory, header
+  
+  
+ file not found. . . . . . . . . . . . 19, 20 
+ null pointer, attempt to dereference
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 42",NA
+O,"‘O’ option, optimization level . . . . . 49‘o’ 
+ option, set output filename. . . . . 7 o, 
+ object file extension . . . . . . . . . . . 11 
+ object file, .o extension. . . . . . . . . . 11 
+ object file, creating from source using
+  
+ option ‘-c’ . . . . . . . . . . . . . . . . . 11 object file, 
+ examining with file
+  
+ command . . . . . . . . . . . . . . . . . . 85 
+ object file, explanation of . . . . . . . . 11 
+ object files, link order . . . . . . . . . . . 12 
+ object files, linking to create
+  
+ executable file . . . . . . . . . . . . . . 12 
+ object files, relinking . . . . . . . . . . . . 13 
+ object files, temporary. . . . . . . . . . . 15 
+ Objective-C. . . . . . . . . . . . . . . . . . . . . . 3 
+ optimization for size, ‘-Os’ . . . . . . . 50 
+ optimization, and compiler warnings
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 53 
+ optimization, common subexpression
+  
+ elimination . . . . . . . . . . . . . . . . . 45 
+ optimization, compiling with ‘-O’
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 49 
+ optimization, example of. . . . . . . . . 50 
+ optimization, explanation of. . . . . . 45 
+ optimization, levels of . . . . . . . . . . . 49 
+ optimization, loop unrolling . . 47, 50 
+ optimization, speed-space tradeoffs
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 47 
+ optimization, with debugging . . . . 53 
+ options, compilation . . . . . . . . . . . . . 19 
+ options, platform-specific . . . . . . . . 63 
+ order, of object files in linking. . . . 12 
+ ordering of libraries . . . . . . . . . . . . . 16 
+ output file option, ‘-o’ . . . . . . . . . . . . 7 
+ overflow error, for TOC on AIX . . 66 
+ overhead, from function call. . . . . . 46
+  
+ ANSI standard (with ‘-ansi’)
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 25 Pentium, 
+ platform-specific options
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 63‘pg’ 
+ option, enable profiling . . . . . . 76 
+ pipelining, explanation of . . . . . . . . 49 
+ platform-specific options . . . . . . . . . 63 
+ POSIX extensions, GNU C Library
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 27 PowerPC 
+ and POWER,
+  
+  
+ platform-specific options. . . . . 66 
+ PowerPC64, multi-architecture
+  
+  
+ support . . . . . . . . . . . . . . . . . . . . 66 
+ precedence, when using preprocessor
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 37 
+ predefined macros . . . . . . . . . . . . . . . 36 
+ preprocessed files, keeping . . . . . . . 39 
+ preprocessing, source files . . . . . . . . 38 
+ preprocessor macros, default value of
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 38 
+ preprocessor, cpp. . . . . . . . . . . . . . . . 81 
+ preprocessor, first stage of
+  
+ compilation. . . . . . . . . . . . . . . . . 82 
+ preprocessor, using . . . . . . . . . . . . . . 35 
+ print debugger command. . . . . . . . 43 
+ printf, example of error in format
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8 
+ printf, incorrect usage warning . . 30 
+ profile file, setting environment
+  
+ variables in . . . . . . . . . . . . . . . . . 24 
+ profiling, with gprof . . . . . . . . . . . . 75 
+ program crashes, saved in core file
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 41 
+ prototypes, missing. . . . . . . . . . . . . . 30",NA
+P,"‘pthread’ option, on AIX . . . . . . . . 66
+  
+  
+ parse error, due to language 
+  
+ extensions . . . . . . . . . . . . . . . . . . 26 patch 
+ level, of GCC . . . . . . . . . . . . . 69 paths, 
+ extending an existing path in an 
+ environment variable . . . . . 25 paths, 
+ search. . . . . . . . . . . . . . . . . . . . 19‘pedantic’ 
+ option, ANSI/ISO C . . 28",NA
+Q ,"qualifiers, warning about overriding 
+  
+ by casts . . . . . . . . . . . . . . . . . . . . 32 
+ quotes, for defining empty macro 
+  
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 38",NA
+R,"recompiling . . . . . . . . . . . . . . . . . . . . . 13 
+ recompiling modified source files. . 13 
+ red-zone, on AMD64 . . . . . . . . . . . . 64 
+ reference books, C language. . . . . . 92 
+ reference, undefined due to missing
+  
+ library . . . . . . . . . . . . . . . . . . . . . 14 
+ relinking. . . . . . . . . . . . . . . . . . . . . . . . 13 
+ relinking, updated object files . . . . 13 
+ return type, invalid. . . . . . . . . . . . . . 30 
+ Richard Stallman, principal author of
+  
+ GCC. . . . . . . . . . . . . . . . . . . . . . . . 3 risks, 
+ example of corrupted output
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9 
+ risks, when using C/C++ . . . . . . . . . . 
+ 5‘rpath’ option, set run-time shared
+  
+ library search path . . . . . . . . . . 24 run-
+ time, measuring with time
+  
+ command . . . . . . . . . . . . . . . . . . 51 
+ running an executable file, C . . . . . . 8 
+ running an executable file, C++. . . 55",NA
+S,"‘S’ option, create assembly code . . 82 s, 
+ assembly file extension . . . . . . . . 
+ 82‘save-temps’ option, keeps
+  
+ intermediate files. . . . . . . . . . . . 39 
+ scanf, incorrect usage warning . . . 30 
+ scheduling, stage of optimization
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 49 
+ Scheme, compared with C/C++. . . . 5 
+ search paths . . . . . . . . . . . . . . . . . . . . 19 
+ search paths, example . . . . . . . . . . . 20 
+ search paths, extended. . . . . . . . . . . 22 
+ segmentation fault, error message
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 42 selecting 
+ specific language standards,
+  
+ with ‘-std’ . . . . . . . . . . . . . . . . . 29 
+ shadowing of variables . . . . . . . . . . . 32 
+ shared libraries . . . . . . . . . . . . . . . . . 23 
+ shared libraries, advantages of. . . . 23 
+ shared libraries, dependencies . . . . 87 
+ shared libraries, error while loading
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 23 shared 
+ libraries, setting load path
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 24 
+ shared object file, .so extension . . 23 
+ shell prompt . . . . . . . . . . . . . . . . . . . . . 5
+  
+ shell quoting . . . . . . . . . . . . . . . . 38, 91 
+ shell variables . . . . . . . . . . . . . 6, 21, 24 
+ shell variables, setting permanently
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 24 
+ signed integer, casting . . . . . . . . . . . 31 
+ signed variable converted to
+  
+ unsigned, warning of . . . . . . . . 31 
+ simple C program, compiling . . . . . . 7 
+ simple C++ program, compiling with
+  
+ g++ . . . . . . . . . . . . . . . . . . . . . . . . 55 
+ size, optimization for, ‘-Os’ . . . . . . 50 
+ Smalltalk, compared with C/C++ . . 5 so, 
+ shared object file extension . . . 23 soft 
+ underflow, on DEC Alpha . . . 64 source 
+ code . . . . . . . . . . . . . . . . . . . . . . 7 source 
+ files, recompiling. . . . . . . . . . 13 source-
+ level optimization. . . . . . . . . 45 space vs 
+ speed, tradeoff in
+  
+  
+ optimization. . . . . . . . . . . . . . . . 47 
+ SPARC, platform-specific options
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 65 Sparc64, 
+ multi-architecture support
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 66 specs 
+ directory, compiler
+  
+ configuration files . . . . . . . . . . . 70 
+ speed-space tradeoffs, in optimization
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 47 
+ sqrt, example of linking with . . . . 14 
+ stack backtrace, displaying . . . . . . . 44 
+ stages of compilation, used internally
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 81 
+ standard library, C . . . . . . . . . . . . . . 14 
+ standard library, C++ . . . . . . . . . . . . 56 
+ Standard Template Library (STL)
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 57 
+ standards, C, C++ and IEEE
+  
+ arithmetic . . . . . . . . . . . . . . . . . . 92 
+ static libraries . . . . . . . . . . . . . . . . . . 23 
+ static linking, forcing with ‘-static’
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 25‘static’ 
+ option, force static linking
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 25 std 
+ namespace in C++ . . . . . . . . . . . 57‘std’ 
+ option, select specific language
+  
+  
+ standard . . . . . . . . . . . . . . . . 25, 29 
+ strict ANSI/ISO C, ‘-pedantic’
+  
+ option . . . . . . . . . . . . . . . . . . . . . 28 
+ strip command. . . . . . . . . . . . . . . . . 86",NA
+T,"‘t’ option, archive table of contents
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 74 
+ table of contents, in ar archive . . . 74 
+ table of contents, overflow error on
+  
+ AIX . . . . . . . . . . . . . . . . . . . . . . . 66 tcsh, 
+ limit command . . . . . . . . . . . . 42 
+ templates, explicit instantiation . . 60 
+ templates, export keyword. . . . . . . 61 
+ templates, in C++ . . . . . . . . . . . . . . . 57 
+ templates, in C++ standard library
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 57 templates, 
+ inclusion compilation
+  
+ model . . . . . . . . . . . . . . . . . . . . . . 58 
+ temporary files, keeping . . . . . . . . . 39 
+ temporary files, written to ‘/tmp’
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 15 
+ termination, abnormal (core dumped)
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 41 
+ threads, on AIX. . . . . . . . . . . . . . . . . 66 
+ Thumb, alternative code format on
+  
+ ARM . . . . . . . . . . . . . . . . . . . . . . 66 time 
+ command, measuring run-time
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 51 
+ TOC overflow error, on AIX . . . . . 66 
+ tools, compiler-related . . . . . . . . . . . 73 
+ tradeoffs, between speed and space in
+  
+ optimization. . . . . . . . . . . . . . . . 47 
+ Traditional C (K&R), warnings of
+  
+ different behavior . . . . . . . . . . . 33
+  
+ translators, from C++ to C, compared
+  
+ with g++ . . . . . . . . . . . . . . . . . . . 55 
+ troubleshooting options . . . . . . . . . . 69 
+ type conversions, warning of . . . . . 31 
+ typeof, GNU C extension keyword
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 27",NA
+U,"ulimit command . . . . . . . . . . . . . . . 42 
+ UltraSPARC, 32-bit mode vs 64-bit
+  
+  
+ mode, . . . . . . . . . . . . . . . . . . . . . . 65 
+ undeclared identifier error for C
+  
+ library, when using ‘-ansi’
+  
+  
+ option . . . . . . . . . . . . . . . . . . . . . 27 
+ undefined macro, compared with
+  
+  
+ empty macro . . . . . . . . . . . . . . . 38 
+ undefined reference error,
+  
+  
+ __gxx_personality_v0. . . . . . 56 
+ undefined reference error, due to
+  
+  
+ library link order . . . . . . . . . . . 16 
+ undefined reference error, due to
+  
+  
+ order of object files . . . . . . . . . 12 
+ undefined reference to C++
+  
+ function, due to linking with gcc
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 56 
+ undefined reference, due to missing
+  
+ library . . . . . . . . . . . . . . . . . . . . . 14 
+ underflow, on DEC Alpha. . . . . . . . 64 
+ uninitialized variable, warning of
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 54 
+ unix, GNU C extension keyword. . 27 
+ unoptimized code (‘-O0’). . . . . . . . . 49 
+ unrolling, of loops (optimization)
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . 47, 50 
+ unsigned integer, casting. . . . . . . . . 31 
+ unsigned variable converted to
+  
+  
+ signed, warning of. . . . . . . . . . . 31 
+ unused variable warning, ‘-Wunused’
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 30 
+ updated object files, relinking . . . . 13 
+ updated source files, recompiling. . 13 
+ Using GCC (Reference Manual) . . 91",NA
+V,"‘Wcomment’ option, warn about nested
+  
+ ‘v’ option, verbose compilation . . . 69 
+ value, of macro . . . . . . . . . . . . . . . . . 36 
+ variable shadowing . . . . . . . . . . . . . . 32 
+ variable, warning of uninitialized use
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 54 variable-
+ size array, forbidden in
+  
+ ANSI/ISO C . . . . . . . . . . . . . . . 28 
+ variable-size arrays in GNU C . . . . 28 
+ vax, GNU C extension keyword . . 27 
+ verbose compilation, ‘-v’ option . . 70 
+ verbose help option. . . . . . . . . . . . . . 69 
+ version number of GCC, displaying
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 69‘version’ 
+ option, display version
+  
+ number . . . . . . . . . . . . . . . . . . . . 69 void 
+ return, incorrect use of . . . . . 30",NA
+W,"‘W’ option, enable additional warnings
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 31‘Wall’ 
+ option, enable common
+  
+ warnings . . . . . . . . . . . . . . . . . . . . 7 warning 
+ option, ‘-W’ additional
+  
+ warnings . . . . . . . . . . . . . . . . . . . 31 
+ warning options, ‘-Wall’ . . . . . . . . . . 7 
+ warning options, additional . . . . . . 31 
+ warning options, in detail . . . . . . . . 29 
+ warning, format with different type
+  
+ arg . . . . . . . . . . . . . . . . . . . . . . . . . 8 
+ warnings, additional with ‘-W’ . . . . 31 
+ warnings, and optimization . . . . . . 53 
+ warnings, implicit declaration of
+  
+ function . . . . . . . . . . . . . . . . . . . . 17 
+ warnings, promoting to errors . . . . 
+ 33‘Wcast-qual’ option, warn about
+  
+ casts removing qualifiers. . . . . 32
+  
+  
+ comments . . . . . . . . . . . . . . . . . . 
+ 29‘Wconversion’ option, warn about
+  
+  
+ type conversions . . . . . . . . . . . . 
+ 31‘Werror’ option, convert warnings to
+  
+  
+ errors . . . . . . . . . . . . . . . . . . . . . . 
+ 33‘Wimplicit’ option, warn about
+  
+ missing declarations . . . . . . . . . 30 
+ word-ordering, endianness. . . . . . . . 85 
+ word-size, determined from
+  
+ executable file . . . . . . . . . . . . . . 85 
+ word-size, on UltraSPARC . . . . . . . 
+ 65‘Wreturn-type’ option, warn about
+  
+  
+ incorrect return types . . . . . . . 30 
+ writable string constants, disabling
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 33‘Wshadow’ option, warn about
+  
+  
+ shadowed variables . . . . . . . . . . 
+ 32‘Wtraditional’ option, warn about
+  
+ traditional C . . . . . . . . . . . . . . . 
+ 33‘Wuninitialized’ option, warn about
+  
+  
+ uninitialized variables . . . . . . . 
+ 53‘Wunused’ option, unused variable
+  
+ warning . . . . . . . . . . . . . . . . . . . . 
+ 30‘Wwrite-strings’ option, warning for
+  
+ modified string constants . . . . 33",NA
+X,"x86, platform-specific options . . . . 63 
+ XL compilers, compatibility on AIX
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 66 XOPEN 
+ extensions, GNU C Library
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 27",NA
+Z,"zero, division by . . . . . . . . . . . . . . . . 65 
+ zero, rounding to by underflow, on
+  
+ DEC Alpha . . . . . . . . . . . . . . . . 64",NA

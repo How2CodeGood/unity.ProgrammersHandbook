@@ -1,0 +1,5372 @@
+Larger Text,Smaller Text,Symbol
+The Haskell School of Music,NA,NA
+— ,NA,NA
+From Signals to Symphonies —,NA,NA
+Paul Hudak ,"Yale University 
+  
+ Department of Computer Science
+  
+ Version 2.6 (January 2014)",NA
+Contents,"Table of Contents 
+ viii
+  
+ List of Figures 
+ xii
+  
+ List of Tables 
+ xiii
+  
+ Preface 
+  
+ xiv
+  
+ 1 Computer Music, Euterpea, and Haskell 
+  
+ 1
+  
+ 1.1 
+  
+ The Note vs. Signal Dichotomy
+  . . . . . . . . . . . . . . . . . 
+  
+ 2
+  
+ 1.2 
+  
+ Basic Principles of Programming
+  . . . . . . . . . . . . . . . . 
+  
+ 3
+  
+ 1.3 
+  
+ Computation by Calculation
+  . . . . . . . . . . . . . . . . . . . 
+  
+ 4
+  
+ 1.4 
+  
+ Expressions and Values 
+  
+ . . . . . . . . . . . . . . . . . . . . . 
+  
+ 8
+  
+ 1.5 
+  
+ Types
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 10
+  
+ 1.6 
+  
+ Function Types and Type Signatures
+  . . . . . . . . . . . . . . 
+  
+ 11
+  
+ 1.7 
+  
+ Abstraction, Abstraction, Abstraction
+  . . . . . . . . . . . . . 
+  
+ 13
+  
+ 1.8 
+  
+ Haskell Equality vs. Euterpean Equality
+  . . . . . . . . . . . . 
+  
+ 22
+  
+ 1.9 
+  
+ Code Reuse and Modularity
+  . . . . . . . . . . . . . . . . . . . 
+  
+ 23
+  
+ 1.10 [Advanced] Programming with Numbers
+  . . . . . . . . . . . . 
+  
+ 24
+  
+ 2 Simple Music 
+  
+ 28
+  
+ 2.1 
+  
+ Preliminaries 
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 28
+  
+ 2.2 
+  
+ Notes, Music, and Polymorphism
+  . . . . . . . . . . . . . . . . 
+  
+ 30
+  
+ 2.3 
+  
+ Convenient Auxiliary Functions
+  . . . . . . . . . . . . . . . . . 
+  
+ 34
+  
+ ii",NA
+List of Figures,"1.1
+  
+ Polyphonic vs. Contrapuntal Interpretation
+  . . . . . . . . . .
+  
+ 23
+  
+ 2.1 
+  
+ General MIDI Instrument Names
+  . . . . . . . . . . . . . . . . 
+  
+ 35
+  
+ 2.2 
+  
+ Convenient Note Names
+  . . . . . . . . . . . . . . . . . . . . . 
+  
+ 37
+  
+ 2.3 
+  
+ Convenient Duration and Rest Names 
+  
+ . . . . . . . . . . . . . 
+  
+ 38
+  
+ 2.4 
+  
+ Converting Pitch Classes to Integers
+  . . . . . . . . . . . . . . 
+  
+ 42
+  
+ 4.1 
+  
+ Excerpt from Chick Corea’s Children’s Songs No. 6
+  . . . . . . 
+  
+ 70
+  
+ 4.2 
+  
+ Bars 7-28 
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 73
+  
+ 5.1 
+  
+ Gluing Two Functions Together
+  . . . . . . . . . . . . . . . . . 
+  
+ 83
+  
+ 6.1 
+  
+ A Simple Melody and Four Transformations
+  . . . . . . . . . . 
+  
+ 89
+  
+ 6.2 
+  
+ Nested Polyrhythms (top: pr
+  1
+ ; bottom: pr
+  2
+ ) 
+  
+ . . . . . . . . . 
+  
+ 90
+  
+ 6.3 
+  
+ Trills in Stars and Stripes Forever 
+  
+ . . . . . . . . . . . . . . . 101
+  
+ 6.4 
+  
+ General MIDI Percussion Names
+  . . . . . . . . . . . . . . . . 103
+  
+ 7.1 
+  
+ Common Type Classes and Their Instances
+  . . . . . . . . . . 121
+  
+ 7.2 
+  
+ Numeric Class Hierarchy
+  . . . . . . . . . . . . . . . . . . . . . 124
+  
+ 7.3 
+  
+ Standard Numeric Types 
+  
+ . . . . . . . . . . . . . . . . . . . . 125
+  
+ 7.4 
+  
+ Euterpea’s Data Types with Deriving Clauses
+  . . . . . . . . . 129
+  
+ 8.1 
+  
+ An abstract perform function
+  . . . . . . . . . . . . . . . . . . 138
+  
+ 8.2 
+  
+ Block Diagram of Performance Concepts
+  . . . . . . . . . . . . 140
+  
+ 8.3 
+  
+ A more efficient perform function
+  . . . . . . . . . . . . . . . . 142
+  
+ ix",NA
+List of Tables,"13.1 Second-Order Markov Chain 
+  
+ . . . . . . . . . . . . . . . . . . 211
+  
+ 14.1 General Midi Instrument Families
+  . . . . . . . . . . . . . . . . 216
+  
+ xiii",NA
+Preface,"In 2000 I wrote a book called The Haskell School of Expression – Learning 
+ Functional Programming through Multimedia [
+ Hud00
+ ]. In that book I used 
+ graphics, animation, music, and robotics as a way to motivate learning how to 
+ program, and specifically how to learn functional programming using 
+ Haskell, a purely functional programming language. Haskell [
+ P
+ +
+ 03
+ ] is quite a 
+ bit different from conventional imperative or object-oriented languages such 
+ as C, C++, Java, C#, and so on. It takes a different mind-set to program in such 
+ a language, and appeals to the mathematically inclined and to those who seek 
+ purity and elegance in their programs. Although Haskell was designed over 
+ twenty years ago, it has only recently begun to catch on in a significant way, 
+ not just because of its purity and elegance, but because with it you can solve 
+ real-world problems quickly and efficiently, and with great economy of code.
+  
+ I have also had a long, informal, yet passionate interest in music, being 
+ an amateur jazz pianist and having played in several bands over the years. 
+ About fifteen years ago, in an effort to combine work with play, I and my 
+ students wrote a Haskell library called Haskore for expressing high-level 
+ computer music concepts in a purely functional way [
+ HMGW96
+ ,
+  Hud96
+ , 
+ Hud03
+ ]. Indeed, three of the chapters in The Haskell School of Expression 
+ summarize the basic ideas of this work. Soon after that, with the help of 
+ another student, I designed a Haskell library called HasSound that was, 
+ essentially, a Haskell interface to csound [
+ Ver86
+ ] for doing sound synthesis 
+ and instrument design.
+  
+ Thus, when I recently became responsible for the Music Track in the 
+ new Computing and the Arts major at Yale, and became responsible for 
+ teaching not one, but two computer music courses in the new curriculum, it 
+ was natural to base the course material on Haskell. This current book is a 
+ rewrite of The Haskell School of Expression with a focus on computer music, 
+ based on, and greatly improving upon, the ideas in Haskore and HasSound.
+  
+ xiv",NA
+How To Read This Book,"As mentioned earlier, there is a certain mind-set, a certain viewpoint of the 
+ world, and a certain approach to problem solving that collectively work best 
+ when programming in Haskell (this is true for any programming paradigm). 
+ If you teach only Haskell language details to a C programmer, he or she is 
+ likely to write ugly, incomprehensible functional programs. But if you teach 
+ how to think differently, how to see problems in a different light, functional 
+ solutions will come easily, and elegant Haskell programs will result. 
+  
+ As 
+ Samuel Silas Curry once said:
+  
+ All expression comes from within outward, from the center to 
+ the surface, from a hidden source to outward manifestation. The 
+ study of expression as a natural process brings you into contact 
+ with cause and makes you feel the source of reality.
+  
+ What is especially beautiful about this quote is that music is also a form of 
+ expression, although Curry was more likely talking about writing and 
+ speaking. In addition, as has been noted by many, music has many ties to 
+ mathematics. So for me, combining the elegant mathematical nature of 
+ Haskell with that of music is as natural as singing a nursery tune.
+  
+ Using a high-level language to express musical ideas is, of course, not 
+ new. But Haskell is unique in its insistence on purity (no side effects), and 
+ this alone makes it particularly suitable for expressing musical ideas. By 
+ focusing on what a musical entity is rather than on how to create it, we 
+ allow musical ideas to take their natural form as Haskell expressions. 
+ Haskell’s many abstraction mechanisms allow us to write computer music 
+ programs",NA
+Haskell Implementations,"There are several implementations of Haskell, all available free on the Inter-net 
+ through the Haskell users’ website at
+  http://haskell.org
+ . However, the one that has 
+ dominated all others, and on which Euterpea is based, is GHC, an easy-to-use and 
+ easy-to-install Haskell compiler and interpreter (see
+  http://haskell.org/ghc
+ ). GHC 
+ runs on a variety of platforms, in-cluding PC’s, various flavors of Unix, and Macs. 
+ The 
+ preferred 
+ way 
+ to 
+ install 
+ GHC 
+ is 
+ through 
+ the 
+ Haskell 
+ Platform 
+ (
+ http://hackage.haskell.org/platform/
+ ).
+  
+ Any text editor can be used to create source files, but I prefer to use emacs 
+ (see
+  http://www.gnu.org/software/emacs
+ ), along with its Haskell mode (see
+  
+ http://projects.haskell.org/haskellmode-emacs/
+ ). 
+  
+ The entire 
+ Euterpea library, including the source code from this textbook, and instal-
+ lation instructions, can be found at
+  http://haskell.cs.yale.edu
+ .",NA
+Acknowledgements,"I wish to thank my funding agencies—the National Science Foundation, the 
+ Defense Advanced Research Projects Agency, and Microsoft Research—for 
+ their generous support of research that contributed to the foundations of 
+ Euterpea. Yale University has provided me a stimulating and flexible 
+ environment to pursue my dreams for over thirty years, and I am especially 
+ thankful for its recent support of the Computing and the Arts initiative.
+  
+ Tom Makucevich, a talented computer music practitioner and composer 
+ in New Haven, was the original motivator, and first user, of Haskore, which 
+ preceded Euterpea. Watching him toil endlessly with low-level csound pro-
+ grams was simply too much for me to bear! Several undergraduate students 
+ at Yale contributed to the original design and implementation of Haskore. I 
+ would like to thank in particular the contributions of Syam Gadde and Bo 
+ Whong, who co-authored the original paper on Haskore. Additionally, Matt 
+ Zamec helped me greatly in the creation of HasSound.
+  
+ I wish to thank my more recent graduate students, in particular Hai 
+ (Paul) Liu, Eric Cheng, Donya Quick, and Daniel Winograd-Cort for their help 
+ in writing much of the code that constitutes the current Euterpea li-brary. In 
+ addition, many students in my computer music classes at Yale provided 
+ valuable feedback through earlier drafts of the manuscript.
+  
+ Finally, I wish to thank my wife, Cathy Van Dyke, my best friend and 
+ ardent supporter, whose love, patience, and understanding have helped me 
+ get through some bad times, and enjoy the good.
+  
+ Happy Haskell Music Making!
+  
+ Paul Hudak 
+  
+ New Haven 
+  
+ January 2012",NA
+Chapter 1,NA,NA
+Overview of Computer,NA,NA
+"Music, Euterpea, and Haskell","Computers are everywhere. And so is music! Although some might think of 
+ the two as being at best distant relatives, in fact they share many deep 
+ properties. Music comes from the soul, and is inspired by the heart, yet it has 
+ the mathematical rigor of computers. Computers have mathematical rigor of 
+ course, yet the most creative ideas in mathematics and computer science 
+ come from the soul, just like music. Both disciplines demand both left-brain 
+ and right-brain skills. It always surprises me how many computer It seems 
+ scientists and mathematicians have a serious interest in music.
+  
+ that those with a strong affinity or acuity in one of these disciplines is often 
+ strong in the other as well.
+  
+ It is quite natural then to consider how the two might interact. 
+  
+ In 
+ fact there is a long history of interactions between music and mathematics, 
+ dating back to the Greeks’ construction of musical scales based on arithmetic 
+ relationships, and including many classical composers use of mathematical 
+ structures, the formal harmonic analysis of music, and many modern music 
+ composition techniques. Advanced music theory uses ideas from diverse 
+ branches of mathematics such as number theory, abstract algebra, topology, 
+ category theory, calculus, and so on.
+  
+ There is also a long history of efforts to combine computers and music. 
+ Most consumer electronics today are digital, as are most forms of audio pro-
+ cessing and recording. But in addition, digital musical instruments provide 
+ new modes of expression, notation software and sequencers have become 
+ standard tools for the working musician, and those with the most computer
+  
+ 1",NA
+1.1 ,NA,NA
+The Note vs. Signal Dichotomy,"The field of computer music has grown astronomically over the past several 
+ decades, and the material can be structured and organized along several 
+ dimensions. A dimension that proves particulary useful with respect to a 
+ programming language is one that separates high-level musical concerns 
+ from low-level musical concerns. Since a “high-level” programming 
+ language—namely Haskell—is used to program at both of these musical 
+ levels, to avoid confusion the terms note level and signal level will be used in 
+ the musical dimension.
+  
+ At the note level, a note (i.e. pitch and duration) is the lowest musical 
+ entity that is considered, and everything else is built up from there. At this 
+ level, in addition to conventional representations of music, we can study in-
+ teresting aspects of so-called algorithmic composition, including the use of 
+ fractals, grammar-based systems, stochastic processes, and so on. From this 
+ basis we can also study the harmonic and rhythmic analysis of music, al-
+ though that is not currently an emphasis in this textbook. Haskell facilitates 
+ programming at this level through its powerful data abstraction facilities, 
+ higher-order functions, and declarative semantics.
+  
+ In contrast, at the signal level the focus is on the actual sound generated in a 
+ computer music application, and thus a signal is the lowest entity that is 
+ considered. Sound is concretely represented in a digital computer by a 
+ discrete sampling of the continuous audio signal, at a high enough rate that 
+ human ears cannot distinguish the discrete from the continuous, usually 
+ 44,100 samples per second (the standard sampling rate used for CDs, mp3 
+ files, and so on). But in Euterpea, these details are hidden: signals are",NA
+1.2 ,NA,NA
+Basic Principles of Programming,"Programming, in its broadest sense, is problem solving. It begins by rec-
+ ognizing problems that can and should be solved using a digital computer. 
+ Thus the first step in programming is answering the question, “What prob-
+ lem am I trying to solve?”
+  
+ Once the problem is understood, a solution must be found. This may not 
+ be easy, of course, and in fact you may discover several solutions, so a way 
+ to measure success is needed. There are various dimensions in which to do 
+ this, including correctness (“Will I get the right answer?”) and efficiency 
+ (“Will it run fast enough, or use too much memory?”). But the distinction of 
+ which solution is better is not always clear, since the number of dimensions",NA
+1.3 ,NA,NA
+Computation by Calculation,"It is helpful when learning a new programming language to have a good grasp 
+ of how programs in that language are executed—in other words, an 
+ understanding of what a program means. The execution of Haskell programs 
+ is perhaps best understood as computation by calculation. 
+  
+ Programs in 
+ Haskell can be viewed as functions whose input is that of the problem being 
+ solved, and whose output is the desired result—and the behavior of functions 
+ can be effectively understood as computation by calculation.
+  
+ An example involving numbers might help to demonstrate these ideas.",NA
+1.4 ,NA,NA
+Expressions and Values,"In Haskell, the entities on which calculations are performed are called 
+ expres-sions, and the entities that result from a calculation—i.e. “the 
+ answers”—are called values. It is helpful to think of a value just as an 
+ expression on which no more calculation can be carried out—every value is 
+ an expression, but not the other way around.
+  
+ Examples of expressions include atomic (meaning, indivisible) values 
+ such as the integer 42 and the character ’a’, which are examples of two 
+ primitive atomic values in Haskell. The next chapter introduces examples",NA
+1.5 ,NA,NA
+Types,"Every expression (and therefore every value) also has an associated type. It is 
+ helpful to think of types as sets of expressions (or values), in which members 
+ of the same set have much in common. 
+  
+ Examples include the 
+ primitive atomic types Integer (the set of all integers) and Char (the set of all 
+ characters), the user-defined atomic type PitchClass (the set of all pitch 
+ classes, i.e. note names), as well as the structured types [Integer ] and 
+ [PitchClass ] (the sets of all lists of integers and lists of pitch classes, 
+ respectively), and String (the set of all Haskell strings).
+  
+ The association of an expression or value with its type is very useful, and 
+ there is a special way of expressing it in Haskell. Using the examples of 
+ values and types above:
+  
+ D 
+  
+ :: PitchClass 
+  
+ 42 
+  
+ :: Integer
+  
+ ’a’
+  
+ :: Char 
+  
+ ""Euterpea"" :: String 
+  
+ [C, D, Ef ] 
+  
+  
+ :: [PitchClass ] 
+ (’b’, 4) 
+  
+ :: (Char, Integer)
+  
+ Each association of an expression with its type is called a type signature.
+  
+ Details: Note that the names of specific types are capitalized, such as Integer
+  
+  
+ and Char, as are the names of some atomic values such as D and Fs. These
+  
+  
+ will never be confused in context, since things to the right of “::” are types, and
+  
+  
+ things to the left are values. Note also that user-defined names of values are not
+  
+  
+ capitalized, such as simple and x. This is not just a convention: it is required when
+  
+  
+ programming in Haskell. In addition, the case of the other characters matters, too.
+  
+  
+ For example, test, teSt, and tEST are all distinct names for values, as are Test,
+  
+  
+ TeST, and TEST for types.
+  
+ 3
+ Technically, each type has its own version of ⊥.",NA
+1.6 ,NA,NA
+Function Types and Type Signatures,"What should the type of a function be? It seems that it should at least
+  
+ convey the fact that a function takes values of one type—T
+ 1
+ , say—as input,
+  
+ and returns values of (possibly) some other type—T
+ 2
+ , say—as output. In
+  
+ Haskell this is written T
+ 1
+  → T
+ 2
+ , and such a function is said to “map values of type T
+ 1
+  to 
+ values of type T
+ 2
+ .”
+ 4 
+  
+ If there is more than one argument,
+  
+ the notation is extended with more arrows. For example, if the intent is
+  
+ that the function simple defined in the previous section has type Integer 
+ →Integer → Integer → Integer, we can include a type signature with the 
+ definition of simple:
+  
+ simple 
+  
+ :: Integer → Integer → Integer → Integer 
+ simple x y z = x ∗ (y + z)
+  
+ 4
+ In mathematics T
+ 1
+  is called the domain of the function, and T
+ 2
+  the range.",NA
+1.7 ,NA,NA
+"Abstraction, Abstraction, Abstraction","The title of this section is the answer to the question: “What are the three 
+ most important ideas in programming?” Webster defines the verb 
+ “abstract”as follows:
+  
+ abstract, vt (1) remove, separate (2) to consider apart from 
+ application to a particular instance.
+  
+ In programming this happens when a pattern repeats itself and we wish 
+ to“separate” that pattern from the “particular instances” in which it appears. 
+ In this textbook this process is called the abstraction principle. The follow-
+ ing sections introduce several different kinds of abstraction, using examples 
+ involving both simple numbers and arithmetic (things everyone should be 
+ familiar with) as well as musical examples (that are specific to Euterpea).
+  
+ 1.7.1 
+  
+ Naming
+  
+ One of the most basic ideas in programming—for that matter, in every day 
+ life—is to name things. For example, we may wish to give a name to the 
+ value of π, since it is inconvenient to retype (or remember) the value of 
+ πbeyond a small number of digits. In mathematics the greek letter π in fact 
+ is the name for this value, but unfortunately we do not have the luxury of 
+ using greek letters on standard computer keyboards and/or text editors. So 
+ in Haskell we write:",NA
+1.8 ,NA,NA
+Haskell Equality vs. Euterpean Equality,"The astute reader will have objected to the proof just completed, arguing that 
+ the original version of mel:
+  
+ hNote qn p
+ 1
+  :+: hNote qn p
+ 2
+  :+: hNote qn p
+ 3
+  
+ is not the same as the terminus of the above proof:
+  
+ hNote qn p
+ 1
+  :+: hNote qn p
+ 2
+  :+: hNote qn p
+ 3
+  :+: rest 0
+  
+ Indeed, that reader would be right! As Haskell values, these expressions are 
+ not equal, and if you printed each of them you would get different results. So 
+ what happened? Did proof by calculation fail?
+  
+ No, proof by calculation did not fail, since, as just pointed out, as Haskell 
+ values these two expressions are not the same, and proof by calculation is 
+ based on the equality of Haskell values. The problem is that a 
+ “deeper”notion of equivalence is needed, one based on the notion of musical 
+ equality. Adding a rest of zero duration to the beginning or end of any piece 
+ of music should not change what we hear, and therefore it seems that the 
+ above two expressions are musically equivalent. But it is unreasonable to 
+ expect Haskell to figure this out for the programmer!
+  
+ As an analogy, consider the use of an ordered list to represent a set 
+ (which is unordered). The Haskell values [x
+ 1
+ , x
+ 2
+ ] and [x
+ 2
+ , x
+ 1
+ ] are not equal, 
+ yet in a program that “interprets” them as sets, they are equal.
+  
+ The way this problem is approached in Euterpea is to formally define a 
+ notion of musical interpretation, from which the notion of musical equiva-
+ lence is defined. This leads to a kind of “algebra of music” that includes, 
+ among others, the following axiom:",NA
+1.9 ,NA,NA
+Code Reuse and Modularity,"There does not seem to be much repetition in the last definition of hList, so 
+ perhaps the end of the abstraction process has been reached. In fact, it is 
+ worth considering how much progress has been made. The original",NA
+1.10 ,NA,NA
+[Advanced] Programming with Numbers,"In computer music programming, it is often necessary to program with 
+ num-bers. For example, it is often convenient to represent pitch on a simple 
+ ab-solute scale using integer values. And when computing with analog 
+ signals that represent a particular sound wave, it is necessary to use floating 
+ point numbers as an approximation to the reals. So it is a good idea to 
+ under-stand precisely how numbers are represented inside a computer, and 
+ within a particular language such as Haskell.
+  
+ 7
+ “Code reuse” and “modularity” are important software engineering principles.",NA
+Chapter 2,NA,NA
+Simple Music,"module Euterpea.Music.Note.Music where 
+  
+ infixr 5 :+:, :=:
+  
+ The previous chapters introduced some of the fundamental ideas of 
+ func-tional programming in Haskell. Also introduced were several of 
+ Euterpea’s functions and operators, such as note, rest, (:+:), (:=:), and trans. 
+ This chapter will reveal the actual definitions of these functions and 
+ operators, thus exposing Euterpea’s underlying structure and overall design 
+ at the note level. In addition, a number of other musical ideas will be 
+ developed, and in the process more Haskell features will be introduced as 
+ well.",NA
+2.1 ,NA,NA
+Preliminaries,"Sometimes it is convenient to use a built-in Haskell data type to directly 
+ represent some concept of interest. For example, we may wish to use Int to 
+ represent octaves, where by convention octave 4 corresponds to the octave 
+ containing middle C on the piano. We can express this in Haskell using a 
+ type synonym:
+  
+ type Octave = Int
+  
+ A type synonym does not create a new data type—it just gives a new name to 
+ an existing type. Type synonyms can be defined not just for atomic types such 
+ as Int, but also for structured types such as pairs. For example, as discussed 
+ in the last chapter, in music theory a pitch is defined as a pair, consisting of a 
+ pitch class and an octave. Assuming the existence of a data type called 
+ PitchClass (which we will return to shortly), we can write the
+  
+ 28",NA
+2.2 ,NA,NA
+"Notes, Music, and Polymorphism","We can of course define other data types for other purposes. For example, 
+ we will want to define the notion of a note and a rest. Both of these can be 
+ thought of as “primitive” musical values, and thus as a first attempt we 
+ might write:
+  
+ data Primitive = Note Dur Pitch 
+  
+  
+  
+ | Rest Dur 
+  
+ Analogously to our previous data type declarations, the above declaration 
+ says that a Primitive is either a Note or a Rest. However, it is different in that 
+ the constructors Note and Rest take arguments, like functions do. In the case 
+ of Note, it takes two arguments, whose types are Dur and Pitch, respectively, 
+ whereas Rest takes one argument, a value of type Dur. In other words, the 
+ types of Note and Rest are:
+  
+ Note :: Dur → Pitch → Primitive 
+  
+ Rest :: Dur →
+  
+ Primitive",NA
+2.3 ,NA,NA
+Convenient Auxiliary Functions,"For convenience, and in anticipation of their frequent use, a number of func-
+  
+ tions are defined in Euterpea to make it easier to write certain kinds of
+  
+ musical values. For starters:
+  
+ note 
+  
+ :: Dur → a → Music a
+  
+ note d p 
+  
+ = Prim (Note d p)
+  
+ rest 
+  
+ :: Dur → Music a
+  
+ rest d 
+  
+ = Prim (Rest d)
+  
+ tempo 
+  
+ :: Dur → Music a → Music a
+  
+ tempo r m 
+  
+ = Modify (Tempo r) m
+  
+ transpose 
+  
+ :: AbsPitch → Music a → Music a
+  
+ transpose i m 
+  
+ = Modify (Transpose i) m
+  
+ instrument 
+  
+ :: InstrumentName → Music a → Music a
+  
+ instrument i m = Modify (Instrument i) m
+  
+ phrase 
+  
+ :: [PhraseAttribute ] → Music a → Music a
+  
+ phrase pa m 
+  
+ = Modify (Phrase pa) m
+  
+ player 
+  
+ :: PlayerName → Music a → Music a",NA
+2.4 ,NA,NA
+Absolute Pitches,"Treating pitches simply as integers is useful in many settings, so Euterpea 
+ uses a type synonym to define the concept of an “absolute pitch:”
+  
+ type AbsPitch = Int
+  
+ The absolute pitch of a (relative) pitch can be defined mathematically as 12 
+ times the octave, plus the index of the pitch class. We can express this in 
+ Haskell as follows:
+  
+ absPitch 
+  
+ :: Pitch → AbsPitch
+  
+ absPitch (pc, oct) = 12 ∗ oct + pcToInt pc
+  
+  
+ Details: Note the use of pattern matching to match the argument of absPitch
+  
+  
+ to a pair.
+  
+ pcToInt is a function that converts a particular pitch class to an index, 
+ easily but tediously expressed as shown in Figure
+  2.4
+ . But there is a 
+ subtlety: according to music theory convention, pitches are assigned 
+ integers in the range 0 to 11, i.e. modulo 12, starting on pitch class C. In 
+ other words, the index of C is 0, C
+ ♭
+  is 11, and B
+ ♯
+  is 0. However, that would 
+ mean the absolute",NA
+Chapter 3,NA,NA
+Polymorphic and,NA,NA
+Higher-Order Functions,"Several examples of polymorphic data types were introduced in the last 
+ couple of chapters. In this chapter the focus is on polymorphic functions, 
+ which are most commonly defined over polymorphic data types.
+  
+ The already familiar list is the protoypical example of a polymorphic 
+ data type, and it will be studied in depth in this chapter. Although lists have 
+ no direct musical connection, they are perhaps the most commonly used 
+ data type in Haskell, and have many applications in computer music 
+ program-ming. But in addition the Music data type is polymorphic, and 
+ several new functions that operate on it polymorphiccally will also be 
+ defined,
+  
+ (A more detailed discussion of predefined polymorphic functions that 
+ operate on lists can be found in Appendix
+  A
+ .)
+  
+ This chapter also introduces higher-order functions, which are functions 
+ that take one or more functions as arguments or return a function as a result 
+ (functions can also be placed in data structures). Higher-order func-tions 
+ permit the elegant and concise expression of many musical concepts. 
+ Together with polymorphism, higher-order functions substantially increase 
+ the programmer’s expressive power and ability to reuse code.
+  
+ Both of these new ideas follow naturally the foundations that have al-ready 
+ been established.
+  
+ 45",NA
+3.1 ,NA,NA
+Polymorphic Types,"In previous chapters, examples of lists containing several different kinds of 
+ elements—integers, characters, pitch classes, and so on—were introduced, 
+ and we can well imagine situations requiring lists of other element types. 
+ Sometimes, however, it is not necessary to be so particular about the type of 
+ the elements. For example, suppose we wish to define a function length that 
+ determines the number of elements in a list. It does not really matter 
+ whether the list contains integers, pitch classes, or even other lists—we can 
+ imagine computing the length in exactly the same way in each case. The 
+ obvious definition is:
+  
+ length [ ] 
+  
+ = 0 
+  
+ length (x : xs) = 1 + length xs
+  
+ This recursive definition is self-explanatory. Indeed, we can read the equa-
+ tions as saying: “The length of the empty list is 0, and the length of a list 
+ whose first element is x and remainder is xs is 1 plus the length of xs.”
+  
+ But what should the type of length be? Intuitively, we would like to say 
+ that, for any type a, the type of length is [a ] → Integer. In mathematics we 
+ might write this as:
+  
+ length :: (∀ a) [a ] → Integer 
+  
+ But in Haskell this is written simply as:
+  
+ length :: [a ] → Integer 
+  
+ In other words, the universal quantification of the type variable a is implicit.
+  
+ Details: Generic names for types, such as a above, are called type variables, and
+  
+  
+ are uncapitalized to distinguish them from concrete types such as Integer.
+  
+ So length can be applied to a list containing elements of any type. For 
+ example:
+  
+  
+ length [1, 2, 3] =⇒ 3 
+  
+  
+ length [C, D, Ef ] =⇒ 3 
+  
+  
+ length [[1], [ ], [2, 3, 4]] =⇒ 3 
+  
+ Note that the type of the argument to length in the last example is [[Integer 
+ ]]; that is, a list of lists of integers.
+  
+ Here are two other examples of polymorphic list functions, which happen",NA
+3.2 ,NA,NA
+Abstraction Over Recursive Definitions,"Given a list of pitches, suppose we wish to convert each pitch into an absolute
+  
+ pitch. We could define a function:
+  
+ toAbsPitches 
+  
+ toAbsPitches [ ]
+  
+ :: [Pitch] → [AbsPitch] 
+  
+ = [ ]
+  
+  
+ toAbsPitches (p : ps) = absPitch p : toAbsPitches ps 
+  
+ We might also want to convert a list of absolute pitches to a list of pitches:",NA
+3.3 ,NA,NA
+Append,"Consider now the problem of concatenating or appending two lists together; 
+ that is, creating a third list that consists of all of the elements from the first 
+ list followed by all of the elements of the second. Once again the type of list 
+ elements does not matter, so we can define this as a polymorphic infix 
+ operator (++):
+  
+ (++) :: [a ] → [a ] → [a ] 
+  
+ For example, here are two uses of (++) on different types:
+  
+  
+ [1, 2, 3] ++ [4, 5, 6] 
+  
+ =⇒ [1, 2, 3, 4, 5, 6] 
+  
+  
+ [C, E, G ] ++ [D, F, A] =⇒ [C, E, G, D, F, A] 
+  
+ As usual, we can approach this problem by considering the various pos-
+ sibilities that could arise as input. But in the case of (++) there are two 
+ inputs—so which should be considered first? In general this is not an easy 
+ question to answer, so we could just try the first list first: it could be empty, 
+ or non-empty. If it is empty the answer is easy:
+  
+ [ ] ++ ys = ys
+  
+ and if it is not empty the answer is also straightforward:
+  
+ (x : xs) ++ ys = x : (xs ++ ys)
+  
+ Note the recursive use of (++). The full definition is thus:
+  
+ (++) 
+  
+ [ ]
+  
+  
+ :: [a ] → [a ] → [a ] 
+  
+ ++ ys = ys
+  
+ (x : xs) ++ ys = x : (xs ++ ys)",NA
+3.4 ,NA,NA
+Fold,"Suppose we wish to take a list of notes (each of type Music a) and convert 
+ them into a line, or melody. We can define a recursive function to do this as 
+ follows:
+  
+ line 
+  
+ line [ ]
+  
+ :: [Music a ] → Music a 
+  
+ = rest 0
+  
+ line (m : ms) = m :+: line ms
+  
+ Note that this function is polymorphic—the first example so far, in fact, of a 
+ polymorphic function involving the Music data type.
+  
+ We might also wish to have a function chord that operates in an analo-gous 
+ way, but using (:=:) instead of (:+:):
+  
+ chord 
+  
+ chord [ ]
+  
+ :: [Music a ] → Music a 
+  
+ = rest 0
+  
+ chord (m : ms) = m :=: chord ms
+  
+ This function is also polymorphic.
+  
+ In a completely different context we might wish to compute the highest pitch 
+ in a list of pitches, which we might capture in the following way:
+  
+ maxPitch 
+  
+ maxPitch [ ]
+  
+ :: [Pitch ] → Pitch 
+  
+ = pitch 0
+  
+ maxPitch (p : ps) = p !!! maxPitch ps
+  
+ where (!!!) is defined as:
+  
+ p
+ 1
+  !!! p
+ 2
+  = if absPitch p
+ 1
+  > absPitch p
+ 2
+  then p
+ 1
+  else p
+ 2",NA
+3.5,"maxPitch1 
+  
+ :: [Pitch] → Pitch
+  
+ maxPitch1 ps = foldr1 (!!!) ps",NA
+[Advanced] A Final Example: Reverse,"As a final example of a useful list function, consider the problem of reversing 
+ a list, which will be captured in a function called reverse. This could be 
+ useful, for example, when constructing the retrograde of a musical passage, 
+ i.e. the music as if it were played backwards. For example, reverse [C, D, Ef ] 
+ is [Ef , D, C ].
+  
+ Thus reverse takes a single list argument, whose possibilities are the normal 
+ ones for a list: it is either empty, or it is not. And thus:
+  
+ reverse 
+  
+ reverse [ ]
+  
+ :: [a ] → [a ] 
+  
+ = [ ]
+  
+ reverse (x : xs) = reverse xs ++ [x ]
+  
+ This, in fact, is a perfectly good definition for reverse—it is certainly clear—
+ except for one small problem: it is terribly inefficient! To see why, first recall 
+ that the number of steps needed to compute xs ++ ys is proportional to the 
+ length of xs. Now suppose that the list argument to reverse has length n. The 
+ recursive call to reverse will return a list of length n − 1, which is the first 
+ argument to (++). Thus the cost to reverse a list of length of n will be 
+ proportional to n − 1 plus the cost to reverse a list of length n − 1. So the 
+ total cost is proportional to (n − 1) + (n − 2) + · · · + 1 = n(n − 1)/2, which in 
+ turn is proportional to the square of n.
+  
+ Can we do better than this? In fact, yes.",NA
+3.6 ,NA,NA
+Currying,"We can improve further upon some of the definitions given in this chapter 
+ using a technique called currying simplification. To understand this idea, 
+ first look closer at the notation used to write function applications, such as 
+ simple x y z. Although, as noted earlier, this is similar to the mathematical 
+ notation simple(x, y, z), in fact there is an important difference, namely that 
+ simple x y z is actually shorthand for (((simple x) y) z). In other words, 
+ function application is left associative, taking one argument at a time.
+  
+ Now look at the expression (((simple x) y) z) a bit closer: there is an 
+ application of simple to x, the result of which is applied to y; so (simple x) 
+ must be a function! The result of this application, ((simple x) y), is then 
+ applied to z, so ((simple x) y) must also be a function!
+  
+ Since each of these intermediate applications yields a function, it seems 
+ perfectly reasonable to define a function such as:
+  
+ multSumByFive = simple 5
+  
+ What is simple 5? From the above argument it is clear that it must be a 
+ function. And from the definition of simple in Section
+  1
+  we might guess that 
+ this function takes two arguments, and returns 5 times their sum. Indeed, 
+ we can calculate this result as follows:
+  
+  
+ multSumByFive a b
+  
+   
+ ⇒ (simple 5) a b
+  
+   
+ ⇒ simple 5 a b
+  
+   
+ ⇒ 5 ∗ (a + b) 
+  
+ The intermediate step with parentheses is included just for clarity. This 
+ method of applying functions to one argument at a time, yielding interme-
+ diate functions along the way, is called currying, after the logician Haskell",NA
+3.7 ,NA,NA
+Errors,"The last section suggested the idea of “returning an error” when the argu-
+ ment to foldr1 is the empty list. As you might imagine, there are other 
+ situations where an error result is also warranted.
+  
+ There are many ways to deal with such situations, depending on the 
+ application, but sometimes all we want to do is stop the program, signalling 
+ to the user that some kind of an error has occurred. In Haskell this is done 
+ with the Standard Prelude function error :: String → a. Note that error is 
+ polymorphic, meaning that it can be used with any data type. The value of 
+ the expression error s is ⊥, the completely undefined, or “bottom” value that 
+ was discussed in Section
+  1.4
+ . As an example of its use, here is the definition 
+ of foldr1 from the Standard Prelude:
+  
+ foldr1 
+  
+ foldr1 f [x ]
+  
+ :: (a → a → a) → [a ] → a = x
+  
+ foldr1 f (x : xs) = f x (foldr1 f xs) 
+  
+ foldr1 f [ ] 
+  
+ = error ""Prelude.foldr1: empty list""
+  
+ Thus if the anomalous situation arises, the program will terminate immedi-
+ ately, and the string ""Prelude.foldr1: empty list"" will be printed.
+  
+ Exercise 3.7 Rewrite the definition of length non-recursively.
+  
+ Exercise 3.8 Define a function that behaves as each of the following:
+  
+ a) Doubles each number in a list. For example:
+  
+ doubleEach [1, 2, 3] =⇒ [2, 4, 6]
+  
+ b) Pairs each element in a list with that number and one plus that number. 
+ For example:
+  
+ pairAndOne [1, 2, 3] =⇒ [(1, 2), (2, 3), (3, 4)]
+  
+ c) Adds together each pair of numbers in a list. For example:
+  
+ addEachPair [(1, 2), (3, 4), (5, 6)] =⇒ [3, 7, 11]
+  
+ d) Adds “pointwise” the elements of a list of pairs. For example:
+  
+ addPairsPointwise [(1, 2), (3, 4), (5, 6)] =⇒ (9, 12)",NA
+Chapter 4,NA,NA
+A Musical Interlude,"At this point enough detail about Haskell and Euterpea has been covered 
+ that it is worth developing a small but full application or two. In this chapter 
+ an existing composition will be transcribed into Euterpea, thus exemplifying 
+ how to express conventional musical ideas in Euterpea. Then a simple form 
+ of algorithmic composition will be presented, where it will become apparent 
+ that more exotic things can be easily expressed as well.
+  
+ But before tackling either of these, Haskell’s modules will be described in 
+ more detail.",NA
+4.1 ,NA,NA
+Modules,"Haskell programs are partitioned into modules that capture common types, 
+ functions, etc. that naturally comprise an application. The first part of a 
+ module is called the module header, which declares what the name of the 
+ module is, and what other modules it might import. For this chapter the 
+ module’s name is Interlude, into which the module Euterpea is imported:
+  
+ module Interlude where 
+  
+ import Euterpea
+  
+  
+ Details: Module names must always be capitalized (just like type names).
+  
+ 67",NA
+4.2 ,NA,NA
+Transcribing an Existing Score,"Figure
+  4.1
+  shows the first 28 bars of Chick Corea’s Children’s Songs No. 6, 
+ written for electric piano [
+ Cor94
+ ]. Analyzing the structure of this tune ex-
+ plores several basic issues that arise in the transcription of an existing score 
+ into Euterpea, including repeating phrases, grace notes, triplets, tempo, and 
+ specifying an instrument. To begin, however, we will define a couple of 
+ auxiliary functions to make our job easier.
+  
+ 4.2.1 
+  
+ Auxiliary Functions
+  
+ For starters, note that there are several repeating patterns of notes in this 
+ composition, each enclosed in a rectangle in Figure
+  4.1
+ . In fact, the bass line 
+ consists entirely of three repeating phrases. In anticipation of this, a 
+ function can be defined that repeats a phrase a particular number of times:
+  
+ timesM 
+  
+ :: Int → Music a → Music a 
+  
+ timesM 0 m = rest 0 
+  
+ timesM n m = m :+: timesM (n − 1) m
+  
+ Details: Note that pattern-matching can be used on numbers. As mentioned
+  
+  
+ earlier, when there is more than one equation that defines a function, the first
+  
+  
+ equation is tried first. If it fails, the second equation is tried, and so on. In the
+  
+  
+ case above, if the first argument to timesM is not 0, the first equation will fail.
+  
+  
+ The second equation is then tried, which always succeeds.
+  
+ So, for example, timesM 3 b
+ 1
+  will repeat the baseline b
+ 1
+  (to be defined 
+ shortly) three times.
+  
+ To motivate the second auxiliary function, note in Figure
+  4.1
+  that there 
+ are many melodic lines that consist of a sequence of consecutive notes 
+ having the same duration (for example eighth notes in the melody, and 
+ dotted",NA
+4.3 ,NA,NA
+Simple Algorithmic Composition,"Algorithmic composition is the process of designing an algorithm (or heuris-
+ tic) for generating music. There are unlimited possibilites, with some trying 
+ to duplicate a particular style of music, others exploring more exotic styles; 
+ some based on traditional notions of music theory, others not; some com-
+ pletely deterministic, others probabilistic; and some requiring user interac-
+ tion, others being completely automatic. Some even are based simply 
+ on“interpreting” data—like New York Stock Exchange numbers—in 
+ interest-ing ways! In this textbook a number of algorithmic composition 
+ techniques are explored, but the possibilities are endless—hopefully what is 
+ presented will motivate the reader to invent new, exciting algorithmic 
+ composition techniques.
+  
+ To give a very tiny glimpse into algorithmic composition, we end this 
+ chapter with a very simple example. We will call this example “prefix,” for 
+ reasons that will become clear shortly.",NA
+Chapter 5,NA,NA
+Syntactic Magic,"This chapter introduces several more of Haskell’s syntactic devices that fa-
+ ciliate writing concise and intuitive programs. These devices will be used 
+ frequently in the remainder of the text.",NA
+5.1 ,NA,NA
+Sections,"The use of currying was introduced in Chapter
+  3
+  as a way to simplify pro-
+ grams. This is a syntactic device that relies on the way that normal functions 
+ are applied, and how those applications are parsed.
+  
+ With a bit more syntax, we can also curry applications of infix operators 
+ such as (+). This syntax is called a section, and the idea is that, in an 
+ expression such as (x + y), we can omit either the x or the y, and the result 
+ (with the parentheses still intact) is a function of that missing argument. If 
+ both variables are omitted, it is a function of two arguments. In other words, 
+ the expressions (x+), (+y) and (+) are equivalent, respectively, to the 
+ functions:
+  
+ f
+ 1
+  y 
+  
+ = x + y 
+  
+ f
+ 2
+  x 
+  
+ = x + y 
+  
+ f
+ 3
+  x y = x + y
+  
+ For example, suppose we wish to remove all absolute pitches greater 
+ than 99 from a list, perhaps because everything above that value is assumed 
+ to be unplayable. There is a pre-defined function in Haskell that can help to 
+ achieve this:
+  
+ 77",NA
+5.2 ,NA,NA
+Anonymous Functions,"Another way to define a function in Haskell is in some sense the most funda-
+ mental: it is called an anonymous function, or lambda expression (since the 
+ concept is drawn directly from Church’s lambda calculus [
+ Chu41
+ ]). The idea 
+ is that functions are values, just like numbers and characters and strings, 
+ and therefore there should be a way to create them without having to give 
+ them a name. As a simple example, an anonymous function that increments 
+ its numeric argument by one can be written λx → x + 1. Anonymous func-
+ tions are most useful in situations where you do not wish to name them, 
+ which is why they are called “anonymous.” Anonymity is a property also 
+ shared by sections, but sections can only be derived from an existing infix 
+ operator.
+  
+ Details: The typesetting used in this textbook prints an actual Greek lambda
+  
+  
+ character, but in writing λx → x + 1 in your programs you will have to type“\x -> 
+ x+1” instead.
+  
+ As another example, to raise the pitch of every element in a list of pitches ps 
+ by an octave, we could write:
+  
+ map (λp → pitch (absPitch p + 12)) ps 
+  
+ An even better example is an anonymous function that pattern-matches its 
+ argument, as in the following, which doubles the duration of every note in a 
+ list of notes ns:
+  
+ map (λ(Note d p) → Note (2 ∗ d) p) ns
+  
+ Details: Anonymous functions can only perform one match against an 
+ argument.
+  
+  
+ That is, you cannot stack together several anonymous functions to define one
+  
+  
+ function, as you can with equations.
+  
+ Anonymous functions are considered most fundamental because defini-tions 
+ such as that for simple given in Chapter
+  1
+ :
+  
+ simple x y z = x ∗ (y + z) 
+  
+ can be written instead as:",NA
+5.3 ,NA,NA
+List Comprehensions,"Haskell has a convenient and intuitive way to define a list in such a way that 
+ it resembles the definition of a set in mathematics. For example, recall in the 
+ last chapter the definition of the function addDur:
+  
+ addDur 
+  
+ :: Dur → [Dur → Music a ] → Music a 
+ addDur d ns = let f n = n d 
+  
+  
+  
+ in line (map f ns)
+  
+ Here ns is a list of notes, each of which does not have a duration yet assigned 
+ to it. If we think of this as a set, we might be led to write the following 
+ solution in mathematical notation:
+  
+ {n d | n ∈ ns}",NA
+5.4 ,NA,NA
+Function Composition,"An example of polymorphism that has nothing to do with data structures 
+ arises from the desire to take two functions f and g and “glue them to-
+ gether,” yielding another function h that first applies g to its argument, and 
+ then applies f to that result. This is called function composition (just as in 
+ mathematics), and Haskell pre-defines a simple infix operator (◦) to 
+ achieve it, as follows:
+  
+ (◦) 
+  
+ :: (b → c) → (a → b) → a → c
+  
+ (f ◦ g) x = f (g x)
+  
+  
+ Details: The symbol for function composition is typeset in this textbook as ◦, 
+ which is consistent with mathematical convention. When writing your programs,
+  
+  
+ however, you will have to use a period, as in “f . g”.
+  
+ Note the type of the operator (◦); it is completely polymorphic. Note 
+ also that the result of the first function to be applied—some type b—must 
+ be the same as the type of the argument to the second function to be 
+ applied. Pictorially, if we think of a function as a black box that takes input at 
+ one end and returns some output at the other, function composition is like 
+ connecting two boxes together, end to end, as shown in Figure
+  5.1
+ .
+  
+ The ability to compose functions using (◦) is quite handy. For example, recall 
+ the last version of hList:",NA
+5.5 ,NA,NA
+Higher-Order Thinking,"It is worth taking a deep breath here and contemplating what has been done 
+ with hList, which has gone through quite a few transformations. Here is the 
+ original definition given in Chapter
+  1
+ :
+  
+ hList d [ ] 
+  
+ = rest 0 
+  
+ hList d (p : ps) = hNote d p :+: hList d ps
+  
+ Compare this to the definition above. You may be distressed to think that 
+ you have to go through all of these transformations just to write a relatively 
+ simple function! There are two points to make about this: First, you do not 
+ have to make any of these transformations if you do not want to. All of these 
+ versions of hList are correct, and they all run about equally fast. They are 
+ explained here for pedagogical purposes, so that you understand the full 
+ power of Haskell. Second, with practice, you will find that you can write the 
+ concise higher-order versions of many functions straight away, without 
+ going through all of the steps presented here.
+  
+ As mentioned earlier, one thing that helps is to start thinking in “higher-
+ order” terms. To facilitate this way of thinking it is helpful to write type 
+ signatures that reflect more closely their higher-order nature. For example, 
+ recall these type signatures for map, filter, and (◦): 
+  
+  
+ map :: (a → b) → [a ] → [b] 
+  
+  
+ filter :: (a → Bool) → [a ] → [a ] 
+  
+  
+ (◦) 
+  
+ :: (b → c) → (a → b) → a → c 
+  
+ Also recall that the arrow in function types is right associative. Therefore, 
+ another completely equivalent way to write the above type signatures is:
+  
+ map :: (a → b) → ([a ] → [b]) 
+  
+ filter :: (a → Bool) → ([a ] → [a ]) 
+  
+ (◦) 
+  
+ :: (b → c) → (a → b) → (a → c) 
+  
+ Although equivalent, the latter versions emphasize the fact that each of these",NA
+5.6 ,NA,NA
+Infix Function Application,"Haskell predefines an infix operator to apply a function to a value:
+  
+ f $ x = f x
+  
+ At first glance this does not seem very useful—after all, why not simply write 
+ f x instead of f $ x?
+  
+ But in fact this operator has a very useful purpose: eliminating paren-
+ theses! In the Standard Prelude, ($) is defined to be right associative, and to 
+ have the lowest precedence level, via the fixity declaration:
+  
+ infixr 0 $
+  
+ Therefore, note that f (g x) is the same as f $ g x (remember that normal 
+ function application always has higher precedence than infix operator ap-
+ plication), and f (x + 1) is the same as f $ x + 1. This “trick” is especially 
+ useful when there is a sequence of nested, parenthesized expresssions. For 
+ example, recall the following definition from the last chapter:
+  
+ childSong6 = let t = (dhn/qn) ∗ (69/120) 
+  
+  
+ in instrument RhodesPiano 
+  
+  
+  
+ (tempo t (bassLine :=: mainVoice))",NA
+Chapter 6,NA,NA
+More Music,"module Euterpea.Music.Note.MoreMusic where 
+ import Euterpea.Music.Note.Music
+  
+ This chapter explores a number of simple musical ideas, and contributes to a 
+ growing collection of Euterpea functions for expressing those ideas.",NA
+6.1 ,NA,NA
+Delay and Repeat,"We can delay the start of a music value simply by inserting a rest in front of it, 
+ which can be packaged in a function as follows:
+  
+ delayM 
+  
+ :: Dur → Music a → Music a 
+  
+ delayM d m = rest d :+: m
+  
+ With delayM it is easy to write canon-like structures such as m:=:delayM d m, a 
+ song written in rounds (see Exercise
+  3.14
+ ), and so on.
+  
+ Recall from Chapter
+  4
+  the function timesM that repeats a musical phrase a 
+ certain number of times:
+  
+  
+ timesM 
+  
+ :: Int → Music a → Music a 
+  
+  
+ timesM 0 m = rest 0 
+  
+  
+ timesM n m = m :+: timesM (n − 1) m 
+  
+ More interestingly, Haskell’s non-strict semantics allows us to define in-finite 
+ musical values. For example, a musical value may be repeated ad nauseam 
+ using this simple function:
+  
+ 87",NA
+6.2 ,NA,NA
+Inversion and Retrograde,"The notions of inversion, retrograde, retrograde inversion, etc. as used in 
+ twelve-tone theory are also easily captured in Euterpea. These terms are 
+ usually applied only to a “line” of notes, i.e. a melody (in twelve-tone theory 
+ it is called a “row”). The retrograde of a line is simply its reverse—i.e. the 
+ notes played in the reverse order. The inversion of a line is with respect to a 
+ given pitch (by convention usually the first pitch), where the intervals 
+ between successive pitches are inverted, i.e. negated. If the absolute pitch of 
+ the first note is ap, then each pitch p is converted into an absolute pitch ap − 
+ (absPitch p − ap), in other words 2 ∗ ap − absPitch p.
+  
+ To do all this in Haskell, a transformation from a line created by line to a list 
+ is defined:
+  
+ lineToList 
+  
+ :: Music a → [Music a ] 
+  
+ lineToList (Prim (Rest 0)) = [ ] 
+  
+ lineToList (n :+: ns) 
+  
+ = n : lineToList ns 
+  
+ lineToList 
+  
+ = 
+  
+  
+ error ""lineToList: argument not created by function line""
+  
+ Using this function it is then straightforward to define invert:
+  
+ invert :: Music Pitch → Music Pitch 
+  
+ invert m = 
+  
+  
+ let l@(Prim (Note r) : ) = lineToList m 
+  
+   
+ inv (Prim (Note d p)) = 
+  
+   
+  
+ note d (pitch (2 ∗ absPitch r − absPitch p)) 
+   
+ inv (Prim (Rest d)) 
+  
+ = rest d 
+  
+  
+ in line (map inv l)",NA
+6.3 ,NA,NA
+Polyrhythms,"For some rhythmical ideas, first note that if m is a line of three eighth notes, 
+ then tempo (3/2) m is a triplet of eighth notes (recall that this idea was used 
+ in Chapter
+  4
+ ). In fact tempo can be used to create quite complex rhythmical 
+ patterns. For example, consider the “nested polyrhythms” shown in Figure 
+ 6.2
+ . They can be expressed naturally in Euterpea as follows (note the use of a 
+ let clause in pr
+ 2
+  to capture recurring phrases): 
+  
+ pr
+ 1
+ , pr
+  2
+  :: Pitch → Music Pitch 
+  
+ pr
+ 1
+  p = tempo (5/6) 
+  
+  
+  
+ (tempo (4/3) (mkLn 1 p qn :+: 
+  
+  
+  
+ tempo (3/2) (mkLn 3 p en :+: 
+  
+  
+  
+  
+  
+ mkLn 2 p sn :+: 
+  
+  
+  
+  
+  
+ mkLn 1 p qn) :+:",NA
+6.4 ,NA,NA
+Symbolic Meter Changes,"We can implement the notion of “symbolic meter changes” of the form “old-
+  
+ note = newnote” (quarter note = dotted eighth, for example) by defining
+  
+ an infix function:
+  
+ (=:=) 
+  
+ :: Dur → Dur → Music a → Music a old 
+ =:= new = tempo (new /old)
+  
+ Of course, using the new function is not much shorter than using tempo
+  
+ directly, but it may have mnemonic value.",NA
+6.5 ,NA,NA
+Computing Duration,"It is often desirable to compute the duration, in whole notes, of a musical
+  
+ value; we can do so as follows:
+  
+ dur
+  
+ ))
+  
+ :: Music a → Dur 
+  
+ = d
+  
+ dur (Prim (Note d
+  
+ dur (Prim (Rest d))
+  
+ = d
+  
+ dur (m
+ 1
+  :+: m
+ 2
+ )
+  
+ = dur m
+ 1
+  + dur m
+ 2
+  
+ dur (m
+ 1
+  :=: m
+ 2
+ )
+  
+ = dur m
+ 1
+  ‘max‘ dur m
+ 2
+  
+ dur (Modify (Tempo r) m) = dur m/r
+  
+ dur (Modify
+  
+ m)
+  
+ = dur m
+  
+ The duration of a primitive value is obvious. The duration of m
+ 1
+ :+:m
+ 2
+  is the
+  
+ sum of the two, and the duration of m
+ 1
+  :=: m
+ 2
+  is the maximum of the two.
+  
+ The only tricky case is the duration of a music value that is modified by the
+  
+ Tempo atttribute—in this case the duration must be scaled appropriately.
+  
+ Note that the duration of a music value that is conceptually infinite in
+  
+ duration will be ⊥, since dur will not terminate. (Similary, taking the length of 
+ an infinite list is ⊥.) For example:
+  
+ dur (repeatM (a 4 qn))
+  
+ ⇒ dur (a 4 qn :+: repeatM (a 4 qn))
+  
+ ⇒ dur (a 4 qn) + dur (repeatM (a 4 qn))
+  
+ ⇒ qn + dur (repeatM (a 4 qn))
+  
+ ⇒ qn + qn + dur (repeatM (a 4 qn))
+  
+ ⇒ ...
+  
+ ⇒ ⊥",NA
+6.6 ,NA,NA
+Super-retrograde,"Using dur we can define a function revM that reverses any Music value
+  
+ whose duration is finite (and is thus considerably more useful than retro
+  
+ defined earlier):",NA
+6.7 ,NA,NA
+takeM and dropM,"Two other useful operations on Music values is the ability to “take” the first 
+ so many beats (in whole notes), discarding the rest, and conversely, the 
+ ability to “drop” the first so many beats, returning what is left. We will first 
+ define a function takeM :: Dur → Music a → Music a such that takeM d m is a 
+ prefix of m having duration d. In other words, it “takes” only the first d beats 
+ (in whole notes) of m. We can define this function as follows:
+  
+ takeM :: Dur → Music a → Music a 
+  
+ takeM d m | d ⩽ 0 
+  
+ = rest 0 
+  
+ takeM d (Prim (Note oldD p)) = note (min oldD d) p
+  
+ takeM d (Prim (Rest oldD)) 
+ takeM d (m
+ 1
+  :=: m
+ 2
+ ) 
+  
+ takeM d (m
+ 1
+  :+: m
+ 2
+ )
+  
+ = rest (min oldD d) 
+  
+ = takeM d m
+ 1
+  :=: takeM d m
+ 2 
+  
+ = let m
+ ′1
+  = takeM d m
+ 1 
+  
+  
+ m
+ ′2
+  = takeM (d − dur m
+ ′1
+ ) m
+ 2 
+ in m
+ ′1
+  
+ :+: m
+ ′2
+  
+ takeM d (Modify (Tempo r) m) = tempo r (takeM (d ∗ r) m) 
+ takeM d (Modify c m) 
+  
+ = Modify c (takeM d m)
+  
+ This definition is fairly straightforward, except for the case of sequential
+  
+ composition, where two cases arise: (1) if d is greater than dur m
+ 1
+ , then
+  
+ we return all of m
+ 1
+  (i.e. m
+ ′1
+  = m
+ 1
+ ), followed by d − dur m
+ ′1
+  beats of m
+ 2
+ ,",NA
+6.8 ,NA,NA
+Removing Zeros,"Note that functions such as timesM , line, revM , takeM and dropM occa-
+  
+ sionally insert rests of zero duration, and in the case of takeM and dropM ,
+  
+ may insert notes of zero duration. Doing this makes the code simpler and
+  
+ more elegant, and since we cannot hear the effect of the zero-duration events,
+  
+ the musical result is the same.
+  
+ On the other hand, these extraneous notes and rests (which we will call
+  
+ “zeros”) can be annoying when viewing the textual (rather than audible)
+  
+ representation of the result. To alleviate this problem, we define a function
+  
+ that removes them from a given Music value:",NA
+6.9 ,NA,NA
+Truncating Parallel Composition,"The duration of m
+ 1
+  :=: m
+ 2
+  is the maximum of the durations of m
+ 1
+  and m
+ 2 
+ (and thus if one is infinite, so is the result). However, sometimes it is useful 
+ to have the result be of duration equal to the shorter of the two. Defining a 
+ function to achieve this is not as easy as it sounds, since it may require 
+ truncating the longer one in the middle of a note (or notes), and it may be 
+ that one (or both) of the Music values is infinite.
+  
+ The goal is to define a “truncating parallel composition” operator (/=:):: 
+ Music a → Music a → Music a. Using takeM , we can make an initial attempt 
+ at a suitable definition for (/=:) as follows:
+  
+ (/=:) 
+  
+ :: Music a → Music a → Music a 
+  
+ m
+ 1
+  /=: m
+ 2
+  = takeM (dur m
+ 2
+ ) m
+ 1
+  :=: takeM (dur m
+ 1
+ ) m
+ 2
+  
+ Unfortunately, whereas takeM can handle infinite-duration music values, 
+ (/=:) cannot. This is because (/=:) computes the duration of both of its 
+ arguments, but if one of them, say m
+ 1
+ , has infinite duration, then dur m
+ 1
+  ⇒⊥. 
+ If, in a particular context, we know that only one of the two arguments is 
+ infinite, and we know which one (say m
+ 1
+ ), it is always possible to write:
+  
+ takeM (dur m
+ 2
+ ) m
+ 1
+  :=: m
+ 2
+  
+ But somehow this seems unsatisfactory.",NA
+6.10 ,NA,NA
+Trills,"A trill is an ornament that alternates rapidly between two (usually adjacent) 
+ pitches. 
+  
+ Two versions of a trill function will be defined, both of which take 
+ the starting note and an interval for the trill note as arguments (the interval 
+ is usually one or two, but can actually be anything). One version will 
+ additionally have an argument that specifies how long each trill note should 
+ be, whereas the other will have an argument that specifies how many trills 
+ should occur. In both cases the total duration will be the same as the duration 
+ of the original note.",NA
+6.11 ,NA,NA
+Grace Notes,"Recall from Chapter
+  4
+  the function graceNote to generate grace notes. A 
+ more general version is defined below, which takes a Rational argument 
+ that specifies that fraction of the principal note’s duration to be used for the 
+ grace note’s duration:
+  
+ grace :: Int → Rational → Music Pitch → Music Pitch 
+  
+ grace n r (Prim (Note d p)) = 
+  
+  
+ note (r ∗ d) (trans n p) :+: note ((1 − r) ∗ d) p 
+  
+ grace n r 
+  
+ = 
+  
+  
+ error ""grace: can only add a grace note to a note""
+  
+ Thus grace n r (note d p) is a Music value consisting of two notes, the first 
+ being the grace note whose duration is r ∗ d and whose pitch is n semitones 
+ higher (or lower if n is negative) than p, and the second being the principal 
+ note at pitch p but now with duration (1 − r) ∗ d.
+  
+ Note that grace places the downbeat of the grace note at the point written for 
+ the principal note. Sometimes the interpretation of a grace note is such that 
+ the downbeat of the principal note is to be unchanged. In that case, the grace 
+ note reduces the duration of the previous note. We can define a function 
+ grace2 that takes two notes as arguments, and places the grace note 
+ appropriately:
+  
+ grace2 :: Int → Rational →
+  
+  
+ Music Pitch → Music Pitch → Music Pitch",NA
+6.12 ,NA,NA
+Percussion,"Percussion is a difficult notion to represent in the abstract. On one hand, a 
+ percussion instrument is just another instrument, so why should it be treated 
+ differently? 
+  
+ On the other hand, even common practice notation 
+ treats it specially, although it has much in common with non-percussive 
+ notation. The MIDI standard is equally ambiguous about the treatment of 
+ percussion: on one hand, percussion sounds are chosen by specifying an 
+ octave and pitch, just like any other instrument; on the other hand, these 
+ pitches have no tonal meaning whatsoever: they are just a convenient way to 
+ select from a large number of percussion sounds. Indeed, part of the General 
+ MIDI Standard is a set of names for commonly used percussion sounds.
+  
+ Since MIDI is such a popular platform, it is worth defining some handy 
+ functions for using the General MIDI Standard. In Figure
+  6.4
+  a data type is 
+ defined that borrows its constructor names from the General MIDI stan-
+ dard. The comments reflecting the “MIDI Key” numbers will be explained 
+ later, but basically a MIDI Key is the equivalent of an absolute pitch in 
+ Euterpea terminology. So all that remains to be done is a way to convert 
+ these percussion sound names into a Music value; i.e. a Note:
+  
+ perc :: PercussionSound → Dur → Music Pitch perc ps 
+ dur = note dur (pitch (fromEnum ps + 35))",NA
+6.13 ,NA,NA
+A Map for Music,"Recall from Chapter
+  3
+  the definition of map:",NA
+6.14 ,NA,NA
+A Fold for Music,"We can also define a fold-like operator for Music. But whereas the list data 
+ type has only two constructors (the nullary constructor [ ] and the binary 
+ constructor (:)), Music has four constructors (Prim, (:+:), (:=:), and Modify). 
+ Thus the following function takes four arguments in addition to the Music 
+ value it is transforming, instead of two:
+  
+ mFold :: (Primitive a → b) → (b → b → b) → (b → b → b) →
+  
+  
+    
+ (Control → b → b) → Music a → b 
+  
+ mFold f (+:) (=:) g m = 
+  
+  
+  
+ let rec = mFold f (+:) (=:) g 
+  
+  
+  
+ in case m of 
+  
+  
+   
+ Prim p→ f p 
+  
+  
+   
+ m
+ 1
+  :+: m
+ 2
+  
+ → rec m
+ 1
+  +: rec m
+ 2 
+  
+  
+  
+ m
+ 1
+  :=: m
+ 2
+ → rec m
+ 1
+  =: rec m
+ 2 
+  
+  
+   
+ Modify c m → g c (rec m) 
+  
+ This somewhat unwieldy function basically takes apart a Music value and 
+ puts it back together with different constructors. Indeed, note that:
+  
+ mFold Prim (:+:) (:=:) Modify m == m
+  
+ Although intuitive, proving this property requires induction, a proof tech-
+ nique discussed in Chapter
+  10
+ .
+  
+ To see how mFold might be used, note first of all that it is more general than 
+ mMap—indeed, mMap can be defined in terms of mFold like this:
+  
+ mMap 
+  
+ :: (a → b) → Music a → Music b 
+  
+ mMap f = mFold g (:+:) (:=:) Modify where 
+  
+  
+ g (Note d x) = note d (f x) 
+  
+  
+ g (Rest d) 
+  
+ = rest d
+  
+ More interestingly, we can use mFold to more succinctly define functions 
+ such as dur from Section
+  6.5
+ :
+  
+ dur :: Music a → Dur 
+  
+ dur = mFold getDur (+) max modDur where
+  
+ getDur (Note d
+  
+ )
+  
+ = d
+  
+ getDur (Rest d)
+  
+ = d
+  
+ modDur (Tempo r) d = d/r
+  
+ modDur
+  
+ d
+  
+ = d
+  
+ Exercise 6.10 Redefine revM from Section
+  6.6
+  using mFold.",NA
+6.15 ,NA,NA
+Crazy Recursion,"With all the functions and data types that have been defined, and the power 
+ of recursion and higher-order functions well understood, we can start to do 
+ some wild and crazy things with music. Here is just one such idea.
+  
+ The goal is to define a function to recursively apply transformations f (to 
+ elements in a sequence) and g (to accumulated phrases) some specified 
+ number of times:
+  
+ rep :: (Music a → Music a) → (Music a → Music a) → Int
+  
+  
+  
+ → Music a → Music a 
+  
+ rep f g 0 m = rest 0 
+  
+ rep f g n m = m :=: g (rep f g (n − 1) (f m)) 
+  
+ With this simple function we can create some interesting phrases of music 
+ with very little code. 
+  
+ For example, rep can be used three times, nested 
+ together, to create a “cascade” of sounds:
+  
+ run 
+  
+ = rep (transpose 5) (delayM tn) 8 (c 4 tn) 
+ cascade = rep (transpose 4) (delayM en) 8 run 
+ cascades = rep id (delayM sn) 2 cascade
+  
+ We can then make the cascade run up, and then down:
+  
+ final = cascades :+: revM cascades
+  
+ What happens if the f and g arguments are reversed?
+  
+ run
+ ′
+  
+ = rep (delayM tn) (transpose 5) 8 (c 4 tn) 
+ cascade
+ ′
+ = rep (delayM en) (transpose 4) 8 
+ run
+ ′
+ cascades
+ ′
+ = rep (delayM sn) id 2 cascade
+ ′
+  
+ final
+ ′
+  
+ = cascades
+ ′
+ :+: revM cascades
+ ′",NA
+Chapter 7,NA,NA
+Qualified Types and Type,NA,NA
+Classes,"This chapter introduces the notions of qualified types and type classes. 
+ These concepts can be viewed as a refinement of the notion of 
+ polymorphism, and increase the ability to write modular programs.",NA
+7.1 ,NA,NA
+Motivation,"A polymorphic type such as (a → a) can be viewed as shorthand for ∀(a)a 
+ →a, which can be read “for all types a, functions mapping elements of type a 
+ to elements of type a.” Note the emphasis on “for all.”
+  
+ In practice, however, there are times when we would prefer to limit a 
+ polymorphic type to a smaller number of possibilities. A good example is a 
+ function such as (+). It is probably not a good idea to limit (+) to a single 
+ (that is, monomorphic) type such as Integer → Integer → Integer, since there 
+ are other kinds of numbers—such as rational and floating-point numbers—
+ that we would like to perform addition on as well. Nor is it a good idea to 
+ have a different addition function for each number type, since that would 
+ require giving each a different name, such as addInteger, addRational, 
+ addFloat, etc. And, unfortunately, giving (+) a type such as a → a → a will not 
+ work, since this would imply that we could add things other than numbers, 
+ such as characters, pitch classes, lists, tuples, functions, and any type that we 
+ might define on our own!
+  
+ Haskell provides a solution to this problem through the use of qualified
+  
+ 111",NA
+7.2 ,NA,NA
+Equality,"Equality between two expressions e
+ 1
+  and e
+ 2
+  in Haskell means that the value 
+ of e
+ 1
+  is the same as the value of e
+ 2
+ . Another way to view equality is that we 
+ should be able to substitute e
+ 1
+  for e
+ 2
+ , or vice versa, wherever they appear in 
+ a program, without affecting the result of that program.
+  
+ In general, however, it is not possible for a program to determine the 
+ equality of two expressions—consider, for example, determining the equal-
+ ity of two infinite lists, two infinite Music values, or two functions of type 
+ Integer → Integer.
+ 1
+ The ability to compute the equality of two values is called 
+ computational equality. Even though by the above simple examples it is 
+ clear that computational equality is strictly weaker than full equality, it is 
+ still an operation that we would like to use in many ordinary programs.
+  
+ Haskell’s operator for computational equality is (==). Partly because of 
+ the problem mentioned above, there are many types for which we would 
+ like equality defined, but some for which it might not make sense. For 
+ example, it is common to compare two characters, two integers, two 
+ floating-point numbers, etc. On the other hand, comparing the equality of 
+ infinite data structures, or functions, is difficult, and in general not possible. 
+ Thus Haskell has a type class called Eq, so that the equality operator (==) 
+ can be given the qualified type:
+  
+  
+ (==) :: Eq a ⇒ a → a → Bool 
+  
+ In other words, (==) is a function that, for any type a in the class Eq, tests two 
+ values of type a for equality, returning a Boolean (Bool) value as a result. 
+ Amongst Eq’s instances are the types Char and Integer, so that the following 
+ calculations hold:
+  
+ 42 
+  
+ == 42
+  
+ ⇒ True 
+  
+ 42 
+  
+ == 43
+  
+ ⇒ False
+  
+ ’a’ == ’a’ ⇒ True
+  
+ ’a’ == ’b’ ⇒ False 
+  
+ Furthermore, the expression 42 == ’a’ is ill-typed; Haskell is clever enough
+  
+ 1
+ This is the same as determining program equivalence, a well-known example of an 
+ undecideable problem in the theory of computation.",NA
+7.3 ,NA,NA
+Defining Our Own Type Classes,"Haskell provides a mechanism whereby we can create our own qualified types,
+  
+ by defining a new type class and specifying which types are members, or
+  
+ “instances” of it. 
+  
+ Indeed, the type classes Num and Eq are not built-in
+  
+ as primitives in Haskell, but rather are simply predefined in the Standard
+  
+ Prelude.
+  
+ To see how this is done, consider the Eq class. 
+ following type class declaration:
+  
+ class Eq a where
+  
+ It is created by the
+  
+   
+ (==) :: a → a → Bool 
+  
+ The connection between (==) and Eq is important: the above declaration 
+ should be read, “a type a is an instance of the class Eq only if there is an 
+ operation (==) :: a → a → Bool defined on it.” (==) is called an operation in the 
+ class Eq, and in general more than one operation is allowed in a class. More 
+ examples of this will be introduced shortly.
+  
+ So far so good. But how do we specify which types are instances of the 
+ class Eq, and the actual behavior of (==) on each of those types? This is done 
+ with an instance declaration. For example:
+  
+ instance Eq Integer where 
+  
+ x == y = integerEq x y",NA
+7.4 ,NA,NA
+Haskell’s Standard Type Classes,"The Standard Prelude defines many useful type classes, including Eq and 
+ Ord. They are described in detail in Appendix
+  B
+ . In addition, the Haskell 
+ Report and the Library Report contain useful examples and discussions of 
+ type classes; you are encouraged to read through them.
+  
+ Most of the standard type classes in Haskell are shown in Figure
+  7.1
+ , 
+ along with their key instances. Since each of these has various default mth-
+ ods defined, also shown is the minimal set of methods that must defined—
+ the rest are taken care of by the default methods. For example, for Ord, all 
+ we have to provide is a definition for (⩽).
+  
+ The Num class, which has been used implicitly throughout much of the 
+ text, is described in more detail below. With this explanation a few more of 
+ Haskell’s secrets will be revealed.",NA
+7.5 ,NA,NA
+Other Derived Instances,"In addition to Eq and Ord, instances of Enum, Bounded, Ix, Read, and Show 
+ (see Appendix
+  B
+ ) can also be generated by the deriving clause. 
+  
+ These 
+ type classes are widely used in Haskell programming, making the deriving 
+ mechanism very useful.
+  
+ The textual representation defined by a derived Show instance is consis-
+ tent with the appearance of constant Haskell expressions (i.e. values) of the 
+ type involved. For example, from:
+  
+  
+ data Color = Black 
+  
+  
+  
+  
+ | Blue 
+  
+  
+  
+  
+ | Green 
+  
+ 2
+ The essence of this idea is due to Willard Van Orman Quine [
+ Qui66
+ ], and its use in a computer 
+ program is discussed by Hofstadter [
+ Hof79
+ ]. It was adapted to Haskell by J´on Fairbairn.",NA
+7.6 ,NA,NA
+The type of play,"Ever since the play function was introduced in Chapter
+  2
+ , we have been 
+ using it to “play” the results of our Music values, i.e. to listen to their 
+ rendering through MIDI. However, it is just a function like any other 
+ function in Haskell, but we never discussed what its type is. In fact, here it is:
+  
+ play :: Performable a ⇒ Music a → IO () 
+  
+ The type of the result, IO (), is the type of a command in Haskell, i.e. 
+ something that “does I/O.” We will have more to say about this in a later 
+ chapter.
+  
+ But of more relevance to this chapter, note the constraint Performable a. You 
+ might guess that Performable is a type class, indeed it is the type class of 
+ “performable values.” If a type is a member of (i.e. instance of) Performable, 
+ then it can be “performed,” i.e. rendered as sound. The point is, some things 
+ we would not expect to be performable, for example a list or a character or a 
+ function. So the type signature for play can be read,“For any type T that is a 
+ member of the class Performable, play has type Music T → IO ().”
+  
+ Currently the types Pitch, (Pitch, Volume), and (Pitch, [NoteAttribute ]) are 
+ members of the class Performable. (The NoteAttribute data type will be 
+ introduced in Chapter
+  8
+ .) Indeed, we have used play on the first two of these 
+ types, i.e. on values of type Music Pitch and Music (Pitch, Volume) in previous 
+ examples, and you might have wondered how both could possibly be 
+ properly typed—hopefully now it is clear.",NA
+7.7 ,NA,NA
+Reasoning With Type Classes,"Type classes often imply a set of laws that govern the use of the operators in 
+ the class. For example, for the Eq class, we can expect the following laws to 
+ hold for every instance of the class:
+  
+  
+ x == x 
+  
+  
+ x == y⊇ y == x 
+  
+  
+ (x == y) ∧ (y == z) ⊇ x == z 
+  
+  
+ (x ̸= y)⊇ ¬ (x == y) 
+  
+ where ⊇ should be read “implies that.”
+ 3 
+  
+ 3
+ Mathematically, the first three of these laws are the same as those for an equivalence relation.",NA
+Chapter 8,NA,NA
+Interpretation and,NA,NA
+Performance,"{-# LANGUAGE FlexibleInstances, TypeSynonymInstances #-} 
+ module Euterpea.Music.Note.Performance where
+  
+ import Euterpea.Music.Note.Music 
+  
+ import Euterpea.Music.Note.MoreMusic
+  
+ Details: The first line above is a GHC pragma that, in this case, relaxes certain
+  
+  
+ constraints on instance declarations. Specifically, instances cannot normally be
+  
+  
+ declared for type synonyms—but the above pragma overrides that constraint.
+  
+ So far, our presentation of musical values in Haskell has been mostly 
+ structural, i.e. syntactic. Although we have given an interpretation of the 
+ duration of Music values (as manifested in dur, takeM , dropM , and so on), 
+ we have not given any deeper musical interpretation. What do these musical 
+ values actually mean, i.e. what is their semantics, or interpretation? The 
+ formal process of giving a semantic interpretation to syntactic constructs is 
+ very common in computer science, especially in programming language 
+  
+  
+ But it is obviously also common in music: the interpretation of theory.
+  
+ music is the very essence of musical performance. However, in conventional 
+ music this process is usually informal, appealing to aesthetic judgments and 
+ values. What we would like to do is make the process formal in Euterpea—
+ but still flexible, so that more than one interpretation is possible, just as in
+  
+ 134",NA
+8.1 ,NA,NA
+Abstract Performance,"To begin, we need to say exactly what an abstract performance is. Our 
+ approach is to consider a performance to be a time-ordered sequence of 
+ musical events, where each event captures the playing of one individual 
+ note. In Haskell:
+  
+ type Performance = [Event ]
+  
+ data Event = Event {eTime 
+  
+ eInst
+  
+ :: PTime, 
+  
+ :: InstrumentName,
+  
+ ePitch 
+  
+ :: AbsPitch,
+  
+ eDur 
+  
+ :: DurT,
+  
+ eVol 
+  
+ :: Volume,
+  
+ eParams :: [Double ]}
+  
+ deriving (Show, Eq, Ord)
+  
+ type PTime = Rational
+  
+ type DurT 
+  
+ = Rational
+  
+ type Volume = Integer
+  
+ Details: The data declaration for Event uses Haskell’s field label syntax, also
+  
+  
+ called record syntax, and is equivalent to:
+  
+  
+ data Event = Event PTime InstrumentName
+  
+  
+ AbsPitch DurT Volume [Double ]
+  
+  
+ deriving (Show, Eq, Ord)
+  
+  
+ except that the former also defines “field labels” eTime, eInst, ePitch, eDur,
+  
+  
+ eVol, and eParams, which can be used to create, update, and select from Event
+  
+  
+ values.",NA
+8.2 ,NA,NA
+Players,"Recall from Section
+  2.2
+  that the Phrase constructor in the Control data type 
+ takes a list of PhraseAttributes as an argument:
+  
+ data Control = ...
+  
+ | Phrase [PhraseAttribute ] 
+ ...
+  
+ -- phrase attributes
+  
+ It is now time to unveil the definition of PhraseAttribute! Shown fully in 
+ Figure
+  8.4
+ , these attributes give us great flexibility in the interpretation pro-
+ cess, because they can be interpreted by different players in different ways. 
+ For example, how should “legato” be interpreted in a performance? 
+  
+ Or“
+ diminuendo?” Different human players interpret things in different ways, of 
+ course, but even more fundamental is the fact that a pianist, for exam-
+  
+ 2
+ In reality this piece is meant to capture extemporaneously the sound of the environ-ment 
+ during that period of “silence.” [
+ Cag86
+ ]",NA
+8.3 ,NA,NA
+Putting it all Together,"The play function in Euterpea ueses a default player map and a default
+  
+ context that are defined as follows:
+  
+ defPMap 
+  
+ :: PMap Note1
+  
+ defPMap ""Fancy"" 
+  
+ = fancyPlayer
+  
+ defPMap ""Default"" = defPlayer
+  
+ defPMap n 
+  
+ = defPlayer {pName = n }
+  
+ defCon :: Context Note1
+  
+ defCon = Context {cTime 
+  
+ = 0,
+  
+ cPlayer = fancyPlayer,
+  
+ cInst 
+  
+ = AcousticGrandPiano,
+  
+ cDur 
+  
+ = metro 120 qn,
+  
+ cPch 
+  
+ = 0,
+  
+ cKey 
+  
+ = (C, Major),
+  
+ cVol 
+  
+ = 127}
+  
+ Note that if anything other than a ""Fancy"" or ""Default"" player is specified
+  
+ in the Music value, such as player ""Strange"" m, then the default player
+  
+ defPlayer is used, and given the name ""Strange"".
+  
+ If instead we wish to use our own player, say newPlayer defined in Section
+  
+ 8.2.2
+ , then a new player map can be defined, such as:
+  
+ myPMap 
+  
+ :: PlayerName → Player Note1
+  
+ myPMap ""NewPlayer"" = newPlayer
+  
+ myPMap p 
+  
+ = defPMap p
+  
+ Similarly, different versions of the context can be defined based on a
+  
+ user’s needs.
+  
+ We could, then, use these versions of player maps and contexts to invoke
+  
+ the perform function to generate an abstract Performance. Of course, we
+  
+ ultimately want to hear our music, not just see an abstract Performance
+  
+ displayed on our computer screen. Recall that play’s type signature is:
+  
+ play :: Performable a ⇒ Music a → IO ()
+  
+ To allow using different player maps and contexts, Euterpea also has a ver-
+  
+ sion of play called playA whose type signature is:
+  
+ playA :: Performable a ⇒
+  
+ PMap Note1 → Context Note1 → Music a → IO ()
+  
+ For example, to play a Music value m using myPMap defined above and the",NA
+Chapter 9,NA,NA
+Self-Similar Music,"module Euterpea.Examples.SelfSimilar where 
+  
+ import Euterpea
+  
+ In this chapter we will explore the notion of self-similar music—i.e. mu-
+ sical structures that have patterns that repeat themselves recursively in in-
+ teresting ways. There are many approaches to generating self-similar struc-
+ tures, the most well-known being fractals, which have been used to generate 
+ not just music, but also graphical images. We will delay a general treatment 
+ of fractals, however, and will instead focus on more specialized notions of 
+ self-similarity, notions that we conceive of musically, and then manifest as 
+ Haskell programs.",NA
+9.1 ,NA,NA
+Self-Similar Melody,"Here is the first notion of self-similar music that we will consider: Begin with 
+ a very simple melody of n notes. Now duplicate this melody n times, playing 
+ each in succession, but first perform the following transformations: 
+ transpose the ith melody by an amount proportional to the pitch of the ith 
+ note in the original melody, and scale its tempo by a factor proportional to 
+ the duration of the ith note. For example, Figure
+  9.1
+  shows the result of 
+ applying this process once to a four-note melody (the first four notes form 
+ the original melody). Now imagine that this process is repeated infinitely 
+ often. For a melody whose notes are all shorter than a whole note, it yields an 
+ infinitely dense melody of infinitesimally shorter notes. To make the result 
+ playable, however, we will stop the process at some pre-determined
+  
+ 153",NA
+9.2 ,NA,NA
+Self-Similar Harmony,"In the last section we used a melody as a seed, and created longer melodies 
+ from it. Another idea is to stack the melodies vertically. Specifically, suppose 
+ we redefine fringe in such a way that it does not concatenate the sub-
+ clusters together:
+  
+ fringe
+ ′
+ fringe
+ ′
+ 0 (Cluster note cls) = [[note ]] :: Int → Cluster → [[SNote ]]
+  
+ fringe
+ ′
+ n (Cluster note cls) = map (fringe (n − 1)) cls 
+  
+ Note that this strategy is only applied to the top level—below that we use 
+ fringe. Thus the type of the result is [[SNote ]], i.e. a list of lists of notes.
+  
+ We can convert the individual lists into melodies, and play the melodies all 
+ together, like this:
+  
+  
+ simToMusic
+ ′
+ :: [[SNote ]] → Music Pitch 
+  
+  
+ simToMusic
+ ′
+ = chord ◦ map (line ◦ map mkNote) 
+  
+ Finally, we can define a function akin to ss defined earlier:
+  
+ ss
+ ′
+ pat n tr te = 
+  
+  
+ transpose tr $ tempo te $ simToMusic
+ ′
+ $ fringe
+ ′
+ n $ selfSim pat",NA
+9.3 ,NA,NA
+Other Self-Similar Structures,"The reader will observe that our notion of “self-similar harmony” does not 
+ involve changing the structure of the Cluster data type, nor the algorithm for 
+ computing the sub-structures (as captured in selfSim). 
+  
+ All that we 
+ do is interpret the result differently. 
+  
+ This is a common characteristic of 
+ algorithmic music composition—the same mathematical or computational 
+ structure is interpreted in different ways to yield musically different results.
+  
+ For example, instead of the above strategy for playing melodies in paral-
+ lel, we could play entire levels of the Cluster in parallel, where the number 
+ of levels that we choose is given as a parameter. If alligned properly in time 
+ there will be a harmonic relationship between the levels, which could yield 
+ pleasing results.
+  
+ The Cluster data type is conceptually useful in that is represents the infinite 
+ solution space of self-simlar melodies. And it is computationally useful in that 
+ it is computed to a desired depth only once, and thus can be inspected and 
+ reused without recomputing each level of the tree. This idea might be useful 
+ in the application mentioned above, namely combining two or more levels of 
+ the result in interesting ways.
+  
+ However, the Cluster data type is strictly unnecessary, in that, for ex-
+ ample, if we are interested in computing a specific level, we could define a 
+ function that recursed to that level and gave the result directly, without 
+ saving the intermediate levels.",NA
+Chapter 10,NA,NA
+Proof by Induction,"In this chapter we will study a powerful proof technique based on 
+ mathemat-ical induction. With it we will be able to prove complex and 
+ important prop-erties of programs that cannot be accomplished with proof-
+ by-calculation alone. The inductive proof method is one of the most 
+ powerful and common methods for proving program properties.",NA
+10.1 ,NA,NA
+Induction and Recursion,"Induction is very closely related to recursion. In fact, in certain contexts the 
+ terms are used interchangeably; in others, one is preferred over the other 
+ primarily for historical reasons. Think of them as being duals of one 
+ another: induction is used to describe the process of starting with 
+ something small and simple, and building up from there, whereas recursion 
+ describes the process of starting with something large and complex, and 
+ working backward to the simplest case.
+  
+ For example, although we have previously used the phrase recursive data 
+ type, in fact data types are often described inductively, such as a list:
+  
+ A list is either empty, or it is a pair consisting of a value and 
+ another list.
+  
+ On the other hand, we usually describe functions that manipulate lists, such 
+ as map and foldr, as being recursive. This is because when you apply a 
+ function such as map, you apply it initially to the whole list, and work 
+ backwards toward [ ].
+  
+ 161",NA
+10.2 ,NA,NA
+Examples of List Induction,"Ok, enough talk, let’s see this idea in action. 
+ following property about foldr:
+  
+ (∀xs) foldr (:) [ ] xs =⇒ xs
+  
+ Recall in Section
+  3.1
+  the",NA
+10.3 ,NA,NA
+Proving Function Equivalences,"At this point it is a simple matter to return to Chapter
+  3
+  and supply the proofs 
+ that functions defined using map and fold are equivalent to the
+  
+ recursively defined versions. 
+ toAbsPitches:
+  
+ In particular, recall these two definitions of
+  
+ toAbsPitches
+ 1
+  [ ] 
+  
+ = [ ] 
+  
+ toAbsPitches
+ 1
+  (p : ps) = absPitch p : toAbsPitches
+ 1
+  ps
+  
+ toAbsPitches
+ 2
+  = map absPitch
+  
+ We want to prove that toAbsPitches
+ 1
+  = toAbsPitches
+ 2
+ . To do so, we use the 
+ extensionality principle (briefly discussed in Section
+  3.6.1
+ ), which says that 
+ two functions are equal if, when applied to the same value, they always yield 
+ the same result. We can change the specification slightly to reflect this. For 
+ any finite list ps, we want to prove:
+  
+ toAbsPitches
+ 1
+  ps = toAbsPitches
+ 2
+  ps
+  
+ We proceed by induction, starting with the base case ps = [ ]:
+  
+ toAbsPitches
+ 1
+  [ ]
+  
+  
+ ⇒ [ ]
+  
+  
+ ⇒ map absPitch [ ]
+  
+  
+ ⇒ toAbsPitches
+ 2
+  [ ] 
+  
+ Next we assume that toAbsPitches
+ 1
+  ps = toAbsPitches
+ 2
+  ps holds, and try to 
+ prove that toAbsPitches
+ 1
+  (p : ps) = toAbsPitches
+ 2
+  (p : ps):
+  
+ toAbsPitches
+ 1
+  (p : ps)
+  
+ ⇒ absPitch p : toAbsPitches
+ 1
+  ps",NA
+10.4 ,NA,NA
+Useful Properties on Lists,"There are many useful properties of functions on lists that require inductive
+  
+ proofs. Figures
+  10.1
+  and
+  10.2
+  list a number of them involving functions used
+  
+ in this text, but their proofs are left as exercises (except for one; see below).
+  
+ You may assume that these properties are true, and use them freely in
+  
+ proving other properties of your programs. In fact, some of these properties
+  
+ can be used to simplify the proof that reverse
+ 1
+  and reverse
+ 2
+  are the same;
+  
+ see if you can find them!
+ 1
+  
+ (Note, by the way, that in the first rule for map in Figure
+  10.1
+ , the type
+  
+ of λx → x on the left-hand side is a → b, whereas on the right-hand side it is [a 
+ ] → [b]; i.e. these are really two different functions.)
+  
+ 10.4.1 
+  
+ [Advanced] Function Strictness
+  
+ Note that the last rule for map in Figure
+  10.1
+  is only valid for strict functions.
+  
+ A function f is said to be strict if f ⊥ = ⊥. Recall from Section
+  1.4
+  that⊥ is the 
+ value associated with a non-terminating computation. So another way to 
+ think about a strict function is that it is one that, when applied to
+  
+ a non-terminating computation, results in a non-terminating computation.
+  
+ For example, the successor function (+1) is strict, because (+1) ⊥ = ⊥ + 1 = 
+ ⊥. In other words, if you apply (+1) to a non-terminating computation, you 
+ end up with a non-terminating computation.
+  
+ Not all functions in Haskell are strict, and we have to be careful to say
+  
+ on which argument a function is strict. For example, (+) is strict on both
+  
+ of its arguments, which is why the section (+1) is also strict. On the other
+  
+ hand, the constant function:
+  
+ const x y = x
+  
+ is strict on its first argument (why?), but not its second, because const x ⊥= x, 
+ for any x.
+  
+ 1
+ More thorough discussions of these properties and their proofs may be found in [
+ BW88
+ ,
+  
+ Bir98
+ ].",NA
+10.5 ,NA,NA
+Induction on the Music Data Type,"Proof by induction is not limited to lists. In particular, we can use it to
+  
+ reason about Music values.
+  
+ For example, recall this property intuitively conjectured in Section
+  6.14
+ :
+  
+ mFold Prim (:+:) (:=:) Modify m = m
+  
+ To prove this, we again use the extensionality principle, and then proceed
+  
+ by induction. But what is the base case? Recall that the Music data type
+  
+ is defined as:
+  
+ data Music a =
+  
+ Prim (Primitive a)
+  
+ | Music a :+: Music a 
+  
+ | Music a :=: Music a 
+  
+ | Modify Control (Music a)
+  
+ The only constructor that does not take a Music value as an argument is
+  
+ Prim, so that in fact is the only base case.
+  
+ So, starting with this base case:
+  
+ mFold Prim (:+:) (:=:) Modify (Prim p)
+  
+ ⇒ Prim p
+  
+ ⇒ id (Prim p)",NA
+10.6 ,NA,NA
+[Advanced] Induction on Other Data Types,"Proof by induction can be used to reason about many data types. 
+  
+ For 
+ example, we can use it to reason about natural numbers.
+ 2 
+  
+ Suppose we 
+ define an exponentiation function as follows:
+  
+ (ˆ) :: Integer → Integer → Integer 
+  
+ xˆ0 = 1 
+  
+ xˆn = x ∗ xˆ(n − 1)
+  
+ Details: (∗) is defined in the Standard Prelude to have precedence level 7, and 
+ recall that if no infix declaration is given for an operator it defaults to 
+ precedence
+  
+  
+ level 9, which means that (ˆ) has precedence level 9, which is higher than that
+  
+  
+ for (∗). Therefore no parentheses are needed to disambiguate the last line in the 
+ definition above, which corresponds nicely to mathematical convention.
+  
+ Now suppose that we want to prove that:
+  
+ (∀x, n ⩾ 0, m ⩾ 0) xˆ(n + m) = xˆn ∗ xˆm
+  
+ We proceed by induction on n, beginning with n = 0:
+  
+  
+ xˆ(0 + m)
+  
+  
+  
+ ⇒ xˆm 
+  
+ 2
+ Indeed, one could argue that a proof by induction over finite lists is really an induction over 
+ natural numbers, since it is an induction over the length of the list, which is a natural number.",NA
+Chapter 11,NA,NA
+An Algebra of Music,"In this chapter we will explore a number of properties of the Music data 
+ type and functions defined on it, properties that collectively form an algebra 
+ of music [
+ Hud04
+ ]. With this algebra we can reason about, transform, and 
+ optimize computer music programs in a meaning preserving way.",NA
+11.1 ,NA,NA
+Musical Equivalance,"Suppose we have two values m
+ 1
+  ::Music Pitch and m
+ 2
+  ::Music Pitch, and we 
+ want to know if they are equal. If we treat them simply as Haskell values, we 
+ could easily write a function that compares their structures recursively to 
+ see if they are the same at every level, all the way down to the Primitive 
+ rests and notes. This is in fact what the Haskell function (==) does. For 
+ example, if:
+  
+ m
+ 1
+  = c 4 en :+: d 4 qn 
+  
+ m
+ 2
+  = revM (revM m
+ 1
+ )
+  
+ Then m
+ 1
+  == m
+ 2
+  is True.
+  
+ Unfortunately, as we saw in the last chapter, if we reverse a parallel 
+ composition, things do not work out as well. For example:
+  
+  
+ revM (revM (c 4 en :=: d 4 qn))
+  
+  
+  
+ ⇒ (rest 0 :+: c 4 en :+: rest en) :=: d 4 qn 
+  
+ In addition, as we discussed briefly in Chapter
+  1
+ , there are musical prop-
+ erties for which standard Haskell equivalence is insufficient to capture. For 
+ example, we would expect the following two musical values to sound the
+  
+ 182",NA
+11.2 ,NA,NA
+Some Simple Axioms,"Let’s look at a few simple axioms, and see how we can prove each of them 
+ using the proof techniques that we have developed so far.
+  
+ (Note: In the remainder of this chapter we will use the functions tempo r and 
+ trans p to represent their unfolded versions, Modify (Tempo r) and
+  
+ 2
+ A more striking example of this point is John Cage’s composition 4’33”, which consists 
+ basically of four minutes and thirty-three seconds of silence [].",NA
+11.3 ,NA,NA
+The Fundamental Axiom Set,"There are many other useful axioms, but we do not have room to include all
+  
+ of their proofs here. They are listed below, which include the axioms from
+  
+ the previous section as special cases, and the proofs are left as exercises.
+  
+ Axiom 11.3.1 Tempo is multiplicative and Transpose is additive. That is,
+  
+ for any r
+ 1
+ , r
+ 2
+ , p
+ 1
+ , p
+ 2
+ , and m:
+  
+ tempo r
+ 1
+  (tempo r
+ 2
+  m) ≡ tempo (r
+ 1
+  ∗ r
+ 2
+ ) m
+  
+ trans p
+ 1
+  (trans p
+ 2
+  m)
+  
+ ≡ trans (p
+ 1
+  + p
+ 2
+ ) m
+  
+ Axiom 11.3.2 Function composition is commutative with respect to both
+  
+ tempo scaling and transposition. That is, for any r
+ 1
+ , r
+ 2
+ , p
+ 1
+  and p
+ 2
+ :",NA
+11.4 ,NA,NA
+An Algebraic Semantics,"Discuss formal semantics. 
+  
+ Denotational, operational (relate to “proof by 
+ calculation”), and algebraic.
+  
+ Soundness and Completeness.
+  
+ [
+ Hud04
+ ]",NA
+11.5 ,NA,NA
+Other Musical Properties,"Aside from the axioms discussed so far, there are many other properties of 
+ Music values and its various operators, just as we saw in Chapter
+  10
+  for lists. 
+ For example, this property of map taken from Figure
+  10.1
+ :
+  
+ map (f ◦ g) = map f ◦ map g 
+  
+ suggests and analogous property for mMap:
+  
+ map (f ◦ g) = map f ◦ map g 
+  
+ Not all of the properties in Figures
+  10.1
+  and
+  10.2
+  have analogous musical 
+ renditions, and there are also others that are special only to Music values. 
+ Figure
+  11.1
+  summarizes the most important of these properties, including the 
+ one above. 
+  
+ Note that some of the properties are expressed as strict 
+ equality—that is, the left-hand and right-hand sides are equivalent as Haskell 
+ values. But others are expressed using musical equivalence—that is, using 
+ (≡). We leave the proofs of all these properties as an exercise.
+  
+ Exercise 11.4 Prove that timesM a m :+: timesM b m ≡ timesM (a + b) m.
+  
+ Exercise 11.5 Prove as many of the axioms from Figure
+  11.1
+  as you can.",NA
+Chapter 12,NA,NA
+Musical L-Systems and,NA,NA
+Generative Grammars,"module Euterpea.Examples.LSystems where
+  
+ import Euterpea 
+  
+ import Data.List hiding (transpose) 
+  
+ import System.Random",NA
+12.1 ,NA,NA
+Generative Grammars,"A grammar describes a formal language. One can either design a recognizer 
+ (or parser) for that language, or design a generator that generates sentences 
+ in that language. We are interested in using grammars to generate music, 
+ and thus we are only interested in generative grammars.
+  
+ A generative grammar is a four-tuple (N, T, n, P), where:
+  
+ • N is the set of non-terminal symbols.
+  
+ • T is the set of terminal symbols.
+  
+ • n is the initial symbol.
+  
+ • P is a set of production rules, where each production rule is a pair (X, Y 
+ ), often written X → Y . X and Y are sentences (or sentential forms) 
+ formed over the alphabet N ∪ T, and X contains at least one non-
+ terminal.
+  
+ 191",NA
+12.2 ,NA,NA
+An L-System Grammar for Music,"The previous section gave a generative framework for a generic grammar. 
+ For a musical L-system we will define a specific grammar, whose sentences 
+ are defined as follows. A musical L-system sentence is either:
+  
+ • A non-terminal symbol N a.
+  
+ • A sequential composition s
+ 1
+  :+ s
+ 2
+ .
+  
+ • A functional composition s
+ 1
+  :. s
+ 2
+ .
+  
+ • The symbol Id, which will eventually be interpeted as the identity 
+  
+ function.
+  
+ We capture this in the LSys data type:
+  
+ data LSys a = N a 
+  
+   
+ | LSys a :+ LSys a 
+  
+   
+ | LSys a :. LSys a 
+  
+   
+ | Id 
+  
+  
+ deriving (Eq, Ord, Show)
+  
+ The idea here is that sentences generated from this grammar are relative to 
+ a starting note, and thus the above constructions will be interpreted as 
+ functions that take that starting note as an argument. This will all become 
+ clear shortly, but first we need to define a replacement function for this 
+ grammar.",NA
+Chapter 13,NA,NA
+"Random Numbers,",NA,NA
+"Probability Distributions,",NA,NA
+and Markov Chains,"module Euterpea.Examples.RandomMusic where
+  
+ import Euterpea
+  
+ import System.Random 
+  
+ import System.Random.Distributions 
+  
+ import qualified Data.MarkovChain as M
+  
+ The use of randomness in composition can be justified by the somewhat 
+ random, exploratory nature of the creative mind, and indeed it has been 
+ used in computer music composition for many years. In this chapter we will 
+ explore several sources of random numbers and how to use them in 
+ generating simple melodies. With this foundation you will hopefully be able 
+ to use randomness in more sophisticated ways in your compositions. Music 
+ relying at least to some degree on randomness is said to be stochastic, or 
+ aleatoric.",NA
+13.1 ,NA,NA
+Random Numbers,"This section describes the basic functionality of Haskell’s System.Random 
+ module, which is a library for random numbers. 
+  
+ The library presents a 
+ fairly abstract interface that is structured in two layers of type classes: one
+  
+ 201",NA
+13.2,NA,NA
+Probability Distributions,"The random number generators described in the previous section are as-
+ sumed to be uniform, meaning that the probability of generating a number 
+ within a given interval is the same everywhere in the range of the generator. 
+ For example, in the case of Float (that purportedly represents continuous 
+ real numbers), suppose we are generating numbers in the range 0 to 10. 
+ Then we would expect the probability of a number appearing in the range 
+ 2.3-2.4 to be the same as the probability of a number appearing in the range 
+ 7.6-7.7, namely 0.01, or 1% (i.e. 0.1/10). In the case of Int (a discrete or 
+ integral number type), we would expect the probability of generating a 5 to 
+ be the same as generating an 8. In both cases, we say that we have a uniform 
+ distribution.
+  
+ But we don’t always want a uniform distribution. In generating music, in 
+ fact, it’s often the case that we want some kind of a non-uniform 
+ distribution. Mathematically, the best way to describe a distribution is by 
+ plotting how the probability changes over the range of values that it 
+ produces. In the case of continuous numbers, this is called the probability 
+ density function, which has the property that its integral over the full range 
+ of values is equal to 1.
+  
+ The System.Random.Distributions library provides a number of different 
+ probability distributions, which are described below. Figure
+  13.1
+  shows the 
+ probability density functions for each of othem.
+  
+ Here is a list and brief description of each random number generator:",NA
+13.3 ,NA,NA
+Markov Chains,"Each number in the random number sequences that we have described thus 
+ far is independent of any previous values in the sequence. This is like flip-
+ ping a coin—each flip has a 50% chance of being heads or tails, i.e. it is 
+ independent of any previous flips, even if the last ten flips were all heads.
+  
+ Sometimes, however, we would like the probability of a new choice to 
+ depend upon some number of previous choices. This is called a conditional 
+ probability. In a discrete system, if we look only at the previous value to 
+ help determine the next value, then these conditional probabilities can be 
+ con-veniently represented in a matrix. For example, if we are choosing 
+ between the pitches C, D, E, and F, then Table
+  13.1
+  might represent the 
+ conditional probabilities of each possible outcome. The previous pitch is 
+ found in the left column—thus note that the sum of each row is 1.0. So, for 
+ example, the probability of choosing a D given that the previous pitch was 
+ an E is 0.6, and the probability of an F occurring twice in succession is 0.2. 
+ The",NA
+Chapter 14,NA,NA
+From Performance to Midi,"module Euterpea.IO.MIDI .ToMidi (toMidi, UserPatchMap, defST, 
+ defUpm, testMidi, testMidiA, 
+  
+ test, testA, writeMidi, writeMidiA, 
+  
+ play, playM , playA, 
+  
+ makeMidi, mToMF, gmUpm, gmTest) where
+  
+ import Euterpea.Music.Note.Music 
+  
+ import Euterpea.Music.Note.MoreMusic 
+  
+ import Euterpea.Music.Note.Performance 
+  
+ import Euterpea.IO.MIDI .GeneralMidi 
+  
+ import Euterpea.IO.MIDI .MidiIO 
+  
+ import Euterpea.IO.MIDI .ExportMidiFile 
+  
+ import Sound.PortMidi 
+  
+ import Data.List (partition) 
+  
+ import Data.Char (toLower, toUpper) 
+  
+ import Codec.Midi
+  
+ writeMidi :: (Performable a) =¿ FilePath -¿ Music a -¿ IO () writeMidi fn = 
+ exportMidiFile fn . testMidi
+  
+ writeMidiA :: (Performable a) =¿ FilePath -¿ PMap Note1 -¿ Context 
+ Note1 -¿ Music a -¿ IO () writeMidiA fn pm con m = exportMidiFile fn 
+ (testMidiA pm con m)
+  
+ Midi is shorthand for “Musical Instrument Digital Interface,” and is a 
+ standard protocol for controlling electronic musical instruments [
+ Ass13a
+ , 
+ Ass13b
+ ]. This chapter describes how to convert an abstract performance as 
+ defined in Chapter
+  8
+  into a standard Midi file that can be played on any
+  
+ 214",NA
+14.1 ,NA,NA
+An Introduction to Midi,"Midi is a standard adopted by most, if not all, manufacturers of electronic 
+ instruments and personal computers. At its core is a protocol for commu-
+ nicating musical events (note on, note off, etc.) and so-called meta events 
+ (select synthesizer patch, change tempo, etc.). Beyond the logical protocol, 
+ the Midi standard also specifies electrical signal characteristics and cabling 
+ details, as well as a standard Midi file which any Midi-compatible software 
+ package should be able to recognize.
+  
+ Most “sound-blaster”-like sound cards on conventional PC’s know about 
+ Midi. However, the sound generated by such modules, and the sound pro-
+ duced from the typically-scrawny speakers on most PC’s, is often quite poor. 
+ It is best to use an outboard keyboard or tone generator, which are attached 
+ to a computer via a Midi interface and cables. It is possible to connect sev-
+ eral Midi instruments to the same computer, with each assigned to a 
+ different channel. Modern keyboards and tone generators are quite good. 
+ Not only is the sound excellent (when played on a good stereo system), but 
+ they are also multi-timbral, which means they are able to generate many 
+ different sounds simultaneously, as well as polyphonic, meaning that 
+ simultaneous instantiations of the same sound are possible.
+  
+ 14.1.1 
+  
+ General Midi
+  
+ Over the years musicians and manufacturers decided that they also wanted 
+ a standard way to refer to commonly used instrument sounds, such as 
+ “acous-tic grand piano,” “electric piano,” “violin,” and “acoustic bass,” as well 
+ as more exotic sounds such as “chorus aahs,” “voice oohs,” “bird tweet,” 
+ and“helicopter.” A simple standard known as General Midi was developed to 
+ fill this role. The General Midi standard establishes standard names for 128 
+ common instrument sounds (also called “patches”) and assigns an integer 
+ called the program number (also called “program change number”), to each 
+ of them. The instrument names and their program numbers are grouped 
+ into “familes” of instrument sounds, as shown in Table
+  14.1
+ .
+  
+ Now recall that in Chapter
+  2
+  we defined a set of instruments via the 
+ InstrumentName data type (see Figure
+  2.1
+ ). All of the names chosen for that 
+ data type come directly from the General Midi standard, except for two,",NA
+14.2 ,NA,NA
+Converting a Performance into Midi,"Our goal is to convert a value of type Performance into a value of type Midi. 
+ We can summarize the situation pictorially as follows ...",NA
+14.3 ,NA,NA
+Putting It All Together,NA,NA
+Chapter 15,NA,NA
+Basic Input/Output,"So far the only input/output (IO) that we have seen in Euterpea is the 
+ use of the play function to generate the MIDI output corresponding to a 
+ Music value. But we have said very little about the play function itself.
+  
+ What is its type?
+  
+ How does it work?
+  
+ How does one do IO in a purely
+  
+ functional language such as Haskell? Our goal in this chapter is to answer 
+ these questions. Then in Chapter
+  17
+  we will describe an elegant way to do 
+ IO involving a “musical user interface,” or MUI.",NA
+15.1 ,NA,NA
+IO in Haskell,"The Haskell Report defines the result of a program to be the value of the 
+ variable main in the module Main. This is a mere technicality, however, only 
+ having relevance when you compile a program as a stand-alone executable 
+ (see the GHC documentation for a discussion of how to do that).
+  
+ The way most people run Haskell programs, especially during program 
+ development, is through the GHCi command prompt. As you know, the GHCi 
+ implementation of Haskell allows you to type whatever expression you wish 
+ to the command prompt, and it will evaluate it for you.
+  
+ In both cases, the Haskell system “executes a program” by evaluating an 
+ expression, which (for a well-behaved program) eventually yields a value. 
+ The system must then display that value on your computer screen in some 
+ way that makes sense to you. GHC does this by insisting that the type of the 
+ value be an instance of the Show class—in which case it “shows” the result
+  
+ 224",NA
+15.2 ,NA,NA
+do Syntax,"To make these ideas clearer, let’s consider a few examples. One useful IO 
+ command is putStr, which prints a string argument to the standard output 
+ area, and has type String → IO (). The () simply indicates that there is no 
+ useful result returned from this action; its sole purpose is to print its 
+ argument to the standard output area. So the program:
+  
+ module Main where 
+  
+ main = putStr ""Hello World\n""
+  
+ is the canonical “Hello World” program that is often the first program that 
+ people write in a new language.
+  
+ Suppose now that we want to perform two actions, such as first writing 
+ to a file named ""testFile.txt"", then printing to the standard output area. 
+ Haskell has a special keyword, do, to denote the beginning of a sequence of 
+ commands such as this, and so we can write:
+  
+ do writeFile ""testFile.txt"" ""Hello File System"" 
+  
+ putStr ""Hello World\n""
+  
+ where the file-writing function writeFile has type:
+  
+ writeFile 
+  
+ :: FilePath → String → IO ()
+  
+ type FilePath = String
+  
+  
+ Details: A do expression allows one to sequence an arbitrary number of com-
+  
+  
+ mands, each of type IO (), using layout to distinguish them (just as in a let or
+  
+  
+ where expression). When used in this way, the result of a do expression also has
+  
+  
+ type IO ().
+  
+ So far we have only used actions having type IO (); i.e. output actions. 
+ But what about input? As above, we will consider input from both the user 
+ and the file system.
+  
+ To receive a line of input from the user (which will be typed in the 
+ standard input area of the computer screen, usually the same as the 
+ standard output area) we can use the function:
+  
+ getLine :: IO String
+  
+ Suppose, for example, that we wish to read a line of input using this func-tion, 
+ and then write that line (a string) to a file. To do this we write the",NA
+15.3,NA,NA
+Actions are Just Values,"There are many other commands available for file, system, and user IO,
+  
+ some in the Standard Prelude, and some in various libraries (such as IO,
+  
+ Directory, System, and Time). 
+  
+ We will not discuss many of these here,
+  
+ other than the MIDI IO commands described in Section
+  15.4
+ .
+  
+ Before that, however, we wish to emphasize that, despite the special do
+  
+ syntax, Haskell’s IO commands are no different in status from any other
+  
+ Haskell function or value. 
+ actions, such as:
+  
+ For example, it is possible to create a list of
+  
+ actionList = [putStr ""Hello World\n"", 
+  
+ writeFile ""testFile.txt"" ""Hello File System"", putStr 
+ ""File successfully written.""]",NA
+15.4 ,NA,NA
+Reading and Writing MIDI Files,"[TODO: Explain MIDI-file IO functions defined in Codec.Midi, as well as the 
+ Euterpea functions for writing MIDI files.]",NA
+Chapter 16,NA,NA
+Higher-Order Types and,NA,NA
+Monads,"All of the types that we have considered thus far in this text have been first 
+ order. For example, the type constructor Music has so far always been paired 
+ with an argument, as in Music Pitch. 
+  
+ This is because Music by 
+ itself is a type constructor: something that takes a type as an argument and 
+ returns a type as a result. There are no values in Haskell that have this type, 
+ but such “higher-order types” can be used in type class declarations in useful 
+ ways, as we shall see in this chapter.",NA
+16.1 ,NA,NA
+The Functor Class,"To begin, consider the Functor class described previously in Section
+  7.4.3
+ , 
+ and defined in the Standard Prelude:
+ 1
+  
+  
+ class Functor f where 
+  
+  
+  
+  
+ fmap :: (a → b) → f a → f b 
+  
+ 1
+ The term functor (as well as the term monad to be introduced shortly) comes from a branch 
+ of abstract mathematics known as category theory [
+ Pie91
+ ]. This reflects the strong 
+ mathematical principles that underly Haskell, but otherwise does not concern us here; i.e., you 
+ do not need to know anything about category theory to understand Haskell’s functors and 
+ monads.
+  
+ 230",NA
+16.2 ,NA,NA
+The Monad Class,"There are several classes in Haskell that are related to the notion of a 
+ monad, which can be viewed as a generalization of the principles that 
+ underly IO. Because of this, although the names of the classes and methods 
+ may seem unusual, these “monadic” operations are rather intuitive and 
+ useful for gen-eral programming.
+ 2
+  
+ There are three classes associated with monads: Functor (which we 
+ have discussed already), Monad (also defined in the Standard Prelude), and 
+ MonadPlus (defined in Control.Monad).
+  
+ The Monad class defines four basic operators: (>>=) (often 
+ pronounced“bind”), (>>) (often pronounced “sequence”), return, and fail:
+  
+ class Monad m where
+  
+ (>>=) :: m a → (a → m b) → m b
+  
+ (>>) :: m a → m b → m b
+  
+ return :: a → m a
+  
+ fail :: String → m a
+  
+ m >> k = m >>= \ → k
+  
+ fail s 
+  
+ = error s
+  
+  
+ Details: The two infix operators above are typeset nicely here; using a text editor,
+  
+  
+ you will have to type >>= and >> instead.
+  
+ The default methods for (>>) and fail define behaviors that are almost 
+ always just what is needed. Therefore most instances of Monad need only 
+ define (>>=) and return.
+  
+ Before studying examples of particular instances of Monad, we will first 
+ reveal another secret in Haskell, namely that the do syntax is actually short-
+ hand for use of the monadic operators! The rules for this are a bit more 
+ involved than those for other syntax we have seen, but are still straightfor-
+ ward. The first rule is this:
+  
+  
+ do e ⇒ e 
+  
+ 2
+ Moggi [
+ Mog89
+ ] was one of the first to point out the value of monads in describing the 
+ semantics of programming languages, and Wadler first popularized their use in functional 
+ programming [
+ Wad92
+ ,
+  PJW93
+ ].",NA
+16.3 ,NA,NA
+The MonadPlus Class,"The class MonadPlus, defined in the Standard Library Control.Monad, is used 
+ for monads that have a zero element and a plus operator:
+  
+ class Monad m ⇒ MonadPlus m where 
+  
+  
+ mzero :: m a 
+  
+  
+  
+ mplus :: m a → m a → m a 
+  
+ The zero element should obey the following laws:",NA
+16.4 ,NA,NA
+State Monads,"Monads are commonly used to simulate stateful, or imperative, computa-
+ tions, in which the details of updating and passing around the state are
+  
+ hidden within the mechanics of the monad. 
+ monad has a type of the form:
+  
+ Generally speaking, a state
+  
+ data SM s a = SM (s → (s, a)) 
+  
+ where s is the state type, and a is the value type. The instance of this type in 
+ Monad is given by:
+  
+ instance Monad (SM s) where 
+  
+  
+ return a
+  
+ SM sm
+ 0
+  >>= fsm
+ 1 
+ = SM $ λs
+ 0
+  → (s
+ 0
+ , a)
+  
+ = SM $ λs
+ 0
+  →let (s
+ 1
+ , a
+ 1
+ ) 
+  
+ = 
+ sm
+ 0
+  s
+ 0 
+  
+   
+ SM sm
+ 1
+  = fsm
+ 1
+  a
+ 1 
+  
+   
+ (s
+ 2
+ , a
+ 2
+ ) 
+  
+ = sm
+ 1
+  s
+ 1 
+  
+  
+ in (s
+ 2
+ , a
+ 2
+ )
+  
+ The last equation in the let expression could obviously be eliminated, but it 
+ is written this way to stress the symmetry in the treatment of the two 
+ commands.",NA
+16.5 ,NA,NA
+Type Class Type Errors,"As you know, Haskell’s type system detects ill-typed expressions. But what 
+ about errors due to malformed types? The value (+) 1 2 3 results in a type 
+ error since (+) takes only two arguments. Similarly, the type Tree Int Int 
+ should result in some sort of an error since the Tree type constructor takes 
+ only a single argument. So, how does Haskell detect malformed types? The 
+ answer is a second type system which ensures the correctness of types! That 
+ is, each type is assigned its own type—which is called its kind—and these 
+ kinds are used to ensure that the type is used correctly.
+  
+ There are only two kinds that we need to consider:
+  
+ • The symbol ∗ represents the kind of type associated with concrete data 
+ objects. That is, if the value v has type t, then the kind of t must be∗.
+  
+ • If κ
+ 1
+  and κ
+ 2
+  are kinds, then κ
+ 1
+  → κ
+ 2
+  is the kind of types that take a type of kind κ
+ 1
+  
+ and return a type of kind κ
+ 2
+ .",NA
+Chapter 17,NA,NA
+Musical User Interface,"Daniel Winograd-Cort
+  
+ {-# LANGUAGE Arrows #-} 
+  
+ module Euterpea.Examples.MUI where 
+  
+ import Euterpea
+  
+ This module is not part of the standard Euterpea module hierarchy (i.e. 
+ those modules that get imported by the header command “import Euterpea”), 
+ but it can be found in the Examples folder in the Euterpea distribution, and can 
+ be imported into another module by the header command:
+  
+ import Euterpea.Examples.MUI
+  
+ Details: To use the arrow syntax described in this chapter, it is necessary to use
+  
+  
+ the following compiler pragma in GHC:
+  
+  
+  
+ {-# LANGUAGE Arrows #-}",NA
+17.1,NA,NA
+Introduction,"Many music software packages have a graphical user interface (aka “GUI”) 
+ that provides varying degrees of functionality to the user. In Euterpea a 
+ basic set of widgets is provided that are collectively referred to as the mu-
+  
+ 247",NA
+17.2 ,NA,NA
+Basic Concepts,"A signal is a time-varying quantity. Conceptually, at least, most things in our 
+ world, and many things that we program with, are time-varying. The position 
+ of a mouse is time-varying. 
+  
+ So is the voltage used to control a 
+ motor in a robot arm. Even an animation can be thought of as a time-varying 
+ image.
+  
+ A signal function is an abstract function that converts one signal into 
+ another. Using the examples above, a signal function may add an offset to a 
+ time-varying mouse position, filter out noise from the time-varying voltage 
+ for a robot motor, or speed up or slow down an animation.
+  
+ Perhaps the simplest way to understand Euterpea’s approach to pro-
+ gramming with signals is to think of it as a language for expressing signal 
+ processing diagrams (or equivalently, electrical circuits). We can think of 
+ the lines in a typical signal processing diagram as signals, and the boxes that 
+ convert one signal into another as signal functions. For example, this very 
+ simple diagram has two signals, x and y, and one signal function, sigfun:
+  
+ Image not in repository!
+  
+ Using Haskell’s arrow syntax [
+ Hug00
+ ,
+  Pat01
+ ], this diagram can be expressed 
+ as a code fragment in Euterpea simply as:
+  
+  
+ y ← sigfun −≺ x 
+  
+ 1
+ The Euterpea MUI is built using the arrow-based GUI library UISF, which is its own 
+ standalone package. UISF, in turn, borrows concepts from Fruit [
+ CE01
+ ,
+  Cou04
+ ].",NA
+17.3 ,NA,NA
+The UISF Arrow,"SF as used in this chapter so far is an instance of the Arrow class, but is not 
+ the actual type used for constructing MUIs. The core component of 
+ Euterpea’s MUI is the user interface signal function, captured by the type 
+ UISF, which is also an instance of the Arrow class. So instead of SF, in the 
+ remainder of this chapter we will use UISF, but all of the previous discussion 
+ about signal functions and arrows still applies.
+  
+ Using UISF, we can create “graphical widgets” using a style very similar 
+ to the way we wired signal functions earlier. However, instead of having 
+ values of type SF a b, we will use values of type UISF a b. Just like SF, the 
+ UISF type is fully abstract (meaning its implementation is hidden) and, 
+ being an instance of the Arrow class, can be used with arrow syntax.
+  
+ 17.3.1 
+  
+ Graphical Input and Output Widgets
+  
+ Euterpea’s basic widgets are shown in Figure
+  17.1
+ . Note that each of them is, 
+ ultimately, a value of type UISF a b, for some input type a and output type b, 
+ and therefore may be used with the arrow syntax to help coordinate their 
+ functionality. The names and type signatures of these functions suggest 
+ their functionality, which we elaborate in more detail below:
+  
+ • A simple (static) text string can be displayed using: 
+  
+  
+  
+ label :: String → UISF a a
+  
+ • Alternatively, a time-varying string can be be displayed using:
+ “catching up” at a 
+ later point in time. This catching up process can take an arbitrarily long time, and may 
+ consume additional space as well. It can destroy any hope for real-time behavior if not 
+ managed properly.",NA
+17.4 ,NA,NA
+Non-Widget Signal Functions,"All of the signal functions we have seen so far are effectful widgets. That is, 
+ they all do something graphical or audible when they are used. 
+  
+ For 
+ regular computation, we have been using pure functions (which we can 
+ insert arbitrarily in arrow syntax or lift with arr otherwise). However, there 
+ are signal functions that are important and useful which have no visible 
+ effects. We will look at a few different types of these signal functions in this 
+ section.
+  
+ Details: Note that the mediators and folds in the next two subsections are 
+ generic
+  
+  
+ signal functions, and are not restricted to use only in MUIs. To highlight this, we
+  
+  
+ present them with the SF type rather than the UISF type. However, they can be
+  
+  
+ (and often are) used as UISFs in MUIs.
+  
+  
+ The timers and delay functions in Subsections
+  17.4.3
+  and
+  17.4.4
+  require the MUI’s
+  
+  
+ internal notion of time, and so we present those directly with the UISF type.
+  
+ 17.4.1
+  
+ Mediators
+  
+ In order to use event streams in the context of continuous signals, Euterpea 
+ defines a set of functions that mediate between the continuous and the dis-
+ crete. These “mediators,” as well as some functions that deal exclusively 
+ with events, are shown in Figure
+  17.4
+  along with their type signatures and 
+ brief descriptions. Their use will be better understood through some exam-
+ ples that follow in Section
+  17.5
+ .",NA
+17.5 ,NA,NA
+Musical Examples,"In this section we work through three larger musical examples that use 
+ Euterpea’s MUI in interesting ways.
+  
+ 17.5.1 
+  
+ Chord Builder
+  
+ This MUI will display a collection of chord types (Maj, Maj7, Maj9, min, min7, 
+ min9, and so on), one of which is selectable via a radio button. Then when a 
+ key is pressed on a MIDI keyboard, the selected chord is built and played 
+ using that key as the root.
+  
+ To begin, we define a “database” that associates chord types with their 
+ intervals starting with the root note:
+  
+ chordIntervals :: [(String, [Int ])] 
+  
+ chordIntervals = [(""Maj"", 
+  
+ [4, 3, 5]), 
+  
+ (""Maj7"", 
+  
+ [4, 3, 4, 1]), 
+  
+ (""Maj9"", [4, 3, 4, 3]), (""Maj6"", 
+  
+ [4, 3, 2, 3]), 
+  
+ (""min"", 
+  
+  
+ [3, 4, 5]), 
+  
+ (""min7"", 
+  
+ [3, 4, 3, 2]), (""min9"", [3, 
+ 4, 3, 4]), (""min7b5"", [3, 3, 4, 2]), 
+  
+ (""mMaj7"", [3, 4, 4, 1]), 
+ (""dim"", 
+  
+ [3, 3, 3]), 
+  
+ (""dim7"", [3, 3, 3, 3]), (""Dom7"", 
+  
+ [4, 
+ 3, 3, 2]), 
+  
+ (""Dom9"", [4, 3, 3, 4]), (""Dom7b9"", [4, 3, 3, 3])]",NA
+17.6,"ANote c k v d→ f c k v d
+  
+ Std (NoteOn c k v) → f c k v dur
+  
+ → Nothing",NA
+Special Purpose and Custom Widgets,"Although the widgets and signal functions described so far enable the cre-
+ ation of many basic MUIs, there are times when something more specific is 
+ required. Thus, in this section, we will look at some special purpose widgets 
+ as well as some functions that aid in the creation of custom widgets.
+  
+ Some of the functions described in this subsection are included in Eu-
+ terpea by default, but others require extra imports of specific Euterpea 
+ modules. We will note this where applicable.
+  
+ 17.6.1 
+  
+ Realtime graphs, histograms
+  
+ So far, the only way to display the value of a stream in the MUI is to use the 
+ display widget. Although this is often enough, there may be times when 
+ another view is more enlightening. For instance, if the stream represents a 
+ sound wave, then rather than displaying the instantaneous values of the 
+ wave as numbers, we may wish to see them graphed.
+  
+ Euterpea provides support for a few different widgets that will graph 
+ streaming data visually.
+  
+ realtimeGraph
+  
+ :: RealFrac a ⇒ Layout",NA
+17.7 ,NA,NA
+Advanced Topics,"In the final section of this chapter, we will explore some advanced topics 
+ related to the MUI.
+  
+ 17.7.1 
+  
+ Banana brackets
+  
+ When dealing with layout, we have so far shown two ways to apply the 
+ various layout transformers (e.g. topDown, leftRight, etc.) to signal func-
+  
+ 5
+ The UIEvent can contain information like mouse clicks or key presses. For complete 
+ documentation on UIEvent, look to the FRP.UISF documentation.",NA
+Chapter 18,NA,NA
+Sound and Signals,"In this chapter we study the fundamental nature of sound and its basic 
+ mathematical representation as a signal. We also discuss discrete digital 
+ representations of a signal, which form the basis of modern sound synthesis 
+ and audio processing.",NA
+18.1 ,NA,NA
+The Nature of Sound,"Before studying digital audio, it’s important that we first know what sound is. 
+ In essence, sound is the rapid compression and relaxation of air, which 
+ travels as a wave through the air from the physical source of the sound to, 
+ ultimately, our ears. The physical source of the sound could be the vibration 
+ of our vocal chords (resulting in speech or singing), the vibration of a speaker 
+ cone, the vibration of a car engine, the vibration of a string in a piano or 
+ violin, the vibration of the reed in a saxophone or of the lips when playing a 
+ trumpet, or even the (brief and chaotic) vibrations that result when our 
+ hands come together as we clap. The “compression and relaxation” of the air 
+ (or of a coiled spring) is called a longitudinal wave, in which the vibrations 
+ occur parallel to the direction of travel of the wave. 
+  
+ In contrast, a rope 
+ that is fixed at one end and being shaken at the other, and a wave in the 
+ ocean, are examples of a transverse wave, in which the rope’s and water’s 
+ movement is perpendicular to the direction the wave is traveling.
+  
+ [Note: There are some great animations of these two kinds of waves at: 
+ http://www.computermusicresource.com/what.is.sound.html.]
+  
+ If the rate and amplitude of the sound are within a suitable range, we
+  
+ 289",NA
+18.2 ,NA,NA
+Digital Audio,"The preceding discussion has assumed that sound is a continuous quantity, 
+ which of course it is, and thus we represent it using continuous 
+ mathematical functions. If we were using an analog computer, we could 
+ continue with this representation, and create electronic music accordingly. 
+ Indeed, the earliest electronic synthesizers, such as the Moog synthesizer of 
+ the 1960’s, were completely analog.
+  
+ However, most computers today are digital, which require representing",NA
+Chapter 19,NA,NA
+Euterpea’s Signal Functions,"{-# LANGUAGE Arrows #-} 
+  
+ module Euterpea.Examples.SigFuns where
+  
+ import Euterpea 
+  
+ import Control.Arrow ((>>>), (<<<), arr)
+  
+ Details: The first line in the module header above is a compiler pragma, amd
+  
+  
+ in this case is telling GHC to accept arrow syntax, which will be explained in
+  
+  
+ Section
+  19.1
+ .
+  
+ In this chapter we show how the theoretical concepts involving sound and 
+ signals studied in the last chapter are manifested in Euterpea. 
+  
+ The 
+ techniques learned will lay the groundwork for doing two broad kinds of 
+ activities: sound synthesis and audio processing. Sound synthesis might 
+ include creating the sound of a footstep on dry leaves, simulating a con-
+ ventional musical instrument, creating an entirely new instrument sound, or 
+ composing a single “soundscape” that stands alone as a musical com-position. 
+ Audio processing includes such things as equalization, filtering, reverb, 
+ special effects, and so on. In future chapters we will study various techniques 
+ for achieving these goals.
+  
+ 311",NA
+19.1 ,NA,NA
+Signals and Signal Functions,"As we saw in Chapter
+  17
+ , it would seem natural to represent a signal as an 
+ abstract type, say Signal T in Haskell, and then define functions to add, 
+ multiply, take the sine of, and so on, signals represented in this way. For 
+ example, Signal Float would be the type of a time-varying floating-point 
+ number, Signal AbsPitch would be the type of a time-varing absolute pitch, 
+ and so on. Then given s
+ 1
+ , s
+ 2
+  :: Signal Float we might simply write s
+ 1
+  + s
+ 2
+ , s
+ 1
+  ∗ 
+ s
+ 2
+ , and sin s
+ 1
+  as examples of applying the above operations. Haskell’s 
+ numeric type class hierarchy would make this particularly easy to do. 
+ Indeed, several domain-specific languages based on this approach have 
+ been defined before, beginning with the language Fran [
+ EH97
+ ] that was 
+ designed for writing computer animation programs.
+  
+ But years of experience and theoretical study have revealed that such an 
+ approach leads to a language with subtle time- and space-leaks,
+ 1
+ for reasons 
+ that are beyond the scope of this textbook [
+ LH07
+ ]. Therefore Euterpea takes 
+ a somewhat different approach, as described below.
+  
+ Perhaps the simplest way to understand Euterpea’s approach to pro-
+ gramming with signals is to think of it as a language for expressing signal 
+ processing diagrams (or equivalently, electrical circuits). 
+  
+ We refer to the 
+ lines in a typical signal processing diagram as signals, and the boxes that 
+ convert one signal into another as signal functions. For example, this very 
+ simple diagram has two signals, x and y, and one signal function, sigfun:
+  
+ Image not in repository!
+  
+ Using Haskell’s arrow syntax [
+ Hug00
+ ,
+  Pat01
+ ], this diagram can be expressed 
+ as a code fragment in Euterpea simply as:
+  
+ y ← sigfun −≺ x
+  
+ Details: The syntax ← and −≺ is typeset here in an attractive way, but the user 
+ will have to type <- and -<, respectively, in her source file.
+  
+ 1
+ A time-leak in a real-time system occurs whenever a time-dependent computation falls 
+ behind the current time because its value or effect is not needed yet, but then 
+ requires“catching up” at a later point in time. This catching up process can take an arbitrarily 
+ long time, and may consume additional space as well. It can destroy any hope for real-time 
+ behavior if not managed properly.",NA
+19.2 ,NA,NA
+Generating Sound,"Euterpea can execute some programs in real-time, but sufficiently complex 
+ programs require writing the result to a file. The function for achieving this 
+ is:
+  
+ outFile :: (AudioSample a, Clock c) ⇒
+  
+  
+  
+ String → Double → SigFun c () a → IO () 
+  
+ The first argument is the name of the WAV file to which the result is written. 
+ The second argument is the duration of the result, in seconds (remember that 
+ signals are conceptually infinite). The third argument is a signal function that 
+ takes no input and generates a signal of type a as output (i.e. a signal source), 
+ where a is required to be an instance of the AudioSample type class, which 
+ allows one to choose between mono, stereo, etc.
+  
+ For convenience, Euterpea defines these type synonyms:
+  
+ type Mono p = SigFun p () Double 
+  
+ type Stereo p = SigFun p () (Double, Double)",NA
+19.3,NA,NA
+Instruments,"So far we have only considered signal functions as stand-alone values whose 
+ output we can write to a WAV file. But how do we connect the ideas in 
+ previous chapters about Music values, Performances, and so on, to the ideas 
+ presented in this chapter? This section presents a bridge between the two",NA
+Chapter 20,NA,NA
+Spectrum Analysis,"{-# LANGUAGE Arrows #-} 
+  
+ module Euterpea.Music.Signal.SpectrumAnalysis where
+  
+ import Euterpea 
+  
+ import Euterpea.Experimental (fftA)
+  
+ import Data.Complex (Complex ((:+)), polar ) 
+  
+ import Data.Maybe (listToMaybe, catMaybes)
+  
+ There are many situations where it is desirable to take an existing sound 
+ signal—in particular one that is recorded by a microphone—and analyze it 
+ for its spectral content. If one can do this effectively, it is then possible (at 
+ least in theory) to recreate the original sound, or to create novel variations 
+ of it. The thepry behind this approach is based on Fourier’s Theorem, which 
+ states that any periodic signal can be decomposed into a weighted sum of (a 
+ potentially infinite number of) sine waves. In this chapter we discuss the 
+ theory as well as the pragmatics for doing spectrum analysis in Euterpea.",NA
+20.1 ,NA,NA
+Fourier’s Theorem,"A periodic signal is a signal that repeats itself infinitely often. Mathemati-
+ cally, a signal x is periodic if there exists a real number T such that for all 
+ integers n:
+  
+ x(t) = x(t + nT)
+  
+ T is called the period, which may be just a few microseconds, a few seconds, 
+ or perhaps days—the only thing that matters is that the signal repeats
+  
+ 331",NA
+20.2 ,NA,NA
+The Discrete Fourier Transform,"Recall from Section
+  18.2.1
+  that we can move from the continuous signal 
+ domain to the discrete domain by replacing the time t with the quantity
+ n
+ /
+ r
+ , 
+ where n is the integer index into the sequence of discrete samples, and r is 
+ the sampling rate. Let us assume that we have done this for x, and we will 
+ use square brackets to denote the difference. That is, x[n] denotes the n
+ th 
+ sample of the continuous signal x(t), corresponding to the value x(
+ n
+ /
+ r
+ ).
+  
+ We would now like to compute the Discrete Fourier Transform (DFT) of 
+ our discrete signal. But instead of being concerned about the sampling rate 
+ (which can introduce aliasing, for example), our concern turns to the",NA
+20.3 ,NA,NA
+The Fast Fourier Transform,"In the last section a DFT program was developed in Haskell that was easy to 
+ understand, being a faithful translation of Equation
+  20.5
+ . For pedogogical 
+ purposes, this effort served us well. However, for practical purposes, the 
+ program is inherently inefficient.
+  
+ To see why, think of x[n] and ˆx[k] as vectors. Thus, for example, each 
+ element of ˆx is the sum of N multiplications of a vector by a complex 
+ exponential (which can be represented as a pair, the real and imaginary 
+ parts). And this overall process must be repeated for each value of k, also N 
+ times. Therefore the overall time complexity of the implied algorithm is 
+ O(N
+ 2
+ ). 
+  
+ For even moderate values of N, this can be computationally 
+ intractable. (Our choice of lists for the implementation of vectors makes the 
+ complexity even worse, because of the linear-time complexity of indexing, 
+ but the discussion below makes this a moot point.)
+  
+ Fortunately, there exists a much faster algorithm called the Fast Fourier 
+ Transform, or FFT, that reduces the complexity to O(N log N). This differ-
+ ence is quite significant for large values of N, and is the standard algorithm 
+ used in most signal processing applications. We will not go into the details 
+ of the FFT algorithm, other than to note that it is a divide-and-conquer 
+ algorithm that depends on the vector size being a power of two.
+ 4
+  
+ Rather than developing our own program for the FFT, we will instead 
+ use the Haskell library Numeric.FFT to import a function that will do the job 
+ for us. Specifically:
+  
+ fft :: ...
+  
+ With this function we could explore the use of the FFT on specific iinput 
+ vectors, as we did earlier with dft.
+  
+ However, our ultimate goal is to have a version of FFT that works on 
+ signals. We would like to be able to specify the number of samples as a power
+  
+ 4
+ The basic FFT algorithm was invented by James Cooley and John Tukey in 1965.",NA
+20.4 ,NA,NA
+Further Pragmatics,"Exercise 20.5 Modify the program in Figure
+  20.5
+  in the following ways:
+  
+ 1. Add a second slider, and use it to control the frequency of a second 
+  
+ oscillator.
+  
+ 2. Let s
+ 1
+  and s
+ 2
+  be the names of the signals whose frequencies are con-
+ trolled by the first and second sliders, respectively. Instead of display-
+ ing the FFT of just s
+ 1
+ , try a variety of combinations of s
+ 1
+  and s
+ 2
+ , such as 
+ s
+ 1
+  + s
+ 2
+ , s
+ 1
+  − s
+ 2
+ , s
+ 1
+  ∗ s
+ 2
+ , 1/s
+ 1
+  + 1/s
+ 2
+ , and s
+ 1
+ /s
+ 2
+ . Comment on the results.
+  
+ 3. Use s
+ 2
+  to control the frequency of s
+ 1
+  (as was done with vibrato in 
+  
+ Chapter
+  19
+ ). Plot the fft of s
+ 1
+  and comment on the result.",NA
+20.5 ,NA,NA
+References,"Most of the ideas in this chapter can be found in any good textbook on signal
+  
+ processing. The particular arrangement of the material here, in particular
+  
+ Figure
+  20.1
+  and the development and demonstration of a program for the
+  
+ DFT, is borrowed from the excellent text Elements of Computer Music by
+  
+ Moore [
+ Moo90
+ ].",NA
+Chapter 21,NA,NA
+Additive and Subtractive,NA,NA
+Synthesis,"{-# LANGUAGE Arrows #-} 
+  
+ module Euterpea.Examples.Additive where 
+  
+ import Euterpea
+  
+ There are many techniques for synthesizing sound. In this chapter we will 
+ discuss two of them: additive synthesis and subtractive synthesis. In practice 
+ it is rare for either of these, or any of the ones discussed in future chapters, to 
+ be utilized alone—a typical application may in fact employ all of them. 
+  
+ But 
+ it is helpful to study them in isolation, so that the sound designer has a 
+ suitably rich toolbox of techniques at his or her disposal.
+  
+ Additive synthesis is, conceptually at least, the simplest of the many 
+ sound synthesis techniques. Simply put, the idea is to add signals (usually 
+ sine waves of differing amplitudes, frequencies and phases) together to 
+ form a sound of interest. It is based on Fourier’s theorem as discussed in the 
+ previous chapter, and indeed is sometimes called Fourier synthesis.
+  
+ Subtractive synthesis is the dual of additive synthesis. The basic ideas is 
+ to start with a signal rich in harmonoc content, and seletively 
+ “remove”signals to create a desired effect.
+  
+ In understanding the difference between the two, it is helpful to consider the 
+ following analogy to art:
+  
+ • Additive synthesis is like painting a picture—each stroke of the brush, 
+ each color, each shape, each texture, and so on, adds to the artist’s
+  
+ 351",NA
+21.1 ,NA,NA
+Additive Synthesis,"21.1.1 
+  
+ Preliminaries
+  
+ When doing pure additive synthesis it is often convenient to work with a list 
+ of signal sources whose elements are eventually summed together to form a 
+ result. To facilitate this, we define a few auxiliary functions, as shown in 
+ Figure
+  21.1
+ .
+  
+ constSF s sf simply lifts the value s to the signal function level, and composes 
+ that with sf , thus yielding a signal source.
+  
+ foldSF f b sfs is analogous to foldr for lists: it returns the signal source 
+ constA b if the list is empty, and otherwise uses f to combine the results, 
+ pointwise, from the right. In other words, if sfs has the form:
+  
+ [sf1, sf2, ..., sfn ]
+  
+ then the result will be:
+  
+ proc () → do 
+  
+ s
+ 1
+  ← sf1 −≺ () 
+  
+ s
+ 2
+  ← sf2 −≺ () 
+ ...
+  
+ sn ← sfn −≺ () 
+  
+ outA −≺ f s
+ 1
+  (f s
+ 2
+  (...(f sn b)))",NA
+21.2 ,NA,NA
+Subtractive Synthesis,"As mentioned in the introduction to this chapter, subtractive synthesis in-
+ volves starting with a harmonically rich sound source, and selectively taking 
+ away sounds to create a desired effect. In signal processing terms, we “take 
+ away” sounds using filters.
+  
+ 21.2.1 
+  
+ Filters
+  
+ Filters can be arbitrarily complex, but are characterized by a transfer func-
+ tion that captures, in the frequency domain, how much of each frequency",NA
+Chapter 22,NA,NA
+Amplitude and Frequency,NA,NA
+Modulation,"To modulate something is to change it in some way. In signal processing, 
+ amplitude modulation is the process of modifying a signal’s amplitude by 
+ another signal. Similarly, frequency modulation is the process of modify-ing 
+ a signal’s frequency by another signal. These are both powerful sound 
+ synthesis techniques that will be discussed in this chapter.",NA
+22.1 ,NA,NA
+Amplitude Modulation,"Technically speaking, whenever the amplitude of a signal is dynamically 
+ changed, it is a form of amplitude modulation, or AM for short; that is, we 
+ are modulating the amplitude of a signal. So, for example, shaping a signal 
+ with an envelope, as well as adding tremolo, are both forms of AM. In this 
+ section more interesting forms of AM are explored, including their 
+ mathematical basis. To help distinguish these forms of AM from others, we 
+ define a few terms:
+  
+ • The dynamically changing signal that is doing the modulation is called 
+  
+ the modulating signal.
+  
+ • The signal being modulated is sometimes called the carrier.
+  
+ • A unipolar signal is one that is always either positive or negative (usu-
+  
+ ally positive).
+  
+ 369",NA
+22.2 ,NA,NA
+Frequency Modulation,"[This section needs work.]
+  
+ As mentioned in the introduction of this chapter, if we modulate the 
+ frequency (rather than amplitude) of a signal with another signal, we are 
+ performing frequency modulation, or FM.
+  
+ FM can be used to implement vibrato. [show code] Contrast this with 
+ tremolo, which varies the amplitude. [show code?] It is also the basis for FM 
+ radio. [see later subsection]",NA
+Chapter 23,NA,NA
+Physical Modelling,NA,NA
+23.1 ,NA,NA
+Introduction,...,NA
+23.2 ,NA,NA
+Delay Lines,"An important tool for physical modeling is the delay line. In this section we 
+ will discuss the basic concepts of a delay line, the delay line signal functions 
+ in Eutperpea, and a couple of fun examples that do not yet involve physical 
+ modeling.
+  
+ Conceptually, a delay line is fairly simple: it delays a signal by a certain 
+ number of seconds (or, equivalently, by a certain number of samples at 
+ some given sample rate). Figure ??(a) show this pictorially—if s is the 
+ number of samples in the delay line, and r is the clock rate, then the delay d 
+ is given by:
+  
+ d = s/r
+  
+ In the case of audio, of course, r will be 44.1 kHz. So to achieve a one-second 
+ delay, s would be chosen to be 44,100. In essence, a delay line is a queue or 
+ FIFO data structure.
+  
+ In Euterpea there is a family of delay lines whose type signatures are given in 
+ Figure
+  23.1
+ . Their behaviors can be described as follows:
+  
+ • init x is a delay line with one element, which is initalized to x.
+  
+ 377",NA
+23.3 ,NA,NA
+Karplus-Strong Algorithm,"Now that we know how delay lines work, let’s look at their use in physical 
+ modeling. The Karplus-Strong Algorithm [
+ KS83
+ ] was one of the first algo-
+ rithms classified as “physical modeling.” It’s a good model for synthesizing 
+ plucked strings and drum-like sounds. The basic idea is to use a recursive 
+ delay line to feed back a signal onto itself, thus simulating the standing wave 
+ modes discussed in Section
+  21.1.3
+ . The result is affected by the initial values 
+ in the delay line, the length of the delay line, and any processing in the 
+ feedback loop. A diagram that depicts this algorithm is shown in Figure
+  
+ 23.3
+ (a).
+  
+ 23.3.1 
+  
+ Physical Model of a Flute
+  
+ Figure
+  23.4
+  shows a physical model of a flute, based on the model of a“slide 
+ flute” proposed by Perry Cook in [
+ Coo02
+ ]. Although described as a slide 
+ flute, it sounds remarkably similar a regular flute. Note that the lower right 
+ part of diagram looks just like the feedback loop in the Karplus-",NA
+23.4 ,NA,NA
+Waveguide Synthesis,"The Karplus-Strong algorithm can be generalized to a more accurate model 
+ of the transmission of sound up and down a medium, whether it be a string, 
+ the air in a chamber, the surface of a drum, the metal plate of a xylo-phone, 
+ and so on. This more accurate model is called a waveguide, and, 
+ mathematically, can be seen as a discrete model of d’Alembert’s solution to 
+ the one-dimensional wave equation, which captures the superposition of a 
+ right-going wave and a left-going wave, as we have discussed earlier in 
+ Section
+  21.1.3
+ . In its simplest form, we can express the value of a wave at 
+ position m and time n as:
+  
+ y(m, n) = y
+ +
+ (m − n) + y
+ −
+ (m + n)
+  
+ where y
+ +
+ is the right-going wave and y
+ −
+ is the left-going wave. Intuitively, the 
+ value of y at point m and time n is the sum of two delayed copies of its 
+ traveling waves. As discusses before, these traveling waves will reflect at 
+ boundaries such as the fixed ends of a string or the open or closed ends of 
+ tubes.
+  
+ What distinguishes this model from the simpler Karplus-Strong model is 
+ that it captures waves traveling in both directions—and to realize that, we 
+ need a closed loop of delay lines. But even with that generalization, the 
+ equation above assumes a lossless system, and does not account for inter-
+ actions between the left- and right-traveling waves. The former quantity is",NA
+Chapter 24 ,NA,NA
+Sound Effects,"TBD
+  
+ 386",NA
+Appendix,387,NA
+Appendix A,NA,NA
+The PreludeList Module,"The use of lists is particularly common when programming in Haskell, and 
+ thus, not surprisingly, there are many pre-defined polymorphic functions 
+ for lists. The list data type itself, plus some of the most useful functions on it, 
+ are contained in the Standard Prelude’s PreludeList module, which we will 
+ look at in detail in this chapter. There is also a Standard Library module 
+ called List that has additional useful functions. It is a good idea to become 
+ familiar with both modules.
+  
+ Although this chapter may feel like a long list of “Haskell features,” the 
+ functions described here capture many common patterns of list usage that 
+ have been discovered by functional programmers over many years of tri-als 
+ and tribulations. In many ways higher-order declarative programming with 
+ lists takes the place of lower-level imperative control structures in more 
+ conventional languages. By becoming familiar with these list functions you 
+ will be able to more quickly and confidently develop your own applications 
+ using lists. Furthermore, if all of us do this, we will have a common vocab-
+ ulary with which to understand each others’ programs. Finally, by reading 
+ through the code in this module you will develop a good feel for how to 
+ write proper function definitions in Haskell.
+  
+ It is not necessary for you to understand the details of every function, 
+ but you should try to get a sense for what is available so that you can return 
+ later when your programming needs demand it. In the long run you are 
+ well-advised to read the rest of the Standard Prelude as well as the various 
+ Standard Libraries, to discover a host of other functions and data types that 
+ you might someday find useful in your own work.
+  
+ 388",NA
+A.1 The PreludeList Module,"To get a feel for the PreludeList module, let’s first look at its module dec-
+ laration:
+  
+ module PreludeList ( 
+  
+ map, (++), filter, concat, 
+  
+ head, last, tail, init, null, length, (!!), 
+  
+ foldl, foldl1, scanl, scanl1, foldr, foldr1, scanr, scanr1, 
+ iterate, repeat, replicate, cycle, 
+  
+ take, drop, splitAt, takeWhile, dropWhile, span, break, 
+ lines, words, unlines, unwords, reverse, and, or, 
+  
+ any, all, elem, notElem, lookup, 
+  
+ sum, product, maximum, minimum, concatMap, 
+  
+ zip, zip3, zipWith, zipWith3, unzip, unzip3) 
+  
+ where
+  
+ import qualified Char (isSpace)
+  
+ infixl 9 !!
+  
+ infixr 5 ++ 
+  
+ infix 4 ∈, /∈
+  
+ We will not discuss all of the functions listed above, but will cover most of 
+ them (and some were discussed in previous chapters).",NA
+A.2 Simple List Selector Functions,"head and tail extract the first element and remaining elements, respectively, 
+ from a list, which must be non-empty. last and init are the dual functions 
+ that work from the end of a list, rather than from the beginning.
+  
+ head :: [a ] → a 
+  
+ head (x: ) = x 
+  
+ head [ ] 
+  
+  
+ = error ""PreludeList.head: empty list""
+  
+ last :: [a ] → a 
+  
+ last [x ] 
+  
+  
+ = x 
+  
+ last ( : xs) = last xs 
+  
+ last [ ] 
+  
+  
+ = error ""PreludeList.last: empty list""
+  
+ tail :: [a ] → [a ] 
+  
+ tail ( : xs) = xs 
+  
+ tail [ ] 
+  
+  
+ = error ""PreludeList.tail: empty list""",NA
+A.3 Index-Based Selector Functions,"To select the nth element from a list, with the first element being the 0th 
+ element, we can use the indexing function (!!):
+  
+ (!!) 
+   
+ :: [a ] → Int → a 
+  
+ (x: ) !! 0 = 
+  
+ x 
+  
+ ( : xs) !! n | n > 0 = xs !! (n − 1) 
+  
+ ( : ) !! 
+  
+ = 
+  
+ error ""PreludeList.!!: negative index"" [ ] 
+  
+ !! 
+  
+  
+ = 
+  
+ error ""PreludeList.!!: index too large""",NA
+A.4 Predicate-Based Selector Functions,"takeWhile p xs returns the longest (possibly empty) prefix of xs, all of whose 
+ elements satisfy the predicate p. dropWhile p xs returns the remaining suffix. 
+ Finally, span p xs is equivalent to (takeWhile p xs, dropWhile p xs), while 
+ break p uses the negation of p.
+  
+ takeWhile 
+  
+ :: (a → Bool) → [a ] → [a ] 
+  
+ takeWhile p [ ] = [ ] 
+  
+ takeWhile p (x : xs) 
+  
+  
+  
+ | p x 
+  
+  
+ = x : takeWhile p xs 
+  
+  
+  
+ | otherwise = [ ] 
+  
+ dropWhile 
+  
+  
+ :: (a → Bool) → [a ] → [a ] dropWhile p [ ] = [ ] 
+  
+ dropWhile p xs@(x : xs
+ ′
+ ) 
+  
+  
+  
+ | p x 
+  
+  
+ = dropWhile p xs
+ ′
+  
+  
+  
+ | otherwise = xs 
+  
+ span, break 
+  
+ :: (a → Bool) → [a ] → ([a ], [a ]) 
+  
+ span p [ ] 
+  
+  
+ = ([ ], [ ]) 
+  
+ span p xs@(x : xs
+ ′
+ ) 
+  
+  
+  
+ | p x 
+  
+  
+ = (x : xs
+ ′
+ , xs
+ ′′
+ ) where (xs
+ ′
+ , xs
+ ′′
+ ) = span p xs 
+  
+  
+ | otherwise = (xs, [ ]) 
+  
+ break p 
+   
+ = span (¬ ◦ p) 
+  
+ filter removes all elements not satisfying a predicate:
+  
+ filter :: (a → Bool) → [a ] → [a ] 
+  
+ filter p [ ] = [ ] 
+  
+ filter p (x : xs) | p x = x : filter p xs 
+  
+  
+ | otherwise = filter p xs",NA
+A.5 Fold-like Functions,"foldl1 and foldr1 are variants of foldl and foldr that have no starting value 
+ argument, and thus must be applied to non-empty lists.
+  
+ foldl 
+  
+ foldl f z [ ]
+  
+ :: (a → b → a) → a → [b] → a = z
+  
+ foldl f z (x : xs) = foldl f (f z x) xs
+  
+ foldl1 
+  
+ :: (a → a → a) → [a ] → a 
+  
+ foldl1 f (x : xs) = foldl f x xs",NA
+A.6 List Generators,"There are some functions which are very useful for generating lists from 
+ scratch in interesting ways. To start, iterate f x returns an infinite list of 
+ repeated applications of f to x. That is:
+  
+ iterate f x ⇒ [x, f x, f (f x), ...] 
+  
+ The “infinite” nature of this list may at first seem alarming, but in fact is one 
+ of the more powerful and useful features of Haskell.
+  
+ [say more]
+  
+ iterate 
+  
+ :: (a → a) → a → [a ] 
+  
+ iterate f x = x : iterate f (f x)
+  
+ repeat x is an infinite list, with x the value of every element. replicate n x is a 
+ list of length n with x the value of every element. And cycle ties a finite list 
+ into a circular one, or equivalently, the infinite repetition of the original list.
+  
+ repeat 
+  
+ repeat 
+ x
+  
+ :: a → [a ] 
+  
+ = xs where xs = x : xs
+  
+ Manipulating
+  
+ replicate :: Int → a → [a ]
+  
+ replicate n x = take n (repeat x)
+  
+ cycle 
+  
+ cycle [ 
+ ]
+  
+ :: [a ] → [a ] 
+  
+ = error ""Prelude.cycle: empty list""
+  
+ cycle xs
+  
+ = xs
+ ′
+ where xs
+ ′
+ = xs ++ xs
+ ′",NA
+A.7,NA,NA
+String-Based Functions,"Recall that strings in Haskell are just lists of characters.
+  
+ strings (i.e. text) is a very common practice, so it makes sense that Haskell 
+ would have a few pre-defined functions to make this easier for you.
+  
+ lines breaks a string at every newline character (written as ’\n’ in Haskell), 
+ thus yielding a list of strings, each of which contains no newline characters. 
+ Similary, words breaks a string up into a list of words, which were delimited 
+ by white space. Finally, unlines and unwords are the in-verse operations: 
+ unlines joins lines with terminating newline characters, and unwords joins 
+ words with separating spaces. (Because of the potential",NA
+A.8 Boolean List Functions,"and and or compute the logical “and” and “or,” respectively, of all of the
+  
+ elements in a list of Boolean values.
+  
+ and, or :: [Bool ] → Bool
+  
+ and = foldr (∧) True
+  
+ or = foldr (∨) False
+  
+ Applied to a predicate and a list, any determines if any element of the list
+  
+ satisfies the predicate. An analogous behavior holds for all.
+  
+ any, all :: (a → Bool) → [a ] → Bool
+  
+ any p 
+  
+ = or ◦ map p
+  
+ all p 
+  
+ = and ◦ map p",NA
+A.9 List Membership Functions,"elem is the list membership predicate, usually written in infix form, e.g., x ∈ 
+ xs (which is why it was given a fixity declaration at the beginning of the 
+ module). notElem is the negation of this function.
+  
+ elem, notElem :: (Eq a) ⇒ a → [a ] → Bool 
+  
+ elem x 
+  
+ = any (== x) 
+  
+ notElem x 
+  
+ = all (̸= x)
+  
+ It is common to store “key/value” pairs in a list, and to access the list by 
+ finding the value associated with a given key (for this reason the list is often 
+ called an association list). The function lookup looks up a key in an 
+ association list, returning Nothing if it is not found, or Just y if y is the value 
+ associated with the key.
+  
+ lookup 
+  
+ :: (Eq a) ⇒ a → [(a, b)] → Maybe b 
+ lookup key [ ] = Nothing 
+  
+ lookup key ((x, y) : xys) 
+  
+  
+ | key == x = Just y 
+  
+  
+ | otherwise = lookup key xys",NA
+A.10 Arithmetic on Lists,"sum and product compute the sum and product, respectively, of a finite list of 
+ numbers.
+  
+ sum, product :: (Num a) ⇒ [a ] → a 
+  
+ sum = foldl (+) 0 
+  
+ product = foldl (∗) 1 
+  
+ maximum and minimum return the maximum and minimum value, respec-
+ tively from a non-empty, finite list whose element type is ordered.
+  
+ maximum, minimum :: (Ord a) ⇒ [a ] → a 
+  
+ maximum [ ] = error ""Prelude.maximum: empty list"" 
+ maximum xs = foldl1 max xs
+  
+ minimum [ ] = error ""Prelude.minimum: empty list"" 
+ minimum xs = foldl1 min xs
+  
+ Note that even though foldl1 is used in the definition, a test is made for the 
+ empty list to give an error message that more accurately reflects the source 
+ of the problem.",NA
+A.11 List Combining Functions,"map and (++) were defined in previous chapters, but are repeated here for 
+ completeness:
+  
+ map :: (a → b) → [a ] → [a ] 
+  
+ map f [ ] = [ ] 
+  
+ map f (x : xs) = f x : map f xs
+  
+ (++) :: [a ] → [a ] → [a ] 
+  
+ [ ] ++ ys = ys 
+  
+ (x : xs) ++ ys = x : (xs ++ ys)
+  
+ concat appends together a list of lists:
+  
+ concat :: [[a ]] → [a ] 
+  
+ concat xss = foldr (++) [ ] xss
+  
+ concatMap does what it says: it concatenates the result of mapping a func-
+ tion down a list.
+  
+ concatMap 
+  
+ :: (a → [b]) → [a ] → [b] 
+  
+ concatMap f = concat ◦ map f 
+  
+ zip takes two lists and returns a list of corresponding pairs. If one input list is 
+ short, excess elements of the longer list are discarded. zip3 takes three lists 
+ and returns a list of triples. (“Zips” for larger tuples are contained in the List 
+ Library.)
+  
+ zip 
+  
+ zip
+  
+ :: [a ] → [b] → [(a, b)] 
+  
+ = zipWith (, )
+  
+ zip3 :: [a ] → [b] → [c] → [(a, b, c)] 
+  
+ zip3 = zipWith3 (, , )
+  
+ Details: The functions (,) and (,,) are the pairing and tripling functions, respec-
+  
+  
+ tively:
+  
+  
+ (, ) ⇒ λx y → (x, y) 
+  
+ (, , ) ⇒ λx y z → (x, y, z)
+  
+ The zipWith family generalises the zip and map families (or, in a sense, 
+ combines them) by applying a function (given as the first argument) to each 
+ pair (or triple, etc.) of values. For example, zipWith (+) is applied to two lists 
+ to produce the list of corresponding sums.",NA
+Appendix B,NA,NA
+Haskell’s Standard Type,NA,NA
+Classes,"This provides a “tour” through the predefined standard type classes in 
+ Haskell, as was done for lists in Chapter
+  A
+ . We have simplified these classes 
+ somewhat by omitting some of the less interesting methods; the Haskell 
+ Report and Standard Library Report contain more complete descriptions.",NA
+B.1 ,NA,NA
+The Ordered Class,"The equality class Eq was defined precisely in Chapter
+  7
+ , along with a 
+ simplified version of the class Ord. Here is its full specification of class Ord; 
+ note the many default methods.
+  
+ class (Eq a) ⇒ Ord a where 
+  
+  
+ compare 
+  
+ :: a → a → Ordering 
+  
+  
+ (<), (⩽), (⩾), (>) :: a → a → Bool 
+  
+  
+ max, min :: a → a → a 
+  
+  
+ compare x y
+  
+ | x == y 
+  
+ =
+  
+ | x ⩽ y 
+  
+ =
+  
+ | otherwise =
+  
+ x ⩽ y 
+  
+ =
+  
+ x < y 
+  
+ =
+  
+ EQ 
+  
+ LT 
+  
+ GT
+  
+ compare x y ̸= GT 
+  
+ compare x y == LT
+  
+ x ⩾ y
+  
+ =
+  
+ compare x y ̸= LT 
+  
+ compare x y == GT
+  
+ x > y
+  
+ =
+  
+ 399",NA
+B.2 ,NA,NA
+The Enumeration Class,"Class Enum has a set of operations that underlie the syntactic sugar of 
+ arithmetic sequences; for example, the arithmetic sequence [1, 3 . .] is actu-
+ ally shorthand for enumFromThen 1 3. If this is true, then we should be able 
+ to generate arithmetic sequences for any type that is an instance of Enum. 
+ This includes not only most numeric types, but also Char, so that, for 
+ instance, [’a’ . . ’z’] denotes the list of lower-case letters in alphabetical order. 
+ Furthermore, a user-defined enumerated type such as Color:
+  
+ data Color = Red | Orange | Yellow | Green | Blue | Indigo | Violet can 
+ easily be given an Enum instance declaration, after which we can cal-culate 
+ the following results:
+  
+ [Red . . Violet ] 
+  
+ =⇒
+  
+  
+ [ 
+  
+ Red, Orange, Yellow, Green, 
+  
+  
+  
+  
+   
+ Blue, Indigo, Violet ] 
+  
+ [Red, Yellow . .] 
+  
+ =⇒
+  
+  
+ [ 
+  
+  
+ Red, Yellow, Blue, Violet ] fromEnum Green =⇒
+  
+ 3 
+  
+ toEnum 5 :: Color =⇒ Indigo 
+  
+ Indeed, the derived instance will give this result. Note that the sequences are 
+ still arithmetic in the sense that the increment between values is constant, 
+ even though the values are not numbers.
+  
+ The complete definition of the Enum class is given below:",NA
+B.3 ,NA,NA
+The Bounded Class,"The class Bounded captures data types that are linearly bounded in some 
+ way; i.e. they have both a minimum value and a maximum value.
+  
+ class Bounded a where 
+  
+ minBound :: a 
+  
+ maxBound :: a",NA
+B.4 ,NA,NA
+The Show Class,"Instances of the class Show are those types that can be converted to 
+ character strings. This is useful, for example, when writing a representation 
+ of a value to the standard output area or to a file. The class Read works in 
+ the other direction: it provides operations for parsing character strings to 
+ obtain the values that they represent. In this section we will look at the 
+ Show class; in the next we will look at Read.
+  
+ For efficiency reasons the primitive operations in these classes are 
+ some-what esoteric, but they provide good lessons in both algorithm and 
+ software design, so we will look at them in some detail.
+  
+ First, let’s look at one of the higher-level functions that is defined in terms of 
+ the lower-level primitives:
+  
+ show :: (Show a) ⇒ a → String 
+  
+ Naturally enough, show takes a value of any type that is a member of Show, 
+ and returns its representation as a string. For example, show (2 + 2) yields 
+ the string ""4"", as does show (6−2) and show applied to any other expression 
+ whose value is 4.
+  
+ Furthermore, we can construct strings such as:
+  
+ ""The sum of "" ++ show x ++ "" and "" ++ show y ++ "" is "" 
+  
+ ++ show (x + y) ++ "".""
+  
+ with no difficulty. In particular, because (++) is right associative, the number 
+ of steps to construct this string is directly proportional to its total length, 
+ and we can’t expect to do any better than that. (Since (++) needs to recon-
+ struct its left argument, if it were left associative the above expression 
+ would repeatedly reconstruct the same sub-string on each application of 
+ (++). If the total string length were n, then in the worst case the number of 
+ steps needed to do this would be proportional to n
+ 2
+ , instead of proportional 
+ to n in the case where (++) is right associative.)
+  
+ Unfortunately, this strategy breaks down when construction of the list is 
+ nested. A particularly nasty version of this problem arises for tree-shaped 
+ data structures. Consider a function showTree that converts a value of type 
+ Tree into a string, as in:
+  
+ showTree (Branch (Branch (Leaf 2) (Leaf 3)) (Leaf 4)) 
+  
+ =⇒ 
+ ""< <2|3>|4>"" 
+  
+ We can define this behavior straightforwardly as follows:
+  
+ showTree :: (Show a) ⇒ Tree a → String",NA
+B.5 ,NA,NA
+The Read Class,"Now that we can convert trees into strings, let’s turn to the inverse problem: 
+ converting strings into trees. The basic idea is to define a parser for a type a, 
+ which at first glance seems as if it should be a function of type String → a. 
+ This simple approach has two problems, however: (1) it’s possible that the 
+ string is ambiguous, leading to more than one way to interpret it as a value 
+ of type a, and (2) it’s possible that only a prefix of the string will parse 
+ correctly. Thus we choose instead to return a list of (a, String) pairs as the 
+ result of a parse. If all goes well we will always get a singleton list such as 
+ [(v, """")] as the result of a parse, but we cannot count on it (in fact, when 
+ recursively parsing sub-strings, we will expect a singleton list with a non-
+ empty trailing string).
+  
+ The Standard Prelude provides a type synonym for parsers of the kind just 
+ described:
+  
+ type ReadS a = String → [(a, String)] 
+  
+ and also defines a function reads that by analogy is similar to shows:
+  
+ reads :: (Read a) ⇒ ReadS a 
+  
+ We will return later to the precise definition of this function, but for now let’s 
+ use it to define a parser for the Tree data type, whose string represen-",NA
+B.6 ,NA,NA
+The Index Class,"The Standard Prelude defines a type class of array indices:
+  
+ class (Ord a) ⇒ Ix a where 
+  
+  
+ range 
+  
+ :: (a, a) → [a ] 
+  
+  
+ index 
+  
+ :: (a, a) → a → Int 
+  
+  
+ inRange :: (a, a) → a → Bool
+  
+ Arrays are defined elsewhere, but the index class is useful for other things
+  
+ besides arrays, so I will describe it here.
+  
+ Instance declarations are provided for Int, Integer, Char, Bool, and
+  
+ tuples of Ix types; in addition, instances may be automatically derived for
+  
+ enumerated and tuple types. You should think of the primitive types as
+  
+ vector indices, and tuple types as indices of multidimensional rectangular",NA
+B.7 ,NA,NA
+The Numeric Classes,"The Num class and the numeric class hierarchy were briefly described in 
+ Section
+  7.4
+ . Figure
+  B.1
+  gives the full class declarations.",NA
+Appendix C,NA,NA
+Built-in Types Are Not,NA,NA
+Special,"Throughout this text we have introduced many “built-in” types such as lists, 
+ tuples, integers, and characters. We have also shown how new user-defined 
+ types can be defined. Aside from special syntax, you might be wondering if 
+ the built-in types are in any way more special than the user-defined ones. 
+ The answer is no. The special syntax is for convenience and for consistency 
+ with historical convention, but has no semantic consequence.
+  
+ We can emphasize this point by considering what the type declarations 
+ would look like for these built-in types if in fact we were allowed to use the 
+ special syntax in defining them. For example, the Char type might be written 
+ as:
+  
+ data Char = ’a’ | ’b’ | ’c’ | ...
+  
+ -- This is not valid 
+  
+ | ’A’ | ’B’ | ’C’ | ...
+  
+ -- Haskell code!
+  
+ | ’1’ | ’2’ | ’3’ | ...
+  
+ These constructor names are not syntactically valid; to fix them we would 
+ have to write something like:
+  
+ data Char = Ca | Cb | Cc | ...
+  
+ | CA | CB | CC | ...
+  
+ | C1 | C2 | C3 | ...
+  
+ Even though these constructors are actually more concise, they are quite 
+ unconventional for representing characters, and thus the special syntax is 
+ used instead.
+  
+ In any case, writing “pseudo-Haskell” code in this way helps us to see
+  
+ 411",NA
+Appendix D,NA,NA
+Pattern-Matching Details,"In this chapter we will look at Haskell’s pattern-matching process in greater 
+ detail.
+  
+ Haskell defines a fixed set of patterns for use in case expressions and 
+ function definitions. Pattern matching is permitted using the constructors of 
+ any type, whether user-defined or pre-defined in Haskell. This includes 
+ tuples, strings, numbers, characters, etc. For example, here’s a contrived 
+ function that matches against a tuple of “constants:”
+  
+ contrived :: ([a ], Char, (Int, Float), String, Bool) → Bool 
+ contrived ([ ], ’b’, (1, 2.0), ""hi"", True) = False
+  
+ This example also demonstrates that nesting of patterns is permitted (to 
+ arbitrary depth).
+  
+ Technically speaking, formal parameters to functions are also patterns—it’s 
+ just that they never fail to match a value. 
+  
+ As a “side effect” of a 
+ successful match, the formal parameter is bound to the value it is being 
+ matched against. 
+  
+ For this reason patterns in any one equation are not 
+ allowed to have more than one occurrence of the same formal parameter.
+  
+ A pattern that may fail to match is said to be refutable; for example, the 
+ empty list [ ] is refutable. Patterns such as formal parameters that never fail 
+ to match are said to be irrefutable. There are three other kinds of irrefutable 
+ patterns, which are summarized below.
+  
+ As-Patterns Sometimes it is convenient to name a pattern for use on the 
+ right-hand side of an equation. For example, a function that duplicates the 
+ first element in a list might be written as:
+  
+ 414",NA
+Pattern-Matching Semantics,"So far we have discussed how individual patterns are matched, how some are 
+ refutable, some are irrefutable, etc. But what drives the overall process? In
+  
+ 1
+ Another advantage to doing this is that a naive implementation might otherwise com-pletely 
+ reconstruct x : xs rather than re-use the value being matched against.",NA
+Case Expressions,"Pattern matching provides a way to “dispatch control” based on structural 
+ properties of a value. However, in many circumstances we don’t wish to 
+ define a function every time we need to do this. Haskell’s case expression 
+ provides a way to solve this problem. Indeed, the meaning of pattern match-
+ ing in function definitions is specified in the Haskell Report in terms of case 
+ expressions, which are considered more primitive. In particular, a function 
+ definition of the form:
+  
+ f p
+ 11
+ ...p
+ 1k
+  = e
+ 1 
+  
+ ...
+  
+ f p
+ n1
+ ...p
+ nk
+  = e
+ n
+  
+ where each p
+ ij
+  is a pattern, is semantically equivalent to:
+  
+ f x
+ 1
+  x
+ 2
+  ... xk = case (x
+ 1
+ , ..., xk) of (p
+ 11
+ , ..., p
+ 1k
+ ) → e
+ 1 
+  
+ ...
+  
+ (p
+ n1
+ , ..., p
+ nk
+ ) → e
+ n
+  
+ where the xi are new identifiers. For example, the definition of take given 
+ earlier is equivalent to:
+  
+ take m ys = case (m, ys) of 
+  
+  
+ (0, )
+  
+ → [ ] 
+  
+  
+ ( , [ ])
+  
+ → [ ] 
+  
+  
+ (n, x : xs) → x : take (n − 1) xs",NA
+Bibliography,"[Ass13a] 
+  
+ MIDI Manufacturers Association. Complete midi 1.0 detailed
+  
+ specification, 1995-2013.
+  
+ [Ass13b] 
+  
+ MIDI Manufacturers Association. General midi 1, 2 and lite
+  
+ specifications, 1995-2013.
+  
+ [Bir98] 
+  
+ R. Bird. Introduction to Functional Programming using Haskell
+  
+ (second edition). Prentice Hall, London, 1998.
+  
+ [BW88] 
+  
+ R. Bird and P. Wadler. Introduction to Functional Program-
+  
+ ming. Prentice Hall, New York, 1988.
+  
+ [Cag86] 
+  
+ John Cage. Silence: Lectures and Writings. Wesleyan Univer-
+  
+ sity Press, Middletown, CT, 1961,1986.
+  
+ [CE01] 
+  
+ Antony Courtney and Conal Elliott. Genuinely functional user
+  
+ interfaces. In Proc. of the 2001 Haskell Workshop, September
+  
+ 2001.
+  
+ [Cho73] 
+  
+ John M. Chowning. The synthesis of complex audio spectra by
+  
+ means of frequency modulation. Journal of Audio Engineering
+  
+ Society, 21(7):526–534, 1973.
+  
+ [Chu41] 
+  
+ A. Church. The Calculi of Lambda Conversion. Princeton Uni-
+  
+ versity Press, Princeton, NJ, 1941.
+  
+ [Coo02] 
+  
+ Perry Cook. Real Sound Synthesis for Interactive Applications.
+  
+ A.K. Peters Press, Natick MA, USA, 2002.
+  
+ [Cor94] 
+  
+ Chick Corea. Children’s Songs – 20 Pieces for Keyboard (ED
+  
+ 7254). Schott, Mainz, 1994.
+  
+ 419",NA

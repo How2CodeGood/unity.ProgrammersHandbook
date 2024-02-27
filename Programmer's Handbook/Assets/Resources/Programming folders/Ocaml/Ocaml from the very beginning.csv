@@ -1,0 +1,7626 @@
+Larger Text,Smaller Text,Symbol
+OC,AML FROM THE,NA
+ V,ERY,NA
+ B,"EGINNING
+  
+ In OCaml from the Very Beginning John Whitington takes a no-prerequisites approach 
+ to teaching a modern general-purpose programming language. Each small, self-
+ contained chapter introduces a new topic, building until the reader can write quite 
+ substantial programs. There are plenty of questions and, crucially, worked answers 
+ and 
+ hints.
+  
+ OCaml from the Very Beginning will appeal both to new programmers, and 
+ experienced programmers eager to explore functional languages such as OCaml. It 
+ is 
+ suitable both for formal use within an undergraduate or graduate curriculum, and for 
+ the interested amateur.
+  
+ J
+ OHN
+  W
+ HITINGTON
+  founded a software company which uses OCaml extensively. He 
+ teaches functional programming to students of Computer Science at the University of 
+ Cambridge.",NA
+OC,NA,NA
+AML,NA,NA
+from the very beginning,"John Whitington
+  
+ C O H E R E N T 
+  
+ P R E S S",NA
+Contents,"Getting Ready 
+  
+ ix
+  
+ 1 
+  
+ Starting Off 
+  
+ 1
+  
+ 2 
+  
+ Names and Functions 
+  
+ 9
+  
+ Note on Notation 
+  
+ 17
+  
+ 3 
+  
+ Case by Case 
+  
+ 19
+  
+ 4 
+  
+ Making Lists 
+  
+ 25
+  
+ Two Different Ways of Thinking 
+  
+ 35
+  
+ 5 
+  
+ Sorting Things 
+  
+ 37
+  
+ Loading a Program from a File 
+  
+ 45
+  
+ 6 
+  
+ Functions upon Functions upon Functions 
+  
+ 47
+  
+ 7 
+  
+ When Things Go Wrong 
+  
+ 55
+  
+ 8 
+  
+ Looking Things Up 
+  
+ 61
+  
+ 9 
+  
+ More with Functions 
+  
+ 67
+  
+ 10 New Kinds of Data 
+  
+ 73
+  
+ 11 Growing Trees 
+  
+ 8
+ 1
+  
+ 12 In and Out 
+  
+ 89
+  
+ 13 Putting Things in Boxes 
+  
+ 99
+  
+ 14 The Other Numbers 
+  
+ 11
+ 1
+  
+ 15 The OCaml Standard Library 
+  
+ 11
+ 7
+  
+ 16 Building Bigger Programs 
+  
+ 12
+ 3
+  
+ Answers to Questions 
+  
+ 13
+ 3",NA
+Preface,"This book is based on the Author’s experience of teaching programming to students in the University of 
+ Cambridge supervisions system. In particular, working with students for the first-year undergraduate 
+ course “Foundations of Computer Science”, based on Standard ML and lectured for many years by 
+ Lawrence C. Paulson.
+  
+ An interesting aspect of supervising students from a wide range of backgrounds (some with no 
+ previous experience at all taking Computer Science as an additional subject within the Cambridge Natural 
+ Sciences curriculum, and some with a great deal of programming experience already) is the level playing 
+ field which the ML family of languages (like OCaml) provide. Sometimes, those students with least prior 
+ programming experience perform the best.
+  
+ I have tried to write a book which has no prerequisites – and with which any intelligent undergraduate 
+ ought to be able to cope, whilst trying to be concise enough that someone coming from another language 
+ might not be too annoyed by the tone.",NA
+Special note to those who have already written programs,"When I was a boy, our class was using a word processor for the first time. I wanted a title for my story, so I 
+ typed it on the first line and then, placing the cursor at the beginning, held down the space bar until the 
+ title 
+ was roughly in the middle. My friend taught me how to use the centring function, but it seemed more 
+ complicated to me, and I stuck with the familiar way – after all, it worked. Later on, of course, when I had 
+ more confidence and experience, I realized he had been right.
+  
+ When starting a language which is fundamentally different from those you have seen before, it can be 
+ difficult to see the advantages, and to try to think of every concept in terms of the old language. I would 
+ urge 
+ you to consider the possibility that, at the moment, you might be the boy holding down the space bar.",NA
+Acknowledgments,"Inevitably, the approach here owes a debt to that taken by Lawrence C. Paulson, both in his lecture notes 
+ and in his book “ML for the Working Programmer” (Cambridge University Press, 1996). Question 3 in 
+ Chapter 11 is inspired by an examination question of his. I was taught Standard ML by Professor Paulson 
+ and 
+ Andrei Serjantov in Autumn 2000. Mark Shinwell has been a constant source of helpful discussion. 
+ Robin 
+ Walker and latterly Andrew Rice have arranged the supervisions system at Queens’ College within 
+ which I 
+ have taught since 2004. I am grateful to the developers of OCaml who have provided such a 
+ pleasant 
+ environment in which to write programs. Helpful comments on an earlier draft were provided by 
+ Martin 
+ DeMello, Damien Doligez, Arthur Guillon, Zhi Han, Robert Jakob, Xavier Leroy, Florent Monnier, and 
+ Benjamin Pierce. And, of course, I thank all my students, some of whom are now working with OCaml for a 
+ living.
+  
+ vii",NA
+Getting Ready,"This book is about teaching the computer to do new things by writing computer programs. Just as there are 
+ different languages for humans to speak to one another, there are different programming languages for 
+ humans to speak to computers.
+  
+ We are going to be using a programming language called
+  OCaml
+ . It might already be on your computer, 
+ or you may have to find it on the internet and install it yourself. You will know that you have OCaml 
+ working when you see something like this:
+  
+ OCaml
+  
+ #
+  
+ OCaml is waiting for us to type something. Try typing
+  1 space + space 2 ; ;
+  followed by the
+  Enter
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ key. You should see this:
+  
+ OCaml
+  
+ # 1 + 2;;
+  
+ - : int = 3
+  
+ OCaml is telling us the result of the calculation. To leave OCaml, give the
+  exit 0
+  command, again ending 
+ with
+  ;;
+  
+ to tell OCaml we have finished typing:
+  
+ OCaml
+  
+ # exit 0;;
+  
+ You should find yourself back where you were before. If you make a mistake when typing, you can press
+  
+  
+ Ctrl-C (hold down the Ctrl key and tap the c key). This will allow you to start again:
+  
+  
+  
+  
+   
+ OCaml
+  
+ # 1 + 3^CInterrupted 
+  
+ # 1 + 2;;
+  
+ - : int = 3
+  
+ We are ready to begin.
+  
+ ix",NA
+Chapter 1,NA,NA
+Starting Off,"We will cover a fair amount of material in this chapter and its questions, since we will need a solid base on 
+ which to build. You should read this with a computer running OCaml in front of you.
+  
+ Consider first the mathematical expression 1 + 2 × 3. What is the result? How did you work it out?
+  
+ We might show the process like this:
+  
+ 1 + 2 × 3
+  
+ =⇒
+  
+ 1 + 6
+  
+ =⇒
+  
+ 7
+  
+ How did we know to multiply 2 by 3 first, instead of adding 1 and 2? How did we know when to stop? Let us 
+ underline the part of the expression which is dealt with at each step:
+  
+ 1 + 2 × 3
+  
+ =⇒
+  
+ 1 + 6
+  
+ =⇒
+  
+ 7
+  
+ We chose which part of the expression to deal with each time using a familiar mathematical rule –
+ multiplication is done before addition. We stopped when the expression could not be processed any further.
+  
+ Computer programs in OCaml are just like these expressions. In order to give you an answer, the 
+ computer needs to know all the rules you know about how to process the expression correctly. In fact, 1 + 2 
+ × 3
+  is a valid OCaml expression as well as a valid mathematical one, but we must write
+  *
+  instead of
+ ×, since 
+ there is no × key on the keyboard:
+  
+ OCaml
+  
+ # 1 + 2 * 3;;
+  
+ - : int = 7
+  
+ Here,
+  #
+  is OCaml prompting us to write an expression, and
+  1 + 2 * 3;;
+  is what we typed (the semicolons 
+ followed by the Enter key tell OCaml we have finished our expression). OCaml responds with the answer 
+ 7
+ . 
+ OCaml also prints
+  int
+ , which tells us that the answer is a whole number, or integer.
+  
+ Let us look at our example expression some more. There are two operators: + and ×. There are three 
+ operands: 1, 2, and 3. When we wrote it down, and when we typed it into OCaml, we put spaces between
+  
+ 1",NA
+Questions,"1. What are the types of the following expressions and what do they evaluate to, and why?
+  
+ 17 
+  
+ 1 + 2 * 3 + 4 
+  
+ 800 / 80 / 8 
+  
+ 400 > 200 
+  
+ 1 <> 1 
+  
+ true || false 
+  
+ true && false 
+  
+ if
+  true
+  then
+  false
+  else
+  true 
+  
+ '%' 
+  
+ 'a' + 'b'
+  
+ 2.
+  Consider the evaluations of the expressions
+  1 + 2 mod 3
+ ,
+  (1 + 2) mod 3
+ , and
+  1 + (2 mod 3)
+ . What 
+  
+ can you 
+ conclude about the
+  +
+  and
+  mod
+  operators?
+  
+ 3. A programmer writes
+  1+2 * 3+4
+ . What does this evaluate to? What advice would you give him? 4. The 
+ range of numbers available is limited. There are two special numbers:
+  min_int
+  and
+  max_int
+ .
+  
+ What are their values on your computer? What happens when you evaluate the expressions
+  max_int + 1
+  
+ and
+  min_int - 1
+ ?
+  
+ 5. What happens when you try to evaluate the expression
+  1 / 0
+ ? Why?
+  
+ 6.
+  Can you discover what the
+  mod
+  operator does when one or both of the operands are negative? What 
+  
+ about if the first operand is zero? What if the second is zero?
+  
+ 7. Why not just use, for example, the integer
+  0
+  to represent false and the integer
+  1
+  for true? Why have 
+  
+ a separate bool type at all?
+  
+ 8. What is the effect of the comparison operators like
+  <
+  and
+  >
+  on alphabetic values of type char? For 
+ example, what does
+  'p' < 'q'
+  evaluate to? What is the effect of the comparison operators on the 
+ booleans,
+  true
+  and
+  false
+ ?",NA
+So Far,"Integers
+  min_int
+  ...
+  -3 -2 -1 0 1 2 3
+  ...
+  max_int
+  of",NA
+1 ,"type int. Booleans
+  true
+  and
+  false
+  of type bool. Char-
+  
+ acters of type char like
+  'X'
+  and
+  '!'
+ .
+  
+ Mathematical operators
+  + - * / mod
+  which take two inte-
+  
+ gers and give another.
+  
+ Operators
+  = < <= > >= <>
+  which compare two values 
+  
+ and evaluate to either
+  true
+  or
+  false
+ .
+  
+ The conditional
+  if
+  expression1
+  then
+  expression2
+  else
+  ex-
+  
+ pression3, where expresssion1 has type
+  bool
+  and 
+ expression2 
+  
+ and expression3 have the same type as one another.
+  
+ The boolean operators
+  &&
+  and
+  ||
+  which allow us to build 
+  
+ compound boolean expressions.",NA
+Chapter 2,NA,NA
+Names and Functions,"So far we have built only tiny toy programs. To build bigger ones, we need to be able to name things so as 
+ to 
+ refer to them later. We also need to write expressions whose result depends upon one or more other 
+ things.
+  
+  
+ Before, if we wished to use a sub-expression twice or more in a single expression, we had to type it 
+ multiple times:
+  
+ OCaml
+  
+ # 200 * 200 * 200;;
+  
+ - : int = 8000000
+  
+ Instead, we can define our own name to stand for the result of evaluating an expression, and then use the 
+ name as we please:
+  
+ OCaml
+  
+ # let x = 200;; 
+  
+ val x : int = 200 
+  
+ # x * x * x;;
+  
+ - : int = 8000000
+  
+ To write this all in a single expression, we can use the
+  let
+  . . .
+  =
+  . . .
+  in
+  construct:
+  
+ OCaml
+  
+ # let x = 200 in x * x * x;;
+  
+ - : int = 8000000 
+  
+ # let a = 500 in (let b = a * a in a + b);;
+  
+ - : int = 250500
+  
+ We can also make a function, whose value depends upon some input (we call this input an argument – we 
+ will be using the word “input” later in the book to mean something different):
+  
+ OCaml
+  
+ 9",NA
+Questions,"1. Write a function which multiplies a given number by ten. What is its type?
+  
+ 2. Write a function which returns
+  true
+  if both of its arguments are non-zero, and
+  false
+  otherwise. What is 
+ the type of your function?
+  
+ 3.
+  Write a recursive function which, given a number
+  n
+ , calculates the sum
+  1 + 2 + 3 + . . . + n
+ . What is 
+  
+ its 
+ type?
+  
+ 4. Write a function
+  power x n
+  which raises
+  x
+  to the power
+  n
+ . Give its type.
+  
+ 5. Write a function
+  isconsonant
+  which, given a lower-case character in the range
+  'a'
+ ...
+  'z'
+ , deter-
+  
+ mines 
+ if it is a consonant.
+  
+ 6. What is the result of the expression
+  let
+  x = 1
+  in let
+  x = 2
+  in
+  x + x
+  ?
+  
+ 7. Can you suggest a way of preventing the non-termination of the
+  factorial
+  function in the case of 
+  
+ a zero 
+ or negative argument?",NA
+So Far,"Integers
+  min_int
+  ...
+  -3 -2 -1 0 1 2 3
+  ...
+  max_int
+  of",NA
+1 ,"type int. Booleans
+  true
+  and
+  false
+  of type bool. Char-
+  
+ acters of type char like
+  'X'
+  and
+  '!'
+ .
+  
+ Mathematical operators
+  + - * / mod
+  which take two inte-
+  
+ gers and give another.
+  
+ Operators
+  = < <= > >= <>
+  which compare two values 
+  
+ and evaluate to either
+  true
+  or
+  false
+ .
+  
+ The conditional
+  if
+  expression1
+  then
+  expression2
+  else
+  ex-
+  
+ pression3, where expresssion1 has type
+  bool
+  and 
+ expression2 
+  
+ and expression3 have the same type as one another.
+  
+ The boolean operators
+  &&
+  and
+  ||
+  which allow us to build 
+  
+ compound boolean expressions.",NA
+2 ,"sion using the
+  let
+  name
+  =
+  expression construct. Building 
+  
+ Assigning a name to the result of evaluating an expres-
+  
+ compound expressions using
+  let
+  name1
+  =
+  expression1
+  in 
+  
+ let
+  name2
+  =
+  expression2
+  in
+  ...
+  
+ Functions, introduced by
+  let
+  name argument1 argument2 
+  
+ ...
+  =
+  expression. These have type α → β, α → β → γ etc. 
+  
+ for some types α, β, γ etc.
+  
+ Recursive functions, which are introduced in the same 
+  
+ way, but using
+  let rec
+  instead of
+  let
+ .",NA
+Note on Notation,"From now on, instead of showing the actual OCaml session. . .
+  
+ OCaml
+  
+ # let rec factorial a = 
+  
+  
+ if a = 1 then 1 else a * factorial (a - 1);; val factorial : int -> int = 
+ <fun>
+  
+ . . . we will usually just show the program in a box, together with its type:
+  
+ factorial :
+  int → int 
+  
+ let rec
+  factorial a = 
+  
+  
+ if
+  a = 1
+  then
+  1
+  else
+  a * factorial (a - 1)
+  
+ If you prefer to compose your programs in a text editing program, and copy-and-paste them into OCaml, you 
+ can do that too. Just make sure you end with
+  ;;
+  to let OCaml know you have finished entering the program.
+  
+  
+ Later on, when we write larger programs, we will see how to use OCaml to load our programs from 
+ external files.
+  
+ 17",NA
+Chapter 3,NA,NA
+Case by Case,"In the previous chapter, we used the conditional expression
+  if
+  . . .
+  then
+  . . .
+  else
+  to define functions whose 
+ results depend on their arguments. For some of them we had to nest the conditional expressions one 
+ inside 
+ another. Programs like this are not terribly easy to read, and expand quickly in size and complexity 
+ as the 
+ number of cases increases.
+  
+  
+ OCaml has a nicer way of expressing choices – pattern matching. For example, recall our factorial 
+ function:
+  
+ factorial :
+  int → int 
+  
+ let rec
+  factorial a = 
+  
+  
+ if
+  a = 1
+  then
+  1
+  else
+  a * factorial (a - 1)
+  
+ We can rewrite this using pattern matching:
+  
+ factorial :
+  int → int 
+  
+ let rec
+  factorial a = 
+  
+  
+ match
+  a
+  with 
+  
+  
+ 1 -> 1 
+  
+  
+ | _ -> a * factorial (a - 1)
+  
+ We can read this as “See if
+  a
+  matches the pattern
+  1
+ . If it does, just return
+  1
+ . If not, see if it matches the 
+ pattern
+ _
+ . If it does, the result is
+  a * factorial (a - 1)
+ .” The pattern
+ _
+ is special – it matches anything. 
+ Remember our
+  
+ isvowel
+  function from the previous chapter?
+  
+ isvowel :
+  char → bool 
+  
+ let
+  isvowel c = 
+  
+  
+ c = 'a' || c = 'e' || c = 'i' || c = 'o' || c = 'u'
+  
+ 19",NA
+Questions,"1. Rewrite the
+  not
+  function from the previous chapter in pattern matching style.
+  
+ 2. Use pattern matching to write a recursive function which, given a positive integer n, returns the 
+  
+ sum of 
+ all the integers from 1 to n.
+  
+ 3. Use pattern matching to write a function which, given two numbers x and n, computes x
+ n
+ . 4. For each of 
+ the previous three questions, comment on whether you think it is easier to read the 
+  
+  
+ function with or without pattern matching. How might you expect this to change if the functions were 
+ much larger?
+  
+ 5. What does
+  match
+  1 + 1
+  with
+  2 ->
+  match
+  2 + 2
+  with
+  3 -> 4 | 4 -> 5
+  evaluate to? 6. There is a special pattern
+  x..y
+  
+ to denote continuous ranges of characters, for example
+  'a'..'z' 
+ will match all lowercase letters. Write 
+ functions
+  islower
+  and
+  isupper
+ , each of type
+  char → bool
+ , to 
+  
+  
+ decide on the case of a given letter.",NA
+So Far,"Integers
+  min_int
+  ...
+  -3 -2 -1 0 1 2 3
+  ...
+  max_int
+  of",NA
+1 ,"type int. Booleans
+  true
+  and
+  false
+  of type bool. Char-
+  
+ acters of type char like
+  'X'
+  and
+  '!'
+ .
+  
+ Mathematical operators
+  + - * / mod
+  which take two inte-
+  
+ gers and give another.
+  
+ Operators
+  = < <= > >= <>
+  which compare two values 
+  
+ and evaluate to either
+  true
+  or
+  false
+ .
+  
+ The conditional
+  if
+  expression1
+  then
+  expression2
+  else
+  ex-
+  
+ pression3, where expresssion1 has type
+  bool
+  and 
+ expression2 
+  
+ and expression3 have the same type as one another.
+  
+ The boolean operators
+  &&
+  and
+  ||
+  which allow us to build 
+  
+ compound boolean expressions.",NA
+2 ,"sion using the
+  let
+  name
+  =
+  expression construct. Building 
+  
+ Assigning a name to the result of evaluating an expres-
+  
+ compound expressions using
+  let
+  name1
+  =
+  expression1
+  in 
+  
+ let
+  name2
+  =
+  expression2
+  in
+  ...
+  
+ Functions, introduced by
+  let
+  name argument1 argument2 
+  
+ ...
+  =
+  expression. These have type α → β, α → β → γ etc. 
+  
+ for some types α, β, γ etc.
+  
+ Recursive functions, which are introduced in the same 
+  
+ way, but using
+  let rec
+  instead of
+  let
+ .",NA
+3 ,"tern1
+  |
+  . . .
+  ->
+  expression2
+  |
+  pattern2
+  |
+  . . .
+  ->
+  expression3 
+  
+ Matching patterns using
+  match
+  expression1
+  with
+  pat-
+  
+ |
+ . . . The expressions expression2, expression3 etc. must 
+ have 
+  
+ the same type as one another, and this is the type of the 
+  
+ whole
+  match
+  ...
+  with
+  expression.",NA
+Chapter 4,NA,NA
+Making Lists,"A list is a collection of elements. Here is a list of three integers:
+  
+ [1; 2; 3]
+  
+ We write a list between square brackets
+  [
+  and
+  ]
+ , separating the elements with semicolons. The list above has 
+ type int list, because it is a list of integers. All elements of the list must have the same type. The elements in 
+ the list are ordered (in other words,
+  [1; 2; 3]
+  and
+  [2; 3; 1]
+  are not the same list).
+  
+ The first element is called the head, and the rest are collectively called the tail. In our example, the head 
+ is 
+ the integer
+  1
+  and the tail is the list
+  [2; 3]
+ . So you can see that the tail has the same type as the whole list. 
+ Here is a list with no elements (called “the empty list” or sometimes “nil”):
+  
+ []
+  
+ It has neither a head nor a tail. Here is a list with just a single element:
+  
+ [5]
+  
+ Its head is the integer
+  5
+  and its tail is the empty list
+  []
+ . So every non-empty list has both a head and a tail. 
+ Lists may contain elements of any type: integers, booleans, functions, even other lists. For example, here is 
+ a 
+ list containing elements of type bool:
+  
+ [false; true; false]
+  : bool list
+  
+ OCaml defines two operators for lists. The
+  ::
+  operator (pronounced “cons”) is used to add a single element to 
+ the front of an existing list:
+  
+ false :: [true; false]
+  
+ =⇒
+ [false; true; false]
+  
+ The cons operation is completed in a constant amount of time, regardless of the length of the list. The
+  @ 
+ operator (pronounced “append”) is used to combine two lists together:
+  
+ [1; 2] @ [3; 4; 5]
+  
+ =⇒
+ [1; 2; 3; 4; 5]
+  
+ 25",NA
+Questions,"1.
+  Write a function
+  evens
+  which does the opposite to
+  odds
+ , returning the even numbered elements in a list. 
+ For example,
+  evens [2; 4; 2; 4; 2]
+  should return
+  [4; 4]
+ . What is the type of your function?
+  
+ 2. Write a function
+  count_true
+  which counts the number of
+  true
+  elements in a list. For example, 
+ count_true 
+ [true; false; true]
+  should return
+  2
+ . What is the type of your function? Can you write a tail recursive 
+ version?
+  
+ 3. Write a function which, given a list, builds a palindrome from it. A palindrome is a list which equals its 
+ own reverse. You can assume the existence of
+  rev
+  and
+  @
+ . Write another function which determines if 
+ a list is a palindrome.
+  
+ 4. Write a function
+  droplast
+  which returns all but the last element of a list. If the list is empty, it should 
+ return the empty list. So, for example,
+  droplast [1; 2; 4; 8]
+  should return
+  [1; 2; 4]
+ . What about a tail 
+ recursive version?
+  
+ 5.
+  Write a function
+  member
+  of type
+  α → α list → bool
+  which returns
+  true
+  if an element exists in a list, 
+ or
+  false
+  
+ if not. For example,
+  member 2 [1; 2; 3]
+  should evaluate to
+  true
+ , but
+  member 3 [1; 2] 
+ should evaluate to
+  
+ false
+ .
+  
+ 6. Use your
+  member
+  function to write a function
+  make_set
+  which, given a list, returns a list which contains 
+ all the elements of the original list, but has no duplicate elements. For example,
+  make_set [1; 2; 3; 3; 1]
+  
+ might return
+  [2; 3; 1]
+ . What is the type of your function?
+  
+ 7. Can you explain why the
+  rev
+  function we defined is inefficient? How does the time it takes to run 
+ relate to the size of its argument? Can you write a more efficient version using an accumulating 
+ argument? What is its efficiency in terms of time taken and space used?",NA
+So Far,"Integers
+  min_int
+  ...
+  -3 -2 -1 0 1 2 3
+  ...
+  max_int
+  of",NA
+1 ,"type int. Booleans
+  true
+  and
+  false
+  of type bool. Char-
+  
+ acters of type char like
+  'X'
+  and
+  '!'
+ .
+  
+ Mathematical operators
+  + - * / mod
+  which take two inte-
+  
+ gers and give another.
+  
+ Operators
+  = < <= > >= <>
+  which compare two values 
+  
+ and evaluate to either
+  true
+  or
+  false
+ .
+  
+ The conditional
+  if
+  expression1
+  then
+  expression2
+  else
+  ex-
+  
+ pression3, where expresssion1 has type
+  bool
+  and 
+ expression2 
+  
+ and expression3 have the same type as one another.
+  
+ The boolean operators
+  &&
+  and
+  ||
+  which allow us to build 
+  
+ compound boolean expressions.",NA
+2 ,"sion using the
+  let
+  name
+  =
+  expression construct. Building 
+  
+ Assigning a name to the result of evaluating an expres-
+  
+ compound expressions using
+  let
+  name1
+  =
+  expression1
+  in 
+  
+ let
+  name2
+  =
+  expression2
+  in
+  ...
+  
+ Functions, introduced by
+  let
+  name argument1 argument2 
+  
+ ...
+  =
+  expression. These have type α → β, α → β → γ etc. 
+  
+ for some types α, β, γ etc.
+  
+ Recursive functions, which are introduced in the same 
+  
+ way, but using
+  let rec
+  instead of
+  let
+ .",NA
+3 ,"tern1
+  |
+  . . .
+  ->
+  expression2
+  |
+  pattern2
+  |
+  . . .
+  ->
+  expression3 
+  
+ Matching patterns using
+  match
+  expression1
+  with
+  pat-
+  
+ |
+ . . . The expressions expression2, expression3 etc. must 
+ have 
+  
+ the same type as one another, and this is the type of the 
+  
+ whole
+  match
+  ...
+  with
+  expression.",NA
+4 ,"elements of like type. They are written between square 
+  
+ Lists, which are ordered collections of zero or more
+  
+ brackets, with elements separated by semicolons e.g.
+  [1; 
+  
+ 2; 3; 4; 5]
+ . If a list is non-empty, it has a head, which is 
+  
+ its first element, and a tail, which is the list composed of 
+  
+ the rest of the elements.",NA
+Two Different Ways of Thinking,"Look again at our list appending function:
+  
+ append :
+  α list → α list → α list
+  
+ let rec
+  append a b = 
+  
+  
+ match
+  a
+  with 
+  
+  
+ [] -> b 
+  
+  
+ | h::t -> h :: append t b
+  
+ There are two ways to think about this computation. One way is to imagine the actions the computer might 
+ take to calculate the result:
+  
+ Look at the first list. If it is empty, return the second list. Otherwise, pull apart the first list, 
+ looking at its head and tail. Make a recursive call to append the tail to the second list, and then 
+ cons the head onto 
+ the result. Return this.
+  
+ Alternatively, we can consider each match case to be an independent statement of truth, thinking the same 
+ way about the whole function:
+  
+ The empty list appended to another list is that list. Otherwise, the first list is non-empty, so it 
+ has a 
+ head and a tail. Call them
+  h
+  and
+  t
+ . Clearly
+  append (h :: t) b
+  is equal to
+  h :: append t b
+ . Since 
+ this 
+ reduces the problem size, progress is made.
+  
+ It is very useful to be able to think in these two ways about functions you write, and to be able to swap 
+ between them in the mind with ease.
+  
+ 35",NA
+Chapter 5,NA,NA
+Sorting Things,"Lists often need to be in sorted order. How might we write a function to sort a list of integers? Well, a list 
+ with zero elements is already sorted. If we do not have an empty list, we must have a head and a tail. 
+ What 
+ can we do with those? Well, we can sort the tail by a recursive call to our
+  sort
+  function. So, now we 
+ have the 
+ head, and an already sorted list. Now, we just need to write a function to insert the head in an already sorted 
+ list. We have reduced the problem to an easier one.
+  
+ let rec
+  sort l = 
+  
+  
+ match
+  l
+  with 
+  
+  
+ [] -> [] 
+  
+  
+ an empty list is already 
+ sorted 
+  
+ | h::t -> insert h (sort t) 
+ insert the 
+ head into the sorted tail
+  
+ Now we just need to write the
+  insert
+  function. This takes an element and an already-sorted list, and returns 
+ the list with the element inserted in the right place:
+  
+ let rec
+  insert x l =
+  
+ match
+  l
+  with
+  
+ [] -> [x] 
+  
+ the simple case – just put
+  x
+  
+ in
+  
+ | h::t -> 
+  
+ otherwise we have a head and a 
+ tail
+  
+ if
+  x <= h 
+  
+ if we are at an appropriate 
+ point
+  
+ then
+  x :: h :: t 
+  
+ just put
+  x
+  here
+  
+ else
+  h :: insert x t 
+  
+ otherwise, keep
+  h
+  and carry 
+ on
+  
+ Consider the evaluation of
+  insert 3 [1; 1; 2; 3; 5; 9]
+ :
+  
+ insert 3 [1; 1; 2; 3; 5; 9]
+  
+ =⇒
+  
+ 1 :: insert 3 [1; 2; 3; 5; 9] 
+  
+ 1 :: 1 :: insert 3 [2; 3; 5; 9] 1 :: 1 :: 2 :: insert 3 
+ [3; 5; 9]
+  
+ =⇒
+  
+ =⇒
+  
+ =⇒
+  
+ 1 :: 1 :: 2 :: 3 :: 3 :: [5; 9]
+  
+ ∗
+  
+ =⇒
+  
+ [1; 1; 2; 3; 3; 5; 9]
+  
+ 37",NA
+How long does it take?,"How long does merge sort take to run? We can visualize it with the following diagram, in which we have 
+ chosen a list of length eight (a power of two) for convenience.
+  
+ [6; 
+ 4; 
+ 5; 
+ 7; 
+ 2; 
+ 5; 
+ 3; 
+ 4] 
+  
+ [6; 
+ 4; 
+ 5; 
+ 7][2; 
+ 5; 
+ 3; 
+ 4] 
+  
+ [6; 
+ 4][5; 
+ 7][2; 
+ 5][3; 
+ 4] 
+  
+ [6][4][5][7][2][5][3][4] 
+  
+ [4; 
+ 6][5; 
+ 7][2; 
+ 5][3; 
+ 4] 
+  
+ [4; 
+ 5; 
+ 6; 
+ 7][2; 
+ 3; 
+ 4; 
+ 5] 
+  
+ [2; 3; 4; 4; 5; 5; 6; 7]
+  
+ In the top half of the diagram, the lists are being taken apart using
+  take
+  and
+  drop
+ , until they are small enough 
+ to already be sorted. In the bottom half, they are being merged back together.
+  
+ How long does each row take? For the top half: to split a list into two halves takes time proportional to 
+ the length of the list. On the first line, we do this once on a list of length eight. On the second line, we do it 
+ twice on lists of length four, and so on. So each line takes the same time overall. For the bottom half, we have 
+ another function which takes time proportional to the length of its argument –
+  merge
+  – so each line in the 
+ bottom half takes time proportional to the length too.",NA
+Questions,"1. In
+  msort
+ , we calculate the value of the expression
+  length l / 2
+  twice. Modify
+  msort
+  to remove 
+  
+ this 
+ inefficiency.
+  
+ 2.
+  We know that
+  take
+  and
+  drop
+  can fail if called with incorrect arguments. Show that this is never the 
+  
+ case in
+  
+ msort
+ .
+  
+ 3. Write a version of insertion sort which sorts the argument list into reverse order.
+  
+ 4. Write a function to detect if a list is already in sorted order.
+  
+ 5. We mentioned that the comparison functions like
+  <
+  work for many OCaml types. Can you determine, 
+ by experimentation, how they work for lists? For example, what is the result of
+  [1; 2] < [2; 3]
+ ? What 
+ happens when we sort the following list of type char list list? Why?
+  
+ [['o'; 'n'; 'e']; ['t'; 'w'; 'o']; ['t'; 'h'; 'r'; 'e'; 'e']]
+  
+ 6. Combine the
+  sort
+  and
+  insert
+  functions into a single
+  sort
+  function.",NA
+So Far,"Integers
+  min_int
+  ...
+  -3 -2 -1 0 1 2 3
+  ...
+  max_int
+  of",NA
+1 ,"type int. Booleans
+  true
+  and
+  false
+  of type bool. Char-
+  
+ acters of type char like
+  'X'
+  and
+  '!'
+ .
+  
+ Mathematical operators
+  + - * / mod
+  which take two inte-
+  
+ gers and give another.
+  
+ Operators
+  = < <= > >= <>
+  which compare two values 
+  
+ and evaluate to either
+  true
+  or
+  false
+ .
+  
+ The conditional
+  if
+  expression1
+  then
+  expression2
+  else
+  ex-
+  
+ pression3, where expresssion1 has type
+  bool
+  and 
+ expression2 
+  
+ and expression3 have the same type as one another.
+  
+ The boolean operators
+  &&
+  and
+  ||
+  which allow us to build 
+  
+ compound boolean expressions.",NA
+2 ,"sion using the
+  let
+  name
+  =
+  expression construct. Building 
+  
+ Assigning a name to the result of evaluating an expres-
+  
+ compound expressions using
+  let
+  name1
+  =
+  expression1
+  in 
+  
+ let
+  name2
+  =
+  expression2
+  in
+  ...
+  
+ Functions, introduced by
+  let
+  name argument1 argument2 
+  
+ ...
+  =
+  expression. These have type α → β, α → β → γ etc. 
+  
+ for some types α, β, γ etc.
+  
+ Recursive functions, which are introduced in the same 
+  
+ way, but using
+  let rec
+  instead of
+  let
+ .",NA
+3 ,"tern1
+  |
+  . . .
+  ->
+  expression2
+  |
+  pattern2
+  |
+  . . .
+  ->
+  expression3 
+  
+ Matching patterns using
+  match
+  expression1
+  with
+  pat-
+  
+ |
+ . . . The expressions expression2, expression3 etc. must 
+ have 
+  
+ the same type as one another, and this is the type of the 
+  
+ whole
+  match
+  ...
+  with
+  expression.",NA
+4 ,"elements of like type. They are written between square 
+  
+ Lists, which are ordered collections of zero or more
+  
+ brackets, with elements separated by semicolons e.g.
+  [1; 
+  
+ 2; 3; 4; 5]
+ . If a list is non-empty, it has a head, which is 
+  
+ its first element, and a tail, which is the list composed of 
+  
+ the rest of the elements.",NA
+5 ,"to separate as in
+  match
+  a, b
+  with
+  0, 0 ->
+  expression1 
+  
+ Matching two or more things at once, using commas
+  
+ | x, y ->
+  expression2
+  |
+  ...",NA
+Loading a Program from a File,"Now that we are building larger functions, we might like to store them between sessions, rather than typing 
+ them in every time. For example, compose a file like this in a text editor:
+  
+ let rec length l = 
+  
+  
+ match l with 
+  
+  
+ [] -> 0 
+  
+  
+ | h::t -> 1 + length t
+  
+ let rec append a b = 
+  
+  
+ match a with 
+  
+  
+ [] -> b 
+  
+  
+ | h::t -> h :: append t b
+  
+ Save the file in same directory (folder) as you enter OCaml from, under the name
+  lists.ml
+ . We can then tell 
+ OCaml to use the contents of that file like this:
+  
+ OCaml
+  
+ # #use ""lists.ml"";;
+  
+ val length : 'a list -> int = <fun>
+  
+ val append : 'a list -> 'a list -> 'a list = <fun>
+  
+ It is exactly the same as typing it in manually – the functions
+  length
+  and
+  append
+  will now be available for use. 
+ Errors and warnings will be reported as usual. Note that the
+  #use
+  command is not part of the OCaml 
+ language 
+ for expressions – it is just a command we are giving to OCaml.
+  
+ 45",NA
+Chapter 6,NA,NA
+Functions upon Functions,NA,NA
+upon Functions,"Often we need to apply a function to every element of a list. For example, doubling each of the numbers 
+ in a 
+ list of integers. We could do this with a simple recursive function, working over each element of a list:
+  
+ double :
+  int list → int list 
+  
+ let rec
+  double l = 
+  
+  
+ match
+  l
+  with
+  
+ [] -> [] 
+  
+  
+ no element to 
+ process 
+ | h::t -> (h * 2) :: double t 
+  
+ process the element, and the 
+ rest
+  
+ For example,
+  
+ double [1; 2; 4]
+  
+ =⇒
+  
+ 2 :: double [2; 4] 
+  
+ 2 :: 4 :: double [4] 
+  
+ 2 :: 4 :: 8 :: double []
+  
+ =⇒
+  
+ =⇒
+  
+ =⇒
+  
+ 2 :: 4 :: 8 :: []
+  
+ ∗
+  
+ =⇒
+  
+ [2; 4; 8]
+  
+ The result list does not need to have the same type as the argument list. We can write a function which, 
+ given a list of integers, returns the list containing a boolean for each:
+  true
+  if the number is even,
+  false
+  if it is 
+ odd.
+  
+ evens :
+  int list → bool list 
+  
+ let rec
+  evens l = 
+  
+  
+ match
+  l
+  with
+  
+ [] -> [] 
+  
+  
+ no element to 
+ process 
+ | h::t -> (h mod 2 = 0) :: evens t 
+  
+ process the element, and the 
+ rest
+  
+ 47",NA
+Questions,"1.
+  Write a simple recursive function
+  calm
+  to replace exclamation marks in a
+  char list
+  with periods. For 
+ example
+  calm ['H'; 'e'; 'l'; 'p'; '!'; ' '; 'F'; 'i'; 'r'; 'e'; '!']
+  should evaluate to 
+ calm ['H'; 'e'; 'l'; 'p'; '.'; ' '; 'F'; 'i'; 'r'; 'e'; 
+ '.']
+ . Now rewrite your function 
+ to use
+  map
+  instead of recursion. What are the types of your functions?
+  
+ 2. Write a function
+  clip
+  which, given an integer, clips it to the range 1 . . . 10 so that integers bigger 
+ than 
+ 10 round down to 10, and those smaller than 1 round up to 1. Write another function
+  cliplist 
+ which 
+ uses this first function together with
+  map
+  to apply this clipping to a whole list of integers.
+  
+ 3. Express your function
+  cliplist
+  again, this time using an anonymous function instead of
+  clip
+ .
+  
+ 4. Write a function
+  apply
+  which, given another function, a number of times to apply it, and an initial 
+ argument for the function, will return the cumulative effect of repeatedly applying the function. For 
+ instance,
+  apply f 6 4
+  should return
+  f (f (f (f (f (f 4))))))
+ . What is the type of your function?
+  
+ 5. Modify the insertion sort function from the preceding chapter to take a comparison function, in the 
+  
+ same way that we modified merge sort in this chapter. What is its type?
+  
+ 6. Write a function
+  filter
+  which takes a function of type α → bool and an α list and returns a list of 
+  
+ just 
+ those elements of the argument list for which the given function returns
+  true
+ .
+  
+ 7. Write the function
+  for_all
+  which, given a function of type α → bool and an argument list of typeα list 
+ evaluates to
+  true
+  if and only if the function returns
+  true
+  for every element of the list. Give examples of 
+ its use.
+  
+ 8.
+  Write a function
+  mapl
+  which maps a function of type
+  α → β
+  over a list of type
+  α list list
+  to produce 
+  
+ a list of type β list list.",NA
+So Far,"Integers
+  min_int
+  ...
+  -3 -2 -1 0 1 2 3
+  ...
+  max_int
+  of",NA
+1 ,"type int. Booleans
+  true
+  and
+  false
+  of type bool. Char-
+  
+ acters of type char like
+  'X'
+  and
+  '!'
+ .
+  
+ Mathematical operators
+  + - * / mod
+  which take two inte-
+  
+ gers and give another.
+  
+ Operators
+  = < <= > >= <>
+  which compare two values 
+  
+ and evaluate to either
+  true
+  or
+  false
+ .
+  
+ The conditional
+  if
+  expression1
+  then
+  expression2
+  else
+  ex-
+  
+ pression3, where expresssion1 has type
+  bool
+  and 
+ expression2 
+  
+ and expression3 have the same type as one another.
+  
+ The boolean operators
+  &&
+  and
+  ||
+  which allow us to build 
+  
+ compound boolean expressions.",NA
+2 ,"sion using the
+  let
+  name
+  =
+  expression construct. Building 
+  
+ Assigning a name to the result of evaluating an expres-
+  
+ compound expressions using
+  let
+  name1
+  =
+  expression1
+  in 
+  
+ let
+  name2
+  =
+  expression2
+  in
+  ...
+  
+ Functions, introduced by
+  let
+  name argument1 argument2 
+  
+ ...
+  =
+  expression. These have type α → β, α → β → γ etc. 
+  
+ for some types α, β, γ etc.
+  
+ Recursive functions, which are introduced in the same 
+  
+ way, but using
+  let rec
+  instead of
+  let
+ .",NA
+3 ,"tern1
+  |
+  . . .
+  ->
+  expression2
+  |
+  pattern2
+  |
+  . . .
+  ->
+  expression3 
+  
+ Matching patterns using
+  match
+  expression1
+  with
+  pat-
+  
+ |
+ . . . The expressions expression2, expression3 etc. must 
+ have 
+  
+ the same type as one another, and this is the type of the 
+  
+ whole
+  match
+  ...
+  with
+  expression.",NA
+4 ,"elements of like type. They are written between square 
+  
+ Lists, which are ordered collections of zero or more
+  
+ brackets, with elements separated by semicolons e.g.
+  [1; 
+  
+ 2; 3; 4; 5]
+ . If a list is non-empty, it has a head, which is 
+  
+ its first element, and a tail, which is the list composed of 
+  
+ the rest of the elements.
+  
+ The
+  ::
+  “cons” operator, which adds an element to the front 
+  
+ of a list. The
+  @
+  “append” operator, which concatenates two 
+  
+ lists together.",NA
+5 ,"to separate as in
+  match
+  a, b
+  with
+  0, 0 ->
+  expression1 
+  
+ Matching two or more things at once, using commas
+  
+ | x, y ->
+  expression2
+  |
+  ...",NA
+6,"Anonymous functions
+  fun
+  name
+  ->
+  expression. Making 
+ operators into functions as in
+  ( < )
+  and
+  ( + )
+ .",NA
+Chapter 7,NA,NA
+When Things Go Wrong,"Some of the functions we have written so far have had a single, correct answer for each possible argument. For 
+ example, there’s no number we cannot halve. However, when we use more complicated types such as 
+ lists, 
+ there are plenty of functions which do not always have an answer – a list might not have a head or a tail, for 
+ example. Our
+  take
+  and
+  drop
+  functions were unsatisfactory in case of invalid arguments. For example,
+  take 3 
+ ['a']
+  would simply return
+  []
+ . This is bad practice – we are hiding errors rather than confronting them.
+  
+  
+ OCaml has a mechanism for reporting such run-time errors (these are quite different from the type 
+ errors OCaml reports when it refuses to accept a program at all). This mechanism is exceptions.
+  
+  
+ There are some built-in exceptions in OCaml. For example
+  Division_by_zero
+ , which is raised when a 
+ program tries to divide a number by zero:
+  
+ OCaml
+  
+ # 10 / 0;; 
+  
+ Exception: Division_by_zero.
+  
+ In order to signal bad arguments in functions like
+  take
+  and
+  drop
+ , we can rewrite them using the built-in 
+ exception
+  Invalid_argument
+ , which also carries a message written between double quotation marks. Typically 
+ we use this to record the name of the function which failed. Figure 7.1 shows
+  take
+  and
+  drop 
+ rewritten to use 
+ the
+  Invalid_argument
+  exception using
+  raise
+ . Note that these functions deal with two problems of our previous 
+ versions: a negative argument, and being asked to take or drop more than the number of elements in the 
+ list.
+  
+  
+ We can define our own exceptions, using
+  exception
+ . They can carry information along with them, of a 
+ type we choose:
+  
+ OCaml
+  
+ # exception Problem;; 
+  
+ exception Problem 
+  
+ # exception NotPrime of int;; 
+  
+ exception NotPrime of int
+  
+ We have defined two exceptions –
+  Problem
+ , and
+  NotPrime
+  which carries an integer along with it. Excep-tions 
+ must start with a capital letter. The
+  of
+  construct can be used to introduce the type of information
+  
+ 55",NA
+Questions,"1. Write a function
+  smallest
+  which returns the smallest positive element of a list of integers. If there 
+  
+ is no positive element, it should raise the built-in
+  Not_found
+  exception.
+  
+ 2. Write another function
+  smallest_or_zero
+  which uses the
+  smallest
+  function but if
+  Not_found
+  is 
+  
+ raised, 
+ returns zero.
+  
+ 3. Write an exception definition and a function which calculates the largest integer smaller than or equal 
+ to the square root of a given integer. If the argument is negative, the exception should be raised.
+  
+ 4. Write another function which uses the previous one, but handles the exception, and simply returns 
+  
+ zero when a suitable integer cannot be found.
+  
+ 5. Comment on the merits and demerits of exceptions as a method for dealing with exceptional 
+ situations, in contrast to returning a special value to indicate an error (such as
+  -1
+  for a function 
+ normally returning a positive number).",NA
+So Far,"Integers
+  min_int
+  ...
+  -3 -2 -1 0 1 2 3
+  ...
+  max_int
+  of",NA
+1 ,"type int. 
+ Booleans
+  true
+  and
+  false
+  of type bool. Char-
+  
+ acters of type char like
+  'X'
+  and
+  '!'
+ .",NA
+7 ,"carry extra information by adding
+  of
+  type. Raising 
+ Defining exceptions with
+  exception
+  name. They can
+  
+ exceptions with
+  raise
+ . Handling exceptions with
+  try
+  ...
+  
+ Mathematical operators
+  + - * / mod
+  which take two inte-
+  
+ with
+  ...
+  
+ gers and give another.
+  
+ Operators
+  = < <= > >= <>
+  which compare two values 
+  
+ and evaluate to either
+  true
+  or
+  false
+ .
+  
+ The conditional
+  if
+  expression1
+  then
+  expression2
+  else
+  ex-
+  
+ pression3, where expresssion1 has type
+  bool
+  and 
+ expression2 
+  
+ and expression3 have the same type as one another.
+  
+ The boolean operators
+  &&
+  and
+  ||
+  which allow us to build 
+  
+ compound boolean expressions.",NA
+2 ,"sion using the
+  let
+  name
+  =
+  expression construct. Building 
+  
+ Assigning a name to the result of evaluating an expres-
+  
+ compound expressions using
+  let
+  name1
+  =
+  expression1
+  in 
+  
+ let
+  name2
+  =
+  expression2
+  in
+  ...
+  
+ Functions, introduced by
+  let
+  name argument1 argument2 
+  
+ ...
+  =
+  expression. These have type α → β, α → β → γ etc. 
+  
+ for some types α, β, γ etc.
+  
+ Recursive functions, which are introduced in the same 
+  
+ way, but using
+  let rec
+  instead of
+  let
+ .",NA
+3 ,"tern1
+  |
+  . . .
+  ->
+  expression2
+  |
+  pattern2
+  |
+  . . .
+  ->
+  expression3 
+  
+ Matching patterns using
+  match
+  expression1
+  with
+  pat-
+  
+ |
+ . . . The expressions expression2, expression3 etc. must 
+ have 
+  
+ the same type as one another, and this is the type of the 
+  
+ whole
+  match
+  ...
+  with
+  expression.",NA
+4 ,"elements of like type. They are written between square 
+  
+ Lists, which are ordered collections of zero or more
+  
+ brackets, with elements separated by semicolons e.g.
+  [1; 
+  
+ 2; 3; 4; 5]
+ . If a list is non-empty, it has a head, which is 
+  
+ its first element, and a tail, which is the list composed of 
+  
+ the rest of the elements.",NA
+5 ,"to separate as in
+  match
+  a, b
+  with
+  0, 0 ->
+  expression1 
+  
+ Matching two or more things at once, using commas
+  
+ | x, y ->
+  expression2
+  |
+  ...",NA
+6 ,"operators into functions as in
+  ( < )
+  and
+  ( + )
+ . 
+  
+ Anonymous functions
+  fun
+  name
+  ->
+  expression. Making",NA
+Chapter 8,NA,NA
+Looking Things Up,"Many programs make use of a structure known as a dictionary. A real dictionary is used for associating 
+ definitions with words; we use “dictionary” more generally to mean associating some unique keys (like 
+ words) with values (like definitions). For example, we might like to store the following information about 
+ the number of people living in each house in a road:
+  
+ House
+  
+ People
+  
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+ 4
+  
+  
+ 2
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 1
+  
+  
+ 2
+  
+ The house number is the key, the number of people living in the house is the value. The order of keys is 
+ unimportant – we just need to be able to associate each key with one (and only one) value. It would be very 
+ inconvenient to store two lists, one of house numbers and one of people. For one thing, we would have 
+ way 
+ of guaranteeing the two lists were of equal length. What we would like is a way of representing pairs 
+ like (1, 
+ 4) and then having a single list of those. To make a pair in OCaml, just write it with parentheses and a 
+ comma:
+  
+ p :
+  int × int 
+  
+ let
+  p = (1, 4)
+  
+ It has the type int × int, which we pronounce as “int cross int”. When printed on the screen,
+  *
+  is used instead 
+ of × just as with multiplication. The two parts of the pair need not have the same type:
+  
+ q :
+  int × char 
+  
+ let
+  q = (1, '1')
+  
+ 61",NA
+Questions,"1. Write a function to determine the number of different keys in a dictionary.
+  
+ 2. Define a function
+  replace
+  which is like
+  add
+ , but raises
+  Not_found
+  if the key is not already there. 3. Write a 
+ function to build a dictionary from two equal length lists, one containing keys and another 
+  
+ containing values. Raise the exception
+  Invalid_argument
+  if the lists are not of equal length. 4. Now write 
+ the inverse function: given a dictionary, return the pair of two lists – the first containing 
+  
+ all the keys, and 
+ the second containing all the values.
+  
+ 5. Define a function to turn any list of pairs into a dictionary. If duplicate keys are found, the value 
+  
+ associated with the first occurrence of the key should be kept.
+  
+ 6. Write the function
+  union a b
+  which forms the union of two dictionaries. The union of two dictio-naries is 
+ the dictionary containing all the entries in one or other or both. In the case that a key is contained in 
+ both dictionaries, the value in the first should be preferred.",NA
+So Far,"Integers
+  min_int
+  ...
+  -3 -2 -1 0 1 2 3
+  ...
+  max_int
+  of",NA
+1 ,"type int. 
+ Booleans
+  true
+  and
+  false
+  of type bool. Char-
+  
+ acters of type char like
+  'X'
+  and
+  '!'
+ .",NA
+7 ,"carry extra information by adding
+  of
+  type. Raising 
+ Defining exceptions with
+  exception
+  name. They can
+  
+ exceptions with
+  raise
+ . Handling exceptions with
+  try
+  ...
+  
+ Mathematical operators
+  + - * / mod
+  which take two inte-gers 
+ and give another.
+  
+ Operators
+  = < <= > >= <>
+  which compare two values and 
+ evaluate to either
+  true
+  or
+  false
+ .
+  
+ with
+  ...",NA
+8,"Tuples to combine a fixed number of elements
+  (a, b)
+ , 
+ (a, 
+ b, c)
+  etc. with types α × β, α × β × γ etc.
+  
+ The conditional
+  if
+  expression1
+  then
+  expression2
+  else
+  ex-
+  
+ pression3, where expresssion1 has type
+  bool
+  and 
+ expression2 
+  
+ and expression3 have the same type as one another.
+  
+ The boolean operators
+  &&
+  and
+  ||
+  which allow us to build 
+  
+ compound boolean expressions.",NA
+2 ,"sion using the
+  let
+  name
+  =
+  expression construct. Building 
+  
+ Assigning a name to the result of evaluating an expres-
+  
+ compound expressions using
+  let
+  name1
+  =
+  expression1
+  in 
+  
+ let
+  name2
+  =
+  expression2
+  in
+  ...
+  
+ Functions, introduced by
+  let
+  name argument1 argument2 
+  
+ ...
+  =
+  expression. These have type α → β, α → β → γ etc. 
+  
+ for some types α, β, γ etc.
+  
+ Recursive functions, which are introduced in the same 
+  
+ way, but using
+  let rec
+  instead of
+  let
+ .",NA
+3 ,"tern1
+  |
+  . . .
+  ->
+  expression2
+  |
+  pattern2
+  |
+  . . .
+  ->
+  expression3 
+  
+ Matching patterns using
+  match
+  expression1
+  with
+  pat-
+  
+ |
+ . . . The expressions expression2, expression3 etc. must 
+ have 
+  
+ the same type as one another, and this is the type of the 
+  
+ whole
+  match
+  ...
+  with
+  expression.",NA
+4 ,"elements of like type. They are written between square 
+  
+ Lists, which are ordered collections of zero or more
+  
+ brackets, with elements separated by semicolons e.g.
+  [1; 
+  
+ 2; 3; 4; 5]
+ . If a list is non-empty, it has a head, which is 
+  
+ its first element, and a tail, which is the list composed of 
+  
+ the rest of the elements.",NA
+5 ,"to separate as in
+  match
+  a, b
+  with
+  0, 0 ->
+  expression1 
+  
+ Matching two or more things at once, using commas
+  
+ | x, y ->
+  expression2
+  |
+  ...",NA
+6,"Anonymous functions
+  fun
+  name
+  ->
+  expression. Making 
+ operators into functions as in
+  ( < )
+  and
+  ( + )
+ .",NA
+Chapter 9,NA,NA
+More with Functions,"Look again at the type of a simple function with more than one argument:
+  
+ add :
+  int → int → int 
+  
+ let
+  add x y = x + y
+  
+ We have been considering functions like this as taking two arguments and returning a result. In fact, the 
+ truth is a little different. The type
+  int → int → int
+  can also be written as
+  int →
+  (
+ int → int
+ ). OCaml lets us 
+ omit 
+ the parentheses because → is a right-associative operator in the language of types. This gives us a clue.
+  
+ In truth, the function
+  add
+  is a function which, when you give it an integer, gives you a function 
+ which, 
+ when you give it an integer, gives the sum.
+  
+ This would be of no particular interest to us, except for one thing: we can give a function with two 
+ arguments just one argument at a time, and it turns out to be rather useful. For example:
+  
+ OCaml
+  
+ # let add x y = x + y 
+  
+ val add : int -> int -> int = <fun> 
+  
+ # let f = add 6 
+  
+ val f : int -> int = <fun> 
+  
+ # f 5
+  
+ - : int = 11
+  
+ Here, we have defined a function
+  f
+  by applying just one argument to
+  add
+ . This gives a function of type int → 
+ int which adds six to any number. We then apply
+  5
+  to this function, giving
+  11
+ . When defining 
+ f
+ , we used 
+ partial application (we applied only some of the arguments). In fact, even when applying all the arguments 
+ at once, we could equally write
+  (add 6) 5
+  rather than
+  add 6 5
+ . We can add six to every element in a list:
+  
+ map (add 6) [10; 20; 30]
+  
+ 67",NA
+S,"UMMARY
+  
+ The function
+  f x y
+  has type α → β → γ which can also be written α → (β → γ). Thus, it takes an argument of 
+ type α and returns a function of type β → γ which, when you give it an argument of type βreturns 
+ something of type γ. And so, we can apply just one argument to the function
+  f
+  (which is called partial 
+ application), or apply both at once. When we write
+  let
+  f x y = ...
+  this is just shorthand for
+  let 
+ f =
+  fun
+  x ->
+  fun
+  y -> 
+ ...",NA
+Questions,"1. Rewrite the summary paragraph at the end of this chapter for the three argument function
+  g a b c
+ .
+  
+ 2. Recall the function
+  member x l
+  which determines if an element
+  x
+  is contained in a list
+  l
+ . What is its type? 
+ What is the type of
+  member x
+ ? Use partial application to write a function
+  member_all x ls 
+ which 
+ determines if an element is a member of all the lists in the list of lists
+  ls
+ .
+  
+ 3.
+  Why can we not write a function to halve all the elements of a list like this:
+  map (( / ) 2) [10; 20; 30]
+ ? Write a 
+ suitable division function which can be partially applied in the manner we require.
+  
+ 4. Write a function
+  mapll
+  which maps a function over lists of lists of lists. You must not use the
+  let rec
+  
+ construct. Is it possible to write a function which works like
+  map
+ ,
+  mapl
+ , or
+  mapll
+  depending upon the 
+ list given to it?
+  
+ 5. Write a function
+  truncate
+  which takes an integer and a list of lists, and returns a list of lists, each of 
+ which has been truncated to the given length. If a list is shorter than the given length, it is unchanged. 
+ Make use of partial application.
+  
+ 6. Write a function which takes a list of lists of integers and returns the list composed of all the first 
+  
+ elements of the lists. If a list is empty, a given number should be used in place of its first element.",NA
+So Far,"Integers
+  min_int
+  ...
+  -3 -2 -1 0 1 2 3
+  ...
+  max_int
+  of",NA
+1 ,"type int. 
+ Booleans
+  true
+  and
+  false
+  of type bool. Char-
+  
+ acters of type char like
+  'X'
+  and
+  '!'
+ .",NA
+7 ,"carry extra information by adding
+  of
+  type. Raising 
+ Defining exceptions with
+  exception
+  name. They can
+  
+ exceptions with
+  raise
+ . Handling exceptions with
+  try
+  ...
+  
+ Mathematical operators
+  + - * / mod
+  which take two inte-gers 
+ and give another.
+  
+ Operators
+  = < <= > >= <>
+  which compare two values and 
+ evaluate to either
+  true
+  or
+  false
+ .
+  
+ with
+  ...",NA
+8,"Tuples to combine a fixed number of elements
+  (a, b)
+ , 
+ (a, 
+ b, c)
+  etc. with types α × β, α × β × γ etc.
+  
+  
+ The conditional
+  if
+  expression1
+  then
+  expression2
+  else
+  ex-
+ pression3, where expresssion1 has type
+  bool
+  and 
+ expression2 
+ and expression3 have the same type as one 
+ another.
+  
+ The boolean operators
+  &&
+  and
+  ||
+  which allow us to build 
+ compound boolean expressions.",NA
+2 ,"sion using the
+  let
+  name
+  =
+  expression construct. Building 
+ Assigning a name to the result of evaluating an expres-
+  
+ compound expressions using
+  let
+  name1
+  =
+  expression1
+  in let
+  
+ name2
+  =
+  expression2
+  in
+  ...",NA
+9 ,"the full number of arguments. Partial application with 
+ Partial application of functions by giving fewer than
+  
+ functions built from operators.
+  
+ Functions, introduced by
+  let
+  name argument1 argument2 
+  
+ ...
+  =
+  expression. These have type α → β, α → β → γ etc. 
+  
+ for some types α, β, γ etc.
+  
+ Recursive functions, which are introduced in the same 
+  
+ way, but using
+  let rec
+  instead of
+  let
+ .",NA
+3 ,"tern1
+  |
+  . . .
+  ->
+  expression2
+  |
+  pattern2
+  |
+  . . .
+  ->
+  expression3 
+  
+ Matching patterns using
+  match
+  expression1
+  with
+  pat-
+  
+ |
+ . . . The expressions expression2, expression3 etc. must 
+ have 
+  
+ the same type as one another, and this is the type of the 
+  
+ whole
+  match
+  ...
+  with
+  expression.",NA
+4 ,"elements of like type. They are written between square 
+  
+ Lists, which are ordered collections of zero or more
+  
+ brackets, with elements separated by semicolons e.g.
+  [1; 
+  
+ 2; 3; 4; 5]
+ . If a list is non-empty, it has a head, which is 
+  
+ its first element, and a tail, which is the list composed of 
+  
+ the rest of the elements.",NA
+5 ,"to separate as in
+  match
+  a, b
+  with
+  0, 0 ->
+  expression1 
+  
+ Matching two or more things at once, using commas
+  
+ | x, y ->
+  expression2
+  |
+  ...",NA
+6,"Anonymous functions
+  fun
+  name
+  ->
+  expression. Making 
+ operators into functions as in
+  ( < )
+  and
+  ( + )
+ .",NA
+Chapter 10,NA,NA
+New Kinds of Data,"So far, we have considered the simple types int, bool, char, the compound type list, and tuples. We have 
+ built functions from and to these types. It would be possible to encode anything we wanted as lists and 
+ tuples of these types, but it would lead to complex and error-strewn programs. It is time to make our own 
+ types. New types are introduced using
+  type
+ . Here’s a type for colours:
+  
+ OCaml
+  
+ # type colour = Red | Green | Blue | Yellow;; 
+  
+ type colour = Red | Green | Blue | Yellow
+  
+ The name of our new type is colour. It has four constructors, written with an initial capital letter:
+  Red
+ , 
+ Green
+ ,
+  
+ Blue
+ , and
+  Yellow
+ . These are the possible forms a value of type colour may take. Now we can build 
+ values of type 
+ color:
+  
+ col :
+  colour 
+  
+ cols :
+  colour list 
+  
+ colpair :
+  char × colour
+  
+ let
+  col = Blue
+  
+ let
+  cols = [Red; Red; Green; Yellow]
+  
+ let
+  colpair = ('R', Red)
+  
+ Let us extend our type to include any other colour which can be expressed in the RGB (Red, Green, Blue) 
+ colour system (each component ranges from 0 to 255 inclusive, a standard range giving about 16 million 
+ different colours).
+  
+ 73",NA
+A Type for Mathematical Expressions,"Our sequence was an example of a recursively-defined type, which can be processed naturally by recursive 
+ functions. Mathematical expressions can be modeled in the same way. For example, the expression 1 + 2 × 3 
+ could be drawn like this:
+  
+ +
+  
+  
+ 1×
+  
+  
+ 2 
+  
+ 3
+  
+ Notice that, in this representation, we never need parentheses – the diagram is unambiguous. We can 
+ evaluate the expression by reducing each part in turn:
+  
+ +
+  
+ −→
+  
+ +
+  
+ −→
+  
+ 7
+  
+  
+  
+ 1
+  
+ ×
+  
+ 1
+  
+ 6
+  
+  
+ 2 
+  
+ 3
+  
+ Here’s a suitable type for such expressions:",NA
+Questions,"1. Design a new type rect for representing rectangles. Treat squares as a special case.
+  
+ 2. Now write a function of type rect → int to calculate the area of a given rect.
+  
+ 3. Write a function which rotates a rect such that it is at least as tall as it is wide.
+  
+ 4. Use this function to write one which, given a rect list, returns another such list which has the 
+  
+ smallest total width and whose members are sorted widest first.
+  
+ 5. Write
+  take
+ ,
+  drop
+ , and
+  map
+  functions for the sequence type.
+  
+ 6. Extend the expr type and the
+  evaluate
+  function to allow raising a number to a power.
+  
+ 7. Use the option type to deal with the problem that
+  Division_by_zero
+  may be raised from the 
+  
+ evaluate
+  function.",NA
+So Far,"Integers
+  min_int
+  ...
+  -3 -2 -1 0 1 2 3
+  ...
+  max_int
+  of",NA
+1 ,"type int. 
+ Booleans
+  true
+  and
+  false
+  of type bool. Char-
+  
+ acters of type char like
+  'X'
+  and
+  '!'
+ .",NA
+7 ,"carry extra information by adding
+  of
+  type. Raising 
+ Defining exceptions with
+  exception
+  name. They can
+  
+ exceptions with
+  raise
+ . Handling exceptions with
+  try
+  ...
+  
+ Mathematical operators
+  + - * / mod
+  which take two inte-gers 
+ and give another.
+  
+ Operators
+  = < <= > >= <>
+  which compare two values and 
+ evaluate to either
+  true
+  or
+  false
+ .
+  
+ with
+  ...",NA
+8,"Tuples to combine a fixed number of elements
+  (a, b)
+ , 
+ (a, 
+ b, c)
+  etc. with types α × β, α × β × γ etc.
+  
+  
+ The conditional
+  if
+  expression1
+  then
+  expression2
+  else
+  ex-
+ pression3, where expresssion1 has type
+  bool
+  and 
+ expression2 
+ and expression3 have the same type as one 
+ another.
+  
+ The boolean operators
+  &&
+  and
+  ||
+  which allow us to build 
+ compound boolean expressions.",NA
+2 ,"sion using the
+  let
+  name
+  =
+  expression construct. Building 
+ Assigning a name to the result of evaluating an expres-
+  
+ compound expressions using
+  let
+  name1
+  =
+  expression1
+  in let
+  
+ name2
+  =
+  expression2
+  in
+  ...",NA
+9 ,"the full number of arguments. Partial application with 
+ Partial application of functions by giving fewer than
+  
+ functions built from operators.",NA
+10 ,"|
+  constructor2
+  of
+  type2
+  |
+  ... Pattern matching on 
+ New types with
+  type
+  name
+  =
+  constructor1
+  of
+  type1
+  
+ them as with the built-in types. Polymorphic types.
+  
+ Functions, introduced by
+  let
+  name argument1 argument2 
+  
+ ...
+  =
+  expression. These have type α → β, α → β → γ etc. 
+  
+ for some types α, β, γ etc.
+  
+ Recursive functions, which are introduced in the same 
+  
+ way, but using
+  let rec
+  instead of
+  let
+ .",NA
+3 ,"tern1
+  |
+  . . .
+  ->
+  expression2
+  |
+  pattern2
+  |
+  . . .
+  ->
+  expression3 
+  
+ Matching patterns using
+  match
+  expression1
+  with
+  pat-
+  
+ |
+ . . . The expressions expression2, expression3 etc. must 
+ have 
+  
+ the same type as one another, and this is the type of the 
+  
+ whole
+  match
+  ...
+  with
+  expression.",NA
+4 ,"elements of like type. They are written between square 
+  
+ Lists, which are ordered collections of zero or more
+  
+ brackets, with elements separated by semicolons e.g.
+  [1; 
+  
+ 2; 3; 4; 5]
+ . If a list is non-empty, it has a head, which is",NA
+5 ,"to separate as in
+  match
+  a, b
+  with
+  0, 0 ->
+  expression1 
+  
+ Matching two or more things at once, using commas
+  
+ | x, y ->
+  expression2
+  |
+  ...",NA
+6,"Anonymous functions
+  fun
+  name
+  ->
+  expression. Making 
+ operators into functions as in
+  ( < )
+  and
+  ( + )
+ .",NA
+Chapter 11,NA,NA
+Growing Trees,"We have used lists to represent collections of elements of like type but varying length, and tuples to 
+ represent collections of things of any type but fixed length. Another common type is the binary tree, which 
+ is 
+ used to represent structures which branch, such as the arithmetical expressions we constructed in the last 
+ chapter.
+  
+ How can we represent such trees using an OCaml type? When we built our version of the OCaml list 
+ type, we had two constructors –
+  Cons
+  to hold a head and a tail, and
+  Nil
+  to represent the end of the list. With a 
+ tree, we need a version of Cons which can hold two tails – the left and right, and we still need a version of
+  Nil
+ .
+  
+ type
+  'a tree = 
+  
+  
+ Br of 'a * 'a tree * 'a tree 
+  
+ branch 
+ | Lf 
+  
+  
+ leaf
+  
+ Our type is called tree, and is polymorphic (can hold any kind of data at the branches). There are two 
+ constructors:
+  Br
+  for branches, which hold three things in a tuple: an element, the left sub-tree, and the right 
+ sub-tree. If it is not a
+  Br
+ , it is a
+  Lf
+  (leaf), which is used to signal that there is no left, or no right sub-tree. Here 
+ are some representations in our new type of integer trees:
+  
+ 1
+  
+ is written as
+  
+ Br (1, Lf, Lf)
+  
+  
+ 2
+  
+ is written as
+  
+ Br (2, Br (1, Lf, Lf), Lf)
+  
+  
+ 1
+  
+  
+ 81",NA
+Using trees to build better dictionaries,"We have seen that arithmetic expressions can be drawn as trees on paper, and we have designed an OCaml 
+ data type for binary trees to hold any kind of element. Now it is time to introduce the most important 
+ application of trees: the binary search tree, which is another way of implementing the dictionary data 
+ structure we described in Chapter 8.
+  
+ The most important advantage of a tree is that it is often very much easier to reach a given element. 
+ When searching in a dictionary defined as a list, it took on average time proportional to the number of items 
+ in the dictionary to find a value for a key (the position of the required entry is, on average, halfway along the 
+ list). If we use a binary tree, and if it is reasonably nicely balanced in shape, that time can be reduced to the 
+ logarithm base two of the number of elements in the dictionary. Can you see why?
+  
+ We can use our existing tree type. In the case of a dictionary, it will have type (α × β) tree, in other 
+ words a tree of key-value pairs where the keys have some type α and the values some type β. For this 
+ example, we are going to be using another built-in type,
+  string
+ . A string is a sequence of characters written 
+ between double quotation marks. We have seen these as messages attached to exceptions, but they are a 
+ basic OCaml type too.
+  
+  
+ So, our tree representing a dictionary mapping integers like
+  1
+  to their spellings like
+  “one”
+  would have 
+ type 
+ (int × string) tree:",NA
+Questions,"1. Write a function of type α → α tree → bool to determine if a given element is in a tree.
+  
+ 2. Write a function which flips a tree left to right such that, if it were drawn on paper, it would appear 
+  
+ to be a mirror image.
+  
+ 3. Write a function to determine if two trees of the same type have the same shape, irrespective of 
+ actual 
+ values of the elements. Can you write a more general version which can tell if two trees have 
+ the same 
+ shape even if one has type α tree and one has type β tree for some α and β ?
+  
+ 4. Write a function
+  tree_of_list
+  which builds a tree representation of a dictionary from a list 
+  
+ representation of a dictionary.
+  
+ 5. Write a function to combine two dictionaries represented as trees into one. In the case of clashing 
+  
+ keys, prefer the value from the first dictionary.
+  
+ 6.
+  Can you define a type for trees which, instead of branching exactly two ways each time, can branch 
+ zero 
+ or more ways, possibly different at each branch? Write simple functions like
+  size
+ ,
+  total
+ , and 
+ map
+  using 
+ your new type of tree.",NA
+So Far,"Integers
+  min_int
+  ...
+  -3 -2 -1 0 1 2 3
+  ...
+  max_int
+  of",NA
+1 ,"type int. 
+ Booleans
+  true
+  and
+  false
+  of type bool. Char-
+  
+ acters of type char like
+  'X'
+  and
+  '!'
+ .",NA
+7 ,"carry extra information by adding
+  of
+  type. Raising 
+ Defining exceptions with
+  exception
+  name. They can
+  
+ exceptions with
+  raise
+ . Handling exceptions with
+  try
+  ...
+  
+ Mathematical operators
+  + - * / mod
+  which take two inte-gers 
+ and give another.
+  
+ Operators
+  = < <= > >= <>
+  which compare two values and 
+ evaluate to either
+  true
+  or
+  false
+ .
+  
+ with
+  ...",NA
+8,"Tuples to combine a fixed number of elements
+  (a, b)
+ , 
+ (a, 
+ b, c)
+  etc. with types α × β, α × β × γ etc.
+  
+  
+ The conditional
+  if
+  expression1
+  then
+  expression2
+  else
+  ex-
+ pression3, where expresssion1 has type
+  bool
+  and 
+ expression2 
+ and expression3 have the same type as one 
+ another.
+  
+ The boolean operators
+  &&
+  and
+  ||
+  which allow us to build 
+ compound boolean expressions.",NA
+2 ,"sion using the
+  let
+  name
+  =
+  expression construct. Building 
+ Assigning a name to the result of evaluating an expres-
+  
+ compound expressions using
+  let
+  name1
+  =
+  expression1
+  in let
+  
+ name2
+  =
+  expression2
+  in
+  ...",NA
+9 ,"the full number of arguments. Partial application with 
+ Partial application of functions by giving fewer than
+  
+ functions built from operators.",NA
+10 ,"|
+  constructor2
+  of
+  type2
+  |
+  ... Pattern matching on 
+ New types with
+  type
+  name
+  =
+  constructor1
+  of
+  type1
+  
+ them as with the built-in types. Polymorphic types.",NA
+11 ,"between double quotes and are of type string. 
+ Strings, which are sequences of characters written
+  
+ Functions, introduced by
+  let
+  name argument1 argument2 
+  
+ ...
+  =
+  expression. These have type α → β, α → β → γ etc. 
+  
+ for some types α, β, γ etc.
+  
+ Recursive functions, which are introduced in the same 
+  
+ way, but using
+  let rec
+  instead of
+  let
+ .",NA
+3 ,"tern1
+  |
+  . . .
+  ->
+  expression2
+  |
+  pattern2
+  |
+  . . .
+  ->
+  expression3 
+  
+ Matching patterns using
+  match
+  expression1
+  with
+  pat-
+  
+ |
+ . . . The expressions expression2, expression3 etc. must 
+ have 
+  
+ the same type as one another, and this is the type of the 
+  
+ whole
+  match
+  ...
+  with
+  expression.",NA
+4 ,"elements of like type. They are written between square 
+  
+ Lists, which are ordered collections of zero or more
+  
+ brackets, with elements separated by semicolons e.g.
+  [1; 
+  
+ 2; 3; 4; 5]
+ . If a list is non-empty, it has a head, which is 
+  
+ its first element, and a tail, which is the list composed of 
+  
+ the rest of the elements.
+  
+ The
+  ::
+  “cons” operator, which adds an element to the front 
+  
+ of a list. The
+  @
+  “append” operator, which concatenates two 
+  
+ lists together.
+  
+ Lists and the
+  ::
+  “cons” symbol may be used for pattern 
+  
+ matching to distinguish lists of length zero, one, etc. and 
+  
+ with particular contents.",NA
+5 ,"to separate as in
+  match
+  a, b
+  with
+  0, 0 ->
+  expression1 
+  
+ Matching two or more things at once, using commas
+  
+ | x, y ->
+  expression2
+  |
+  ...",NA
+6,"Anonymous functions
+  fun
+  name
+  ->
+  expression. Making 
+ operators into functions as in
+  ( < )
+  and
+  ( + )
+ .",NA
+Chapter 12,NA,NA
+In and Out,"We have considered a function (and indeed, a whole program composed of many functions) to take a chunk 
+ of data, do some calculations, and then produce a result. This assumption has allowed us to write neat, 
+ easily understood programs.
+  
+ However, some computer programs do not have all data available at the beginning of the program (or 
+ even the beginning of a given function). The user might provide new data interactively, or the program 
+ might fetch data from the internet, or two or more programs might communicate with one another in real 
+ time.
+  
+ We must learn how to write such programs, whilst understanding the utility of restricting such 
+ complications to as small a part of the program as possible – interactivity turns out to be surprisingly hard 
+ to 
+ reason about, since the result of a function no longer depends only on its initial argument.
+  
+ Writing to the screen
+  
+ OCaml has a built-in function
+  print_int
+  which prints an integer to the screen:
+  
+ OCaml
+  
+ # print_int 100;; 
+  
+ 100- : unit = ()
+  
+ What is the type of this function? Well, it is a function, and it takes an integer as its argument. It prints the 
+ integer to the screen, and then returns.. .what? Nothing! OCaml has a special type to represent nothing, 
+ called
+  unit
+ . There is exactly one thing of type
+  unit
+  which is written
+  ()
+  and is called “unit”. So, the function 
+ print_int
+  has type int → unit.
+  
+ There is another built-in function
+  print_string
+  of type string → unit to print a string, and another 
+ print_newline
+  to move to the next line. This function has type unit → unit because it requires no substantive 
+ argument and produces no useful result. It is only wanted for its “side-effect”.
+  
+ We can produce several side-effects, one after another, using the
+  ;
+  symbol. This evaluates the ex-
+ pression on its left hand side, throws away the result (which will normally be unit anyway), and then 
+ evaluates the expression to its right hand side, returning the result (which is often unit too). The type of 
+ the 
+ expression
+  x
+  ;
+  y
+  is thus the type of
+  y
+ . For example, we can write a function to write to the screen an
+  int× string 
+ pair as an integer on one line, followed by a string on another:
+  
+ 89",NA
+Questions,"1. Write a function to print a list of integers to the screen in the same format OCaml uses – i.e. with 
+  
+ square brackets and semicolons.
+  
+ 2. Write a function to read three integers from the user, and return them as a tuple. What exceptions 
+  
+ could be raised in the process? Handle them appropriately.
+  
+ 3. In our
+  read_dict
+  function, we waited for the user to type
+  0
+  to indicate no more data. This is clumsy. 
+ Implement a new
+  read_dict
+  function with a nicer system. Be careful to deal with possible exceptions 
+ which may be raised.
+  
+ 4.
+  Write a function which, given a number
+  x
+ , prints the
+  x
+ -times table to a given file name. For example, 
+  
+ table ""table.txt"" 5
+  should produce a file
+  table.txt
+  containing the following:
+  
+ 1
+  
+ 2
+  
+ 3
+  
+ 4
+  
+ 5
+  
+ 2
+  
+ 4
+  
+ 6
+  
+ 8
+  
+ 10
+  
+ 3
+  
+ 6
+  
+ 9
+  
+ 12
+  
+ 15
+  
+ 4
+  
+ 8
+  
+ 12
+  
+ 16
+  
+ 20
+  
+ 5
+  
+ 10
+  
+ 15
+  
+ 20
+  
+ 25
+  
+ Adding the special tabulation character
+  '\t'
+  after each number will line up the columns.
+  
+ 5. Write a function to count the number of lines in a given file.
+  
+ 6. Write a function
+  copy_file
+  of type string → string → unit which copies a file line by line. For example,
+  
+ copy_file ""a.txt"" ""b.txt""
+  should produce a file
+  b.txt
+  identical to
+  a.txt
+ . Make sure you deal with the case 
+ where the file
+  a.txt
+  cannot be found, or where
+  b.txt
+  cannot be created or filled.",NA
+So Far,"Integers
+  min_int
+  ...
+  -3 -2 -1 0 1 2 3
+  ...
+  max_int
+  of",NA
+1 ,"type int. 
+ Booleans
+  true
+  and
+  false
+  of type bool. Char-
+  
+ acters of type char like
+  'X'
+  and
+  '!'
+ .",NA
+7 ,"carry extra information by adding
+  of
+  type. Raising 
+ Defining exceptions with
+  exception
+  name. They can
+  
+ exceptions with
+  raise
+ . Handling exceptions with
+  try
+  ...
+  
+ Mathematical operators
+  + - * / mod
+  which take two inte-gers 
+ and give another.
+  
+ Operators
+  = < <= > >= <>
+  which compare two values and 
+ evaluate to either
+  true
+  or
+  false
+ .
+  
+ with
+  ...",NA
+8,"Tuples to combine a fixed number of elements
+  (a, b)
+ , 
+ (a, 
+ b, c)
+  etc. with types α × β, α × β × γ etc.
+  
+  
+ The conditional
+  if
+  expression1
+  then
+  expression2
+  else
+  ex-
+ pression3, where expresssion1 has type
+  bool
+  and 
+ expression2 
+ and expression3 have the same type as one 
+ another.
+  
+ The boolean operators
+  &&
+  and
+  ||
+  which allow us to build 
+ compound boolean expressions.",NA
+2 ,"sion using the
+  let
+  name
+  =
+  expression construct. Building 
+ Assigning a name to the result of evaluating an expres-
+  
+ compound expressions using
+  let
+  name1
+  =
+  expression1
+  in let
+  
+ name2
+  =
+  expression2
+  in
+  ...
+  
+ Functions, introduced by
+  let
+  name argument1 argument2 ...
+  
+ =
+  expression. These have type α → β, α → β → γ etc. for some 
+ types α, β, γ etc.
+  
+ Recursive functions, which are introduced in the same way, 
+ but using
+  let rec
+  instead of
+  let
+ .",NA
+3 ,"tern1
+  |
+  . . .
+  ->
+  expression2
+  |
+  pattern2
+  |
+  . . .
+  ->
+  expression3 
+ Matching patterns using
+  match
+  expression1
+  with
+  pat-
+  
+ |
+ . . . The expressions expression2, expression3 etc. must 
+ have 
+ the same type as one another, and this is the type of 
+ the whole
+  match
+  ...
+  with
+  expression.",NA
+4 ,"elements of like type. They are written between square 
+ Lists, which are ordered collections of zero or more
+  
+ brackets, with elements separated by semicolons e.g.
+  [1; 2; 3; 
+ 4; 5]
+ . If a list is non-empty, it has a head, which is its first 
+ element, and a tail, which is the list composed of the rest of 
+ the elements.
+  
+ The
+  ::
+  “cons” operator, which adds an element 
+ to the front of a list. The
+  @
+  “append” operator, 
+ which concatenates two 
+ lists together.
+  
+ Lists and the
+  ::
+  “cons” symbol may be used 
+ for pattern matching to distinguish lists of 
+ length zero, one, etc. and with particular 
+ contents.",NA
+5 ,"to separate as in
+  match
+  a, b
+  with
+  0, 0 ->
+  
+ expression1 Matching two or more things 
+ at once, using commas
+  
+ | x, y ->
+  expression2
+  |
+  ...",NA
+6,"Anonymous functions
+  fun
+  name
+  ->
+  expression. Making 
+ operators into functions as in
+  ( < )
+  and
+  ( + )
+ .",NA
+9 ,"the full number of arguments. Partial application with 
+ Partial 
+ application of functions by giving fewer than
+  
+ functions built from operators.",NA
+10 ,"|
+  constructor2
+  of
+  type2
+  |
+  ... Pattern matching on New types with
+  
+ type
+  name
+  =
+  constructor1
+  of
+  type1
+  
+ them as with the built-in types. Polymorphic types.",NA
+11 ,"between double quotes and are of type string. Strings, which are 
+ sequences of characters written",NA
+12 ,"of type in_channel and output channels of type 
+  
+ The value
+  
+ ()
+  and its type unit. 
+  
+ Input channels
+  
+ out_channel. Built-in functions for reading from and
+  
+ writing to them respectively.",NA
+Chapter 13,NA,NA
+Putting Things in Boxes,"So far, we have considered “pure” functions which have no side-effects, and functions which have the side-
+ effect of reading or writing information to and from, for example, files. When we assigned a value to a 
+ name, that value could never change. Sometimes, it is convenient to allow the value of a name to be 
+ changed – some algorithms are more naturally expressed in this way.
+  
+ OCaml provides a construct known as a reference which is a box in which we can store a value. We 
+ build a reference using the built-in function
+  ref
+  of type α → α ref. For example, let us build a reference with 
+ initial contents 0. It will have type int ref.
+  
+ OCaml
+  
+ # let x = ref 0;; 
+  
+ val x : int ref = {contents = 0}
+  
+ OCaml tells us that
+  x
+  is a reference of type int ref which currently has contents
+  0
+ . We can extract the current 
+ contents of a reference using the
+  !
+ operator, which has type α ref → α.
+  
+ # let p = !x;; 
+  
+ val p : int = 0
+  
+ We can update the contents of the reference using the
+  :=
+  operator:
+  
+ # x := 50;;
+  
+ - : unit = ()
+  
+ The
+  :=
+  operator has type α ref → α → unit, since it takes a reference and a new value to put in it, puts the 
+ value in, and returns nothing. It is only useful for its side-effect. Now, we can get the contents with
+  ! 
+ again.
+  
+ # let q = !x;; 
+  
+ val q : int = 50 
+  
+ # p;;
+  
+ - : int = 0
+  
+ Notice that
+  p
+  is unchanged. Here’s a function to swap the contents of two references:
+  
+ 99",NA
+Doing it again and again,"There are two ways to repeat an action. To perform an action a fixed number of times, we use the
+  for ... = ... to 
+ ... do ... done
+  construct. For example,",NA
+Example: text file statistics,"We are going to write a program to count the number of words, sentences and lines in a text file. We shall 
+ consider the opening paragraph of Kafka’s “Metamorphosis”.
+  
+ One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in 
+ his bed into a horrible vermin. 
+  
+ He lay on his armour-like back, and if he lifted his head a 
+ little he could see his brown belly, slightly domed and divided by arches into stiff sections. 
+  
+ The 
+ bedding was hardly able to cover it and seemed ready 
+  
+  
+ His many legs, 
+ pitifully thin compared to slide off any moment.
+  
+ with the size of the rest of him, waved about helplessly as he looked.",NA
+Questions,"1. Consider the expression 
+  
+ let
+  x = ref 1
+  in let
+  y = ref 2
+  in
+  x := !x + !x; y := !x + !y; !x + !y 
+  
+ What references have been created? What are their initial and final values after this expression has 
+ been evaluated? What is the type of this expression?
+  
+ 2. What is the difference between
+  [ref 5; ref 5]
+  and
+  let
+  x = ref 5
+  in
+  [x; x]
+ ?
+  
+ 3. Imagine that the
+  for ... to ... do ... done
+  construct did not exist. How might we create the 
+  
+ same 
+ behaviour?
+  
+ 4. What are the types of these expressions?
+  
+ [|1; 2; 3|] 
+  
+ [|true; false; true|] 
+  
+ [|[|1|]|] 
+  
+ [|[1; 2; 3]; [4; 5; 6]|] 
+  
+ [|1; 2; 3|].(2) 
+  
+ [|1; 2; 3|].(2) <- 4
+  
+ 5. Write a function to compute the sum of the elements in an integer array.
+  
+ 6. Write a function to reverse the elements of an array in place (i.e. do not create a new array).
+  
+ 7. Write a function
+  table
+  which, given an integer, builds the int array array representing the multipli-
+  
+ cation table up to that number. For example,
+  table 5
+  should yield:
+  
+ 1
+  
+ 2
+  
+ 3
+  
+ 4
+  
+ 5
+  
+ 2
+  
+ 4
+  
+ 6
+  
+ 8
+  
+ 10
+  
+ 3
+  
+ 6
+  
+ 9
+  
+ 12
+  
+ 15
+  
+ 4
+  
+ 8
+  
+ 12
+  
+ 16
+  
+ 20
+  
+ 5
+  
+ 10
+  
+ 15
+  
+ 20
+  
+ 25
+  
+ There is more than one way to represent this as an array of arrays; you may choose.
+  
+ 8. The ASCII codes for the lower case letters
+  'a'
+ ...
+  'z'
+  are 97...122, and for the upper case letters 
+ 'A'
+ . . .
+  'Z'
+  they 
+ are 65. . . 90. Use the built-in functions
+  int_of_char
+  and
+  char_of_int
+  to write func-
+ tions to uppercase and 
+ lowercase a character. Non-alphabetic characters should remain unaltered.
+  
+ 9. Comment on the accuracy of our character, word, line, and sentence statistics in the case of our 
+  
+ example paragraph. What about in general?
+  
+ 10. Choose one of the problems you have identified, and modify our program to fix it.",NA
+So Far,"Integers
+  min_int
+  ...
+  -3 -2 -1 0 1 2 3
+  ...
+  max_int
+  of",NA
+1 ,"type int. 
+ Booleans
+  true
+  and
+  false
+  of type bool. Char-
+  
+ acters of type char like
+  'X'
+  and
+  '!'
+ .",NA
+7 ,"carry extra information by adding
+  of
+  type. Raising 
+ Defining exceptions with
+  exception
+  name. They can
+  
+ exceptions with
+  raise
+ . Handling exceptions with
+  try
+  ...
+  
+ Mathematical operators
+  + - * / mod
+  which take two inte-gers 
+ and give another.
+  
+ Operators
+  = < <= > >= <>
+  which compare two values and 
+ evaluate to either
+  true
+  or
+  false
+ .
+  
+ with
+  ...",NA
+8,"Tuples to combine a fixed number of elements
+  (a, b)
+ , 
+ (a, 
+ b, c)
+  etc. with types α × β, α × β × γ etc.
+  
+  
+ The conditional
+  if
+  expression1
+  then
+  expression2
+  else
+  ex-
+ pression3, where expresssion1 has type
+  bool
+  and 
+ expression2 
+ and expression3 have the same type as one 
+ another.
+  
+ The boolean operators
+  &&
+  and
+  ||
+  which allow us to build 
+ compound boolean expressions.",NA
+2 ,"sion using the
+  let
+  name
+  =
+  expression construct. Building 
+ Assigning a name to the result of evaluating an expres-
+  
+ compound expressions using
+  let
+  name1
+  =
+  expression1
+  in let
+  
+ name2
+  =
+  expression2
+  in
+  ...
+  
+ Functions, introduced by
+  let
+  name argument1 argument2 ...
+  
+ =
+  expression. These have type α → β, α → β → γ etc. for some 
+ types α, β, γ etc.
+  
+ Recursive functions, which are introduced in the same way, 
+ but using
+  let rec
+  instead of
+  let
+ .",NA
+3 ,"tern1
+  |
+  . . .
+  ->
+  expression2
+  |
+  pattern2
+  |
+  . . .
+  ->
+  expression3 
+ Matching patterns using
+  match
+  expression1
+  with
+  pat-
+  
+ |
+ . . . The expressions expression2, expression3 etc. must 
+ have 
+ the same type as one another, and this is the type of 
+ the whole
+  match
+  ...
+  with
+  expression.",NA
+4 ,"elements of like type. They are written between square 
+ Lists, which are ordered collections of zero or more
+  
+ brackets, with elements separated by semicolons e.g.
+  [1;",NA
+9 ,"the full number of arguments. Partial application with 
+ Partial application of functions by giving fewer than
+  
+ functions built from operators.",NA
+10 ,"|
+  constructor2
+  of
+  type2
+  |
+  ... Pattern matching on 
+ New types with
+  type
+  name
+  =
+  constructor1
+  of
+  type1
+  
+ them as with the built-in types. Polymorphic types.",NA
+11 ,"between double quotes and are of type string. 
+ Strings, which are sequences of characters written",NA
+12 ,"of type in_channel and output channels of type 
+  
+ The value
+  ()
+  and its type unit. 
+  
+ Input channels
+  
+ out_channel. Built-in functions for reading from and
+  
+ writing to them respectively.",NA
+13 ,"accessing their contents using
+  !
+ and updating them 
+ References of type α ref. Building them using
+  ref
+ ,
+  
+ using the
+  :=
+  operator.
+  
+ Bracketing expressions together with
+  begin
+  and
+  end
+  in-
+  
+ stead of parentheses for readability.
+  
+ Performing an action many times based on a boolean con-
+  
+ dition with the
+  while
+  boolean expression
+  do
+  expression
+  done
+  
+ construct. Performing an action a fixed number of times",NA
+5 ,"to separate as in
+  match
+  a, b
+  with
+  0, 0 ->
+  expression1 
+ Matching two or more things at once, using commas
+  
+ | x, y ->
+  expression2
+  |
+  ...",NA
+6,"Anonymous functions
+  fun
+  name
+  ->
+  expression. Making 
+ operators into functions as in
+  ( < )
+  and
+  ( + )
+ .
+  
+  
+ built-in function
+  Array.make
+ , finding its length with 
+ Array.length
+ , accessing an element with
+  a.(
+ subscript
+ )
+ . 
+ Updating with
+  a.(
+ subscript
+ ) <-
+  expression. The built-in 
+ function
+  String.iter
+ .",NA
+Chapter 14,NA,NA
+The Other Numbers,"The only numbers we have considered until now have been the integers. For a lot of programming tasks, 
+ they are sufficient. And, except for their limited range and the possibility of division by zero, they are easy 
+ to 
+ understand and use. However, we must now consider the real numbers.
+  
+ It is clearly not possible to represent all numbers exactly – they might be irrational like
+  π
+  or
+  e
+  and have 
+ no 
+ finite representation. For most uses, a representation called floating-point is suitable, and this is how 
+ OCaml’s real numbers are stored. Not all numbers can be represented exactly, but arithmetic operations are 
+ very quick.
+  
+ Floating-point numbers have type float. We can write a floating-point number by including a decimal 
+ point somewhere in it. For example
+  1.6
+  or
+  2.
+ or
+  386.54123
+ . Negative floating-point numbers are preceded by the
+  
+ -.
+  characters just like negative integers are preceded by the
+  -
+  character. Similarly, we write
+  +. -. *. /.
+  for the 
+ standard arithmetic operators on floating-point numbers. Exponentiation is written with the
+  ** 
+ operator.
+  
+ OCaml
+  
+ # 1.5;;
+  
+ - : float = 1.5 
+  
+ # 6.;;
+  
+ - : float = 6.
+  
+ # -.2.3456;;
+  
+ - : float = -2.3456 
+  
+ # 1.0 +. 2.5 *. 3.0;;
+  
+ - : float = 8.5 
+  
+ # 1.0 /. 1000.0;;
+  
+ - : float = 0.001 
+  
+ # 1. /. 100000.;;
+  
+ - : float = 1e-05 
+  
+ # 3000. ** 10.;;
+  
+ - : float = 5.9049e+34 
+  
+ # 3.123 -. 3.;;
+  
+ - : float = 0.12300000000000022
+  
+ Notice an example of the limits of precision in floating-point operations in the final lines. Note also that very 
+ small or very large numbers are written using scientific notation (such as
+  5.9049e+34
+  above). We
+  
+ 111",NA
+So Far,"Integers
+  min_int
+  ...
+  -3 -2 -1 0 1 2 3
+  ...
+  max_int
+  of",NA
+1 ,"type int. 
+ Booleans
+  true
+  and
+  false
+  of type bool. Char-
+  
+ acters of type char like
+  'X'
+  and
+  '!'
+ .",NA
+7 ,"carry extra information by adding
+  of
+  type. Raising 
+ Defining exceptions with
+  exception
+  name. They can
+  
+ exceptions with
+  raise
+ . Handling exceptions with
+  try
+  ...
+  
+ Mathematical operators
+  + - * / mod
+  which take two inte-gers 
+ and give another.
+  
+ Operators
+  = < <= > >= <>
+  which compare two values and 
+ evaluate to either
+  true
+  or
+  false
+ .
+  
+ with
+  ...",NA
+8,"Tuples to combine a fixed number of elements
+  (a, b)
+ , 
+ (a, 
+ b, c)
+  etc. with types α × β, α × β × γ etc.
+  
+  
+ The conditional
+  if
+  expression1
+  then
+  expression2
+  else
+  ex-
+ pression3, where expresssion1 has type
+  bool
+  and 
+ expression2 
+ and expression3 have the same type as one 
+ another.
+  
+ The boolean operators
+  &&
+  and
+  ||
+  which allow us to build 
+ compound boolean expressions.",NA
+2 ,"sion using the
+  let
+  name
+  =
+  expression construct. Building 
+ Assigning a name to the result of evaluating an expres-
+  
+ compound expressions using
+  let
+  name1
+  =
+  expression1
+  in let
+  
+ name2
+  =
+  expression2
+  in
+  ...
+  
+ Functions, introduced by
+  let
+  name argument1 argument2 ...
+  
+ =
+  expression. These have type α → β, α → β → γ etc. for some 
+ types α, β, γ etc.
+  
+ Recursive functions, which are introduced in the same way, 
+ but using
+  let rec
+  instead of
+  let
+ .",NA
+3 ,"tern1
+  |
+  . . .
+  ->
+  expression2
+  |
+  pattern2
+  |
+  . . .
+  ->
+  expression3 
+ Matching patterns using
+  match
+  expression1
+  with
+  pat-
+  
+ |
+ . . . The expressions expression2, expression3 etc. must 
+ have 
+ the same type as one another, and this is the type of 
+ the whole
+  match
+  ...
+  with
+  expression.",NA
+4 ,"elements of like type. They are written between square 
+ Lists, which are ordered collections of zero or more
+  
+ brackets, with elements separated by semicolons e.g.
+  [1;",NA
+9 ,"the full number of arguments. Partial application with 
+ Partial application of functions by giving fewer than
+  
+ functions built from operators.",NA
+10 ,"|
+  constructor2
+  of
+  type2
+  |
+  ... Pattern matching on 
+ New types with
+  type
+  name
+  =
+  constructor1
+  of
+  type1
+  
+ them as with the built-in types. Polymorphic types.",NA
+11 ,"between double quotes and are of type string. 
+ Strings, which are sequences of characters written",NA
+12 ,"of type in_channel and output channels of type 
+  
+ The value
+  ()
+  and its type unit. 
+  
+ Input channels
+  
+ out_channel. Built-in functions for reading from and
+  
+ writing to them respectively.",NA
+13 ,"accessing their contents using
+  !
+ and updating them 
+ References of type α ref. Building them using
+  ref
+ ,
+  
+ using the
+  :=
+  operator.
+  
+ Bracketing expressions together with
+  begin
+  and
+  end
+  in-
+  
+ stead of parentheses for readability.
+  
+ Performing an action many times based on a boolean con-
+  
+ dition with the
+  while
+  boolean expression
+  do
+  expression
+  done
+  
+ construct. Performing an action a fixed number of times",NA
+5 ,"to separate as in
+  match
+  a, b
+  with
+  0, 0 ->
+  expression1 
+ Matching two or more things at once, using commas
+  
+ | x, y ->
+  expression2
+  |
+  ...",NA
+6,"Anonymous functions
+  fun
+  name
+  ->
+  expression. Making 
+ operators into functions as in
+  ( < )
+  and
+  ( + )
+ .
+  
+  
+ built-in function
+  Array.make
+ , finding its length with 
+ Array.length
+ , accessing an element with
+  a.(
+ subscript
+ )
+ . 
+ Updating with
+  a.(
+ subscript
+ ) <-
+  expression. The built-in 
+ function
+  String.iter
+ .
+  
+ Floating-point numbers
+  min_float
+  . ..
+  max_float",NA
+14 ,"of type float. Floating-point operators
+  +. *. -. /. **
+ and built-in 
+ functions
+  sqrt log
+  etc.",NA
+Chapter 15,NA,NA
+The OCaml Standard Library,"OCaml is provided with a wide range of useful built-in functions, in addition to the ones we have already 
+ seen, 
+ called the OCaml Standard Library. These functions are divided into modules, one for each area of 
+ functionality (in the next chapter, we will learn how to write our own modules). Here are a few examples of 
+ modules in the standard library:
+  
+ List
+  
+ The
+  List
+  module provides many functions over lists, some of
+  
+ which we have already written ourselves in earlier chapters. It 
+ also provides a simple implementation of dictionaries, and list 
+ sorting and searching functions.
+  
+ Array 
+ Functions for creating and modifying arrays, conversion to and 
+ from 
+ lists, and array sorting. Functions to iterate over arrays.
+  
+ Char 
+ Operations on characters, including conversions between char-acters 
+ and their integer equivalents.
+  
+ String 
+ Functions to build and modify strings, together with searching, 
+ mapping, and iteration functions.
+  
+ Random 
+ Generating pseudo-random integers and floating-point num-bers.
+  
+ Buffer 
+ Buffers are used for building strings up from sub-strings or 
+ characters, without the cost of repeated string concatenation.
+  
+ Printf
+  
+ Functions for printing with “format strings”, which are more 
+ flexible and concise than repeated use of
+  print_int
+  and
+  
+ print_string
+  etc.
+  
+ We will take the
+  List
+  module as an example. You can find the documentation for the OCaml Standard Library 
+ installed with your copy of OCaml, or on the internet.
+  
+  
+ The functions from a module can be used by putting a period (full stop) between the module name and 
+ the function. For example the
+  length
+  function in the
+  List
+  module can be used like this:
+  
+ OCaml
+  
+ # List.length [1; 2; 3; 4; 5];;
+  
+ - : int = 5
+  
+ 117",NA
+Questions,"1. Write your own version of the function
+  List.concat
+ . The implementation OCaml provides is not 
+  
+ tail-
+ recursive. Can you write one which is?
+  
+ 2. Use
+  List.mem
+  to write a function which returns
+  true
+  only if every list in a bool list list contains 
+  
+ true
+  
+ somewhere in it.
+  
+ 3.
+  Write a function to count the number of exclamation marks in a string, using one or more functions 
+  
+ from the
+  String
+  module.
+  
+ 4.
+  Use the
+  String.map
+  function to write a function to return a new copy of a string with all exclamation 
+  
+ marks replaced with periods (full stops).
+  
+ 5. Use the
+  String
+  module to write a function which concatenates a list of strings together.
+  
+ 6. Do the same with the
+  Buffer
+  module. This will be faster.
+  
+ 7. Use the
+  String
+  module to count the number of occurrences of the string
+  ""OCaml""
+  within a given 
+  
+ string.",NA
+So Far,"Integers
+  min_int
+  ...
+  -3 -2 -1 0 1 2 3
+  ...
+  max_int
+  of",NA
+1 ,"type int. 
+ Booleans
+  true
+  and
+  false
+  of type bool. Char-
+  
+ acters of type char like
+  'X'
+  and
+  '!'
+ .",NA
+7 ,"carry extra information by adding
+  of
+  type. Raising 
+ Defining exceptions with
+  exception
+  name. They can
+  
+ exceptions with
+  raise
+ . Handling exceptions with
+  try
+  ...
+  
+ Mathematical operators
+  + - * / mod
+  which take two inte-gers 
+ and give another.
+  
+ Operators
+  = < <= > >= <>
+  which compare two values and 
+ evaluate to either
+  true
+  or
+  false
+ .
+  
+ with
+  ...",NA
+8,"Tuples to combine a fixed number of elements
+  (a, b)
+ , 
+ (a, 
+ b, c)
+  etc. with types α × β, α × β × γ etc.
+  
+  
+ The conditional
+  if
+  expression1
+  then
+  expression2
+  else
+  ex-
+ pression3, where expresssion1 has type
+  bool
+  and 
+ expression2 
+ and expression3 have the same type as one 
+ another.
+  
+ The boolean operators
+  &&
+  and
+  ||
+  which allow us to build 
+ compound boolean expressions.",NA
+2 ,"sion using the
+  let
+  name
+  =
+  expression construct. Building 
+ Assigning a name to the result of evaluating an expres-
+  
+ compound expressions using
+  let
+  name1
+  =
+  expression1
+  in let
+  
+ name2
+  =
+  expression2
+  in
+  ...
+  
+ Functions, introduced by
+  let
+  name argument1 argument2 ...
+  
+ =
+  expression. These have type α → β, α → β → γ etc. for some 
+ types α, β, γ etc.
+  
+ Recursive functions, which are introduced in the same way, 
+ but using
+  let rec
+  instead of
+  let
+ .",NA
+3 ,"tern1
+  |
+  . . .
+  ->
+  expression2
+  |
+  pattern2
+  |
+  . . .
+  ->
+  expression3 
+ Matching patterns using
+  match
+  expression1
+  with
+  pat-
+  
+ |
+ . . . The expressions expression2, expression3 etc. must 
+ have 
+ the same type as one another, and this is the type of 
+ the whole
+  match
+  ...
+  with
+  expression.",NA
+4 ,"elements of like type. They are written between square 
+ Lists, which are ordered collections of zero or more
+  
+ brackets, with elements separated by semicolons e.g.
+  [1;",NA
+9 ,"the full number of arguments. Partial application with 
+ Partial application of functions by giving fewer than
+  
+ functions built from operators.",NA
+10 ,"|
+  constructor2
+  of
+  type2
+  |
+  ... Pattern matching on 
+ New types with
+  type
+  name
+  =
+  constructor1
+  of
+  type1
+  
+ them as with the built-in types. Polymorphic types.",NA
+11 ,"between double quotes and are of type string. 
+ Strings, which are sequences of characters written",NA
+12 ,"of type in_channel and output channels of type 
+  
+ The value
+  ()
+  and its type unit. 
+  
+ Input channels
+  
+ out_channel. Built-in functions for reading from and
+  
+ writing to them respectively.",NA
+13 ,"accessing their contents using
+  !
+ and updating them 
+ References of type α ref. Building them using
+  ref
+ ,
+  
+ using the
+  :=
+  operator.
+  
+ Bracketing expressions together with
+  begin
+  and
+  end
+  in-
+  
+ stead of parentheses for readability.
+  
+ Performing an action many times based on a boolean con-
+  
+ dition with the
+  while
+  boolean expression
+  do
+  expression
+  done
+  
+ construct. Performing an action a fixed number of times",NA
+14 ,"of type float. Floating-point operators
+  +. *. -. /. **
+ and built-in 
+ functions
+  sqrt log
+  etc.
+  
+ with particular contents.",NA
+1,NA,NA
+5,Using functions from the OCaml Standard Library,NA
+5 ,"to separate as in
+  match
+  a, b
+  with
+  0, 0 ->
+  expression1 
+ Matching two or more things at once, using commas
+  
+ | x, y ->
+  expression2
+  |
+  ...
+  
+ with the form Module
+ .
+ function.",NA
+6,"Anonymous functions
+  fun
+  name
+  ->
+  expression. Making 
+ operators into functions as in
+  ( < )
+  and
+  ( + )
+ .",NA
+Chapter 16,NA,NA
+Building Bigger Programs,"So far we have been writing little programs and testing them interactively in OCaml. However, to conquer 
+ the 
+ complexity of the task of writing larger programs, tools are needed to split them into well-defined 
+ modules, 
+ each with a given set of types and functions. We can then build big systems without worrying that 
+ some 
+ internal change to a single module will affect the whole program. This process of modularization is 
+ known 
+ as abstraction, and is fundamental to writing large programs, a discipline sometimes called software 
+ engineering.
+  
+ In this chapter, you will have to create text files and type commands into the command prompt of your 
+ computer. If you’re not sure how to do this, or the examples in this chapter do not work for you, ask a friend 
+ or teacher. In particular, if using Microsoft Windows, some of the commands may have different names.",NA
+Making a module,"We will be building a modular version of our text statistics program from Chapter 13. First, write the text 
+ file shown in Figure 16.1 (but not the italic annotations) and save it as
+  textstat.ml
+  (OCaml programs live in 
+ files with lowercase names ending in
+  .ml
+ ).
+  
+ The first line is a comment. Comments in OCaml are written between
+  (*
+  and
+  *)
+ . We use comments in
+  
+ (* Text statistics *) 
+  
+ commen
+ t
+  
+ type stats = int * int * int * int 
+  
+ our type for 
+ statistics
+  
+ let stats_from_channel _ = (0, 0, 0, 0) 
+  
+ statistics from a 
+ channel
+  
+ let stats_from_file filename = 
+  
+ and from a file; exceptions are not 
+ handled
+  
+ let channel = open_in filename in
+  
+ let result = stats_from_channel channel in
+  
+ close_in channel;
+  
+ result
+  
+ Figure 16.1:
+  textstat.ml
+  
+ 123",NA
+Filling out the module,"Let us add a real
+  stats_from_channel
+  function, to produce a working text statistics module. We will also 
+ add utility 
+ functions for retrieving individual statistics from the
+  stats
+  type. This is shown in Figure 16.2.
+  
+ We can compile it in the same way, and try it with our example file:
+  
+ OCaml
+  
+ # #load ""textstat.cmo"";; 
+  
+ # let s = Textstat.stats_from_file ""gregor.txt"";; val s : Textstat.stats = (8, 
+ 464, 80, 4) 
+  
+ # Textstat.lines s;;
+  
+ - : int = 8 
+  
+ # Textstat.characters s;;
+  
+ - : int = 464 
+  
+ # Textstat.words s;;
+  
+ - : int = 80 
+  
+ # Textstat.sentences s;;
+  
+ - : int = 4
+  
+ You might ask why we need the functions
+  lines
+ ,
+  characters
+  etc. when the information is returned in the tuple. 
+ Let us discuss that now.",NA
+Making an interface,"We said that modules were for creating abstractions, so that the implementation of an individual module 
+ could be altered without changing the rest of the program. However, we have not achieved that yet – the 
+ details of the internal type are visible to the program using the module, and that program would break if we 
+ changed the type of
+  stats
+  to hold an additional statistic. In addition, the internal
+  count_words 
+ function is 
+ available, even though the user of the module is not expected to use it.
+  
+ What we would like to do is to restrict the module so that only the types and functions we want to be 
+ used directly are available. For this, we use an interface. Interfaces are held in files ending in
+  .mli
+ , and we 
+ can 
+ write one for our module. Our interface is shown in Figure 16.3.
+  
+  
+ In this interface, we have exposed every type and function. Types are written in the same way as in the
+  
+ .ml
+  file. Functions are written with
+  val
+ , followed by the name, a colon, and the type of the function.
+  
+ We can compile this by giving the
+ .mli
+  file together with the
+ .ml
+  file when using
+  ocamlc
+ :
+  
+ ocamlc textstat.mli textstat.ml
+  
+ The
+  ocamlc
+  compiler has created at least two files:
+  textstat.cmo
+  as before and
+  textstat.cmi
+  (the 
+ compiled 
+ interface). You should find this operates exactly as before when loaded into OCaml. Now, let us 
+ remove the 
+ definition of the type from the interface, to make sure that the stats type is hidden, and its parts can only be 
+ accessed using the
+  lines
+ ,
+  characters
+ ,
+  words
+ , and
+  sentences
+  functions. We will also remove the declaration for
+  
+ stats_from_channel
+  to demonstrate that functions we do not need can be hidden too. This is shown in Figure 
+ 16.4.
+  
+  
+ Now, if we compile the program again with
+  ocamlc textstat.mli textstat.ml
+ , we see that the 
+ stats_of_channel
+  
+ function is now not accessible, and the type of stats is now hidden, or abstract.
+  
+ OCaml
+  
+ # #load ""textstat.cmo"";; 
+  
+ # let s = Textstat.stats_from_file ""gregor.txt"";;
+  
+ val s : Textstat.stats = <abstr> # Textstat.lines 
+ s;;
+  
+ - : int = 8 
+  
+ # Textstat.characters s;;
+  
+ - : int = 464 
+  
+ # Textstat.words s;;
+  
+ - : int = 80 
+  
+ # Textstat.sentences s;;
+  
+ - : int = 4 
+  
+ # Textstat.stats_from_channel;;
+  
+ the type is now abstract
+  
+ we have hidden this function
+  
+ Error: Unbound value Textstat.stats_from_channel
+  
+ We have successfully separated the implementation of our module from its interface – we can now change the
+  
+ stats
+  type internally to hold extra statistics without invalidating existing programs. This is abstraction 
+ in a 
+ nutshell.",NA
+Building standalone programs,"Now it is time to cut ourselves free from interactive OCaml, and build standalone programs which can be 
+ executed directly. Let us add another file
+  stats.ml
+  which will use functions from the
+  Textstat
+  module to create 
+ a program which, when given a file name, prints some statistics about it. This is illustrated in Figure 16.5. 
+ There are some new things here:
+  
+ 1. The built-in array
+  Sys.argv
+  lists the arguments given to a command written at the command line. The 
+ first is the name of our program, so we ignore that. The second will be the name of the file the user 
+ wants our program to inspect. So, we match against that array. If there is any other array size, we print 
+ out a usage message.
+  
+ 2. The function
+  Printexc.to_string
+  from the OCaml Standard Library converts an exception into a 
+  
+ string 
+ – we use this to print out the error.
+  
+ 3. There was an error, so it is convention to specify an exit code of 1 rather than 0. Do not worry about 
+  
+ this.
+  
+ Let us compile this standalone program using
+  ocamlc
+ , giving a name for the executable program using the
+  -o
+  
+ option:
+  
+ ocamlc textstat.mli textstat.ml stats.ml -o stats
+  
+ Now, we can run the program:
+  
+ $ ./stats gregor.txt 
+  
+ Words: 80 
+  
+ Characters: 464 
+  
+ Sentences: 4 
+  
+ Lines: 8
+  
+ $ ./stats not_there.txt
+  
+ An error occurred: Sys_error(""not_there.txt:
+  
+ $ ./stats
+  
+ Usage: stats <filename>
+  
+ No such file or directory"")
+  
+ This output might look different on your computer, depending on your operating system. On most 
+ computers, the
+  ocamlopt
+  compiler is also available. If we type
+  
+ ocamlopt textstat.mli textstat.ml stats.ml -o stats
+  
+ we obtain an executable which is much faster than before, and completely independent of OCaml – it can 
+ run on any computer which has the same processor and operating system (such as Windows or Mac OS X) 
+ as 
+ yours, with no need for an OCaml installation. On the other hand, the advantage of
+  ocamlc
+  is that it produces 
+ a program which can run on any computer, so long as OCaml support is installed.",NA
+Questions,"1. Extend our example to print the character histogram data as we did in Chapter 13.
+  
+ 2. Write and compile a standalone program to reverse the lines in a text file, writing to another file. 3.
+  
+ Write a program which takes sufficiently long to run to allow you to compare the speed of programs 
+  
+ compiled with
+  ocamlc
+  and
+  ocamlopt
+ .
+  
+ 4. Write a standalone program to search for a given string in a file. Lines where the string is found 
+  
+ should 
+ be printed to the screen.",NA
+So Far,"Integers
+  min_int
+  ...
+  -3 -2 -1 0 1 2 3
+  ...
+  max_int
+  of",NA
+1 ,"type int. 
+ Booleans
+  true
+  and
+  false
+  of type bool. Char-
+  
+ acters of type char like
+  'X'
+  and
+  '!'
+ .",NA
+7 ,"carry extra information by adding
+  of
+  type. Raising 
+ Defining exceptions with
+  exception
+  name. They can
+  
+ exceptions with
+  raise
+ . Handling exceptions with
+  try
+  ...
+  
+ Mathematical operators
+  + - * / mod
+  which take two inte-gers 
+ and give another.
+  
+ Operators
+  = < <= > >= <>
+  which compare two values and 
+ evaluate to either
+  true
+  or
+  false
+ .
+  
+ with
+  ...",NA
+8,"Tuples to combine a fixed number of elements
+  (a, b)
+ , 
+ (a, 
+ b, c)
+  etc. with types α × β, α × β × γ etc.
+  
+  
+ The conditional
+  if
+  expression1
+  then
+  expression2
+  else
+  ex-
+ pression3, where expresssion1 has type
+  bool
+  and 
+ expression2 
+ and expression3 have the same type as one 
+ another.
+  
+ The boolean operators
+  &&
+  and
+  ||
+  which allow us to build 
+ compound boolean expressions.",NA
+2 ,"sion using the
+  let
+  name
+  =
+  expression construct. Building 
+ Assigning a name to the result of evaluating an expres-
+  
+ compound expressions using
+  let
+  name1
+  =
+  expression1
+  in let
+  
+ name2
+  =
+  expression2
+  in
+  ...
+  
+ Functions, introduced by
+  let
+  name argument1 argument2 ...
+  
+ =
+  expression. These have type α → β, α → β → γ etc. for some 
+ types α, β, γ etc.
+  
+ Recursive functions, which are introduced in the same way, 
+ but using
+  let rec
+  instead of
+  let
+ .",NA
+3 ,"tern1
+  |
+  . . .
+  ->
+  expression2
+  |
+  pattern2
+  |
+  . . .
+  ->
+  expression3 
+ Matching patterns using
+  match
+  expression1
+  with
+  pat-
+  
+ |
+ . . . The expressions expression2, expression3 etc. must 
+ have 
+ the same type as one another, and this is the type of 
+ the whole
+  match
+  ...
+  with
+  expression.",NA
+4 ,"elements of like type. They are written between square 
+ Lists, which are ordered collections of zero or more
+  
+ brackets, with elements separated by semicolons e.g.
+  [1;",NA
+9 ,"the full number of arguments. Partial application with 
+ Partial application of functions by giving fewer than
+  
+ functions built from operators.",NA
+10 ,"|
+  constructor2
+  of
+  type2
+  |
+  ... Pattern matching on 
+ New types with
+  type
+  name
+  =
+  constructor1
+  of
+  type1
+  
+ them as with the built-in types. Polymorphic types.",NA
+11 ,"between double quotes and are of type string. 
+ Strings, which are sequences of characters written",NA
+12 ,"of type in_channel and output channels of type 
+  
+ The value
+  ()
+  and its type unit. 
+  
+ Input channels
+  
+ out_channel. Built-in functions for reading from and
+  
+ writing to them respectively.",NA
+13 ,"accessing their contents using
+  !
+ and updating them 
+ References of type α ref. Building them using
+  ref
+ ,
+  
+ using the
+  :=
+  operator.
+  
+ Bracketing expressions together with
+  begin
+  and
+  end
+  in-
+  
+ stead of parentheses for readability.
+  
+ Performing an action many times based on a boolean con-
+  
+ dition with the
+  while
+  boolean expression
+  do
+  expression
+  done
+  
+ construct. Performing an action a fixed number of times",NA
+5 ,"to separate as in
+  match
+  a, b
+  with
+  0, 0 ->
+  expression1 
+ Matching two or more things at once, using commas
+  
+ | x, y ->
+  expression2
+  |
+  ...",NA
+6,"Anonymous functions
+  fun
+  name
+  ->
+  expression. Making 
+ operators into functions as in
+  ( < )
+  and
+  ( + )
+ .
+  
+  
+ built-in function
+  Array.make
+ , finding its length with 
+ Array.length
+ , accessing an element with
+  a.(
+ subscript
+ )
+ . 
+ Updating with
+  a.(
+ subscript
+ ) <-
+  expression. The built-in 
+ function
+  String.iter
+ .
+  
+ Floating-point numbers
+  min_float
+  . ..
+  max_float",NA
+14 ,"of type float. Floating-point operators
+  +. *. -. /. **
+ and built-in 
+ functions
+  sqrt log
+  etc.",NA
+15,"Using functions from the OCaml Standard Library 
+ with the form Module
+ .
+ function.",NA
+16 ,"in
+  .mli
+  files with types and
+  val
+ . Using the
+  ocamlc 
+ Writing modules in
+  .ml
+  files. Building interfaces
+  
+ and
+  ocamlopt
+  compilers. Comments written between
+  (* 
+ and
+  
+ *)
+ .",NA
+Answers to Questions,NA,NA
+Chapter 1 (Starting Off),"1
+  
+ The expression
+  17
+  is of type int and is a value already. The expression
+  1 + 2 * 3 + 4
+  is of type int and evaluates 
+ to the value
+  11
+ , since the multiplication is done first. The expression
+  800 / 80 / 8
+  has type int. It is the same as
+  
+ (800 / 80) / 8
+  rather than
+  800 / (80 / 8)
+  and evaluates to
+  1
+ .
+  
+ The expression
+  400 > 200
+  has type
+  bool
+  because this is the type of the result of the comparison operator 
+ >
+ . 
+ It evaluates to
+  true
+ . Similarly,
+  1 <> 1
+  has type bool and evaluates to
+  false
+ . The expression
+  true || false
+  is of type 
+ bool and evaluates to
+  true
+  since one of the operands is true. Similarly,
+  true && false 
+ evaluates to
+  false
+  since 
+ one of the operands is false. The expression
+  if
+  true
+  then
+  false
+  else
+  true 
+ evaluates to
+  false
+  since the first (
+ then
+ ) 
+ part of the conditional expression is chosen, and takes the place of 
+ the entire expression.
+  
+  
+ The expression
+  '%'
+  is of type char and is already a value. The expression
+  'a' + 'b'
+  has no type – it gives a 
+ type error because the
+  +
+  operator does not operate on characters.
+  
+ 2
+  
+ The
+  mod
+  operator is of higher precedence than the
+  +
+  operator. So
+  1 + 2 mod 3
+  and
+  1 + (2 mod 3)
+  are the same 
+ expression, evaluating to
+  1 + 2
+  which is
+  3
+ , but
+  (1 + 2) mod 3
+  is the same as
+  3 mod 3
+ , which is
+  0
+ .
+  
+ 3
+  
+ The expression evaluates to
+  11
+ . The programmer seems to be under the impression that spacing affects 
+ evaluation order. It does not, and so this use of space is misleading.
+  
+ 4
+  
+ The expression
+  max_int + 1
+  evaluates to a number equal to
+  min_int
+ . Likewise,
+  min_int - 1
+  evaluates to a number 
+ equal to
+  max_int
+ . The number line “wraps around”. This leads to the odd situation that 
+ max_int + 1 < max_int
+  
+ evaluates to
+  true
+ . It follows that when writing programs, we must be careful about what happens when 
+ numbers may be very large or very small.
+  
+ 5
+  
+ OCaml accepts the program, but complains when it is run:
+  
+ 133",NA
+Chapter 2 (Names and Functions),"1
+  
+ Just take in an integer and return the number multiplied by ten. The function takes and returns an integer, 
+ so 
+ the type is int → int.
+  
+ OCaml
+  
+ # let times_ten x = x * 10;; 
+  
+ val times_ten : int -> int = <fun>
+  
+ 2
+  
+ We must take two integer arguments, and use the
+  &&
+  and
+  <>
+  operators to test if they are both non-zero. So 
+ the 
+ result will be of type bool. The whole type will therefore be int → int → bool.
+  
+ OCaml",NA
+Chapter 3 (Case by Case),"1
+  
+ We can just pattern match on the boolean. It does not matter, in this instance, which order the two cases are 
+ in.
+  
+ not :
+  bool → bool
+  
+ let
+  not x = 
+  
+  
+ match
+  x
+  with 
+  
+   
+ true -> false 
+  
+  
+ | false -> true
+  
+ 2
+  
+ Recall our solution from the previous chapter:
+  
+ sum :
+  int → int 
+  
+ let rec
+  sum n = 
+  
+  
+ if
+  n = 1
+  then
+  1
+  else
+  n + sum (n - 1)",NA
+Chapter 4 (Making Lists),"1
+  
+ This is similar to
+  odd_elements
+ :
+  
+ even_elements :
+  α list → α list
+  
+ let rec
+  even_elements l =
+  
+ match
+  l
+  with
+  
+ [] -> [] 
+  
+ the list has zero 
+ elements
+  
+ | [_] -> [] 
+  
+ the list has one element – drop 
+ it
+  
+ | _::b::t -> b :: even_elements t 
+  
+ h
+  is the head,
+  t
+  the tail
+  
+ But we can perform the same trick as before, by reversing the cases, to reduce their number:",NA
+Chapter 5 (Sorting Things),"1
+  
+ Simply add an extra
+  let
+  to define a name representing the number we will take or drop:
+  
+ msort :
+  α list → α list
+  
+ let rec
+  msort l =
+  
+ match
+  l
+  with
+  
+ [] -> [] 
+  
+ we are done if the list is 
+ empty
+  
+ | [x] -> [x] 
+ and also if it only has one element
+  
+ | _ ->
+  
+ let
+  x = length l / 2
+  in
+  
+ let
+  left = take x l
+  in 
+  
+ get the left hand 
+ half
+  
+ let
+  right = drop x l
+  in 
+  
+ and the right hand 
+ half
+  
+ merge (msort left) (msort right) 
+ sort and merge them
+  
+ 2
+  
+ The argument to
+  take
+  or
+  drop
+  is
+  length l / 2
+  which is clearly less than or equal to
+  length l
+  for all
+  
+ possible values of
+  l
+ . Thus,
+  take
+  and
+  drop
+  always succeed. In our case,
+  take
+  and
+  drop
+  are only called with
+  
+ length l
+  is more than 1, due to the pattern matching.",NA
+Chapter 6 (Functions upon Functions upon Functions),"1
+  
+ Our function will have type char list → char list. We just match on the argument list: if it is empty, we are 
+ done. If it starts with an exclamation mark, we output a period, and carry on. If not, we output the character 
+ unchanged, and carry on:
+  
+ calm :
+  char list → char list
+  
+ let rec
+  calm l = 
+  
+  
+ match
+  l
+  with 
+  
+   
+ [] -> [] 
+  
+  
+ | '!'::t -> '.' :: calm t 
+  
+  
+ | h::t -> h :: calm t
+  
+ To use
+  map
+  instead, we write a simple function
+  calm_char
+  to process a single character. We can then use 
+ map
+  to 
+ build our main function:",NA
+Chapter 7 (When Things Go Wrong),"1
+  
+ The function
+  smallest_inner
+  takes a currently smallest found integer, a boolean value
+  found
+  indicating
+  
+ if we have found any suitable value or not, and the list of integers. It is started with
+  max_int
+  as the current
+  
+ value, so that any number is smaller than it, and
+  false
+  for
+  found
+  because nothing has been found yet.
+  
+ smallest_inner :
+  int → bool → int list → int 
+ smallest :
+  
+ int list → int
+  
+ let rec
+  smallest_inner current found l =
+  
+ match
+  l
+  with
+  
+ [] -> 
+  
+  
+ if
+  found
+  then
+  current
+  else raise
+  Not_found
+  
+ | h::t ->
+  
+ if
+  h > 0 && h < current 
+  
+ then
+  smallest_inner h true t 
+  
+ else
+  smallest_inner current found t
+  
+ let
+  smallest l = 
+  
+  
+ smallest_inner max_int false l
+  
+ Thus, the function raises an exception in the case of an empty list, or one which is non-empty but contains
+  
+ no positive integer, and otherwise returns the smallest positive integer in the list.
+  
+ 2
+  
+ We just surround the call to
+  smallest
+  with an exception handler for
+  Not_found
+ .
+  
+ smallest_or_zero :
+  int list → int 
+  
+ let
+  smallest_or_zero l = 
+  
+  
+ try
+  smallest l
+  with
+  Not_found -> 0",NA
+Chapter 8 (Looking Things Up) ,"1
+  
+ Since the keys must be unique, the number of different keys is simply the length of the list representing
+  
+ the dictionary – so we can just use the usual
+  length
+  function.
+  
+ 2
+  
+ The type is the same as for the
+  add
+  function. However, if we reach the end of the list, we raise an exception,
+  
+ since we did not manage to find the entry to replace.
+  
+ replace :
+  α → β → (α × β) list → (α × β) list
+  
+ let rec
+  replace k v l = 
+  
+  
+ match
+  l
+  with 
+  
+  
+ [] ->
+  raise
+  Not_found 
+  
+  
+ could not find it; 
+ fail 
+  
+ | (k', v')::t -> 
+  
+    
+ if
+  k = k' 
+  
+     
+ then
+  (k, v) :: t 
+  
+  
+  
+ found it – 
+ replace 
+   
+  
+  
+ else
+  (k', v') :: 
+ replace k v t 
+  
+ keep it, and keep 
+ looking",NA
+Chapter 9 (More with Functions),"1
+  
+ The function
+  g a b c
+  has type
+  α → β → γ → δ
+  which can also be written
+  α →
+  (
+ β →
+  (
+ γ → δ
+ )). Thus, it takes an 
+ argument of type
+  α
+  and returns a function of type
+  β →
+  (
+ γ → δ
+ ) which, when you give it an argument of type
+  β
+  
+ returns a function of type
+  γ → δ
+  which, when you give it an argument of type
+  γ
+  returns something 
+ of type δ. 
+ And so, we can apply just one or two arguments to the function
+  g
+  (which is called partial 
+ application), or 
+ apply all three at once. When we write
+  let
+  g a b c = ...
+  this is just shorthand for
+  let
+  g =
+  fun
+  a ->
+  fun
+  b ->
+  fun
+  c -> ...
+  
+ 2
+  
+ The type of
+  member
+  is α → α list → bool, so if we partially apply the first argument, the type of
+  member x
+  must 
+ be α list → bool. We can use the partially-applied
+  member
+  function and
+  map
+  to produce a list of boolean 
+ values, one for each list in the argument, indicating whether or not that list contains the element. Then, we 
+ can use
+  member
+  again to make sure there are no
+  false
+  booleans in the list.
+  
+ member_all :
+  α → α list list → bool 
+  
+ let
+  member_all x ls = 
+  
+  
+ let
+  booleans = map (member x) ls
+  in 
+  
+  
+ not (member false booleans)
+  
+ We could also write:
+  
+ member_all :
+  α → α list list → bool 
+  
+ let
+  member_all x ls = 
+  
+  
+ not (member false (map (member x) ls))
+  
+ Which do you think is clearer? Why do we check for the absence of
+  false
+  rather than the presence of 
+ true
+ ?
+  
+ 3
+  
+ The function
+  ( / ) 2
+  resulting from the partial application of the
+  /
+  operator is the function which divides two 
+ by a given number, not the function which divides a given number by two. We can define a reverse divide 
+ function. . .
+  
+ let
+  rdiv x y = y / x
+  
+ . . . which, when partially applied, does what we want.",NA
+Chapter 10 (New Kinds of Data),"1 
+  
+ We need two constructors – one for squares, which needs just a single integer (the length of a side), and one 
+ for rectangles which needs two integers (the width and height, in that order):
+  
+ type
+  rect = 
+  
+  
+ Square
+  of
+  int 
+  
+ | Rectangle
+  of
+  int * int
+  
+ The name of our new type is rect. A rect is either a
+  Square
+  or a
+  Rectangle
+ . For example,
+  
+ s :
+  rect 
+  
+ r :
+  rect
+  
+ let
+  s = Square 7
+  
+ let
+  r = Rectangle (5, 2) 
+  
+ width 5, height 
+ 2
+  
+ 2 
+  
+ We pattern match on the argument:",NA
+Chapter 11 (Growing Trees),"1
+  
+ Our function will have type α → α tree → bool. It takes a element to look for, a tree holding that kind of 
+ element, and returns
+  true
+  if the element is found, or
+  false
+  otherwise.
+  
+ member_tree :
+  α → α tree → bool 
+  
+ let rec
+  member_tree x tr = 
+  
+  
+ match
+  tr
+  with 
+  
+  
+ Lf -> false 
+  
+  
+ | Br (y, l, r) -> x = y || member_tree x l || member_tree x r
+  
+ Note that we have placed the test
+  x = y
+  first of the three to ensure earliest termination upon finding an 
+ appropriate element.
+  
+ 2
+  
+ Our function will have type
+  α
+  tree
+  → α
+  tree. A leaf flips to a leaf. A branch has its left and right swapped, 
+ and 
+ we must recursively flip its left and right sub-trees too.
+  
+ flip_tree :
+  α tree → α tree 
+  
+ let rec
+  flip_tree tr = 
+  
+  
+ match
+  tr
+  with 
+  
+  
+ Lf -> Lf 
+  
+  
+ | Br (x, l, r) -> Br (x, flip_tree r, flip_tree l)
+  
+ 3
+  
+ We can check each part of both trees together. Leaves are considered equal, branches are equal if their left 
+ and right sub-trees are equal.",NA
+Chapter 12 (In and Out),"1
+  
+ A first attempt might be:",NA
+Chapter 13 (Putting Things in Boxes),"1
+  
+ Two references,
+  x
+  and
+  y
+ , of type int ref have been created. Their initial values are 1 and 2. Their final values 
+ are 2 and 4. The type of the expression is int because this is the type of
+  !x + !y
+ , and the result is 6.
+  
+ 2
+  
+ The expression
+  [ref 5; ref 5]
+  is of type
+  int ref list
+ . It contains two references each containing the integer 
+ 5. 
+ Changing the contents of one reference will not change the contents of the other. The expression
+  let
+  x = ref 5
+  
+ in
+  [x; x]
+  is also of type int ref list and also contains two references to the integer 5. However, altering one will 
+ alter the other:
+  
+ OCaml
+  
+ # let r = let x = ref 5 in [x; x];; 
+  
+ val r : int ref list = [{contents = 5}; {contents = 5}] # match r with h::_ -> h := 6;; 
+  
+ Warning 8: this pattern-matching is not exhaustive.
+  
+ Here is an example of a value that is not matched: []
+  
+ - : unit = () 
+  
+ # r;;
+  
+ - : int ref list = [{contents = 6}; {contents = 6}]
+  
+ 3
+  
+ We can write a function
+  forloop
+  which takes a function of type
+  int → α
+  (where alpha would normally be 
+ unit), 
+ together with the start and end numbers:",NA
+Chapter 14 (The Other Numbers),"1
+  
+ We calculate the ceiling and floor, and return the closer one, being careful to make sure that a point equally 
+ far 
+ from the ceiling and floor is rounded up.
+  
+ round :
+  float → float
+  
+ let
+  round x = 
+  
+  
+ let
+  c = ceil x
+  in 
+  
+   
+ let
+  f = floor x
+  in 
+  
+    
+ if
+  c -. x <= x -. f
+  then
+  c
+  else
+  f
+  
+ The behaviour with regard to values such as
+  infinity
+  and
+  nan
+  is fine, since it always returns the result of 
+ either
+  
+ floor
+  or
+  ceil
+ .
+  
+ 2
+  
+ The function returns another point, and is simple arithmetic.
+  
+ between :
+  float × float → float × float → float × float 
+ let
+  
+ between (x, y) (x’, y’) = 
+  
+  
+ ((x +. x’) /. 2., (y +. y’) /. 2.)",NA
+Chapter 15 (The OCaml Standard Library),"1
+  
+ A non-tail-recursive one is simple:
+  
+ concat :
+  α list list → α list
+  
+ let rec
+  concat l = 
+  
+  
+ match
+  l
+  with 
+  
+   
+ [] -> [] 
+  
+  
+ | h::t -> h @ concat t
+  
+ To make a tail-recursive one, we can use an accumulator, reversing each list as we append it, and reversing 
+ the 
+ result.
+  List.rev
+  is tail-recursive already.
+  
+ concat_tail :
+  α list → α list list → α list 
+ concat :
+  α 
+ list list → α list
+  
+ let rec
+  concat_tail a l =
+  
+ match
+  l
+  with
+  
+  
+ [] -> List.rev a 
+  
+ | h::t -> concat_tail (List.rev h @ a) t
+  
+ let
+  concat l = 
+  
+  
+ concat_tail [] l
+  
+ 2
+  
+ We can use
+  List.mem
+ , partially applied, to map over the list of lists. We then make sure that
+  false
+  is not in the 
+ resultant list, again with
+  List.mem
+ .
+  
+ all_contain_true :
+  bool list list → bool 
+  
+ let
+  all_contain_true l = 
+  
+  
+ not (List.mem false (List.map (List.mem true) l))
+  
+ 3
+  
+ The
+  String.iter
+  function calls a user-supplied function of type char → unit on each character of the string. We 
+ can use this to increment a counter when an exclamation mark is found.",NA
+Chapter 16 (Building Bigger Programs),"1
+  
+ First, we extend the
+  Textstat
+  module to allow frequencies to be counted and expose it through the interface, 
+ shown in Figures 16.6 and 16.7. Then the main program is as shown in Figure 16.8.
+  
+ 2
+  
+ We can write two little functions – one to read all the lines from a file, and one to write them. The main 
+ function, then, reads the command line to find the input and output file names, reads the lines from the 
+ input, reverses the list of lines, and writes them out. If a problem occurs, the exception is printed out. If the 
+ command line is badly formed, we print a usage message and exit. This is shown in Figure 16.9.
+  
+  
+ Note that there is a problem if the file has no final newline – it will end up with one. How might you solve 
+ that?",NA
+Hints for Questions,NA,NA
+Chapter 1 ,2,NA
+Starting Off,"What does the function take as arguments? What is 
+ the type of its result? So what is the whole type?
+  
+ 1
+  
+ You can use the
+  <>
+  and
+  &&
+  operators here.
+  
+ Try to work these out on paper, and then check by 
+  
+ typing them in. Remember that the type of an ex-
+ 3 
+  
+ pression is the type of the value it will evaluate to.
+  
+ Can you show the steps of evaluation for each ex-
+  
+ This will be a recursive function, so remember to
+  
+ pression? use
+  let rec
+ . What is the sum of all the integers from 1 . . . 1? Perhaps this is a good base case.
+  
+ 2
+  
+ Type each expression in. What number does each 
+ 4
+  
+ evaluate to? Can you work out which operator (
+ mod 
+ or
+  
+ +
+ ) is being calculated first?
+  
+ 3
+  
+ This will be a recursive function. What happens 
+ when you raise a number to the power 0? What 
+ about the power 1? What about a higher power?
+  
+ Type it in. What does OCaml print? What is the 
+ evaluation order?
+  
+ 5
+  
+ Can you define this in terms of the
+  isvowel
+  function
+  
+ 7
+  
+ we have already written?
+  
+ What if a value of 2 appeared? How might we inter-
+  
+ pret it? 
+  
+ 6
+  
+ Try adding parentheses to the expression in a way",NA
+Chapter 2 ,NA,NA
+Names and Functions,"which does not change its meaning. Does this make 
+ it 
+ easier to understand?
+  
+ 1 
+  
+ 7
+  
+ The function takes one integer, and returns that in-
+ teger multiplied by ten. So what must its type be?
+  
+ When does it not terminate? Can you add a check to 
+ see when it might happen, and return 0 instead?
+  
+ 179",NA
+Chapter 3,NA,NA
+Case by Case,"The function to make a palindrome is trivial; to de-tect 
+ if a list is a palindrome, consider the definition
+  
+ 1 
+  
+ We are pattern matching on a boolean value, so there 
+ are just two cases:
+  true
+  and
+  false
+ .
+  
+ of a palindrome – a list which equals its own reverse.
+  
+ 4
+  
+ Consider the cases (1) the empty list, (2) the list
+  
+ 2
+  
+ with one element, and (3) the list with more than 
+ one element. For the tail recursive version, use an
+  
+  
+ Convert the
+  if
+  ...
+  then
+  ...
+  else
+  structure of the
+  sum
+  
+ function from the previous chapter into a pattern 
+ matching structure.
+  
+ accumulating argument.
+  
+ 5
+  
+ 3 
+  
+ Can any element exist in the empty list? If the list is
+  
+ You will need three cases as before – when the power 
+ is 0, 1 or greater than 1 – but now in the form of a 
+ pattern match.
+  
+ not empty, it must have a head and a tail. What is 
+ the answer if the element we are looking for is equal 
+ to the head? What do we do if it is not?
+  
+ 5 
+  
+ 6
+  
+ Consider where parentheses might be added with-out 
+ altering the expression.
+  
+ 6
+  
+ There will be two cases in each function – the special 
+ range pattern
+  x..y
+ , and
+ _
+ for any other character.
+  
+ The empty list is already a set. If we have a head 
+ and 
+ a tail, what does it tell us to find out if the head 
+ exists 
+ within the tail?
+  
+ 7
+  
+ Consider in which order the
+  @
+  operators are evalu-
+ ated in the reverse function. How long does each",NA
+Chapter 4 ,NA,NA
+Making Lists,"1
+  
+ Consider three cases: (1) the argument list is empty, 
+ (2) the argument list has one element, (3) the argu-
+  
+ append take? How many are there?",NA
+Chapter 5,NA,NA
+Sorting Things,"1
+  
+  
+ ment list has more than one element
+  a::b::t
+ . In 
+ the last 
+ case, which element do we need to miss out?
+  
+ Consider adding another
+  let
+  before
+  let
+  left
+  and 
+ let
+  right
+ .
+  
+ 2 
+  
+ The function will have type
+  bool list→ int
+ . Consider
+  
+ 2
+  
+  
+ the empty list, the list with
+  true
+  as its head, and the list 
+ with
+  false
+  as its head. Count one for each
+  true
+  
+ Consider the situations in which
+  take
+  and
+  drop
+  can 
+ fail, 
+ and what arguments
+  msort
+  gives them at each
+  
+ and zero for each
+  false
+ . 
+  
+ recursion.",NA
+Chapter 6 ,NA,NA
+Functions upon Functions upon,"function does not hold. If not, it must hold for the 
+ first one, and for all the others by recursion.",NA
+Functions ,"1 
+  
+ The function
+  calm
+  is simple recursion on lists. There
+  
+ are three cases – the empty list, a list beginning with
+  
+ 8 
+  
+ You can use
+  map
+  on each α list in the α list list.",NA
+Chapter 7,"'!'
+  and a list beginning with any other character. In the 
+ second part of the question, write a function 
+ calm_char
+  
+ which processes a single character. You",NA
+When Things Go Wrong,"can then use
+  map
+  to define a new version of
+  calm
+ . 
+  
+ 1
+  
+ Make sure to consider the case of the empty list,
+  
+ 2 
+  
+ This is the same process as Question 1.
+  
+ 3
+  
+ where there is no smallest positive element, and 
+ also the non-empty list containing entirely zero or 
+ negative numbers.
+  
+ 2
+  
+  
+ Look back at the section on anonymous functions. 
+ How can
+  clip
+  be expressed as an anonymous func-
+ tion? So, how can we use it with
+  map
+ ?
+  
+ Just put an exception handler around the function in 
+ the previous question.
+  
+ 4
+  
+ 3 
+  
+ First, write a function to find the number less than
+  
+  
+ We want a function of the form
+  let rec
+  apply f n x =
+  . . . 
+ which applies
+  f
+  to
+  x
+  a total of
+  n
+  times. What is the 
+ base case? What do we do in that case? What
+  
+ or equal to the square root of its argument. Now, 
+ define a suitable exception, and wrap up your func-
+ tion in another which, on a bad argument, raises the
+  
+ otherwise? 
+  
+ exception or otherwise calls your first function.",NA
+Chapter 8,NA,NA
+Looking Things Up,"The function will take two dictionaries, and return 
+ another – so you should be able to write down its 
+ type easily.
+  
+ Try pattern matching on the first list – when it is 
+ empty, the answer is trivial – what about when it 
+ has a head and a tail?
+  
+ 1",NA
+Chapter 9,"The keys in a dictionary are unique – does remem-
+ bering that fact help you?",NA
+More with Functions ,"2
+  
+ 2 
+  
+ The type will be the same as for the
+  add
+  function,
+  
+ Try building a list of booleans, each representing the 
+ result of
+  member
+  on a list.
+  
+ but we only replace something if we find it there –
+  
+ when do we know we will not find it?
+  
+ 3
+  
+ 3 
+  
+ The
+  /
+  operator differs from the
+  *
+  operator in an 
+ important sense. What is it?
+  
+ The function takes a list of keys and a list of values,
+  
+ and returns a dictionary. So it will have type α list→ β 
+ list →
+  (
+ α × β
+ )
+  list
+ . Try matching on both lists
+  
+ 4
+  
+  
+ at once – what are the cases?
+  
+ The type of
+  map
+  is (α → β) → α list → β list. The type of
+  
+ mapl
+  is (α → β) → α list list → β list list.
+  
+ 4 
+  
+ This function takes a list of pairs and produces a
+  
+ So, what must the type of
+  mapll
+  be? Now, look at 
+ our 
+ definition of
+  mapl
+  – how can we extend it to lists 
+ of 
+ lists of lists?
+  
+ pair of lists. So its type must be (α × β) list → α
+  
+ list × β list.
+  
+ For the base case (the empty dictionary), we can
+  
+ 5
+  
+  
+ see that the result should be
+  ([], [])
+ . But what to do in 
+ the case we have
+  (k, v) :: more
+ ? We must 
+ get names for 
+ the two parts of the result of our func-
+ tion on
+  more
+ , 
+ and then cons
+  k
+  and
+  v
+  on to them –can you think of 
+ how to do that?
+  
+ Use our revised
+  take
+  function to process a single list. 
+ You may then use
+  map
+  with this (partially applied) 
+ function to build the
+  truncate
+  function.
+  
+ 5
+  
+ 6 
+  
+ Build a function
+  firstelt
+  which, given the number
+  
+  
+ You can keep a list of the keys which have already 
+ been seen, and use the
+  member
+  function to make 
+ sure you do not add to the result list a key-value
+  
+ and a list, returns the first element or that number. 
+ You can then use this function (partially applied) to-
+ gether with
+  map
+  to build the main
+  firstelts
+  func-
+  
+ pair whose key has already been included. tion.",NA
+Chapter 11,183,NA
+Chapter 10,NA,NA
+New Kinds of Data,NA,NA
+Growing Trees,"1
+  
+ 1
+  
+  
+ The type will have two constructors: one for squares, 
+ requiring only a single integer, and one for rectan-
+ gles, requiring two: one for the width and one for the 
+ height.
+  
+ The type will be α → α tree → bool. That is, it 
+ takes 
+ an element to search for, and a tree containing 
+ elements of the same type, and returns
+  true
+  if the 
+ element is found, and
+  false
+  if not. What happens if 
+ the tree is a leaf? What if it is a branch?
+  
+ 2 
+  
+ 2
+  
+ The function will have type rect → int. Work by 
+ pattern matching on the two constructors of your 
+ type.
+  
+ The function will have type α tree → α tree. What 
+ happens to a leaf? What must happen to a branch 
+ and its sub-trees?
+  
+ 3
+  
+ 3 
+  
+ If the two trees are both
+  Lf
+ , they have the same
+  
+ shape. What if they are both branches? What if one
+  
+ Work by pattern matching on your type. What hap-
+ pens to a square. What to a rectangle?
+  
+ is a branch and the other a leaf or vice versa? For 
+ the second part of the question, consider a devious 
+ way to use
+  map_tree
+  to produce trees of like type.
+  
+ 4 
+  
+ 4
+  
+ First, we need to rotate the rectangles as needed –
+ you have already written something for this. Then, 
+ we need to sort them according to width. Can you
+  
+ We have already written a function for inserting an 
+ element into an existing tree.
+  
+ use our
+  sort
+  function which takes a custom com-
+ parison function for this?
+  
+ 5
+  
+ Try using list dictionaries as an intermediate rep-
+  
+ resentation. We already know how to build a tree
+  
+ 5 
+  
+ Look at how we re-wrote
+  length
+  and
+  append
+  for the 
+ sequence type.
+  
+ from a list.
+  
+ 6
+  
+ Consider using a list of sub-trees for a branch. How 
+  
+ can we represent a branch which has no sub-trees?
+  
+ 6
+  
+ Add another constructor, and amend
+  evaluate
+  as 
+ necessary.
+  
+ 7",NA
+Chapter 12 ,NA,NA
+In and Out,"1
+  
+ You can use the
+  print_string
+  and
+  print_int
+  func-
+  
+  
+ Handle the exception, and return
+  None
+  in that case.
+  
+ tions. Be careful about what happens when you",NA
+Chapter 13 ,NA,NA
+Putting Things in Boxes ,"1
+  
+ To build an array of arrays, you will need a use 
+ Array.make
+  to build an array of empty arrays. You can 
+ then set each of the elements of the main ar-ray to a 
+ suitably sized array, again created with 
+ Array.make
+ . 
+ Once the structure is in place, putting the numbers in 
+ should be simple.
+  
+ Consider the initial values of the references, and then 
+ work through how each one is altered by each
+  
+ 8
+  
+  
+ part of the expression. What is finally returned as the 
+ result of the expression?
+  
+ What is the difference between the codes for
+  'a' 
+ and
+  
+ 'A'
+ ? What about
+  'z'
+  and
+  'Z'
+ ?",NA
+Chapter 14,NA,NA
+The Other Numbers,"Consider
+  String.concat
+ .
+  
+ 1
+  
+ 6
+  
+  
+ Consider the built-in functions
+  ceil
+  and
+  floor
+ .
+  
+ Create a buffer, add all the strings to it in order, and 
+ then return its contents.
+  
+ 2 
+  
+ This is simple arithmetic. The function will take two
+  
+ 7
+  
+  
+ points and return another, so it will have type float× 
+ float → float × float → float × float.
+  
+ 3
+  
+ Consider the built-in function
+  floor
+ . What should
+  
+ happen in the case of a negative number?
+  
+ String.sub
+  is useful here. You can compare strings 
+ with one another for equality, as with any other 
+ type.",NA
+Chapter 16,NA,NA
+Building Bigger Programs,"4 
+  
+ 1
+  
+ Calculate the column number for the asterisk care-
+ fully. How can it be printed in the correct column?
+  
+ You will need to alter the
+  Textstat
+  module to cal-culate 
+ the histogram and allow it to be accessed 
+ through the 
+ module’s interface. Then, alter the main
+  
+ 5 
+  
+ You will need to call the
+  star
+  function with an ap-
+ propriate argument at points between the beginning
+  
+ program to retrieve and print the extra information.
+  
+ 2
+  
+  
+ and end of the range, as determined by the step.",NA
+Chapter 15 ,NA,NA
+The OCaml Standard Library,"You will need functions to read and write the lines. 
+ You can read the required input and output file-
+ names from
+  Sys.argv
+ . What should we do in case of an 
+ error, e.g. a bad filename?
+  
+ 1
+  
+ 3 
+  
+ Consider doing something a very large number of
+  
+  
+ You can assume
+  List.rev
+  which is tail-recursive.
+  
+ times. You should avoid printing information to the 
+ screen, because the printing speed might dominate,
+  
+ 2
+  
+ and the differing computation speeds may be hard 
+ to notice.
+  
+ You might use
+  List.map
+  here, together with
+  
+ List.mem
+  
+ 3
+  
+ 4 
+  
+ Start with a function to search for a given string in-
+ side another. You might find some functions from
+  
+  
+ The
+  String.iter
+  function should help here.
+  
+ the
+  String
+  module in the OCaml Standard Library 
+ to be 
+ useful, or you can write it from first principles.
+  
+ 4
+  
+ Once this is done, the rest is simple.
+  
+ Try
+  String.map
+  supplying a suitable function.",NA
+Coping with Errors,"It is very hard to write even small programs correctly the first time. An unfortunate but inevitable part of 
+ programming is the location and fixing of mistakes. OCaml has a range of messages to help you with this 
+ process.
+  
+ Here are descriptions of the common messages OCaml prints when a program cannot be accepted or 
+ when running it causes a problem (a so-called “run-time error”). We also describe warnings OCaml prints 
+ to 
+ alert the programmer to a program which, though it can be accepted for evaluation, might contain mistakes.",NA
+E,"RRORS
+  
+ These are messages printed when an expression could not be accepted for evaluation, due to being 
+ malformed in some way. No evaluation is attempted. You must fix the expression and try again.
+  
+ Syntax error
+  
+ This error occurs when OCaml finds that the program text contains things which are not valid words (such 
+ as
+  
+ if
+ ,
+  let
+  etc.) or other basic parts of the language, or when they exist in invalid combinations – this is known as 
+ syntax. Check carefully and try again.
+  
+ OCaml
+  
+ #1 +;; 
+  
+ Error: syntax error
+  
+ OCaml has underlined where it thinks the error is. Since this error occurs for a wide range of different 
+ mistakes and problems, the underlining may not pinpoint the exact position of your mistake.
+  
+ Unbound value ...
+  
+ This error occurs when you have mentioned a name which has not been defined (technically “bound to a 
+ value”). This might happen if you have mistyped the name.
+  
+ OCaml
+  
+ # x + 1;; 
+  
+ Error: Unbound value x
+  
+ 187",NA
+R,UN,NA
+-,TIME,NA
+ E,"RRORS
+  
+ In any programming language powerful enough to be of use, some errors cannot be detected before 
+ attempting evaluation of an expression (until “run-time”). The exception mechanism is for handling and 
+ recovering from these kinds of problems.
+  
+ Stack overflow during evaluation (looping recursion?)
+  
+ This occurs if the function builds up a working expression which is too big. This might occur if the function 
+ is 
+ never going to stop because of a programming error, or if the argument is just too big.
+  
+ OCaml
+  
+ # let rec f x = 1 + f (x + 1);; 
+  
+ val f : int -> int = <fun> 
+  
+ # f 0;; 
+  
+ Stack overflow during evaluation (looping recursion?).
+  
+ Find the cause of the unbounded recursion, and try again. If it is really not a mistake, rewrite the function 
+ to 
+ use an accumulating argument (and so, to be tail recursive).
+  
+ Exception: Match_failure ...
+  
+ This occurs when a pattern match cannot find anything to match against. You would have been warned 
+ about this possibility when the program was originally entered. For example, if the following function
+  f 
+ were defined as
+  
+ let
+  f x =
+  match
+  x
+  with
+  0 -> 1
+  
+ then using the function with
+  1
+  as an argument would produce:
+  
+ OCaml",NA
+W,"ARNINGS
+  
+ Warnings do not stop an expression being accepted or evaluated. They are printed after an expression is 
+ accepted but before the expression is evaluated. Warnings are for occasions where OCaml is concerned you 
+ may have made a mistake, even though the expression is not actually malformed. You should check each 
+ new warning in a program carefully.
+  
+ This pattern-matching is not exhaustive
+  
+ This warning is printed when OCaml has determined that you have missed out one or more cases in a pattern 
+ match. This could result in a
+  Match_failure
+  exception being raised at run-time.
+  
+ OCaml
+  
+ # let f x = match x with 0 -> 1;; 
+  
+ Warning 8: this pattern-matching is not exhaustive. Here is an example of 
+ a value that is not matched: 1 
+  
+ val f : int -> int = <fun>
+  
+ Helpfully, it is able to generate an example of something the pattern match does not cover, so this should 
+ give you a hint about what has been missed out. You may ignore the warning if you’re sure that, for other 
+ reasons, this case can never occur.
+  
+ This match case is unused
+  
+ This occurs when two parts of the pattern match cover the same case. In this situation, the second one could 
+ never be reached, so it is almost certain the programmer has made a mistake.",NA
+Index,"!
+ , 99
+  
+ associativity, 2
+  
+ executable, 124
+  
+ →, 10
+  
+ atan
+ , 112
+  
+ exit
+ , ix
+  
+ ×, 61
+  
+ begin
+ , 100
+  
+ expression, 1
+  
+ *
+ , 2
+  
+ evaluating, 2
+  
+ *.
+ , 111
+  
+ binary search tree, 83
+  
+ factorial, 11
+  
+ +
+ , 2
+  
+ binary tree, 81
+  
+ +.
+ , 111
+  
+ bool, 2
+  
+ false
+ , 2
+  
+ -
+ , 2
+  
+ boolean, 2
+  
+ file, 93
+  
+ float_of_int
+ , 112
+  
+ -.
+ , 111
+  
+ case, in a pattern match, 27
+  
+ float_of_string
+ , 112
+  
+ ->
+ , 19
+  
+ /
+ , 2
+  
+ ceil
+ , 112
+  
+ floating-point, 111
+  
+ /.
+ , 111
+  
+ char, 3
+  
+ floor
+ , 112
+  
+ ::
+ , 25
+  
+ character, 3
+  
+ for
+ , 100
+  
+ :=
+ , 99
+  
+ close_in
+ , 95
+  
+ for loop, 101
+  
+ ;
+ , 25, 89
+  
+ close_out
+ , 95
+  
+ fun
+ , 49
+  
+ <
+ , 3
+  
+ comment, 123
+  
+ function, 9
+  
+ <-
+ , 104
+  
+ comparison operator, 2
+  
+ anonymous, 49
+  
+ <=
+ , 3
+  
+ compilation, 124
+  
+ from an operator, 50
+  
+ <>
+ , 3
+  
+ conditional expression, 19
+  
+ functional language, 13
+  
+ =
+ , 3, 9
+  
+ cons, 25
+  
+ handling an exception, 56
+  
+ >
+ , 3
+  
+ cos
+ , 112
+  
+ head of a list, 25
+  
+ >=
+ , 3
+  
+ @
+ , 25
+  
+ data structure, 83
+  
+ if
+ , 3
+  
+ #load
+ , 124
+  
+ dictionary, 61
+  
+ imperative programming,
+  
+ #use
+ , 45
+  
+ Division_by_zero
+ , 55
+  
+ 100
+  
+ &&
+ , 3
+  
+ do
+ , 100, 101
+  
+ in
+ , 9
+  
+ ||
+ , 3
+  
+ done
+ , 100, 101
+  
+ in_channel, 93
+  
+ |
+ , 19
+  
+ drop function, 29
+  
+ indentation, 11
+  
+ abstraction, 123, 126
+  
+ element of a list, 25
+  
+ insertion sort, 38
+  
+ int, ix, 1
+  
+ accumulator, 27
+  
+ else
+ , 3
+  
+ int_of_float
+ , 112
+  
+ algorithm, 12
+  
+ end
+ , 100
+  
+ int_of_string
+ , 95
+  
+ anonymous function, 49
+  
+ End_of_file
+ , 94
+  
+ interface, 126
+  
+ append, 25
+  
+ Euclid’s algorithm, 12
+  
+ Invalid_argument
+ , 55
+  
+ argument, 9
+  
+ exception, 55
+  
+ accumulating, 27
+  
+ defining, 55
+  
+ key, in a dictionary, 61
+  
+ array, 104
+  
+ handling, 56
+  
+ keyboard, 91
+  
+ array, 104
+  
+ raising, 56
+  
+ length function, 26
+  
+ ASCII, 105
+  
+ exception
+ , 55
+  
+ 193",NA

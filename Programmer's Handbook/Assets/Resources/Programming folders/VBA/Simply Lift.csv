@@ -1,0 +1,4351 @@
+Larger Text,Smaller Text,Symbol
+Simply Lift,"David Pollak
+  
+ September 8, 2011",NA
+Contents,"Contents 
+  
+ iii
+  
+ List of Figures 
+  
+ v
+  
+ List of Listings 
+  
+ vii
+  
+ I The Lift Web Framework 
+  
+ 1
+  
+ 1 
+  
+ Introduction 
+  
+ 3
+  
+ 2 
+  
+ The ubiquitous Chat app 
+  
+ 5
+  
+ 2.1 The View
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  
+ 5 
+ 2.2 The Chat Comet component
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  
+ 6 
+ 2.3 The ChatServer
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  
+ 7 
+ 2.4 User Input
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  
+ 8 
+ 2.5 Chat In
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  
+ 9 
+ 2.6 Running it
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 10 
+ 2.7 What you don’t see
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 10 
+ 3 
+  
+ Snippets and SiteMap 
+  
+ 11
+  
+ 3.1 Starting at the beginning: Boot.scala
+  . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 11 
+ 3.1.1 
+  
+ LiftRules rules
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 13 
+ 3.1.2 
+  
+ Properties and Run modes 
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 13",NA
+List of Figures,ix,NA
+List of Listings,"2.1 index.html
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  
+ 5 
+ 2.2 Chat.scala 
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  
+ 6 
+ 2.3 ChatServer.scala
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  
+ 7 
+ 2.4 ChatIn.scala
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  
+ 9 
+ 3.1 Boot.scala
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 11 
+ 3.2 index.html
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 18 
+ 3.3 dynamic.html
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 21 
+ 3.4 HelloWorld.scala 
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 21 
+ samples/snippet_and_sitemap/src/main/webapp/_embedme.html
+  . . . . . . . . . . . . 
+  
+ 2
+ 2 
+ 3.5 Embedded.scala
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 22 
+ 3.6 param.html 
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 23 
+ 3.7 Param.scala 
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 24 
+ 3.8 recurse.html
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 25 
+ 3.9 Recurse.scala
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 25 
+ 4.1 dumb.html
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 27 
+ 4.2 DumbForm.scala 
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 27 
+ 4.3 onsubmit.html
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 29 
+ 4.4 OnSubmit.scala
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 29",NA
+Part I ,NA,NA
+The Lift Web Framework,1,NA
+Chapter 1,NA,NA
+Introduction,"The Lift Web Framework provides web application developers tools to make writing security, in-
+ teracting, scalable web applications easier than with any other web framework. After reading Part I 
+ of this book, you should understand Lift’s core concepts and be able to write Lift applications. But 
+ with anything, practice is important. I have been writing Lift and Scala for 4 years, and even I learn 
+ new things about the language and the framework on a weekly basis. Please consider Lift an path 
+ and an exploration, rather than an end point. 
+ “Yo, David, stop yer yappin’. I’m coming from Rails|Spring|Struts|Django and I want to get started 
+ super fast with Lift.” See From MVC (
+  13 on page 111
+ ). 
+ Lift is built on top of the
+  Scala
+  programming language. Scala runs on the
+  Java Virtual Machine
+ . Lift 
+ applications are typically packaged as
+  WAR
+  files and run as a
+  J/EE Servlets
+  or Servlet Filters. This 
+ book will provide you with the core concepts you need to successfully write Lift web applications. 
+ The book assumes knowledge of Servlets and Servlet containers, the Scala Language (Chapters 1-6 
+ of
+  Beginning Scala
+  gives you a good grounding in the language), build tools, program editors, web 
+ development including HTML and JavaScript, etc. Further, this book will not explore persistence. 
+ Lift has additional modules for persisting to relational and non-relational data stores. Lift doesn’t 
+ distinguish as to how an object is materialized into the address space... Lift can treat any object any 
+ old way you want. There are many resources (including
+  Exploring Lift
+ ) that cover ways to persist 
+ data from a JVM. 
+ Lift is different from most web frameworks and it’s likely that Lift’s differences will present a 
+ challenge and a friction if you are familiar with the MVC school of web frameworks
+ 1
+ . But Lift is 
+ different and Lift’s differences give you more power to create interactive applications. Lift’s 
+ differences lead to more concise web applications. Lift’s differences result in more secure and 
+ scalable applications. Lift’s differences let you be more productive and make maintaining appli-
+ cations easier for the future you or whoever is writing your applications. Please relax and work to 
+ understand Lift’s differences... and see how you can make best use of Lift’s features to build your 
+ web applications. 
+ Lift creates abstractions that allow easier expression of business logic and then maps those ab-
+ stractions to HTTP and HTML. This approach differs from traditional web frameworks which build 
+ abstractions on top of HTTP and HTML and require the developer to bridge between com-mon 
+ business logic patterns and the underlying protocol. The difference means that you spend more 
+ time thinking about your application and less time thinking about the plumbing. 
+ 1
+ This includes Ruby on Rails, Struts, Java Server Faces, Django, TurboGears, etc.
+  
+ 3",NA
+Chapter 2,NA,NA
+The ubiquitous Chat app,"Writing a multi-user chat application in Lift is super-simple and illustrates many of Lift’s core 
+ concepts. 
+ The Source Code can be found at
+  https://github.com/dpp/simply_lift/tree/master/chat
+ .",NA
+2.1 ,NA,NA
+The View,"When writing a Lift app, it’s often best to start off with the user interface... build what the user 
+ will see and then add behavior to the HTML page. So, let’s look at the Lift template that will make 
+ up our chat application. 
+ Listing 2.1: index.html 
+ 1 
+  
+ 2 
+  
+ 3 
+  
+ 4 
+  
+ 5 
+  
+ 6 
+  
+ 7 
+  
+ 8 
+  
+ 9 
+  
+ 10 
+  
+ 11 
+  
+ 12 
+  
+ 13 
+  
+ 14 
+  
+ 15
+  
+ <!
+ DOCTYPE
+  html
+  PUBLIC
+  ""-//W3C//DTD XHTML 1.0 Transitional//EN"" 
+  
+  
+  
+   
+ ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd""
+ > <html 
+ xmlns=
+ ""http://www.w3.org/1999/xhtml""
+ > 
+  
+  
+ <head><title>Home</title></head> 
+  
+  
+ <body class=
+ ""lift:content_id=main""
+ > 
+  
+   
+ <div id=
+ ""main""
+  class=
+ ""lift:surround?with=default;at=content""
+ > 
+  
+  
+  
+ <!
+ -- the behavior of the div --
+ > 
+  
+    
+ <div class=
+ ""lift:comet?type=Chat""
+ > 
+  
+     
+ Some chat messages 
+  
+     
+ <ul> 
+  
+      
+ <li>A message</li> 
+  
+      
+ <li class=
+ ""clearable""
+ >Another message</li> 
+  
+      
+ <li class=
+ ""clearable""
+ >A third message</li> 
+  
+     
+ </ul> 
+  
+    
+ </div>
+  
+ 16
+  
+ 17 
+  
+ <div>
+  
+ 18 
+  
+ <form class=
+ ""lift:form.ajax""
+ >
+  
+ 19 
+ <input class=
+ ""lift:ChatIn""
+  id=
+ ""chat_in""
+ />
+  
+ 20 
+ <input type=
+ ""submit""
+  value=
+ ""Say Something""
+ />
+  
+ 21 
+  
+ </form>
+  
+ 22 
+  
+ </div>
+  
+ 23 
+  
+ </div>
+  
+ 5",NA
+2.2 ,NA,NA
+The Chat Comet component,"The
+  Actor Model
+  provides state in functional languages include Erlang. Lift has an Actor library 
+ and LiftActors (see
+  7.14
+ ) provides a powerful state and concurrency model. This may all seem 
+ abstract, so let’s look at the Chat class. 
+ Listing 2.2: Chat.scala 
+ 1 
+  
+ 2
+  
+ package
+  code 
+  
+ package
+  comet
+  
+ 3
+  
+ 4 
+  
+ import
+  net.liftweb._
+  
+ 5 
+  
+ import
+  http._
+  
+ 6 
+  
+ import
+  util._
+  
+ 7 
+  
+ import
+  Helpers._
+  
+ 8
+  
+ 9
+  
+ 1
+ 0 
+ 1
+ 1 
+ 1
+ 2 
+ 1
+ 3 
+ 1
+ 4 
+ 1
+ 5
+  
+ /** 
+  
+ * The screen real estate on the browser will be represented * by this component. When 
+ the component changes on the server * the changes are automatically reflected in the 
+ browser.
+  
+ */ 
+  
+ class
+  Chat
+  extends
+  CometActor
+  with
+  CometListener {
+  
+ private var
+  msgs: Vector[String] = Vector()
+  // private state
+  
+ 16
+  
+ 1
+ 7 
+  
+ 1
+ 8 
+  
+ 1
+ 9 
+  
+ 2
+ 0 
+  
+ 2
+ 1
+  
+ /** 
+  
+ * When the component is instantiated, register as * a listener with the 
+ ChatServer 
+  
+ */ 
+  
+ def
+  registerWith = ChatServer
+  
+ 22
+  
+ 23 
+  
+ /**",NA
+2.3 ,NA,NA
+The ChatServer,"The ChatServer code is: 
+ Listing 2.3: ChatServer.scala 
+ 1 
+  
+ 2
+  
+ package
+  code 
+  
+ package
+  comet
+  
+ 3
+  
+ 4 
+  
+ import
+  net.liftweb._
+  
+ 5 
+  
+ import
+  http._
+  
+ 6 
+  
+ import
+  actor._
+  
+ 7
+  
+ 8 
+  
+ /**",NA
+2.4 ,NA,NA
+User Input,"Let’s go back to the view and see how the behavior is defined for adding lines to the chat. 
+ <form class=""lift:form.ajax""> defines an input form and the form.ajax snippet turns a form into an 
+ Ajax (see Section
+  7.12
+ ) form that will be submitted back to the server without causing a full page 
+ load. 
+ Next, we define the input form element: <input class=""lift:ChatIn"" id=""chat_in""/>. It’s a plain old 
+ input form, but we’ve told Lift to modify the <input>’s behavior by calling the ChatIn snippet.",NA
+2.5 ,NA,NA
+Chat In,"The ChatIn snippet (See Section
+  7.1
+ ) is defined as: 
+ Listing 2.4: ChatIn.scala 
+ 1 
+  
+ 2
+  
+ package
+  code 
+  
+ package
+  snippet
+  
+ 3 
+  
+ 4 
+ import
+  net.liftweb._ 
+  
+ 5 
+ import
+  http._ 
+  
+ 6 
+ import
+  js._ 
+  
+ 7 
+  
+ import
+  JsCmds._ 
+ 8 
+ import
+  JE._ 
+  
+ 9 
+  
+ 10 
+ import
+  comet.ChatServer 
+  
+ 11
+  
+ 1
+ 2 
+ 1
+ 3 
+ 1
+ 4 
+ 1
+ 5 
+ 1
+ 6 
+ 1
+ 7 
+ 1
+ 8 
+ 1
+ 9 
+ 2
+ 0 
+ 2
+ 1 
+ 2
+ 2
+  
+ /** 
+  
+ * A snippet transforms input to output... it transforms * templates to dynamic 
+ content. Lift's templates can invoke * snippets and the snippets are resolved in 
+ many different * ways including ""by convention"". The snippet package 
+  
+ * has named snippets and those snippets can be classes * that are instantiated when 
+ invoked or they can be 
+  
+ * objects, singletons. Singletons are useful if there's * no explicit state managed in 
+ the snippet.
+  
+ */ 
+  
+ object
+  ChatIn {
+  
+ 23
+  
+ 24
+  
+ }
+  
+ /**
+  
+ 25
+  
+ * The render method in this case returns a function
+  
+ 26
+  
+ * that transforms NodeSeq
+  =>
+  NodeSeq. In this case,
+  
+ 27
+  
+ * the function transforms a form input element by attaching
+  
+ 28
+  
+ * behavior to the input. The behavior is to send a message
+  
+ 29
+  
+ * to the ChatServer and then returns JavaScript which
+  
+ 30
+  
+ * clears the input.
+  
+ 31
+  
+ */
+  
+ 32
+  
+ def
+  render = SHtml.onSubmit(s
+  =>
+  {
+  
+ 33
+  
+ ChatServer ! s
+  
+ 34
+  
+ SetValById(
+ ""chat_in""
+ ,
+  """"
+ )
+  
+ 35
+  
+ })
+  
+ 36
+  
+ The code is very simple. The snippet is defined as a method that associates a function with form 
+ element submission, onSubmit. When the element is submitted, be that normal form submission, 
+ Ajax, or whatever, the function is applied to the value of the form. In English, when the user submits 
+ the form, the function is called with the user’s input. 
+ The function sends the input as a message to the ChatServer and returns JavaScript that sets the 
+ value of the input box to a blank string.",NA
+Running it,CHAPTER 2. THE UBIQUITOUS CHAT APP,NA
+2.6,"Running the application is easy. Make sure you’ve got Java 1.6 or better installed on your machine. 
+ Change directories into the chat directory and type sbt update ~jetty-run. The Simple Build Tool 
+ will download all necessary dependencies, compile the program and run it. 
+ You can point a couple of browsers to
+  http://localhost:8080
+  and start chatting. 
+ Oh, and for fun, try entering <script>alert(’I ownz your browser’);<script> and see what happens. 
+ You’ll note it’s what you want to happen.",NA
+2.7 ,NA,NA
+What you don’t see,"Excluding imports and comments, there are about 20 lines of Scala code to implement a multi-
+ threaded, multi-user chat application. That’s not a lot. 
+ The first thing that’s missing is synchronization or other explicit forms of thread locking. The 
+ application takes advantage of Actors and immutable data structures, thus the developer can focus 
+ on the business logic rather than the threading and locking primatives. 
+ The next thing that’s missing is routing and controllers and other stuff that you might have to do to 
+ wire up Ajax calls and polling for server-side changes (long or otherwise). In our application, we 
+ associated behavior with display and Lift took care of the rest (see Section
+  7.17
+ ). 
+ We didn’t do anything to explicitly to avoid cross-site scripting in our application. Because Lift takes 
+ advantage of Scala’s strong typing and type safety (see Section
+  7.16
+ ), Lift knows the differ-ence 
+ between a String that must be HTML encoded and an HTML element that’s already properly 
+ encoded. By default, Lift applications are resistant to many of the OWASP top 10 security vulner-
+ abilities (see Section
+  7.18
+ ). 
+ This example shows many of Lift’s strengths. Let’s expand the application and see how Lift’s 
+ strengths continue to support the development of the application.",NA
+Chapter 3,NA,NA
+Snippets and SiteMap,"Lift services HTTP request in three ways: generating HTML pages, low level HTTP responses 
+ (e.g., REST), and responding to Ajax/Comet requests. Lift treats each type of request differently 
+ to make the semantics for responding to each type of request most natural. Put another way, it’s 
+ different to build a complex HTML page with lots of different components than to send back some 
+ JSON data that corresponds to a database record. 
+ In this chapter, we’re going to explore how Lift does dynamic HTML page generation based on 
+ the incoming HTTP request and URL including putting “chrome” around the HTML page (menus, 
+ etc.), placing dynamic content on each page, and site navigation including access control. 
+ The code for this chapter can be found in the samples/snippet_and_sitemap directory of the 
+ Simply Lift
+  distribution
+ .",NA
+3.1 ,NA,NA
+Starting at the beginning: Boot.scala,"When your Lift application first starts up, it executes the code in Boot.scala: 
+ Listing 3.1: Boot.scala 
+ 1
+  
+ package
+  bootstrap.liftweb
+  
+ 2
+  
+ 3 
+  
+ import
+  net.liftweb._
+  
+ 4 
+  
+ import
+  util._
+  
+ 5 
+  
+ import
+  Helpers._
+  
+ 6
+  
+ 7 
+  
+ import
+  common._
+  
+ 8 
+  
+ import
+  http._
+  
+ 9 
+  
+ import
+  sitemap._
+  
+ 10 
+ import
+  Loc._
+  
+ 11
+  
+ 12 
+ import
+  code.snippet._
+  
+ 13
+  
+ 1
+ 4 
+ 1
+ 5 
+ 1
+ 6 
+ 1
+ 7
+  
+ /** 
+  
+ * A class that's instantiated early and run. It allows the application * to modify lift's environment 
+  
+ */
+  
+ 11",NA
+3.2,NA,NA
+SiteMap,"Lift has an optional feature called SiteMap. You don’t have to use it. But if you do set a sitemap in 
+ boot, then Lift will use the sitemap as a white list of HTML pages for your site (note that REST URLs 
+ do not need to be listed in the sitemap). SiteMap defines navigation and access control, allows you 
+ to create hierarchical menus, grouped menu items, display the entire sitemap, a relative sitemap, as 
+ well breadcrumbs. This section will discuss some of SiteMap’s capabilities. 
+ 3.2.1 
+  
+ Defining the SiteMap
+  
+ The SiteMap must be defined in boot and is only defined once
+ 1
+ . Typically, you will define a function 
+ that returns a SiteMap instance: 
+ 1 
+  
+ 2
+  
+ // Build SiteMap 
+  
+ def
+  sitemap(): SiteMap = ...
+  
+ And then define the SiteMap in LiftRules: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+ // set the sitemap. Note if you don't want access control for // each page, just 
+ comment this line out. 
+  
+ LiftRules.setSiteMapFunc(()
+  =>
+  sitemap())
+  
+ In development mode, the function will be called on each page load to rebuilt the SiteMap. In all 
+ other Lift run modes, the sitemap will be built once during boot. 
+ A SiteMap is a collection of Menu instances. Each Menu has one Loc[_] and a set of Menu instances 
+ as submenus (zero or more). Each Menu instance has a unique name. 
+ If an HTML page is not defined in the sitemap, Lift will not serve it. SiteMap is a white list of pages to 
+ serve. Further, the Loc[_] has parameters that can include multiple access control rules. 
+ 3.2.2 
+  
+ Simplest SiteMap
+  
+ The simplest sitemap defines a single page: 
+ 1
+  
+ def
+  sitemap(): SiteMap = SiteMap(Menu.i(
+ ""Home""
+ ) /
+  ""index""
+ )
+  
+ 1
+ In development mode, the sitemap can be changed dynamically to support changes to site content without having to 
+ re-start your application each time navigation changes. This is a development-time feature only. There are significant 
+ performance penalties associated with rebuilding the sitemap on each page load including forcing the serialization of 
+ serving pages. There are plenty of features in SiteMap that allow you to enable/disable menu items and have dynamically 
+ generated submenus. Don’t rely on Lift’s development-mode menu reloading for your application design.",NA
+3.3 ,NA,NA
+View First,"Once the access control is granted by SiteMap, Lift loads the view related to the URL. There are 
+ many mechanisms that Lift uses to resolve a path to a view, but the simplest is a one to one 
+ mapping between the URL path and the files in /src/main/webapp. If the URL is /index, then 
+ Lift will look for the localized (see
+  8.1 on page 92
+ ) version of /src/main/webapp/index.html. 
+ Once Lift loads the template, Lift processes it to transform it into the dynamic content you want 
+ to return in response to the URL input. 
+ 3.3.1 
+  
+ Page source
+  
+ Let’s look at the page source: 
+ Listing 3.2: index.html 
+ 1 
+  
+ 2 
+  
+ 3 
+  
+ 4 
+  
+ 5 
+  
+ 6 
+  
+ 7 
+  
+ 8 
+  
+ 9 
+  
+ 10
+  
+ <!
+ DOCTYPE
+  html> 
+  
+ <html> 
+  
+  
+ <head> 
+  
+   
+ <meta content=
+ ""text/html; charset=UTF-8""
+  http-equiv=
+ ""content-type""
+  /> 
+  
+  
+ <title>Home</title> 
+  
+  
+ </head> 
+  
+  
+ <body class=
+ ""lift:content_id=main""
+ > 
+  
+   
+ <div id=
+ ""main""
+  class=
+ ""lift:surround?with=default&at=content""
+ > 
+  
+    
+ <div>Hello World. Welcome to your Lift application.</div> 
+  
+    
+ <div>Check out a page with <a href=
+ ""/param/foo""
+ >query parameters</a>.</div>
+  
+ 11
+  
+ 12 
+  
+ <span class=
+ ""lift:embed?what=_embedme""
+ >
+  
+ 13 
+  
+ replaced with embedded content
+  
+ 14 
+  
+ </span>
+  
+ 15
+  
+ 16 
+  
+ <div>
+  
+ 17 
+ BADTAB<ul>
+  
+ 18 
+ BADTAB <li>Recursive: <a href=
+ ""/recurse/one""
+ >First snippet</a></li>
+  
+ 19 
+ BADTAB <li>Recursive: <a href=
+ ""/recurse/two""
+ >Second snippet</a></li>
+  
+ 20 
+ BADTAB <li>Recursive: <a href=
+ ""/recurse/both""
+ >Both snippets</a></li>
+  
+ 21 
+ BADTAB</ul>",NA
+3.4 ,NA,NA
+Snippets and Dynamic content,"Lift templates contain no executable code. They are pure, raw, valid HTML. 
+ Lift uses snippets to transform sections of the HTML page from static to dynamic. The key word is 
+ transform. 
+ Lift’s snippets are Scala functions: NodeSeq => NodeSeq. A NodeSeq is a collection of XML nodes. An 
+ snippet can only transform input NodeSeq to output NodeSeq. Well, not exactly... a snippet may also 
+ have side effects including setting cookies, doing database transactions, etc. But the core 
+ transformation concept is important. First, it isolates snippet functionality to discrete parts of the 
+ page. This means that each snippet, each NodeSeq => NodeSeq, is a component. Second, it means 
+ that pages are recursively built, but remain as valid HTML at all times. This means that the 
+ developer has to work hard to introduce a cross site scripting vulnerability. Third, the designers 
+ don’t have to worry about learning to program anything in order to design HTML pages because the 
+ program execution is abstracted away from the HTML rather than embedded in the HTML. 
+ 3.4.1 
+  
+ Snippets in markup
+  
+ In order to indicate that content is dynamic, the markup contains a snippet invocation. That typ-
+ ically takes the form class=""someclass someothercss lift:mysnippet"". If a class at-tribute contains 
+ lift:xxx, the xxx will be resolved to a snippet. The snippet may take attributes. Attributes are 
+ encoded like URL parameters... offset by a ? (question mark), then name=value, separted by ? 
+ (question mark), ; (semicolon) or & (ampersand). name and value are URL en-coded. 
+ You may also invoke snippets with XML tags: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+ <lift:my_snippet cat=
+ ""foo""
+ > 
+  
+  
+ <div>xxxx</div> 
+  
+ </lift:my_snippet>",NA
+3.5 ,NA,NA
+Wrap up,"In this chapter, we’ve seen how to define application behavior on Boot.scala. We’ve explored Lift’s 
+ SiteMap which is used to generate navigation and enforce access control. We’ve seen how Lift’s 
+ templating system works (well, there are actually a bunch of different ways to template in Lift, but 
+ we’ve explored to most common mechanism.) We’ve seen how snippets work. 
+ In the next chapter, we’ll take a dive into Lift’s form handling.",NA
+Chapter 4,NA,NA
+Forms,"In this chapter, we’ll see how Lift processes templates. We’ll start with form processing the old 
+ fashioned way (where the designer names the inputs and the application maps those names to 
+ variables) through multi-page input forms and Ajax form support.",NA
+4.1 ,NA,NA
+Old Fashioned Dumb Forms,"Let’s take a look at the HTML for a form: 
+ Listing 4.1: dumb.html 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+ <div id=
+ ""main""
+  class=
+ ""lift:surround?with=default&at=content""
+ > 
+  
+  
+ <div> 
+  
+   
+ This is the simplest type of form processing... plain old 
+  
+   
+ mechanism of naming form elements and processing the form elements 
+  
+  
+ in a 
+ post-back.
+  
+ </div>
+  
+ 7
+  
+ 8 
+  
+ 9 
+  
+ 10 
+  
+ 11 
+  
+ 12 
+  
+ 13 
+  
+ 14 
+  
+ 15
+  
+  
+ <div> 
+  
+   
+ <form action=
+ ""/dumb""
+  method=
+ ""post""
+  class=
+ ""lift:DumbForm""
+ > 
+  
+  
+  
+ Name: <input name=
+ ""name""
+ ><br> 
+  
+    
+ Age: <input name=
+ ""age""
+ ><br> 
+  
+    
+ <input type=
+ ""submit""
+  value=
+ ""Submit""
+ > 
+  
+   
+ </form> 
+  
+  
+ </div> 
+  
+ </div>
+  
+ Okay... looks pretty normal... we define a form. The only thing we do is associate the behavior with 
+ the form with the class=""lift:DumbForm"" attribute on the <form> tag. The page is a post-back which 
+ means that the form is posted to the same URL that served the original content. 
+ Let’s see the code to process the form: 
+ Listing 4.2: DumbForm.scala 
+ 1 
+  
+ 2
+  
+ package
+  code 
+  
+ package
+  snippet
+  
+ 27",NA
+4.2 ,NA,NA
+OnSubmit,"Some of Lift’s design reflects VisualBasic... associating user behavior with a user interface element. 
+ It’s a simple, yet very powerful concept. Each form element is associated with a function on the 
+ server
+ 1
+ . Further, because functions in Scala close over scope (capture the variables currently in 
+ scope), it’s both easy and secure to keep state around without exposing that state to the web client. 
+ So, let’s see how it works. First, the HTML: 
+ Listing 4.3: onsubmit.html 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+ <div id=
+ ""main""
+  class=
+ ""lift:surround?with=default&at=content""
+ > 
+  
+ <div> 
+  
+   
+ Using Lift
+ 's SHtml.onSubmit, we'
+ ve got better control 
+   
+ over the form 
+ processing.
+  
+ </div>
+  
+ 6
+  
+ 7 
+  
+ 8 
+  
+ 9 
+  
+ 10 
+  
+ 11 
+  
+ 12 
+  
+ 13 
+  
+ 14
+  
+  
+ <div> 
+  
+   
+ <form class=
+ ""lift:OnSubmit?form=post""
+ > 
+  
+  
+  
+ Name: <input name=
+ ""name""
+ ><br> 
+  
+    
+ Age: <input name=
+ ""age""
+  value=
+ ""0""
+ ><br> 
+  
+  
+  
+ <input type=
+ ""submit""
+  value=
+ ""Submit""
+ > 
+  
+  
+ </form> 
+  
+  
+ </div> 
+  
+ </div>
+  
+ The only different thing in this HTML is <form class=""lift:OnSubmit?form=post"">. The snippet, 
+ behavior, of the form is to invoke OnSubmit.render. The form=post attribute makes the form into a 
+ post-back. It sets the method and action attributes on the <form> tag: <form method=""post"" 
+ action=""/onsubmit"">. 
+ Let’s look at the snippet: 
+ Listing 4.4: OnSubmit.scala 
+ 1 
+  
+ 2
+  
+ package
+  code 
+  
+ package
+  snippet
+  
+ 3
+  
+ 4 
+  
+ import
+  net.liftweb._
+  
+ 5 
+  
+ import
+  http._
+  
+ 6 
+  
+ import
+  util.Helpers._
+  
+ 7 
+  
+ import
+  scala.xml.NodeSeq
+  
+ 8
+  
+ 9
+  
+  
+ 1
+ 0 
+  
+ 1
+ 1 
+  
+ 1
+ 2 
+  
+ 1
+ 3 
+  
+ 1
+ 4 
+  
+ 1
+ 5 
+  
+ 1
+ 6
+  
+ /** 
+  
+ * A snippet that binds behavior, functions, * to HTML 
+ elements 
+  
+ */ 
+  
+ object
+  OnSubmit {
+  
+ def
+  render = {
+  
+ // define some variables to put our values into
+  
+ var
+  name =
+  """"
+  
+  
+ 1
+ Before you get all upset about statefulness and such, please read about Lift and State (see
+  20 on page 131
+ ).",NA
+4.3 ,NA,NA
+Stateful Snippets,"In order for us to give the user a better experience, we need to capture the state of the name and 
+ age variables across the multiple form submissions. The mechanism that Lift has for doing this is 
+ the Stateful Snippet
+ 2
+ . A snippet that subclasses StatefulSnippet has an extra hidden parameter 
+ automatically inserted into the form which ensures that during processing of that form, the same 
+ instance of the StatefulSnippet will be used
+ 3
+ . 
+ Let’s look at the HTML template: 
+ Listing 4.5: stateful.html 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+ <div id=
+ ""main""
+  class=
+ ""lift:surround?with=default&at=content""
+ > 
+  
+ <div> 
+  
+   
+ Using stateful snippets for a better 
+  
+   
+ user experience 
+  
+  
+ </div>
+  
+ 6
+  
+ 7 
+  
+ 8 
+  
+ 9 
+  
+ 10 
+  
+ 11 
+  
+ 12 
+  
+ 13 
+  
+ 14
+  
+  
+ <div> 
+  
+   
+ <div class=
+ ""lift:Stateful?form=post""
+ > 
+   
+  
+ Name: <input name=
+ ""name""
+ ><br> 
+  
+    
+ Age: <input name=
+ ""age""
+  value=
+ ""0""
+ ><br> 
+  
+  
+  
+ <input type=
+ ""submit""
+  value=
+ ""Submit""
+ > 
+   
+ </div> 
+  
+  
+ </div> 
+  
+ </div>
+  
+ The template looks pretty much like the template in onsubmit.html. Let’s look at the snippet itself: 
+ Listing 4.6: Stateful.scala 
+ 1 
+  
+ 2
+  
+ package
+  code 
+  
+ package
+  snippet
+  
+ 3
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+  
+ 7
+  
+  
+ 8
+  
+ import
+  net.liftweb._ 
+  
+ import
+  http._ 
+  
+ import
+  common._ 
+  
+ import
+  util.Helpers._ 
+  
+ import
+  scala.xml.NodeSeq
+  
+  
+ 2
+ There are no stateless snippets. A Stateful Snippet doesn’t consume any more server-side resources than does a form 
+ composed via SHtml.onSubmit(). Oh, and state is not a barier to scalaing. See Chapter
+  20
+ .
+  
+ 3
+ Earlier I talked about the security implications of hidden form parameters. The hidden parameter mechanism is not 
+ vulnerable to the same issues because the hidden parameter itself is just a GUID that causes a function to be invoked on 
+ the server. No state is exposed to the client, so there’s nothing for a hacker to capture or mutate that would allow for the 
+ exploitation of a vulnerability.",NA
+4.4 ,NA,NA
+RequestVars,"In this example, we’re going to preserve state during the request by placing state in RequestVars 
+ (see
+  7.8 on page 84
+ ). 
+ Lift has type-safe containers for state called XXXVars. There are SessionVars that have session 
+ scope, WizardVars that are scoped to a Wizard and RequestVars that are scoped to the cur-rent 
+ request
+ 4
+ . Vars are defined as singletons: private object name extends Request-Var(""""). They are 
+ typed (in this case, the type is String) and they have a default value. 
+ So, let’s look at the HTML which looks shockingly like the HTML in the last two examples: 
+ Listing 4.7: requestvar.html 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+ <div id=
+ ""main""
+  class=
+ ""lift:surround?with=default&at=content""
+ > 
+  
+ <div> 
+  
+   
+ Using RequestVars to store state 
+  
+  
+ </div>
+  
+ 5
+  
+ 6 
+  
+ 7 
+  
+ 8 
+  
+ 9 
+  
+ 10 
+  
+ 11 
+  
+ 12 
+  
+ 13
+  
+  
+ <div> 
+  
+   
+ <form class=
+ ""lift:ReqVar?form=post""
+ > 
+  
+    
+ Name: <input name=
+ ""name""
+ ><br> 
+  
+    
+ Age: <input name=
+ ""age""
+  id=
+ ""the_age""
+  value=
+ ""0""
+ ><br> 
+  
+  
+  
+ <input type=
+ ""submit""
+  value=
+ ""Submit""
+ > 
+  
+   
+ </form> 
+  
+  
+ </div> 
+  
+ </div>
+  
+ Now, let’s look at the snippet code: 
+ Listing 4.8: ReqVar.scala 
+ 1 
+  
+ 2
+  
+ package
+  code 
+  
+ package
+  snippet
+  
+ 3
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+ import
+  net.liftweb._ 
+ import
+  
+ http._ 
+  
+ import
+  common._
+  
+  
+ 4
+ In this case, “request” means full HTML page load and all subsquent Ajax operations on that page. There’s also a 
+ TransientRequestVar that has the scope of the current HTTP request.",NA
+4.5 ,NA,NA
+Field Errors,"In the prior examples, we displayed an error to the user. However, we didn’t tell the user what 
+ field resulted in the error. Let’s be a little more granular about error reporting. 
+ First, let’s look at the HTML: 
+ Listing 4.9: fielderror.html 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+ <div id=
+ ""main""
+  class=
+ ""lift:surround?with=default&at=content""
+ > 
+  
+ <div> 
+  
+   
+ Let
+ 's get granular about error messages 
+  
+  
+ </div>
+  
+ 5
+  
+ 6 
+  
+ 7 
+  
+ 8 
+  
+ 9 
+  
+ 10 
+  
+ 11 
+  
+ 12 
+  
+ 13 
+  
+ 14
+  
+  
+ <div> 
+  
+   
+ <div class=""lift:FieldErrorExample?form=post""> 
+  
+    
+ Name: <input name=""name""><br> 
+  
+    
+ Age: <span class=""lift:Msg?id=age&errorClass=error"">error</span> 
+   
+  
+ <input name=""age"" id=""the_age"" value=""0""><br> 
+  
+    
+ <input type=""submit"" value=""Submit""> 
+  
+   
+ </div> 
+  
+  
+ </div> 
+  
+ </div>
+  
+  
+ This HTML is different. Note: Age: 
+ <span class=""lift:Msg?id=age&errorClass=error"">error</s 
+ We mark an area in the markup to put the error message. 
+ Let’s look at our snippet code which is very similar to Stateful.scala with a small, but impor- 
+ tant difference: 
+ Listing 4.10: FieldErrorExample.scala 
+ 1 
+  
+ 2
+  
+ package
+  code 
+  
+ package
+  snippet
+  
+ 3
+  
+ 4 
+  
+ import
+  net.liftweb._
+  
+ 5 
+  
+ import
+  http._
+  
+ 6 
+  
+ import
+  common._
+  
+ 7 
+  
+ import
+  util.Helpers._
+  
+ 8 
+  
+ import
+  scala.xml.NodeSeq
+  
+ 9
+  
+ 1
+ 0 
+ 1
+ 1 
+ 1
+ 2 
+ 1
+ 3 
+ 1
+ 4 
+ 1
+ 5 
+ 1
+ 6
+  
+ /** 
+  
+ * A StatefulSnippet like Stateful.scala 
+  
+ */ 
+  
+ class
+  FieldErrorExample
+  extends
+  StatefulSnippet {
+  
+ private var
+  name =
+  """"
+  
+ private var
+  age =
+  ""0""
+  
+ private val
+  whence = S.referer openOr
+  ""/""
+  
+ 17
+  
+ 18 
+  
+ def
+  dispatch = {
+ case
+  _
+  =>
+  render}
+  
+ 19
+  
+ 20 
+  
+ def
+  render =
+  
+ 21 
+  
+ ""name=name""
+  #> SHtml.text(name, name = _) &
+  
+ 22 
+  
+ ""name=age""
+  #> SHtml.text(age, age = _) &
+  
+ 23 
+  
+ ""type=submit""
+  #> SHtml.onSubmitUnit(process)",NA
+4.6 ,NA,NA
+LiftScreen,"Much of what we do to build web applications is generating screens that associate input with 
+ dynamic content. Lift provides Screen and Wizard for building single page and multi-page input 
+ forms with validation, back-button support, etc. 
+ So, let’s look at the HTML for a screen: 
+ Listing 4.11: screen.html 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+ <div id=
+ ""main""
+  class=
+ ""lift:surround?with=default&at=content""
+ > 
+  
+ <div> 
+  
+   
+ Let
+ 's use Lift'
+ s LiftScreen to build complex 
+  
+   
+ simple screen input forms.
+  
+ </div>
+  
+ 6
+  
+ 7 
+  
+ 8 
+  
+ 9 
+  
+ 10
+  
+  
+ <div class=
+ ""lift:ScreenExample""
+ > 
+  
+   
+ Put your form here 
+  
+  
+ </div> 
+  
+ </div>
+  
+ We don’t explicitly declare the form elements. We just point to the snippet which looks like: 
+ Listing 4.12: ScreenExample.scala 
+ 1 
+  
+ 2
+  
+ package
+  code 
+  
+ package
+  snippet",NA
+4.7 ,NA,NA
+Wizard,"LiftScreen is great for single screen applications. If you’ve got input and validation that re- 
+ quires multiple screens, Wizard is what you want. We’ll skip the markup ’cause it’s just a snippet 
+ invocation. Here’s the wizard code: 
+ Listing 4.13: WizardExample.scala 
+ 1 
+  
+ 2
+  
+ package
+  code 
+  
+ package
+  snippet
+  
+ 3
+  
+ 4 
+  
+ import
+  net.liftweb._
+  
+ 5 
+  
+ import
+  http._
+  
+ 6 
+  
+ import
+  wizard._
+  
+ 7 
+  
+ import
+  util._
+  
+ 8
+  
+ 9
+  
+ 1
+ 0 
+ 1
+ 1 
+ 1
+ 2
+  
+ /** 
+  
+ * Define the multi-page input screen */ 
+  
+ object
+  WizardExample
+  extends
+  Wizard {
+  
+ 13
+  
+ 14 
+  
+ // define the first screen
+  
+ 15 
+  
+ val
+  screen1 =
+  new
+  Screen {
+  
+ 16 
+  
+ val
+  name = field(
+ ""Name""
+ ,
+  """"
+ )
+  
+ 17 
+  
+ val
+  age = field(
+ ""Age""
+ , 0, minVal(13,
+  ""Too Young""
+ ))
+  
+ 18 
+  
+ }",NA
+4.8 ,NA,NA
+Ajax,"In addition to full-page HTML, Lift support Ajax forms. Because Lift’s forms are functions on the 
+ server-side associated with GUIDs in the browser, switching a form from full page load to Ajax is, 
+ well, pretty trivial. Let’s look at the markup: 
+ Listing 4.14: ajax.html 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+ <div id=
+ ""main""
+  class=
+ ""lift:surround?with=default&at=content""
+ > 
+  
+ <div> 
+  
+   
+ An example of doing forms with Ajax.
+  
+ </div>
+  
+ 5
+  
+ 6 
+  
+ <form class=
+ ""lift:form.ajax""
+ >
+  
+ 7 
+  
+ <div class=
+ ""lift:AjaxExample""
+ >
+  
+ 8 
+  
+ Name: <input name=
+ ""name""
+ ><br>
+  
+ 9 
+  
+ Age: <span class=
+ ""lift:Msg?id=age&errorClass=error""
+ >error</span><input name=
+ ""age""
+  id=
+ """,NA
+4.9 ,NA,NA
+But sometimes Old Fashioned is good,"In this chapter, we’ve explored Lift’s form building and processing features and demonstrated the 
+ power and value of associating GUIDs on the client with functions on the server. However, 
+ sometimes it’s nice to have parameter processing via URL parameters... and that’s easy to do with 
+ Lift as well. 
+ Every page in the examples for this chapter contain: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+ BADTAB<form action=
+ ""/query""
+ >
+  
+ BADTAB
+  
+ <input name=
+ ""q""
+ >
+  
+ BADTAB
+  
+ <input type=
+ ""submit""
+  value=
+ ""Search""
+ >
+  
+ BADTAB</form>
+  
+ This is a plain old form that generates a URL like: http://localhost:8080/query?q=catfood This URL 
+ can be copied, pasted, shared, etc. 
+ Processing this URL is easy: 
+ Listing 4.16: Query.scala 
+ 1 
+  
+ 2
+  
+ package
+  code 
+  
+ package
+  snippet
+  
+ 3
+  
+ 4 
+  
+ import
+  net.liftweb._
+  
+ 5 
+  
+ import
+  http._",NA
+4.10 ,NA,NA
+Conclusion,"Lift’s form generation and processing tools offer a wide variety of mechanisms to securely, simply 
+ and powerfully generate and process HTML forms either as part of full HTTP requests or via Ajax 
+ requests.",NA
+Chapter 5,NA,NA
+HTTP and REST,"We explored Lift’s HTML generation features. Let’s dive down to a lower level and handle HTTP 
+ requests REST-style. The code for this chapter can be found at
+  https://github.com/dpp/simply_-
+ lift/tree/master/samples/http_rest",NA
+5.1 ,NA,NA
+Introduction,"Lift gives you access to low level HTTP requests, either within the scope of an session or outside the 
+ scope of a session. In sessionless or stateless mode, Lift does not use the container’s session 
+ management machinery to add a cookie to the HTTP response and does not make SessionVar or 
+ ContainerVar available during the request. Stateless REST requests do not require session affinity. 
+ Authentication for stateless REST handling can be done via
+  OAuth
+ . If the requests are handled 
+ statefully, a container session will be created if the JSESSIONID cookie is not supplied as part of the 
+ request and the JSESSIONID cookie will be included with the response. 
+ Lift makes use of Scala’s pattern matching to allow you match incoming HTTP requests, extract 
+ values as part of the pattern matching process and return the results. Scala’s pattern matching is 
+ very, very powerful. It allows both the declaration of a pattern that must be matched, wild-card 
+ values (a sub-expression may match any supplied value), wildcard values extracted into variables, 
+ and explicit extractors (imperative logic applied to a value to determine if it should match and if it 
+ does, extract it into a variable). Lift tests a Scala PartialFunction[Req, () => Box[LiftResponse]] to 
+ see if it is defined for a given Req, which represents an HTTP request. If there is a match, Lift will 
+ take the resulting function, apply it to get a Box[LiftResponse] and if the Box is full, the response 
+ will be sent back to the browser. That’s a mouth-full. Let’s look at examples.",NA
+5.2 ,NA,NA
+REST the hard way,"Let’s take a look at the raw level of doing REST with Lift: taking an incoming HTTP request and 
+ transforming it into a function that returns a Box[LiftResponse] (and don’t worry, it gets easier, but 
+ we’re starting with the ugly verbose stuff so you get an idea of what’s happening under the covers): 
+ 43",NA
+5.3,NA,NA
+Making it easier with RestHelper,"The above example shows you how Lift deals with REST calls. However, it’s a tad verbose. Lift’s 
+ RestHelper trait contains a lot of very helpful shortcuts that make code more concise, easier to 
+ read and easier to maintain. Let’s look at a bunch of examples and then we’ll work through each 
+ one: 
+ Listing 5.3: BasicWithHelper.scala 
+ 1 
+  
+ 2
+  
+ package
+  code 
+  
+ package
+  lib
+  
+ 3
+  
+ 4 
+  
+ import
+  model._
+  
+ 5
+  
+ 6 
+  
+ import
+  net.liftweb._
+  
+ 7 
+  
+ import
+  common._
+  
+ 8 
+  
+ import
+  http._
+  
+ 9 
+  
+ import
+  rest._
+  
+ 10 
+ import
+  json._
+  
+ 11 
+ import
+  scala.xml._
+  
+ 12
+  
+ 1
+ 3 
+ 1
+ 4 
+ 1
+ 5 
+ 1
+ 6 
+ 1
+ 7 
+ 1
+ 8 
+ 1
+ 9 
+ 2
+ 0 
+ 2
+ 1 
+ 2
+ 2 
+ 2
+ 3 
+ 2
+ 4 
+ 2
+ 5 
+ 2
+ 6 
+ 2
+ 7 
+ 2
+ 8
+  
+ /** 
+  
+ * A simple example of a REST style interface * using the basic 
+ Lift tools 
+  
+ */ 
+  
+ object
+  BasicWithHelper
+  extends
+  RestHelper {
+  
+ /* 
+  
+ * Serve the URL, but have a helpful error message when you * return a 404 if the 
+ item is not found 
+  
+ */ 
+  
+ serve {
+  
+ case
+  ""simple3""
+  ::
+  ""item""
+  :: itemId :: Nil JsonGet _
+  =>
+  
+ for
+  {
+  
+ // find the item, and if it's not found,
+  
+ // return a nice message for the 404
+  
+ item
+  <-
+  Item.find(itemId) ?~
+  ""Item Not Found""
+  
+ }
+  yield
+  item: JValue
+  
+ 29
+  
+ 30
+  
+ }
+  
+ case
+  ""simple3""
+  ::
+  ""item""
+  :: itemId :: Nil XmlGet _
+  =>
+  
+ 31
+  
+ for
+  {
+  
+ 32
+  
+ item
+  <-
+  Item.find(itemId) ?~
+  ""Item Not Found""
+  
+ 33
+  
+ }
+  yield
+  item: Node
+  
+ 34
+  
+ 35
+  
+ 36
+  
+ 37
+  
+ 38 
+  
+ serve {
+  
+ 39 
+  
+ // Prefix notation
+  
+ 40 
+  
+ case
+  JsonGet(
+ ""simple4""
+  ::
+  ""item""
+  :: Item(item) :: Nil, _)
+  =>",NA
+5.4,NA,NA
+A complete REST example,"The above code gives us the bits and pieces that we can combine into a full fledged REST service. 
+ Let’s do that combination and see what such a service looks like: 
+ Listing 5.4: FullRest.scala 
+ 1 
+  
+ 2
+  
+ package
+  code 
+  
+ package
+  lib",NA
+5.5 ,NA,NA
+Wrap Up,"In this chapter, we’ve covered how you create web services in Lift. While there is a lot of implicit 
+ conversion stuff going on under the covers in RestHelper, the resulting code is pretty easy to read, 
+ create, and maintain. At the core, you match an incoming request against a pattern, if the pattern 
+ matches, evaluate the expression on the right hand side of the pattern.",NA
+Chapter 6,NA,NA
+Wiring,"Interactive web applications have many interdependent components on a single web page. For 
+ example (and this is the example we’ll use for this chapter), you may have a shopping cart in your 
+ application. The shopping cart will contain items and quantities. As you add/remove items from the 
+ cart, the cart should update, along with the sub-total, the tax, the shipping and the grand total. Plus, 
+ the count of the items in the cart may be displayed on some pages without the cart contents. 
+ Keeping track of all of these dependencies for all the different page layouts is pretty tough work. 
+ When it comes to updating the site, the team must remember where all of the items are and how to 
+ update them and if they get one wrong, the site looks broken. 
+ Lift’s Wiring provides a simple solution to managing complex dependencies on a single page and on 
+ multiple tabs. Lift’s Wiring allows you to declare the formulaic relationships among cells (like a 
+ spreadsheet) and then the user interface components (yes, there can be more than one component) 
+ associated with each cell. Lift will automatically update the dependent user interface components 
+ based on change in the predicates. Lift will do this on initial page render and with each Ajax or 
+ Comet update to the page. Put another way, Wiring is like a spreadsheet and the page will 
+ automatically get updated when any of the predicate values change such that the change results in a 
+ change in the display value.",NA
+6.1 ,NA,NA
+Cells,"Like a spreadsheet, Lift’s Wiring is based on Cells. Cells come in three types: ValueCell, Dy-
+ namicCell, and FuncCell. 
+ A ValueCell contains a value that is entered by a user or depends on some user action. A ValueCell 
+ may represent the items in our shopping cart or the tax rate. 
+ A DynamicCell contains a value that changes every time the cell is accessed. For example, a random 
+ number or the current time. 
+ A FuncCell has a value based on a formula applied to the value or other cells. 
+ Let’s see some code that demonstrates this: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+ val
+  quantity = ValueCell(0) 
+  
+ val
+  price = ValueCell(1d) 
+  
+ val
+  total = price.lift(_ * quantity)
+  
+ 63",NA
+6.2 ,NA,NA
+Hooking it up to the UI,"Now that we can declare relationships among cells, how do we associate the value of Cells with 
+ the user interface? 
+ Turns out that it’s pretty simple: 
+ 1
+  
+ ""#total""
+  #> WiringUI.asText(total)
+  
+ We associate the element with id=""total"" with a function that displays the value in total. 
+ Here’s the method definition: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+ /** 
+  
+ * Given a Cell register the 
+  
+ * postPageJavaScript that will update the element with * a new value.
+  
+ *",NA
+6.3 ,NA,NA
+Shared Shopping,"Let’s move onto a real code example. You can find this code at
+  Shop with Me source
+ . 
+ The example is going to be a simple shopping site. There are a bunch of items that you can view. 
+ You have a shopping cart. You can add items to the cart. If you’re viewing the cart in multiple tabs 
+ or browser windows, the cart in all tabs/windows will update when you change the cart. Further, 
+ you can share your cart with someone else and any changes to the cart will be propagated to all the 
+ different browsers sharing the same cart. 
+ The data model is the same that we used in the REST chapter (see
+  5.2 on page 46
+ ). 
+ Let’s look at the shopping cart definition: 
+ Listing 6.1: Cart.scala 
+ 1 
+  
+ 2
+  
+ package
+  code 
+  
+ package
+  lib
+  
+ 3
+  
+ 4 
+  
+ import
+  model.Item
+  
+ 5
+  
+ 6 
+  
+ import
+  net.liftweb._
+  
+ 7 
+  
+ import
+  util._
+  
+ 8
+  
+ 9
+  
+ 1
+ 0 
+ 1
+ 1 
+ 1
+ 2 
+ 1
+ 3 
+ 1
+ 4 
+ 1
+ 5 
+ 1
+ 6
+  
+ /** 
+  
+ * The shopping cart 
+  
+ */ 
+  
+ class
+  Cart {
+  
+ /** 
+  
+ * The contents of the cart 
+  
+ */ 
+  
+ val
+  contents = ValueCell[Vector[CartItem]](Vector())
+  
+ 17
+  
+ 1
+ 8 
+  
+ 1
+ 9 
+  
+ 2
+ 0 
+  
+ 2
+ 1 
+  
+ 2
+ 2
+  
+ /** 
+  
+ * The subtotal 
+  
+ */ 
+  
+ val
+  subtotal = contents.lift(_.foldLeft(zero)(_ +
+  
+ _.qMult(_.price)))
+  
+ 23
+  
+ 2
+ 4 
+  
+ 2
+ 5 
+  
+ 2
+ 6 
+  
+ 2
+ 7 
+  
+ 2
+ 8 
+  
+ 2
+ 9
+  
+ /** 
+  
+ * The taxable subtotal 
+  
+ */ 
+  
+ val
+  taxableSubtotal = contents.lift(_.filter(_.taxable).
+  
+ foldLeft(zero)(_ +
+  
+ _.qMult(_.price)))
+  
+ 30
+  
+ 3
+ 1 
+  
+ 3
+ 2 
+  
+ 3
+ 3 
+  
+ 3
+ 4
+  
+ /** 
+  
+ * The current tax rate 
+  
+ */ 
+  
+ val
+  taxRate = ValueCell(BigDecimal(
+ ""0.07""
+ ))",NA
+6.4 ,NA,NA
+Wrap up,"In this chapter we’ve seen how Lift’s Wiring can be used to create complex inter-relationships 
+ among values and then surface those relationships in the web user interface. Wiring can be used 
+ with Ajax or Comet. Wiring makes it simple to build complex web pages that are user friendly 
+ and easy to maintain.",NA
+Chapter 7 ,NA,NA
+Core Concepts,77,NA
+Snippets,CHAPTER 7. CORE CONCEPTS,NA
+7.1,"Lift is built on the Scala programming language. Scala is a hybrid of Functional and Object Ori-ented. 
+ Two core principles of functional programming languages are immutability and transfor-mation. 
+ Immutability means that once a data structure is instantiated, it will not change for its life. More 
+ concretely, once you instantiate an object, you can freely pass the object around and the object will 
+ always return the same values for all its methods. Java’s String class is immutable. Python requires 
+ immutable classes as indexes to dictionaries. Immutability is also very powerful for multithreaded 
+ applications because you can pass references to immutable objects across thread boundaries 
+ without having to worry about locking or synchronization because you are guaran-teed that the 
+ objects will not change state. 
+ 7.1.1 
+  
+ Snippet NodeSeq => NodeSeq
+  
+ Transformation provides an alternative to “writing to a stream” for composing web pages. Rather 
+ than having tags that cause characters to be streamed as part of the response, Lift loads the view 
+ and for each “snippet” encountered in the view, Lift transforms just the markup associated with the 
+ snippet invocation into a new set of HTML. 
+ Let’s make it more concrete, here’s some markup: 
+ 1
+  
+ <span class=
+ ""foo lift:WhatTime""
+ >The time is <span id=
+ ""current_time""
+ >currentTime</span></spa
+  
+ And the associated snippet: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+ object
+  WhatTime { 
+  
+  
+ def
+  render =
+  ""#current_time""
+  #> (
+ new
+  Date).toString }
+  
+ The resulting markup will look like: 
+ 1
+  
+ <span class=
+ ""foo""
+ >The time is Mon Dec 06 21:01:36 PST 2010</span>
+  
+ Let’s walk through how this works. First, the class attribute in the <span> has two classes, foo and 
+ lift:WhatTime. Any class attribute that starts with lift: indicates a snippet invocation. 
+ A snippet is a function that transforms HTML to HTML, or in Scala, NodeSeq => NodeSeq. 
+ Lift looks up the snippet named WhatTime (See Section
+  23.1
+ ) which in this case resolves to a 
+ singleton and invokes the render method. The render method returns a NodeSeq => NodeSeq built 
+ using Lift’s CSS Selector Transforms (See Section
+  7.10
+ ). The parameter to the function is the 
+ Element that caused the snippet invocation with the actual snippet invocation removed from the 
+ class attribute: 
+ 1
+  
+ <span class=
+ ""foo""
+ >The time is <span id=
+ ""current_time""
+ >currentTime</span></span>
+  
+ The function is then applied and the resulting NodeSeq is inserted in the page where the origi-nal 
+ Element was. Because the page is composed of immutable XML objects, we can transform",NA
+Box/Option,CHAPTER 7. CORE CONCEPTS,NA
+7.2,"Scala has a ton of nice features. One of the features that I was slow to adopt, until Burak Emir gently 
+ reminded me a bunch of times, is ""Options"". Read on about Options, Boxes, and how Lift makes 
+ good use of them to make clean, error resistant code. If you come from an imperative (Java, Ruby) 
+ background, you’ll probably recognize the following code: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+  
+ 7
+  
+  
+ 8
+  
+ x = someOperation 
+  
+ if
+  !x.nil?
+  
+ y = someOtherOperation 
+  
+ if
+  !y.nil?
+  
+   
+ doSomething(x,y)
+  return
+  ""it worked"" 
+  
+  
+ end 
+  
+ end 
+  
+ return
+  ""it failed""
+  
+ Okay, so that’s pseudo-code, but there are tons of operation, guard, operation, guard, blah blah 
+ constructs. 
+ Further, null/nil are passed around as failures. This is especially bad when it’s null, but it’s pretty 
+ bad when it’s nil because it’s not clear to the consumer of the API that there can be a ""call failed"" 
+ return value. 
+ In Java, null is a non-object. It has no methods. It is the exception to the statically typed rule (null 
+ has no class, but any reference of any class can be set to null.) Invoking a method on null has one 
+ and only one result: an exception is thrown. null is often returned from meth-ods as a flag 
+ indicating that the method ran successfully, but yielded no meaningful value. For example, 
+ CardHolder.findByCreditCardNumber(""2222222222"") In fact, the guy who in-vented null called it a
+  
+ billion dollar mistake
+ . 
+ Ruby has nil which is marginally better than null. nil is a real, singleton object. There’s only one 
+ instance of nil in the whole system. It has methods. It is a subclass of Object. Object has a method 
+ called ""nil?"" which returns false, except the nil singleton overrides this method to return true. nil is 
+ returned much like null in Java. It’s the ""no valid answer"" answer. 
+ Scala does something different. 
+ There’s an abstract class, called Option. Options are strongly typed. They are declared Op-tion[T]. 
+ This means an Option can be of any type, but once its type is defined, it does not change. There are 
+ two subclasses of Option: Some and None. None is a singleton (like nil). 
+ Some is a container around the actual answer. So, you might have a method that looks like: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+  
+ 7
+  
+ def
+  findUser(name: String): Option[User] = { 
+  
+  
+ val
+  query = buildQuery(name) 
+  
+  
+ val
+  resultSet = performQuery(query) 
+  
+  
+ val
+  retVal =
+  if
+  (resultSet.next) Some(createUser(resultSet))
+  else
+  None 
+  
+ resultSet.close 
+  
+  
+ retVal 
+  
+ }
+  
+ Some, you’ve got a findUser method that returns either Some(User) or None. So far, it doesn’t look a 
+ lot different than our example above. So, to confuse everyone, I’m going to talk about collections for 
+ a minute.",NA
+S/SHtml,CHAPTER 7. CORE CONCEPTS,NA
+7.3,NA,NA
+7.4,NA,NA
+Boot,NA,NA
+7.5,NA,NA
+SiteMap,NA,NA
+7.6,NA,NA
+GUIDs,"A core concept in Lift is GUIDs. GUIDs are globally unique identifiers used to associate some- 
+ thing in the browser with a function on the server. GUIDs make Lift more secure because they 
+ make replay attacks very difficult and GUIDs make it easier to develop complex, stateful, interac- 
+ tive applications because the developer spends more time on business logic and less time on the 
+ plumbing of it. 
+ 7.6.1 
+  
+ How GUIDs are generated
+  
+ 7.6.2 
+  
+ Where they are used",NA
+7.7 ,NA,NA
+LiftRules,NA,NA
+7.8 ,NA,NA
+SessionVars and RequestVars,NA,NA
+7.9 ,NA,NA
+Helpers,NA,NA
+7.10 ,NA,NA
+CSS Selector Transforms,"Lift 2.2-M1 introduced a new mechanism for transforming XHTML: CSS Selector Transforms 
+ (CssBindFunc). The new mechanism provides a subset of CSS selectors that can be used to 
+ transform NodeSeq => NodeSeq. Examples of this feature include: 
+ • ""#name"" #> userName // replace the element with the id name with the variable user-Name 
+ • ""#chat_lines *"" #> listOfChats // replace the content of chat_lines with each ele-ment of 
+ listOfChats 
+ • "".pretty *"" #> <b>Unicorn</b> // each element with CSS class pretty, replace con-tent with 
+ <b>Unicorn</b> 
+ • ""dog=cat [href]"" #> ""http://dogscape.com"" // set the href attribute of all ele-ments with the 
+ dog attribute set to cat 
+ • ""#name"" #> userName & ""#age"" #> userAge // set name to userName and age to userAge 
+ • ""li *"" #> userName & ""li [class]"" #> ""foo"" // set the contents of all <li> ele-ment with username 
+ and class to foo 
+ • ""li *"" #> userName & ""li [class+]"" #> ""foo"" // set the contents of all <li> el-ement with 
+ username and append foo to the class 
+ • ""*"" #> <span>{userName}</span> 
+ // 
+ set 
+ all 
+ the 
+ elements 
+ to 
+ <span>{userName}</span> 
+ CSS Selector Transforms extends NodeSeq => NodeSeq... they are quite literally functions and can 
+ be passes as a parameter to anything expecting NodeSeq => NodeSeq or returned as a result for any 
+ method that returns NodeSeq => NodeSeq. 
+ Let’s look at each of the pieces to see how they work. 
+ First, you must import net.liftweb.util._ and import Helpers._ These packages in-clude the classes 
+ and the implicit conversions that make the CSS Selector Tranforms work. The transform is defined 
+ by: String representing selector #> transform value. 
+ The selector is a String constant which implements the following subset of CSS Selectors: 
+ • #id - selects the element with the specified id 
+ • .class - selects all elements have a class attribute where one of the space-separated values 
+ equals class 
+ • attr_name=attr_value - selects all elements where the given attribute equals the given value 
+ • element_name - selects all the elements matching the name 
+ • * - selects all elements",NA
+7.11 ,NA,NA
+Client-side behavior invoking server-side functions,NA,NA
+7.12 ,NA,NA
+Ajax,NA,NA
+7.13 ,NA,NA
+Comet,NA,NA
+7.14 ,NA,NA
+LiftActor,NA,NA
+7.15 ,NA,NA
+Pattern Matching,NA,NA
+7.16 ,NA,NA
+Type safety,NA,NA
+7.17 ,NA,NA
+Page rewriting,NA,NA
+7.18 ,NA,NA
+Security,NA,NA
+Chapter 8 ,NA,NA
+Common Patterns,91,NA
+Localization,CHAPTER 8. COMMON PATTERNS,NA
+8.1,"Lift has broad support for localization at the page and element level. 
+ 8.1.1 
+  
+ Localizing Templates
+  
+ The locale  
+ for  the  current  request  is  calculated  
+ based  
+ on  
+ the  function  
+ in 
+ LiftRules.localeCalculator.  
+ By default, the function looks at the
+  Locale in the HTTP
+  
+ request
+ . But you can change this function to look at the Locale for the current user by changing 
+ LiftRules.localeCalculator. 
+ When a template is requested, Lift’s TemplateFinder looks for a template with the suf- 
+ fix _langCOUNTRY.html, then _lang.html, then .html. So, if you’re loading /frog and 
+ your Locale is enUS, then Lift will look for /frog_enUS.html, then /frog_en.html, then 
+ /frog.html. But if your Locale is Czech, then Lift would look for /frog_csCZ.html, /frog_- 
+ cs.html, and /frog.html. The same lookup mechanism is used for templates accessed via the 
+ Surround (See Section
+  9.14
+ ) and Embed (See Section
+  9.13
+ ) snippets. So, at the template level, Lift 
+ offers very flexible templating. 
+ Note: Lift parses all templates in UTF-8. Please make sure your text editor is set to UTF-8 encod- 
+ ing. 
+ 8.1.2 
+  
+ Resource Lookup
+  
+ Lift uses the following mechanism to look up resources. Localized resources are stored in tem- 
+ plate files along-side your HTML pages. The same parser is used to load resources and the pages 
+ themselves. A global set of resources is searched for in the following files: /_resources.html, 
+ /templates-hidden/_resources.html, and /resources-hidden/_resources.html. 
+ Keep in mind that Lift will look for the _resources file using the suffixes based on the Locale. 
+ The resource file should be in the following format: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+ <resources> 
+  
+  
+ <res name=
+ ""welcome""
+ >Benvenuto</res> 
+  
+  
+ <res name=
+ ""thank.you""
+ >Grazie</res> 
+  
+  
+ <res name=
+ ""locale""
+ >Località</res> 
+  
+  
+ <res name=
+ ""change""
+ >Cambia</res> 
+  
+ </resources>
+  
+ In addition to global resource files, there are per-page resource files (based on the current 
+ Req.) If you are currently requesting page /foo/bar, the following resource files will also 
+ be consulted: /foo/_resources_bar.html, /templates-hidden/foo/_resources_- 
+ bar.html, and /foo/resources-hidden/_resources_bar.html (and all Locale-specific 
+ suffixes.) You can choose to create a separate resource file for each locale, or lump multiple locales 
+ into the _resources_bar.html file itself using the following format: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+ <resources> 
+  
+ <res name=
+ ""hello""
+  lang=
+ ""en""
+  default=
+ ""true""
+ >Hello</res> <res name=
+ ""hello""
+  
+ lang=
+ ""en""
+  country=
+ ""US""
+ >Howdy, dude!</res>",NA
+Dependency Injection,CHAPTER 8. COMMON PATTERNS,NA
+8.2,"Dependency injection is an important topic in the Java world. It’s important because Java lacks 
+ certain basic features (e.g., functions) that tend to bind abstract interfaces to concrete implementa-
+ tions. Basically, it’s so much easier to do MyInterface thing = new MyInterfaceImpl(), so most 
+ developers do just that. 
+ Scala’s
+  cake pattern
+  goes a long way to help developers compose complex behaviors by combining 
+ Scala traits. Jonas Bonér wrote an excellent piece on
+  Dependency Injection
+ . 
+ The cake pattern only goes half way to giving a Java developer complete dependency injection 
+ functionality. The cake pattern allows you to compose the complex classes out of Scala traits, but 
+ the cake pattern is less helpful in terms of allowing you to make dynamic choices about which 
+ combination of cake to vend in a given situation. Lift provides extra features that complete the 
+ dependency injection puzzle. 
+ 8.2.1 
+  
+ Lift Libraries and Injector
+  
+ Lift is both a web framework and a set of Scala libraries. Lift’s common, actor, json, and util 
+ packages provide common libraries for Scala developers to build their application. Lift’s libraries 
+ are well tested, widely used, well supported, and released on a well defined schedule (montly 
+ milestones, quarterly releases). 
+ Lift’s Injector trait forms the basis of dependency injection: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+ /** 
+  
+ * A trait that does basic dependency injection.
+  
+ */ 
+  
+ trait
+  Injector {
+  
+ implicit def
+  inject[T](
+ implicit
+  man: Manifest[T]): Box[T]
+  
+ }
+  
+ You can use this trait as follows: 
+ 1
+  
+ object
+  MyInjector
+  extends
+  Injector {...}
+  
+ 2
+  
+ 3
+  
+ val
+  myThing: Box[Thing] = MyInjector.inject
+  
+ The reason that the instance of MyThing is in a Box is because we’re not guaranteed that MyIn-
+ jector knows how to create an instance of Thing. Lift provides an implementation of Injector called 
+ SimpleInjector that allows you to register (and re-register) functions for injection: 
+ 1
+  
+ object
+  MyInjector
+  extends
+  SimpleInjector
+  
+ 2
+  
+ 3 
+  
+ def
+  buildOne(): Thing =
+  if
+  (testMode)
+  new
+  Thing
+  with
+  TestThingy {}
+  else new
+  Thing
+  with
+  Runt
+  
+ 4
+  
+ 5 
+  
+ MyInjector.registerInjection(buildOne _)
+  // register the function that builds Thing
+  
+ 6
+  
+ 7
+  
+ val
+  myThing: Box[Thing] = MyInjector.inject",NA
+8.3 ,NA,NA
+Modules,"Lift has supported modules from the first version of the project in 2007. Lift’s entire handling of the 
+ HTTP request/response cycle is open to hooks. Further, Lift’s templating mechanism where 
+ resulting HTML pages are composed by transforming page content via snippets (See Section
+  7.1
+ ) 
+ which are simply functions that take HTML and return HTML: NodeSeq => NodeSeq. Be-cause Lift’s 
+ snippet resolution mechanism is open and any code referenced in Boot (See Section 
+ 7.4
+ ), any code 
+ can be a Lift “module” by virtue of registering its snippets and other resources in LiftRules. Many 
+ Lift modules already exist including PayPal, OAuth, OpenID, LDAP, and even a module containing 
+ many jQuery widgets. 
+ The most difficult issue relating to integration of external modules into Lift is how to properly 
+ insert the module’s menu items into a SiteMap (See Section
+  3.2
+ ) menu hierarchy. Lift 2.2 introduces 
+ a more flexible mechanism for mutating the SiteMap: SiteMap mutators. SiteMap mutators are 
+ functions that rewrite the SiteMap based on rules for where to insert the module’s menus in the 
+ menu hierarchy. Each module may publish markers. For example, here are the markers for 
+ ProtoUser: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+ /** 
+  
+ * Insert this LocParam into your menu if you want the 
+  
+ * User's menu items to be inserted at the same level 
+  
+ * and after the item 
+  
+ */ 
+  
+ final case object
+  AddUserMenusAfter
+  extends
+  Loc.LocParam[Any]",NA
+"HtmlProperties, XHTML and HTML5",CHAPTER 8. COMMON PATTERNS,NA
+8.4,"Lift unifies many aspects of parsing and displaying the HTML page in a single trait, HtmlProp-erties. 
+ HtmlProperties defines, on a session-by-session (and even a request-by-request) basis, the way that 
+ templates are parsed and the way that Scala’s NodeSeq is converted into valid HTML output. 
+ The properties on HtmlProperties are: 
+ • docType 
+ - 
+ the 
+ DocType 
+ for 
+ the 
+ HTML 
+ page, 
+ e.g., 
+ <!DOCTYPE 
+ html PUBLIC ""-//W3C//DTD XHTML 1.0 Transitional//EN""  
+ ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd""> or <!DOC- 
+ TYPE html> 
+ • encoding - the page’s encoding, e.g., <?xml version=""1.0"" encoding=""UTF-8""?> 
+ • contentType - the setting of the Content-Type response header, e.g., application/x-html+xml; 
+ charset=utf-8 or text/html; charset=utf-8 
+ • htmlOutputHeader - calculates the way to combine the docType and encoding (this is 
+ important for IE6 support where encoding goes after docType). 
+ • htmlParser - a function that converts an InputStream to a Box[NodeSeq]. This is used by Lift to 
+ parse templates. 
+ • htmlWriter - a function that writes a NodeSeq to a Writer. This is used by Lift to convert the 
+ internal XML representation of a page to a stream of bytes representing an HTML page. 
+ • html5FormsSupport - a flag indicating whether the current browser supports HTML5 forms. 
+ • maxOpenRequests - the maximum number of concurrent HTTP requests the browser sup-ports 
+ to a named host. 
+ • userAgent - the User-Agent string sent from the browser. 
+ 8.4.1 
+  
+ XHTML via OldHtmlProperties
+  
+ The default properties that keep compability with the disparate LiftRules used to calculate Doc-
+ Type and Encoding. Uses the PCDataXmlParser parser which requires well-formed XML files. 
+ Output is generally XHTML via AltXML.toXML, but cerain tags (e.g., <br>) are written in IE6/IE7 
+ friendly ways. 
+ 8.4.2 
+  
+ HTML5 via Html5Properties
+  
+ Prior to Lift 2.2, Lift always emitted XHTML and by default set the Content-Type header to ap-
+ plication/xhtml+xml; charset=utf-8. This continues to be Lift’s default behavior. It turns out that 
+ most browsers, even modern ones (Firefox, Chrome and Safari) had issues with XHTML. Further, 
+ XHTML limited the behavior of certain JavaScript libraries.",NA
+Chapter 9,NA,NA
+Built-in Snippets,NA,NA
+9.1 ,NA,NA
+CSS,NA,NA
+9.2 ,NA,NA
+Msgs,NA,NA
+9.3 ,NA,NA
+Msg,NA,NA
+9.4 ,NA,NA
+Menu,NA,NA
+9.5 ,NA,NA
+A,NA,NA
+9.6 ,NA,NA
+Children,NA,NA
+9.7 ,NA,NA
+Comet,NA,NA
+9.8 ,NA,NA
+Form,NA,NA
+9.9 ,NA,NA
+Ignore,NA,NA
+9.10 ,NA,NA
+Loc,NA,NA
+9.11 ,NA,NA
+Surround,NA,NA
+9.12 ,NA,NA
+TestCond,NA,NA
+9.13 ,NA,NA
+Embed,NA,NA
+9.14 ,NA,NA
+Tail,NA,NA
+9.15 ,NA,NA
+WithParam,NA,NA
+9.16 ,NA,NA
+VersionInfo,NA,NA
+Chapter 10 ,NA,NA
+SiteMap,103,NA
+Chapter 11,NA,NA
+REST,"Lift makes providing REST-style web services very simple. 
+ First, create an object that extends RestHelper: 
+ 1 
+  
+ 2
+  
+ import
+  net.liftweb.http._ 
+  
+ import
+  net.liftweb.http.rest._
+  
+ 3 
+  
+ 4 
+  
+ object
+  MyRest
+  extends
+  RestHelper { 
+  
+ 5
+  
+ 6
+  
+ }
+  
+ And hook your changes up to Lift in Boot.scala: 
+ 1 
+  
+ 2
+  
+ LiftRules.dispatch.append(MyRest)
+  // stateful -- associated with a servlet container sessio 
+ LiftRules.statelessDispatchTable.append(MyRest)
+  // stateless -- no session created
+  
+ Within your MyRest object, you can define which URLs to serve: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+ serve { 
+  
+  
+ case
+  Req(
+ ""api""
+  ::
+  ""static""
+  :: _,
+  ""xml""
+ , GetRequest)
+  =>
+  <b>Static</b> 
+  
+ case
+  Req(
+ ""api""
+  ::
+  ""static""
+  :: _,
+  
+ ""json""
+ , GetRequest)
+  =>
+  JString(
+ ""Static""
+ ) }
+  
+ The above code uses the suffix of the request to determine the response type. Lift supports testing 
+ the Accept header for a response type: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+ serve { 
+  
+  
+ case
+  XmlGet(
+ ""api""
+  ::
+  ""static""
+  :: _, _)
+  =>
+  <b>Static</b> 
+  
+ case
+  JsonGet(
+ ""api""
+  ::
+  ""static""
+  
+ :: _, _)
+  =>
+  JString(
+ ""Static""
+ ) }
+  
+ The above can also be written: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+ serve { 
+  
+  
+ case
+  ""api""
+  ::
+  ""static""
+  :: _ XmlGet _
+ =>
+  <b>Static</b> 
+  
+  
+ case
+  ""api""
+  ::
+  ""static""
+  :: _ JsonGet _
+  =>
+  JString(
+ ""Static""
+ ) }
+  
+ 105",NA
+Chapter 12 ,NA,NA
+MVC (If you really want it),109,NA
+Chapter 13,NA,NA
+From MVC,"Okay, so you’re coming from MVC-land and you’re used to defining routes, defining controlers and 
+ defining views. 
+ Lift is different. For HTML requests, Lift loads the view first and builds your page from the view. Lift 
+ also supports REST style requests for non-HTML data. (See
+  11 on page 105
+ ) 
+ “Why?” Because complex HTML pages rarely contain a dominant piece of logic... a single con-
+ troller... but contain many different components. Some of those components interact and some do 
+ not. In Lift, you define the collection of components to be rendered in the resulting HTML page in 
+ the view. 
+ So, to create a page that has dynamic content, we need to do three things: 
+ • Make a SiteMap entry for the page 
+ • Create the view (the HTML) 
+ • Create the behavior (the Snippet that transforms the incoming HTML to the dynamically 
+ generated HTML) 
+ You can find the source for this project at
+  https://github.com/dpp/simply_lift/tree/mas-
+ ter/samples/from_mvc
+ .",NA
+13.1 ,NA,NA
+First things first,"The first step to using Lift is to make sure you’ve got Java 1.6 or better installed on your machine... 
+ you’ll need tar or zip as well. 
+ Download the
+  TAR
+  or
+  Zip
+  version of the Lift templates and extract the files. 
+ Copy the lift_basic project into another directory called first_lift. 
+ cd into first_lift and type sbt. It will take a few minutes for sbt, the Simple Build Tool, to download 
+ all the depedencies. At the > prompt type update which will download Lift and every-thing else you 
+ need to get started. Once all that stuff is downloaded, type jetty-run and point your browser to 
+ http://localhost:8080 and you’ll see a live application. To continuously update your running 
+ application as you to code, enter ~prepare-webapp at the sbt prompt. 
+ 111",NA
+Making a SiteMap entry,CHAPTER 13. FROM MVC,NA
+13.2,"Every page on the site needs a SiteMap entry. For more on SiteMap, see
+  3.2 on page 15
+  and
+  7.5 on 
+ page 84
+ . 
+ Open the Boot.scala file (src/main/scala/bootstrap/liftweb/Boot.scala) and up-date the SiteMap 
+ definition: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+ // Build SiteMap 
+  
+ def
+  sitemap(): SiteMap = SiteMap( 
+  
+  
+ Menu(
+ ""Home""
+ ) /
+  ""index""
+ , 
+  
+  
+ Menu(
+ ""Second Page""
+ ) /
+  ""second"" 
+  
+ )",NA
+13.3,NA,NA
+Creating the view,"Next you have to create a file that corresponds to the path defined in the SiteMap. So, let’s look at 
+ the src/main/webapp/index.html file: 
+ Listing 13.1: index.html 
+ 1 
+  
+ 2 
+  
+ 3 
+  
+ 4 
+  
+ 5 
+  
+ 6 
+  
+ 7 
+  
+ 8 
+  
+ 9 
+  
+ 10 
+  
+ 11 
+  
+ 12
+  
+ <!DOCTYPE html> 
+  
+ <html> 
+  
+  
+ <head> 
+  
+   
+ <meta content=
+ ""text/html; charset=UTF-8""
+  http-equiv=
+ ""content-type""
+  /> 
+  
+  
+ <title>Home</title> 
+  
+  
+ </head> 
+  
+  
+ <body
+  class
+ =
+ ""lift:content_id=main""
+ > 
+  
+   
+ <div id=
+ ""main""
+  class
+ =
+ ""lift:surround?with=default&at=content""
+ > 
+  
+    
+ <div> 
+  
+     
+ Hi, I'm a page that contains the time: 
+  
+     
+ <span
+  class
+ =
+ ""lift:TimeNow""
+ >??? some time</span>.
+  
+ </div>
+  
+ 13
+  
+ 1
+ 4 
+  
+ 1
+ 5 
+  
+ 1
+ 6 
+  
+ 1
+ 7 
+  
+ 1
+ 8 
+  
+ 1
+ 9
+  
+ <div> 
+  
+  
+ And a button: <button
+  class
+ =
+ ""lift:ClickMe""
+ >Click Me</button>.
+  
+    
+ </div> 
+  
+   
+ </div> 
+  
+  
+ </body> 
+  
+ </html>
+  
+ The page is valid HTML5. <body class=""lift:content_id=main""> says “ignore every-thing on this page 
+ except the Element with id ’main’.” 
+ <div id=""main"" class=""lift:surround?with=default&at=content""> says “Wrap the default page 
+ chrome around this Element.” 
+ <span class=""lift:TimeNow"">???  
+ some time</span> says “Find the TimeNow snip-pet 
+ and transform this Element with the rules contained in that snippet.” See
+  7.1 on page 78
+ . The result 
+ will be <span>Fri Jan 21 11:30:34 PST 2011</span>",NA
+13.4 ,NA,NA
+Creating the Snippet,"Next you have to tell Lift what the rules are for transforming the section of your template based on 
+ dynamic rules. This is a Snippet... it’s a function that transforms NodeSeq => NodeSeq. Let’s look at 
+ the TimeNow snippet: 
+ Listing 13.2: TimeNow.scala 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+ // make sure this is the snippet package so Lift // can find the 
+ snippet 
+  
+ package
+  code 
+  
+ package
+  snippet
+  
+ 5
+  
+ 6 
+  
+ // some inputs
+  
+ 7 
+  
+ import
+  net.liftweb._
+  
+ 8 
+  
+ import
+  util._
+  
+ 9 
+  
+ import
+  Helpers._
+  
+ 10
+  
+ 1
+ 1 
+  
+ 1
+ 2 
+  
+ 1
+ 3 
+  
+ 1
+ 4 
+  
+ 1
+ 5 
+  
+ 1
+ 6 
+  
+ 1
+ 7
+  
+ // our snippet 
+  
+ object
+  TimeNow { 
+  
+  
+ // create a function (NodeSeq
+  =>
+  NodeSeq) 
+  
+ // that 
+ puts the current time into the 
+  
+ // body of the incoming 
+ Elem
+  
+ }
+  
+ def
+  render =
+  ""* *""
+  #> now.toString
+  
+  
+ This snippet must be in the snippet package so Lift knows how to find it by convention. 
+ It is an object which is a singleton because the snippet has no state. 
+ Lift calls the render method on a snippet unless you specify another method when you invoke your 
+ snippet. 
+ The snippet generates a function, NodeSeq => NodeSeq, that uses Lift’s CSS Selector Trans-forms 
+ (See
+  7.10 on page 85
+ ) to insert the current time into the body of all HTML Elements: def 
+ render = ""* *"" #> now.toString",NA
+13.5 ,NA,NA
+Getting Ajaxy,"The ClickMe snippet is a little more complex, but it demonstrates, especially on the “Second Page” 
+ the power of Lift’s View First in which no particular component on the page is the dominant 
+ component. Here’s the ClickMe code: 
+ Listing 13.3: ClickMe.scala 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+ // make sure this is the snippet package so Lift // can find the 
+ snippet 
+  
+ package
+  code",NA
+13.6 ,NA,NA
+Next Steps,"If you want to see more of Lift’s snazzy Ajax and Comet, check out
+  2 on page 5
+ . If you want to see 
+ more of the basics of SiteMap and snippets, check out
+  3 on page 11
+ . If you want to see how Lift 
+ does forms, check out
+  4 on page 27
+ .",NA
+Part II ,NA,NA
+Recipes,115,NA
+Chapter 14,NA,NA
+Dynamic html tables created ,NA,NA
+from DB.runQuery(),NA,NA
+14.1 ,NA,NA
+Problem,"What I’m trying is:  
+ 1. query the SQL server via DB.runQuery()  
+ 2. put the result (multiple, rows and columns) into a Table structure like this: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+  
+ 7
+  
+  
+ 8
+  
+ <table> 
+  
+  
+ <thead> 
+  
+   
+ <tr><th></th></tr> 
+  
+  
+ </thead> 
+  
+  
+ <tbody> 
+  
+  
+ <tr><td></td></tr> 
+  
+  
+ </tbody> 
+  
+ </table>",NA
+14.2,NA,NA
+Solution,"The DB.runQuery(sql_query_string) method returns (List[String], List[List[String]]), to put that in a 
+ table, your view looks like: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+  
+ 7
+  
+  
+ 8
+  
+ <table class=
+ ""lift:MySnippet""
+ > 
+  
+  
+ <thead> 
+  
+   
+ <tr><th id=
+ ""my_th""
+ >Field Name</th></tr> 
+  
+ </thead> 
+  
+  
+ <tbody> 
+  
+  
+ <tr id=
+ ""my_tr""
+ ><td>An item</td></tr> 
+  
+  
+ </tbody> 
+  
+ </table>
+  
+ And your snippet uses CSS Selector Transforms (See Section
+  7.10
+ ) and looks like: 
+ 117",NA
+Chapter 15,NA,NA
+Dynamically choosing content,NA,NA
+15.1 ,NA,NA
+Problem,"I want to to keep design completely separated from logic and I am bit stuck. I have a page that loads 
+ different pieces of html depending on some variables and it also has some ajax code so it may load 
+ new pieces of html. So far, that page uses only one snippet that has the logic to decide what html 
+ should be loaded. So here is the question, how should the snippet get an only-with-design piece of 
+ html to bind data to it.",NA
+15.2 ,NA,NA
+Solution,"Snippets are evaluated recursively... this means that you can return markup from a snippet that 
+ contains other snippets. 
+ The other thing to pay attention to is the <lift:embed> snippet (See Section
+  9.13
+ ). 
+ Combining the two: 
+ Main page: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+ <html><body> Stuff here 
+  
+ <div
+  class
+ =
+ ""lift:ChooseBehavior""
+ >Different behavior will go here</div> </body></html>
+  
+ The snippet: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+  
+ 7
+  
+ object
+  ChooseBehavior { 
+  
+  
+ def
+  render = someState
+  match
+  { 
+  
+   
+ case
+  ShowData
+  =>
+  <lift:embed what=
+ ""_showData""
+  /> 
+   
+ case
+  
+ EditData
+  =>
+  <lift:embed what=
+ ""_editData""
+  /> 
+  
+  
+ case
+  AjaxThing
+  
+ =>
+  <lift:embed what=
+ ""_ajaxThing""
+  /> 
+  
+ } 
+  
+ }
+  
+ Then your designer need only edit the main page and each of the templates, and then you wire them 
+ together. 
+ 119",NA
+Chapter 16 ,NA,NA
+Ajax Forms,121,NA
+Chapter 17,NA,NA
+Protecting REST APIs,NA,NA
+17.1 ,NA,NA
+Problem,"I want to expose part of my site as authenticated REST, but with custom authentication (not the 
+ HTTP based authentication). 
+ Right now, I’m thinking of using a custom dispatch, but that means I’ll have to check every request 
+ in the request handler itself to see if it is authenticated, right? 
+ Authentication is just a SessionVar on the server, so it also implies I need a way to pass the session 
+ identifier back and forth between the REST client and the service. If it were a cookie I think it would 
+ be transparent, but I think Lift adds te session ids to the URLs (at least that’s what I see in my 
+ address bar). 
+ So, assuming I have a public ""login"" REST call that sets a SessionVar, how do I pass this transar-
+ ently to the REST client? I have thought about a token system as well, but that seems like copying 
+ the session system. 
+ Any suggestions?",NA
+17.2 ,NA,NA
+Solution,"If you’ve got a: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+ object
+  MyService
+  extends
+  RestHelper { 
+  
+ ....
+  
+ }
+  
+ And: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+ val
+  ensureSession: PartialFunction[Req, Unit] = { 
+  
+ case
+  _
+  if
+  
+ isLoggedIn
+  => 
+  
+ }
+  
+ then in Boot: 
+ 123",NA
+Chapter 18,NA,NA
+URI-based locale selection,NA,NA
+18.1 ,NA,NA
+Problem,"I’m evaluating Lift and one thing I miss, or cannot see how toimplement, is the ability to have the 
+ locale determined from an URI-pattern. In Struts2 I have: 
+ 1
+  
+ namespace=
+ ""/{request_locale}""
+  
+ So I can have an action (restful) invoked on an URI=/no/companies/company/1 and it will call my 
+ CompanyAction with id=1 and the locale 
+ set to no If called from URI=/en/companies/company/1 it will callthe same CompanyAction but the 
+ locale will be set to ""en"". 
+ So my question is: Is it possible to teach Lift to retrieve the locale based on some uri-pattern, so that 
+ it will try to resolve my *.xhtml after the /{request_locale} part? 
+ /no/index.xhtml 
+ /en/index.xhtml 
+ Should then map to the same templates but with different locale.",NA
+18.2 ,NA,NA
+Solution,"This is an ideal use of URL rewriting. 
+ You have to hook up the module in Boot.scala with: UrlLocalizer.init(). 
+ You can see a complete runnable example at
+  DPP’s GitHub Starting Point
+ . 
+ Here’s the code: 
+ 125",NA
+Chapter 19,NA,NA
+Embedding JavaScript in an HTML page,NA,NA
+19.1 ,NA,NA
+Problem,"What am I doing wrong? I’m trying to output a javascript object into the page (so my front end guy 
+ can do some stuff with the data without parsing it out of elements by id) but it’s replacing all the 
+ double quotes with &quot; (only in view source - if I inspect it then firebug converts them to double 
+ quotes again)  
+ I’ve copied the example from E
+ XPLORING
+  L
+ IFT
+ , but it still does the same: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+ &
+  "".data_as_object *""
+  #> { 
+  
+  
+ JsCrVar(
+ ""myObject""
+ , JsObj((
+ ""persons""
+ , JsArray( 
+  
+  
+ JsObj((
+ ""name""
+ ,
+  ""Thor""
+ ), (
+ ""race""
+ ,
+  ""Asgard""
+ )), 
+  
+  
+ JsObj((
+ ""name""
+ ,
+  ""Todd""
+ ), (
+ ""race""
+ ,
+  ""Wraith""
+ )), 
+  
+  
+ JsObj((
+ ""name""
+ ,
+  ""Rodney""
+ ), (
+ ""race""
+ ,
+  ""Human""
+ )) 
+  
+ ))))
+  
+ Becomes: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+  
+ 7
+  
+ <div class=
+ ""data_as_object""
+  style=
+ ""display: none;""
+ >var myObject = {&quot;persons&quot;: 
+ [{&quot;name&quot;: &quot;Thor&quot;, &quot;race&quot;: &quot;Asgard&quot;}, 
+ {&quot;name&quot;: 
+  
+ &quot;Todd&quot;, &quot;race&quot;: &quot;Wraith&quot;}, 
+  
+ {&quot;name&quot;: &quot;Rodney&quot;, &quot;race&quot;: 
+  
+ &quot;Human&quot;}] 
+  
+ };</div>
+  
+ I’ve noticed that if what I’m outputting is a number rather than a string then it’s fine.",NA
+19.2 ,NA,NA
+Solution,"Try: 
+ 1 
+  
+ 2
+  
+ &
+  "".data_as_object *""
+  #> { 
+  
+  
+ Script(JsCrVar(
+ ""myObject""
+ , JsObj((
+ ""persons""
+ , JsArray(
+  
+ 127",NA
+Part III ,NA,NA
+Questions and Answers,129,NA
+Chapter 20,NA,NA
+Scaling,"Lift is a web framework built on the Scala programming language. Lift takes advantage of many of 
+ Scala’s features that allow developers to very concisely code secure, scalable, highly interactive web 
+ applications. Lift provides a full set of layered abstractions on top of HTTP and HTML from ""close to 
+ the metal"" REST abstractions up to transportation agnostic server push (Comet) support. Scala 
+ compiles to JVM byte-code and is compatible with Java libraries and the Java object model. Lift 
+ applications are typically deployed as WAR files in J/EE web containers... Lift apps run in Tomcat, 
+ Jetty, Glassfish, etc. just like any other J/EE web application. Lift apps can generally be monitored 
+ and managed just like any Java web app. Web Applications, Sessions, and State. All web applications 
+ are stateful in one way or another. Even a ""static"" web site is made up of the files that are served... 
+ the application’s state is defined in those files. The site content may be served out of a database, but 
+ the content served does not depend on identity of the user or anything about the HTTP request 
+ except the contents of the HTTP request. These contents can include the URI, parameters, and 
+ headers. The complete value of the response can be calculated from the request without referencing 
+ any resources except the content resources. For the purpose of this discussion, I will refer to these 
+ as session-less requests. News sites like the UK Guardian, MSNBC, and others are prototypical 
+ examples of this kind of site. Sessions. Some applications are customized on a user-by-user basis. 
+ These applications include the likes of Foursquare and others where many HTTP requests make up 
+ a ""session"" in which the results of previous HTTP requests change the behavior of future HTTP 
+ requests. Put in concrete terms, a user can log into a site and for some duration, the responses are 
+ specific to that user. There are many mechanisms for managing sessions, but the most common and 
+ secure method is creating a cryptographically unique token (a session id), and putting that token in 
+ the Set-Cookie response header such that the browser will present that Cookie in subsequent HTTP 
+ requests for a certain period of time. The server-side state is referenced by the Cookie and the state 
+ is made available to the web appli-cation during the scope of servicing the request and any 
+ mutations the web app makes to session state during the request are kept on the server and are 
+ available to the application in subsequent requests. Another available technique for managing state 
+ is to serialize application state in the Cookie and deliver it to the browser such that the server is not 
+ responsible for managing state across requests. As we’ve recently discovered, this is a 
+ tremendously insecure way to manage application state. Further, for any moderately complex 
+ application, the amount of data the needs to be transferred as part of each request and response is 
+ huge. Migratory Sessions. Many web application managers allow for server-managed sessions to 
+ migrate across a cluster of web appli-cation servers. In some environments such as Ruby on Rails, 
+ this is a hard requirement because 
+ 131",NA
+Chapter 21 ,NA,NA
+How Lift does function/GUID mapping,137,NA
+Chapter 22,NA,NA
+How Lift does Comet,"I can speak to Lift’s Comet Architecture which was selected by Novell to power their Pulse product 
+ after they evaluated a number of different technologies. 
+ Lift’s Comet implementation uses a single HTTP connection to poll for changes to an arbitrary 
+ number of components on the page. Each component has a version number. The long poll in-cludes 
+ the version number and the component GUID. On the server side, a listener is attached to all of the 
+ GUIDs listed in the long poll requests. If any of the components has a higher version number (or the 
+ version number increases during the period of the long poll), the deltas (a set of JavaScript 
+ describing the change from each version) is sent to the client. The deltas are applied and the 
+ version number on the client is set to the highest version number for the change set. 
+ Lift integrates long polling with session management so that if a second request comes into the 
+ same URL during a long poll, the long poll is terminated to avoid connection starvation (most 
+ browsers have a maximum of 2 HTTP connections per named server). Lift also supports DNS wild-
+ carded servers for long poll requests such that each tab in the browser can do long polling against a 
+ different DNS wildcarded server. This avoids the connection starvation issues. 
+ Lift dynamically detects the container the Servlet is running in and on Jetty 6 & 7 and (soon) 
+ Glassfish, Lift will use the platform’s ""continuations"" implementation to avoid using a thread during 
+ the long poll. 
+ Lift’s JavaScript can sit on top of jQuery and YUI (and could sit on top of Prototype/Scriptaculous as 
+ well.) The actual polling code includes back-off on connection failures and other ""graceful"" ways of 
+ dealing with transient connection failures. 
+ I’ve looked at Atmosphere and CometD (both JVM-oriented Comet technologies). Neither had (at 
+ the time I evaluated them) support for multiple components per page or connection starvation 
+ avoidance. 
+ 139",NA
+Chapter 23,NA,NA
+Advanced Concepts,NA,NA
+23.1 ,NA,NA
+Snippet Resolution,"Lift snippets transform markup to dynamic content. The are functions that transform NodeSeq => 
+ NodeSeq. 
+ Snippets can be invoked from templates via tags: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+ <lift:surround with=
+ ""default""
+  at=
+ ""content""
+ > 
+  
+  
+ <p> 
+  
+   
+ You have reached this page, but you can only get here if you
+ 've logged in 
+  
+  
+ first.
+  
+  
+ </p> 
+  
+ </lift:surround>
+  
+ or via class attributes. 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+ <p class=
+ ""lift:surround?with=default;at=content""
+ > 
+  
+ You have reached this page, but you can only get here if you
+ 've logged in first.
+  
+ </p>
+  
+ In both cases, the surround (See Section
+  9.11
+ ) snippet will be invoked with attribute with set to 
+ default and at set to content. The parameter passed to the surround NodeSeq => NodeSeq function 
+ is: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+ <p> 
+  
+ You have reached this page, but you can only get here if you
+ 've logged in first.
+  
+ </p>
+  
+ Lift will resolve from the snippet name to a function in the following steps. 
+ 141",NA
+23.2 ,NA,NA
+The Merging Phase,NA,NA
+Part IV ,NA,NA
+Misc,145,NA
+Chapter 24 ,NA,NA
+Releases,147,NA
+Lift 2.2-RC1,CHAPTER 24. RELEASES,NA
+24.1,"December 8, 2010 
+ The
+  Lift
+  team is pleased to announce
+  Lift 2.2-RC1
+ . In the month since the 2.2-M1 release, the team 
+ has closed 53 tickets and made significant improvements to Lift based on
+  community
+  feedback. 
+ Lift is an elegant, expressive framework that allows any size team build and maintain secure, highly 
+ interactive, scalable web applications quickly and efficiently. Lift is built on
+  Scala
+  and compiles to 
+ JVM byte-code. Lift applications deploy as WAR files on popular application servers and web 
+ containers including Jetty, Glassfish and Tomcat. Lift applications can be monitored and managed 
+ with the same proven infrastructure used to manage and monitor any Java web application. Lift is 
+ open source licensed under an Apache 2.0 license. 
+ Lift features include:
+  
+ • Community... the Lift community is 2,400 members strong, super-active and always there to 
+ help with questions 
+ • Best Comet (server-push) support that allows the creation of dynamic application such as 
+ Novell Vibe
+  
+ • Super simple Ajax for creating highly interactive web applications without worrying about 
+ HTTP plumbing 
+ • Secure by default... Lift apps are resistant to the OWASP top 10 vulnerabilities including XSS, 
+ XSRF, and parameter tampering 
+ • Concise and Maintainable... Lift apps typically contain fewer lines of code than correspond-ing 
+ Rails apps, yet are type safe so that many errors are flagged by the compiler 
+ • Scalable... Lift apps scale to millions of users across many servers, yet are highly efficient for 
+ single-box implementations 
+ • Compatible... Lift apps can take advantage of any Java library as well as the growing collec-tion 
+ of Scala libraries 
+ Lift 2.2-RC1 improvements include:
+  
+ • HTML5 Support: Lift supports parsing HTML5 input files and rendering HTML5 to the browser 
+ in addition to Lift’s XHTML support 
+ •
+  Wiring
+ : Spreadsheets meet web application yielding an automatic mechanism for updating 
+ dependent elements on a page, making it even easier to build dynamic apps with Lift 
+ • Wizard and Screen Improvements: Build complex screens more easily with new helper 
+ methods for creating form elements and improved life-cycle callbacks 
+ •
+  CSS Selector Transforms
+  Improvements: including appending attributes, multiple selectors 
+ applying to a single element, and element lifting",NA
+Lift 2.2,CHAPTER 24. RELEASES,NA
+24.2,"January 5, 2011 
+ The
+  Lift
+  team is pleased to announce
+  Lift 2.2
+ . In the three months since the 2.1 release, the team has 
+ closed over 100 tickets and made significant improvements to Lift based on
+  community
+  feedback. 
+ Lift is an elegant, expressive framework that allows any size team build and maintain secure, highly 
+ interactive, scalable web applications quickly and efficiently. Lift is built on
+  Scala
+  and compiles to 
+ JVM byte-code. Lift applications deploy as WAR files on popular application servers and web 
+ containers including Jetty, Glassfish and Tomcat. Lift applications can be monitored and managed 
+ with the same proven infrastructure used to manage and monitor any Java web application. Lift is 
+ open source licensed under an Apache 2.0 license. 
+ Lift features include:
+  
+ • Community... the Lift community is 2,400 members strong, super-active and always there to 
+ help with questions 
+ • Best Comet (server-push) support that allows the creation of dynamic application such as 
+ Novell Vibe
+  
+ • Super simple Ajax for creating highly interactive web applications without worrying about 
+ HTTP plumbing 
+ • Secure by default... Lift apps are resistant to the OWASP top 10 vulnerabilities including XSS, 
+ XSRF, and parameter tampering 
+ • Concise and Maintainable... Lift apps typically contain fewer lines of code than correspond-ing 
+ Rails apps, yet are type safe so that many errors are flagged by the compiler 
+ • Scalable... Lift apps scale to millions of users across many servers, yet are highly efficient for 
+ single-box implementations 
+ • Compatible... Lift apps can take advantage of any Java library as well as the growing collec-tion 
+ of Scala libraries 
+ Lift 2.2 improvements include:
+  
+ • HTML5 Support: Lift supports parsing HTML5 input files and rendering HTML5 to the browser 
+ in addition to Lift’s XHTML support 
+ •
+  Wiring
+ : Spreadsheets meet web application yielding an automatic mechanism for updating 
+ dependent elements on a page, making it even easier to build dynamic apps with Lift 
+ • Wizard and Screen Improvements: Build complex screens more easily with new helper 
+ methods for creating form elements and improved life-cycle callbacks 
+ •
+  CSS Selector Transforms
+  Improvements: including appending attributes, multiple selectors 
+ applying to a single element, and element lifting",NA
+Inde,NA,NA
+x ,"MVC,
+  3",NA

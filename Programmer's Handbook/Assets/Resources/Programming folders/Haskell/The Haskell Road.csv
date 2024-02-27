@@ -1,0 +1,4259 @@
+Larger Text,Smaller Text,Symbol
+The Haskell Road ,NA,NA
+to ,NA,NA
+"Logic, Math and ",NA,NA
+Programming,"Kees Doets and Jan van Eijck
+  
+ March 4, 2004",NA
+Contents,"Preface
+  
+ v
+  
+ 1 
+  
+ 2 
+  
+ 3 
+  
+ 8 
+  
+ 11 
+  
+ 12 
+  
+ 17 
+  
+ 19 
+  
+ 20 
+  
+ 24 
+  
+ 26
+  
+ 27 
+  
+ 2
+ 8 
+  
+ 3
+ 8 
+  
+ 5
+ 0 
+  
+ 5
+ 8 
+  
+ 6
+ 0 
+  
+ 6
+ 1 
+  
+ 6
+ 4 
+  
+ 6
+ 8 
+  
+ 7
+ 0
+  
+ 71 
+  
+ 7
+ 2 
+  
+ 7
+ 5 
+  
+ 7
+ 8 
+  
+ 9
+ 0
+  
+ 1
+  
+ Getting Started 
+  
+ 1.1 
+  
+ Starting up the Haskell Interpreter . . . . . . . . . . . . . . . . .
+  
+ 1.2
+  
+ Implementing a Prime Number 
+ Test
+  
+ . . . . . . . . . . . . . . . .
+  
+ 1.3
+  
+ Haskell Type 
+ Declarations
+  
+ . . . . . . . . . . . . . . . . . . . . .
+  
+ 1.4
+  
+ Identifiers in Haskell
+  
+ . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 1.5
+  
+ Playing the Haskell 
+ Game
+  
+ . . . . . . . . . . . . . . . . . . . . .
+  
+ 1.6
+  
+ Haskell Types . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 1.7
+  
+ The Prime Factorization Algorithm . . . . . . . . . . . . . . . . .
+  
+ 1.8
+  
+ The map and filter Functions . . . . . . . . . . . . . . . . . . .
+  
+ 1.9
+  
+ Haskell Equations and Equational 
+ Reasoning
+  
+ . . . . . . . . . . .
+  
+ 1.10 Further Reading . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 2
+  
+ Talking about Mathematical Objects 
+  
+ 2.1 
+  
+ Logical Connectives and their Meanings . . . . . . . . . . . . . .
+  
+ 2.2
+  
+ Logical Validity and Related Notions . . . . . . . . . . . . . . . .
+  
+ 2.3
+  
+ Making Symbolic Form Explicit . . . . . . . . . . . . . . . . . .
+  
+ 2.4
+  
+ Lambda Abstraction . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 2.5
+  
+ Definitions and Implementations . . . . . . . . . . . . . . . . . .
+  
+ 2.6
+  
+ Abstract Formulas and Concrete Structures
+  
+ . . . . . . . . . . . .
+  
+ 2.7
+  
+ Logical Handling of the 
+ Quantifiers
+  
+ . . . . . . . . . . . . . . . .
+  
+ 2.8
+  
+ Quantifiers as Procedures . . . . . . . . . . . . . . . . . . . . . .
+  
+ 2.9
+  
+ Further Reading . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 3
+  
+ The Use of Logic: Proof
+  
+ 3.1 
+  
+ Proof Style 
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 3.2
+  
+ Proof Recipes . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 3.3
+  
+ Rules for the Connectives . . . . . . . . . . . . . . . . . . . . . .
+  
+ 3.4
+  
+ Rules for the Quantifiers
+  
+ . . . . . . . . . . . . . . . . . . . . . .
+  
+ i",NA
+Preface,NA,NA
+Purpose,"Long ago, when Alexander the Great asked the mathematician Menaechmus 
+ for a crash course in geometry, he got the famous reply “There is no royal 
+ road to mathematics.” Where there was no shortcut for Alexander, there is 
+ no shortcut for us. Still, the fact that we have access to computers and 
+ mature programming languages means that there are avenues for us that 
+ were denied to the kings and emperors of yore.
+  
+ The purpose of this book is to teach logic and mathematical reasoning in 
+ practice, and to connect logical reasoning with computer programming. The 
+ programming language that will be our tool for this is Haskell, a member of 
+ the Lisp family. Haskell emerged in the last decade as a standard for lazy 
+ functional programming, a programming style where arguments are 
+ evaluated only when the value is actu-ally needed. Functional programming 
+ is a form of descriptive programming, very different from the style of 
+ programming that you find in prescriptive languages like C or Java. Haskell 
+ is based on a logical theory of computable functions called the lambda 
+ calculus.
+  
+ Lambda calculus is a formal language capable of expressing 
+ arbitrary computable functions. In combination with types it 
+ forms a compact way to denote on the one hand functional 
+ programs and on the other hand mathematical proofs. [Bar84]
+  
+ Haskell can be viewed as a particularly elegant implementation of the 
+ lambda cal-culus. It is a marvelous demonstration tool for logic and math 
+ because its func-tional character allows implementations to remain very 
+ close to the concepts that get implemented, while the laziness permits 
+ smooth handling of infinite data struc-tures.
+  
+ v",NA
+Logic in Practice,"The subject of this book is the
+  use
+  of logic in practice, more in particular the 
+ use of logic in reasoning about programming tasks. Logic is not taught here 
+ as a mathematical discipline per se, but as an aid in the understanding and 
+ construction of proofs, and as a tool for reasoning about formal objects like 
+ numbers, lists, trees, formulas, and so on. As we go along, we will introduce 
+ the concepts and tools that form the set-theoretic basis of mathematics, and 
+ demonstrate the role of these concepts and tools in implementations. These 
+ implementations can be thought of as
+  representations
+  of the mathematical 
+ concepts.
+  
+ Although it may be argued that the logic that is needed for a proper 
+ understanding of reasoning in reasoned programming will get acquired 
+ more or less automatically in the process of learning (applied) mathematics 
+ and/or programming, students nowadays enter university without any 
+ experience whatsoever with mathematical proof, the central notion of 
+ mathematics.
+  
+ The rules of Chapter 3 represent a detailed account of the structure of a 
+ proof. The purpose of this account is to get the student acquainted with 
+ proofs by putting em-phasis on logical structure. The student is encouraged 
+ to write “detailed” proofs, with every logical move spelled out in full. The 
+ next goal is to move on to writing“concise” proofs, in the customary 
+ mathematical style, while keeping the logical structure in mind. Once the 
+ student has arrived at this stage, most of the logic that is explained in 
+ Chapter 3 can safely be forgotten, or better, can safely fade into the 
+ subconsciousness of the matured mathematical mind.",NA
+Pre- and Postconditions of Use,"We do not assume that our readers have previous experience with either 
+ program-ming or construction of formal proofs. We do assume previous 
+ acquaintance with mathematical notation, at the level of secondary school 
+ mathematics. Wherever necessary, we will recall relevant facts. Everything 
+ one needs to know about math-ematical reasoning or programming is 
+ explained as we go along. We do assume that our readers are able to 
+ retrieve software from the Internet and install it, and that they know how to 
+ use an editor for constructing program texts.
+  
+ After having worked through the material in the book, i.e., after having 
+ digested the text and having carried out a substantial number of the 
+ exercises, the reader will be able to write interesting programs, reason 
+ about their correctness, and doc-ument them in a clear fashion. The reader 
+ will also have learned how to set up mathematical proofs in a structured 
+ way, and how to read and digest mathematical proofs written by others.",NA
+How to Use the Book,"Chapters 1–7 of the book are devoted to a gradual introduction of the 
+ concepts, tools and methods of mathematical reasoning and reasoned 
+ programming.
+  
+ Chapter 8 tells the story of how the various number systems (natural 
+ numbers, integers, rationals, reals, complex numbers) can be thought of as 
+ constructed in stages from the natural numbers. Everything gets linked to 
+ the implementations of the various Haskell types for numerical 
+ computation.
+  
+ Chapter 9 starts with the question of how to automate the task of finding 
+ closed forms for polynomial sequences. It is demonstrated how this task can 
+ be automated with difference analysis plus Gaussian elimination. Next, 
+ polynomials are imple-mented as lists of their coefficients, with the 
+ appropriate numerical operations, and it is shown how this representation 
+ can be used for solving combinatorial problems.
+  
+ Chapter 10 provides the first general textbook treatment (as far as we 
+ know) of the important topic of corecursion. The chapter presents the proof 
+ methods suitable for reasoning about corecursive data types like streams 
+ and processes, and then goes on to introduce power series as infinite lists of 
+ coefficients, and to demonstrate the uses of this representation for handling 
+ combinatorial problems. This generalizes the use of polynomials for 
+ combinatorics.
+  
+ Chapter 11 offers a guided tour through Cantor’s paradise of the infinite, 
+ while providing extra challenges in the form of a wide range of additional 
+ exercises.",NA
+Exercises,"Parts of the text and exercises marked by a * are somewhat harder than the 
+ rest of the book.
+  
+ All exercises are solved in the electronically avaible solutions volume. 
+ Before turning to these solutions, one should read the
+  Important Advice to 
+ the Reader
+  that this volume starts with.",NA
+Book Website and Contact,"The programs in this book have all been tested with Hugs98, the version of 
+ Hugs that implements the Haskell 98 standard. The full source code of all 
+ programs is integrated in the book; in fact, each chapter can be viewed as a
+  
+ literate program 
+ [Knu92] in Haskell. The source code of all programs 
+ discussed in the text can be found on the website devoted to this book, at 
+ address http://www.cwi.nl/ ~jve/HR. Here you can also find a list of errata, 
+ and further relevant material.
+  
+ Readers who want to share their comments with the authors are 
+ encouraged to get in touch with us at email address jve@cwi.nl.",NA
+Acknowledgments,"Remarks from the people listed below have sparked off numerous 
+ improvements. Thanks to Johan van Benthem, Jan Bergstra, Jacob 
+ Brunekreef, Thierry Coquand (who found the lecture notes on the internet 
+ and sent us his comments), Tim van Erven, Wan Fokkink, Evan Goris, 
+ Robbert de Haan, Sandor Heman, Eva Hoog-land, Rosalie Iemhoff, Dick de 
+ Jongh, Anne Kaldewaij, Breannd´an ´O Nuall´ain, Alban Ponse, Vincent van 
+ Oostrom, Piet Rodenburg, Jan Rutten, Marco Swaen, Jan Terlouw, John 
+ Tromp, Yde Venema, Albert Visser and Stephanie Wehner for suggestions 
+ and criticisms. The beautiful implementation of the sieve of Eratos-thenes in 
+ Section 3.7 was suggested to us by Fer-Jan de Vries.
+  
+ The course on which this book is based was developed at ILLC (the Institute 
+ of Logic, Language and Computation of the University of Amsterdam) with 
+ finan-cial support from the
+  Spinoza Logic in Action
+  initiative of Johan van 
+ Benthem, which is herewith gratefully acknowledged. We also wish to thank 
+ ILLC and CWI (Centrum voor Wiskunde en Informatica, or Centre for 
+ Mathematics and Com-puter Science, also in Amsterdam), the home institute 
+ of the second author, for providing us with a supportive working 
+ environment. CWI has kindly granted permission to reuse material from 
+ [Doe96].
+  
+ It was Krzysztof Apt who, perceiving the need of a deadline, spurred us on to 
+ get in touch with a publisher and put ourselves under contract.",NA
+Chapter 1,NA,NA
+Getting Started,NA,NA
+Preview,"Our purpose is to teach logic and mathematical reasoning in practice, and to 
+ con-nect formal reasoning to computer programming. It is convenient to 
+ choose a programming language for this that permits implementations to 
+ remain as close as possible to the formal definitions. Such a language is the 
+ functional programming language Haskell [HT]. Haskell was named after the 
+ logician Haskell B. Curry. Curry, together with Alonzo Church, laid the 
+ foundations of functional computa-tion in the era Before the Computer, 
+ around 1940. As a functional programming language, Haskell is a member of 
+ the Lisp family. Others family members are Scheme, ML, Occam, Clean. 
+ Haskell98 is intended as a standard for lazy func-tional programming. Lazy 
+ functional programming is a programming style where arguments are 
+ evaluated only when the value is actually needed.
+  
+ With Haskell, the step from formal definition to program is particularly easy. 
+ This presupposes, of course, that you are at ease with formal definitions. 
+ Our reason for combining training in reasoning with an introduction to 
+ functional programming is that your programming needs will provide 
+ motivation for improving your reason-ing skills. Haskell programs will be 
+ used as illustrations for the theory throughout the book. We will always put 
+ computer programs and pseudo-code of algorithms in frames (rectangular 
+ boxes).
+  
+ The chapters of this book are written in so-called ‘literate programming’ 
+ style [Knu92]. Literate programming is a programming style where the 
+ program and its documentation are generated from the same source. The 
+ text of every chapter in
+  
+ 1",NA
+1.1 ,NA,NA
+Starting up the Haskell Interpreter,"We assume that you succeeded in retrieving the Haskell interpreter
+  hugs
+  
+ from the Haskell homepage www.haskell.org and that you managed to 
+ install it on your computer. You can start the interpreter by typing hugs at 
+ the system prompt. When you start
+  hugs
+  you should see something like 
+ Figure (1.1). The string Prelude> on the last line is the Haskell prompt when 
+ no user-defined files are loaded.
+  
+ You can use
+  hugs
+  as a calculator as follows:",NA
+1.2 ,NA,NA
+Implementing a Prime Number Test,"Suppose we want to implement a definition of
+  prime number
+  in a procedure that
+  
+ recognizes prime numbers. A prime number is a natural number greater than
+  
+ 1 that has no proper divisors other than 1 and itself. The natural numbers are
+  
+ 0, 1, 2, 3, 4, . . . The list of prime numbers starts with 2, 3, 5, 7, 11, 13, . . . Except
+  
+ for 2, all of these are odd, of course.",NA
+1.3 ,NA,NA
+Haskell Type Declarations,"Haskell has a concise way to indicate that divides consumes an integer, then 
+ another integer, and produces a truth value (called Bool in Haskell). Integers 
+ and",NA
+1.4 ,NA,NA
+Identifiers in Haskell,"In Haskell, there are two kinds of identifiers:",NA
+1.5 ,NA,NA
+Playing the Haskell Game,"This section consists of a number of further examples and exercises to get you
+  
+ acquainted with the programming language of this book. To save you the trouble
+  
+ of keying in the programs below, you should retrieve the module GS.hs for the
+  
+ present chapter from the book website and load it in
+  hugs
+ . This will give you a
+  
+ system prompt GS>, indicating that all the programs from this chapter are loaded.
+  
+ In the next example, we use Int for the type of fixed precision integers, and [Int]
+  
+ for lists of fixed precision integers.
+  
+ Example 1.8
+  Here is a function that gives the minimum of a list of integers:",NA
+1.6 ,NA,NA
+Haskell Types,"The basic Haskell types are:
+  
+ • Int and Integer, to represent integers. bounded. That’s why we used this type in the implementation of the 
+ prime Elements of Integer are un-
+  
+ number test.
+  
+ • Float and Double represent floating point numbers. The elements of Double have higher precision.
+  
+ • Bool is the type of Booleans.",NA
+1.7 ,NA,NA
+The Prime Factorization Algorithm,"Let n be an arbitrary natural number > 1. A
+  prime factorization
+  of n is a list 
+ of prime numbers p
+ 1
+ , . . . , p
+ j
+  with the property that p
+ 1
+  · · · · · p
+ j
+  = n. We will 
+ show that a prime factorization of every natural number n > 1 exists by 
+ producing one by means of the following method of splitting off prime 
+ factors: 
+  
+ WHILE n ̸= 1 DO BEGIN p := LD(n); n :=n pEND 
+  
+ Here := denotes
+  assignment
+  or the act of giving a variable a new value. As we 
+ have seen, LD(n) exists for every n with n > 1. Moreover, we have seen that 
+ LD(n) is always prime. Finally, it is clear that the procedure terminates, for 
+ every round through the loop will decrease the size of n.",NA
+1.8 ,NA,NA
+The,NA,NA
+ map,NA,NA
+ and,NA,NA
+ filter,NA,NA
+ Functions,"Haskell allows some convenient abbreviations for lists: [4..20] denotes the 
+ list of integers from 4 through 20, [’a’..’z’] the list of all lower case letters,",NA
+1.9 ,NA,NA
+Haskell Equations and Equational Reasoning,"The Haskell equations f x y = ... used in the definition of a function f are 
+ genuine mathematical equations. They state that the left hand side and the 
+ right hand side of the equation have the same value. This is
+  very
+  different 
+ from the use of = in imperative languages like C or Java. In a C or Java 
+ program, the statement x = x*y does
+  not mean
+  that x and x ∗ y have the same 
+ value, but rather it is a command to throw away the old value of x and put 
+ the value of x ∗ y in its place. It is a so-called
+  destructive assignment 
+ statement
+ : the old value of a variable is destroyed and replaced by a new 
+ one.
+  
+ Reasoning about Haskell definitions is a lot easier than reasoning about 
+ programs that use destructive assignment. In Haskell, standard reasoning 
+ about mathemat-ical equations applies. E.g., after the Haskell declarations x 
+ = 1 and y = 2, the Haskell declaration x = x + y will raise an error ""x"" multiply 
+ defined. Be-cause = in Haskell has the meaning “is by definition equal to”, 
+ while redefinition",NA
+1.10 ,NA,NA
+Further Reading,"The standard Haskell operations are defined in the file
+  Prelude.hs
+ , which you 
+ should be able to locate somewhere on any system that runs
+  hugs
+ . Typically, 
+ the file resides in /usr/lib/hugs/libraries/Hugs/.
+  
+ In case Exercise 1.19 has made you curious, the definitions of these example 
+ func-tions can all be found in
+  Prelude.hs
+ . If you want to quickly learn a lot 
+ about how to program in Haskell, you should get into the habit of consulting 
+ this file regularly. The definitions of all the standard operations are
+  open 
+ source code
+ , and are there for you to learn from. The Haskell
+  Prelude
+  may be 
+ a bit difficult to read at first, but you will soon get used to the syntax and 
+ acquire a taste for the style.
+  
+ Various tutorials on Haskell and Hugs can be found on the Internet: see e.g. 
+ [HFP96] and [JR
+ +
+ ]. The definitive reference for the language is [Jon03]. A 
+ text-book on Haskell focusing on multimedia applications is [Hud00]. Other 
+ excellent textbooks on functional programming with Haskell are [Tho99] 
+ and, at a more ad-vanced level, [Bir98]. A book on discrete mathematics that 
+ also uses Haskell as a tool, and with a nice treatment of automated proof 
+ checking, is [HO00].",NA
+Chapter 2,NA,NA
+Talking about ,NA,NA
+Mathematical Objects,NA,NA
+Preview,"To talk about mathematical objects with ease it is useful to introduce some 
+ sym-bolic abbreviations. These symbolic conventions are meant to better 
+ reveal the 
+ structure
+  of our mathematical statements. This chapter 
+ concentrates on a few (in fact: seven), simple words or phrases that are 
+ essential to the mathematical vo-cabulary:
+  not
+ ,
+  if
+ ,
+  and
+ ,
+  or
+ ,
+  if and only if
+ ,
+  for all
+  
+ and
+  for some
+ . We will introduce symbolic shorthands for these words, and 
+ we look in detail at how these building blocks are used to construct the 
+ logical patterns of sentences. After having isolated the logical key 
+ ingredients of the mathematical vernacular, we can systematically relate 
+ definitions in terms of these logical ingredients to implementations, thus 
+ building a bridge between logic and computer science.
+  
+ The use of symbolic abbreviations in specifying algorithms makes it easier 
+ to take the step from definitions to the procedures that implement those 
+ definitions. In a similar way, the use of symbolic abbreviations in making 
+ mathematical statements makes it easier to construct proofs of those 
+ statements. Chances are that you are more at ease with programming than 
+ with proving things. However that may be, in the chapters to follow you will 
+ get the opportunity to improve your skills in both of these activities and to 
+ find out more about the way in which they are related.
+  
+ 27",NA
+2.1 ,NA,NA
+Logical Connectives and their Meanings,"Goal 
+  
+ To understand how the meanings of statements using connectives 
+ can be described by explaining how the truth (or falsity) of the statement 
+ depends on the truth (or falsity) of the smallest parts of this statement. This 
+ understanding leads directly to an implementation of the logical connectives 
+ as truth functional procedures.
+  
+ In ordinary life, there are many statements that do not have a definite truth 
+ value, for example ‘Barnett Newman’s
+  Who is Afraid of Red, Yellow and Blue 
+ III
+  is a beautiful work of art,’ or ‘Daniel Goldreyer’s restoration of
+  Who is 
+ Afraid of Red, Yellow and Blue III
+  meets the highest standards.’
+  
+ Fortunately the world of mathematics differs from the Amsterdam Stedelijk 
+ Mu-seum of Modern Art in the following respect. In the world of 
+ mathematics, things are so much clearer that many mathematicians adhere 
+ to the following slogan:
+  
+ every statement that makes mathematical sense is either true or false.
+  
+ The idea behind this is that (according to the adherents) the world of 
+ mathematics exists independently of the mind of the mathematician. Doing 
+ mathematics is the activity of exploring this world. In proving new theorems 
+ one discovers new facts about the world of mathematics, in solving 
+ exercises one rediscovers known facts for oneself. (Solving problems in a 
+ mathematics textbook is like visiting famous places with a tourist guide.)
+  
+ This belief in an independent world of mathematical fact is called Platonism, 
+ after the Greek philosopher Plato, who even claimed that our everyday 
+ physical world is somehow an image of this ideal mathematical world. A 
+ mathematical Platonist holds that every statement that makes mathematical 
+ sense
+  has exactly one
+  of the two truth values. Of course, a Platonist would 
+ concede that we may not know which value a statement has, for 
+ mathematics has numerous open problems. Still, a Platonist would say that 
+ the true answer to an open problem in mathematics like‘Are there infinitely 
+ many Mersenne primes?’ (Example 3.40 from Chapter 3) is",NA
+2.2 ,NA,NA
+Logical Validity and Related Notions,"Goal 
+  
+ To grasp the concepts of logical validity and logical equivalence, to 
+ learn how to use truth tables in deciding questions of validity and 
+ equivalence, and in the handling of negations, and to learn how the truth 
+ table method for testing validity and equivalence can be implemented.
+  
+ Logical Validities. 
+  
+ There are propositional formulas that receive the value
+  
+ t
+  no matter what the values of the occurring letters. Such formulas are called 
+ (logically) 
+ valid
+ .
+  
+ Examples of logical validities are: P ⇒ P, P ∨ ¬P, and P ⇒ (Q ⇒ P).
+  
+ Truth Table of an Expression. 
+  
+ If an expression contains n letters P, Q, . . ., 
+ then there are 2
+ n
+ possible distributions of the truth values between these 
+ letters. The 2
+ n
+ -row table that contains the calculations of these values is the
+  
+ truth table
+  of the expression.
+  
+ If all calculated values are equal to
+  t
+ , then your expression, by definition, is a 
+ validity.",NA
+2.3 ,NA,NA
+Making Symbolic Form Explicit,"In a sense, propositional reasoning is not immediately relevant for 
+ mathematics. Few mathematicians will ever feel the urge to write down a 
+ disjunction of two statements like 3 < 1 ∨ 1 < 3. In cases like this it is clearly 
+ “better” to only write down the right-most disjunct.
+  
+ Fortunately, once variables enter the scene, propositional reasoning 
+ suddenly be-comes a very useful tool: the connectives turn out to be quite 
+ useful for combining 
+ open
+  formulas. An open formula is a formula with one 
+ or more unbound variables in it. Variable binding will be explained below, 
+ but here is a first example of a formula with an unbound variable x. A 
+ disjunction like 3 < x ∨ x < 3 is (in some cases) a useful way of expressing 
+ that x ̸= 3.
+  
+ Example.
+  
+ Consider the following (true) sentence:
+  
+ (2.1)
+  
+ Between every two rational numbers there is a third one.
+  
+ The property expressed in (2.1) is usually referred to as
+  density
+  of the 
+ rationals. We will take a systematic look at proving such statements in 
+ Chapter 3.
+  
+ Exercise 2.22
+  Can you think of an argument showing that statement (2.1) is true?
+  
+ A Pattern. 
+  
+ There is a
+  logical pattern
+  underlying sentence (2.1). To make it 
+ visi-ble, look at the following, more explicit, formulation. It uses
+  variables
+  x, 
+ y and z for arbitrary rationals, and refers to the
+  ordering
+  < of the set Q of 
+ rational numbers.
+  
+ For all rational numbers x and z, if x < z, then some (2.2)
+  
+ rational number y exists such that x < y and y < z.
+  
+ You will often find
+  ‘
+ x < y
+  and
+  y < z
+ ’
+  shortened to: x < y < z.
+  
+ Quantifiers 
+ Note the words
+  all
+  (or:
+  for all
+ ),
+  some
+  (or:
+  for some
+ ,
+  some...exists
+ , 
+ there exists...such that
+ , etc.). They are called
+  quantifiers
+ , and we use the 
+ symbols∀ and ∃ as shorthands for them.
+  
+ With these shorthands, plus the shorthands for the connectives that we saw 
+ above, and the shorthand . . . ∈ Q for the property of being a rational, we 
+ arrive at the following compact symbolic formulation:
+  
+ ∀x∈Q ∀z ∈Q ( x < z ⇒ ∃y∈Q ( x < y ∧ y < z ) ). 
+  
+ (2.3)",NA
+2.4 ,NA,NA
+Lambda Abstraction,"The following description defines a specific function that does not depend at 
+ all on x:
+  
+ The function that sends x to x
+ 2
+ .
+  
+ Often used notations are x → x
+ 2
+ and λx.x
+ 2
+ . The expression λx.x
+ 2
+ is called a 
+ lambda term
+ .
+  
+ If t is an expression of type b and x is a variable of type a then λx.t is an 
+ expression of type a → b, i.e., λx.t denotes a function. This way of defining 
+ functions is called lambda abstraction.",NA
+2.5 ,NA,NA
+Definitions and Implementations,"Here is an example of a definition in mathematics. A natural number n is
+  
+ prime
+  if n > 1 and no number m with 1 < m < n divides n.",NA
+2.6 ,NA,NA
+Abstract Formulas and Concrete Structures,"The formulas of Section 2.1 are “handled” using truth values and tables. 
+ Quan-tificational formulas need a
+  structure
+  to become meaningful. Logical 
+ sentences involving variables can be interpreted in quite different 
+ structures. A structure is a domain of quantification, together with a 
+ meaning for the abstract symbols that occur. A meaningful statement is the 
+ result of interpreting a logical formula in a certain structure. It may well 
+ occur that interpreting a given formula in one structure yields a true 
+ statement, while interpreting the same formula in a differ-ent structure 
+ yields a false statement. This illustrates the fact that we can use one logical 
+ formula for many different purposes.
+  
+ Look again at the example-formula (2.3), now displayed without reference 
+ to Q and using a neutral symbol R. This gives:
+  
+  
+ ∀x ∀y ( xRy =⇒ ∃z ( xRz ∧ zRy ) ). 
+ 4
+ :≡ 
+ means: ‘is by defi nition equivalent to’.
+  
+ (2.9)",NA
+2.7 ,NA,NA
+Logical Handling of the Quantifiers,"Goal 
+  
+ To learn how to recognize simple logical equivalents involving 
+ quantifiers, and how to manipulate negations in quantified contexts.
+  
+ Validities and Equivalents. 
+  
+ Compare the correspondingdefinitions in Section 2.2.
+  
+ 1. A logical formula is called (logically)
+  valid
+  if it turns out to be true in
+  
+ every 
+  
+ structure.
+  
+ 2. Formulas are (logically)
+  equivalent
+  if they obtain the same truth value 
+ in 
+ every
+  structure (i.e., if there is no structure in which one of them is 
+ true and the other one is false).
+  
+ Notation: Φ ≡ Ψ expresses that the quantificational formulas Φ and Ψ are equivalent.
+  
+ Exercise 2.39
+  (The propositional version of this is in Exercise 2.19 p. 48.) 
+ Argue that Φ and Ψ are equivalent iff Φ ⇔ Ψ is valid.
+  
+ Because of the reference to
+  every possible
+  structure (of which there are 
+ infinitely many), these are quite complicated definitions, and it is nowhere 
+ suggested that you will be expected to decide on validity or equivalence in 
+ every case that you may encounter. In fact, in 1936 it was proved rigorously, 
+ by Alonzo Church (1903–1995) and Alan Turing (1912–1954) that no one 
+ can! This illustrates that the complexity of quantifiers exceeds that of the 
+ logic of connectives, where truth tables allow you to decide on such things in 
+ a mechanical way, as is witnessed by the Haskell functions that implement 
+ the equivalence checks for propositional logic.
+  
+ Nevertheless: the next theorem already shows that it is sometimes very well 
+ possi-ble to recognize whether formulas are valid or equivalent — if only 
+ these formulas are sufficiently simple.
+  
+ Only a few useful equivalents are listed next. Here, Ψ(x), Φ(x, y) and the like 
+ denote logical formulas that may contain variables x (or x, y) free.",NA
+2.8 ,NA,NA
+Quantifiers as Procedures,"One way to look at the meaning of the universal quantifier ∀ is as a 
+ procedure to test whether a set has a certain property. The test yields
+  t
+  if the 
+ set equals the whole domain of discourse, and
+  f
+  otherwise. This means that 
+ ∀ is a procedure that maps the domain of discourse to
+  t
+  and all other sets to
+  
+ f
+ . Similarly for restricted universal quantification. A restricted universal 
+ quantifier can be viewed as a procedure that takes a set A and a property P, 
+ and yields
+  t
+  just in case the set of members of A that satisfy P equals A itself.
+  
+ In the same way, the meaning of the unrestricted existential quantifier ∃ can 
+ be specified as a procedure. ∃ takes a set as argument, and yields
+  t
+  just in 
+ case the argument set is non-empty. A restricted existential quantifier can 
+ be viewed as a procedure that takes a set A and a property P, and yields
+  t
+  
+ just in case the set of members of A that satisfy P is non-empty.
+  
+ If we implement sets as lists, it is straightforward to implement these 
+ quantifier procedures. In Haskell, they are predefined as all and any (these 
+ definitions will be explained below):",NA
+2.9 ,NA,NA
+Further Reading,"Excellent books about logic with applications in computer science are 
+ [Bur98] and [HR00]. A good introduction to mathematical logic is 
+ Ebbinghaus, Flum and Thomas [EFT94].",NA
+Chapter 3,NA,NA
+The Use of Logic: Proof,NA,NA
+Preview,"This chapter describes how to write simple proofs. Section 3.1 is about style 
+ of presentation, while Section 3.2 gives the general format of the proof rules. 
+ Sec-tions 3.3 and 3.4 describe the rules that govern the use of the 
+ connectives and the quantifiers in the proof process. The recipes are 
+ summarized in Section 3.5. Section 3.6 gives some strategic hints for 
+ handling proof problems. Section 3.7 applies the proof recipes to reasoning 
+ about prime numbers; this section also illus-trates how the computer can be 
+ used (sometimes) as an instrument for checking particular cases, and 
+ therefore as a tool for refuting general claims.
+  
+ Representation and proof are two sides of the same coin. In order to handle 
+ the stuff of mathematics, we start out from definitions and try to find 
+ meaningful rela-tions. To check our intuitions and sometimes just to make 
+ sure that our definitions accomplish what we had in mind we have to 
+ provide proofs for our conjectures. To handle abstract objects in an 
+ implementation we have to represent them in a concrete way. Again, we 
+ have to check that the representation is faithful to the original intention.
+  
+ It turns out that proofs and implementations have many things in common. 
+ In the first place,
+  variables
+  are a key ingredient in both. Variables are used to 
+ denote members of certain sets. In our example proofs, we will used x, y for 
+ rational numbers and real numbers, and m, n for integers. Similarly, the 
+ variables used in the implementation of a definition range over certain sets, 
+ indicated by means of typings for the variables.
+  
+ 71",NA
+3.1 ,NA,NA
+Proof Style,"The
+  objects
+  of mathematics are strange creatures. They do not exist in 
+ physical space. No one ever saw the number 1. One can consistently argue 
+ that mathematics has no subject at all, or maybe that the subject matter of 
+ mathematics is in the mind. But what does that mean? For sure, different 
+ mathematicians have the same objects in mind when they investigate prime 
+ numbers. But how can that be, if mathematics has no subject matter?
+  
+ As to the
+  method
+  of mathematics, there is no disagreement: the heart of the 
+ matter is the notion of
+  proof
+ . A proof is an argument aimed at convincing 
+ yourself and others of the truth of an assertion. Some proofs are simple, but 
+ others can be pieces of art with aesthetic and intellectual qualities.
+  
+ In daily life, people argue a lot, but these efforts are not always capable of 
+ convinc-ing others. If you have a row with your partner, more often than not 
+ it is extremely difficult to assess who is right. (If this were an easy matter, 
+ why have a row in",NA
+3.2 ,NA,NA
+Proof Recipes,"Goal 
+  
+ Develop the ability to apply the proof rules in simple contexts. The 
+ proof rules are recipes that will allow you to cook up your own proofs. Try 
+ to distill a recipe from every rule, and and make sure you remember how to 
+ apply these recipes in the appropriate situation.
+  
+ It is completely normal that you get stuck in your first efforts to prove 
+ things. Of-ten, you will not even know how to make a first move. This 
+ section then may come to your help. It provides you with rules that govern 
+ the behaviour of the logical phrases in mathematical proof, and thus with 
+ recipes to use while constructing a proof.
+  
+ In fact, constructing proofs has a lot in common with writing computer 
+ programs. In structured programming, layout can be used to reveal the 
+ building blocks of a program more clearly. We will also use layout as a tool 
+ to reveal structure.
+  
+ The most important structure principle is that a proof can contain 
+ subproofs, just like a program may contain procedures which have their 
+ own sub-procedures, and so on. We will indicate subproofs by means of 
+ indentation. The general structure of a proof containing a subproof is as 
+ follows:",NA
+3.3 ,NA,NA
+Rules for the Connectives,"Implication
+  
+ Here come a complicated but important introduction rule and a trivial one 
+ for elim-ination.
+  
+ Introduction
+  The introduction rule for implication is the
+  Deduction Rule
+ . It 
+ en-ables you to reduce the problem of proving an implication Φ ⇒ Ψ. 
+ Instead, it prescribes to assume Φ as an additional new
+  Given
+ , and asks you 
+ to derive that Ψ.
+  
+ Given:
+  ...
+  
+ To be proved:
+  Φ ⇒ 
+ Ψ
+ Proof: 
+  
+ Suppose
+  Φ
+  
+ To be proved:
+  Ψ
+  
+ Proof:
+  ...
+  
+ Thus Φ ⇒ Ψ.
+  
+ Safety.
+  In case Φ is false, the implication Φ ⇒ Ψ will be true anyway. Thus, 
+ the case that is left for you to consider is when Φ is true, meaning that you 
+ can assume it as given. But then of course you should show that Ψ is true as 
+ well (otherwise,Φ ⇒ Ψ would be false).
+  
+ Example 3.1
+  We show that the implication P ⇒ R is provable on the basis of 
+ the given P ⇒ Q and Q ⇒ R. Thus, employing the schema in the 7th 
+ commandment (p. 74) for the first time:",NA
+3.4 ,NA,NA
+Rules for the Quantifiers,"The rules for the quantifiers come in two types: for the unrestricted, and for 
+ the restricted versions. Those for the restricted quantifiers can be derived 
+ from the others: see Exercise 3.32 p. 102.",NA
+3.5 ,NA,NA
+Summary of the Proof Recipes,"Here is a summary of the rules, with introduction rules on the left hand side, 
+ and elimination rules on the right hand side. Proof by Contradiction has 
+ been put in the Elimination-column.
+  
+ The Recipes for
+  ⇒
+  Introduction and Elimination
+  
+ Given:
+  ...
+  
+ To be proved:
+  P ⇒ Q 
+ Proof: 
+  
+ Suppose
+  P 
+  
+ To be proved:
+  Q 
+  
+ Proof:
+  ...
+  
+ Thus P ⇒ Q.
+  
+ Given:
+  P, P ⇒ Q, ... Thus Q
+  
+ The Recipes for
+  ⇔
+  Introduction and Elimination
+  
+ Given:
+  ...
+  
+ To be proved:
+  P ⇔ Q 
+ Proof: 
+  
+ Suppose
+  P 
+  
+ To be proved:
+  Q 
+  
+ Proof:
+  ...
+  
+ Given:
+  P, P ⇔ Q, ... Thus Q
+  
+ Suppose
+  Q 
+  
+ To be proved:
+  P 
+  
+ Proof:
+  ...
+  
+ Given:
+  Q, P ⇔ Q, ... Thus P
+  
+ Thus P ⇔ Q.",NA
+3.6 ,NA,NA
+Some Strategic Guidelines,"Here are the most important guidelines that enable you to solve a proof problem.
+  
+ 1.
+  Do not
+  concentrate on the given, by trying to transform that into what is to
+  
+ be proved.
+  
+ 2.
+  Instead
+ , concentrate on (the form of) what is to be proved.
+  
+ 3. A number of rules enable you to simplify the proof problem. For instance:
+  
+ • When asked to prove P ⇒ Q, add P to the givens and try to prove Q. (Deduction Rule).
+  
+ • When asked to prove ∀x E(x), prove E(c) for an arbitrary c instead 
+  
+ (∀-introduction).
+  
+ 4. Only
+  after
+  you have reduced the problem as far as possible you should look
+  
+ at the givens in order to see which of them can be used.
+  
+ • When one of the givens is of the form P ∨ Q, and R is to be proved, make a case 
+ distinction: first add P to the givens and prove R, next
+  
+ add Q to the givens and prove R.
+  
+ • When one of the givens is of the form ∃x E(x), and P is to be proved, give the object 
+ that satisfies E a name, by adding E(c) to the givens.
+  
+ Next, prove P.
+  
+ 5. It is usually a good idea to move negations inward as much as possible before
+  
+ attempting to apply ¬-introduction.
+  
+ 6. Stay away from Proof by Contradiction as long as possible.",NA
+3.7 ,NA,NA
+Reasoning and Computation with Primes,"In this section we will demonstrate the use of the computer for investigating 
+ the theory of prime numbers. For this, we need the code for prime that was 
+ given in Chapter 1. It is repeated here:
+  
+ prime :: Integer -> Bool 
+  
+ prime n | n < 1 
+  
+  
+ = error ""not a positive integer"" 
+  
+ | n == 1 
+  
+ = False 
+  
+  
+ | otherwise = ldp n == n where 
+  
+  
+ ldp 
+  
+  
+ = ldpf primes 
+  
+  
+ ldpf (p:ps) m | rem m p == 0 = p 
+  
+   
+   
+ | p^2 > m 
+  
+ = m 
+  
+   
+   
+ | otherwise 
+  
+ = ldpf ps m 
+  
+  
+ primes = 2 : filter prime [3..]
+  
+ Euclid (fourth century B.C.) proved the following famous theorem about 
+ prime numbers.
+  
+ Theorem 3.33
+  There are infinitely many prime numbers.
+  
+ Proof.
+  Suppose there are only finitely many prime numbers, and p
+ 1
+ , . . . , p
+ n
+  is 
+ a list of all primes. Consider the number m = (p
+ 1
+ p
+ 2
+  · · · p
+ n
+ ) + 1. Note that m is 
+ not divisible by p
+ 1
+ , for dividing m by p
+ 1
+  gives quotient p
+ 2
+  · · · p
+ n
+  and 
+ remainder 1. Similarly, division by p
+ 2
+ , p
+ 3
+ , . . . always gives a remainder 1.
+  
+ Thus, we get the following:",NA
+3.8 ,NA,NA
+Further Reading,"The distinction between finding meaningful relationships in mathematics on 
+ one hand and proving or disproving mathematical statements on the other 
+ is drawn",NA
+Chapter 4,NA,NA
+"Sets, Types and Lists",NA,NA
+Preview,"The chapter introduces sets, not by means of a definition but by explaining 
+ why‘set’ is a primitive notion, discusses the process of set formation, and 
+ explains some important operations on sets.
+  
+ Talking about sets can easily lead to paradox, but such paradoxes can be 
+ avoided either by always forming sets on the basis of a previously given set, 
+ or by imposing certain typing constraints on the expressions one is allowed 
+ to use. Section 4.2 explains how this relates to functional programming.
+  
+ The end of the Chapter discusses various ways of implementing sets using 
+ list representations. The chapter presents ample opportunity to exercise 
+ your skills in writing implementations for set operations and for proving 
+ things about sets.
+  
+ module STAL
+  
+ where
+  
+ import List
+  
+ import DB
+  
+ 113",NA
+4.1 ,NA,NA
+Let’s Talk About Sets,"Remarkably, it is not possible to give a satisfactory definition of the notion 
+ of a set. There are several axiomatic approaches to set theory; the standard 
+ one (that is implicitly assumed throughout mathematics) is due to Zermelo 
+ and Fraenkel and dates from the beginning of the 20th century.
+  
+ Axioms vs. Theorems, Primitive vs. Defined Notions.
+  The truth of a 
+ mathemati-cal statement is usually demonstrated by a proof. Most proofs 
+ use results that have been proved earlier. It follows that some truths must 
+ be given outright without proof. These are called
+  axioms
+ . The choice of 
+ axioms often is rather arbitrary. Criteria can be simplicity or intuitive 
+ evidence, but what must be considered an axiom can also be dictated by 
+ circumstance (for instance, a proof cannot be given within the given context, 
+ but in another context a proof would be possible). In the present context, we 
+ shall accept some of the Zermelo-Fraenkel axioms, as well as some 
+ fundamental properties of the number systems, such as the principle of 
+ mathematical induction for N (see Sections 7.1 and 11.1).
+  
+ Statements that have been proved are called
+  theorems
+  if they are considered 
+ to be of intrinsic value, and
+  lemmas
+  if they are often used in proving 
+ theorems.
+  
+ Notions are split up in two analogous categories. Their meaning may have 
+ been explained by
+  definitions
+  in terms of other notions. However, the 
+ process of defining notions must have a beginning somewhere. Thus, the 
+ need for notions that are 
+ primitive
+ , i.e., undefined.
+  
+ For instance, we shall consider as undefined here the notions of set and 
+ natural number. Given the notion of a set, that of a
+  function
+  can be defined. 
+ However, in a context that is not set-theoretic, it could well be an undefined 
+ notion.
+  
+ Georg Cantor (1845-1915), the founding father of set theory, gave the 
+ following description.
+  
+ The Comprehension Principle.
+  A set is a collection into a whole of definite, 
+ dis-tinct objects of our intuition or of our thought. The objects are called the 
+ elements
+  
+ (members) of the set.
+  
+ Usually, the objects that are used as elements of a set are not sets 
+ themselves. To handle sets of this kind is unproblematic. But it is not 
+ excluded at all that members are sets. Thus, in practice, you can encounter 
+ sets of sets of ... sets.
+  
+ Notation.
+  If the object a is member of the set A, this is denoted by a ∈ A, or 
+ sometimes by A ∋ a. If a is not a member of A, we express this as a /∈ A, or",NA
+4.2 ,NA,NA
+"Paradoxes, Types and Type Classes","It is a well-known fact from the theory of computation that there is no 
+ general test for checking whether a given procedure terminates for a 
+ particular input. The 
+ halting problem
+  is undecidable. Intuitively, the reason 
+ for this is that the existence of an algorithm (a procedure which always 
+ terminates) for the halting problem would lead to a paradox very similar to 
+ the Russell paradox.
+  
+ Here is a simple example of a program for which no proof of termination exists:
+  
+ run :: Integer -> [Integer] 
+  
+ run n | n < 1 = error ""argument not positive"" 
+  
+  
+ | n == 1 = [1] 
+  
+  
+ | even n = n: run (div n 2) 
+  
+  
+ | odd n 
+  
+ = n: run (3*n+1)
+  
+ This gives, e.g.:
+  
+ STAL> run 5 
+  
+ [5,16,8,4,2,1] 
+  
+ STAL> run 6 
+  
+ [6,3,10,5,16,8,4,2,1] 
+  
+ STAL> run 7 
+  
+ [7,22,11,34,17,52,26,13,40,20,10,5,16,8,4,2,1]",NA
+4.3 ,NA,NA
+Special Sets,"Singletons. 
+  
+ Sets that have exactly one element are called
+  singletons
+ . The set 
+ whose only element is a is { a }; this is called the
+  singleton of
+  a. Note that it 
+ follows from the definition that x ∈ {a} iff x = a.
+  
+ Warning.
+  Do not confuse a singleton { a } with its element a.
+  
+ In most cases you will have that a ̸= {a}. For instance, in the case that a = {0, 
+ 1}, we have that {0, 1} ̸= {{0, 1}}. For, {0, 1} has two elements: the numbers 0 
+ and 1. On the other hand, {{0, 1}} has only one element: the set {0, 1}.
+  
+ Remark.
+  The question whether the equation a = { a } has solutions (or, more 
+ generally, whether sets a exist such that a ∈ a) is answered differently by 
+ different axiomatizations of set theory. A set satisfying this equation has the 
+ shape a = {{{· · · · · · }}}, but of course this is unofficial notation. For the 
+ mathematical content of set theory this problem is largely irrelevant.
+  
+ An example of a case where it would be useful to let sets have themselves as 
+ members would be infinite streams, like an infinite list of ‘1’s. Such an object 
+ is easily programmed in Haskell:
+  
+ ones = 1 : ones",NA
+4.4 ,NA,NA
+Algebra of Sets,"Definition 4.12 (Intersection, Union, Difference.)
+  Assume that A and B are sets. 
+ Then:
+  
+ 1. A ∩ B = { x | x ∈ A ∧ x ∈ B } is the
+  intersection
+  of A and B,
+  
+ 2. A ∪ B = { x | x ∈ A ∨ x ∈ B } is their
+  union
+ , 
+  
+  
+ and
+  
+ 3. A − B = { x | x ∈ A ∧ x ̸∈ B } their
+  difference
+ .
+  
+ Types of Set Theoretic Expressions
+  Often, the symbols ∩ and ∪ are confused 
+ with the connectives ∧ and ∨. From Definition 4.12, their intimate 
+ connection is clear. However, their functioning is completely different: ∩ 
+ and ∪ produce, given two sets A and B, new sets A ∩ B resp. A ∪ B (thus, ∩ 
+ and ∪ can be written between sets only), whereas ∧ and ∨ combine two 
+ statements Φ and Ψ into new statements Φ ∧ Ψ resp. Φ ∨ Ψ.
+  
+ In the idiom of Section 4.2: the operations ∩, ∪ on one hand and ∧, ∨ on the 
+ other have
+  different types
+ . The typing underlying the notation of set theory is 
+ much simpler than that of functional programming. To start with, we just 
+ distinguish between the types s (for set), t (for a proposition, i.e., an 
+ expression with a truth value), 
+  
+ (for anything at all), and {s} (for a family 
+ of sets, see below).
+  
+ t is like Bool in Haskell, but s has no Haskell analogue. In set theory, sets like 
+ N, Z, Q, R are all of the same type, namely s, whereas in Haskell much finer 
+ distinctions are drawn. The simplicity of the typing underlying set theory is 
+ an advantage, for it makes the language of set theory more flexible.
+  
+ To find the types of the set theoretic operations we use the same recipe as in 
+ func-tional programming. Thus, ∩ and ∪ both have type s → s → s, for they 
+ take two set arguments and produce a new set. ∧ and ∨ have type t → t → t, 
+ tor they",NA
+4.5 ,NA,NA
+Ordered Pairs and Products,"Next to the unordered pairs {a, b} of Section 4.3, in which the order of a and 
+ b is immaterial ({a, b} = {b, a}), there are
+  ordered
+  pairs in which order does 
+ count. The
+  ordered pair
+  of objects a and b is denoted by
+  
+ (a, b) .
+  
+ Here, a is the
+  first
+  and b the
+  second coordinate
+  of (a, b).
+  
+ Ordered pairs behave according to the following rule:
+  
+ (a, b) = (x, y) =⇒ a = x ∧ b = y. 
+  
+ (4.2)
+  
+ This means that the ordered pair of a and b fixes the objects as well as their order.
+  
+ Its behaviour differs from that of the unordered pair: we always have that 
+ {a, b} = {b, a}, whereas (a, b) = (b, a) only holds — according to (4.2) — 
+ when a = b.
+  
+ Warning.
+  If a and b are reals, the notation (a, b) also may denote the open interval
+  
+ {x ∈ R | a < x < b}. The context should tell you which of the two is meant.",NA
+4.6 ,NA,NA
+Lists and List Operations,"Assuming the list elements are all taken from a set A, the set of all lists over 
+ A is the set 
+  
+ n∈N
+ A
+ n
+ . We abbreviate this set as A
+ ∗
+ . For every list L ∈ A
+ ∗
+  
+ there is some n ∈ N with L ∈ A
+ n
+ . If L ∈ A
+ n
+ we say that list L has length n.
+  
+ Standard notation for the (one and only) list of length 0 is []. A list of length 
+ n > 0 looks like (x
+ 0
+ , (x
+ 1
+ , (· · · , x
+ n−1
+ ) · · · )). This is often written as [x
+ 0
+ , x
+ 1
+ , . . . , 
+ x
+ n−1
+ ]. A one element list is a list of the form (x, []). In line with the above 
+ square bracket notation, this is written as [x].
+  
+ If one uses lists to represent sets, there is a difficulty. The list [a, b, b] is 
+ different from the list [a, b], for [a, b, b] has length 3, and [a, b] has length 2, 
+ but the sets {a, b, b} and {a, b} are identical. This shows that sets and lists 
+ have different identity conditions.
+  
+ This is how the data type of lists is (pre-)declared in Haskell:",NA
+4.7 ,NA,NA
+List Comprehension and Database Query,"To get more familiar with list comprehensions, we will devote this section to list
+  
+ comprehension for database query, using the movie database module
+  DB.hs
+  given
+  
+ in Figure 4.6. The database that gets listed here is called db, with type DB, where
+  
+ DB is a synonym for the type [WordList], where Wordlist is again a synonym
+  
+ for the type [String]. The reserved keyword type is used to declare these type
+  
+ synonyms. Notice the difference between defining a type synonym with type and
+  
+ declaring a new data type with data.
+  
+ The database can be used to define the following lists of database objects, with list
+  
+ comprehension. Here db :: DB is the database list.
+  
+ characters = nub [ x
+  
+ | [""play"",_,_,x]
+  
+ <- db ]
+  
+ movies = 
+  
+ [ x | [""release"",x,_] <- db ]
+  
+ actors = nub [ x | [""play"",x,_,_] 
+  
+ <- db ]
+  
+ directors = nub [ x | [""direct"",x,_] 
+  
+ <- db ]
+  
+ dates 
+  
+ = nub [ x | [""release"",_,x] <- db ]
+  
+ universe = nub (characters++actors++directors++movies++dates)
+  
+ Next, define lists of tuples, again by list comprehension:
+  
+ direct
+  
+ = [ (x,y)
+  
+ | [""direct"",x,y]
+  
+ <- db ]
+  
+ act 
+  
+ = [ (x,y) | [""play"",x,y,_] 
+  
+ <- db ]
+  
+ play 
+  
+ = [ (x,y,z) | [""play"",x,y,z] 
+  
+ <- db ]
+  
+ release = [ (x,y) | [""release"",x,y] <- db ]
+  
+ Finally, define one placed, two placed and three placed predicates by means of
+  
+ lambda abstraction.",NA
+4.8 ,NA,NA
+Using Lists to Represent Sets,"Sets are unordered, lists are ordered, but we can use lists to represent finite 
+ (or countably infinite) sets by representing sets as lists with duplicates 
+ removed, and by disregarding the order. If a finite list does not contain 
+ duplicates, its length gives the size of the finite set that it represents.
+  
+ Even if we gloss over the presence of duplicates, there are limitations to the 
+ rep-resentation of sets by lists. Such representation only works if the sets to 
+ be repre-sented are small enough. In Chapter 11 we will return to this issue.
+  
+ To removing an element from a list without duplicates all we have to do is 
+ remove the
+  first
+  occurrence of the element from the list. This is done by the 
+ predefined function delete, also part of the Haskell module
+  List.hs
+ . Here is 
+ our home-made version:
+  
+ delete :: Eq a => a -> [a] -> [a]
+  
+ delete x [] = []
+  
+ delete x (y:ys) | x == y 
+  
+ = ys
+  
+ | otherwise = y : delete x ys",NA
+4.9 ,NA,NA
+A Data Type for Sets,"The representation of sets as lists without duplicates has the drawback that 
+ two finite lists containing the same elements, but in a different order, e.g., 
+ [1,2,3] and [3,2,1], are unequal as lists, but equal as sets. The Haskell 
+ equality operator == gives the wrong results when we are interested in set 
+ equality. For instance, we get:
+  
+ Prelude> [1,2,3] == [3,2,1] 
+  
+ False 
+  
+ Prelude>
+  
+ This can be remedied by defining a special data type for sets, with a 
+ matching definition of equality. All this is provided in the module
+  SetEq.hs
+  
+ that is given in Figs. 4.7 and 4.8. If a is an equality type, then Set a is the type 
+ of sets over a. The newtype declaration allows us to put Set a as a separate 
+ type in the Haskell type system.
+  
+ Equality for Set a is defined in terms of the subSet relation:",NA
+4.10 ,NA,NA
+Further Reading,"Russell’s paradox, as stated by Russell himself, can be found in [Rus67]. A 
+ further introduction to sets and set theory is Doets, Van Dalen and De Swart 
+ [DvDdS78].",NA
+Chapter 5,NA,NA
+Relations,NA,NA
+Preview,"The first section of this chapter explains the abstract notion of a relation. 
+ Sec-tion 5.2 discusses various properties of relations. Next, in Sections 5.3 
+ and 5.4, we discuss various possible implementations of relations and 
+ relation processing. Sections 5.5 and 5.6 focus on an often occurring type of 
+ relation: the
+  equivalence
+ .
+  
+ The following declaration turns the code in this chapter into a module that 
+ loads the List module (to be found in same directory as
+  Prelude.hs
+ , under the 
+ name 
+ List.hs
+ ), and the SetOrd module (see below, in Figs. 5.3 and 5.4).
+  
+ module REL
+  
+ where
+  
+ import List
+  
+ import SetOrd
+  
+ 161",NA
+5.1 ,NA,NA
+The Notion of a Relation,"Although you probably will not be able to explain the general notion of a 
+ relation, you are definitely familiar with a couple of instances, such as the 
+ usual ordering relation < between natural numbers, or the subset relation ⊆ 
+ between sets. Non-mathematical examples are the different family 
+ relationships that exist between humans. For instance, the
+  father-of
+  relation 
+ holds between two people if the first one is the father of the second.
+  
+ For every two numbers n, m ∈ N, the statement n < m is either true or false. 
+ E.g., 3 < 5 is true, whereas 5 < 2 is false. In general: to a relation you can 
+ “input” a pair of objects, after which it “outputs” either
+  true
+  or
+  false
+ . 
+ depending on whether these objects are in the relationship given.
+  
+ In set theory, there is a clever way to reduce the notion of a relation to that 
+ of a set. Consider again the ordering ⩽ on N. With it, associate the set R of 
+ ordered pairs (n, m) of natural numbers for which n ⩽ m is true:
+  
+ R
+ ⩽
+  = { (n, m) ∈ N
+ 2
+ | n ⩽ m }.
+  
+ Note that a statement n ⩽ m now has become tantamount with the 
+ condition, that (n, m) ∈ R
+ ⩽
+ . Thus, (3, 5) ∈ R
+ ⩽
+ , and (5, 2) ̸∈ R
+ ⩽
+ .
+  
+ This connection can be converted into a definition. That is, the ordering 
+ relation ⩽of N is
+  identified
+  with the set R
+ ⩽
+ . The following definition puts it 
+ bluntly.
+  
+ Definition 5.1 (Relations, Domain, Range)
+  A
+  relation
+  is a set of ordered pairs.
+  
+ Instead of (x, y) ∈ R — where R is a relation — one usually writes xRy, or R(x, y), or Rxy.
+  
+ The set dom (R) = {x | ∃y ( xRy )}, i.e., the set consisting of all first 
+ coordinates of pairs in R, is called the
+  domain
+  of R and ran(R) = {y | ∃x ( xRy 
+ )}, the set of second coordinates of pairs in R, its
+  range
+ .
+  
+ Example 5.2
+  If A and B are sets, then A × B is a relation. The empty set ∅trivially is a relation 
+ (for,
+  all
+  its members are ordered pairs).
+  
+ dom (∅) = ran(∅) = ∅, dom (A×B) = A (provided B is non-empty: A×∅ = ∅, 
+ thus dom (A × ∅) = ∅), and ran(A × B) = B (analogously: provided A is non-
+ empty).",NA
+5.2 ,NA,NA
+Properties of Relations,"In this section we list some useful properties of relations on a set A. Further 
+ on, in Sections 5.3 and 5.4, we will illustrate how tests for these properties 
+ can be implemented.
+  
+ A relation R is
+  reflexive
+  on A if for every x ∈ A: xRx.
+  
+ Example 5.14
+  On any set A, the relation ∆
+ A
+  is reflexive. Note that ∆
+ A
+  is the 
+ smallest reflexive relation on A: it is a subset of any reflexive relation on A. 
+ In other words, a relation R is reflexive on A iff ∆
+ A
+  ⊆ R.
+  
+ Example 5.15
+  The relation ⩽ on N is reflexive (for every number is less than 
+ or equal to itself).
+  
+ A relation R on A is
+  irreflexive
+  if for no x ∈ A: xRx.
+  
+ Example 5.16
+  The relation < on N is irreflexive.
+  
+ Exercise 5.17
+  Show that a relation R on A is irreflexive iff ∆
+ A
+  ∩ R = ∅.
+  
+ There are relations which are neither reflexive nor irreflexive (the reader is 
+ urged to think up an example).
+  
+ A relation R on A is
+  symmetric
+  if for all x, y ∈ A: if xRy then yRx.",NA
+5.3 ,NA,NA
+Implementing Relations as Sets of Pairs,"Our point of departure is a slight variation on the module
+  SetEq.hs
+  of the 
+ previ-ous Chapter. This time, we represent sets a
+  ordered
+  lists without 
+ duplicates. See Figs. 5.3 and 5.4 for a definition of the module
+  SetOrd.hs
+ .
+  
+ The definition of deleteList inside Figure 5.3 employs a Haskell feature that 
+ we haven’t encountered before: ys@(y:ys’) is a notation that allows us to 
+ refer to the non-empty list (y:ys’) by means of ys. If the item to be deleted is 
+ greater then the first element of the list then the instruction is to do nothing. 
+ Doing nothing boils down to returning the whole list ys. This possibility to 
+ give a name to a pattern is just used for readability.
+  
+ Next we define relations over a type a as sets of pairs of that type, i.e., Rel a 
+ is defined and implemented as Set(a,a).
+  
+ type Rel a = Set (a,a)
+  
+ domR gives the domain of a relation.
+  
+ domR :: Ord a => Rel a -> Set a
+  
+ domR (Set r) = list2set [ x | (x,_) <- r ]
+  
+ ranR gives the range of a relation.
+  
+ ranR :: Ord a => Rel a -> Set a
+  
+ ranR (Set r) = list2set [ y | (_,y) <- r ]
+  
+ idR creates the identity relation ∆
+ A
+  over a set A:",NA
+5.4 ,NA,NA
+Implementing Relations as Characteristic Func-,NA,NA
+tions,"A characteristic function is a function of type A → {0, 1}, for some set A. 
+ Char-acteristic functions are so-called because they characterize subsets of 
+ a set A. The function f : A → {0, 1} characterizes the set B = {a ∈ A | f(a) = 1} 
+ ⊆ A. Characteristic functions implemented in Haskell have type a -> Bool, for 
+ some type a.
+  
+ From the fact that a binary relation r is a subset of a product A × B, you 
+ would expect that a binary relation is implemented in Haskell as a function 
+ of type (a,b) -> Bool. Given a pair of objects (x,y), with x of type a and y of 
+ type b, the function proclaims the verdict True if (x,y) in the relation, False 
+ otherwise.",NA
+5.5 ,NA,NA
+Equivalence Relations,"Definition 5.57
+  A relation R on A is an
+  equivalence relation
+  or
+  equivalence
+  if 
+ R is transitive, reflexive on A and symmetric.
+  
+ Example 5.58
+  On the set of human beings the relation of having the same 
+ age is an equivalence relation.
+  
+ Example 5.59
+  The relation R = {(n, m) | n, m ∈ N and n + m is even } is an equivalence relation 
+ on N.
+  
+ The equivalence test can be implemented for relations of type Ord a => Rel a 
+ as follows:
+  
+ equivalenceR :: Ord a => Set a -> Rel a -> Bool
+  
+ equivalenceR set r = reflR set r && symR r && transR r
+  
+ For relations implemented as type Rel’ a the implementation goes like this:
+  
+ equivalenceR’ :: [a] -> Rel’ a -> Bool
+  
+ equivalenceR’ xs r = reflR’ xs r && symR’ xs r && transR’ xs r
+  
+ Example 5.60
+  The next table shows for a number of familiar relations 
+ whether they have the properties of reflexivity, symmetry and transitivity. 
+ Here:",NA
+5.6 ,NA,NA
+Equivalence Classes and Partitions,"Equivalence relations on a set A enable us to
+  partition
+  the set A into equivalence
+  
+ classes.
+  
+ Definition 5.75
+  Suppose R is an equivalence relation on A and that a ∈ A. The
+  
+ set | a | = | a |
+ R
+  = { b ∈ A | bRa } is called the R-
+ equivalence class
+  of a, or the 
+ equivalence class
+  of a
+  
+ modulo
+  R.
+  
+ Elements of an equivalence class are called
+  representatives
+  of that class.
+  
+ Example 5.76
+  (continued from example 5.62) The equivalence class of a ∈ A",NA
+5.7 ,NA,NA
+Integer Partitions,"Integer partitions of n ∈ N
+ +
+ are lists of non-zero natural numbers that add up to exactly n. For 
+ example, the four integer partitions of 4 are
+  
+ [4], [1, 3], [2, 2], [1, 1, 2], [1, 1, 1, 1].
+  
+ The integer partitions of n correspond to the sizes of the set partitions of a 
+ set A with |A| = n. Here is an algorithm for generating integer partitions, in 
+ lexico-graphically decreasing order:
+  
+ • The first integer partition of n is [n].
+  
+ • Let B be the last integer partition generated. If B consists of only 1’s, 
+ then done. Otherwise, there is a smallest non-1 part m. To generate 
+ the next partition, subtract 1 from m and collect all the units so as to 
+ match the new smallest part m − 1.
+  
+ Examples 
+  
+ The partition after [1, 1, 3, 3] is [1, 2, 2, 3], for after subtracting 1 
+ from 3, we should pack the three units that result in parcels of size 2. The 
+ partition after [1, 1, 1, 1, 1, 1, 5] is [3, 4, 4], for after subtracting 1 from 5, we 
+ should pack the seven units that result in parcels with maximum size 4, 
+ which gives three units and one parcel of size 4, which in turn gives one 
+ parcel of size 3 and one of size 4. The partition after [3, 3, 5] is [1, 2, 3, 5]. 
+ The partition after [1, 3, 3, 4] is [2, 2, 3, 4].
+  
+ Implementation 
+  
+ An integer partition is represented as a list of integers. 
+ For convenience we count the number of 1’s, and remove them from the 
+ partition. This gives a compressed representation (2, [3, 3]) of [1, 1, 3, 3]. 
+ These compressed partitions have type CmprPart.
+  
+ type Part = [Int]
+  
+ type CmprPart = (Int,Part)
+  
+ Expansion of a compressed partition (n, p) is done by generating n 1’s 
+ followed by p:",NA
+5.8 ,NA,NA
+Further Reading,"More on relations in the context of set theory in [DvDdS78]. Binary relations 
+ on finite sets are studied in graph theory. See Chapters 4 and 5 of [Bal91]. 
+ Relations in the context of database theory are the topic of [AHV95].",NA
+Chapter 6,NA,NA
+Functions,NA,NA
+Preview,"In mathematics, the concept of a function is perhaps even more important 
+ than that of a set. Also, functions are crucial in computer programming, as 
+ the functional programming paradigm demonstrates. This chapter 
+ introduces basic notions and then moves on to special functions, operations 
+ on functions, defining equivalences by means of functions, and compatibility 
+ of equivalences with operations.
+  
+ Many concepts from the abstract theory of functions translate directly into 
+ compu-tational practice. Most of the example functions mentioned in this 
+ chapter can be implemented directly in Haskell by just keying in their 
+ definitions, with domains and co-domains specified as Haskell types.
+  
+ Still, we have to bear in mind that an implementation of a function as a com-
+ puter program is a concrete incarnation of an abstract object. The same 
+ func-tion may be computed by vastly different computation procedures. If 
+ you key in sum [2*k | k <- [1 .. 100] ] at the
+  hugs
+  prompt you get the answer 
+ 10100, and if you key in 100 * 101 you get the same answer, but the compu-
+ tation steps that are performed to get at the answers are different. We have 
+ already seen that there is no mechanical test for checking whether two 
+ procedures perform the same task (Section 4.2), although in particular cases 
+ such results can be proved by mathematical induction (see Chapter 7). E.g., 
+ in Example 7.4 in Chapter 7 it is proved by mathematical induction that the 
+ computational recipes
+ n k=1
+ 2k and n(n + 1) specify the same function.
+  
+ 205",NA
+6.1 ,NA,NA
+Basic Notions ,"A
+  function
+  is something that transforms an object given to it into another 
+ one. The objects that can be given to a function are called its
+  arguments
+ , and 
+ the results of the transformation are called
+  values
+ . The set of arguments is 
+ called the
+  domain
+  of the function. We say that a function is
+  defined on
+  its 
+ domain.
+  
+ If f is a function and x one of its arguments, then the corresponding value is 
+ denoted by f(x). A function value y = f(x) is called the
+  image
+  of x under f. 
+ That f(x) = y can also be indicated by f : x −→ y. The domain of f is denoted 
+ by dom (f). Its
+  range
+  is ran(f) = {f(x) | x ∈ dom (f)}.
+  
+ Example 6.1
+  A function can be given as a rule or a prescription how to carry 
+ out the transformation.
+  
+ •
+  First square, next add one
+  is the function that transforms a real x ∈ R into x
+ 2
+ + 1.
+  
+ Letting f stand for this function, it is customary to describe it by the 
+ equation f(x) = x
+ 2
+ + 1.
+  
+ The Haskell implementation uses the same equation:
+  
+ f x = x^2 + 1
+  
+ • The function described by
+  
+  x
+  
+ if x ⩾ 0 
+  
+ if x < 0
+  
+ |x| =
+  
+ −x",NA
+6.2 ,NA,NA
+"Surjections, Injections, Bijections","If X is the domain of a function f, then for each x ∈ X there is only one y with 
+ (x, y) ∈ f. However, there may be other elements z ∈ X with (z, y) ∈ f. 
+ Functions for which this does not happen warrant a special name.
+  
+ If f is a function from X to Y , then there may be elements of Y that are not in
+  
+ f[X]. Again, functions for which this does not happen warrant a special name.
+  
+ Definition 6.21 (Surjections, Injections, Bijections)
+  
+ A function f : X −→ Y is called
+  
+ 1.
+  surjective
+ , or a
+  surjection
+ , or
+  onto Y
+ , if every element b ∈ Y occurs as a 
+  
+ function value of
+  at least
+  one a ∈ X, i.e., if f[X] = Y ;
+  
+ 2.
+  injective
+ , an
+  injection
+ , or
+  one-to-one
+ , if every b ∈ Y is value of
+  at most
+  
+ one 
+  
+ a ∈ X;
+  
+ 3.
+  bijective
+  or a
+  bijection
+  if it is both injective and surjective.
+  
+ Example 6.22
+  Most functions are neither surjective, nor injective. For instance,
+  
+ • sin : R → R is not surjective (e.g., 2 ∈ R is not a value) and not injective (sin 0 = sin π).
+  
+ • The identity function 1
+ X
+  : X → X is a bijection, whatever the set X.
+  
+ • Let A be a set. According to Theorems 5.87 and 5.94, the function that trans-forms an equivalence R on A 
+ into its quotient A/R is a bijection between
+  
+ the set of equivalences and the set of partitions on A.
+  
+ • Consider f = {(0, 1), (1, 0), (2, 1)}. Thus, dom (f) = {0, 1, 2}. The func-tion
+  
+ f : {0, 1, 2} −→ {0, 1}",NA
+6.3 ,NA,NA
+Function Composition,"Definition 6.29 (Composition)
+  Suppose that f : X −→ Y and g : Y −→ Z. Thus, 
+ the
+  co-domain
+  of f coincides with the
+  domain
+  of g. The
+  composition
+  of f and g 
+ is the function g ◦ f : X −→ Z defined by 
+  
+  
+ (g ◦ f)(x) = g(f(x)).
+  
+ (“First, apply f, next, apply g” — thanks to the usual “prefix”-notation for 
+ func-tions, the f and the g are unfortunately in the reverse order in the 
+ notation g ◦ f.
+  
+ To keep this reverse order in mind it is good practice to refer to g ◦ f as “g after f”.)
+  
+ N.B.:
+  The notation g ◦ f presupposes that the co-domain of f and the domain 
+ of g are the same. Furthermore, g ◦ f has the domain of f and the co-domain 
+ of g.
+  
+ Function composition is predefined in Haskell, as follows:
+  
+ (.) 
+  
+ :: (b -> c) -> (a -> b) -> (a -> c) (f . g) x 
+  
+  
+ = f (g x)
+  
+ Example 6.30
+  Haskell has a general procedure negate for negating a 
+ number. The effect of first taking the absolute value, then negating can now 
+ be got by means of (negate . abs):
+  
+ Prelude> (negate . abs) 5
+  
+ -5 
+  
+ Prelude> (negate . abs) (-7)
+  
+ -7 
+  
+ Prelude>
+  
+ Example 6.31
+  Another example from
+  Prelude.hs
+  is:
+  
+ even n 
+  
+ = n ‘rem‘ 2 == 0 
+  
+ odd 
+  
+ = not . even",NA
+6.4 ,NA,NA
+Inverse Function,"If we consider f : X → Y as a relation, then we can consider its relational 
+ inverse: the set of all (y, x) with (x, y) ∈ f. However, there is no guarantee 
+ that the relational inverse of a function is again a function. In case f is 
+ injective, we
+  
+ know that the relational inverse of f is a partial function (some elements in the
+  
+ domain may not have an image). If f is also surjective, we know that the relational
+  
+ inverse of f is a function. Thus, an inverse function of f has to satisfy some special
+  
+ requirements.
+  
+  
+ Figure 6.2: Inverse of the function λx.x
+ 2
+ (restricted to R
+ +
+ ).
+  
+ Definition 6.44 (Inverse Function)
+  Suppose that f : X → Y . A function g : Y → 
+ X is an
+  inverse
+  of f if both (i) g ◦ f = 1
+ X
+ , and (ii) f ◦ g = 1
+ Y
+  .
+  
+ The next theorem says all there is to know about inverses. Its proof describes how
+  
+ to find an inverse if there is one.
+  
+ Note that, by the first part of the theorem, we can safely talk about
+  the
+  inverse of a
+  
+ function (provided there is one).
+  
+ Theorem 6.45
+  
+ 1. A function has at most one inverse.
+  
+ 2. A function has an inverse iff it is bijective.
+  
+ Proof.
+  (1) Suppose that g and h are both inverses of f : X → Y . Then g = 1
+ X
+  ◦ 
+ g = (h ◦ f) ◦ g = h ◦ (f ◦ g) = h ◦ 1
+ Y
+  = h.
+  
+ (2) (Only if.) Assume that g is inverse of f. Then since g ◦ f = 1
+ X
+  is injective, 
+ by Lemma 6.36.1 f also is injective. And since f ◦ g = 1
+ Y
+  is surjective, by 
+ 6.36.2 f also is surjective.",NA
+6.5 ,NA,NA
+Partial Functions ,"A partial function from X to Y is a function with its domain included in X and
+  
+ its range included in Y . If f is a partial function from X to Y we write this as f :
+  
+ X → Y . It is immediate from this definition that f : X → Y iff dom (f) ⊆ X
+  
+ and f ↾ dom (f) : dom (f) → Y .
+  
+ A way of defining a partial function (using ⊥ for ‘undefined’):
+  
+ f(x) =
+  
+  ⊥t
+  
+ if ...
+  
+ otherwise",NA
+6.6 ,NA,NA
+Functions as Partitions,"In practice, equivalences are often defined by way of functions.
+  Par abus de 
+ lan-guage
+  functions sometimes are called partitions for that reason. 
+ Examples of such functions on the class of all people: “the gender of x” 
+ (partitions in males and fe-males), “the color of x” (partitions in races), “the 
+ age of x” (some hundred equiv-alence classes). The next exercise explains 
+ how this works and asks to show that every equivalence is obtained in this 
+ way.
+  
+ Exercise 6.58
+  Suppose that f : A → I is a surjection. Define the relation R on A 
+ by: aRb :≡ f(a) = f(b). Thus, R = {(a, b) ∈ A
+ 2
+ | f(a) = f(b)}. Show:
+  
+ 1. R is an equivalence on A,
+  
+ 2. A/R = {f
+ −1
+ [{i}] | i ∈ I},
+  
+ 3. for every equivalence S on A there is a function g on A such that aSb 
+  
+ g(a) = g(b).⇔
+  
+ Example 6.59
+  For any n ∈ Z with n ̸= 0, let the function RM
+ n
+  :: Z → Z be given 
+ by RM
+ n
+ (m) := r where 0 ⩽ r < n and there is some a ∈ Z with m = an + r. Then 
+ RM
+ n
+  induces the equivalence ≡
+ n
+  on Z.
+  
+ Here is a Haskell implementation of a procedure that maps a function to the 
+ equiv-alence relation inducing the partition that corresponds with the 
+ function:
+  
+ fct2equiv :: Eq a => (b -> a) -> b -> b -> Bool
+  
+ fct2equiv f x y = (f x) == (f y)
+  
+ You can use this to test equality modulo n, as follows:",NA
+6.7 ,NA,NA
+Products,NA,NA
+6.8 ,NA,NA
+Congruences,"A function f : X
+ n
+ → X is called an n-ary operation on X. Addition and multi-plication are binary 
+ operations on N (on Z, on Q, on R, on C).
+  
+ If one wants to define new structures from old, an important method is taking
+  
+ quotients for equivalences that are compatible with certain operations.
+  
+ Definition 6.73 (Congruence)
+  If f be an n-ary operation on A, and R an equiv-
+  
+ alence on A, then R is a
+  congruence
+  for f (or: R is
+  compatible
+  with f) if for
+  
+ all
+  
+ imply that
+  
+ x
+ 1
+ , . . . , x
+ n
+ , y
+ 1
+ , . . . , y
+ n
+  ∈ A :
+  
+ x
+ 1
+ Ry
+ 1
+ , . . . , x
+ n
+ Ry
+ n
+  
+ f(x
+ 1
+ , . . . , x
+ n
+ )Rf(y
+ 1
+ , . . . , y
+ n
+ ).
+  
+ If R is a congruence for f, then the operation induced by f on A/R is the operation
+  
+ f
+ R
+  : (A/R)
+ n
+ → A/R given by
+  
+ f
+ R
+ (|a
+ 1
+ |
+ R
+ , . . . , |a
+ n
+ |
+ R
+ ) := |f(a
+ 1
+ , . . . , a
+ n
+ )|
+ R
+ .
+  
+ If (A, f) is a set with an operation f on it and R is a congruence for f, then
+  
+ (A/R, f
+ R
+ ) is the
+  quotient structure
+  defined by R.
+  
+ Example 6.74
+  Consider the modulo n relation on Z. Suppose m ≡
+ n
+  m
+ ′
+ and k 
+ ≡
+ n
+  k
+ ′
+ . Then (Proposition 5.65) there are a, b ∈ Z with m
+ ′
+ = m + an and k
+ ′
+ = k + 
+ bn. Thus m
+ ′
+ + k
+ ′
+ = m + k + (a + b)n, i.e., m + k ≡
+ n
+  m
+ ′
+ + k
+ ′
+ . This shows that ≡
+ n
+  is a 
+ congruence for addition. Similarly, it can be shown that ≡
+ n
+  is a congruence 
+ for subtraction. It follows that we can define [m]
+ n
+  + [k]
+ n
+  := [m + k]
+ n
+  
+ and [m]
+ n
+  − [k]
+ n
+  := [m − k]
+ n
+ .
+  
+ Exercise 6.75
+  Show that ≡
+ n
+  on Z is a congruence for multiplication, for any n 
+ ∈Z with n ̸= 0.",NA
+6.9,"(m
+ 1
+ , m
+ 2
+ ) · (n
+ 1
+ , n
+ 2
+ )
+  
+ :=
+  
+ (m
+ 1
+ n
+ 1
+  + m
+ 2
+ n
+ 2
+ , m
+ 1
+ n
+ 2
+  + n
+ 1
+ m
+ 2
+ ).",NA
+Further Reading,"More on functions in the context of set theory in [DvDdS78]. A logical theory of
+  
+ functions is developed in the lambda calculus. See [Bar84].",NA
+Chapter 7,NA,NA
+Induction and Recursion,NA,NA
+Preview,"A very important proof method that is not covered by the recipes from 
+ Chapter 3 is the method of proof by Mathematical Induction. Roughly 
+ speaking, mathematical induction is a method to prove things about objects 
+ that can be built from a finite number of ingredients in a finite number of 
+ steps. Such objects can be thought of as construed by means of recursive 
+ definitions. Thus, as we will see in this chapter, recursive definitions and 
+ inductive proofs are two sides of one coin.
+  
+ module IAR
+  
+ where
+  
+ import List
+  
+ import STAL (display)",NA
+7.1 ,NA,NA
+Mathematical Induction,"Mathematical induction is a proof method that can be used to establish the 
+ truth of a statement for an infinite sequence of cases 0, 1, 2, .... Let P(n) be a 
+ property of
+  
+ 239",NA
+7.2 ,NA,NA
+Recursion over the Natural Numbers,"Why does induction over the natural numbers work? Because we can think 
+ of any natural number n as the the result of starting from 0 and applying the 
+ successor op-eration +1 a finite number of times. Let us use this fact about 
+ the natural numbers to give our own Haskell implementation, as follows:
+  
+ data Natural = Z | S Natural
+  
+ deriving (Eq, Show)
+  
+ Here Z is our representation of 0, while S n is a representation of n + 1. The 
+ number 4 looks in our representation like S (S (S (S Z))).
+  
+ The symbol | is used to specify alternatives for the data construction.
+  
+ With deriving (Eq, Show) one declares Natural as a type in the classes Eq 
+ and Show. This ensures that objects of the type can be compared for 
+ equality and displayed on the screen without further ado.
+  
+ We can define the operation of addition on the natural numbers
+  recursively
+  
+ in terms of the successor operation +1 and addition for smaller numbers:
+  
+ m + 0
+  
+ :=
+  
+ m
+  
+ m + (n + 1)
+  
+ :=
+  
+ (m + n) + 1
+  
+ This definition of the operation of addition is called
+  recursive
+  because the 
+ opera-tion + that is being defined is used in the defining clause, but for a 
+ smaller second argument. Recursive definitions always have a
+  base case
+  (in 
+ the example: the first line of the definition, where the second argument of 
+ the addition operation equals 0) and a
+  recursive case
+  (in the example: the 
+ second line of the definition, where the second argument of the addition 
+ operation is greater than 0, and the operation that is being defined appears 
+ in the right hand side of the definition).
+  
+ In proving things about recursively defined objects the idea is to use 
+ mathematical induction with the basic step justified by the base case of the 
+ recursive definition, the induction step justified by the recursive case of the 
+ recursive definition. This we will now demonstrate for properties of the 
+ recursively defined operation of addition for natural numbers.
+  
+ Here is the Haskell version of the definition of +, in prefix notation:",NA
+7.3 ,NA,NA
+The Nature of Recursive Definitions,"Not any set of equations over natural numbers can serve as a definition of an 
+ oper-ation on natural numbers. Consider
+  
+ f(0)
+  
+ :=
+  
+ 1
+  
+ f(n + 1)
+  
+ :=
+  
+ f(n + 2).
+  
+ This does not define unique values for f(1), f(2), f(3), ..., for the equations 
+ only require that all these values should be the same, not what the value 
+ should be.
+  
+ The following format does guarantee a proper definition:
+  
+ f(0)
+  
+ :=
+  
+ c
+  
+ f(n + 1)
+  
+ :=
+  
+ h(f(n)).
+  
+ Here c is a description of a value (say of type A), and h is a function of type A 
+ → A. A definition in this format is said to be a definition by
+  structural 
+ recursion 
+ over the natural numbers. The function f defined by this will be of 
+ type N → A. This format is a particular instance of a slightly more general 
+ one called
+  primitive recursion
+  over the natural numbers. Primitive recursion 
+ allows c to depend on a number of parameters, so the function f will also 
+ depend on these parameters. But we will leave those parameters aside for 
+ now.
+  
+ Definition by structural recursion of f from c and h works like this: take a 
+ natural number n, view it as 
+  
+  
+ 1 + · · · + 1+ 0,
+  
+ n times",NA
+7.4 ,NA,NA
+Induction and Recursion over Trees,Here is a recursive definition of binary trees:,NA
+7.5 ,NA,NA
+Induction and Recursion over Lists,"Induction and recursion over natural numbers are based on the two cases n 
+ = 0 and n = k + 1. Induction and recursion over lists are based on the two 
+ cases l = [] and l = x:xs, where x is an item and xs is the tail of the list. An 
+ example is the definition of a function len that gives the length of a list. In 
+ fact, Haskell has a predefined function length for this purpose; our definition 
+ of len is just for purposes of illustration.
+  
+ len [] 
+  
+ = 0
+  
+ len (x:xs) = 1 + len xs
+  
+ Similarly, Haskell has a predefined operation ++ for concatenation of lists. 
+ For purposes of illustration we repeat our version from Section (4.8).
+  
+ cat :: [a] -> [a] -> [a]
+  
+ cat [] 
+  
+ ys = ys
+  
+ cat (x:xs) ys = x : (cat xs ys)
+  
+ As an example of an inductive proof over lists, we show that concatenation 
+ of lists is associative.
+  
+ Proposition 7.43
+  For all lists xs, ys and zs over the same type a:
+  
+ cat (cat xs ys) zs = cat xs (cat ys zs).
+  
+ Proof.
+  Induction on xs.
+  
+ Basis
+  
+ cat (cat [] ys) zs
+  
+ cat.1 
+ =
+  
+ cat ys zs
+  
+ cat.1 
+ =
+  
+ cat [] (cat ys zs).",NA
+7.6,NA,NA
+Some Variations on the Tower of Hanoi,"Figure 7.1: The Tower of Hanoi.
+  
+ The Tower of Hanoi is a tower of 8 disks of different sizes, stacked in order 
+ of decreasing size on a peg. Next to the tower, there are two more pegs. The 
+ task is to transfer the whole stack of disks to one of the other pegs (using 
+ the third peg as an auxiliary) while keeping to the following rules: (i) move 
+ only one disk at a time, (ii) never place a larger disk on top of a smaller one.
+  
+ Exercise 7.53
+  In this exercise, you are required to invent your own solution, 
+ and next prove it by mathematical induction. Make sure that the reasoning 
+ also es-tablishes that the formula you find for the number of moves is the
+  
+ best
+  one can do.",NA
+7.7,NA,NA
+Induction and Recursion over Other Data Struc-,NA,NA
+tures,"A standard way to prove properties of logical formulas is by induction on 
+ their syntactic structure. Consider e.g. the following Haskell data type for 
+ propositional",NA
+7.8 ,NA,NA
+Further Reading,"Induction and recursion are at the core of discrete mathematics. See [Bal91]. 
+ A splendid textbook that teaches concrete (and very useful) mathematical 
+ skills in this area is Graham, Knuth and Patashnik [GKP89]. Recursion is also 
+ crucial for algorithm design. If you are specifically interested in the design 
+ and analysis of algorithms you should definitely read Harel [Har87]. 
+ Algorithm design in Haskell is the topic of [RL99].",NA
+Chapter 8,NA,NA
+Working with Numbers,NA,NA
+Preview,"When reasoning about mathematical objects we make certain assumptions 
+ about the existence of things to reason about. In the course of this chapter 
+ we will take a look at integers, rational numbers, real numbers, and complex 
+ numbers. We will recall what they all look like, and we will demonstrate 
+ that reasoning about mathematical objects can be put to the practical test by 
+ an
+  implementation
+  of the definitions that we reason about. The 
+ implementations turn the definitions into procedures for handling 
+ representations of the mathematical objects. This chapter will also present 
+ some illuminating examples of the art of mathematical reasoning.
+  
+ module WWN
+  
+ where
+  
+ import List
+  
+ import Nats
+  
+ 285",NA
+8.1 ,NA,NA
+A Module for Natural Numbers,"The natural numbers are the conceptual basis of more involved number 
+ systems. The implementation of Natural from the previous chapter has the 
+ advantage that the unary representation makes the two cases for inductive 
+ proofs and recursive definitions, Z and S n, very clear. We repeat the code of 
+ our implementation of Natural, wrapped up this time in the form of a 
+ module, and integrated into the Haskell type system: see Figure 8.1. Note 
+ that an implementation of quotRem was added: quotRem n m returns a pair 
+ (q,r) consisting of a quotient and a remainder of the process of dividing n by 
+ m, i.e., q and r satisfy 0 ⩽ r < m and q × m + r = n.
+  
+ The integration of Natural in the system of Haskell types is achieved by 
+ means of instance declarations. E.g., the declaration instance Ord Natural 
+ makes the type Natural an instance of the class Ord. From an inspection of
+  
+ Prelude.hs 
+ we get that (i) a type in this class is assumed to also be in the 
+ class Eq, and (ii) a minimal complete definition of a type in this class 
+ assumes definitions of <= or compare. Condition (i) is fulfilled for Natural by 
+ the deriving Eq statement, while (ii) is taken care of by the code for compare 
+ in the module. The general code for class Ord provides methods for the 
+ relations <=, <, >=, >, and for the comparison operators max and min, so 
+ putting Natural in class Ord provides us with all of these.
+  
+ Similarly, the declaration instance Enum Natural ensures that Natural is in 
+ the class Enum. Definitions for the following functions for types in this class 
+ are provided in the module:
+  
+ succ :: Natural -> Natural
+  
+ pred :: Natural -> Natural
+  
+ toEnum :: Int -> Natural
+  
+ fromEnum :: Natural -> Int
+  
+ enumFrom :: Natural -> [Natural]
+  
+ The general code for the class provides, e.g., enumFromTo, so we get:
+  
+ Nats> 
+  
+ enumFromTo Z (toEnum 5)
+  
+ [Z,S Z,S (S Z),S (S (S Z)),S (S (S (S Z))),S (S (S (S (S Z))))]
+  
+ Next, the declaration instance Num Natural ensures that Natural is in the 
+ class Num. This is where the functions for addition, multiplication, sign, 
+ abso-lute value belong, as well as a type conversion function fromInteger. 
+ Putting in the appropriate definitions allows the use of the standard names 
+ for these opera-tors. In terms of these,
+  Prelude.hs
+  defines subtraction, the 
+ type conversion function",NA
+8.2 ,NA,NA
+GCD and the Fundamental Theorem of Arith-,NA,NA
+metic,"The fundamental theorem of arithmetic, stating that every n ∈ N with n > 1 
+ has a unique prime factorization, was known in Antiquity. Let us reflect a bit 
+ to see why it is true. First note that the restriction on n is necessary, for m · 
+ 0 = 0 for all m ∈ N, so a factorization of 0 can never be unique, and since we 
+ have ruled out 1 as a prime, 1 does not have a prime factorization at all. The 
+ fundamental theorem of arithmetic constitutes the reason, by the way, for 
+ ruling out 1 as a prime number. We have n = 1
+ m
+ · n for any n, m ∈ N, so a 
+ factorization of n that admits 1
+ m
+ as a factor can never be unique.",NA
+8.3 ,NA,NA
+Integers,"Suppose n, m, k are natural numbers. When n = m + k we can view k as the 
+ difference of n and m, and it is tempting to write this as k = n − m for the",NA
+8.4 ,NA,NA
+Implementing Integer Arithmetic,"If we represent natural numbers as type Natural, then the moral of the above 
+ is that integers can be represented as
+  pairs
+  of naturals. E.g., minus five is 
+ represented by the pair (S Z,S(S(S(S(S(S Z)))))), or by the pair (Z,S(S(S(S(S 
+ Z))))), and so on. Here is an appropriate data type declaration:
+  
+ type NatPair = (Natural,Natural)",NA
+8.5 ,NA,NA
+Rational Numbers,"A further assumption that we would like to make is that any integer can be 
+ divided by any non-zero integer to form a fraction, or rational number, and 
+ that any rational number m/n can be ‘canceled down’ to its lowest form by 
+ dividing m and n by the same number. E.g., 12/39 cancels down to 4/13.
+  
+ Again we can view the rational numbers as constructed by means of pairs, in 
+ this case pairs (m, n) with m, n ∈ Z, n ̸= 0. In this case the pairs are ‘ratio 
+ pairs’. One and the same rational number can be represented in many 
+ different ways: (1, 2), (2, 4), (13, 26) all represent the rational number 1/2. 
+ Or in other words: the rational number m/n is nothing but the class of all (p, 
+ q) with p, q ∈ Z, q ̸= 0, and the property that mq = np. In such a case we say 
+ that m/n and p/q represent the same number.
+  
+ As in the case of the representation of integers by means of difference 
+ classes we have an underlying notion of equivalence. Let S be the 
+ equivalence relation on Z×(Z−{0}) given by (m, n)S(p, q) :≡ mq = np. Note 
+ that (m, n) and (km, kn) are equivalent modulo S (provided k ̸= 0), which 
+ justifies the simplification of km/kn to m/n by means of canceling down. 
+ The set Q of rational numbers (or fractional numbers) can be defined as:
+  
+ Q := (Z × (Z − {0}))/S.
+  
+ We write a class [(m/n)]
+ S
+  as [m/n]. Addition, multiplication and equality of 
+ ra-tional numbers are now defined in terms of addition and multiplication 
+ of integers, as follows:
+  
+ [m/n] + [p/q]
+  
+ :=
+  
+ [(mq + pn)/nq]
+  
+ [m/n] · [p/q] 
+  
+ [m/n] = [p/q]
+  
+ :=
+  
+ [mp/nq]
+  
+ :≡
+  
+ mq = np",NA
+8.6 ,NA,NA
+Implementing Rational Arithmetic,"Haskell has a standard implementation of the above, a type Rational, 
+ predefined as follows:
+  
+ data Integral a => Ratio a = a :% a deriving (Eq)
+  
+ type Rational = Ratio Integer
+  
+ To reduce a fraction to its simplest form, we first make sure that the 
+ denominator is non-negative. If (x,y) represents a fraction with numerator x 
+ and denominator y, then
+  
+ (x * signum y) (abs y)
+  
+ is an equivalent representation with positive denominator. Here abs gives 
+ the ab-solute value, and signum the sign (1 for positive integers, 0 for 0, −1 
+ for negative integers). The reduction to canonical form is performed by:",NA
+8.7 ,NA,NA
+Irrational Numbers,"The Ancients discovered to their dismay that with just ruler and compass it 
+ is possible to construct line segments whose lengths do not form rational 
+ fractions. In other words, it is possible to construct a length q such that for 
+ no m, n ∈ N it holds that q = 
+  
+ n
+ . Here is the famous theorem from 
+ Antiquity stating this disturbing fact, with its proof.
+  
+ @ 
+  
+ @ 
+  
+   
+ @ 
+  
+   
+ @ 
+ x
+  
+ 1 
+  
+ @ 
+  
+  
+ @ 
+  
+  
+  
+ @ 
+  
+  
+    
+ @@
+  
+ 1",NA
+8.8 ,NA,NA
+The Mechanic’s Rule,"Sequences of fractions can be used to find approximations to real numbers 
+ that themselves are
+  not
+  fractions (see Section 8.7). A well known algorithm 
+ for gen-erating such sequences is the so-called
+  mechanic’s rule
+  (also known 
+ as
+  Newton’s method
+ , a bit misleadingly, for the algorithm was already in use 
+ centuries before Newton):
+  
+ p > 0, a
+ 0
+  > 0, a
+ n+1
+  = 1 2(a
+ n
+  + p a
+ n 
+ ).
+  
+ In Exercise 8.19 you are asked to prove that this can be used to approximate 
+ the square root of any positive fraction p to any degree of accuracy. The 
+ Haskell im-plementation uses some fresh ingredients. The function recip 
+ takes the reciprocal of a fraction, the operation iterate iterates a function by 
+ applying it again to the result of the previous application, and takeWhile 
+ takes a property and a list and constructs the largest prefix of the list 
+ consisting of objects satisfying the property. In the present case, the 
+ property is (\ m -> m^2 <= p), having a square ⩽ p, and the list is the list of 
+ positive naturals. You should look up the implementations in Prelude.hs and 
+ make sure you understand.
+  
+ mechanicsRule :: Rational -> Rational -> Rational
+  
+ mechanicsRule p x = (1 % 2) * (x + (p * (recip x)))
+  
+ mechanics :: Rational -> Rational -> [Rational]
+  
+ mechanics p x = iterate (mechanicsRule p) x",NA
+8.9 ,NA,NA
+Reasoning about Reals,"Suppose one wants to describe the behaviour of moving objects by plotting 
+ their position or speed as a function of time. Moving objects do not suddenly 
+ disappear and reappear somewhere else (outside the Bermuda triangle, at 
+ least), so the path of a moving object does not have holes or gaps in it. This 
+ is where the notions of continuity and limit arise naturally. Analysis, with its 
+ emphasis on continuity and limit, is a rich source of examples where skill in 
+ quantifier reasoning is called for.
+  
+ The following Lemma illustrates that many common functions are 
+ continuous. Its proof is given as an example: it is a nice illustration of the use 
+ of the logical rules. In fact, logic is all there is to this proof: properties of real 
+ numbers are not needed at all.
+  
+ Lemma.
+  The composition of two continuous functions is continuous.
+  
+ I.e., if f and g are continuous functions from reals to reals, then the function h 
+ defined by h(x) = g(f(x)) (cf. Definition 6.29 p. 222) is continuous as well.
+  
+ Proof. Given:
+  f and g are continuous, i.e., (“ε-δ-definition” p. 66; for clarity we 
+ use different variables for the arguments):
+  
+ ∀x ∀ε > 0 ∃δ > 0 ∀y (|x − y| < δ =⇒ |f(x) − f(y)| < ε), (8.1)
+  
+ ∀a ∀ε > 0 ∃δ > 0 ∀b (|a − b| < δ =⇒ |g(a) − g(b)| < ε). 
+  
+ (8.2)
+  
+ To be proved:
+  ∀x ∀ε > 0 ∃δ > 0 ∀y (|x − y| < δ =⇒ |g(f(x)) − g(f(y))| < ε).",NA
+8.10 ,NA,NA
+Complex Numbers,"In the domain of rational numbers we cannot solve the equation x
+ 2
+ − 2 = 0, but in the domain of 
+ real numbers we can: its roots are x =√2 and x = −√2. What",NA
+8.11 ,NA,NA
+Further Reading,"A classic overview of the ideas and methods of mathematics, beautifully 
+ written, and a book everyone with an interest in mathematics should 
+ possess and read is Courant and Robbins [CR78, CrbIS96]. Here is praise for 
+ this book by Albert Einstein:
+  
+ A lucid representation of the fundamental concepts and 
+ methods of the whole field of mathematics. It is an easily 
+ understandable intro-duction for the layman and helps to give 
+ the mathematical student a general view of the basic principles 
+ and methods.
+  
+ Another beautiful book of numbers is [CG96]. For number theory and its 
+ history see [Ore88].",NA
+Chapter 9,NA,NA
+Polynomials,NA,NA
+Preview,"Polynomials or integral rational functions are functions that can be 
+ represented by a finite number of additions, subtractions, and 
+ multiplications with one indepen-dent variable. The closed forms that we 
+ found and proved by induction for the sums of evens, sums of odds, sums of 
+ squares, sums of cubes, and so on, in Chap-ter 7, are all polynomial 
+ functions. In this chapter we will first study the process of automating the 
+ search for polynomial functions that produce given sequences of integers. 
+ Next, we establish the connection with the binomial theorem, we im-
+ plement a datatype for the polynomials themselves, and we use this 
+ datatype for the study of combinatorial problems.
+  
+ module POL
+  
+ where
+  
+ import Polynomials
+  
+ 331",NA
+9.1 ,NA,NA
+Difference Analysis of Polynomial Sequences,"Suppose {a
+ n
+ } is a sequence of natural numbers, i.e., f = λn.a
+ n
+  is a function in N 
+ → N. The function f is a
+  polynomial function of degree
+  k if f can be presented 
+ in the form 
+  
+  
+ c
+ k
+ n
+ k
+ + c
+ k−1
+ n
+ k−1
+ + · · · + c
+ 1
+ n + c
+ 0
+ , 
+  
+ with c
+ i
+  ∈ Q and c
+ k
+  ̸= 0.
+  
+ Example 9.1
+  The sequence
+  
+ [1, 4, 11, 22, 37, 56, 79, 106, 137, 172, 211, 254, 301, 352, . . .]
+  
+ is given by the polynomial function f = λn.(2n
+ 2
+ + n + 1). This is a function of 
+ the second degree.
+  
+ Here is the Haskell check:
+  
+ Prelude> take 15 (map (\ n -> 2*n^2 + n + 1) [0..]) 
+ [1,4,11,22,37,56,79,106,137,172,211,254,301,352,407]
+  
+ Consider the
+  difference sequence
+  given by the function
+  
+ d(f) = λn.a
+ n+1
+  − a
+ n
+ .
+  
+ The Haskell implementation looks like this:
+  
+ difs :: [Integer] -> [Integer] 
+  
+ difs [] = [] 
+  
+ difs [n] = [] 
+  
+ difs (n:m:ks) = m-n : difs (m:ks)
+  
+ This gives:
+  
+ POL> difs [1,4,11,22,37,56,79,106,137,172,211,254,301] 
+ [3,7,11,15,19,23,27,31,35,39,43,47]",NA
+9.2 ,NA,NA
+Gaussian Elimination,"If we know that a sequence a
+ 0
+ , a
+ 1
+ , a
+ 2
+ , a
+ 3
+ , . . . has a polynomial form of degree 
+ 3, then we know that the form is a + bx + cx
+ 2
+ + dx
+ 3
+ (listing the coefficients in 
+ increasing order). This means that we can find the form of the polynomial 
+ by solving the following quadruple of linear equations in a, b, c, d:
+  
+ a
+  
+ =
+  
+ a
+ 0
+  
+ a + b + c + d
+  
+ =
+  
+ a
+ 1
+  
+ a + 2b + 4c + 8d
+  
+ =
+  
+ a
+ 2
+  
+ a + 3b + 9c + 27d
+  
+ =
+  
+ a
+ 3
+  
+ Since this is a set of four linear equations in four unknowns, where the 
+ equations are linearly independent (none of them can be written as a 
+ multiple of any of the others), this can be solved by eliminating the 
+ unknowns one by one.
+  
+ Example 9.4
+  Find the appropriate set of equations for the sequence
+  
+ and solve it.
+  
+ [−7, −2, 15, 50, 109, 198, 323]
+  
+ Difference analysis yields that the sequence is generated by a polynomial of 
+ the third degree, so the sequence leads to the following set of equations:
+  
+ a
+  
+ =
+  
+ −7
+  
+ −2 
+  
+ 15
+  
+ a + b + c + d
+  
+ =
+  
+ a + 2b + 4c + 8d
+  
+ =
+  
+ a + 3b + 9c + 27d
+  
+ =
+  
+ 50
+  
+ Eliminating a and rewriting gives:
+  
+ b + c + d
+  
+ =
+  
+ 5
+  
+ 2b + 4c + 8d
+  
+ =
+  
+ 22
+  
+ 3b + 9c + 27d
+  
+ =
+  
+ 57",NA
+9.3 ,NA,NA
+Polynomials and the Binomial Theorem,"In this section we will establish a connection between polynomials and lists, 
+ namely lists of coefficients of a polynomial. Let f(x) be a polynomial of degree 
+ n, i.e., let f(x) be a function
+  
+ f(x) = a
+ n
+ x
+ n
+ + a
+ n−1
+ x
+ n−1
+ + · · · + a
+ 1
+ x + a
+ 0
+ ,
+  
+ with a
+ i
+  constants, and a
+ n
+  ̸= 0. Let c be a constant and consider the case x = y+c. Substitution of y 
+ + c for x in f(x) gives a new polynomial of degree n in y, say
+  
+ f(x) = f(y + c) = b
+ n
+ y
+ n
+ + b
+ n−1
+ y
+ n−1
+ + · · · + b
+ 1
+ y + b
+ 0
+ .",NA
+9.4,"n
+  
+ +
+  
+ n + 1
+  
+ +
+  
+ n + 2
+  
+ + · · · +
+  
+ n + k
+  
+ =
+  
+ n + k + 1
+  
+ .
+  
+ n
+  
+ n
+  
+ n
+  
+ n
+  
+ n + 1",NA
+Polynomials for Combinatorial Reasoning,"To implement the polynomial functions in a variable z, we will represent a 
+ poly-nomial 
+  
+  
+ f(z) = f
+ 0
+  + f
+ 1
+ z + f
+ 2
+ z
+ 2
+ + · · · + f
+ n−1
+ z
+ n−1
+ + f
+ n
+ z
+ n 
+  
+ as a list of its coefficients: 
+  
+  
+  
+ [f
+ 0
+ , f
+ 1
+ , . . . , f
+ n
+ ].
+  
+ As we have seen, the function p2fct maps such lists to the corresponding 
+ func-tions.
+  
+ The constant zero polynomial has the form f(z) = 0. In general we will avoid 
+ trailing zeros in the coefficient list, i.e., we will assume that if n > 0 then f
+ n
+  ̸= 
+ 0. The constant function λz.c will get represented as [c], so there is a map 
+ from in-tegers to polynomial representations, given by λc.[c]. We will also 
+ allow rationals as coefficients, to there is also a map from rationals to 
+ polynomial representations, given by λr.[r].
+  
+ We need some conventions for switching back and forth between a 
+ polynomial and its list of coefficients. If f(z) is a polynomial, then we use f 
+ for its coefficient list. If this list of coefficients is non-empty then, as before, 
+ we will indicate the tail of f",NA
+9.5 ,NA,NA
+Further Reading,"Charles Babbage’s difference engine is described in [Lar34] (reprinted in 
+ [Bab61]), and by Babbage himself in his memoirs [Bab94]. The memoirs are 
+ very amusing:
+  
+ Among the various questions which have been asked respecting 
+ the Difference Engine, I will mention a few of the most 
+ remarkable: one gentleman addressed me thus: ‘Pray, Mr 
+ Babbage, can you explain to me in two words what is the 
+ principle of your machine?’ Had the querist possessed a 
+ moderate acquaintance with mathematics I might in four words 
+ have conveyed to him the required information by an-swering, 
+ ‘The Method of Differences.’
+  
+ [...] On two occasions I have been asked - ‘Pray, Mr Babbage, if 
+ you put into the machine wrong figures, will the right answers 
+ come out?’In one case a member of the Upper, and in the other a 
+ member of the Lower, House put this question.
+  
+ There are many good textbooks on calculus, but [Bry93] is particularly 
+ enlight-ening. An excellent book on discrete mathematics and combinatorial 
+ reasoning is [Bal91].",NA
+Chapter 10,NA,NA
+Corecursion,NA,NA
+Preview,"In this chapter we will look the construction of infinite objects and at proof 
+ meth-ods suited to reasoning with infinite data structures. The most 
+ important kind of infinite data structures are streams (infinite lists), so the 
+ main topic of this chapter is the logic of stream processing. We will show 
+ how non-deterministic processes can be viewed as functions from random 
+ integer streams to streams. For the im-plementation of this we will use two 
+ functions from Random.hs, a module for random number generation and 
+ processing from the Haskell library. At the end of the chapter we will 
+ connect combinatorial reasoning with stream processing, via the study of 
+ power series and generating functions. Our Haskell treatment of power 
+ series is modeled after the beautiful [McI99, McI00].
+  
+ module COR
+  
+ where
+  
+ import Random (mkStdGen,randomRs)
+  
+ import Polynomials
+  
+ import PowerSeries
+  
+ The default for the display of fractional numbers in Haskell is floating point nota-
+  
+ 361",NA
+10.1 ,NA,NA
+Corecursive Definitions,"As we have seen, it is easy to generate infinite lists in Haskell. Infinite lists 
+ are often called
+  streams
+ . Here is the code again for generating an infinite list 
+ (or a stream) of ones:
+  
+ ones = 1 : ones
+  
+ This looks like a recursive definition, but there is no base case. Here is a 
+ definition of a function that generates an infinite list of all natural numbers:
+  
+ nats = 0 : map (+1) nats
+  
+ Again, the definition of nats looks like a recursive definition, but there is no 
+ base case. Definitions like this are called
+  corecursive definitions
+ . 
+  
+ Corecursive 
+ def-initions always yield infinite objects. When you come to think of it, the 
+ funny explanation of the acronym
+  GNU
+  as
+  GNU’s Not Unix
+  is also an example.
+  
+ As we have seen in Section 3.7, generating the odd natural numbers can be 
+ done by corecursion.
+  
+ odds = 1 : map (+2) odds",NA
+10.2 ,NA,NA
+Processes and Labeled Transition Systems,"The notion of a nondeterministic sequential process is so general that it is 
+ impos-sible to give a rigorous definition. Informally we can say that 
+ processes are inter-acting procedures. Typical examples are (models of) 
+ mechanical devices such as clocks, protocols for traffic control, vending 
+ machines, operating systems, client-server computer systems, and so on. A 
+ formal notion for modeling processes that has turned out to be extremely 
+ fruitful is the following.
+  
+ A
+  labeled transition system
+  (Q, A, T ) consists of a set of
+  states
+  Q, a set of 
+ action labels
+  A, and a ternary relation T ⊆ Q × A × Q, the
+  transition relation
+ .
+  
+ If (q, a, q
+ ′
+ ) ∈ T we write this as q
+  
+ Example 10.4
+  Perhaps the simplest example of a labeled transition system is 
+ the 
+  
+  
+ tick 
+  
+  
+ crack 
+ system 
+ given by the two states c and c
+ 0
+  and the two transitions c c
+ 0
+  (Figure 10.1). 
+ This is a model of a clock that ticks until it gets unhinged.−→ c and c−→
+  
+ Note that the process of the ticking clock is nondeterministic. The clock 
+ keeps ticking, until at some point, for no reason, it gets stuck.
+  
+ To implement nondeterministic processes like the clock process from 
+ Example 10.4, we have to find a way of dealing with the nondeterminism. 
+ Nondeterministic",NA
+10.3 ,NA,NA
+Proof by Approximation,"One of the proof methods that work for corecursive programs is proof by approx-
+  
+ imation. For this, we have to extend each data type to a so-called
+  domain
+  with a
+  
+ partial ordering ⊑ (the approximation order). Every data type gets extended 
+ with an element ⊥. This is the lowest element in the approximation order.
+  
+ Let (D, ⊑) be a set D with a partial order ⊑ on it, and let A ⊆ D.
+  
+ An element x ∈ A is the
+  greatest element
+  of A if a ⊑ x for all a ∈ A. x ∈ A is the
+  
+ least element
+  of A if x ⊑ a for all a ∈ A. Note that there are D with A ⊆ D for 
+ which such least and greatest elements do not exist.
+  
+ Exercise 10.12
+  Give an example of a set D, a partial order ⊑ on D, and a subset A of D such that 
+ A has no greatest and no least element.
+  
+ An element x ∈ D is an
+  upper bound
+  of A if a ⊑ x for all a ∈ A. Use A
+ u
+ for the 
+ set of all upper bounds of A, i.e., A
+ u
+ := {x ∈ D | ∀a ∈ A a ⊑ x}.
+  
+ E.g., consider N with the usual order ⩽. Take {2, 4, 6} ⊆ N. Then {2, 4, 6}
+ u
+ = {n 
+ ∈ N | 6 ⩽ n}. But the set of even numbers has no upper bounds in N.
+  
+ An element x ∈ D is a
+  lower bound
+  of A if x ⊑ a for all a ∈ A. Use A
+ l
+ for the set 
+ of all upper bounds of A, i.e., A
+ l
+ := {x ∈ D | ∀a ∈ A x ⊑ a}.
+  
+ An element x ∈ D is the
+  lub
+  or
+  least upper bound
+  of A if x is the least element 
+ of A
+ u
+ . The lub of A is also called the supremum of A. Notation ⊔A.
+  
+ E.g., consider R with the usual order ⩽. Take A = { 
+ n+1
+ | n ∈ N} ⊆ R. Then
+  
+ A = {0,
+ 1 2
+ ,
+  2 3
+ ,
+  3 4
+ , . . .}, A
+ u
+  = {r ∈ R | r ⩾ 1}, and ⊔A = 1.
+  
+ An element x ∈ D is the
+  glb
+  or
+  greatest lower bound
+  of A if x is the greatest 
+ element of A
+ l
+ . The glb of A is also called the infimum of A. Notation ⊓A. 
+ Caution: there may be A ⊆ D for which ⊔A and ⊓A do not exist.",NA
+10.4 ,NA,NA
+Proof by Coinduction,"To compare two streams xs and ys, intuitively it is enough to compare their obser-
+  
+ vational behaviour. The key observation on a stream is to inspect its head. If two
+  
+ streams have the same head, and their tails have the same observational behaviour,
+  
+ then they are equal. Similarly, to compare two infinite binary trees it is enough
+  
+ to observe that they have the same information at their root nodes, that their left
+  
+ daughters have the same observational behaviour, and that their right daughters
+  
+ have the same observational behaviour. And so on, for other infinite data struc-
+  
+ tures.",NA
+10.5 ,NA,NA
+Power Series and Generating Functions,"module PowerSeries
+  
+ where
+  
+ import Polynomials
+  
+ instance Fractional a => Fractional [a] where 
+  
+  
+ fromRational c 
+  
+ = [fromRational c] 
+  
+  
+ fs 
+  
+  
+ / [] 
+  
+ = error ""division by 0 attempted"" 
+  
+ [] 
+  
+  
+ / gs 
+  
+  
+ = [] 
+  
+ (0:fs) / (0:gs) = fs / gs 
+  
+  
+ (_:fs) / (0:gs) = error ""division by 0 attempted"" 
+  
+ (f:fs) / 
+ (g:gs) = let q = f/g in 
+  
+   
+ q : (fs - q.*gs) / (g:gs)
+  
+ int :: Fractional a => [a] -> [a] 
+  
+ int fs = 0 : int1 fs 1 where 
+  
+  
+ int1 [] 
+  
+ _ = [] 
+  
+  
+ int1 (g:gs) n = g/n : (int1 gs (n+1))
+  
+ expz = 1 + (int expz)
+  
+ Figure 10.9: A Module for Power Series.
+  
+ In chapter 9 we have seen how polynomials can get represented as finite 
+ lists of their coefficients, and how operations on polynomials can be given 
+ directly on these list representations. We will now generalize this to infinite 
+ sequences. A",NA
+10.6 ,NA,NA
+Exponential Generating Functions,"Up until now, the generating functions were used for solving combinatorial 
+ prob-lems in which order was irrelevant. These generating functions are 
+ sometimes called
+  ordinary generating functions
+ . To tackle combinatorial 
+ problems where order of selection plays a role, it is convenient to use 
+ generating functions in a slightly different way. The
+  exponential generating 
+ function
+  for a sequence λn.f
+ n 
+ is the function
+  
+ f(z) = f
+ 0
+  + f
+ 1
+ z +f
+ 2
+ z
+ 2 
+ 2! 
+  
+  
+ +f
+ 3
+ z
+ 3 
+  
+  
+  
+ 3! 
+  
+ + · · · =
+   
+  
+  
+ ∞
+  
+ f
+ n
+ z
+ n
+  
+ n!
+  
+ n=0
+  
+ Example 10.47
+  The (ordinary) generating function of [1, 1, 1, . . .] is ponential generating 
+ function of [1, 1, 1, . . .] is e
+ z
+ . If e
+ z
+ is taken as an ordinary 
+ 1−z
+ , the ex-
+  
+ generating function, it generates the sequence [1,
+ 1 1!
+ ,
+  1 2!
+ ,
+  1 3!
+ ,
+  1 4!
+ , . . .].
+  
+ Example 10.48
+  (1 + z)
+ r
+ is the ordinary generating function for the problem of 
+ picking an n-sized subset from an r-sized set, and it is the exponential 
+ generating function for the problem of picking a sequence of n distinct 
+ objects from an r-sized set.
+  
+ We see from Examples 10.47 and 10.48 that the same function g(z) can be 
+ used for generating different sequences, depending on whether g(z) is used 
+ as an ordinary or an exponential generating function.
+  
+ It makes sense, therefore, to define an operation that maps ordinarily 
+ generated sequences to exponentially generated sequences.",NA
+10.7 ,NA,NA
+Further Reading,"Domain theory and proof by approximation receive fuller treatment in 
+ [DP02]. Generating functions are a main focus in [GKP89]. The connection 
+ between gen-erating functions and lazy semantics is the topic of [Kar97, 
+ McI99, McI00]. A coinductive calculus of streams and power series is 
+ presented in [Rut00]. Core-cursion is intimately connected with circularity 
+ in definitions [BM96] and with the theory of processes and process 
+ communication [Fok00, Mil99].",NA
+Chapter 11,NA,NA
+Finite and Infi nite Sets,NA,NA
+Preview ,"Some sets are bigger than others. For instance, finite sets such as ∅ and {0, 1, 
+ 2}, are smaller than infinite ones such as N and R. But there are varieties of 
+ infinity: the infinite set R is bigger than the infinite set N, in a sense to be 
+ made precise in this chapter.
+  
+ This final chapter starts with a further discussion of the Principle of 
+ Mathematical Induction as the main instrument to fathom the infinite with, 
+ and explains why some infinite sets are incomparably larger than some 
+ others.
+  
+ module FAIS 
+  
+ where",NA
+11.1 ,NA,NA
+More on Mathematical Induction ,"The natural numbers form the set N = {0, 1, 2, . . .}. The Principle of 
+ Mathemati-cal Induction allows you to prove
+  universal
+  statements about the 
+ natural numbers, that is, statements of the form ∀n ∈ N E(n).
+  
+ 399",NA
+11.2 ,NA,NA
+Equipollence,"In order to check whether two finite sets have the same number of elements, 
+ it is not necessary at all to count them. For, these numbers are the same iff
+  
+ there is a
+  
+ bijection between the two sets.
+  
+ Sometimes, it is much easier to construct a bijection than to count elements. 
+ Imag-ine a large room full of people and chairs, and you want to know 
+ whether there are as many people as there are chairs. In order to answer 
+ this question, it suffices to ask everyone to sit down, and have a look at the 
+ resulting situation.",NA
+11.3 ,NA,NA
+Infinite Sets,"One of the great discoveries of Cantor is that for any set A, the set ℘(A) is ‘larger’
+  
+ (in a sense to made precise below) than A. This shows the existence of ‘Cantor’s
+  
+ paradise’ of an abundance of sets with higher and higher grades of infinity.",NA
+11.4 ,NA,NA
+Cantor’s World Implemented,"The following program illustrates that N
+ 2
+ is denumerable:
+  
+ natpairs = [(x,z-x) | z <- [0..], x <- [0..z]]
+  
+ This gives:
+  
+ FAIS> natpairs 
+  
+ [(0,0),(0,1),(1,0),(0,2),(1,1),(2,0),(0,3),(1,2),(2,1), 
+ (3,0),(0,4),(1,3),(2,2),(3,1),(4,0),(0,5),(1,4),(2,3), 
+ (3,2),(4,1),(5,0){Interrupted!}
+  
+ Exercise 11.79
+  Implement the function pair :: (Int,Int) -> Int that is the 
+ inverse of natpairs. It should hold for all natural numbers n that
+  
+ pair (natpairs !! n) = n.
+  
+ Exercise 11.80
+  Implement a function natstar :: [[Int]] to enumerate N
+ ∗
+ (cf. 
+ Exercise 11.55).
+  
+ The following code illustrates that Q is denumerable:
+  
+ rationals = [ (n,m) | (n,m) <- natpairs, m /= 0, gcd n m == 1 ]
+  
+ This gives:
+  
+ FAIS> rationals 
+  
+ [(0,1),(1,1),(1,2),(2,1),(1,3),(3,1),(1,4),(2,3),(3,2),(4,1),(1,5), 
+ (5,1),(1,6),(2,5),(3,4),(4,3),(5,2),(6,1),(1,7),(3,5),(5,3),(7,1), 
+ (1,8),(2,7),(4,5),(5,4),(7,2),(8,1),(1,9),(3,7),(7,3),(9,1),(1,10), 
+ (2,9),(3,8),(4,7),(5,6),(6,5),(7,4),(8,3),(9,2),(10,1),(1,11),(5,7), 
+ (7,5),(11,1),(1,12),(2,11),(3,10),(4,9),(5,8),(6,7),(7,6),(8,5),(9,4), 
+ (10,3),(11,2),(12,1),(1,13),(3,11),(5,9),(9,5),(11,3),(13,1),(1,14),",NA
+11.5 ,NA,NA
+*Cardinal Numbers ,"By Theorem 11.21, equipollence is an equivalence on the collection of all sets. 
+ Definition 11.81 (Cardinal Number)
+  A
+  cardinal number
+  is an equivalence class 
+ w.r.t. equipollence.
+  
+ |A| denotes the cardinal number of the set A modulo ∼.
+  
+ The following is immediate (cf. Lemma 5.80, p. 
+ 193): 
+  
+ Lemma 11.82
+  |A| = |B| ⇐⇒ A ∼ B
+ .
+  
+ Usually, the cardinal number |{0, . . . , n − 1}| of the n-element sets is identified with the natural 
+ number n.
+  
+ Aleph-zero.
+  
+ ℵ
+ 0
+  = |N|.
+ 1 
+  
+ The concept of a cardinal number can be considered as a generalisation of 
+ that of a natural number.
+  
+ It is possible to generalize the definitions of addition, multiplication and 
+ exponen-tiation to cardinal numbers, and to prove natural laws that 
+ generalize those for the natural numbers.
+  
+ The operations are defined as follows. |A|+|B| = |A∪B| (provided that A∩B 
+ =∅: only if A and B are disjoint sets of n resp. m elements does it follow that 
+ their union has n + m elements), |A| × |B| = |A × B| and |A|
+ |B|
+ = |A
+ B
+ |.
+  
+ Thus, by Theorem 11.71, we have that |R| = 2
+ ℵ
+ 0
+ .
+  
+ The cardinal ℵ
+ 0
+  is the starting point of an infinite series of cardinal numbers 
+ called 
+ alephs
+ : ℵ
+ 0
+  < ℵ
+ 1
+  < ℵ
+ 2
+  < · · · < ℵ
+ ω
+  < · · · ; (ℵ
+ ω
+  is the smallest cardinal 
+ bigger than every ℵ
+ n
+ ).
+  
+ Using cardinals sometimes makes for amazingly compact proofs. An 
+ example is the following theorem.
+  
+ Theorem 11.83
+  R × R ∼ R
+ , i.e.: there are as many points in the plane as on a line.
+  
+ 1
+ ℵ (aleph) is the fi rst letter of the Hebrew alphabet.",NA
+*Further Exercises,"Exercise 11.84
+  Suppose that A
+ 1
+  ∼ A
+ 2
+  and B
+ 1
+  ∼ B
+ 2
+ . Show:
+  
+ 1. if A
+ 1
+  ∩ B
+ 1
+  = A
+ 2
+  ∩ B
+ 2
+  = ∅, then A
+ 1
+  ∪ B
+ 1
+  ∼ A
+ 2
+  ∪ B
+ 2
+ ,
+  
+ 2. A
+ 1
+  × B
+ 1
+  ∼ A
+ 2
+  × B
+ 2
+ ,
+  
+ 3.
+ *
+  A
+ B
+ 1 
+ 1
+  
+ ∼ A
+ B
+ 2 
+ (Hint: it does not do to say |A
+ 1 B
+ 1
+ | = |A
+ 1
+ |
+ |B
+ 1
+ |
+  = |A
+ 2
+ |
+ |B
+ 2
+ |
+  =
+  
+ |A
+ 2 
+ yet. Instead, show how to establish a bijection between A
+ B
+ 1 
+ B
+ 2
+ |, for we don’t have a 
+ rule of exponentiation for cardinal numbers as
+  
+ 1 
+  
+ and A
+ B
+ 2 
+ 2
+ .)
+  
+ Exercise 11.85
+  Suppose that A
+ 1
+  ⪯ A
+ 2
+  and B
+ 1
+  ⪯ B
+ 2
+ . Show:
+  
+ 1. if A
+ 2
+  ∩ B
+ 2
+  = ∅, then A
+ 1
+  ∪ B
+ 1
+  ⪯ A
+ 2
+  ∪ B
+ 2
+ ,
+  
+ 2. A
+ 1
+  × B
+ 1
+  ⪯ A
+ 2
+  × B
+ 2
+ ,
+  
+ 3. ℘(A
+ 1
+ ) ⪯ ℘(A
+ 2
+ ),
+  
+ 4.
+ *
+  if A
+ 2
+  ̸= ∅, then A
+ B
+ 1
+ ⪯ A
+ B
+ 2 
+ (Hint: Use the fact that, since A
+ 2
+  ̸= ∅, you
+  
+ can pick a ∈ A
+ 2
+  for the definition of the injection that you need.)
+  
+ Exercise 11.86
+  Give counter-examples to the following implications:
+  
+ 1. A
+ 1
+  ≺ A
+ 2
+  ⇒ A
+ 1
+  ∪ B ≺ A
+ 2
+  ∪ B (A
+ 1
+  ∩ B = A
+ 2
+  ∩ B = ∅),",NA
+The Greek Alphabet ,"Mathematicians are in constant need of symbols, and most of them are very 
+ fond
+  
+ of Greek letters. Since this book might be your first encounter with this new set of
+  
+ symbols, we list the Greek alphabet below.
+  
+ name
+  
+ lower case
+  
+ upper case
+  
+ alpha
+  
+ α
+  
+ Γ
+  
+ beta 
+  
+ gamma
+  
+ β
+  
+ γ
+  
+ delta 
+  
+ epsilon
+  
+ δ
+  
+ ∆
+  
+ ε
+  
+ zeta
+  
+ ζ
+  
+ Θ
+  
+ eta 
+  
+ thet
+ a
+  
+ η
+  
+ θ
+  
+ iota
+  
+ ι
+  
+ Λ
+  
+ kappa 
+  
+ lambda
+  
+ κ
+  
+ λ
+  
+ mu 
+  
+ nu
+  
+ µ
+  
+ Ξ
+  
+ ν
+  
+ xi
+  
+ ξ
+  
+ pi 
+  
+ rh
+ o
+  
+ π
+  
+ Π
+  
+ ρ
+  
+ sigma
+  
+ σ
+  
+ Σ
+  
+ tau 
+  
+ upsilon
+  
+ τ
+  
+ Υ
+  
+ υ
+  
+ phi 
+  
+ chi
+  
+ ϕ
+  
+ Φ
+  
+ χ
+  
+ psi
+  
+ ψ
+  
+ Ψ
+  
+ omega
+  
+ ω
+  
+ Ω
+  
+ 423",NA
+Bibliography,"[AHV95] 
+ [Bab61]
+  
+ [Bab94]
+  
+ [Bal91] 
+  
+ [Bar84] 
+  
+ [Bir98] 
+  
+ [BM96] 
+  
+ [Bry93] 
+  
+ [Bur98] 
+  
+ [CG96] 
+  
+ [CR78]
+  
+ S Abiteboul, R. Hull, and V. Vianu.
+  Foundations of Databases
+ . Ad-
+ dison Wesley, 1995.
+  
+ C. Babbage.
+  On the Principles and Development of the Calculator
+ . 
+ Dover, 1961. Edited and with an introduction by P. Morrison 
+ and E. Morrison.
+  
+ C. Babbage.
+  Passages from the Life of a Philosopher
+ . Rutgers Uni-
+ versity Press and IEEE-Press, New Brunswick, New Jersey and 
+ Pis-cataway, New Jersey, 1994. Edited with a new introduction 
+ by Martin Campbell-Kelly. Originally published 1864.
+  
+ V. K. Balakrishnan.
+  Introductory Discrete Mathematics
+ . Dover, 1991.
+  
+ H. Barendregt.
+  The Lambda Calculus: Its Syntax and Semantics 
+ (2nd ed.)
+ . North-Holland, Amsterdam, 1984.
+  
+ R. Bird.
+  
+ Introduction to Functional Programming Using Haskell
+ .
+  
+ Prentice Hall, 1998.
+  
+ J. Barwise and L. Moss.
+  Vicious Circles: On the Mathematics of 
+ Non-wellfounded Phenomena
+ . CSLI Publications, 1996.
+  
+ V. Bryant.
+  Yet another introduction to analysis
+ . Cambridge 
+ University Press, 1993.
+  
+ Stanley N. Burris.
+  Logic for Mathematics and Computer Science
+ . 
+ Prentice Hall, 1998.
+  
+ J.H. Conway and R.K. Guy.
+  The Book of Numbers
+ . Springer, 1996.
+  
+ R. Courant and H. Robbins.
+  What is Mathematics? An Elementary 
+ Approach to Ideas and Methods
+ . Oxford University Press, Oxford, 
+ 1978.
+  
+ 425",NA
+Index,"(a, b), 136
+  
+ :=, 32
+  
+ :≡, 61 A/R, 194
+  
+ A
+ c
+ , 131
+  
+ R
+ −1
+ , 163
+  
+ ∆
+ A
+ , 163
+  
+ ∩, 127
+  
+ ∪, 127 dom 
+ (R), 162
+  
+ ∅, 126
+  
+ ∧, 29, 31
+  
+ ∨, 29, 32
+  
+ ⇔, 29, 35
+  
+ ¬, 29, 30
+  
+ ⊕.n, 
+ 247℘(X), 
+ 132
+  
+ ⇒, 29, 33 ran(R), 162
+  
+ {a}, 125 
+  
+ {x∈A | P}, 118 
+  
+ {x | P}, 118
+  
+ k=1
+ a
+ k
+ , 54, 241
+  
+ &&, 17, 31, 141
+  
+ ||, 32
+  
+ (.), 69
+  
+ (.*), 354
+  
+ (op x), 21
+  
+ (x op), 21
+  
+ (x1,x2), 139
+  
+ +, 6
+  
+ --, 122
+  
+ ->, 9, 142 
+  
+ ., 69, 222 
+  
+ /, 15 
+  
+ /=, 5, 124 
+  
+ ::, 9 
+  
+ :l, 2 
+  
+ :r, 5 
+  
+ :t, 9 
+  
+ <, 124 
+  
+ <+>, 36 
+  
+ <=, 124 
+  
+ <=, 13 
+  
+ <=>, 36 
+  
+ =, 5 
+  
+ ==, 5, 124 
+  
+ ==>, 33 
+  
+ <, 8 
+  
+ >=, 8 
+  
+ @, 175 
+  
+ [a], 18 
+  
+ [n..m], 120 
+  
+ Z
+ n
+ , 195 
+  
+ \\, 150 
+  
+ \, 46 
+  
+ _, 141 
+  
+ n
+  
+ k 
+ , 346
+  
+ ⊥, 46, 84 dom 
+ (f), 206
+  
+ ≡
+ n
+ , 189λx.t, 
+ 58 
+  
+ (mod n), 189
+  
+ 429",NA

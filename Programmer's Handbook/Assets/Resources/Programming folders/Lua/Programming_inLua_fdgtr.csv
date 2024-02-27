@@ -1,0 +1,2731 @@
+Larger Text,Smaller Text,Symbol
+Programming in Lua,"Roberto Ierusalimschy
+  
+ January 22, 2003",NA
+Contents,"1
+  
+ Introduction
+  
+ 7
+  
+ I
+  
+ The Language
+  
+ 11
+  
+ 2
+  
+ Getting Started
+  
+ 13
+  
+ 3
+  
+ 2.1
+  
+ Environment and Chunks . . . . . . . . . . . . . . . . . . . . . .
+  
+ 14
+  
+ 2.2
+  
+ Some Lexical Conventions . . . . . . . . . . . . . . . . . . . . . .
+  
+ 16
+  
+ Types and Values
+  
+ 19
+  
+ 4
+  
+ Expressions
+  
+ 27
+  
+ 5
+  
+ 4.1
+  
+ Arithmetic Operators
+  
+ . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 27
+  
+ 4.2
+  
+ Relational Operators . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 27
+  
+ 4.3
+  
+ Logical Operators . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 28
+  
+ 4.4
+  
+ Concatenation
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 29
+  
+ 4.5
+  
+ Precedence
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 29
+  
+ 4.6
+  
+ Table Constructors . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 29
+  
+ Statements
+  
+ 33
+  
+ 6
+  
+ 5.1
+  
+ Assignment . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 33
+  
+ 5.2
+  
+ Local Variables and Blocks
+  
+ . . . . . . . . . . . . . . . . . . . . .
+  
+ 34
+  
+ 5.3
+  
+ Control Structures . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 35
+  
+ Functions
+  
+ 41
+  
+ 7
+  
+ More About Functions
+  
+ 45
+  
+ 8
+  
+ 7.1
+  
+ Closures & Upvalues . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 47
+  
+ 7.2
+  
+ Variable Number of Arguments . . . . . . . . . . . . . . . . . . .
+  
+ 52
+  
+ 7.3
+  
+ Named Parameters . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 53
+  
+ Errors
+  
+ 55
+  
+ 8.1
+  
+ Error Messages . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 57
+  
+ 8.2
+  
+ Error Handling and Exceptions . . . . . . . . . . . . . . . . . . .
+  
+ 58
+  
+ 3",NA
+1.,NA,NA
+Introduction,"Currently, many languages are concerned with how to help you write programs 
+ with hundreds of thousands of lines. For that, they offer you packages, name 
+ spaces, complex type systems, myriads of constructions, and thousands of doc-
+ umentation pages to be studied.
+  
+ Lua does not try to help you write programs with hundreds of thousands of 
+ lines. Instead, Lua tries to help you solve your problem with only hundreds of 
+ lines, or even less. To achieve this aim, Lua relies on
+  extensibility
+ , like many 
+ other languages. But, unlike most other languages, Lua is easily extended not 
+ only with software written in Lua itself, but also with software written in other 
+ languages, such as C/C++.
+  
+ Lua was designed, from the beginning, to be easily integrated with software 
+ written in C and other “conventional” languages. 
+  
+ This duality of languages 
+ brings many benefits. Lua is a very small and simple language, partially because 
+ it does not try to do what C is already good for, such as sheer performance, low 
+ level operations, or interface with third-party software. Lua relies on C for those 
+ tasks. What Lua offers you is what C is not good for: a good distance from the 
+ hardware, dynamic structures, no redundancies, ease of testing and debugging. 
+ For that, Lua has a secure environment, automatic memory management, and 
+ great facility to handle strings and other kinds of data with dynamic size.
+  
+ More than being an extensible language, Lua is mainly a
+  glue language
+ . Lua 
+ supports a component-based approach to software development, where we 
+ create an application by gluing together high-level components. Usually, these 
+ components are written in a a compiled, statically typed language, such as C or 
+ C++; Lua is the glue we use to compose and connect those components. Usually, 
+ the components (or objects) represent more concrete, low level concepts (such 
+ as widgets and data structures), which are not subject to many changes during 
+ program development, and which take the bulk of the CPU time of the final 
+ program. Lua gives the final shape of the application, which will probably 
+ change a lot during the life-cycle of the product. But, unlike some other glue 
+ technologies, Lua is a full-fledged language as well. Therefore, we can use Lua 
+ not only to glue components, but also to adapt and reshape them, or even to 
+ create whole new components.
+  
+ Of course, Lua is not the only scripting language around. There are other
+  
+ 7",NA
+Part I ,NA,NA
+The Language,"In the following chapters, we give an overview of the whole language, starting
+  
+ from the
+  Hello World
+  example. We will focus on different language constructs,
+  
+ and use numerous examples to show how to use them for practical tasks.",NA
+2.,NA,NA
+Getting Started,"To keep with tradition, our first program in Lua just prints ""Hello World"":
+  
+ print(""Hello World"")
+  
+ If you are using the stand-alone Lua interpreter, all you have to do to run your 
+ first program is to call the interpreter (usually named lua) with the name of the 
+ text file that contains your program. For instance, if you write the above 
+ program in a file first.lua, then the command
+  
+ prompt> lua first.lua
+  
+ should run it.
+  
+ As a more complex example, the following program defines a function to 
+ compute the factorial of a given number, then asks the user for a number, and 
+ prints its factorial:
+  
+ -- defines a factorial function function 
+ factorial (n) 
+  
+ if n == 0 then return 1
+  
+ (this line is a comment)
+  
+ else return n*factorial(n-1) end
+  
+ end
+  
+ print ""enter a number:""
+  
+ a = read(""*number"")
+  
+ -- read a number
+  
+ print(factorial(a))
+  
+ If you are using Lua embedded in an application, such as CGILua or IUPLua, 
+ please refer to the application manual (or to a “guru friend”) to learn how to run 
+ your programs. Nevertheless, Lua is still the same language, and most things we 
+ will see here are valid regardless of how you are using Lua. For a start, we 
+ recommend that you use the stand-alone interpreter to run your first examples 
+ and experiments.
+  
+ 13",NA
+2.1 ,NA,NA
+Environment and Chunks,"Each piece of code that Lua executes, such as a file or a single line in interactive 
+ mode, is called a
+  chunk
+ . A chunk is simply a sequence of commands.
+  
+ Any command may be optionally followed by a semicolon. Usually, we use 
+ semicolons only to separate two or more commands written in the same line, 
+ but this is only a convention. Line breaks play no role in Lua’s syntax. So, the 
+ following four chunks are all valid and equivalent:
+  
+ a = 1
+  
+ b = a*2
+  
+ a = 1;
+  
+ b = a*2;
+  
+ a = 1 ; b = a*2
+  
+ a = 1
+  
+ b = a*2
+  
+ -- ugly, but valid
+  
+ Lua has no declarations, and function definitions are also commands (in fact, 
+ they are assignments, as we will see later). So, a chunk may be as simple as a 
+ single statement, such as the “hello world” example, or it may be composed by a 
+ mix of usual commands and function definitions, such as the factorial example.
+  
+ A chunk may be as large as you wish, and may comprise thousands of com-
+ mands and function definitions. Because Lua is also used as a data-description 
+ language, chunks with several megabytes are not uncommon. The Lua inter-
+ preter has no problems at all with large sizes.
+  
+ Instead of writing your program to a file, you may run the stand-alone 
+ interpreter in interactive mode. If you call Lua without any arguments, you will 
+ get its prompt:
+  
+ Lua 4.0 
+  
+ Copyright (C) 1994-2000 TeCGraf, PUC-Rio
+  
+ >
+  
+ Thereafter, each command that you type (such as print ""Hello World"") ex-ecutes 
+ immediately after you press <
+ enter
+ >. To exit the interactive mode and the 
+ interpreter, just type
+  end-of-file
+  (ctrl-D in Unix, ctrl-Z in DOS), or call the exit 
+ function (you have to type exit()<
+ enter
+ >).
+  
+ In interactive mode, each line that you type is usually interpreted as a whole 
+ chunk. Therefore, you cannot enter a multi-line definition, such as the factorial 
+ function, directly in interactive mode. As soon as you enter the first line, Lua 
+ complains that the function has no end to close it.
+  
+ > function fat (n)
+  
+ lua error: ‘end’ expected;
+  
+ last token read: ‘<eof>’ at line 1 in string ‘function fat (n)’
+  
+ If you really want to enter a multi-line function in interactive mode, you can end 
+ each intermediate line with a backslash, to prevent Lua from closing the chunk:",NA
+2.2 ,NA,NA
+Some Lexical Conventions,"Identifiers in Lua can be any string of letters, digits, and underscores, not be-
+ ginning with a digit; for instance
+  
+ i
+  
+ j
+  
+ i10
+  
+ _ij
+  
+ ____
+  
+ aSomewhatLongName
+  
+ _INPUT
+  
+ Identifiers starting with one underscore followed by one or more uppercase 
+ letters (e.g., _INPUT) should not be defined in regular programs; they are 
+ reserved for special uses in Lua. Identifiers made up of underscores only (e.g., 
+ __) are conventionally used for dummy variables or short-lived temporary 
+ values.
+  
+ In Lua, the concept of what is a letter is locale dependent. So, with a proper 
+ locale, you can use variable names such as ´ındice or a¸c~ao. However, such 
+ names will make your program unsuitable to run in systems that do not support 
+ that locale.
+  
+ The following words are reserved, and cannot be used as identifiers:
+  
+ and
+  
+ break
+  
+ do
+  
+ else
+  
+ elseif
+  
+ end
+  
+ for
+  
+ function
+  
+ if
+  
+ in
+  
+ local
+  
+ nil
+  
+ not
+  
+ or
+  
+ repeat
+  
+ return
+  
+ then
+  
+ until
+  
+ while",NA
+3.,NA,NA
+Types and Values,"Lua is a dynamically typed language.
+  
+ There are no type definitions in the
+  
+ language; each value carries its own type.
+  
+ There are six basic types in Lua:
+  nil
+ ,
+  number
+ ,
+  string
+ ,
+  userdata
+ ,
+  function
+ , and
+  
+ table
+ .
+  Nil
+  is a type with a single value,
+  nil
+ , whose main property is to be different 
+ from any other value. It also represents
+  false
+  in boolean expressions, because 
+ Lua has no boolean type (any other value is considered
+  true
+ ). Also, as we have 
+ seen, a global variable has a
+  nil
+  value by default, before a first assignment, and 
+ you can assign
+  nil
+  to a global variable to delete it.
+  
+ Number
+  represents real (double-precision floating-point) numbers.
+  
+ There
+  
+ is no distinction between integers and floating-point numbers in Lua. Numeric 
+ constants may be written with an optional decimal part, and an optional decimal 
+ exponent. Examples of valid numeric constants are:
+  
+ 4 
+  
+ 4. 
+  
+ .4 
+  
+ 0.4 
+  
+ 4.57e-3 
+  
+ 0.3e12
+  
+ Strings
+  have the usual meaning, a sequence of characters. Lua is eight-bit
+  
+ clean, and so strings may contain characters with any numeric value, including
+  
+ embedded zeros (’\0’). Strings in Lua are immutable values. 
+  
+ You cannot
+  
+ change a character inside a string, as in C; instead, you create a new string with
+  
+ the desired modifications:
+  
+ a = ""one string""
+  
+ b = gsub(a, ""one"", ""another"") 
+ print(a)
+  
+ --> one string
+  
+ -- substitute string parts
+  
+ print(b)
+  
+ --> another string
+  
+ Strings in Lua use automatic memory management, like all Lua objects. This 
+ means that you do not have to worry about allocation and deallocation of 
+ strings; Lua handles this for you. A string may contain a single letter or a whole 
+ book. Lua handles long strings quite efficiently. Programs that manipulate 
+ strings with 100K or even 1M characters are not unusual in Lua.
+  
+ Literal strings can be delimited by matching single or double quotes:
+  
+ a = ""a line""
+  
+ b = ’another line’
+  
+ 19",NA
+4.,NA,NA
+Expressions,"Expressions denote values. Expressions in Lua include the numeric constants 
+ and string literals, variables, unary and binary operations, and function calls; 
+ expressions can be also the quite unconventional upvalues, function definitions, 
+ and constructors.",NA
+4.1 Arithmetic Operators,"Lua supports the usual arithmetic operators: the binary + (addition), - (sub-
+ traction), * (multiplication), / (division) and the unary - (negation). All of them 
+ operate over real numbers.
+  
+ Lua also offers partial support for ^ (exponentiation). One of the design goals 
+ of Lua is to have a tiny core. An exponentiation operation (through the pow 
+ function in C) would mean that Lua should be linked with the C mathe-matic 
+ library. To avoid this, the core of Lua offers only the syntax for the ^ binary 
+ operator, which have the higher precedence among all operations. The 
+ mathematic library (which is standard, but not part of the Lua core) then gives 
+ to this operator its expected meaning.",NA
+4.2 Relational Operators,"Lua provides the following relational operators:
+  
+ < 
+  
+ > 
+  
+ <= 
+  
+ >= 
+  
+ ~= 
+  
+ ==
+  
+ All these operators return
+  nil
+  as false and a value different from
+  nil
+  as true.
+  
+ The order operators can be applied only to two numbers or two strings. The 
+ operator == tests for equality, and can be applied to any two values. If the values 
+ have different types, they are considered different values. Otherwise they are 
+ compared according to their types. The operator ~= is exactly the negation of 
+ equality.
+  
+ Numbers are compared in the usual way. 
+  
+ Alphabetical order for strings 
+ follows the locale set for Lua. For instance, with the European Latin-1 locale, we 
+ have ""acai"" < ""a¸ca´ı"" < ""acorde"". Other types can only be compared
+  
+ 27",NA
+4.3 ,NA,NA
+Logical Operators,"The logical operators are and, or, and not. Like control structures, all logical 
+ operators consider
+  nil
+  as false and anything else as true. 
+  
+ The operator and 
+ returns
+  nil
+  if its first argument is
+  nil
+ ; otherwise, it returns its second argument. 
+ The operator or returns its first argument if it is different from
+  nil
+ ; otherwise, it 
+ returns its second argument.
+  
+ print(4 and 5)
+  
+ --> 5
+  
+ print(nil and 13)
+  
+ --> nil
+  
+ print(4 or 5)
+  
+ --> 4
+  
+ print(nil or 5)
+  
+ --> 5
+  
+ Both and and or use short-cut evaluation, that is, the second operand is evalu-
+ ated only when necessary.
+  
+ A useful Lua idiom is x = x or v, which is equivalent to
+  
+ if x == nil then x = v end
+  
+ i.e., it sets x to a default value v when x is not set.
+  
+  
+ Another useful idiom is (e and a) or b, which is equivalent to the C ex-pression
+  
+ e ? a : b
+  
+ (provided that $Ta is not
+  nil
+ ). For instance, we can select the maximum of two 
+ numbers x and y with a statement like
+  
+ max = ((x > y) and x) or y
+  
+ If x > y, the first expression of the and is true, so the and results in its second 
+ expression (x) (which is also true, because it is a number), and then the or 
+ results in the value of its first expression (x). If x > y is false, the whole and 
+ expression is false, and so the or results in its second expression, y.",NA
+4.4 Concatenation,"The string concatenation operator in Lua is denoted by “..” (two dots). If any
+  
+ of its operands is a number, it is converted to a string.
+  
+ print(""Hello "" .. ""World"")
+  
+ --> Hello World
+  
+ print(0 .. 1)
+  
+ --> 01
+  
+ Remember that strings in Lua are immutable values. The concatenation oper-
+  
+ ator always creates a new string, without any modification to its operands:
+  
+ a = ""Hello""
+  
+ print(a .. "" World"")--> Hello World
+  
+ print(a)--> Hello",NA
+4.5 Precedence,"Operator precedence follows the table below, from the lower to the higher pri-
+  
+ ority:
+  
+ and
+  
+ >
+  
+ or
+  
+ >=
+  
+ ~=
+  
+ ==
+  
+ <
+  
+ <=
+  
+ ..
+  
+ +
+  
+ -
+  
+ * 
+  
+ /
+  
+ not- (unary)
+  
+ ^
+  
+ All binary operators are left associative, except for ^ (exponentiation), which is
+  
+ right associative. Therefore, the following expressions on the left are equivalent
+  
+ to the ones on the right:
+  
+ a+i < b/2+1 
+  
+ (a+i) < ((b/2)+1)
+  
+ 5+x^2*8 
+  
+ 5+((x^2)*8)
+  
+ a < y and y <= z 
+  
+ (a < y) and (y <= z)
+  
+ -x^2
+  
+ -(x^2)
+  
+ x^y^z 
+  
+ x^(y^z)
+  
+ When in doubt, always use explicit parentheses. It is easier than to look in the
+  
+ manual, and probably you will have the same doubt when you read the code
+  
+ again.",NA
+4.6 Table Constructors,"Constructors are expressions that create and initialize tables. They are a dis-
+  
+ tinctive feature of Lua, and one of its most useful and versatile mechanisms.
+  
+ The simplest constructor is the empty constructor, {}, which creates an
+  
+ empty table; we have seen it before. Constructors can also be used to initialize
+  
+ arrays (also called sequences or lists). For instance, the statement",NA
+5.,NA,NA
+Statements,"Lua supports an almost conventional set of statements, similar to those in Pascal 
+ or C. The conventional statements include assignment, control structures and 
+ procedure calls. Non-conventional commands include multiple assignment and 
+ local variable declarations.",NA
+5.1 Assignment,"Assignment is the basic means to change the value of a variable or a table field:
+  
+ a = a/2
+  
+ t.n = t.n+1
+  
+ Lua allows multiple assignment, where a list of values is assigned to a list of 
+ variables in one step. Both lists are written with their elements separated by 
+ commas:
+  
+ a, b = 10, 2*x
+  
+ a, b = f(x)
+  
+ t[x], t.n, a = t[x]+1, f(t.n), t.n+a
+  
+ Lua first evaluates all values on the right side, and after that it makes the 
+ assignments. Therefore, we can use a multiple assignment to swap two values, 
+ as in
+  
+ x, y = y, x
+  
+ a[i], a[j] = a[j], a[i]
+  
+ In any assignment, when the list of values is shorter than the list of variables, 
+ the extra variables receive
+  nil
+  as their values. One the other hand, if the list of 
+ values is longer, the extra values are silently discarded:
+  
+ a, b, c = 0, 1
+  
+ print(a,b,c)--> 0 
+  
+ 1 nil
+  
+ a, b = a+1, b+1, c+1-- c+1 is ignored
+  
+ print(a,b)--> 1 
+  
+ 2
+  
+ a, b, c = 0
+  
+ print(a,b,c)
+  
+ --> 0
+  
+ nil
+  
+ nil
+  
+ 33",NA
+5.2 ,NA,NA
+Local Variables and Blocks,"Besides global variables, Lua supports local variables. Local variables are cre-
+  
+ ated with the statement local:
+  
+ j = 10
+  
+ -- global variable
+  
+ local i = 1
+  
+ -- local variable
+  
+ Unlike global variables, local variables have their
+  scope
+  limited to the block
+  
+ where they are declared. A block is the body of a control structure, the body
+  
+ of a function, or a chunk (the file or string with the code where the variable is
+  
+ declared).
+  
+ x = 10
+  
+ local i = 1
+  
+ -- local to the chunk
+  
+ while i<=x do
+  
+  
+ local x = i*2 
+  
+  
+ print(x) 
+  
+  
+ i = i+1 
+  
+ end 
+  
+ if i > 20 then
+  
+ -- local to the while body
+  
+ local x
+  
+ -- local to the ""then"" body
+  
+ x = 20
+  
+ print(x+2)
+  
+ else
+  
+ print(x)
+  
+ --> 10
+  
+ (the global one)
+  
+ end
+  
+ print(x)
+  
+ --> 10
+  
+ (the global one)
+  
+ It is good programming style to use local variables whenever possible. The 
+ access to local variables is faster than to global ones; moreover, with local vari-
+ ables you avoid cluttering the global environment with unnecessary names, and 
+ also avoid name clashes.
+  
+  
+ In Lua, local variable declarations are handled as statements. 
+  
+ As such, 
+ you can write local declarations anywhere you can write a statement. 
+  
+ The 
+ scope begins after the declaration and lasts until the end of the block. The 
+ declaration may include an initial assignment, which works the same way as a 
+ conventional assignment: Extra values are thrown away, extra variables get
+  nil
+ . 
+ As a particular case, if a declaration has no initial assignment, its variables are 
+ initialized with
+  nil
+ .",NA
+5.3 Control Structures,"Lua provides a small and conventional set of control structures, with if for 
+ conditional, and while, repeat, and for for iteration. All control structures have 
+ an explicit terminator: end for if, for and while; until for repeat.
+  
+ If
+  
+ An if tests its condition, and executes its
+  then-part
+  or its
+  else-part
+  accordingly. 
+ The
+  else-part
+  is optional.
+  
+ if a<0 then a = 0 end
+  
+ if a<b then return a else return b end
+  
+ if line > MAXLINES then
+  
+ showpage()
+  
+ line = 0
+  
+ end
+  
+ When you write nested ifs, you can use elseif. It is equivalent to a else if, but 
+ avoids the need of multiple ends.",NA
+6.,NA,NA
+Functions,"Functions are the main mechanism for abstraction of statements and 
+ expressions in Lua. Functions can both do a specific task (what is sometimes 
+ called
+  procedure 
+ or
+  subroutine
+  in other languages) or compute and return 
+ values. In the first case, a function call is used as a statement; in the second, it is 
+ used as an expression.
+  
+ print(8*9, 9/8)
+  
+ a = sin(3)+cos(10)
+  
+ print(date())
+  
+ In both cases, a list of
+  arguments
+  are given enclosed in parentheses. 
+  
+ If the 
+ function call has no arguments, an empty list () must be used to indicate the call. 
+ There is a special case to this rule: If the function has exactly one argument, and 
+ this argument is either a literal string or a table constructor, then the 
+ parentheses are optional:
+  
+ print ""Hello World"" 
+  
+ <--> print(""Hello World"")
+  
+ dofile ’a.lua’
+  
+ <--> dofile (’a.lua’)
+  
+ print [[a multi-line 
+  
+ <--> print([[a multi-line
+  
+ message]] 
+  
+ message]])
+  
+ f{x=10, y=20} 
+  
+ <--> f({x=10, y=20})
+  
+ type{} 
+  
+ <--> type({})
+  
+ Functions used by a Lua program can be defined both in Lua and in C (or other 
+ language used by the host application). Both are used in exactly the same way 
+ inside Lua. For instance, all builtin functions, as well as the library functions, are 
+ written in C, but this fact has no relevance to Lua programmers.
+  
+ As we have seen in other examples, a function definition has a quite conven-
+ tional syntax; for instance
+  
+ -- add all elements of array ‘a’
+  
+ function add (a)
+  
+ local sum = 0
+  
+ for i = 1, getn(a) do
+  
+ sum = sum + a[i]
+  
+ end
+  
+ 41",NA
+7.,NA,NA
+More About Functions,"Functions in Lua are first-class values, and they have a form of proper lexical 
+ scoping through
+  upvalues
+ . Through those mechanisms, Lua properly contains 
+ the lambda calculus, and therefore many powerful programming techniques 
+ used in functional languages can be applied in Lua as well. If you know nothing 
+ about functional programming, do not worry; as we have seen, functions in Lua 
+ can be used in conventional ways, too. Nevertheless, it is worth learning a little 
+ about how to explore those mechanisms, which can make your programs 
+ smaller and simpler.
+  
+ What does it mean for functions to be “first-class values”? It means that a 
+ function is a value in Lua, with the same rights as conventional values like 
+ numbers and strings. Functions can be stored in variables (both global and 
+ local), passed as arguments and returned by other functions, and can be stored 
+ in tables.
+  
+ A somewhat difficult notion in Lua is that functions, like all other values, do 
+ not have names. When we talk about a function name, say print, we are actually 
+ talking about a variable that holds that function. The “name” of a function in Lua 
+ is the name of a plain global variable that happens to hold its value. Like any 
+ other variable holding any other value, we can manipulate it in many ways. The 
+ following example, although a little silly, shows our point:
+  
+ a = {p = print}
+  
+ a.p(""Hello World"")--> Hello World
+  
+ print = sin
+  
+ a.p(print(10))--> 0.173648
+  
+ sin = a.p-- ‘sin’ now refers to the print function
+  
+ sin(10, 20)--> 10 
+  
+ 20
+  
+ Later we will see more useful applications for this facility.
+  
+ If functions are values, are there any expressions that “create” functions?
+  
+ Yes. In fact, the usual way to write a function in Lua, like
+  
+ function foo (x)
+  
+ return 2*x
+  
+ end
+  
+ 45",NA
+7.1 Closures & Upvalues,"Though powerful, the mechanism of anonymous functions has a major 
+ drawback: When a function is written enclosed in another function, it has no 
+ access to local variables from the enclosing function. For instance, suppose you 
+ want to sort a list of names, according to grades given to the names; those 
+ grades are given in a separate table, as follows:
+  
+ names = {""Peter"", ""Paul"", ""Mary""} 
+  
+ grades = {Mary = 10, Paul = 7, Peter = 8} 
+  
+ sort(names, function (n1, n2)
+  
+ return grades[n1] < grades[n2] end)
+  
+ -- compare the grades",NA
+7.2 ,NA,NA
+Variable Number of Arguments,"Some functions in Lua may be called with a variable number of arguments. For 
+ instance, we have already called print with 1, 2, and more arguments.
+  
+ Suppose now that we want to redefine print in Lua: Our new system does not 
+ have a stdout and so, instead of printing its arguments, print stores them in a 
+ global variable, for later use. We can write this new function in Lua as follows:
+  
+ PRINT_RESULT = """"
+  
+ function print (...) 
+  
+  
+ for i=1,arg.n do 
+  
+   
+ PRINT_RESULT = PRINT_RESULT..tostring(arg[i])..""\t"" 
+  
+ end 
+  
+  
+ PRINT_RESULT = PRINT_RESULT..""\n"" 
+  
+ end
+  
+ The three dots (...) in the parameter list indicates that this function has a 
+ variable number of arguments. When this function is called, all its arguments are 
+ collected in a single table, which the function accesses as a hidden parameter,",NA
+7.3 Named Parameters,"The parameter passing mechanism in Lua is
+  positional
+ , meaning that, when you 
+ call a function, arguments match parameters by their positions: The first",NA
+8.,NA,NA
+Errors,"Errare humanum est
+ . So, we must handle errors the best way we can. Because 
+ Lua is an extension language, frequently used embedded in an application, it 
+ cannot simply crash or exit when an error happens. Instead, whenever an error 
+ occurs, Lua ends the current chunk and returns to the application.
+  
+ Any unexpected condition that Lua encounters raises an error. (You can 
+ modify this behavior using
+  tag methods
+ , as we will see later.) Errors occur when 
+ you (that is, your program) try to add values that are not numbers, to call values 
+ that are not functions, to index values that are not tables, to run a chunk with
+  
+ syntax errors, and so on.
+  
+ Also, you can explicitly raise an error calling the
+  
+ function error; its only optional argument is the error message. Usually, this 
+ function is a good way to handle errors in your code.
+  
+ print ""enter a number:""
+  
+ n = read(""*number"")
+  
+ if not n then error(""invalid input"") end
+  
+ Such combination of if not ... 
+  
+ then error end is so common that Lua has a 
+ builtin function just for that job, called assert.
+  
+ print ""enter a number:""
+  
+ n = read(""*number"")
+  
+ assert(n, ""invalid input"")
+  
+ The assert function checks whether its first argument is not
+  nil
+ , and raises an 
+ error if it is. Its second argument is optional, so that if you do not want to say 
+ anything in the error message, you do not have to.
+  
+ When a function finds a somewhat unexpected situation (an
+  exception
+ ), it can 
+ assume two basic behaviors: it can return an error code (typically
+  nil
+ ), or it can 
+ raise an error, calling the error function. There are no fixed rules for choosing 
+ between these two options, but we can provide a general rule: An exception 
+ which are easily avoided should raise an error, otherwise it should return an 
+ error code.
+  
+ For instance, let us consider the sin function. How should it behave when 
+ called over a table? Suppose it returns an error code. If we need to check for 
+ errors, we would have to write something like
+  
+ 55",NA
+8.1 Error Messages,"When an error happens, the interpreter calls the function _ERRORMESSAGE 
+ with an error message as its only argument, right before finishing the current 
+ chunk. The default implementation of this function only calls the function 
+ _ALERT, which then prints the error message on the console (stderr).
+  
+ The I/O library redefines the function _ERRORMESSAGE, so that it gives 
+ more information about the error. Again, it uses _ALERT to display this extended 
+ error message. This new implementation uses the
+  debug API
+  of Lua to gather 
+ informations such as the name of the function where the error happens, the 
+ calling stack, and the like. For instance,
+  
+ error: attempt to perform arithmetic on global ‘a’ (a nil value)
+  
+ Active Stack:
+  
+ function ‘f’ at line 3 [file ‘temp’]
+  
+ function ‘g’ at line 7 [file ‘temp’]
+  
+ main of file ‘temp’ at line 10
+  
+ Particularly, the first line of the active stack gives exactly the line where the 
+ error happens (line 3 of file temp, in that example).
+  
+ You can change where Lua shows its messages by redefining the _ALERT 
+ function. For instance, if you are using a window system without consoles, you 
+ can redefine _ALERT as a function that, when called, opens a pop-up window to 
+ show its only argument.
+  
+ If you want to change what Lua shows in an error message, or the message 
+ format, then you should redefine _ERRORMESSAGE. As a special case, if you set",NA
+8.2 ,NA,NA
+Error Handling and Exceptions,"For most applications, you do not need to do any error handling in Lua. Usually 
+ this handling is done by the application. All Lua activities start from a call by the 
+ application, usually asking Lua to run a chunk. If there is any error, this call 
+ returns an error code, and the application can take appropriate actions. In the 
+ case of the stand-alone interpreter, its main loop just ignores the error code, and 
+ continues showing the prompt and running the commands.
+  
+  
+ If you need to handle errors in Lua, you can use the dostring function to 
+  
+  
+ But a encapsulate your code, as we did previously with the exec function.
+  
+ better way to do that is with the call function.
+  
+ Suppose you want to run some piece of Lua code, and to catch any error 
+ raised while running that code. Your first step is to encapsulate that piece of 
+ code in a function; let us call it foo.
+  
+ function foo ()
+  
+ ...
+  
+ if unexpected_condition then error() end
+  
+ ...
+  
+ end
+  
+ Then, you call foo with the call function:
+  
+ if not call(foo, {}, ""x"", nil) then
+  
+ -- ‘foo’ raised an error: take appropriate actions",NA
+9.,NA,NA
+Complete Examples,"To end this chapter, we show two complete programs that illustrate different 
+ facilities of the language.",NA
+9.1 Data Description,"Our first example is a real program from the Lua site. We keep a record of 
+ projects around the world that use Lua. Each entry is represented by a con-
+ structor, in a quite auto-documented way:
+  
+ entry{ 
+  
+ title = ""TeCGraf"", 
+  
+ org = ""Computer Graphics Technology Group, PUC-Rio"", 
+  
+ url = ""http://www.tecgraf.puc-rio.br/"", 
+  
+ contact = ""Waldemar Celes"", 
+  
+ description = [[ 
+  
+  
+ TeCGraf is the result of a partnership between 
+  
+  
+ PUC-Rio, the Pontifical Catholic University of Rio de Janeiro, 
+  
+ and <A 
+ HREF=""http://www.petrobras.com.br/"">PETROBRAS</A>, 
+  
+ the Brazilian 
+ Oil Company.
+  
+ TeCGraf is Lua’s birthplace, 
+  
+ and the language has been used there since 1993.
+  
+  
+ Currently, more than thirty programmers in TeCGraf use Lua regularly, 
+  
+ who 
+ have written more than two hundred thousand lines of code, 
+  
+ distributed among 
+ dozens of final products.]] 
+  
+ }
+  
+ The interesting thing about this representation is that a file with a sequence of 
+ such entries is a Lua program, that does a sequence of calls to a function entry, 
+ using the described table as the call argument.
+  
+ Our goal is to write a program that shows that data in HTML. Because there 
+ are lots of projects, the final page first shows a list of all project titles, and then 
+ shows the details of each project. The final result of the program is something 
+ like
+  
+ 61",NA
+9.2 ,NA,NA
+Markov Chain Algorithm,"Our second example is an implementation of the
+  Markov chain algorithm
+ , de-
+ scribed by Kernighan & Pike in their book
+  The Practice of Programming
+  (Addison-
+ Wesley, 1999). The program generates random text, based on what words may 
+ follow a sequence of
+  n
+  previous words in a base text. For this particular imple-
+ mentation, we will fix
+  n
+  = 2.
+  
+ The first part of the program reads the base text and builds a table that, for 
+ each prefix of two words, gives an array with the words that may follow that 
+ prefix. Each prefix is represented by the two words concatenated with spaces in 
+ between:
+  
+ function prefix (w1, w2) 
+  
+  
+ return w1..’ ’..w2 
+  
+ end
+  
+  
+ We use the string NOWORD (""\n"") to initialize the prefix words, and to mark 
+ the end of the text. For instance, for the following text
+  
+ the more we try the more we do
+  
+ the table would be
+  
+ { [""\n \n""] = {""the""}, 
+  
+  
+ [""\n the""] = {""more""}, 
+  
+  
+ [""the more""] = {""we"", ""we""}, 
+  
+  
+ [""more we""] = {""try"", ""do""}, 
+  
+  
+ [""we try""] = {""the""}, 
+  
+  
+ [""try the""] = {""more""}, 
+  
+  
+ [""we do""] = {""\n""}, 
+  
+ }
+  
+ To insert a new word in a list, we use the following function:
+  
+ function insert (index, value) 
+  
+  
+ if not statetab[index] then 
+  
+   
+ statetab[index] = {n=0}",NA
+10.,NA,NA
+The Stand-Alone Interpreter,"to do: explain its options and different ways to pass arguments to a script
+  
+ 67",NA
+Part II ,NA,NA
+Tables and Objects,"Tables in Lua are not a data structure mechanism; they are
+  the
+  data struc-
+ ture mechanism. All structures that other languages offer —arrays, records,
+  
+ lists, queues, sets— are represented with tables in Lua.
+  
+ More to the point,
+  
+ tables implement all these structures
+  efficiently
+ .
+  
+ Lua also offers a powerful way to denote tables, the so called
+  constructors
+ . 
+ Constructors allow Lua to be used as a powerful data-representation language. 
+ (One user called this mechanism “XML ahead of its time”.) When you represent 
+ data with constructors, you do not need parsers or other facilities to read that 
+ data. Data files are actually Lua programs, and to read them you only have 
+ to“dofile” them.
+  
+ But tables are more than data structuring and representation.
+  
+ Because
+  
+ tables can also store functions in its fields, they are also a mechanism to structure 
+ programs. Tables can implement modules and objects in many different ways.",NA
+11.,NA,NA
+Data Structures,"In traditional languages, such as C and Pascal, most data structures are imple-
+ mented with arrays and lists (“lists = records + pointers”). Although we can 
+ implement arrays and lists using tables (and sometimes we do that), tables are 
+ more powerful than arrays and lists; many algorithms are simplified to the point 
+ of triviality with the use of tables. For instance, you seldom write a search in 
+ Lua, because tables offer direct access to any type.
+  
+ It takes a while to learn how to use tables efficiently. Here, we will show how 
+ you can implement some typical data structures with tables, and provide some 
+ examples of their use. We will start with arrays, records, and lists, not because 
+ we need them for the other structures, but because most programmers are 
+ already familiar with them. We have already seen the basics of this material in 
+ our chapters about the language, but we will repeat it here for completeness.",NA
+11.1 Arrays,"We implement arrays in Lua simply by indexing tables with integers. 
+ Therefore,“arrays” do not have a fixed size, but grow as you need. Usually, when 
+ you initialize the array you indirectly define its size. For instance, after the 
+ following code
+  
+ a = {}-- new array
+  
+ for i=1,1000 do
+  
+ a[i] = 0
+  
+ end
+  
+ any attempt to access a field outside the range 1. . . 1000 will return
+  nil
+ , instead 
+ of 0.
+  
+ You can start an array at index 0, 1, or any other value:
+  
+ -- creates an array with indices from -5 to 5
+  
+ a = {}
+  
+ for i=-5,5 do
+  
+ a[i] = 0
+  
+ end
+  
+ 71",NA
+11.2 ,NA,NA
+Matrices and multi-dimensional arrays,"There are two main ways to represent matrices in Lua. 
+  
+ The first one is to 
+ use an array of arrays, that is, a table wherein each element is another table. For 
+ instance, you can create a matrix of zeros with dimensions N, M with the 
+ following code:
+  
+ mt = {}
+  
+ -- create the matrix
+  
+ for i=1,N do
+  
+ mt[i] = {}
+  
+ -- create a new row
+  
+ for j=1,M do
+  
+ while j <= M do
+  
+ mt[i][j] = 0
+  
+ end
+  
+ end
+  
+ Because tables are objects in Lua, you have to explicitly create each row to 
+ create a matrix. At one hand, this is certainly more verbose than simply 
+ declaring a matrix, as you do in C or Pascal. On the other hand, that gives you 
+ more flexibility. For instance, you can create a diagonal matrix changing the line
+  
+ for j=1,M do
+  
+ in the previous example to
+  
+ for j=i,M do
+  
+ With that code, the diagonal matrix uses only half the memory of the original one.
+  
+ The second way to represent a matrix in Lua is composing the two indices 
+ into a single one. If the two indices are integers, you can multiply the first one by 
+ a constant and then add with the second index. With this approach, our matrix of 
+ zeros with dimensions N, M would be created with
+  
+ mt = {}
+  
+ -- create the matrix
+  
+ for i=1,N do
+  
+ for j=1,M do
+  
+ mt[i*M+j] = 0
+  
+ end
+  
+ end",NA
+11.3 Linked Lists,"Because tables are dynamic entities, it is very easy to implement linked lists in 
+ Lua. Each node is represented by a table, and links are simply table fields that 
+ contain references to other tables. For instance, to implement a basic list, where 
+ each node has two fields, next and value, we need a variable to be the list root:
+  
+ list = nil
+  
+ To insert an element at the beginning of the list, with some value v, we do
+  
+ list = {next = list, value = v}
+  
+ Other kinds of lists, such as double-linked lists or circular lists, are also eas-ily 
+ implemented. However, you seldom need these structures in Lua, because 
+ usually there is a better way to represent your data without using lists. For 
+ instance, a stack is better represented with an array, with the field n pointing to 
+ the top. We have already seen such implementation, when we discussed the 
+ tinsert and tremove functions.",NA
+11.4 ,NA,NA
+Queues and Double Queues,"Although we can implement queues trivially using tinsert and tremove, such 
+ implementation can be too slow for large structures. We can do much better 
+ using two indices, one for the first and another for the last element:
+  
+ function List_new () 
+  
+  
+ return {first = 0, last = -1} 
+  
+ end
+  
+ Now, we can insert or remove an element in both ends in constant time:
+  
+ function List_pushleft (list, value) 
+  
+  
+ local first = list.first - 1 
+  
+  
+ list.first = first 
+  
+  
+ list[first] = value 
+  
+ end
+  
+ function List_pushright (list, value) 
+  
+  
+ local last = list.last + 1 
+  
+  
+ list.last = last 
+  
+  
+ list[last] = value 
+  
+ end
+  
+ function List_popleft (list) 
+  
+  
+ local first = list.first 
+  
+  
+ if first > list.last then error""list is empty"" end 
+  
+ local value = 
+ list[first] 
+  
+  
+ list[first] = nil
+  
+ -- to allow garbage collection 
+  
+ list.first 
+ = first+1 
+  
+  
+ return value 
+  
+ end
+  
+ function List_popright (list) 
+  
+  
+ local last = list.last 
+  
+  
+ if list.first > last then error""list is empty"" end 
+  
+ local value = 
+ list[last] 
+  
+  
+ list[last] = nil
+  
+ -- to allow garbage collection 
+  
+ list.last 
+ = last-1 
+  
+  
+ return value 
+  
+ end
+  
+ If you use this structure in a strict queue discipline, calling only List_pushright 
+ and List_popleft, both first and last will increase continually. However, because 
+ “arrays” in Lua are actually hash tables, there is no difference whether you index 
+ them from 1 to 20 or from 16777216 to 16777236. And because Lua uses doubles to 
+ represent numbers, your program can run for two hundred years doing one million 
+ insertions per second before it has problems with overflows.",NA
+11.5 Sets and Bags,"Suppose you want to list all identifiers used in a program source; somehow you 
+ will need to filter the reserved words out of your listing. Some C programmers 
+ could be tempted to represent the set of reserved words as an array of strings, 
+ and then to search this array every time they need to know whether a given 
+ word is in the set. To speed up the search, they could even use a binary tree or a 
+ hash table to represent the set.
+  
+ In Lua, a very efficient and simple way to represent such sets is to put the set 
+ elements as
+  indices
+  in a table. Then, instead of searching the table for a given 
+ element, you just index the table and test whether the result is
+  nil
+  or not.
+  
+ In our example, we could write the next code:
+  
+ reserved = {
+  
+ [""while""] = 1,
+  
+ [""end""] = 1,
+  
+ [""function""] = 1,
+  
+ [""local""] = 1,
+  
+ }
+  
+ if reserved[w] then
+  
+ -- ‘w’ is a reserved word
+  
+ ...
+  
+ (Because while is a reserved word in Lua, we cannot use it as an identifier. So, 
+ we cannot write while = 1; instead, we use the [""while""] = 1 notation.) You can 
+ have a clearer initialization using an auxiliary function to build the set:
+  
+ function Set (list)
+  
+ local set = {}
+  
+ for i=i,getn(list) do
+  
+ set[list[i]] = 1
+  
+ end
+  
+ return set
+  
+ end
+  
+ reserved = Set{""while"", ""end"", ""function"", ""local"", }",NA
+12.,NA,NA
+Metafiles and Persistence,"When dealing with data files, usually it is much easier to write the data than to 
+ read it back. When we write a file, we have full control of what is going on. When 
+ we read a file, on the other hand, we do not know what to expect. Besides all 
+ kinds of data that a correct file may contain, a good program should also handle 
+ bad files gracefully. Because of that, coding good read routines is always 
+ difficult.
+  
+ As we have seen in a previous example, table constructors provide a good 
+ alternative for file formats. The technique is to write our data file as Lua code 
+ that, when ran, builds the data into the program. With table constructors, these 
+ chunks can look remarkably like a plain data file.
+  
+ As usual, let us see an example to make things clear. In Chapter
+  ??
+ , we have 
+ seen how to read CSVs (Comma-Separated Values) in Lua. If our data file is 
+ already in CSV format, we have little choice. But if we are going to create the file 
+ for later use, we can use Lua constructors as our format, instead of CSV. In this 
+ format, we represent each data record as a Lua constructor. Therefore, instead 
+ of writing
+  
+ Donald E. Knuth,Literate Programming,CSLI,1992
+  
+ Jon Bentley,More Programming Pearls,Addison-Wesley,1990
+  
+ in our data file, we could write
+  
+ Entry{""Donald E. Knuth"", ""Literate Programming"", ""CSLI"", 1992}
+  
+ Entry{""Jon Bentley"", ""More Programming Pearls"", ""Addison-Wesley"", 1990}
+  
+ Remember that Entry{...} is the same as Entry({...}), that is, a call to function 
+ Entry with a table as its single argument. Therefore, this previous piece of data 
+ is a Lua program. To read such file, we only need to “run” it, with a sensible 
+ definition for Entry. For instance, the following program counts the number of 
+ entries in a data file:
+  
+ count = 0
+  
+ function Entry (b) count = count+1 end
+  
+ dofile(""data"")
+  
+ print(""number of entries: "" .. count)
+  
+ 77",NA
+12.1 Persistence,"Frequently we need some kind of
+  persistence
+ , that is, a way to save internal 
+ values of a program into a file for future use. (Currently this is also called 
+ serialization
+ , after Java mechanism for persistence.) Again, we can use a Lua 
+ chunk to represent persistent data, in such a way that, when we run the chunk, it 
+ reconstructs the saved values into the current program.
+  
+ Usually, if we want to restore the value of a global variable, our chunk will be 
+ something like varname = ..., where ... is the Lua code to create the value.
+  
+ Let us see how to write that code. For a numeric value the task is trivial:
+  
+ function serialize (o)
+  
+ if type(o) == ""number"" then
+  
+ write(o)
+  
+ else ...
+  
+ end
+  
+ For a string value, a naive approach would be something like
+  
+ if type(o) == ""string"" then
+  
+ write(""’"", o, ""’"")
+  
+ However, if the string contains “special” characters (such as quotes or newlines) 
+ the resulting code will not be a valid Lua program. Here, you may be tempted to 
+ solve this problem changing quotes:
+  
+ if type(o) == ""string"" then
+  
+ write(""[["", o, ""]]"")
+  
+ Do not do that! Double square brackets are very good for hand-written strings, 
+ but not for automatically generated ones. If the string you want to save is 
+ something like
+  §
+  ]]..execute(’rm *.*’)..[[ , your final chunk will be
+  
+ varname = [[ ]]..execute(’rm *.*’)..[[ ]]
+  
+ The user will have a bad surprise trying to reload this “data”.
+  
+ To quote an arbitrary string in a secure way, the format function, from the 
+ standard string library, offers the option %q. It surrounds the string with double 
+ quotes, and properly escape double quotes, newlines, and some other characters 
+ inside the string. Using this feature, our serialize function now looks like this:
+  
+ function serialize (o)
+  
+ if type(o) == ""number"" then
+  
+ write(o)
+  
+ elseif type(o) == ""string"" then
+  
+ write(format(""%q"", o))
+  
+ else ...
+  
+ end",NA
+13.,NA,NA
+Namespaces & Packages,"Many languages provide mechanisms to organize their space of global names, 
+ such as
+  modules
+  in Modula,
+  packages
+  in Java and Perl, and
+  namespaces
+  in C++. 
+ Each of these mechanisms have different rules regarding the use of elements 
+ declared inside a module, visibility rules, and other details. But all of them 
+ provide a basic mechanism to avoid collision among names defined in different 
+ libraries. Each library creates its own namespace, and names defined inside this 
+ namespace do not interfere with names in other namespaces.
+  
+ In Lua, such packages (or modules, or namespaces) are easily implemented 
+ with tables: We only have to put our identifiers as keys in a table, instead of as 
+ global variables. The main point here is that functions can be stored inside table, 
+ just as any other value. For instance, suppose we are writing a library to 
+ manipulate complex numbers. We represent each number as a table, with fields 
+ r (real part) and i (imaginary part). To avoid polluting the global namespace, we 
+ will declare all our new operations in a table, that acts as a new package:
+  
+ Complex = {
+  
+ new = function (r, i) return {r=r, i=i} end,
+  
+ add = function (c1, c2)
+  
+ return {r=c1.r+c2.r, i=c1.i+c2.i}
+  
+ end,
+  
+ sub = function (c1, c2)
+  
+ return {r=c1.r-c2.r, i=c1.i-c2.i}
+  
+ end,
+  
+ mul = function (c1, c2)
+  
+ return {r = c1.r*c2.r - c1.i*c2.i,
+  
+ i = c1.r*c2.i + c1.i*c2.r}
+  
+ end,
+  
+ inv = function (c)
+  
+ local n = c.r^2 + c.i^2
+  
+ 85",NA
+14.,NA,NA
+Objects,"A fundamental feature of our understanding of the world is that we organize our 
+ experience as a number of distinct
+  objects
+  (tables and chairs, bank loans and 
+ algebraic expressions, polynomials and persons, transistors and triangles, etc.); our 
+ thought, language, and actions are based on the designation, description, and 
+ manipulation of these objects, either individually or in relationship with other 
+ objects. (Tony Hoare, 1966) 
+  
+  
+ A table in Lua is an “object” in more than one sense. Like objects, tables have a 
+ state. Like objects, tables have an identity that is independent of their particular 
+ values; particularly, two objects (tables) with exactly the same value can be 
+ different objects, while the same object can have different values at different 
+ times. Like objects, tables have a life cycle that is independent of who created 
+ them or where they were created.
+  
+ Objects have their own operations. Tables also can have operations:
+  
+ Account = {balance = 0}
+  
+ function Account.withdraw (v)
+  
+ Account.balance = Account.balance - v
+  
+ end
+  
+ Such definition creates a new function and stores it in field withdraw of the 
+ Account object. Then, we can call it as
+  
+ Account.withdraw(100.00)
+  
+ This kind of function is almost what we call a
+  method
+ . However, the use of 
+ the global name Account inside the function is a bad programming practice. 
+ First, such function will work only for this particular object. Second, even for this 
+ particular object the function will work only as long as the object is stored in 
+ this particular global variable. For instance, if we change the name of this object, 
+ the withdraw function does not work any more:
+  
+ a = Account; Account = nil
+  
+ a.withdraw(100.00)-- ERROR!
+  
+ This restriction violates the previous principle that objects have independent life 
+ cycles.
+  
+ 89",NA
+14.1 Privacy,"Many people consider privacy to be an integral part of an object-oriented lan-
+ guage: The state of each object should be its own internal affair. In some OO 
+ languages, such as C++ and Java, you can control whether an object field (also 
+ called
+  instance variable
+ ) or a method is visible outside the object. Other lan-
+ guages, such as Smalltalk, makes all variables private and all methods public.
+  
+ The first OO language, Simula-67, did not offer any kind of protection.
+  
+ The main design for objects in Lua, that we shown previously, do not offer 
+ privacy mechanisms. Partially, this is a consequence of our use of a very general 
+ structure (tables) to represent objects. But this also reflects some basic design 
+ decisions behind Lua. Lua is not intended for building huge programs, where 
+ many programmers are involved for large periods of time. Quite the opposite, 
+ Lua aims small programs, usually part of a larger system, typically developed by 
+ one or a few programmers, or even by non programmers. So, Lua avoids 
+ redundancy and artificial restrictions. If you do not want to access something 
+ outside an object, just
+  do not do it
+ .
+  
+ Nevertheless, another aim of Lua is to be flexible, and to offer meta-mechanisms 
+ through which we can emulate many different mechanisms. Therefore, although the 
+ basic design for objects in Lua does not offer privacy mechanisms, we can 
+ implement objects in a different way, so as to have access control. Although this 
+ implementation is not used frequently, it is instructive to know it, both because it 
+ explores some interesting corners of Lua, and because it can be a good solution for 
+ other problems.",NA
+14.2 Delegation,"Back to our first design for objects, we still have some problems to solve. First, 
+ clones are not efficient when we have lots of objects with lots of methods. Sec-
+ ond, we still do not have inheritance. We will solve these two problems with the 
+ same mechanism:
+  delegation
+ . To implement delegation, we will need tag 
+ methods.
+  
+ Tag methods are the subject of a whole part of this book, but here we will see 
+ only a small part of this mechanism, and we will see it through a restricted point 
+ of view, which is enough to solve our problems now.
+  
+ What happens when Lua indexes a table with an absent index? For instance, 
+ if a = {x=1}, what is the value of a.y? It is
+  nil
+ . But this is not the whole true, 
+ because we can change this: We can define a function to be called by Lua in such 
+ an event, so that the final result of the indexing operation, instead of
+  nil
+ , will be 
+ the value returned by this function. This function is what we call a 
+ tag method
+ , 
+ and this specific event is called an
+  index
+  event. In other words, an index tag 
+ method is a function that is called when Lua cannot find a value for a given index 
+ in a table.
+  
+ To set a tag method, we use the settagmethod function. 
+  
+ It takes three 
+ arguments: A tag, an event name, and a function. The tag identifies the objects 
+ that will use this tag method, so that we can have different tag methods for 
+ different tables. For now, we will use only the default tag for tables, which is 
+ given by the call tag (that is, tag applied over a table); this tag refers to 
+ all“regular” tables in a program. The event name identifies what kind of event 
+ this tag method will handle; for now, it will be ""index"". Finally, the third 
+ argument is the function to be called when the given event happens over an 
+ object with",NA
+14.3 Classes & Inheritance,"Finally, we know all we need to know to fully implement objects in Lua. Let us go 
+ back to our first example of a bank account. Let us assume that our program 
+ already has the definition for an object Account; our program also has installed 
+ the delegate function as its index tag method, as we described previously. Now 
+ suppose we define a new object as follows:
+  
+ a1 = {balance = 100.00, parent = Account}
+  
+ and then do a call like
+  
+ a1:deposit(150.00)
+  
+ which is equivalent to
+  
+ a1.deposit(a1, 150.00)
+  
+ Because a1 does not have a field ""deposit"", the index tag method (the delegate 
+ function) will be called. That function will look for a field ""parent"" in a1, will find 
+ it, and will get the field ""deposit"" from this parent. 
+  
+ So, the re-
+ sult of a1.deposit will be the Account.deposit function. Lua will then call this 
+ function, with self = a1 and $Tv = 150.00, and finally the value of a1.balance will 
+ be incremented. The same sequence of actions happens for a call to a1.withdraw, 
+ or to any other method available in object Account.
+  
+ Now, any object with a parent field pointing to Account has available all 
+ methods defined for Account. Therefore, Account acts as a
+  prototype
+  for these 
+ objects; for most practical purposes, it also acts as a
+  class
+ . Let us repeat here this 
+ class definition:
+  
+ Account = {balance=0}
+  
+ function Account:withdraw (v)
+  
+ self.balance = self.balance - v
+  
+ end
+  
+ function Account:deposit (v)
+  
+ self.balance = self.balance + v
+  
+ end
+  
+ Moreover, as a class, Account should also have a method to create new instances:
+  
+ function Account:new (balance)
+  
+ return {balance=balance, parent=self}
+  
+ end",NA
+Part III ,NA,NA
+The Standard Libraries,"A great part of the power of Lua comes from its libraries.
+  
+ This is not
+  
+ by chance. One of the main strengths of Lua is its extensibility through new 
+ functions. Many features contribute to this strength. Dynamic typing allows a 
+ great degree of polymorphism (e.g., functions that operate over any kind of 
+ tables, such as sort and tinsert). Automatic memory management simplifies 
+ interfaces, because there is no need to decide who is responsible to allocate and 
+ deallocate memory, and how to handle overflows (e.g., functions returning 
+ strings, such as gsub). First order functions and anonymous functions allow a 
+ high degree of parameterization, making functions more versatile (e.g., functions 
+ sort and gsub).
+  
+ Lua comes with a set of standard libraries. When installing Lua in a strongly 
+ limited environment, such as embedded processors, it may be wise to choose 
+ carefully which libraries you really need. Moreover, if the limitations are really 
+ hard, it is very easy to go inside the libraries source code and choose one by one 
+ which functions should be kept. Remember, however, that Lua is rather small 
+ (even with all standard libraries), and in most systems you can use the whole 
+ package without any concerns.
+  
+ The
+  basic library
+  comprises functions that provide some kind of
+  reflexive 
+ facility (e.g., type and call), and functions that could be written in Lua itself, but 
+ are so common that deserve to be always at hand (e.g., sort, assert).
+  
+ The other standard libraries are a mathematical library, with trigonomet-ric 
+ and logarithmic functions, a pseudo-random number generator, and other 
+ related functions; a library for string manipulation, comprising pattern match-
+ ing; and the system library, with functions for time/date, input/output, file 
+ manipulation, and other functions related to the operating system.
+  
+ In the following chapters, we will tour through these libraries. Our purpose 
+ here is not to give the complete specification of each function, but to show you 
+ what kind of functionality these libraries can provide to you. We may omit some 
+ subtle options or behaviors for clarity of exposition. The main idea is to spark 
+ your curiosity, which then will be satiated by the manual.",NA
+15.,NA,NA
+Basic Library,"We classify the basic functions in five main classes:
+  
+ •
+  Functions to check and convert types.
+  
+ •
+  Functions to manipulate tables.
+  
+ •
+  Functions to manipulate the global environment.
+  
+ •
+  Functions to execute Lua code.
+  
+ •
+  Functions to manipulate tags and tag methods. These functions will be explained in Chapter 
+ IV, where we discuss tag methods.",NA
+15.1 Functions to Check and Convert Types,"We have already seen all these functions before. The function type returns a 
+ string describing the type of its argument. Its result can be ""function"", ""nil"", 
+ ""number"", ""string"", ""table"", and ""userdata"".
+  
+ The function tostring returns a string describing a value. Its main use is for 
+ human consumption; for instance, the function print uses it to know how to 
+ show a value. For strings it returns the string itself. For numbers, it returns the 
+ number converted to a string in a reasonable format (for a complete control 
+ over the conversion from numbers to strings, such as the number of significant 
+ digits, you should use the function format, from the string library). For other 
+ types, it returns the type name plus an internal identification (such as the 
+ hardware address of the object).
+  
+ > print(print)
+  
+ function: 0040A5B0
+  
+ > print({})
+  
+ table: 00672B60
+  
+ > print(_INPUT)
+  
+ userdata: 00420AB0
+  
+ > print(""Rio"")
+  
+ Rio
+  
+ 101",NA
+15.2 Functions to manipulate tables,"Frequently we use tables to represent arrays or lists. In those cases, the table 
+ has indices in the range 1
+  . . . n
+ . The Lua libraries offer special support for this 
+ use of tables. For most functions that manipulate arrays (that is, that manipulate 
+ tables that represent arrays), we need to define the size of an array. As we have 
+ seen, tables in Lua have no fixed size. So, if you are going to see a table as a list or 
+ an array, what is the list length, or the array size? The getn function defines the 
+ size of an array: If the table has a field n with a numeric value, that value is the 
+ size of the array. Otherwise, the size of the array is its greatest numeric index 
+ with a non
+  nil
+  value.
+  
+ print(getn{n=20})--> 20
+  
+ print(getn{""a"", ""b"", ""c""})--> 3
+  
+ print(getn{""a"", nil, ""c""})--> 3
+  
+ print(getn{""a"", nil, nil})--> 1
+  
+ print(getn{""a"", ""b"", ""c""; n=2})--> 2
+  
+ print(getn{[1000] = ""x""})--> 1000
+  
+ Two useful functions to manipulate arrays are tinsert and tremove. The first 
+ one inserts an element in a given position of an array, moving up other elements 
+ to open space. Moreover, tinsert increments (or creates) the field n of the array, 
+ to reflect its size. For instance, if a is the array {10 20 30}, after the call tinsert(a, 
+ 1, 15) a will be {15 10 20 30; n=4}. As a special (and frequent) case, if we call 
+ tinsert without a position, the element is inserted in the last position of the array 
+ (and, therefore, no elements are moved). As an example, the following code 
+ reads a file line by line, storing all lines in an array:
+  
+ a = {n=0}
+  
+ while 1 do
+  
+ local line = read()
+  
+ if line == nil then break end
+  
+ tinsert(a, line)
+  
+ end
+  
+ print(a.n)--> (number of lines read)",NA
+15.3 Functions to manipulate the global envi-,NA,NA
+ronment,"Our next class of functions deals with global variables. Usually, assignment is 
+ enough for getting and setting global variables. However, often we need a form 
+ of meta-programming. A typical case is when we need to manipulate a global 
+ variable whose name is stored in another variable, or somehow computed at run 
+ time. To get the value of such a variable, many programmers are tempted by 
+ something like
+  
+ dostring(""value = ""..varname)
+  
+ or
+  
+ value = dostring(""return ""..varname)
+  
+ If varname is x, for instance, the concatenation will result in ""return x"" (or ""value 
+ = x"", with the first form), which when run will achieve the desired result. 
+ However, such code involves the creation and compilation of a new chunk, and 
+ lots of extra work. You can accomplish the same effect with the following code, 
+ which is more than an order of magnitude more efficient than the previous one:",NA
+15.4 ,NA,NA
+Functions to execute Lua code,"Our last group of builtin functions deals with the execution of Lua code. Two of 
+ these functions are dofile and dostring, which we have seen already.
+  
+ The function dostring is very powerful, and therefore must be used with 
+ care. It is an expensive function (when compared to some alternatives), and may 
+ result in incomprehensible code. Before you use it, make sure that there is no 
+ better way to solve the problem at hand (for instance with getglobal, setglobal, 
+ or call).
+  
+  
+ The most typical use of dostring is to run “external” code, that is, pieces of 
+ code that come from outside your program. 
+  
+ For instance, you may want to 
+ plot a function defined by the user; the user enters the function code, and then 
+ you use dostring to evaluate it. Note that dostring expects a chunk, that is, 
+ statements. If you want to evaluate an expression, you must prefix it with return, 
+ so that you get a statement that returns the value of the given expression. See the 
+ example:
+  
+ print ""enter your expression:""
+  
+ local l = read()
+  
+ result = dostring(""return ""..l)
+  
+ print(""the value of your expression is ""..result)",NA
+16.,NA,NA
+The Mathematical Library,"The math library comprises a standard set of math functions, such as trigono-
+ metric functions (sin, cos, tan, asin, acos, etc.), exponential and logarithms (exp, 
+ log, log10), round functions (floor, ceil), max, min, plus a global vari-able PI. The 
+ math library also defines the operator ^ (using tag methods) to work as the 
+ exponential operator.
+  
+ All trigonometric functions work in degrees (and not radians). You can use 
+ the functions deg and rad to convert between degrees and radians. If you really 
+ want to work in radians, you can always redefine these functions:
+  
+ sin = function (x) return %sin(deg(x)) end
+  
+ asin = function (x) return rad(%asin(x)) end
+  
+ ...
+  
+ The function to generate pseudo-random numbers, random, can be called in 
+ three ways. When called without arguments, it returns a pseudo-random real 
+ number with uniform distribution in the interval [0
+ ,
+  1). When called with only 
+ one argument, an integer
+  n
+ , it returns an integer pseudo-random number 
+ x
+  such 
+ that 1
+  ≤ x ≤ n
+ . For instance, you can simulate the result of a dice with random(6). 
+ Finally, random can be called with two integer arguments,
+  l
+  and
+  u
+ , to return an 
+ integer pseudo-random number
+  x
+  such that
+  l ≤ x ≤ u
+ . You can set a seed for the 
+ pseudo-random generator with the randomseed function; its only numeric 
+ argument is the seed. Usually, when a program starts, it initializes the generator 
+ with a fixed seed. That means that, every time you run your program, it 
+ generates the same sequence of pseudo-random numbers. For debugging this is 
+ a nice property; but in a game, you will have the same scenario over and over. A 
+ common trick to solve this problem is to use the time of the day as a seed:
+  
+ randomseed(date""%d%H%M%S"")
+  
+ The call to function date will return the concatenation of the current day, hour, 
+ minute, and second. (So, you will repeat your game scenario only if you start to 
+ play at exactly the same second of the same day, at least one month later.)
+  
+ 109",NA
+17.,NA,NA
+The String Library,"The power of a raw Lua interpreter to manipulate strings is quite limited. A 
+ program can create string literals and concatenate them. But it cannot extract a 
+ substring, check its size, nor examine its contents. The full power to manipulate 
+ strings in Lua is provided by the string library.
+  
+ Some functions in the string library are quite simple: strlen(s) returns the 
+ length of the string s. strrep(s, n) returns the string s repeated n times; for 
+ instance, strrep("".\n"", 3) is "".\n.\n.\n"". You can create a string with 1M bytes (for 
+ tests, for instance) with strrep(""a"", 2^20). strlower(s) returns a copy of s with 
+ the upper case letters converted to lower case; all other characters in the string 
+ are not changed (strupper converts to upper case). As a typical use, if you want 
+ to sort an array of strings regardless case, you may write something like
+  
+ sort(a, function (a, b) return strlower(a) < strlower(b) end)
+  
+ Both strupper and strlower follow the current locale. Therefore, if you work 
+ with the European Latin-1 locale, the expression strupper(""a¸c~ao"") will result 
+ in ""AC¸~AO"".
+  
+ The strsub(s,i,j) function extracts a piece of the string s, from the i-th to the j-
+ th character inclusive. In Lua, the first character of a string has index 1. You can 
+ use also negative indices, which count from the end of the string: The index
+  −
+ 1 
+ refers to the last character in a string,
+  −
+ 2 to the previous one, and so on. 
+ Therefore, the call strsub(s, 1, j) gets a
+  prefix
+  of the string s with length j; 
+ strsub(s, j, -1) gets a
+  suffix
+  of the string, starting at the j-th character (if you do 
+ not provide a third argument, it defaults to
+  −
+ 1, so the last call could be written as 
+ strsub(s, j)); and strsub(s, 2, -2) removes the first and last characters of a string: 
+ If s is ""[in brackets]"", strsub(s, 2,-2) will be ""in brackets"".
+  
+ The conversion between characters and their internal numeric representa-
+ tions is done with strchar and strbyte. The function strchar gets zero or more 
+ integers, converts each one to a character, and returns a string concate-nating all 
+ those characters. The function strbyte(s, i) returns the internal numeric 
+ representation of the i-th character of the string s; the second argument
+  
+ 111",NA
+17.1 ,NA,NA
+Pattern Matching,"The most powerful functions in the string library are strfind (
+ String Find
+ ) and 
+ gsub (
+ Global Substitution
+ ). Both have multiple uses besides those implied by 
+ their names, and are based on
+  patterns
+ .
+  
+  
+ to do: brief comparison with POSIX regexp (why Lua does not use them?) 
+  
+ The basic use of strfind is to search for a pattern inside a given string (called 
+ the
+  subject
+  string). The function returns where it found the pattern, or
+  nil
+  if it 
+ could not find it. The simplest form of a pattern is a word, that matches only a 
+ copy of itself. For instance, the pattern hello will search for the substring ""hello"" 
+ inside the subject string. When the strfind function",NA
+18.,NA,NA
+The System Library,"The system library is the interface to the operating system. It includes func-tions 
+ for file manipulation, for getting current date and time, and other related 
+ facilities. This library pays a little price for Lua portability. Because Lua is 
+ written in ANSI C, it uses only the functions that the ANSI standard defines. 
+ Many OS facilities, such as directory manipulation and sockets, are not stan-
+ dard, and therefore are not provided by the system library. There are other Lua 
+ libraries, not included in the main distribution, that provide extended OS access. 
+ An example is the poslib library, which offers all functionality of the POSIX 
+ standard to Lua.",NA
+18.1 Input & Output,"The readfrom function opens a file for input. It receives the file name, and 
+ returns a
+  file handle
+ , which is a userdata that Lua uses to represent the file. 
+ Moreover, readfrom stores this new file handle in the global variable _INPUT, so 
+ that this file becomes the
+  current input file
+ , which will be used as the default file 
+ for subsequent read operations.
+  
+ Similarly, the writeto function opens a file for output. It stores its result in 
+ the variable _OUTPUT, as the
+  current output file
+ . Remember that, when you open 
+ a file for writing, you erase all its previous content. To append to a file, you 
+ should open it with the appendto function.
+  
+ The system library initializes the global variables _STDIN, _STDOUT, and 
+ _STDERR with handles to the standard input, standard output, and standard 
+ error, respectively. It also initializes the variables _INPUT and _OUTPUT with the 
+ values of _STDIN and _STDOUT, respectively.
+  
+ To close the current input file, you can call readfrom without arguments. 
+ This call will also reset _INPUT to the standard input. Similarly, to close the 
+ current output file, simply call writeto without arguments (even when you 
+ opened the file with appendto). This call will also reset _OUTPUT to the standard 
+ output.
+  
+ All these functions return
+  nil
+  plus an error message and an error number in case 
+ of errors:
+  
+ 127",NA
+18.2 ,NA,NA
+Other Operations on Files,"The rename function changes the name of a file; remove removes (deletes) a file. 
+ The tmpname function returns a name that you can use for a temporary file; it is 
+ your responsibility to open, close, and remove such files. The flush function 
+ executes all pending writes to a file. It can be called with a file handle, to flush 
+ that specific file, or without arguments, to flush all open files.
+  
+ The seek function can be used both to get and to set the current position of a 
+ file. Its general form is seek(filehandle, whence, offset). The whence argument is 
+ a string that specifies how the offset will be interpreted. Its valid values are 
+ ""set"", when offsets are interpreted from the beginning of the file; ""cur"", when 
+ offsets are interpreted from the current position of the file; and ""end"", when 
+ offsets are interpreted from the end of the file. Independently of the value of 
+ whence, the call returns the final current position of the file, measured in bytes 
+ from the beginning of the file.
+  
+ The default value for whence is ""cur"", and for offset is 0. Therefore, the call 
+ seek(file) returns the current file position, without changing it; the call seek(file, 
+ ""set"") resets the position to the beginning of the file (and returns 0); and the call 
+ seek(file, ""end"") sets the position to the end of the file, and returns its size. The 
+ following function gets the file size without changing its current position:
+  
+ function fsize (file)
+  
+  
+ local current = seek(file) 
+  
+  
+ local size = seek(file, ""end"") 
+  
+ seek(file, ""set"", current) 
+  
+  
+ return size 
+  
+ end
+  
+ -- get current position-- get 
+ file size
+  
+ -- restore position
+  
+ All the previous functions return
+  nil
+  plus an error message in case of errors.",NA
+18.3 ,NA,NA
+Date and Time,"All date and time queries in Lua are done through a single function, called date. 
+ This function gets as argument a format string, and returns a copy of this string 
+ where specific tags have been replaced by information about time and date. All 
+ tags are represented by a % followed by a letter; for instance
+  
+ print(date(""today is %A; minutes = %M""))
+  
+ --> today is Tuesday; minutes = 53
+  
+ The following table shows each tag, its meaning, and an example of its value for 
+ September 16, 1998 (a Wednesday), at 23:48:10. For numeric values, the table 
+ also shows the range of possible values.",NA
+18.4 Other system calls,"The exit function terminates the execution of a program. The getenv function 
+ gets the value of an environment variable. It receives the name of the variable 
+ and returns a string with its value.",NA
+Part IV,NA,NA
+Tag Methods,"to do: This whole part needs lots of work. We have to explain what are tag 
+ methods, how we use them, and provide several examples with typical uses, such as 
+ different forms of inheritance, proxies, operator overloading, tracking and 
+ declaring global variables, autoload, etc.",NA
+Part V,NA,NA
+The C API,"to do: I have written only the first chapters of this part. I still have to cover the 
+ auxiliar lib, userdata, tags, gargabe-collector management, upvalues (in C), etc.
+  
+ What makes Lua different from most other languages is that Lua is an 
+ embedded
+  language. That means that Lua is not a stand-alone package, but a 
+ library that can be linked with other applications so as to incorporate Lua 
+ facilities into these applications. This is what makes Lua an
+  extension
+  language. 
+ At the same time, a program that uses Lua can register new functions in the Lua 
+ environment; such functions are implemented in C (or other language), and can 
+ add facilities that cannot be written directly in Lua. This is what makes Lua an
+  
+ extensible
+  language.
+  
+ The C API is the set of functions that allows a
+  host
+  program to interact with 
+ Lua. It comprises functions to read and write Lua global variables, to call Lua 
+ functions, to run a piece of Lua code, to register a C function so that it can later 
+ be called by Lua code, and so on.
+  
+ The C API follows the C
+  modus operandi
+ , which is quite different from Lua’s. 
+ Most functions do not check the correctness of their arguments; it is your 
+ responsibility to make sure that the arguments are valid before calling a 
+ function. If you make mistakes, you can get a “segmentation fault” error or 
+ something similar, instead of a well-behaved error message. Moreover, the API 
+ emphasizes flexibility and simplicity, sometimes at the cost of easy of use. Later, 
+ we will study the
+  auxiliar library
+  (lauxlib), which uses the basic API to provide a 
+ higher abstraction level.
+  
+ In the following chapters, we are using a “hat” of C programmers. So, when 
+ we talk about “you”, we mean you when programming in C, or you impersonated 
+ by the C code you write.",NA
+19.,NA,NA
+A First Example,"As a first example, the stand-alone Lua interpreter is a simple C program, that 
+ takes your files and strings and feed them to the Lua library. We can write a very 
+ primitive stand-alone interpreter as follows:
+  
+ #include <stdio.h> 
+  
+ #include <lua.h>
+  
+ int main (void) { 
+  
+ char line[BUFSIZ]; 
+  
+ lua_State *L = lua_open(0); /* opens Lua */ while (fgets(line, 
+ sizeof(line), stdin) != 0)
+  
+ }
+  
+ lua_dostring(L, line); /* executes the string */
+  
+ lua_close(L);
+  
+ return 0;
+  
+ The header file lua.h defines the basic functions provided by Lua. That includes 
+ functions to create a new Lua environment (such as lua_open), to execute 
+ chunks (such as lua_dostring), to read and write global variables in the Lua 
+ environment, to call Lua functions, to register new functions to be called by Lua, 
+ and so on.
+  
+ The lua_open function creates a new environment (or
+  state
+ ). When lua_open 
+ creates a fresh environment, this environment contains no pre-defined functions. 
+ To keep Lua small, all standard libraries are provided as a separate package, so 
+ that you only use them if you need. If you want to include the standard libraries in 
+ your little interpreter, your code will look like
+  
+ #include <stdio.h>
+  
+ #include <lua.h>
+  
+ #include <lualib.h>
+  
+ int main (void) {
+  
+ char line[BUFSIZ];
+  
+ lua_State *L = lua_open(0);
+  
+ 141",NA
+20.,NA,NA
+The Stack,"We face two problems when trying to exchange values between Lua and C: The 
+ mismatch between a dynamic and a static type system, and garbage collection.
+  
+ In Lua, when we write a[k] = v, both k and v can have many different types 
+ (even a may have different types, because of tag methods). But a single Lua 
+ function, such as settable(a, k, v), is enough to represent all possibilities. If we 
+ want to offer this funcionallity in C, however, any settable function must have 
+ fixed types. We would need dozens different functions for this single 
+ functionallity (one new function for each combination of types for the three 
+ arguments).
+  
+ We could solve this problem declaring some kind of union type in C, let us 
+ call it lua_Value, which could represent all Lua values. Then, we could declare 
+ settable as
+  
+ void lua_settable (lua_Value a, lua_Value k, lua_Value v);
+  
+ This solution has two drawbacks. First, it can be difficult to map such complex 
+ type to other languages (Lua has been designed to interface easily not only with 
+ C/C++, but also with Java, Fortran, etc.). Second, Lua does garbage collection: If 
+ we keep a Lua value in a C variable, the Lua engine has no way to know about 
+ this use; it may (wrongly) assume that this value is garbage, and collect it.
+  
+ Therefore, the Lua API does not define anything like a lua_Value type. Instead, it 
+ uses an abstract stack to exchange values between Lua and C. Each slot in this 
+ stack can hold any Lua value. 
+  
+ Whenever you ask a value from 
+ Lua (such as lua_getglobal), you call Lua, which pushes this value in the stack. 
+ Whenever you want to pass a value to Lua (such as lua_setglobal), you first push 
+ this value in the stack, and then you call Lua (which will pop the value). We still 
+ need a different function to push each C type into the stack (lua_pushnumber, 
+ lua_pushstring, etc.), and a different function to get each value from the stack 
+ (lua_tonumber, lua_tostring, etc.), but we avoid the combinatorial explosion. 
+ Moreover, because this stack is managed by Lua, the garbage collector knows 
+ exactly which values are being used by C.
+  
+ Lua manipulates this stack in a strict FIFO discipline (First In, First Out; that 
+ is, always through the top), but your C code can inspect any element inside
+  
+ 143",NA
+21.,NA,NA
+Extending your Application,"A main use of Lua is as a
+  configuration
+  language.
+  
+ In this section, we will
+  
+ illustrate how Lua is used as a configuration language, starting with a simple 
+ example and evolving it to more complex tasks.
+  
+ As our first task, let us imagine a very simple configuration scenario: Your 
+ program (let us call it pp) has a window, and you want the user to be able to give 
+ the initial window size. Clearly, for such a simple task, there are many options 
+ simpler than using Lua, such as environment variables or files with name-value 
+ pairs. But even for a simple text file, you have to parse it somehow. So, you 
+ decide to use a Lua configuration file (that is, a plain text file that happens to be 
+ a Lua program). In its simplest form, such file can contain something like the 
+ next lines:
+  
+ -- configuration file for program ‘pp’
+  
+ -- define window size 
+  
+ width = 200 
+  
+ height = 300
+  
+ Now, you must use the Lua API to direct Lua to parse this file, and then to get 
+ the values of the global variables width and height. The following function does 
+ the job:
+  
+ #include <lua.h> 
+  
+ #include <lualib.h>
+  
+ int width, height; 
+  
+ /* global variables */ 
+  
+ lua_State *L;
+  
+ void load (char *filename) { 
+  
+ L = lua_open(0); 
+  
+ lua_baselibopen(L); 
+  
+ lua_iolibopen(L); 
+  
+ lua_strlibopen(L); 
+  
+ lua_mathlibopen(L); 
+  
+ if (lua_dofile(L, filename) != 0) 
+  
+  
+ error(""cannot run configuration file"");
+  
+ 145",NA
+22.,NA,NA
+??,"Let us adopt this attitude: Now, you want to configure a background color for 
+ the window, too. We will assume that the final color specification is composed 
+ by three numbers, where each number is a color component in RGB. A naive 
+ approach is to ask the user to give each component in a different global variable:
+  
+ -- configuration file for program ‘pp’
+  
+ width = 200
+  
+ height = 300
+  
+ background_red = 30
+  
+ background_green = 100
+  
+ background_blue = 0
+  
+ This approach has several drawbacks; it is too verbose (most real programs 
+ need dozens of different colors, for window background, window foreground, 
+ menu background, etc.); and there is no way to pre-define some colors, so that, 
+ later, you can simply write something like background = WHITE. A better option 
+ is to use a table to represent a color:
+  
+ background = {r=30, g=100, b=0}
+  
+ The use of tables gives more structure to the script; now it is easy for the user or 
+ the application to pre-define colors for later use in her configuration file:
+  
+ BLUE = {r=0, g=0, b=255}
+  
+ ...
+  
+ background = BLUE
+  
+ To get these values from your C program, you can do as follows:
+  
+ lua_getglobal(L, ""background"");
+  
+ if (!lua_istable(L, -1))
+  
+ error(""‘background’ is not a valid color table"");
+  
+ else {
+  
+ red = getfield(""r"");
+  
+ green = getfield(""g"");
+  
+ blue = getfield(""b"");
+  
+ }
+  
+ 149",NA
+23.,NA,NA
+Calling Lua Functions,"A great strength of Lua is that a configuration file can define functions to be 
+ called by the application. For instance, you can write an application to plot the 
+ graphic of a function, and use Lua to define the functions to be plotted.
+  
+ The API protocol to call a function is simple: First, you push the function to 
+ be called; second, you push the arguments to the call; then you use the lua_call to 
+ do the actual call; and finally, you pop the results from the stack.
+  
+ As an example, let us assume that our configuration file has a function like
+  
+ function f(x,y)
+  
+ return (x^2 * sin(y))/(1-x)
+  
+ end
+  
+ and you want to evaluate, in C, z = f(x, y) for given x and y. You can encapsulate 
+ this call in the following C function, assuming that you have already opened the 
+ Lua library and ran the configuration file:
+  
+ /* call a function ‘f’ defined in the configuration file */
+  
+ double f (double x, double y) {
+  
+ double z;
+  
+ lua_getglobal(L, ""f"");
+  
+ if (!lua_isfunction(L, -1))
+  
+ error(""function ‘f’ not defined in configuration file"");
+  
+ lua_pushnumber(L, 
+ x); 
+ lua_pushnumber(L, 
+ y); 
+ lua_call(L, 2, 1);
+  
+ /* 
+ push 
+ 1st 
+ argument 
+ */ 
+  
+ /* 
+ push 
+ 2nd 
+ argument 
+ */ 
+  
+ /* do the call (2 arguments, 1 result) */
+  
+ if (!lua_isnumber(L, -1)) 
+  
+  
+ error(""function ‘f’ must return a number""); 
+  
+ z = lua_tonumber(L, -1); 
+  
+ lua_pop(L, 1); 
+  
+ /* remove returned value from the stack */ return 
+ z; 
+  
+ }
+  
+ You call lua_call with the number of arguments you are passing, and the 
+ number of results that you want. As in Lua, lua_call adjusts the actual number
+  
+ 153",NA
+24.,NA,NA
+Registering C Functions,"One of the basic means for extending Lua is for the application to
+  register
+  new
+  
+ functions, written in C, to Lua.
+  
+ As we saw previously, when C calls a Lua
+  
+ function, it must follow a protocol to pass the arguments and to get the results. 
+ Similarly, when Lua calls a C function, this C function must follow a protocol to 
+ get its arguments and to return its results.
+  
+ When Lua calls a C function, it uses the same stack that C uses to call Lua. The 
+ C function gets its arguments from the stack, and pushes the results into the 
+ stack. As a first example, let us see how to implement a simplified version of a 
+ function that returns the sin of a given number (a more professional 
+ implementation should check whether its argument is actually a number):
+  
+ int l_sin (lua_State ls) {
+  
+ double d = lua_tonumber(ls, 1);
+  
+ lua_pushnumber(ls, sin(d));
+  
+ return 1; 
+  
+ /* number of results */
+  
+ }
+  
+ Any function registered into Lua must have this prototype: It gets as its single 
+ argument the Lua state, and returns (in C) the number of values it wants to 
+ return (in Lua). Therefore, it does not need to clear the stack before pushing its 
+ results. Lua removes whatever is in the stack below the resulting values.
+  
+ Before we can use this function from Lua, we must
+  register
+  it. For that, we have 
+ to run the following code:
+  
+ lua_pushcfunction(L, l_sin);
+  
+ lua_setglobal(L, ""sin"");
+  
+ The first line passes this function to Lua, and the second assigns it to the global 
+ variable sin. This sequence is so common that lua.h has a macro for it:
+  
+ lua_register(L, ""sin"", l_sin);
+  
+ to do: everything from this point on are just ideas which must be put together.
+  
+ 155",NA

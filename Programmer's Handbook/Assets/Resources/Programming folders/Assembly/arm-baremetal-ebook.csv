@@ -1,0 +1,3510 @@
+Larger Text,Smaller Text,Symbol
+Bare-metal programming for ARM,NA,NA
+A hands-on guide,NA,NA
+Daniels Umanovskis,NA,NA
+Contents,"0
+  
+ Introduction
+  
+ 5
+  
+ 1
+  
+ Target audience . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 6 
+ Formatting and terminology . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 6 
+ Source code . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 7 
+ Licensing 
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 7 
+ Credits and acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 7 
+ Environment setup
+  
+ 8
+  
+ 2
+  
+ Linux 
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 8 
+ QEMU . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 8 
+ GCC cross-compiler toolchain . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 9 
+ Build system essentials . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 10 
+ The first boot
+  
+ 11
+  
+ 3
+  
+ The first hang . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 12 
+ Writing some code . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 12 
+ Assembling it . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 13 
+ And... Blastof! . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 14 
+ What we did wrong . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 14 
+ Memory mappings . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 14 
+ Creating the vector table . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 16 
+ Creating the linker script . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 17 
+ What’s a linker anyway? 
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 17 
+ Hanging again - but better . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 18 
+ Adding a bootloader
+  
+ 19
+  
+ Introduction 
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 19 
+ Preparing U-Boot . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 19 
+ Creating a SD card . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 21 
+ Creating the 
+ uImage 
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 23 
+ Booting everything . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 24 
+ 2",NA
+0 Introduction,"Modern programming takes many forms. There’s web development, desktop application 
+ development, mobile development and more. Embedded programming is one of the areas of 
+ programming, and can 
+ be radically diferent from the others. Embedded programming means 
+ programming for a computer 
+ that’s mainly intended to be embedded within a larger system, and 
+ the embedded computer is usually 
+ responsible for a particular task, instead of being a general-
+ purpose computing device. The system 
+ where it’s embedded might be a simple pocket calculator, 
+ or an industrial robot, or a spaceship. Some embedded devices are microcontrollers with very little 
+ memory and low frequencies, others are more 
+ powerful. 
+ Embedded computers may be running a fully-fleged operating system, or a minimalistic system 
+ that 
+ just provides some scheduling of real-time functions. In cases when there’s no operating 
+ system at all, 
+ the computer is said to be
+  bare metal
+ , and consequently
+  bare metal programming
+  is 
+ programming directly for a (micro-)computer that lacks an operating system. Bare metal 
+ programming can be both highly challenging and very diferent from other types of programming. 
+ Code interfaces directly with the underlying hardware, and common abstractions aren’t 
+ available. There are no files, processes or 
+ command lines. You cannot even get the simplest C code 
+ to work without some preparatory steps. And, in one of the biggest challenges, failures tend to be 
+ absolute and mysterious. It’s not uncommon to see embedded developers break out tools such as 
+ voltmeters and oscilloscopes to debug their sofware.
+  
+ Modern embedded hardware comes in very many types, but the field is dominated by CPUs 
+ implementing an ARM architecture. Smartphones and other mobile devices ofen run Qualcomm 
+ Snapdragon or Apple A-series CPUs, which are all based on the ARM architecture.  
+ Among 
+ microcontrollers, ARM Cortex-M and Cortex-R series CPU cores are very popular. The ARM 
+ architectures 
+ play a very significant role in modern computing. 
+ The subject of this ebook is bare-metal programming in C for an ARM system. Specifically, the 
+ ARMv7-A architecture is used, which is the last purely 32-bit ARM architecture, unlike the newer 
+ ARMv8/AArch64. 
+ The -A sufix in ARMv7-A indicates the A profile, which is intended for more 
+ resource-intensive applications. The corresponding microcontroller architecture is ARMv7-M. 
+ Note that this is not a tutorial on how to write an OS. Some of the topics covered in this ebook are 
+ relevant for OS development, but there are many OS-specific aspects that are not covered here. 
+ 5",NA
+Target audience,"This ebook is aimed at people who have an interest in low-level programming, and in seeing how 
+ to build a system from the ground up. Topics covered include system startup, driver 
+ development and low-level memory management. For the most part, the chapters cover things 
+ from a practical perspective, by building something, although background theory is provided. 
+ The reader should be familiar with C programming. This is not a C tutorial, and even though there 
+ are occasional notes on the language, the ebook is probably dificult to follow without having 
+ programmed 
+ in C. Some minimal exposure to an assembly language and understanding of 
+ computer architecture are very useful, though the assembly code presented is explained line by 
+ line as it’s introduced. 
+ It’s also helpful to be familiar with Linux on a basic level. You should be able to navigate 
+ directories, run shell scripts and do basic troubleshooting if something doesn’t work - 
+ fortunately, even for an inexperienced Linux user, a simple online search is ofen enough to solve 
+ a problem. The ebook 
+ assumes all development is done on Linux, although it should be possible to 
+ do it on OS X and even on 
+ Windows with some creativity. 
+ Experienced embedded developers are unlikely to find much value in this text.",NA
+Formatting and terminology,"The ebook tries to for the most part follow usual conventions for a programming-related text. 
+ Commands, bits of code or references to variables are
+  formatted like code
+ , with bigger code 
+ snippets presented separately like this: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+ void
+  do_amazing_things
+ (
+ void
+ ) { 
+  
+ int
+  answer
+  = 42; 
+  
+  
+ /* A lot happens here! */ 
+ }
+  
+  
+ If you are reading the PDF version, note that longer lines of code have to get wrapped to fit within 
+ the 
+ page, but the indentation and line numbers inside each code block should help keep things 
+ clear. 
+ Due to some unfortunate historical legacy, there are two diferent definitions for data sizes in 
+ common 
+ use. There’s the binary definition, where a kilobyte is 1024 bytes, and the metric 
+ definition, where a 
+ kilobyte is 1000 bytes. Throughout this ebook, all references to data quantities 
+ are in the binary sense. 
+ The meaning of “billion” in the book is
+  10^9
+ . 
+ Daniels Umanovskis 
+ 6",NA
+Source code,"For each chapter, the corresponding source code is available. If you’re reading this on GitHub, 
+ you can explore the repository and check its readme file for more information. If you’re reading 
+ the PDF version or other standalone copy, you can head to the
+  GitHub repository
+  to access the 
+ source code, and perhaps updates to this ebook. The repository URL is
+  
+ https
+ :
+ //github.com/umanovskis/ baremetal-arm/
+ .",NA
+Licensing,"The ebook is licensed under Creative Commons Attribution-Share Alike (CC-BY-SA)
+  license
+  - see 
+ the Git 
+ repository for more details on licensing.",NA
+Credits and acknowledgments,"The PDF version of this ebook is typeset using the
+  Eisvogel LaTeX template
+  by Pascal Wagler. 
+ Daniels Umanovskis 
+ 7",NA
+1 Environment setup,"In this chapter, I’ll cover the basic environment setup to get started with ARM bare-metal 
+ programming using an emulator. Some familiarity with using Linux is assumed. You don’t need to 
+ be a Linux expert, 
+ but you should be able to use the command line and do some basic 
+ troubleshooting if the system doesn’t behave as expected.",NA
+Linux,"The first prerequisite is getting a Linux system up and running. Hopefully you are already familiar 
+ with 
+ Linux and have some kind of Linux running. Otherwise you should install Linux, or set up a 
+ virtual machine running Linux. 
+ If you are running Windows and want to run a virtual Linux,
+  VirtualBox
+  is recommended. As for 
+ Linux 
+ distributions, any modern distribution should be fine, although in some cases you might 
+ need to install 
+ sofware manually. I use Linux Mint Debian Edition, and double-check most of the 
+ work in a virtual machine running Ubuntu, which is the most popular Linux distribution for 
+ beginners.",NA
+QEMU,"To emulate an ARM machine, we will be using
+  QEMU
+ , a powerful emulation and virtualization tool 
+ that 
+ works with a variety of architectures. While the code we write should eventually be able to 
+ boot on a real ARM device, it is much easier to start with an emulator. Why? 
+ • No additional hardware is needed. 
+ • You don’t have to worry about sofware flashing / download process. 
+ • You have much better tools to inspect the state of the emulated hardware. When working 
+ with 
+ real hardware, you would need a few drivers to get meaningful information from the 
+ sofware, or 
+ use other more dificult methods. 
+ 8",NA
+GCC cross-compiler toolchain,"The next step is the installation of a cross-compiler toolchain. You cannot use the regular
+  gcc
+  
+ compiler 
+ to build code that will run on an ARM system, instead you’ll need a cross-compiler. 
+ What is a cross-
+ compiler exactly? It’s simply a compiler that runs on one platform but creates 
+ executables for another 
+ platform. In our case, we’re running Linux on the x86-64 platform, and 
+ we want executables for ARM, so a cross compiler is the solution to that. 
+ The GNU build tools, and by extension GCC, use the concept of a
+  target triplet
+  to describe a 
+ platform. 
+ The triplet lists the platform’s architecture, vendor and operating system or binary 
+ interface type. The vendor part of target triplets is generally irrelevant. You can look up your own 
+ machine’s target triplet by running
+  gcc
+  -
+ dumpmachine
+ . I get
+  x86_64
+ -
+ linux
+ -
+ gnu
+ , yours will likely be the 
+ same or similar.
+  
+ To compile for ARM, we need to select the correct cross-compiler toolchain, that is, the toolchain 
+ with a target triplet matching our actual target. The fairly widespread
+  gcc
+ -
+ arm
+ -
+ linux
+ -
+ gnueabi
+  
+ toolchain will
+  not
+  work for our needs, and you can probably guess why – the name indicates that 
+ the toolchain is intended to compile code for ARM devices running Linux. We’re going to do bare-
+ metal programming, 
+ so no Linux running on the target system. 
+ The toolchain we need is
+  gcc
+ -
+ arm
+ -
+ none
+ -
+ eabi
+ . We will need a version with GCC 6 or newer, for when 
+ we later use U-Boot. On Ubuntu, you should be able to simply install the toolchain: 
+ 1 
+  
+ sudo apt
+ -
+ get install gcc
+ -
+ arm
+ -
+ none
+ -
+ eabi
+  
+ You can run
+  arm
+ -
+ none
+ -
+ eabi
+ -
+ gcc
+  --
+ version
+  to check the version number. If you’re using a 
+ distribution that ofers an old version of the package, you can download the toolchain
+  from ARM 
+ directly
+ . In that case, it’s recommended that you add the toolchain’s folder to your environment’s 
+ PATH
+  afer extracting it somewhere. 
+ Daniels Umanovskis 
+ 9",NA
+Build system essentials,"Finally, we need the essential components of a build system. In the coming examples, we’ll be 
+ using 
+ the standard Make build tool, as well as CMake. Debian-based systems provide a handy 
+ package called 
+ build
+ -
+ essential
+ , which installs Make and other relevant programs. CMake is available 
+ in a package 
+ called
+  cmake
+ , so the installation is simple: 
+ 1 
+  
+ sudo apt
+ -
+ get install build
+ -
+ essential cmake
+  
+ On some Linux variants, you might also need to install
+  bison
+  and
+  flex
+  if they are not already 
+ present. Those tools are also required to build U-Boot. 
+ 1 
+  
+ sudo apt
+ -
+ get install bison flex
+  
+  
+ sort
+  -
+ R
+  ~/
+ facts
+ -
+ and
+ -
+ trivia
+  |
+  head
+  -
+ n1
+  
+ The
+  flex
+  program is an implementation of
+  lex
+ , a standard lexical analyzer first developed in the 
+ mid-1970s by Mike Lesk and Eric Schmidt, who served as the chairman of Google for some years. 
+ With this, your system should now have everything that is necessary to compile programs for ARM 
+ and run them in an emulated machine. In the next chapter, we’ll continue our introduction by 
+ booting the 
+ emulated machine and giving some of the just-installed tools a spin. 
+ Daniels Umanovskis 
+ 10",NA
+2 The first boot,"We’ll continue our introduction to bare-metal ARM by starting an emulated ARM machine in 
+ QEMU, and using the cross-compiler toolchain to load the simplest possible code into it. 
+ Let us run QEMU for the very first time, with the following command: 
+ 1
+  
+ qemu
+ -
+ system
+ -
+ arm
+  -
+ M vexpress
+ -
+ a9
+  -
+ m
+  32
+ M
+  -
+ no
+ -
+ reboot
+  -
+ nographic
+  -
+ monitor 
+  
+ telnet
+ :127.0.0.1:1234,
+ server
+ ,
+ nowait
+  
+  
+ The QEMU machine will spin up, briefly seem to do nothing, and then crash with an error 
+ message. The crash is to be expected - we did not provide any executable to run so of course our 
+ emulated system cannot accomplish anything. For documenation of the QEMU command line, you 
+ can check 
+ man qemu
+ -
+ doc
+  and online, but let’s go through the command we used and break it down 
+ into parts.
+  
+ •
+  -
+ M vexpress
+ -
+ a9
+ . The
+  -
+ M
+  switch selects the specific machine to be emulated. The
+  ARM Versatile 
+ Express
+  is an ARM platform intended for prototyping and testing. Hardware boards with 
+ the Versatile Express platform exist, and the platform is also a common choice for testing 
+ with emulation. The
+  vexpress
+ -
+ a9
+  variant has the Cortex A9 CPU, which powers a wide 
+ variety of embedded devices that perform computationally-intensive tasks. 
+ •
+  -
+ m
+  32
+ M
+ . This simply sets the RAM of the emulated machine to 32 megabytes. 
+ •
+  -
+ no
+ -
+ reboot
+ . Don’t reboot the system if it crashes. 
+ •
+  -
+ nographic
+ . Run QEMU as a command-line application, outputting everything to a terminal 
+ console. The serial port is also redirected to the terminal. 
+ •
+  -
+ monitor telnet
+ :127.0.0.1:1234,
+ server
+ ,
+ nowait
+ . One of the advantages of QEMU is 
+ that it comes 
+ with a powerful
+  QEMU monitor
+ , an interface to examine the emulated machine and 
+ control it. 
+ Here we say that the monitor should run on localhost, port
+  1234
+ , with the
+  server
+ , 
+ nowait
+  
+ options meaning that QEMU will provide a telnet server but will continue running even 
+ if 
+ nobody connects to it. 
+ That’s it for the first step - now you have a command to start an ARM system, although it will not 
+ do anything except crashing with a message like
+  qemu
+ -
+ system
+ -
+ arm
+ :
+  Trying to execute code outside 
+ RAM or ROM at
+  0
+ x04000000
+ . 
+ 11",NA
+The first hang,"Writing some code
+  
+ Now we want to write some code, turn it into an executable that can run on an ARM system, and 
+ run it in QEMU. This will also serve as our first cross-compilation attempt, so let’s go with the 
+ simplest code 
+ possible - we will write a value to one of the CPU registers, and then enter an 
+ infinite loop, letting our 
+ (emulated) hardware hang indefinitely. Since we’re doing bare-metal 
+ programming and have no form 
+ of runtime or operating system, we have to write the code in 
+ assembly language. Create a file called 
+ startup
+ .
+ s
+  and write the following code: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+ ldr r2
+ ,
+ str1 
+  
+ b
+  .
+  
+ str1
+ : .
+ word
+  0
+ xDEADBEEF
+  
+  
+ Line by line: 
+ 1. We load the value at label
+  str1
+  (which we will define shortly) into the register
+  R2
+ , which is 
+ one of the general-purpose registers in the ARM architecture. 
+ 2.
+  We enter an infinite loop. The period
+  .
+  is short-hand for
+  current address
+ , so
+  b
+  .
+  means “branch 
+ to the current instruction address”, which is an infinite loop. 
+ 3. We allocate a word (4 bytes) with the value
+  0
+ xDEADBEEF
+ , and give it the label
+  str1
+ . The 
+ value 
+ 0
+ xDEADBEEF
+  is a distinctive value that we should easily notice. Writing such values is a 
+ common trick in low-level debugging, and
+  0
+ xDEADBEEF
+  is ofen used to indicate free memory 
+ or a general 
+ sofware crash. Why will this work if we’re in an infinite loop? Because this is 
+ not executable code, it’s just an instruction to the assembler to allocate the 4-byte word 
+ here. 
+ sort
+  -
+ R
+  ~/
+ facts
+ -
+ and
+ -
+ trivia
+  |
+  head
+  -
+ n1 
+  
+ Memorable hexadecimal values like
+  0
+ xDEADBEEF
+  have a long tradition, with diferent vendors 
+ and systems having their own constants. Wikipedia has a
+  separate article
+  on these magic values. 
+ Daniels Umanovskis 
+ 12",NA
+Assembling it,"Next we need to compile the code. Since we only wrote assembly code, compilation is not 
+ actually 
+ relevant, so we will just assemble and link the code. The first time, let’s do this manually 
+ to see how to use the cross-compiler toolchain correctly. What we’re doing here is very much not 
+ optimal even for an 
+ example as simple as this, and we’ll improve the state of things soon. 
+ First, we need to assemble
+  startup
+ .
+ s
+ , which we can do like this, telling the GNU Assembler (
+ as
+ ) to 
+ place the output in
+  startup
+ .
+ o
+ . 
+ 1 
+  
+ arm
+ -
+ none
+ -
+ eabi
+ -
+ as
+  -
+ o startup
+ .
+ o startup
+ .
+ s
+  
+ We do not yet have any C files, so we can go ahead and link the object file, obtaining an executable.
+  
+ 1 
+  
+ arm
+ -
+ none
+ -
+ eabi
+ -
+ ld
+  -
+ o first
+ -
+ hang
+ .
+ elf startup
+ .
+ o
+  
+ This will create the executable file
+  first
+ -
+ hang
+ .
+ elf
+ . You will also see a warning about missing
+  _start
+ . 
+ The 
+ linker expects your code to include a
+  _start
+  symbol, which is normally where the execution would 
+ start from. We can ignore this now because we only need the ELF file as an intermediate step 
+ anyway. The
+  first
+ -
+ hang
+ .
+ elf
+  which you obtained is a sizable executable, reaching 33 kilobytes on my 
+ system. ELF executables are the standard for Linux and other Unix-like systems, but they need to 
+ be loaded and executed by an operating system, which we do not have. An ELF executable is 
+ therefore 
+ not something we can use on bare metal, so the next step is to convert the ELF to a raw 
+ binary dump of 
+ the code, like this: 
+ 1 
+  
+ arm
+ -
+ none
+ -
+ eabi
+ -
+ objcopy
+  -
+ O binary first
+ -
+ hang
+ .
+ elf first
+ -
+ hang
+ .
+ bin
+  
+ The resulting
+  first
+ -
+ hang
+ .
+ bin
+  is just a 12-byte file, that’s all the space necessary for the code we wrote 
+ in
+  startup
+ .
+ s
+ . If we look at the hexdump of this file, we’ll see
+  00000000 00 20 9
+ f e5 fe ff ff 
+  
+ ea ef be ad de
+ . 
+ You can recognize our
+  0
+ xDEADBEEF
+  constant at the end. The first eight bytes are our assembly 
+ instructions in raw form. The code starts with
+  0020 9
+ fe5
+ . The
+  ldr
+  instruction has the opcode
+  e5
+ , 
+ then
+  9
+ f
+  is a reference to the program counter (PC) register, and the
+  20
+  refers to
+  R2
+ , meaning this is 
+ in fact
+  ldr r2
+ , [
+ pc
+ ]
+  encoded. 
+ Lookingatthehexdumpofabinaryandtryingtomatchthebytestoassemblyinstructionsisuncommon 
+ even for low-level programming. It is somewhat useful here as an illustration, to see how we can 
+ go from writing
+  startup
+ .
+ s
+  to code executable by an ARM CPU, but this is more detail than you 
+ would typically need. 
+ Daniels Umanovskis 
+ 13",NA
+And... Blastof!,"We can finally run our code on the ARM machine! Let’s do so. 
+ 1
+  
+ qemu
+ -
+ system
+ -
+ arm
+  -
+ M vexpress
+ -
+ a9
+  -
+ m
+  32
+ M
+  -
+ no
+ -
+ reboot
+  -
+ nographic
+  -
+ monitor 
+  
+ telnet
+ :127.0.0.1:1234,
+ server
+ ,
+ nowait
+  -
+ kernel first
+ -
+ hang
+ .
+ bin
+  
+  
+ This runs QEMU like previously, but we also pass
+  -
+ kernel first
+ -
+ hang
+ .
+ bin
+ , indicating that we want 
+ to 
+ load our binary file into the emulated machine. This time you should see QEMU hang indefinitely. 
+ The QEMU monitor allows us to read the emulated machine’s registers, among other things, so 
+ we 
+ can check whether our code has actually executed. Open a telnet connection in another terminal 
+ with 
+ telnet localhost
+  1234
+ , which should drop you into the QEMU monitor’s command line, looking 
+ something like this: 
+ 1 
+  
+ 2
+  
+ QEMU
+  2.8.1
+  monitor
+  -
+  type
+  'help'
+  for
+  more information 
+ (
+ qemu
+ )
+  
+  
+ At the
+  (
+ qemu
+ )
+  prompt, type
+  info registers
+ . That’s the monitor command to view registers. Near the 
+ beginning of the output, you should spot our
+  0
+ xDEADBEEF
+  constant that has been loaded into R2: 
+ 1 
+  
+ R00
+ =00000000
+  R01
+ =000008
+ e0 R02
+ =
+ deadbeef R03
+ =00000000
+  
+  
+ This means that yes indeed, QEMU has successfully executed the code we wrote. Not at all fancy, 
+ but it 
+ worked. We have our first register write and hang.",NA
+What we did wrong,"Our code worked, but even in this small example we didn’t really do things the right way. 
+ Memory mappings
+  
+ One issue is that we didn’t explicitly specify any start symbol that would show where our 
+ program should begin executing. It works because when the CPU starts up, it begins executing 
+ from address 
+ 0
+ x0
+ , and we have placed a valid instruction at that address. But it could easily go 
+ wrong. Consider this 
+ variation of
+  startup
+ .
+ s
+ , where we move the third line to the beginning. 
+ Daniels Umanovskis 
+ 14",NA
+Creating the vector table,"Having our code start at address
+  0
+ x0
+  isn’t acceptable as explained before, as that is the address 
+ where 
+ the interrupt vector table is expected. We should also not rely on things just working out, 
+ with help 
+ from QEMU or without, and should explicitly specify the entry point for our program. 
+ Finally, we should separate code and data, placing them in separate sections. Let’s start by 
+ improving our
+  startup
+ .
+ s
+  a 
+ bit: 
+ 1 
+  
+ 2 
+  
+ 3 
+  
+ 4 
+  
+ 5 
+  
+ 6 
+  
+ 7 
+  
+ 8 
+  
+ 9 
+  
+ 10 
+  
+ 11 
+  
+ 12 
+  
+ 13 
+  
+ 14 
+  
+ 15 
+  
+ 16 
+  
+ 17
+  
+ .
+ section
+  .
+ vector_table
+ ,
+  ""x"" 
+  
+ .
+ global _Reset 
+  
+ _Reset
+ : 
+  
+  
+ b Reset_Handler 
+  
+  
+ b
+  .
+  /* 0x4 
+  
+ Undefined Instruction */ 
+  
+ b
+  .
+  /* 
+ 0x8 
+  
+ Software Interrupt */ 
+  
+ b
+  .
+  /* 0xC 
+  
+ Prefetch Abort */ 
+  
+  
+ b
+  .
+  /* 0x10 Data Abort */ 
+  
+  
+ b
+  .
+  /* 0x14 Reserved */ 
+  
+  
+ b
+  .
+  /* 0x18 IRQ */ 
+  
+  
+ b
+  .
+  /* 0x1C FIQ */
+  
+ .
+ section
+  .
+ text 
+  
+ Reset_Handler
+ : 
+  
+  
+ ldr r2
+ ,
+  str1 
+  
+  
+ b
+  .
+  
+ str1
+ : .
+ word
+  0
+ xDEADBEEF
+  
+  
+ Here are the things we’re doing diferently this time: 
+ 1. We’re creating the vector table at address
+  0
+ x0
+ , putting it in a separate section called
+  . 
+ vector_table
+ , and declaring the global symbol
+  _Reset
+  to point to its beginning. We leave most 
+ items in the vector table undefined, except for the reset vector, where we place the 
+ instruction
+  b Reset_Handler
+ . 
+ 2.
+  We moved our executable code to the
+  .
+ text
+  section, which is the standard section for code. The 
+ Reset_Handler
+  label points to the code so that the reset interrupt vector will jump to it. 
+ Daniels Umanovskis 
+ 16",NA
+Creating the linker script,"Linker scripts are a key component in building embedded sofware. They provide the linker with 
+ information on how to place the various sections in memory, among other things. Let’s create a 
+ linker 
+ script for our simple program, call it
+  linkscript
+ .
+ ld
+ . 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+  
+ 7
+  
+  
+ 8
+  
+ ENTRY
+ (
+ _Reset
+ )
+  
+ SECTIONS 
+  
+ { 
+  
+  
+ . = 0
+ x0
+ ; 
+  
+  
+ .
+ text
+  : {
+  startup
+ .
+ o
+  (.
+ vector_table
+ ) *(.
+ text
+ ) } 
+  
+ . =
+  ALIGN
+ (8); 
+  
+ }
+  
+  
+ This script tells the linker that the program’s entry point is at the global symbol
+  _Entry
+ , which we 
+ export from
+  startup
+ .
+ s
+ . Then the script goes on to list the section layout. Starting at address
+  0
+ x0
+ , we 
+ create the
+  .
+ text
+  section for code, consisting first of the
+  .
+ vector_table
+  section from
+  startup
+ .
+ o
+ , and then 
+ any and all other
+  .
+ text
+  sections. We align the code to an 8-byte boundary as well.",NA
+What’s a linker anyway?,"Indeed, what’s a linker and why are we using one? As developers, we ofen say “compilation” 
+ when referring to the process by which source code turns into an executable. More accurately 
+ though, compilation is just one step, normally followed by linking, and it’s this compile-and-link 
+ process that 
+ ofen gets simply called compilation. The confusion isn’t helped by the fact that 
+ compiling and linking are usually invoked with the same command in most tools. Whether you’re 
+ using an IDE or using GCC 
+ from the command line, compilation and linking will usually occur 
+ together. 
+ The compiler takes source code and produces
+  object files
+  as the output, these files usually have the
+  
+ .
+ o 
+ extension. A linker takes one or more object files, possibly adds external libraries, and links it all 
+ into an executable. In any non-trivial program, each object file is likely to refer to functions that 
+ are contained in other object files, and resolving those dependencies is part of the linker’s job. So 
+ linkers themselves 
+ are nothing specific to embedded programming, but due to the low 
+ abstraction level available when programming for bare metal, it’s common to require more 
+ control over the linker’s actions. 
+ Linker scripts like the one above, in the broadest terms, tell the linker how to do its job. For now 
+ we’re 
+ just giving it simple instructions, but later we’ll write a more sophisticated linker script. 
+ Daniels Umanovskis 
+ 17",NA
+Hanging again - but better,"We can now build the updated sofware. Let’s do that in a similar manner to before: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+ arm
+ -
+ none
+ -
+ eabi
+ -
+ as
+  -
+ o startup
+ .
+ o startup
+ .
+ s 
+  
+ arm
+ -
+ none
+ -
+ eabi
+ -
+ ld
+  -
+ T linkscript
+ .
+ ld
+  -
+ o better
+ -
+ hang
+ .
+ elf startup
+ .
+ o arm
+ -
+ none
+ -
+ eabi
+ -
+ objcopy
+  -
+ O 
+ binary better
+ -
+ hang
+ .
+ elf better
+ -
+ hang
+ .
+ bin
+  
+  
+ Note the addition of
+  -
+ T linkscript
+ .
+ ld
+  to the linker command, specifying to use our newly created 
+ linker script. We still cannot use the ELF file directly, but we could use
+  objdump
+  to verify that our 
+ linkscript changed things. Call
+  arm
+ -
+ none
+ -
+ eabi
+ -
+ objdump
+  -
+ h better
+ -
+ hang
+ .
+ elf
+  to see the list of 
+ sections. 
+ You’ll notice the
+  .
+ text
+  section. And if you use
+  objdump
+  to view
+  startup
+ .
+ o
+ , you’ll also see 
+ .
+ vector_table
+ . 
+ You can even observe that the sizes of
+  .
+ vector_table
+  and
+  .
+ text
+  in
+  startup
+ .
+ o 
+ add up to the size of
+  .
+ text
+  in 
+ the ELF file, further indicating that things are probably as we wanted.
+  
+ We can now once again run the sofware in QEMU with
+  qemu
+ -
+ system
+ -
+ arm
+  -
+ M vexpress
+ -
+ a9
+  -
+ m
+  32
+ M
+  -
+ no
+ -
+ reboot
+  -
+ nographic
+  -
+ monitor telnet
+ :127.0.0.1:1234,
+ server
+ ,
+ nowait
+  -
+ kernel better
+ -
+ hang
+ .
+ bin
+  and observe the 
+ same results as before, and happily knowing things are 
+ now done in a more proper way. 
+ In the next chapter, we will continue by introducing a bootloader into our experiments. 
+ Daniels Umanovskis 
+ 18",NA
+3 Adding a bootloader,NA,NA
+Introduction,"The
+  bootloader
+  is a critical piece of sofware that is necessary to get the hardware into a usable 
+ state, and load other more useful programs, such as an operating system. On PCs and other fully-
+ featured 
+ devices, common bootloaders include GNU GRUB (which is most likely used to boot your 
+ Linux system), 
+ bootmgr
+  (for modern versions of MS Windows) and others. Developing bootloaders 
+ is a separate and 
+ complicated subject. Bootloaders are generally full of esoteric, highly 
+ architecture-specific code, and 
+ in my opinion learning about bootloaders if fun, but the knowledge 
+ is also somewhat less transferable 
+ to other areas of development. 
+ Writing your own bootloader is certainly something that could be attempted, but in this series of 
+ posts 
+ we will continue by doing something that is usually done in embedded development, 
+ namely using Das U-Boot. 
+ Das U-Boot
+ , usually referred to just as U-Boot, is a very popular bootloader for embedded 
+ devices. It supports a number of architectures, including ARM, and has pre-made configurations 
+ for a very large number of devices, including the Versatile Express series that we’re using. Our 
+ goal in this article will be to build U-Boot, and combine it with our previously built sofware. This 
+ will not, strictly speaking, 
+ change anything significant while we are running on an emulated target 
+ in QEMU, but we would need 
+ a bootloader in order to run on real hardware. 
+ We will, in this article, change our boot sequence so that U-Boot starts, and then finds our program 
+ on a simulated SD card, and subsequently boots it. I will only provide basic explanations for some 
+ of the 
+ steps, because we’ll mostly be dealing with QEMU and Linux specifics here, not really 
+ related to ARM programming.",NA
+Preparing U-Boot,"First, you should download U-Boot. You could clone the project’s source tree, but the easiest way is 
+ to download a release
+  from the oficial FTP server
+ . For writing this, I used
+  u
+ -
+ boot
+ -2018.09
+ . This is 
+ also
+  
+ 19",NA
+Creating a SD card,"On a real hardware board, you would probably have U-Boot and your program stored in the 
+ program 
+ flash. This doesn’t comfortably work with QEMU and the Versatile Express series, so we’ll 
+ take another 
+ approach that is very similar to what you could on hardware. We will create a SD 
+ card image, place our program there, and tell U-Boot to boot it. What follows is again not 
+ particularly related to ARM programming, but rather a convenient way of preparing an image. 
+ First we’ll need an additional package that can be installed with
+  sudo apt
+ -
+ get install qemu
+ -
+ utils
+ . 
+ Next we need the SD card image itself, which we can create with
+  qemu
+ -
+ img
+ . Then we will create 
+ an 
+ ext2 partition on the SD card, and finally copy the uImage containing our code to the card (we’ll 
+ create 
+ the uImage in the next section). It is not easily possible to manipulate partitions directly 
+ inside an image file, so we will need to mount it using
+  qemu
+ -
+ nbd
+ , a tool that makes it possible to 
+ mount QEMU images as network block devices. The following script, which I called
+  create
+ -
+ sd
+ .
+ sh
+ , 
+ can be used to automate the process: 
+ Daniels Umanovskis 
+ 21",NA
+Creating the uImage,"Now that we have created a SD card and can copy an uImage to it, we have to create the uImage 
+ itself.
+  
+ First of all, what is an uImage? The U-Boot bootloader can load applications from diferent types 
+ of 
+ images. These images can consist of multiple parts, and be fairly complex, like how Linux gets 
+ booted. We are not trying to boot a Linux kernel or anything else complicated, so we’ll be using an 
+ older image format for U-Boot, which is then the uImage format. The uImage format consists of 
+ simply the raw data and a header that describes the image. Such images can be created with the
+  
+ mkimage
+  utility, which is 
+ part of U-Boot itself. When we built U-Boot,
+  mkimage
+  should have been 
+ built as well. 
+ Let’s call
+  mkimage
+  and ask it to create an U-Boot uImage out of the application we had previously, 
+ the
+ “better hang” one. From now on, we’ll also be able to use ELF files instead of the raw binary 
+ dumps because U-Boot knows how to load ELF files.
+  mkimage
+  should be located in the
+  tools
+  
+ subfolder of the U-Boot folder. Assuming our
+  better
+ -
+ hang
+ .
+ elf
+  is still present, we can do the 
+ following: 
+ 1
+  
+ u
+ -
+ boot
+ -2018.09/
+ tools
+ /
+ mkimage
+  -
+ A arm
+  -
+ C none
+  -
+ T kernel
+  -
+ a
+  0
+ x60000000
+  -
+ e 
+  
+ 0
+ x60000000
+  -
+ d 
+ better
+ -
+ hang
+ .
+ elf bare
+ -
+ arm
+ .
+ uimg
+  
+  
+ With that, we say that we want an uncompressed (
+ -
+ C none
+ ) image for ARM (
+ -
+ A arm
+ ), the image 
+ will contain an OS kernel (
+ -
+ T kernel
+ ). With
+  -
+ d better
+ -
+ hang
+ .
+ bin
+  we tell
+  mkimage
+  to put that
+  .
+ bin 
+ file 
+ into the image. We told U-Boot that our image will be a kernel, which is not really true because we 
+ don’t have an operating system. But the
+  kernel
+  image type indicates to U-Boot that the application 
+ is not going to return control to U-Boot, and that it will manage interrupts and other low-level 
+ things by 
+ itself. This is what we want since we’re looking at how to do low-level programming in 
+ bare metal. 
+ We also indicate that the image should be loaded at
+  0
+ x60000000
+  (with
+  -
+ a
+ ) and that the entry point 
+ for 
+ the code will be at the same address (with
+  -
+ e
+ ). This choice of address is because we want to 
+ load the 
+ image into the RAM of our device, and in the previous chapter we found that RAM starts 
+ at
+  0
+ x60000000 
+ on the board. Is it safe to place our code into the beginning of RAM? Will it not 
+ overwrite U-Boot itself 
+ and prevent a proper boot? Fortunately, we don’t have that complication. 
+ U-Boot is initially executed 
+ from ROM, and then, on ARM system, it copies itself to the
+  end
+  of the 
+ RAM before continuing from there.",NA
+Booting everything,"We’re ready to boot! Let’s start QEMU as usual, except that this time we’ll also add an extra 
+ parameter 
+ telling QEMU that we want to use a SD card. 
+ 1
+  
+ qemu
+ -
+ system
+ -
+ arm
+  -
+ M vexpress
+ -
+ a9
+  -
+ m
+  32
+ M
+  -
+ no
+ -
+ reboot
+  -
+ nographic
+  -
+ monitor 
+ telnet
+ :127.0.0.1:1234,
+ server
+ ,
+ nowait
+  -
+ kernel u
+ -
+ boot
+ -2018.09/
+ u
+ -
+ boot
+  -
+ sd sdcard
+ .
+ img
+  
+  
+ Hit a key when U-Boot prompts you to, in order to use the U-Boot command line interface. We can 
+ now use a few commands to examine the state of things and confirm that everything is as we 
+ wanted. 
+ First type
+  mmc list
+  and you should get a response like
+  MMC
+ : 0
+ . This confirms the presence 
+ of an emulated SD card. Then type
+  ext2ls mmc
+  0
+ . That is the equivalent of running
+  ls
+  on the SD 
+ card’s filesystem, and you should see a response that includes the
+  bare
+ -
+ arm
+ .
+ uimg
+  file - our uImage. 
+ Let’s load the uImage into memory. We can tell U-Boot to do that with
+  ext2load mmc
+  0 0
+ x60000000 
+ bare
+ -
+ arm
+ .
+ uimg
+ , which ascan probably guessmeansto load
+  bare
+ -
+ arm
+ .
+ uimg
+  fromthe
+  ext2
+  system 
+ on the 
+ first MMC device into address
+  0
+ x60000000
+ . U-Boot should report success, and then we can use
+  
+ iminfo
+  0
+ x60000000
+  to verify whether the image is located at that address now. If everything 
+ went 
+ well, U-Boot should report that a legacy ARM image has been found at the address, along with a 
+ bit 
+ more information about the image. Now we can go and boot the image from memory:
+  bootm
+  0 
+ x60000000
+ . 
+ U-Boot will print
+  Starting kernel
+ ...
+  and seemingly hang. You can now check the QEMU monitor 
+ (recall that you can connect to it with
+  telnet localhost
+  1234
+ ), and issue the
+  info registers 
+ command 
+ to see that R2 is once again equal to
+  0
+ xDEADBEEF
+ . Success! Our program has now been loaded 
+ from a SD card image and started through U-Boot! 
+ Better yet, the modifications we made earlier to U-Boot allow it to perform this boot sequence 
+ automatically. With those modifications, we added a new environment variable to U-Boot, 
+ bootcmd_bare_arm
+ ,whichcontainsthebootcommands. Ifyoutype
+ printenv bootcmd_bare_arm 
+ in the U-
+ Boot command-line, you’ll see the boot sequence. 
+ If you start QEMU again and don’t press any keys to pause U-Boot, you should see If you type
+  
+ printenv bootcmd_bare_arm
+  in the U-Boot command-line, you’ll see the boot sequence. If you start 
+ QEMU again and don’t press any keys to pause U-Boot, you should see the boot continue 
+ automatically. 
+ Daniels Umanovskis 
+ 24",NA
+4 Preparing a C environment,"In this part, we will do some significant work to get a proper application up and running. What we 
+ have done so far is hardly an application, we only execute one instruction before hanging, and 
+ everything is done in the reset handler. Also, we haven’t written or run any C code so far. 
+ Programming in assembly is harder than in C, so generally bare-metal programs will do a small 
+ amount of initialization in assembly 
+ and then hand control over to C code as soon as possible. 
+ We are now going to write startup code that prepares a C environment and runs the
+  main
+  
+ function in C. This will require setting up the stack and also handling data relocation, that is, 
+ copying some data 
+ from ROM to RAM. The first C code that we run will print some strings to the 
+ terminal by accessing the 
+ UART peripheral device. This isn’t really using a proper driver, but 
+ performing some UART prints is a very good way of seeing that things are working properly.",NA
+New startup code,"Setting up the stack
+  
+ Our startup code is getting a major rework. It will do several new and exciting things, the most 
+ basic of which is to prepare the stack. C code will not execute properly without a stack, which is 
+ necessary among other things to have working function calls. 
+ Conceptually, preparing the stack is quite simple. We just pick two addresses in our memory space 
+ that 
+ will be the start and end of the stack, and then set the initial stack pointer to the start of the 
+ stack. By 
+ convention, the stack grows towards lower addresses, that is, your stack could be 
+ between addresses 
+ like
+  0
+ x60020000
+  and
+  0
+ x60021000
+ , which would give a stack of
+  0
+ x1000
+  bytes, 
+ and the stack pointer would initially point to the “end” address
+  0
+ x600210000
+ . This is called a 
+ descending stack. The ARM Procedure Call Standard also specifies that a descending stack 
+ should be used. 
+ The ARMv7A architecture has, on a system level, several stack pointers and the CPU has several 
+ processor modes. Consulting the ARMv7A reference manual, we can see that processor modes 
+ are: user, FIQ, IRQ, supervisor, monitor, abort, undefined and system. To simplify things, we will 
+ only care about three modes now - the FIQ and IRQ modes, which execute fast interrupt and 
+ normal interrupt code respectively - and the supervisor mode, which is the default mode the 
+ processor starts in. 
+ 26",NA
+Into the C,"We’re finally ready to leave the complexities of linker scripts and assembly, and write some code 
+ in good old C. Create a new file, such as
+  cstart
+ .
+ c
+  with the following code: 
+ 1 
+  
+ 2 
+  
+ 3 
+  
+ 4 
+  
+ 5 
+  
+ 6 
+  
+ 7 
+  
+ 8 
+  
+ 9 
+  
+ 10 
+  
+ 11 
+  
+ 12
+  
+ #
+ include
+  <
+ stdint
+ .
+ h
+ >
+  
+ volatile
+  uint8_t
+ *
+  uart0
+  = (
+ uint8_t
+ *)0
+ x10009000
+ ;
+  
+ void
+  write
+ (
+ const char
+ *
+  str
+ ) 
+  
+ { 
+  
+  
+ while
+  (*
+ str
+ ) { 
+  
+  
+  
+ *
+ uart0
+  = *
+ str
+ ++; 
+  
+  
+ } 
+  
+ }
+  
+ int
+  main
+ () {
+  
+  
+  
+ Daniels Umanovskis 
+ 33",NA
+Building and running,"There are a few changes to how we need to build the application. Assembling the startup code in 
+ startup
+ .
+ s
+  is not going to change: 
+ 1 
+  
+ arm
+ -
+ none
+ -
+ eabi
+ -
+ as
+  -
+ o startup
+ .
+ o startup
+ .
+ s
+  
+ The new C source file needs to be compiled, and a few special link options need to be passed to 
+ GCC:
+  
+ 1 
+  
+ arm
+ -
+ none
+ -
+ eabi
+ -
+ gcc
+  -
+ c
+  -
+ nostdlib
+  -
+ nostartfiles
+  -
+ lgcc
+  -
+ o cstart
+ .
+ o cstart
+ .
+ c
+  
+ With
+  -
+ nostdlib
+  we indicate that we’re not using the standard C library, or any other standard 
+ libraries that GCC would like to link against. The C standard library provides the very useful 
+ standard functions like
+  printf
+ , but it also assumes that the system implements certain requirements 
+ for those functions. 
+ We have nothing of the sort, so we don’t link with the C library at all. 
+ However, since
+  -
+ nostdlib 
+ disables all default libraries, we explicitly re-add
+  libgcc
+  with the
+  -
+ lgcc
+  flag.
+  
+ libgcc
+  doesn’t provide 
+ standard C functions, but instead provides code to deal with CPU or 
+ architecture-specific issues. One such issue on ARM is that there is no ARM instruction for 
+ division, so the compiler normally has to provide a division routine, which is something GCC does 
+ in
+  libgcc
+ . We don’t really need it now but include it anyway, which is good practice when 
+ compiling bare-metal ARM sofware with GCC. 
+ The
+  -
+ nostartfiles
+  option tells GCC to omit standard startup code, since we are providing our own in 
+ startup
+ .
+ s
+ . 
+ We’re also providing the
+  -
+ c
+  switch to stop afer the compilation phase. We don’t want GCC to use 
+ its 
+ default linker script, and we’ll perform the linking in the next step with
+  ld
+ . Later, when defining 
+ proper 
+ build targets, this will become streamlined. 
+ Linking everything to obtain an ELF file has not undergone any changes, except for the addition 
+ of 
+ cstart
+ .
+ o
+ : 
+ Daniels Umanovskis 
+ 35",NA
+Bonus: exploring the ELF file,"Dealing with linker scripts, ELF sections and relocations can be dificult. One indispensable tool is 
+ objdump
+ , capable of displaying all kinds of information about object files, as well as 
+ disassembling 
+ them. Let’s look at some of the useful commands to run on our
+  cenv
+ .
+ elf
+ . First is the
+  -
+ h
+  option, which 
+ summarizes sections headers. 
+ 1
+  
+ arm
+ -
+ none
+ -
+ eabi
+ -
+ objdump
+  -
+ h cenv
+ .
+ elf
+  
+ Algn 
+  
+ 2**2
+  
+ 2
+  
+ Sections
+ : 
+ Idx 
+ Name 
+  
+  
+ 0 .
+ text 
+  
+ 1 .
+ data 
+  
+ 2 .
+ bss
+  
+ Size 
+  
+ VMA LMA File off
+  
+ 000001
+ ea 
+  
+ 60000000 60000000 00010000
+  
+ CONTENTS
+ ,
+  ALLOC
+ ,
+  LOAD
+ ,
+  READONLY
+ ,
+  CODE
+  
+ 00000008 
+  
+ 70000000 600001
+ ea 
+ 00020000
+  
+ CONTENTS
+ ,
+  ALLOC
+ ,
+  LOAD
+ ,
+  DATA
+  
+ 00000000 
+  
+ 70000008 600001
+ f2 
+ 00020008
+  
+ ALLOC
+  
+ 3
+  
+ 4
+  
+ 5
+  
+ 6
+  
+ 2**2
+  
+ 7
+  
+ 8
+  
+ 2**0
+  
+ 9
+  
+ 10
+  
+  
+ Of particular interest are the load address (LMA), which indicates where the section would be in 
+ ROM, and the virtual address (VMA), which indicates where the section would be during runtime, 
+ which in our case means RAM. We can also look at the contents of an individual section. Suppose 
+ we want to know what’s in
+  .
+ data
+ : 
+ 1
+  
+ arm
+ -
+ none
+ -
+ eabi
+ -
+ objdump
+  -
+ s
+  -
+ j
+  .
+ data cenv
+ .
+ elf
+  
+ ........
+  
+ 2
+  
+ Contents of section
+  .
+ data
+ : 
+  
+ 70000000 00900010 00000000
+  
+ 3
+  
+ 4
+  
+  
+ The
+  70000000
+  in the beginning is the address, and then we see the actual data -
+  00900010
+  can be 
+ recognized as the little-endian 4-byte encoding of
+  0
+ x10009000
+ , the address of UART0. 
+ Running
+  objdump
+  with the
+  -
+ t
+  switch shows the symbol table, so for
+  arm
+ -
+ none
+ -
+ eabi
+ -
+ objdump
+  -
+ t 
+ cenv
+ .
+ elf
+  we would see quite a bit of output, some of it containing: 
+ 1
+  
+ 00000011
+  
+ l 
+ 00000012
+  
+ l 
+ 00000013
+  
+ l 
+ 60000034
+  
+ l 
+ 6000004
+ c 
+ l 
+ 600001
+ ea 
+ g 
+ 70000008
+  
+ g 
+ 00001000
+  g
+  
+ *
+ ABS
+ * 
+ *
+ ABS
+ * 
+ *
+ ABS
+ * 
+ .
+ text 
+ .
+ text 
+ .
+ text 
+ .
+ bss 
+  
+ *
+ ABS
+ *
+  
+ 00000000
+  MODE_FIQ 
+  
+ 00000000
+  MODE_IRQ 
+  
+ 00000000
+  MODE_SVC 
+  
+ 00000000
+  fiq_loop 
+  
+ 00000000
+  irq_loop 
+  
+ 00000000
+  _text_end 
+  
+ 00000000
+  _bss_start 
+  
+ 00000000
+  _fiq_stack_size
+  
+ 2
+  
+ 3
+  
+ 4
+  
+ 5
+  
+ 6
+  
+ 7
+  
+ 8
+  
+  
+  
+ Daniels Umanovskis 
+ 37",NA
+5 Build & debug system,"This part is going to be a detour from bare-metal programming in order to quickly set up a build 
+ system using CMake, and briefly show how our program can be debugged while running in QEMU. 
+ If you’re not 
+ interested, you can skip this part, though at least skimming it would be 
+ recommended. 
+ We will use
+  CMake
+  as our build manager. CMake provides a powerful language to define projects, 
+ and doesn’t actually build them itself - CMake generates input for another build system, which will 
+ be GNU 
+ Make since we’re developing on Linux. It’s also possible to use Make by itself, but for 
+ new projects I prefer to use CMake even when its cross-platform capabilities and other powerful 
+ features are not needed. 
+ It should also be noted here that I am far from a CMake expert, and build systems aren’t the focus 
+ of these articles, so this could certainly be done better. 
+ To begin with, we’ll organize our project folder with some subfolders, and create a top-level 
+ CMakeLists
+ .
+ txt
+ , which is the input file CMake normally expects. The better-organized project 
+ structure looks like this: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+  
+ 7
+  
+ |--
+  CMakeLists
+ .
+ txt 
+  
+ |--
+  scripts 
+  
+ |
+  
+ - -
+  create
+ -
+ sd
+ .
+ sh
+  
+ - -
+  src 
+  
+   
+ |--
+  cstart
+ .
+ c 
+  
+   
+ |--
+  linkscript
+ .
+ ld
+  
+   
+ - -
+  startup
+ .
+ s
+  
+  
+ The
+  src
+  folder contains all the source code, the
+  scripts
+  folder is for utility scripts like the one 
+ creating 
+ our SD card image, and at the top there’s
+  CMakeLists
+ .
+ txt
+ . 
+ We want CMake to handle the following for us: 
+ • Rebuild U-Boot if necessary 
+ • Build our program, including the binary converstion with
+  
+ objcopy
+ • Create the SD card image for QEMU 
+ • Provide a way of running QEMU 
+ 39",NA
+Building and running,"When building the project, I strongly recommend doing what’s known as an
+  out of source build
+ . It 
+ simply means that all the files resulting from the build should go into a separate folder, and not 
+ your source folder. This is cleaner (no mixing of source and object files), easier to use with Git 
+ (just ignore the whole build folder), and allows you to have several builds at the same time. 
+ To build with CMake, first you need to tell CMake to generate the build configuration from
+  
+ CMakeLists 
+ .
+ txt
+ . The easiest way to perform a build is: 
+ 1 
+  
+ cmake
+  -
+ S
+  . -
+ Bbuild
+  
+ The
+  -
+ S
+  .
+  option says to look for the source, starting with
+  CMakeLists
+ .
+ txt
+ , in the current folder, and
+  -
+ Bbuild
+  specifies that a folder called
+  build
+  should contain the generated configuration. Afer running 
+ that command, you’ll have the
+  build
+  folder containing configurations generated by CMake. You 
+ can then use
+  make
+  inside that folder. There’s no need to call CMake itself again unless the build 
+ configuration is supposed to change. If you, for instance, add a new source file to the project, you 
+ need 
+ to include it in
+  CMakeLists
+ .
+ txt
+  and call CMake again. 
+ From the newly created
+  build
+  folder, simply invoking the default make target will build everything.
+  
+ 1 
+  
+ make
+  
+  
+ You’ll see compilation of U-Boot and our own project, and the other steps culminating in the 
+ creation 
+ of
+  sdcard
+ .
+ img
+ . Since we also defined a CMake target to run QEMU, it can also be invoked 
+ directly afer building. Just do: 
+ Daniels Umanovskis 
+ 42",NA
+Debugging in QEMU with GDB,"While the QEMU monitor provides many useful features, it’s not a proper debugger. When 
+ running sofware on a PC through QEMU, as opposed to running on real hardware, it would be a 
+ waste not to take advantage of the superior debug capabilities available. We can debug our bare-
+ metal program using the GDB, the GNU debugger. GDB provides remote debugging capabilities, 
+ with a server called 
+ gdbserver
+  running on the machine to be debugged, and then the main
+  gdb
+  
+ client communicatng 
+ with the server. QEMU is able to start an instance of
+  gdbserver
+  along with the 
+ program it’s emulating, 
+ so remote debugging is a possibility with QEMU and GDB. 
+ Starting
+  gdbserver
+  when running QEMU is as easy as adding
+  -
+ gdb tcp
+ ::2159
+  to the QEMU command 
+ line (2159 is the standard port for GDB remote debugging). Given that we’re using CMake, we 
+ can use it to define a new target for a debug run of QEMU. These are the additions in 
+ CMakeLists
+ .
+ txt
+ : 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+ 7
+  
+ string
+ (
+ CONCAT GDBSCRIPT
+  ""target remote localhost:2159\n"" ""file bare-
+ metal.elf""
+ ) 
+  
+ file
+ (
+ WRITE $
+ {
+ CMAKE_BINARY_DIR
+ }/
+ gdbscript $
+ {
+ GDBSCRIPT
+ })
+  
+ add_custom_target
+ (
+ drun
+ ) 
+  
+ add_custom_command
+ (
+ TARGET drun PRE_BUILD COMMAND $
+ {
+ CMAKE_COMMAND
+ } -
+ E 
+  
+ cmake_echo_color
+  --
+ cyan 
+  
+  
+  
+ ""To connect the debugger, run arm-none-eabi-gdb -x 
+  
+  
+ gdbscript""
+ )
+  
+  
+  
+ Daniels Umanovskis 
+ 43",NA
+6 UART driver development,"This chapter will concern driver development, a crucial part of bare-metal programming. We will 
+ walk through writing a UART driver for the Versatile Express series, but the ambition here is not 
+ so much to 
+ cover that particular UART in detail as it is to show the general approach and 
+ patterns when writing a 
+ similar driver. As always with programming, there is a lot that can be 
+ debated, and there are parts that 
+ can be done diferently. Starting with a UART driver specifically 
+ has its advantages. UARTs are very common peripherals, they’re much simpler than other serial 
+ buses such as SPI or I2C, and the UART pretty much corresponds to standard input/output when 
+ run in QEMU.",NA
+Doing the homework,"Writing a peripheral driver is not something you should just jump into. You need to understand 
+ the device itself, and how it integrates with the rest of the hardware. If you start coding of the 
+ hip, you’re likely to end up with major design issues, or just a driver that mysteriously fails to 
+ work because you 
+ missed a small but crucial detail. Thinking before doing should apply to most 
+ programming, but driver 
+ programming is particularly unforgiving if you fail to follow that rule. 
+ Before writing a peripheral device driver, we need to understand, in broad strokes, the following 
+ about 
+ the device: 
+ • How it performs its function(s). Whether it’s a communication device, a signal converter, or 
+ anything else, there are going to be many details of how the device operates. In the case of 
+ a UART device, some of the things that fall here are, what baud rates does it support? Are 
+ there input and output bufers? When does it sample incoming data? 
+ • How it is controlled. Most of the time, the peripheral device will have several registers, 
+ writing and reading them is what controls the device. You need to know what the registers 
+ do. 
+ •
+  How it integrates with the hardware. When the device is part of a larger system, which could 
+ be a system-on-a-chip or a motherboard-based design, it somehow connects to the rest of the 
+ system. 
+ Does the device take an external input clock and, if so, where from? Does enabling 
+ the device require some other system conditions to be met? The registers for controlling 
+ the device are somehow accessible from the CPU, typically by being mapped to a particular 
+ memory address.",NA
+Writing the driver,"What’s in the box?
+  
+ In higher-level programming, you can usually treat drivers as a black box, if you even give them 
+ any 
+ consideration. They’re there, they do things with hardware, and they only have a few functions 
+ you’re exposed to. Now that we’re writing a driver, we have to consider what it consists of, the 
+ things we need 
+ to implement. Broadly, we can say that a driver has: 
+ • An initialization function. It starts the device, performing whatever steps are needed. This is 
+ usually relatively simple. 
+ • Configuration functions. Most devices can be configured to perform their functions 
+ diferently. 
+ For a UART, programming the baud rate and frame format would fall here. 
+ Configuration can be 
+ simple or very complex. 
+ • Runtime functions. These are the reason for having the driver in the first place, the 
+ interesting stuf happens here. In the case of UART, this means functions to transmit and read 
+ data. 
+ • A deinitialization function. It turns the device of, and is quite ofen omitted. 
+ •
+  Interrupt handlers. Most peripherals have some interrupts, which need to be handled in 
+ special 
+ functions called interrupt handlers, or interrupt service routines. We won’t be 
+ covering that for now. 
+ Now we have a rough outline of what we need to implement. We will need code to start and 
+ configure 
+ the UART, and to send and receive data. Let’s get on with the implementation. 
+ Exposing the SFRs
+  
+ We know by now that programming the UART will be done by accessing the SFRs. It is possible, 
+ of course, to access the memory locations directly, but a better way is to define a C struct that 
+ reflects 
+ Daniels Umanovskis 
+ 49",NA
+Summary,"We’ve written our first driver that interfaces with the hardware directly, and we wrote some 
+ proof-of-concept code making use of the driver. A big takeaway is that carefully reading the 
+ manual is at least half the work involved in writing a driver. In writing the actual driver code, we 
+ also saw how it can be quite diferent from most non-driver code. There’s a lot of bit 
+ manipulation, and operations that are order-sensitive in ways that may not be intuitive. The fact 
+ that the same location in memory, like the 
+ DR
+  SFR, acts diferently when being read versus 
+ written is also something rarely encountered outside of driver code. 
+ Unsurprisingly, the driver written in this chapter is not perfect. Some possibilities for 
+ improvement:
+  
+ •
+  Interrupt handling. Currently the driver is being used in polling mode, constantly asking it if 
+ new 
+ characters have been received. In most practical cases, polling is too ineficient and 
+ interrupts are desired. This is something that the next chapter handles. 
+ • More robustness. Error handling, sanity checks and other measures preventing the driver 
+ from being incorrectly are good! The driver could return diferent error codes for diferent 
+ types of 
+ receive errors instead of lumping them all together. The driver could keep track of 
+ its own status and prevent functions like
+  uart_write
+  from executing before the configuration 
+ has been done 
+ with
+  uart_configure
+ . 
+ • The reference clock is hardcoded as 24 MHz now, the driver should instead query the 
+ hardware to find the reference clock’s frequency. 
+ Daniels Umanovskis 
+ 61",NA
+7 Interrupts,"There’s no reasonable way of handling systems programming, such as embedded development 
+ or operating system development, without interrupts being a major consideration. 
+ What’s an interrupt, anyway? It’s a kind of notification signal that a CPU receives as an indication 
+ that 
+ something important needs to be handled. An interrupt is ofen sent by another hardware 
+ device, in which case that’s a
+  hardware interrupt
+ . The CPU responds to an interrupt by 
+ interrupting its current 
+ activity (hence the name), and switching to a special function called an
+  
+ interrupt handler
+  or an
+  interrupt 
+ service routine
+  - ISR for short. Afer dealing with the interrupt, 
+ the CPU will resume whatever it was doing previously. 
+ There are also
+  sofware interrupts
+ , which can be triggered by the CPU itself upon detecting an error, 
+ or 
+ may be possible for the programmer to trigger with code. 
+ Interrupts are used primarily for performance reasons. A polling-based approach, where 
+ external devices are continuously asked for some kind of status, are ineficient. The UART driver 
+ we wrote in the previous chapter is a prime example of that. We use it to let the user send data 
+ to our program by 
+ typing, and typing is far slower than the frequency at which the CPU can check 
+ for new data. Interrupts solve this problem by instead letting the device notify the CPU of an event, 
+ such as the UART receiving 
+ a new data byte. 
+ If you read the manual for the PL011 UART in the previous chapter, you probably remember 
+ seeing 
+ some registers that control interrupt settings, which we ignored at the time. So, changing 
+ the driver to work with interrupts should be just a matter of setting some registers to enable 
+ interrupts and writing 
+ an ISR to handle them, right? 
+ No, not even close. Inerrupt handling is ofen quite complicated, and there’s work to be done 
+ before 
+ any interrupts can be used at all, and then there are additional considerations for any ISRs. 
+ Let’s get to 
+ it.",NA
+Interrupt handling in ARMv7-A,"Interrupt handling is very hardware-dependent. We need to look into the general interrupt 
+ handling procedure of the particular architecture, and then into specifics of a particular 
+ implementation like a 
+ 62",NA
+Generic Interrupt Controller of the Cortex-A9,"We’re programming for a CoreTile Express A9x4 daughterboard, which contains the Cortex-A9 
+ MPCore 
+ CPU. The MPCore means it’s a CPU that can consist of one to four individual Cortex-A9 
+ cores. So it’s the
+  Cortex-A9 MPCore manual
+  that becomes our next stop. There’s a chapter in the 
+ manual for the interrupt controller - so far so good - but it immediately refers to another manual. 
+ Turns out that the Cortex-A9 has an interrupt controller of the
+  ARM Generic Interrupt Controller
+  
+ type, for which there’s a separate manual (note that GIC version 4.0 makes a lot of references to 
+ the ARMv8 architecture). The 
+ Cortex-A9 manual refers to version 1.0 of the GIC specification, but 
+ reading version 2.0 is also fine, there 
+ aren’t too many diferences and none in the basic features. 
+ The GIC is one of the major interrupt controller implementations. This is one of the area where 
+ the diference between A-profile and R-profile of ARMv7 matters. ARMv7-R CPUs such as the 
+ Cortex-R4 normally use a vectored controller like the appropriately named VIC. 
+ The GIC has its own set of SFRs that control its operation, and the GIC as a whole is responsible 
+ for 
+ forwarding interrupt requests to the correct A9 core in the A9-MPCore. There are two main 
+ components
+  
+ Daniels Umanovskis 
+ 64",NA
+First GIC implementation,"Let us say that the first goal is to successfully react to an interrupt. For that, we will need a basic 
+ GIC 
+ driver and an interrupt handler, as well as some specific interrupt to enable and react to. The 
+ UART can 
+ act as an interrupt source, as a UART data reception (keypress in the terminal) triggers 
+ an interrupt. From there, we’ll be able to iterate and improve the implementation with better 
+ interrupt hanlders and the use of vectorized interrupts. 
+ This section has quite a lot of information and again refers to multiple manuals, so do not worry if 
+ it initially seems complicated! 
+ We begin by defining the appropriate structures in a header file that could be called
+  gic
+ .
+ h
+ , taking the 
+ register map from the GIC manual as the source of information. The result looks something like 
+ this:
+  
+ 1 
+  
+ 2 
+  
+ 3 
+  
+ 4 
+  
+ 5 
+  
+ 6 
+  
+ 7 
+  
+ 8 
+  
+ 9 
+  
+ 10 
+  
+ 11 
+  
+ 12 
+  
+ 13 
+  
+ 14 
+  
+ 15
+  
+ typedef
+  volatile
+  struct __attribute__
+ ((
+ packed
+ )) { 
+  
+  
+ uint32_t DCTLR
+ ; 
+  
+ /* 0x0 Distributor Control register 
+  
+  
+  
+ */ 
+  
+  
+ const
+  uint32_t DTYPER
+ ; 
+  
+ /* 0x4 Controller type register */ 
+  
+ const
+  
+ uint32_t DIIDR
+ ; 
+  
+ /* 0x8 Implementer identification 
+  
+  
+ register */ 
+  
+  
+ uint32_t _reserved0
+ [29]; 
+  
+ /* 0xC - 0x80; reserved and 
+  
+  
+  
+ implementation-defined */ 
+  
+  
+ uint32_t DIGROUPR
+ [32]; 
+  
+ /* 0x80 - 0xFC Interrupt group 
+  
+  
+ registers */ 
+  
+  
+ uint32_t DISENABLER
+ [32]; 
+  
+  
+ /* 0x100 - 0x17C Interrupt set-
+  
+  
+ enable registers */ 
+  
+  
+ uint32_t DICENABLER
+ [32]; 
+  
+ /* 0x180 - 0x1FC Interrupt clear-
+  
+  
+ enable registers */ 
+  
+  
+ uint32_t DISPENDR
+ [32]; 
+  
+ /* 0x200 - 0x27C Interrupt set-
+   
+ pending 
+ registers */ 
+  
+  
+ uint32_t DICPENDR
+ [32]; 
+  
+ /* 0x280 - 0x2FC Interrupt clear-
+  
+  
+ pending registers */ 
+  
+  
+ uint32_t DICDABR
+ [32]; 
+  
+ /* 0x300 - 0x3FC Active Bit 
+  
+  
+  
+ Registers (GIC v1) */ 
+  
+  
+ uint32_t _reserved1
+ [32]; 
+  
+ /* 0x380 - 0x3FC reserved on GIC v1 
+  
+  
+  
+ */ 
+  
+  
+ uint32_t DIPRIORITY
+ [255]; 
+  
+ /* 0x400 - 0x7F8 Interrupt priority 
+  
+  
+  
+ registers */ 
+  
+  
+ uint32_t _reserved2
+ ; 
+  
+ /* 0x7FC reserved */ 
+  
+  
+ const
+  uint32_t DITARGETSRO
+ [8]; 
+  
+ /* 0x800 - 0x81C Interrupt CPU 
+   
+ targets, 
+ RO */
+  
+  
+  
+ Daniels Umanovskis 
+ 67",NA
+Handling an interrupt,"Let’s now put the GIC to use and enable the UART interrupt, which should be triggered any time 
+ the 
+ UART receives data, which corresponds to us pressing a key in the terminal when running with 
+ QEMU.
+  
+ Afer receiving an interrupt, we’ll need to properly handle it to continue program execution. 
+ Enabling the UART interrupt should be easy since we already wrote the
+  gic_enable_interrupt 
+ function, all we need to do now is to call it with the correct interrupt number. That means once 
+ again going back to the manuals to find the interrupt ID numbe we need to use. Interrupt 
+ numbers usually 
+ difer depending on the board, and in our case the CoreTile Express A9x4 manual 
+ can be the first stop. The section
+  2.6 Interrupts
+  explains that the integrated test chip for the Cortex-
+ A9 MPCore on this board is directly connected to the motherboard (where the UART is located as 
+ we remember from the previous 
+ chapter), and that motherboard interrupts 0-42 map to 
+ interrupts 32-74 on the daughterboard. This 
+ means we need to check the motherboard manual 
+ and add 32 to the interrupt number we find there.
+  
+ The Motherboard Express µATX manual explains in
+  2.6 Interrupt signals
+  that the motherboard 
+ has no interrupt controller, but connects interrupt signals to the daughterboard. The signal list 
+ says that 
+ UART0INTR
+ , the interrupt signal for UART0, is number
+  5
+ . Since the daughterboard remaps 
+ interrupts, 
+ we’ll need to enable interrupt
+  37
+  in order to receive UART interrupts in our program. 
+ The following snippet in
+  main
+  should do just fine: 
+ Daniels Umanovskis 
+ 74",NA
+Surviving the IRQ handler,"Our basic implementation of the IRQ handler isn’t good for much, the biggest issue being that the 
+ program hangs completely and never leaves the IRQ mode. 
+ Interrupt handlers, as the name suggests, interrupt whatever the program was doing previously. 
+ This 
+ means that state needs to be saved before the handler, and restored afer. The general-
+ purpose ARM 
+ registers, for example, are shared between modes, so if your register
+  R0
+  contains 
+ something, and then an interrupt handler writes to it, the old value is lost. This is part of the 
+ reason why a separate IRQ stack is needed (which we prepare in the startup code), as the IRQ 
+ stack is normally where the context would 
+ be saved. 
+ When writing interrupt handlers in assembly, we have to take care of context saving and restoring, 
+ and correctly returning from the handler. Hand-written assembly interrupt handlers should be 
+ reserved for 
+ cases where fine-tuned assembly is critical, but generally it’s much easier to write 
+ interrupt handlers in C, where they become regular functions for the most part. The compiler 
+ can handle context save 
+ and restore, and everything else that’s needed for interrupt handling, if 
+ told that a particular function 
+ is an interrupt handler. In GCC,
+  __attribute__
+ ((
+ interrupt
+ ))
+  is a 
+ decoration that can be used to indicate that a function is an interrupt handler. 
+ We can write a new function in the UART driver that would respond to the interrupt. 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+ void
+  __attribute__
+ ((
+ interrupt
+ ))
+  uart_isr
+ (
+ void
+ ) { 
+  
+ uart_write
+ (
+ ""Interrupt!\n""
+ ); 
+  
+ }
+  
+  
+ Then just changing
+  b IrqHandler
+  to
+  b uart_isr
+  in the vector table will ensure that the
+  uart_isr 
+ function 
+ is the one called when interrupts occur. If you test this, you’ll see that the program just 
+ keeps 
+ spamming
+  Interrupt
+ !
+  endlessly afer a keypress. Our ISR needs to communicate with the GIC, 
+ acknowledge the interrupt and signal the GIC when the ISR is done. In the GIC, we need a function 
+ that 
+ acknowledges an interrupt. 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+ uint32_t gic_acknowledge_interrupt
+ (
+ void
+ ) { 
+  
+ return
+  
+ gic_ifregs
+ ->
+ CIAR
+  &
+  CIAR_ID_MASK
+ ; }
+  
+  
+ CIAR_ID_MASK
+  is
+  0
+ x3FF
+  because the lowest 9 bits of
+  CIAR
+  contain the interrupt ID of the interrupt 
+ that the GIC is signaling. Afer a read from
+  CIAR
+ , the interrupt is said to change from pending state 
+ to active. Another function is necessary to signal the end of the interrupt, which is done by 
+ writing the interrupt ID to the
+  EOIR
+  register. 
+ Daniels Umanovskis 
+ 77",NA
+Adapting the UART driver,"We now finally have working interrupt handling with a properly functional ISR that handles an 
+ interrupt, clears the interrupt source and passes control back to whatever code was running before 
+ the interrupt. Next let us apply interrupts in a useful manner, by adapting the UART driver and 
+ making the interrupts 
+ do something useful. 
+ The first thing to note is that what we’ve been calling “the UART interrupt” is a specific interrupt 
+ signal, 
+ UART0INT
+  that the motherboard forwards to the GIC. From the point of view of the PL011 
+ UART itself 
+ though, several diferent interrupts exist. The PL011 manual has a section devoted to 
+ interrupts, which 
+ lists eleven diferent interrupts that the peripheral can generate, and it also 
+ generates an interrupt 
+ UARTINTR
+  that is an OR of the individual interrupts (that is,
+  UARTINTR
+  is 
+ active if any of the others is). It’s this
+  UARTINTR
+  that corresponds to the interrupt number 37 which 
+ we enabled, but our driver code 
+ should check which interrupt occurred specifically and react 
+ accordingly. 
+ The
+  UARTMIS
+  register can be used to read the masked interrupt status, with the
+  UARTRIS
+  
+ providing the raw interrupt status. The diference between those is that, if an interrupt is masked 
+ (disabled) in the UART’s configuration, it can still show as active in the raw register but not the 
+ masked one. By 
+ default all interrupts all unmasked (enabled) on the PL011 so this distinction 
+ doesn’t matter for us. Of 
+ the individual UART interrupts, only the receive interrupt is really 
+ interesting in the basic use case, so let’s implement that one properly, as well as one of the error 
+ interrupts. 
+ All interrupt-related PL011 registers use the same pattern, where bits 0-10 correspond to the 
+ same 
+ interrupts. The receive (RX) interrupt is bit 4, the break error (BE) interrupt is bit 9. We can 
+ express that 
+ nicely with a couple of defines: 
+ 1
+  
+ #
+ define RX_INTERRUPT 
+ #
+ define BE_INTERRUPT
+  
+ (1
+ u
+  << 4
+ u
+ ) 
+  
+ (1
+ u
+  << 9
+ u
+ )
+  
+ 2
+  
+  
+ We’re using the UART as a terminal, so when the receive interrupt occurs, we’d like to print the 
+ character that was received. If the break error occurs, we can’t do much except clear the error flag 
+ (in the RSRECR register) and write an error message. Let’s write a new ISR that checks for the 
+ actual underlying UART 
+ interrupt and reacts accordingly. 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+ void
+  __attribute__
+ ((
+ interrupt
+ ))
+  uart_isr
+ (
+ void
+ ) { 
+  
+ (
+ void
+ )
+ gic_acknowledge_interrupt
+ ();
+  
+ uint32_t status
+  =
+  uart0
+ ->
+ MIS
+ ; 
+  
+ if
+  (
+ status
+  &
+  RX_INTERRUPT
+ ) { 
+  
+ /* Read the received character and print it back*/
+  
+  
+  
+ Daniels Umanovskis 
+ 79",NA
+Handling diferent interrupt sources,"The interrupt handling solution at this point has a major flaw. No matter what interrupt the CPU 
+ receives, the
+  b uart_isr
+  from the vector table will take us to that interrupt handler, which is of course 
+ only suitable for the UART interrupt. Early on in this chapter, there was mention of vectored 
+ interrupts, 
+ which we cannot use since our hardware uses the GIC, a non-vectored interrupt 
+ controller. Therefore 
+ we’ll need to use a sofware solution, writing a top-level interrupt handler 
+ that will be responsible for 
+ finding out which interrupt got triggered and then calling the 
+ appropriate function. 
+ In the simplest case, we’d then write a function like the following: 
+ 1 
+  
+ 2 
+  
+ 3 
+  
+ 4 
+  
+ 5 
+  
+ 6 
+  
+ 7 
+  
+ 8 
+  
+ 9 
+  
+ 10 
+  
+ 11 
+  
+ 12
+  
+ void
+  __attribute__
+ ((
+ interrupt
+ ))
+  irq_handler
+ (
+ void
+ ) { 
+  
+ uint16_t irq
+  =
+  
+ gic_acknowledge_interrupt
+ (); 
+  
+ switch
+  (
+ irq
+ ) { 
+  
+  
+ case
+  UART0_INTERRUPT
+ : 
+  
+  
+  
+ uart_isr
+ (); 
+  
+  
+  
+ break
+ ; 
+  
+  
+ default
+ : 
+  
+  
+  
+ uart_write
+ (
+ ""Unknown interrupt!\n""
+ ); 
+  
+  
+ break
+ ; 
+  
+  
+ } 
+  
+  
+ gic_end_interrupt
+ (
+ irq
+ ); 
+  
+ }
+  
+  
+  
+ Daniels Umanovskis 
+ 80",NA
+Summary,"In this chapter, we went over interrupt handling in general, the ARM Generic Interrupt 
+ Controller, and we wrote some interrupt handlers. 
+ Interrupts are ofen among the trickiest topics in embedded development. Interrupt controllers 
+ themselves are quite complicated - we used the GIC in pretty much the simplest way possible, 
+ but it can quickly get complicated once you start grouping interrupts, working with their 
+ priorities and so on. Another complication arises from the hard-to-predict nature of interrupts. 
+ You don’t know what 
+ regular code will be executed when an interrupt happens. Many interrupts 
+ in the real world depend on timing or external data sources, so debugging with breakpoints afects 
+ the behavior of the program.
+  
+ As a broad generalization, interrupt handling becomes trickier and more important as you 
+ develop on more limited hardware. When dealing with microcontrollers, you ofen have to 
+ understand the amount of time spent in interrupts, and may also find that the switching between 
+ normal and IRQ modes creates real performance issues. Fast interrupts, FIQs, which we didn’t 
+ cover in this chapter exist in ARMv7 to help alleviate the overhead of regular IRQs. 
+ In a real embedded system that does something useful, interrupts are likely to drive some critical 
+ parts of functionality. For example, most systems need some way of measuring time or triggering 
+ some code 
+ in a time-based manner, and that usually happens by having a timer that generates 
+ interrupts. 
+ Daniels Umanovskis 
+ 83",NA
+8 Simple scheduling,"Very few embedded applications can be useful without some kind of time-keeping and 
+ scheduling. Being able to program things like “do this every X seconds” or “measure the time 
+ between events A and B” is a key aspect of nearly all practically useful applications. 
+ In this chapter, we’ll look at two related concepts.
+  Timers
+ , which are a hardware feature that 
+ allows 
+ sofware to keep track of time, and
+  scheduling
+ , which is how you program a system to run 
+ some code, or a
+  task
+ , on some kind of time-based schedule - hence the name. Scheduling in 
+ particular is a complex 
+ subject, some discussion of which will follow later, but first we’ll need to 
+ set up some kind of time measurement system. 
+ In order to keep track of time in our system, we’re going to use two tiers of “ticks”. First, closer 
+ to the 
+ hardware, we’ll have a timer driver for a hardware timer of the Cortex-A9 CPU. This driver 
+ will generate 
+ interrupts at regular intervals. We will use those interrupts to keep track of
+  system 
+ time
+ , a separate counter that we’ll use in the rest of the system as “the time”. 
+ Such a split is not necessary in a simple tutorial system, but is good practice due to the system 
+ time 
+ thus not being directly connected to a particular hardware clock or driver implementation. 
+ This allows better portability as it becomes possible to switch the underlying timer driver without 
+ afecting uses of 
+ system time. 
+ The first task then is to create a timer driver. Since its purpose will be to generate regular 
+ interrupts, note that this work builds directly on the previous chapter, where interrupt handling 
+ capability was added.",NA
+Private Timer Driver,"A Cortex-A9 MPCore CPU provides a global timer and private timers. There’s one private timer per 
+ core. 
+ The global timer is constantly counting up, even with the CPU paused in debug mode. The 
+ per-core 
+ private timers count down from some starting value to zero, sending an interrupt when 
+ zero is reached. 
+ It’s possible to use either timer for scheduling, but the typical solution is to use 
+ the private timer. It’s somewhat easier to handle due to being 32 bits wide (the global timer is 64 
+ bits) and due to stopping when the CPU is stopped. 
+ 84",NA
+System Time,"As discussed previously, we want to use some kind of
+  system time
+  system-wide. This is going to 
+ have a very straightforward implementation. The private timer will tick every millisecond, and 
+ its ISR will increment the system time. So system time itself will also be measured in 
+ milliseconds. Then 
+ systime
+ .
+ c
+  is exceedingly simple: 
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+  
+ 7
+  
+ #
+ include
+  ""systime.h"" 
+  
+ static volatile
+  systime_t systime
+ ; 
+ void
+  
+ systime_tick
+ (
+ void
+ ) { 
+  
+  
+ systime
+ ++; 
+  
+ }
+  
+  
+  
+ Daniels Umanovskis 
+ 87",NA
+Overflows and spaceships,"A discussion of timers is an opportune time to not only make a bad pun but also to mention 
+ overflows. 
+ By no means limited to embedded programming, overflows are nonetheless more 
+ prominent in low-
+ level systems programming. As a refresher, an overflow occurs when the result 
+ of a calculation exceeds 
+ the maximum range of its datatype. A
+  uint8_t
+  has the maximum value
+  255
+  
+ and so
+  255 + 1
+  would cause an overflow. 
+ Timers in particular tend to overflow. For example, our use of
+  uint32_t
+  for system time means 
+ that 
+ the maximum system timer value is
+  0
+ xFF FF FF FF
+ , or just shy of 4.3 billion in decimal. A timer 
+ that ticks every millisecond will reach that number afer 49 days. So code that assumes a timer will 
+ always 
+ keep inceasing can break in mysterious ways afer 49 days. This kind of bug is notoriously 
+ dificult to track to down. 
+ One solution is of course to use a bigger data type. Using a 64-bit integer to represent a 
+ millisecond timer would be suficient for 292 billion years. This does little to address problems in 
+ older systems, 
+ however. Many UNIX-based systems begin counting time from the 1st of January, 
+ 1970, and use a 32-bit 
+ integer, giving rise to what’s known as the Year 2038 problem, as such 
+ systems cannot represent any time afer January 19, 2038. 
+ When overflows are possible, code should account for them. Sometimes overflows can be 
+ disregarded, but saying that something “cannot happen” is dangerous. It’s reasonable to assume, 
+ for example, that
+  
+ Daniels Umanovskis 
+ 88",NA
+Scheduler types,"A scheduler is responsible for allocating necessary resources to do some work. To make various 
+ bits of code run on a schedule, CPU time is the resource to be allocated, and the various tasks 
+ comprise work. Diferent types of schedulers and diferent scheduling algorithms exist, with a 
+ specific choice depending on the use case and the system’s constraints. 
+ One useful concept to understand is that of
+  real-time systems
+ . Such a system has constraints, or 
+ deadlines
+ , on some timings, and these deadlines are expressed in specific time measurements. A 
+ “fast 
+ response” isn’t specific, “response within 2 milliseconds” is. Further, a real-time system is 
+ said to be 
+ hard real-time
+  if it cannot be allowed to miss any deadlines at all, that is, a single 
+ missed deadline 
+ constitutes a system failure. Real-time systems are commonly found in embedded 
+ systems 
+ controlling 
+ aircraf, 
+ cars, 
+ industrialormedicalequipment, 
+ andsoon.Bycontrast, 
+ mostconsumer-orientedsofware 
+ isn’t real-time. 
+ A real-time system requires a scheduler that can guarantee adherence to the required deadlines. 
+ Such systems will typically run a real-time operating system (RTOS) which provides the necessary 
+ scheduling 
+ support. We’re not dealing with real-time constraints, and we’re not writing an 
+ operating system, so putting RTOS aside, there are two classes of schedulers to consider. 
+ Cooperative schedulers
+  provide
+  cooperative (or non-preemptive) multitasking
+ . In this case, every 
+ task is allowed to run until it returns control to the scheduler, at which point the scheduler can 
+ start another 
+ task. Cooperative scedulers are easy to implement, but their major downside is 
+ relying on each task to make reasonable use of CPU resources. A poorly-written task can cause 
+ the entire system to slow 
+ down or even hang entirely. Implementing individual tasks is also 
+ simpler in the cooperative case - the 
+ task can assume that it will not be interrupted, and will 
+ instead run from start to finish. 
+ Cooperative scheduling is fairly common in low-resource embedded systems, and the 
+ implementation only requires that some kind of system-wide time exists. One example of a suitable 
+ system could be a
+  
+ Daniels Umanovskis 
+ 89",NA
+Cooperative scheduler,"To implement a basic cooperative scheduler, we don’t need much code. We need to keep track of 
+ what 
+ tasks exist in the system, how ofen they want to run, and then the scheduler should execute 
+ those tasks. The scheduler’s header file can be written so: 
+ 1 
+  
+ 2 
+  
+ 3 
+  
+ 4 
+  
+ 5 
+  
+ 6 
+  
+ 7 
+  
+ 8 
+  
+ 9 
+  
+ 10 
+  
+ 11 
+  
+ 12 
+  
+ 13 
+  
+ 14 
+  
+ 15 
+  
+ 16 
+  
+ 17 
+  
+ 18 
+  
+ 19
+  
+ #
+ include
+  ""systime.h""
+  
+ typedef
+  void
+  (*
+ task_entry_ptr
+ )(
+ void
+ );
+  
+ typedef struct
+  { 
+  
+  
+ task_entry_ptr entry
+ ; 
+  
+  
+ systime_t period
+ ; 
+  
+  
+ systime_t last_run
+ ; 
+  
+ }
+  task_desc
+ ;
+  
+ typedef enum
+  { 
+  
+  
+ SCHED_OK
+  = 0, 
+  
+  
+ SCHED_TOO_MANY_TASKS 
+  
+ }
+  sched_error
+ ;
+  
+ #
+ define MAX_NUM_TASKS
+  (10
+ u
+ )
+  
+ sched_error sched_add_task
+ (
+ task_entry_ptr entry
+ ,
+  systime_t period
+ ); 
+ void
+  sched_run
+ (
+ void
+ );
+  
+  
+ Each task should have an entry point, a function that returns
+  void
+  and has no parameters. A 
+ pointer to the entry point, together with the desired task period and the time of the last run, 
+ form the task descriptor in the
+  task_desc
+  type. The scheduler provides a function
+  sched_add_task
+ , 
+ which can 
+ add tasks to the scheduler at run-time. Let’s look at the implementation. Here’s how
+  
+ sched
+ .
+ c
+  starts:
+  
+ 1 
+  
+ #
+ include
+  <
+ stddef
+ .
+ h
+ >
+  
+ 2 
+  
+ 3
+  
+ #
+ include
+  <
+ stdint
+ .
+ h
+ > 
+  
+ #
+ include
+  ""sched.h""
+  
+  
+  
+ Daniels Umanovskis 
+ 90",NA
+Summary,"In this chapter, we looked at the simplest way of making a bare-metal system perform some 
+ useful work on a schedule. Doing this required a small new driver, and we built an abstract 
+ system time on top of it. From there, it was just a few more steps to have a working scheduler 
+ that runs predefined tasks on a predefined schedule. 
+ A real-world cooperative scheduler would be slightly more complex, but not by much. For all its 
+ simplicity, a cooperative scheduler is appropriate in simple embedded systems that don’t have 
+ to quickly react to external input, and have well-known tasks that don’t interfere with one 
+ another and aren’t expected to run for long. At the same time, the scheduler is anything but 
+ robust - a single error in a task can cause it to hang permanently. 
+ Daniels Umanovskis 
+ 95",NA

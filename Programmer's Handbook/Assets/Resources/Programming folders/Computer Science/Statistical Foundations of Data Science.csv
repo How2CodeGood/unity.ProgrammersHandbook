@@ -1,0 +1,2586 @@
+Larger Text,Smaller Text,Symbol
+Statistical Foundations ,NA,NA
+of ,NA,NA
+Data Science,NA,NA
+Statistical Foundations ,NA,NA
+of ,NA,NA
+Data Science,By,NA
+Jianqing Fan ,NA,NA
+Runze Li ,NA,NA
+Cun-Hui Zhang ,NA,NA
+Hui Zou,NA,NA
+TO THOSE,NA,NA
+who educate us and love us;,NA,NA
+whom we teach and we love;,NA,NA
+with whom we collaborate and associate,NA,NA
+Contents,"Preface
+  
+ xvii
+  
+  
+ 1
+  
+ Introduction
+  
+ 1
+  
+ 2
+  
+ 1.1
+  
+ Rise of Big Data and Dimensionality
+  
+ 1
+  
+ 1.1.1
+  
+ Biological sciences
+  
+ 2
+  
+ 1.1.2
+  
+ Health sciences
+  
+ 4
+  
+ 1.1.3
+  
+ Computer and information sciences
+  
+ 5
+  
+ 1.1.4
+  
+ Economics and finance
+  
+ 7
+  
+ 1.1.5
+  
+ Business and program evaluation
+  
+ 9
+  
+ 1.1.6
+  
+ Earth sciences and astronomy
+  
+ 9
+  
+ 1.2
+  
+ Impact of Big Data
+  
+ 9
+  
+ 1.3
+  
+ Impact of Dimensionality
+  
+ 11
+  
+ 1.3.1
+  
+ Computation
+  
+ 11
+  
+ 1.3.2
+  
+ Noise accumulation
+  
+ 12
+  
+ 1.3.3
+  
+ Spurious correlation
+  
+ 14
+  
+ 1.3.4
+  
+ Statistical theory
+  
+ 17
+  
+ 1.4
+  
+ Aim of High-dimensional Statistical Learning
+  
+ 18
+  
+ 1.5
+  
+ What Big Data Can Do
+  
+ 19
+  
+ 1.6
+  
+ Scope of the Book
+  
+ 19
+  
+ Multiple and Nonparametric Regression
+  
+ 21
+  
+ 2.1
+  
+ Introduction
+  
+ 21
+  
+ 2.2
+  
+ Multiple Linear Regression
+  
+ 21
+  
+ 2.2.1
+  
+ The Gauss-Markov theorem
+  
+ 23
+  
+ 2.2.2
+  
+ Statistical tests
+  
+ 26
+  
+ 2.3
+  
+ Weighted Least-Squares
+  
+ 27
+  
+ 2.4
+  
+ Box-Cox Transformation
+  
+ 29
+  
+ 2.5
+  
+ Model Building and Basis Expansions
+  
+ 30
+  
+ 2.5.1
+  
+ Polynomial regression
+  
+ 31
+  
+ 2.5.2
+  
+ Spline regression
+  
+ 32
+  
+ 2.5.3
+  
+ Multiple covariates
+  
+ 35
+  
+ 2.6
+  
+ Ridge Regression
+  
+ 37
+  
+ 2.6.1
+  
+ Bias-variance tradeoff
+  
+ 37
+  
+ 2.6.2
+  
+ ℓ
+ 2
+  penalized least squares
+  
+ 38
+  
+ 2.6.3
+  
+ Bayesian interpretation
+  
+ 38
+  
+ vii",NA
+Preface,"Big data are ubiquitous. They come in varying volume, velocity, and variety. 
+ They have a deep impact on systems such as storages, communications and 
+ computing architectures and analysis such as statistics, computation, opti-
+ mization, and privacy. Engulfed by a multitude of applications, data science 
+ aims to address the large-scale challenges of data analysis, turning big data 
+ into smart data for decision making and knowledge discoveries. Data science 
+ integrates theories and methods from statistics, optimization, mathematical 
+ science, computer science, and information science to extract knowledge, 
+ make decisions, discover new insights, and reveal new phenomena from data. 
+ The concept of data science has appeared in the literature for several decades 
+ and has been interpreted differently by different researchers. It has nowadays 
+ be-come a multi-disciplinary field that distills knowledge in various disciplines 
+ to develop new methods, processes, algorithms and systems for knowledge 
+ dis-covery from various kinds of data, which can be either low or high 
+ dimensional, and either structured, unstructured or semi-structured. 
+ Statistical modeling plays critical roles in the analysis of complex and 
+ heterogeneous data and quantifies uncertainties of scientific hypotheses and 
+ statistical results.
+  
+ This book introduces commonly-used statistical models, contemporary 
+ sta-tistical machine learning techniques and algorithms, along with their 
+ mathe-matical insights and statistical theories. It aims to serve as a graduate-
+ level textbook on the statistical foundations of data science as well as a 
+ research monograph on sparsity, covariance learning, machine learning and 
+ statistical inference. For a one-semester graduate level course, it may cover 
+ Chapters 2, 3, 9, 10, 12, 13 and some topics selected from the remaining 
+ chapters. This gives a comprehensive view on statistical machine learning 
+ models, theories and methods. Alternatively, a one-semester graduate course 
+ may cover Chap-ters 2, 3, 5, 7, 8 and selected topics from the remaining 
+ chapters. This track focuses more on high-dimensional statistics, model 
+ selection and inferences but both paths strongly emphasize sparsity and 
+ variable selections.
+  
+ Frontiers of scientific research rely on the collection and processing of 
+ mas-sive complex data. Information and technology allow us to collect big data 
+ of unprecedented size and complexity. Accompanying big data is the rise of di-
+ mensionality, and high dimensionality characterizes many contemporary sta-
+ tistical problems, from sciences and engineering to social science and humani-
+ ties. Many traditional statistical procedures for finite or low-dimensional data 
+ are still useful in data science, but they become infeasible or ineffective for
+  
+ xvii",NA
+Introduction,"The first two decades of this century have witnessed the explosion of data 
+ collection in a blossoming age of information and technology. The recent tech-
+ nological revolution has made information acquisition easy and inexpensive 
+ through automated data collection processes. The frontiers of scientific re-
+ search and technological developments have collected huge amounts of data 
+ that are widely available to statisticians and data scientists via internet dis-
+ semination. Modern computing power and massive storage allow us to 
+ process this data of unprecedented size and complexity. This provides 
+ mathematical sciences great opportunities with significant challenges. 
+ Innovative reasoning and processing of massive data are now required; novel 
+ statistical and com-putational methods are needed; insightful statistical 
+ modeling and theoretical understandings of the methods are essential.
+  
+ 1.1 
+  
+ Rise of Big Data and Dimensionality
+  
+ Information and technology have revolutionized data collection. Millions of 
+ surveillance video cameras, billions of internet searches and social media 
+ chats and tweets produce massive data that contain vital information about 
+ security, public health, consumer preference, business sentiments, economic 
+ health, among others; billions of prescriptions, and an enormous amount of 
+ genetics and genomics information provide critical data on health and pre-
+ cision medicine; numerous experiments and observations in astrophysics and 
+ geosciences give rise to big data in science.
+  
+ Nowadays,
+  Big Data
+  are ubiquitous: from the internet, engineering, 
+ science, biology and medicine to government, business, economy, finance, 
+ legal, and digital humanities. “There were 5 exabytes of information created 
+ between the dawn of civilization through 2003, but that much information is 
+ now created every 2 days”, according to Eric Schmidt, the CEO of Google, in 
+ 2010; “Data are becoming the new raw material of business”, according to 
+ Craig Mundie, Senior Advisor to the CEO at Microsoft; “Big data is not about 
+ the data”, according to Gary King of Harvard University. The first quote is on 
+ the volume, velocity, variety, and variability of big data nowadays, the second 
+ is about the value of big data and its impact on society, and the third quote is 
+ on the importance of the smart analysis of big data.
+  
+ 1",NA
+Multiple and Nonparametric ,NA,NA
+Regression,"2.1
+  
+ Introduction
+  
+ In this chapter we discuss some popular linear methods for regression 
+ analysis with continuous response variable. We call them linear regression 
+ models in general, but our discussion is not limited to the classical multiple 
+ linear re-gression. They are extended to multivariate nonparametric 
+ regression via the kernel trick. We first give a brief introduction to multiple 
+ linear regression and least-squares, presenting the basic and important ideas 
+ such as inferential results, Box-Cox transformation and basis expansion. We 
+ then discuss linear methods based on regularized least-squares with ridge 
+ regression as the first example. We then touch on the topic of nonparametric 
+ regression in a re-producing kernel Hilbert space (RKHS) via the kernel trick 
+ and kernel ridge regression. Some basic elements of the RKHS theory are 
+ presented, including the famous representer theorem. Lastly, we discuss the 
+ leave-one-out analysis and generalized cross-validation for tuning parameter 
+ selection in regularized linear models.
+  
+ 2.2 
+  
+ Multiple Linear Regression
+  
+ Consider a
+  multiple linear regression
+  model:
+  
+ Y
+  =
+  β
+ 1
+ X
+ 1
+  +
+  · · ·
+  +
+  β
+ p
+ X
+ p
+  +
+  ε, 
+  
+ (2.1)
+  
+ where
+  Y
+  represents the
+  response
+  or
+  dependent variable
+  and the
+  X
+  variables are 
+ often called
+  explanatory variables
+  or
+  covariates
+  or
+  independent variables
+ . The 
+ intercept term can be included in the model by including 1 as one of the co-
+ variates, say
+  X
+ 1
+  = 1. Note that the term “random error”
+  ε
+  in (2.1) is a generic 
+ name used in statistics. In general, the “random error” here corresponds to the 
+ part of the response variable that cannot be explained or predicted by the 
+ covariates. It is often assumed that “random error”
+  ε
+  has zero mean, un-
+ correlated with covariates
+  X
+ , which is referred to as
+  exogenous
+  variables. Our 
+ goal is to estimate these
+  β
+ ’s, called
+  regression coefficients
+ , based on a random 
+ sample generated from model (2.1).
+  
+ Suppose that
+  {
+ (
+ X
+ i
+ 1
+ , · · · , X
+ ip
+ , Y
+ i
+ )
+ }, i
+  = 1
+ , · · · , n
+  is a random sample from
+  
+ 21",NA
+Introduction to Penalized Least-,NA,NA
+Squares,"Variable selection is vital to high-dimensional statistical learning and in-
+ ference, and is essential for scientific discoveries and engineering innovation. 
+ Multiple regression is one of the most classical and useful techniques in statis-
+ tics. This chapter introduces
+  penalized least-squares
+  approaches to variable 
+ selection problems in multiple regression models. They provide fundamental 
+ insights and the basis for
+  model selection
+  problems in other more 
+ sophisticated models.
+  
+ 3.1 
+  
+ Classical Variable Selection Criteria
+  
+  
+ In this chapter, we will follow the notation and model introduced in Chap-
+ ter 2. To reduce noise accumulation and to enhance interpretability, variable 
+ selection techniques have been popularly used even in traditional statistics. 
+ When the number of predictors
+  p
+  is larger than the sample size
+  n
+ , the model 
+ parameters in the linear model (2.2) are not identifiable. What makes them 
+  
+  
+ p 
+ estimable is the
+  sparsity
+  assumption on the regression coefficients
+  {β
+ j
+ }
+ j
+ =1
+ : 
+ many of them are too small to matter, so they are ideally regarded as zero.
+  
+ Throughout this chapter, we assume the linear model (2.1):
+  
+ Y
+  =
+  β
+ 1
+ X
+ 1
+  +
+  · · ·
+  +
+  β
+ p
+ X
+ p
+  +
+  ε,
+  
+ unless otherwise stated.
+  
+ 3.1.1 
+  
+ Subset selection
+  
+ One of the most popular and intuitive variable selection techniques is the 
+ best subset
+  selection. Among all models with
+  m
+  variables, pick the one with the 
+ smallest residual sum of squares (2.3), which is denoted by RSS
+ m
+ . This is 
+ indeed very intuitive: among the models with the same complexity, a better fit 
+ is preferable. This creates a sequence of submodels
+  {M
+ m
+ }
+ p 
+ the model size
+  m
+ . 
+ The choice of the model size
+  m
+  will be further illuminated 
+ m
+ =0
+ indexed by
+  
+ in Section 3.1.3.
+  
+  
+ Computation of the best subset method is expensive even when
+  p
+  is mod-
+  
+  p 
+  
+ erately large. At each step, we compare the goodness-of-fit among 
+ m 
+ models of 
+ size
+  m
+  and there are 2
+ p
+ submodels in total. Intuitive and greedy algorithms
+  
+ 55",NA
+Penalized Least Squares: Properties,"This chapter describes properties of PLS methods in linear regression mod-
+ els with a large number of covariate variables. We will study the performance 
+ of such methods in prediction, coefficient estimation, and variable selection 
+ under proper regularity conditions on the noise level, the sparsity of regres-
+ sion coefficients, and the covariance of covariate variables. To make reading 
+ easier, we defer some lengthier proofs to the end of each section and make 
+ this chapter a self-contained chapter, despite some repetition and slightly 
+ modified notation.
+  
+ 4.1 
+  
+ Performance Benchmarks
+  
+ This section provides a general description of theoretical objectives of pe-
+ nalized least squares estimation along with some basic concepts and termi-
+ nologies for studying such methods in high-dimension.
+  
+ from the
+  i
+ -th data point in the sample,
+  i
+  = 1
+ , . . . , n
+ . As in the
+  linear regression 
+ Suppose we observe 
+ covariates
+  X
+ ij
+ ,
+  1
+  ≤ j ≤ p
+ , and a response variable
+  Y
+ i
+  
+ model
+  (2.1), the covariates and response variable satisfy the relationship
+  
+ p
+  
+ Y
+ i
+  = 
+  
+ X
+ ij
+ β
+ j
+  +
+  ε
+ i
+ , 
+  
+ j
+ =1
+  
+ In vector notation, it is written as
+  
+ Y
+  =
+  X
+ β
+  +
+  ε
+ . 
+  
+ (4.1)
+  
+ See Section 2.1. Unless otherwise stated, the design matrix
+  X
+  is considered as 
+ deterministic. Of course, in the case of random design, the noise vector
+  ε
+  is 
+ assumed to be independent of
+  X
+ .
+  
+ We are interested in the performance of PLS in the case of large
+  p
+ , 
+ including 
+ p ∗ n
+ . Thus, unless otherwise stated,
+  {p,
+  X
+ ,
+  β
+ ,
+  ε
+ }
+  are all allowed to 
+ depend on
+  n
+  and
+  p
+  =
+  p
+ n
+  → ∞
+  as
+  n → ∞
+ . We denote by
+  X
+ j
+  the
+  j
+ -th column (
+ X
+ 1
+ j
+ , . . . , 
+ X
+ nj
+ )
+ T
+ of the design,
+  X
+ A
+  = (
+ X
+ j
+ , j ∗ A
+ ) the sub-matrix of the design with variables in
+  
+ A
+  for subsets 
+ A ∗ {
+ 1
+ , . . . , p}
+ ,
+  Σ
+  =
+  X
+ T
+ X
+ /n
+  the normalized Gram matrix,
+  Σ
+ A,B
+  =
+  X
+ T 
+ A
+ X
+ B
+ /n
+  
+ 121",NA
+Generalized Linear Models and,NA,NA
+Penalized Likelihood,"This chapter extends techniques related to the least squares regression to 
+ regression models with binary, categorial and count responses. We begin by 
+ introducing generalized linear models which provide a unified framework for 
+ modeling binary, categorial and count outcomes, and then move to introduce 
+ the penalized likelihood method and discuss further the numerical optimiza-
+ tion algorithms and tuning parameter selection for the penalized likelihood. 
+ Asymptotic properties for both low-dimensional and high-dimensional prob-
+ lems are also presented. We conclude this chapter by presenting the penalized 
+ M
+ -estimation with decomposable penalty functions.
+  
+ 5.1 
+  
+ Generalized Linear Models
+  
+ Generalized linear models
+  (
+ GLIM
+ ) have numerous applications in diverse 
+ research fields including medicine, psychology, engineering, among others. 
+ Mc-Cullagh and Nelder (1989) provides a comprehensive account of the 
+ general-ized linear models. This section gives a brief introduction of GLIM 
+ based on the theory of exponential families.
+  
+ 5.1.1 
+  
+ Exponential family
+  
+  
+ The distribution of a random variable
+  Y
+  belongs to a canonical exponential 
+ family, if the density or probability mass function of
+  Y
+  can be written as
+  
+ f
+ (
+ y
+ ) = exp[
+ {θy − b
+ (
+ θ
+ )
+ }/a
+ (
+ φ
+ ) +
+  c
+ (
+ y, φ
+ )] 
+  
+ (5.1)
+  
+ for some known functions
+  a
+ (
+ ·
+ ),
+  b
+ (
+ ·
+ ) and
+  c
+ (
+ ·, ·
+ ). The parameter
+  θ
+  is called a 
+ canonical parameter
+  and
+  φ
+  is called a
+  dispersion parameter
+ . As illustrated 
+ below, the exponential family includes many commonly-used distributions as 
+ special cases, including normal distributions, binomial distributions, Poisson 
+ distributions and gamma distributions.
+  
+ 227",NA
+Penalized M-estimators,"In Chapters 3 and 5, we introduce the methodology of penalized least 
+ squares and penalized likelihood, respectively. This chapter is devoted to in-
+ troducing regularization methods in quantile regression, composite quantile 
+ regression, robust regression and rank regression under the general 
+ framework of penalized M-estimators. This chapter also offers a brief 
+ introduction to penalized partial likelihood for survival data analysis.
+  
+ 6.1 
+  
+ Penalized Quantile Regression
+  
+ Quantile regression
+  was first proposed by Koenker and Basset (1978), and 
+ has many applications in various research areas such as growth charts (Wei 
+ and He, 2006), survival analysis (Koenker and Geling, 2001) and economics 
+ (Koenker and Hallock, 2001), and so on. Quantile regression has become a 
+ popular data analytic tool in the literature of both statistics and econometrics. 
+ A comprehensive account on quantile regression can be found in Koenker 
+ (2005).
+  
+ 6.1.1 
+  
+ Quantile regression
+  
+ Let us begin with the univariate unconditional quantile. Let
+  F
+ Y
+  (
+ y
+ ) = Pr(
+ Y ≤ 
+ y
+ ) be the cumulative distribution function (cdf) of
+  Y
+  and
+  Q
+ Y
+  (
+ τ
+ ) = inf
+  {y
+ :
+  F
+ Y
+  (
+ y
+ )
+  ≥ 
+ τ}
+  be the
+  τ
+ th quantile of
+  Y
+  for a given
+  τ ∗
+  (0
+ ,
+  1). Koenker and Basset (1978) 
+ observed the following result
+  
+ Q
+ Y
+  (
+ τ
+ ) = arg min E[
+ ρ
+ τ
+ (
+ Y − t
+ )]
+ , 
+  
+ (6.1)
+  
+ where
+  ρ
+ τ
+ (
+ u
+ ) =
+  u{τ − I
+ (
+ u <
+  0)
+ }
+  is the so-called check loss function. Figure 6.1 
+ shows the
+  check loss
+  function for
+  τ
+  = 0
+ .
+ 75. When
+  τ
+  = 0
+ .
+ 5, the check loss 
+ becomes the absolute value
+  L
+ 1
+ -loss.
+  
+  
+  
+ We now consider the
+  quantile regression
+ . Consider a response variable 
+ Y 
+ and a vector of covariates
+  X
+  = (
+ X
+ 1
+ , . . . , X
+ p
+ )
+ T
+ . Given
+  X
+ , denote by 
+ F
+ Y
+  (
+ y|
+ X
+ ) the 
+ conditional cumulative distribution function, and let
+  Q
+ Y
+  (
+ τ|
+ x
+ ) = tional quantiles, 
+ (6.1) can be naturally generalized as inf
+  {y
+ :
+  F
+ Y
+  (
+ y|
+ X
+  =
+  x
+ )
+  ≥ τ}
+  to be the
+  τ
+ th
+  
+ conditional quantile
+ . For the condi-
+  
+ Q
+ Y
+  (
+ τ|
+ x
+ ) = arg min E[
+ ρ
+ τ
+ (
+ Y− t
+ )
+ |
+ X
+  =
+  x
+ ]
+ . 
+  
+ (6.2)",NA
+High Dimensional Inference,"This chapter concerns statistical inference in the sense of interval estima-
+ tion and hypothesis testing. The key difference from classical inference is that 
+ the parameters fall in high-dimensional sparse regions and regularized meth-
+ ods have been introduced to explore the sparsity. We have studied in previous 
+ chapters regularized estimation of high-dimensional (
+ HD
+ ) objects such as the 
+ mean of the response vector, the coefficient vector and support set in linear 
+ regression, among others. In many cases, it has been shown that such regular-
+ ized estimators have optimality properties such as rate minimaxity in various 
+ collections of unknown parameters classes. However, as these results 
+ concerns relatively large total error of HD quantities, they provide little 
+ information about low-dimensional (
+ LD
+ ) features which could be of primary 
+ interest in common applications, such as a treatment effect. Indeed, these 
+ estimators introduce nonnegligible biases due to regularization and they need 
+ to be cor-rected first in order to have valid statistical inferences. In this 
+ section, we focus on statistical inferences of LD parameters with HD data.
+  
+ A prototypical example of problems under consideration in this chapter is 
+ the efficient interval estimation of a preconceived effect in linear regression, 
+ namely, inferences on the regression coefficients for a few given covariates. In 
+ this and several related problems, our discussion would focus on a semi-low-
+ dimensional (
+ semi-LD
+ ) approach (Zhang, 2011) which is best described with 
+ the following model decomposition,
+  
+ HD model = LD component + HD component
+ , 
+  
+ (7.1)
+  
+ where the LD component is of primary interest and the HD component is 
+ treated as a nuisance parameter. For example, if a coefficient
+  β
+ j
+ 0
+  represents the 
+ treatment effect of interest in a regression model
+  Y
+  =
+  X
+ β
+  +
+  ε
+ , the LD 
+ component can be written as
+  X
+ j
+ 0
+ β
+ j
+ 0
+  and the HD component
+  X
+ −j
+ 0
+ β
+ −j
+ 0
+ . How-ever, 
+ this decomposition is not necessarily unique or the most convenient in a semi-
+ LD analysis.
+  
+ The relationship between this semi-LD approach and regularized estima-
+ tion of HD objects, such as the estimation of
+  β
+  or
+  X
+ β
+  in linear regression 
+ considered in Chapters 3 and 4, is parallel to the one between semi-parametric 
+ analysis and nonparametric (
+ NP
+ ) estimation. In the semi-parametric approach
+  
+ 321",NA
+Feature Screening,"In previous chapters we introduced variable selection methods for 
+ selecting the correct submodel. We now present feature screening methods in 
+ which the goal is to discard as many noise features as possible and at the same 
+ time to retain all important features. Let
+  Y
+  be the response variable, and 
+ X
+  = 
+ (
+ X
+ 1
+ , · · · , X
+ p
+ )
+ T
+ consists of the
+  p
+ -dimensional predictors, from which we obtain a 
+ set of random sample
+  {
+ X
+ i
+ , Y
+ i
+ }
+ n 
+ trahigh (i.e. the dimensionality
+  p
+  grows at the 
+ exponential rate of the sample 
+ i
+ =1
+ . The dimensionality
+  p
+  can be ul-
+  
+ n
+ ). Even though the variable selection methods introduced in the previous 
+ chapters can be used to identify the important variables, the algorithms used 
+ for optimization can still be very expensive when the dimension is extremely 
+ high. In practice, we may consider naturally a two-stage approach: variable 
+ screening followed by variable selection. We first use feature screening meth-
+ ods to reduce ultrahigh dimensionality
+  p
+  to a moderate scale
+  d
+ n
+  with
+  d
+ n
+  ≤ n
+ , 
+ and then apply the existing variable selection algorithm to select the correct 
+ submodel from the remaining variables. This idea can also be employed itera-
+ tively. If all important variables are retained in the dimension reduction stage, 
+ then the two-stage approach is much more economical.
+  
+   
+ Throughout this chapter, we adopt the following notation. Denote
+  Y
+  = (
+ Y , . . 
+ . , Y
+  )
+ T 
+ 1 
+  
+  
+ n 
+  
+ and
+  X
+  = (
+ X
+ 1
+ , · · · ,
+  X
+ n
+ ) , the
+  n × p
+  design 
+ matrix. Let
+  X
+ j
+  be 
+  
+  
+  
+  
+  
+ T
+  
+ the
+  j
+ -th column of
+  X
+ . Thus,
+  X
+  = (
+ X
+ 1
+ , . . . ,
+  X
+ p
+ ). We slightly abuse notation
+  X 
+ as 
+ well as
+  X
+ i
+  and
+  X
+ j
+ , but their meanings are clear in the context. Let
+  ε
+  be a general 
+ random error and
+  ε
+  = (
+ ε
+ 1
+ , . . . , ε
+ n
+ )
+ T
+ with
+  ε
+ i
+  being a random errors. Let 
+ M
+ ∗
+ stand 
+ for the true model with the size
+  s
+  = 
+ |M
+ ∗
+ |
+  and
+  M
+  be the selected model with the 
+ size
+  d
+  =
+  |M| 
+ for different models and contexts. . The definitions of
+  M
+  and
+  M
+  may 
+ be different
+  
+ 8.1 
+  
+ Correlation Screening
+  
+ For linear regression model (2.2), its matrix form is
+  
+ Y
+  =
+  X
+ β
+  +
+  ε
+ . 
+  
+ (8.1)",NA
+Covariance Regularization and,NA,NA
+Graphical Models,"Covariance and precision matrix estimation and inference pervade every 
+ aspect of statistics and machine learning. They appear in the Fisher’s dis-
+ criminant and optimal portfolio choice, in Gaussian graphical models where 
+ edge represents conditional dependence, and in statistical inference such as 
+ Hotelling
+  T
+ 2
+ -test and false discovery rate controls. They have also widely been 
+ applied to various disciplines such as economics, finance, genomics, genetics, 
+ psychology, and computational social sciences.
+  
+ Covariance learning, consisting of unknown elements of square order of 
+ dimensionality, is ultra-high dimension in nature even when the dimension of 
+ data is moderately high. It is necessary to impose some structure assumptions 
+ in covariance learning such as sparsity or bandability. Factor models offer 
+ another useful approach to covariance learning from high-dimensional data. 
+ We can infer the latent factors that drive the dependence of observed 
+ variables. These latent factors can then be used to predict the outcome of 
+ responses, reducing the dimensionality. They can also be used to adjust the 
+ dependence in model selection, achieving better model selection consistency 
+ and reducing spurious correlation. They can further be used to adjust the 
+ dependence in large scale inference, achieving better false discovery controls 
+ and enhancing high statistical power. These applications will be outlined in 
+ Chapter 11.
+  
+ This chapter introduces theory and methods for estimating large covari-
+ ance and precision matrices. We will also introduce robust covariance inputs 
+ to be further regularized. In Chapter 10, we will focus on estimating a co-
+ variance matrix induced by factor models. We will show there how to extract 
+ latent factors, factor loadings and idiosyncratic components. They will be fur-
+ ther applied to high-dimensional statistics and statistical machine learning 
+ problems in Chapter 11.
+  
+ 9.1 
+  
+ Basic Facts about Matrices
+  
+  
+ We here collect some basic facts and introduce some notations. They will 
+ be used throughout this chapter.
+  
+ For a symmetric
+  m × m
+  matrix
+  A
+ , we have its
+  eigen-decomposition
+  as
+  
+ 431",NA
+Covariance Learning and Factor ,NA,NA
+Models,"High-dimensional measurements are often strongly dependent, as they 
+ usu-ally measure similar quantities under similar environments. Returns of 
+ finan-cial assets are strongly correlated due to market conditions. Gene 
+ expressions are frequently stimulated by cytokines or regulated by biological 
+ processes. Factor models are frequently used to model the dependence among 
+ high-dimensional measurements. They also induce a low-rank plus sparse 
+ covariance structure among the measured variables, which are referred to as
+  
+ factor-driven covariance
+  and
+  idiosyncratic covariance
+ , respectively.
+  
+ This chapter introduces the theory and methods for estimating a high-
+ dimensional covariance matrix under factor models. The theory and methods 
+ for estimating both the covariance matrices and the idiosyncratic covariance 
+ will be presented. We will also show how to estimate the latent factors and 
+ their associated
+  factor loadings
+  and how well they can be estimated. The 
+ methodology is summarized in Section 10.2, where any robust covariance in-
+ puts can be utilized and the methods for choosing the number of factors are 
+ also presented.
+  Principal component analysis
+  plays a critical role in unveiling 
+ latent factors as well as estimating a structured covariance matrix. We will 
+ defer the applications of factor models to variable selection, large-scale infer-
+ ences, prediction, as well as other statistical machine learning problems to 
+ Chapter 11.
+  
+ 10.1 
+  
+ Principal Component Analysis
+  
+ Principal component analysis
+  (
+ PCA
+ ) is a popular data processing and di-
+ mension reduction technique. It has been widely used to extract latent factors 
+ for high dimensional statistical learning and inferences. Other applications in-
+ clude handwritten zip code classification (Hastie, Tibshirani and Friedman, 
+ 2009), human face recognition (Hancock, Burton and Bruce, 1996), gene ex-
+ pression data analysis (Misra
+  et al.
+  2002, Hastie
+  et al.
+  2000), to name a few.
+  
+ 10.1.1 
+  
+ Introduction to PCA
+  
+ PCA can be mathematically described as a set of orthogonal linear trans-
+  
+ 471",NA
+Applications of Factor Models and ,NA,NA
+PCA,"As mentioned in the introduction of Chapter 10, the dependence of high-
+ dimensional measurements is often driven by several common factors: 
+ different variables have different dependence on these common factors. This 
+ leads to the factor model (10.4):
+  
+ X 
+  
+ = 
+ a
+  +
+  Bf
+  +
+  u
+ , 
+  
+ E
+  u
+  = 0
+ , 
+  
+ cov(
+ f
+ ,
+  u
+ ) = 0 
+  
+ or 
+  
+  
+  
+  
+  
+  
+  
+  
+ (11.1) 
+ X
+ j 
+  
+ = 
+ a
+ j
+  +
+  b
+ T j
+ f
+  +
+  u
+ j
+  =
+  a
+ j
+  +
+  b
+ j
+ 1
+ f
+ 1
+  +
+  · · ·
+  +
+  b
+ jK
+ f
+ K
+  +
+  u
+ j
+  
+ for each component
+  j
+  = 1
+ , · · · , p
+ . These factors
+  f
+  can be consistently estimated 
+ by using the principal component analysis as shown in the previous chapter.
+  
+ This chapter applies the principal component analysis and factor models to 
+ solve several statistics and machine learning problems. These include fac-tor 
+ adjustments in high-dimensional model selection and multiple testing and 
+ high-dimensional regression using augmented factor models. Principal 
+ compo-nent analysis is a form of
+  spectral learning
+ . We also discuss other 
+ applications of spectral learning in problems such as matrix completion, 
+ community detec-tion, and item ranking, and applications that serve as initial 
+ values for non-convex optimization problems such as mixture models. 
+ Detailed treatments of these require a whole book. Rather, we focus only on 
+ some methodological powers of spectral learning to give the reader some idea 
+ of its importance to statistical machine learning. Indeed, the role of PCA in 
+ statistical machine learning is very similar to regression analysis in statistics.
+  
+ 11.1 
+  
+ Factor-adjusted Regularized Model Selection
+  
+ Model selection is critical in high dimensional regression analysis. Numer-
+ ous methods for model selection have been proposed in the past two decades, 
+ including Lasso, SCAD, the elastic net, the Dantzig selector, among others. 
+ However, these regularization methods work only when the covariates sat-isfy 
+ certain regularity conditions such as the irrepresentable condition (3.38). 
+ When covariates admit a factor structure (11.1), such a condition breaks down 
+ and the model selection consistency can not be granted.",NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+GG ,NA,NA
+G,NA,NA
+GG ,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G G,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+G,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G ,NA,NA
+GG,NA,NA
+G ,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+G,NA,NA
+G,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+GG,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+G,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+G,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G G ,NA,NA
+GG ,NA,NA
+G,NA,NA
+G ,NA,NA
+G G ,NA,NA
+G ,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G ,NA,NA
+G ,NA,NA
+G,NA,NA
+G ,NA,NA
+G GG,NA,NA
+G ,NA,NA
+GG,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G G ,NA,NA
+G,NA,NA
+G ,NA,NA
+G ,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G ,NA,NA
+G ,NA,NA
+G,NA,NA
+G G,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G G G ,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G ,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G ,NA,NA
+G G,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G,NA,NA
+G ,NA,NA
+G ,NA,NA
+G ,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G ,NA,NA
+G,NA,NA
+G G ,NA,NA
+G,"(a) 
+  
+ (b)
+  
+ Figure 11.11: Simulated network data from (a) Erd¨os-R´enyi graph and (b) 
+ stochastic block model with
+  n
+  = 100,
+  p
+  = 5 log(
+ n
+ )
+ /n
+ , and
+  q
+  =
+  p/
+ 4. For SMB 
+ model, there were two communities, with the first
+  n/
+ 2 members from group 1 
+ and the second
+  n/
+ 2 members from group 2; they are hard to differentiate 
+ because
+  p
+  and
+  q
+  are quite close.
+  
+ A
+  planted partition model
+  corresponds to the case where
+  p
+ ii
+  =
+  p
+  for all 
+ i
+  and
+  
+ p
+ ij
+  =
+  q
+  for all
+  i
+  =
+  j
+  and
+  p
+  =
+  q
+ . In other words, the probabil-ity of within-
+ community connections is
+  p
+  and the probability of between-community 
+ connections is
+  q
+ . When
+  r
+  = 2, this corresponds to the two com-munity case. 
+ Figure 11.11 gives a realization from the Erd¨os-R´enyi model and the 
+ stochastic block model. The simulations and plots are generated from the 
+ functions sample gnp and sample sbm in the R package igraph 
+ [install.package(""igraph""); library(igraph)].
+  
+ Given an observed adjacency matrix
+  A
+  = (
+ a
+ ij
+ ), statistical tasks include 
+ detecting whether the graph has a latent structure and recovering the latent 
+ partition of the communities. We naturally appeal to the maximum likelihood 
+ method. Let
+  C
+ (
+ i
+ ) be the unknown community to which node
+  i
+  belongs. Then",NA
+Supervised Learning,"Supervised learning
+ , also referred to as
+  classification
+ , is one of the fun-
+ damental problems in statistical machine learning. Suppose that we have a 
+ random sample of size
+  n
+  from some unknown distribution of (
+ X
+ , Y
+  ), where
+  Y 
+ denotes the class label and
+  X
+  represents a
+  p
+ -dimensional predictor. Let
+  C
+  be 
+ the set of all possible class labels. A classification rule
+  δ
+  is a mapping from
+  X 
+ to
+  
+ C
+  such that a label
+  δ
+ (
+ X
+ ) is assigned to the data point
+  X
+ . Throughout this chapter 
+ we will use the standard 0-1 loss to measure the classification perfor-mance. 
+ Then the misclassification error of
+  δ
+  is
+  R
+ (
+ δ
+ ) = Pr(
+ Y
+  =
+  δ
+ (
+ X
+ )). It can be fairly easy 
+ to show that the smallest
+  classification error
+  is achieved by the 
+ Bayes rule
+  
+ defined as argmax
+ c
+ i 
+ rate of the Bayes rule is called the
+  Bayes error
+ . In theory, 
+ the learning goal is
+ ∗C
+ Pr(
+ Y
+  =
+  c 
+ i
+ |
+ X
+ )
+ .
+  The misclassification error
+  
+ to approximate the Bayes rule as closely as possible, given a finite amount of 
+ data.
+  
+ There is a huge amount of work on classification algorithms in the litera-
+ ture. We have to be selective in order to cover this big topic in one chapter. We 
+ first describe some popular classical classifiers including linear discrimi-nant 
+ analysis, logistic regression, kernel density classifier and nearest neighbor 
+ classifier. We then introduce more modern classifiers such as random forests, 
+ boosting and the support vector machine. Last, we discuss various sparse 
+ classifiers with high-dimensional features.
+  Deep learning
+  classifiers will be in-
+ troduced in Chapter 14.
+  
+ 12.1 
+  
+ Model-based Classifiers
+  
+ 12.1.1 
+  
+ Linear and quadratic discriminant analysis
+  
+ Linear discriminant analysis
+  (
+ LDA
+ ) and
+  quadratic discriminant analysis 
+ (
+ QDA
+ ) are probably the oldest model-based methods for classification. Nev-
+ ertheless, they are still being routinely used in real applications. In fact, LDA 
+ and QDA can be as accurate as much fancier classifiers tested on many bench-
+ mark data sets (Michie, Spiegelhalter and Taylor, 1994; Hand, 2006).
+  
+ LDA and QDA models start with the assumption that the conditional 
+ distribution of the predictor given the class label is a multivariate normal",NA
+?,"3
+  
+ 4
+  
+ 555
+  
+ 5
+  
+ 4
+  
+ 3
+  
+ 2
+  
+ 1
+  
+ 2
+  
+ 0
+  
+ −1
+  
+ −2
+  
+ −2
+  
+ −1
+  
+ Figure 12.1: Quadratic classification basically classifies a point, indicated by a 
+ question mark, to a class with the closest distance to the centroid of the class.
+  
+ optimizes the
+  Raleigh quotient
+  for binary classification: Find
+  Ω
+  and
+  δ
+  to max-
+ imize
+  
+ R
+  Ω
+ ,
+  δ
+ ) =
+  
+ 2
+  
+ E[
+ Q
+ (
+ X
+ ) 
+ |Y
+  = 0]
+  −
+ E[
+ Q
+ (
+ X
+ ) 
+ |Y
+  = 1]
+  
+ π
+ Var[
+ Q
+ (
+ X
+ )
+ |Y
+  = 0] + (1
+  − π
+ )Var[
+ Q
+ (
+ X
+ )
+ | Y
+  = 1]
+  
+ ,
+  
+ where
+  π
+  is the prior proportion for class 0. This makes two classes as far as 
+ possible using the quadratic classifier
+  Q
+ (
+ X
+ ), after normalizing by its variance. 
+ The variance Var[
+ Q
+ (
+ X
+ )] depends on all the fourth cross-moments of
+  X
+  and 
+ hence there are too many (of order
+  O
+ (
+ p
+ 4
+ )) to estimate when
+  p
+  is moderately 
+ large. To circumvent this issue, they assume the elliptical distribution of
+  X 
+ and 
+ need only to estimate one additional kurtosis parameter on top of the first and 
+ second moments. The resulting procedure is called QUADRO (quadratic 
+ dimension reduction via Rayleigh optimization) that classifies a point
+  x
+  to 
+ class 0 if
+  Q
+ (
+ x
+ )
+  < c
+ , in which
+  c
+  is chosen to minimizes the misclassification error. 
+ See Fan,
+  et al.
+  (2015) for additional details.
+  
+ LDA uses the additional homogeneous covariance assumption
+  
+ Σ
+ k
+  =
+  Σ
+  
+ for all
+  c
+ k
+  ∗ C.
+  
+ (12.3)",NA
+Unsupervised Learning,"Cluster analysis
+  in statistics is a learning task in which class labels are 
+ unobservable. The aim is to group data into several clusters such that each 
+ cluster is considered as a homogeneous subpopulation. It has numerous ap-
+ plications in many fields, such as sociology, psychology, business, information 
+ retrieval, linguistics, bioinformatics, computer graphics, and so on.
+  Principal 
+ component analysis
+  (
+ PCA
+ ) is a widely used dimension reduction technique in 
+ multivariate data analysis where we construct a small number of new features 
+ via linear transformations from the original dataset such that there is little 
+ information loss. The basic idea of PCA was introduced in Section 10.1. Both 
+ clustering and PCA involve no response variable. The two are important ex-
+ amples of the so-called
+  unsupervised learning
+  which is a big topic in machine 
+ learning to be covered in a single chapter. This chapter will be devoted to 
+ cluster analysis and PCA and their high-dimensional extensions.
+  
+ 13.1 
+  
+ Cluster Analysis
+  
+ see that the data within each cluster is similar. In order to quantify the simi-Let
+  
+ {
+ x
+  }
+ n i i
+ =1
+ be the
+  n
+  observed data of
+  p
+ -dimensional vector. We expect to
+  
+ larity, we define a
+  dissimilarity measure
+  d
+ j
+ (
+ x
+ ij
+ , x
+ lj
+ ) for the
+  j
+ th variable, which 
+ measures distance between two variables, and define the overall dissimilarity 
+ measure between
+  x
+ i
+  and
+  x
+ l
+  as
+  
+ p
+  
+ D
+ (
+ x
+ i
+ ,
+  x
+ l
+ ) = 
+  
+ w
+ j
+ d
+ j
+ (
+ x
+ ij
+ , x
+ lj
+ )
+ ,
+  
+ j
+ =1
+  
+ where
+  w
+ j
+  is a weight assigned to the
+  j
+ th variable. A simple choice is to set 
+ w
+ j
+  = 
+ 1, but the optimal choice may well depend on specific applications. For the 
+ continuous variables, the most common choice for
+  d
+  is the squared distance
+  
+ d
+ j
+ (
+ x
+ ij
+ , x
+ lj
+ ) = (
+ x
+ ij
+  − x
+ lj
+ )
+ 2
+ . More generally, it is also natural to use 
+ d
+ j
+ (
+ x
+ ij
+ , x
+ lj
+ ) =
+  h
+ (
+ |x
+ ij
+  − 
+ x
+ lj
+ |
+ ) with an increasing function
+  h
+ . If the variable is not continuous, another 
+ distance, such as the
+  Hamming distance
+  d
+ j
+ (
+ x
+ ij
+ , x
+ lj
+ ) = 
+ I
+ (
+ x
+ ij
+  =
+  x
+ lj
+ ), is more 
+ appropriate.
+  
+ Suppose that we want to separate the data into
+  K
+  clusters. We discuss ways 
+ to determine the value of
+  K
+  in Section 13.2. For now,
+  K
+  is given. A clustering
+  
+ 607",NA
+An Introduction to Deep Learning,"Deep learning or deep neural networks has achieved tremendous success 
+ in recent years. In simple words,
+  deep learning
+  uses many compositions of 
+ linear transformations followed by a nonlinear gating to approximate high-
+ dimensional functions. The family of such functions is very flexible so that they 
+ can approximate most of target functions very well. While
+  neural networks 
+ have a long history, recent advances have greatly improved their performance 
+ in computer vision, natural language processing, machine translations, among 
+ others, where the information set
+  x
+  is given but highly complex such as 
+ images, texts and voices and the signal-to-noise ratio is high.
+  
+ What makes deep learning so successful nowadays? The arrivals of big 
+ data allows us to reduce variance in the deep neural networks and modern 
+ computing architects and powers permit us to use deeper networks to better 
+ approximate high-dimensional functions and hence reduces the biases. In 
+ other words, deep learning is a great family of scalable nonparametric 
+ methods that achieve great bias and variance trade-off for high-dimensional 
+ function estimation when sample size is very large.
+  
+ From the statistical and scientific perspective, it is natural to ask: What is 
+ deep learning? What are the new characteristics of deep learning, compared 
+ with classical methods? What are the theoretical foundations of deep 
+ learning? To answer these questions, we introduce common neural network 
+ models (e.g., convolutional neural nets, recurrent neural nets, generative 
+ adversarial nets) and training techniques (e.g., stochastic gradient descent, 
+ dropout, batch nor-malization) from a statistical point of view. Along the way, 
+ we highlight new characteristics of deep learning (including depth and over-
+ parametrization) and explain their practical and theoretical benefits. While a 
+ complete un-derstanding of deep learning remains elusive, we hope that our 
+ introduction provides readers with a quick idea on the subject, which is 
+ advancing rapidly.
+  
+ This chapter is adapted from the recent survey paper on this subject by 
+ Fan, Ma and Zhong (2019). A lot of the materials are taken from that pa-per. 
+ We thank particularly Mr. Cong Ma and Yiqiao Zhong (2019) for their 
+ tremendous help in writing this chapter.
+  
+ 643",NA
+layer input layer output layer,"648 
+  
+ AN INTRODUCTION TO DEEP LEARNING",NA
+layer input layer output layer ,NA,NA
+x ,NA,NA
+y ,NA,NA
+W ,NA,NA
+x,NA,NA
+σ,NA,NA
+y,NA,NA
+σ,NA,NA
+W ,NA,NA
+y,NA,NA
+σ,NA,NA
+σy,NA,NA
+layer input layer output layer ,NA,NA
+x ,NA,NA
+y ,NA,NA
+W x,NA,NA
+σy,NA,NA
+σ,NA,NA
+W ,NA,NA
+y,NA,NA
+σ,NA,NA
+σy,NA,NA
+layer input layer output layer ,NA,NA
+x ,NA,NA
+y ,NA,NA
+W ,NA,NA
+x,NA,NA
+σ,NA,NA
+y,NA,NA
+σ,NA,NA
+W ,NA,NA
+y,NA,NA
+σ,NA,NA
+σ,NA,NA
+y,NA,NA
+layer input layer output layer ,NA,NA
+x ,NA,NA
+y ,NA,NA
+W x,NA,NA
+σy,NA,NA
+σ,NA,NA
+W ,NA,NA
+y,NA,NA
+σ,NA,NA
+σ,NA,NA
+y,NA,NA
+hidden layer input layer output layer,NA,NA
+hidden layer input layer output layer hidden layer input layer output layer,"Figure 14.1: A feed-forward neural network with an input layer, two hidden
+  
+ layers and an output layer. The input layer represents raw features
+  {
+ x
+ i
+ }
+ 1
+ ≤i≤n
+ . Both hidden 
+ layers compute an affine transform (a.k.a. indices) of the input
+  
+ and then apply an element-wise activation function
+  σ
+ (
+ ·
+ ). Finally, the output returns a 
+ linear transform followed by the softmax activation (resp. simply a
+  
+ linear transform) of the hidden layers for the classification (resp. regression)
+  
+ problem. Taken from Fan, Ma and Zhong (2019).
+  
+ that minimizes the loss (e.g., (14.4)) over all the training data. This minimiza-
+  
+ tion is usually done via
+  stochastic gradient descent
+  (SGD). In a way similar
+  
+ to gradient descent, SGD starts from a certain initial value
+  θ
+ 0
+ and then itera-
+  
+ tively updates the parameters
+  θ
+ t
+ by moving it in the direction of the negative
+  
+ gradient. The difference is that, in each update, a small subsample
+  B ∗
+  [
+ n
+ ] called a
+  mini-
+ batch
+ —which is typically of size 32–512—is randomly drawn and
+  
+ the gradient calculation is only on
+  B
+  instead of the full batch [
+ n
+ ]. This saves considerably 
+ the computational cost in calculation of gradient. By the law
+  
+ of large numbers, this stochastic gradient should be close to the full sample
+  
+ one, albeit with some random fluctuations. A pass of the whole training set is
+  
+ called an
+  epoch
+ . Usually, after several or tens of epochs, the error on a valida-
+  
+ tion set levels off and training is complete. See Section 14.5 for more details
+  
+ and variants on training algorithms.
+  
+ The key to the above training procedure, namely SGD, is the calculation
+  
+ of the gradient
+  ∗ℓ
+  (
+ θ
+ ), where",NA
+References,"Abadi,M.,et.al.(2015).TensorFlow:large-
+ scalemachinelearningonhetero-geneousdistributedsystems.
+ arXivpreprintar
+ Xiv:1603.04467
+ and
+ Software availablefromtensorflow.org.
+  
+ Abbe,E.(2018).Communitydetectionandstochasticblockmodels:recent 
+  
+ developments.
+ Jour.Mach.Learn.Res.
+ ,
+ 18
+ ,1–86.
+  
+ Abbe,E.,Bandeira,A.S.andHall,G.(2016).Exactrecoveryinthestochas-
+  
+ ticblockmodel.
+ IEEETrans.Inform.Theory
+ ,
+ 62
+ ,471-487.
+  
+ Abbe,E.,Fan,J.,Wang,K.andZhong,Y.(2020).Entrywiseeigenvector 
+ analysisofrandommatriceswithlowexpectedrank.
+ Ann.Statist.
+ ,toap-pear.
+  
+ Agarwal,A.,Negahban,S.,andWainwright,M.J.(2012a).Noisymatrix 
+ decompositionviaconvexrelaxation:Optimalratesinhighdimensions. 
+ Ann.Statist.
+ ,
+ 40
+ ,1171–1197.
+  
+ Agarwal,A.,Negahban,S.andWainwright,M.(2012b).Fastglobalconver-genceof
+ gradientmethodsforhigh-dimensionalstatisticalrecovery.
+ Ann. 
+ Statist.
+ ,
+ 40
+ ,2452–2482.
+  
+ Ahn,S.C.andHorenstein,A.R.(2013).Eigenvalueratiotestforthenumber 
+  
+ offactors.
+ Econometrica
+ ,
+ 81
+ ,1203–1227.
+  
+ Airoldi,E.M.,Blei,D.M.,Fienberg,S.E.,andXing,E.P.(2008).Mixed 
+ membershipstochasticblockmodels.
+ Jour.Mach.Learn.Res.
+ ,
+ 9
+ ,1981-2014.
+  
+ Akaike,H.(1973).Informationtheoryandanextensionofthemaximum 
+ likelihoodprinciple.In
+ SecondInternationalSymposiuminInformation 
+ Theory
+ .EdsB.N.PetrocandF.Caski,Budapest,AkademiaiKiado,276–281.
+  
+ Akaike,H.(1974).Anewlookatthestatisticalmodelidentification.
+ IEEE 
+  
+ Trans.Automat.Control
+ ,
+ 19
+ ,716–723.
+  
+ Allen,D.M.(1974).Therelationshipbetweenvariableanddataaugmenta-
+  
+ tionandamethodofprediction.
+ Technometrics
+ ,
+ 16
+ ,125–127.
+  
+ Alter,O.,Brown,P.andBotstein,D.(2000).Singularvaluedecomposi-tionforgeno
+ me-wideexpressiondataprocessingandmodeling.
+ Proc.Natl. 
+ Acad.Sci.
+ ,
+ 97
+ ,10101–10106.
+  
+ Amini,A.A.,Chen,A.,Bickel,P.J.,andLevina,E.(2013).Pseudo-
+  
+ 683",NA
+AuthorIndex,"Abadi,M.650
+  
+ Banerjee,O.447,465
+  
+ Abbe,E.533,535,536,541,549 
+  
+ Barber,R.F.3
+  
+ Aduroja,A.11 
+  
+ Barbieri,M.M.84
+  
+ Agarwal,A.96,99,115,220,316,476,506 
+  
+ Barndorff-Nielsen,O.E.238
+  
+ Ahn,J.581,584 
+  
+ Barron,A.59
+  
+ Ahn,S.C.482 
+  
+ Bartlett,P.572,573,579,681
+  
+ Airoldi,E.M.537 
+  
+ Barut,E.115,290,318,395
+  
+ Akaike,H.57,139,278 
+  
+ Baskett,F.564
+  
+ Allen,D.M.58 
+  
+ Baskin,S.107,108
+  
+ Allen-Zhu,Z.681 
+  
+ Basset,G.287
+  
+ Amini,A.A.549,639 
+  
+ Battey,H.11,81,325,439,454,466
+  
+ Amit,Y.569 
+  
+ Bauer,B.644
+  
+ An,L.T.H.98 
+  
+ Baxter,J.573
+  
+ Anandkumar,A.546,548 
+  
+ Beauchamp,J.J.278
+  
+ Andersen,P.K.305 
+  
+ Beaufays,F.654
+  
+ Anderson,T.W.384 
+  
+ Beck,A.95,96,210
+  
+ Andrews,D.F.83 
+  
+ Belkin,M.639
+  
+ Andrieu,C.83 
+  
+ Bellec,P.211,217,224,328
+  
+ Antoniadis,A.60–62,107,109,186,327,436,599 
+ Arjovsky,M.664
+  
+ Belloni,A.115,289,290,318,325,328,377,449 
+ Bengio,Y.9,644,649,651,653,656,661,671
+  
+ Arya,S.564 
+  
+ Benjamini,Y.3,78,385,520,548 Avella-
+ Medina,M.439,454,466 
+  
+ Berger,J.O.84,278 
+  
+  
+ Berk,R377
+  
+ Bach,F.267,639,681 
+  
+ Berthet,Q.639,640 
+  
+ Bache,K.581 
+  
+ Bertrand,A.11 
+  
+ Baden,T.633 
+  
+ Bertsekas,D.P.96,311 
+  
+ Bahdanau,D.656 
+  
+ Bettencourt,J.645 
+  
+ Bai,J.7,478,482,491,506,668 
+  
+ Bickel,P.J.63,77,152,169,175,177,196,198, Bai,Z.435 
+  
+  
+ 224,299,322,334,343,376,377,406,435–440, 
+ Baik,J.627 
+  
+  
+ 447,465,545,549,587,588 
+  
+ Bair,E.529 
+  
+ Biehl,M.627 
+  
+ Bakirov,N.K.403,404 
+  
+ Bien,J.438,465 
+  
+ Baltrunas,L.542 
+  
+ Birg´e,L.59 
+  
+ Balzano,L.549 
+  
+ Birnbaum,A.640 
+  
+ Bandeira,A.S.549 
+  
+ Blanchard,G.548
+  
+ 731",NA
+Index,"F
+ -statistic,27 
+  
+ L
+ 1
+ -norm,432 
+  
+ L
+ 2
+ -projectedmatrix,441 
+ L
+ ∞
+ -
+ norm,432 
+  
+ 0
+ PLSestimator,140 
+  
+ 0
+ sparsity,137 
+  
+ 0
+ sparsityassumption,132 
+ q
+ estimationerror,123 
+  
+ q
+ estimationrisk,126
+  
+ approximatefactormodel,475 
+  
+ approximateglobalsolution,200 
+  
+ approximatesparsity,137 
+  
+ approximateunbiasedness,61,189 
+ artificialneuralnetwork,9 
+  
+ asymptoticallyefficient,343 
+  
+ augmentedfactormodel,528,530 
+ augmentedfeatures,597,598 
+  
+ augmentedprincipalcomponentre-
+  
+ r
+ sparsity,137 
+  
+ gression,531
+  
+ φ
+ -
+ criterion,58
+ ψ
+ -
+ learning,581
+  
+ autoencoders,659 
+  
+ averagelinkage,610
+  
+ k
+ -nearest-neighborgraph,617
+  
+ s
+ ∗
+ -complex,137
+  
+ ACLIME,453
+  
+ activationfunction,644,647
+  
+ AdaBoost,571
+  
+ back-propagation,649 
+  
+ back-propagationthroughtime,655 
+ backtrackingrule,95 
+  
+ backwardelimination,56 
+  
+ bagofwords,539
+  
+ AdaGrad,668 
+  
+ bagging,567
+  
+ adaptiveHuberloss,299 
+ adaptiveLasso,66,71
+  
+ bandwidth,559 
+  
+ Bartlettfirstandsecondidentities,
+  
+ adaptivethresholding,437 
+  
+ 229,257
+  
+ additivemodel,395,489,490 
+  
+ adjacencymatrix,533,616 
+  
+ adjustedeigenvaluesthresholding,482 
+ adjustedp-value,520
+  
+ basisfunctions,34 
+  
+ Bayesclassifier,573 
+ Bayeserror,553 
+  
+ Bayesestimator,128
+  
+ ADMM,96,251,293 
+  
+ Bayesrule,553
+  
+ agglomerative,609 
+  
+ AIC-typeselector,264
+  
+ Bayesianestimator,82 
+  
+ Bayesianinformationcriterion,58,
+  
+ Akaikeinformationcriterion,57 
+  
+ 617
+  
+ AlexNet,645 
+  
+ alternatingdirectionmethodofmul-
+  
+ tipliers,96,293 
+  
+ analysisofdeviance,235 
+  
+ anchorwords,540 
+  
+ ANOVA,235 
+  
+ Anscomberesidual,236–238
+  
+ BayesianLasso,83 
+  
+ Bayesianmodelselection,83 
+ Benjamini-Hochberg,520 
+  
+ Berstein’sinequality,79 
+  
+ bestsubset,55,139 
+  
+ bestsubsetselector,142,143 
+ biasthreshold,187
+  
+ 743",NA

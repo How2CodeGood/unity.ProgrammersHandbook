@@ -1,0 +1,6948 @@
+Larger Text,Smaller Text,Symbol
+Table of Content,"Table of Content
+ .................................................................................................................. i 
+ Copyright
+ .............................................................................................................................. v 
+ Dedication
+  ...................................................................................................................... vi 
+ Preface
+ ................................................................................................................................ vi 
+ Structure of This Book
+ ................................................................................................. vii 
+ A 
+ Note on the Source Code
+ .......................................................................................viii 
+ Acknowledgments
+ .......................................................................................................viii 
+ Where to Find More Information
+ ................................................................................. ix 
+ Typographical Conventions
+ ......................................................................................... ix 
+ Chapter 1. Basic C++ Programming
+  ............................................................................... 1 
+ 1.1 How to Write a C++ Program
+  ................................................................................ 1 
+ 1.2 Defining and Initializing a Data Object
+ ................................................................. 6 
+ 1.3 Writing Expressions
+  ................................................................................................ 9 
+ 1.4 Writing Conditional and Loop Statements
+ ......................................................... 13 
+ 1.5 How to Use Arrays and Vectors
+ .......................................................................... 19 
+ 1.6 Pointers Allow for Flexibility
+ ................................................................................. 23 
+ 1.7 Writing and Reading Files
+ .................................................................................... 26 
+ Chapter 2. Procedural Programming
+ ............................................................................. 30 
+ 2.1 How to Write a Function
+ ....................................................................................... 30 
+ 2.2 Invoking a Function
+ ............................................................................................... 35 
+ 2.3 Providing Default Parameter Values
+  .................................................................. 43 
+ 2.4 Using Local Static Objects
+ ................................................................................... 45 
+ 2.5 Declaring a Function Inline
+  .................................................................................. 47 
+ 2.6 Providing Overloaded Functions
+ ......................................................................... 48 
+ 2.7 Defining and Using Template Functions
+ ............................................................ 49 
+ 2.8 Pointers to Functions Add Flexibility
+  .................................................................. 52 
+ 2.9 Setting Up a Header File
+ ...................................................................................... 54 
+ Chapter 3. Generic Programming
+ .................................................................................. 57 
+ 3.1 The Arithmetic of Pointers
+ .................................................................................... 57 
+ 3.2 Making Sense of Iterators
+ .................................................................................... 62 
+ 3.3 Operations Common to All Containers
+  .............................................................. 65 
+ 3.4 Using the Sequential Containers
+  ........................................................................ 66 
+ 3.5 Using the Generic Algorithms
+ .............................................................................. 69 
+ 3.6 How to Design a Generic Algorithm
+  ................................................................... 71 
+ 3.7 Using a Map
+  ........................................................................................................... 77 
+ 3.8 Using a Set
+ ............................................................................................................. 78 
+ 3.9 How to Use Iterator Inserters
+ ............................................................................... 80 
+ 3.10 Using the iostream Iterators
+  .............................................................................. 81 
+ Chapter 4. Object-Based Programming
+ ........................................................................ 85 
+ 4.1 How to Implement a Class
+ ................................................................................... 86 
+ 4.2 What Are Class Constructors and the Class Destructor?
+ ............................... 89 
+ 4.3 What Are 
+ mutable
+  and 
+ const
+ ?
+ ........................................................................ 94 
+ 4.4 What Is the 
+ this
+  Pointer?
+ ................................................................................... 97 
+ 4.5 Static Class Members
+ ........................................................................................... 99 
+ 4.6 Building an Iterator Class
+ ................................................................................... 102 
+ 4.7 Collaboration Sometimes Requires Friendship
+  .............................................. 106 
+ 4.8 Implementing a Copy Assignment Operator
+  ................................................... 108 
+ 4.9 Implementing a Function Object
+  ....................................................................... 109 
+ 4.10 Providing Class Instances of the iostream Operators
+  ................................. 111 
+ 4.11 Pointers to Class Member Functions
+ ............................................................. 112 
+ Chapter 5. Object-Oriented Programming
+ .................................................................. 117 
+ 5.1 Object-Oriented Programming Concepts
+ ......................................................... 117
+  
+ ii",NA
+Copyright ,"Many of the designations used by manufacturers and sellers to distinguish their products are 
+ claimed as trademarks. Where those designations appear in this book, and Addison-Wesley was 
+ aware of a trademark claim, the designations have been printed in initial capital letters or all 
+ capital letters. 
+  
+ The author and publisher have taken care in preparation of this book, but make no expressed or 
+ implied warranty of any kind and assume no responsibility for errors or omissions. No liability is 
+ assumed for incidental or consequential damages in connection with or arising out of the use of 
+ the information or programs contained herein. 
+  
+ The programs and applications presented in this book have been included for their instructional 
+ value. They have been tested with care, but are not guaranteed for any particular purpose. The 
+ authors and publisher do not offer any warranties or representations, nor do they accept any 
+ liabilities with respect to the programs or applications. 
+  
+ The publisher offers discounts on this book when ordered in quantity for special sales. For more 
+ information please contact: 
+  
+ Corporate, Government, and Special Sales 
+  
+ Addison Wesley Longman, Inc. 
+  
+ One Jacob Way 
+  
+ Reading, Massachusetts 01867 
+  
+ Copyright © 2000 Addison Wesley Longman 
+  
+ Library of Congress Cataloging-in-Publication Data 
+  
+ Lippman, Stanley B. 
+  
+ Essential C++ / Stanley B. Lippman 
+  
+ p. cm. 
+  
+ Includes bibliographical references and index. 
+  
+ 1. C++ (Computer program language) I. Title. 
+  
+ QA76.73.C153 L577 1999 
+  
+ 005.13'3--dc21 99–046613 
+  
+ CIP 
+  
+ All rights reserved. No part of this publication may be reproduced, stored in a retrieval system, or 
+ transmitted, in any form, or by any means, electronic, mechanical, photocopying, recording, or 
+ otherwise, without the prior consent of the publisher. Printed in the United States of America. 
+ Published simultaneously in Canada. 
+  
+ v",NA
+Dedication ,"To Beth, who remains essential
+  
+ —
+  
+ To Danny and Anna, hey, kids look, it's done ...",NA
+Preface ,"Gosh, but this book is short. I mean, wow. My 
+ C++ Primer
+  is 1237 pages counting the index, title, 
+ and dedication pages. This one weighs in at 276 — in boxing terms, we're talking bantamweight. 
+  
+ The first question, of course, is how come? Actually, there's a story to that. 
+  
+ I'd been pestering everyone at Disney Feature Animation for a number of years to let me work on 
+ a production. I asked directors, management types — even Mickey, if the truth be told. In part, it 
+ was for the glamour, I suppose. Hollywood. The big screen. Also, I hold a Master of Fine Arts as 
+ well as my Comp Sci degree, and film work seemed to promise some sort of personal synthesis. 
+  
+ What I told management, of course, was that I needed the experience in production in order to 
+ provide usable tools. As a compiler writer, I'd always been one of my own main users. It's difficult 
+ to get defensive or feel unfairly criticized when you're one of the principal complainers about your 
+ software. 
+  
+ The computer effects lead on the Firebird segment of 
+ Fantasia 2000
+  was interested in having me 
+ join the production. To kind of try things out, he asked me to write a tool to read the raw Disney 
+ camera information for a scene and generate a camera node that could be plugged in to the Houdini 
+ animation package. I wrote it in C++, of course. It worked. They liked it. I was invited to come on 
+ board. 
+  
+ Once on the production (thanks to Jinko and Chyuan), I was asked to rewrite the tool in Perl. The 
+ other TDs, it was explained, weren't heavy-duty programmers but knew Perl, Tcl, and so on. (TD is 
+ film industry jargon for technical director. I was the segment's software TD. There was also a 
+ lighting TD [hi, Mira] and a model TD [hi, Tim] as well as the actual computer effects animators 
+ [hi, Mike, Steve, and Tonya].) And oh, by the way, could I do this quickly, because, gosh, we have 
+ a proof of concept test to get out that the directors (hi, Paul and Gaetan) and effects supervisor (hi, 
+ Dave) are waiting for to pitch to the then head of Feature Animation (hi, Peter). No emergency, 
+ you understand, but ... 
+  
+ This left me in somewhat of a quandary. I can program reasonably quickly in C++ with 
+  
+ confidence. Unfortunately, I didn't know Perl. I thought, OK, I'll read a book. But it can't be too big 
+ a book, at least not right now. And it had better not tell me too much, although I know I should 
+ know everything, only later. After all, this is show biz: The directors need a proof of concept, the 
+ artist needs a plug-in to prove the concept, and the producer — heck, she needs a 48-hour day. I 
+  
+ vi",NA
+Structure of This Book ,"The text consists of seven chapters and two appendixes. 
+ Chapter 1
+  provides a description of the 
+ predefined language in the context of writing a small interactive program. It covers the built-in data 
+ types, the predefined operators, the vector and string library classes, the conditional and looping 
+ statements, and the iostream library for input and output. I introduce the vector and string classes in 
+ this chapter because I encourage their use over the built-in array and C-style character string. 
+  
+ vii",NA
+A Note on the Source Code ,"The full source code of the programs developed within the text as well as the solutions to the 
+ exercises is available on-line for downloading both at the Addison Wesley Longman Web site 
+ (
+ www.awl.com/cseng/titles/0-201-48518-4
+ ) and at my home page (
+ www.objectwrite.com
+ ). All the 
+ code has been executed under both Visual C++ 5.0 using the Intel C++ compiler and Visual C++ 6.0 
+ using the Microsoft C++ compiler. You may need to modify the code slightly to have it compile on 
+ your system. If you make any modifications, send me a list of them 
+  
+ (
+ slippman@objectwrite.com
+ ), and I will post them, along with your name, in a modifications file 
+ attached to the solutions code. (Note that the full source code is 
+ not
+  displayed within the text itself.)",NA
+Acknowledgments ,"Special thanks go to Josée Lajoie, coauthor of 
+ C++ Primer, 3rd Edition
+ . She has been a 
+ wonderful support because of her insightful comments on the various drafts of this text and her 
+ unfailing encouragement. I also offer special thanks to Dave Slayton for going through both the 
+ text and the code examples with a razor-sharp green pencil, and to Steve Vinoski for his 
+ compassionate but firm comments on the drafts of this text. 
+  
+ Special thanks also go to the Addison-Wesley editorial team: Deborah Lafferty, who, as editor, 
+ supported this project from the beginning, Betsy Hardinger, who, as copyeditor, contributed 
+  
+ viii",NA
+Where to Find More Information ,"From a completely biased point of view, the two best one-volume introductions to C++ are 
+ Lippman and Lajoie's 
+ C++ Primer
+  and Stroustrup's 
+ The C++ Programming Language
+ , both in 
+ their third edition. Throughout the text I refer you to one or both of the texts for more in-depth 
+ information. The following books are cited in the text. (A more extensive bibliography can be 
+ found in both 
+ C++ Primer
+  and 
+ The C++ Programming Language
+ .) 
+  
+ [LIPPMAN98] Lippman, Stanley, and Josée Lajoie, 
+ C++ Primer, 3rd Edition
+ , Addison Wesley 
+ Longman, Inc., 
+  
+ Reading, MA 1998) ISBN 0-201-82470-1. 
+  
+ [LIPPMAN96a] Lippman, Stanley, 
+ Inside the C++ Object Model
+ , Addison Wesley Longman, Inc., 
+ Reading, MA(1996) ISBN 0-201-83454-5. 
+  
+ [LIPPMAN96b] Lippman, Stanley, Editor, 
+ C++ Gems
+ , a SIGS Books imprint, Cambridge 
+ University Press, 
+  
+ Cambridge, 
+  
+ England(1996) ISBN 0-13570581-9. 
+  
+ [STROUSTRUP97] Stroustrup, Bjarne, 
+ The C++ Programming Language, 3rd Edition
+ , Addison 
+ Wesley Longman, Inc., 
+  
+ Reading, MA(1997) ISBN 0-201-88954-4. 
+  
+ [SUTTER99] Sutter, Herb, 
+ Exceptional C++
+ , Addison Wesley Longman, Inc., 
+ Reading, MA(2000) ISBN 0-201-61562-2.",NA
+Typographical Conventions ,"The text of the book is set in 10.5 pt. Palatino. Program text and language keywords appear in 8.5 
+ pt. 
+ lucida
+ . Functions are identified by following their name with the C++ function call operator 
+ (
+ ()
+ ). Thus, for example, 
+ foo
+  represents a program object, and 
+ bar()
+  represents a program 
+ function. Class names are set in Palatino. 
+  
+ ix",NA
+Chapter 1. Basic C++ Programming ,"In this chapter, we evolve a small program to exercise the fundamental components of the C++ language. 
+ These components consist of the following: 
+  
+ 1. A small set of data types: Boolean, character, integer, and floating point. 
+  
+ 2. A set of arithmetic, relational, and logical operators to manipulate these types. These include not 
+ only the usual suspects, such as addition, equality, less than, and assignment, but also the less 
+ conventional increment, conditional, and compound assignment operators. 
+  
+ 3. A set of conditional branch and looping statements, such as the 
+ if
+  statement and 
+ while
+  loop, to 
+  
+ alter the control flow of our program. 
+  
+ 4. A small number of compound types, such as a pointer and an array. These allow us, respectively, to 
+ refer indirectly to an existing object and to define a collection of elements of a single type. 
+  
+ 5. A standard library of common programming abstractions, such as a string and a vector.",NA
+1.1 How to Write a C++ Program ,"We've been asked to write a simple program to write a message to the user's terminal asking her to type in 
+ her name. Then we read the name she enters, store the name so that we can use it later, and, finally, greet 
+ the user by name. 
+  
+ OK, so where do we start? We start in the same place every C++ program starts — in a function called 
+ main()
+ . 
+ main()
+  is a user-implemented function of the following general form: 
+  
+ int main() 
+  
+ { 
+  
+  
+  // our program code goes here  
+  
+ } 
+  
+ int
+  is a C++ language keyword. 
+ Keywords
+  are predefined names given special meaning within the 
+ language. 
+ int
+  represents a built-in integer data type. (I have much more to say about data types in the next 
+ section.) 
+  
+ A 
+ function
+  is an independent code sequence that performs some computation. It consists of four parts: the 
+ return type, the function name, the parameter list, and the function body. Let's briefly look at each part in 
+ turn. 
+  
+ The 
+ return type
+  of the function usually represents the result of the computation. 
+ main()
+  has an integer 
+ return type. The value returned by 
+ main()
+  indicates whether our program is successful. By convention, 
+ main()
+  returns 0 to indicate success. A nonzero return value indicates something went wrong. 
+  
+ The 
+ name
+  of a function is chosen by the programmer and ideally should give some sense of what the 
+ function does. 
+ min()
+  and 
+ sort()
+ , for example, are pretty good function names. 
+ f()
+  and 
+ g()
+  are not as 
+ good. Why? Because they are less informative as to what the functions do. 
+  
+ main
+  is not a language keyword. The compilation system that executes our C++ programs, however, 
+ expects a 
+ main()
+  function to be defined. If we forget to provide one, our program will not run. 
+  
+ The 
+ parameter list
+  of a function is enclosed in parentheses and is placed after the name of the function. An 
+ empty parameter list, such as that of 
+ main()
+ , indicates that the function accepts no parameters. 
+  
+ 1",NA
+Exercise 1.1 ,"Enter the 
+ main()
+  program, shown earlier. Either type it in directly or download the program; see the 
+ Preface
+  for how to acquire the source programs and solutions to exercises. Compile and execute the 
+ program on your system.",NA
+Exercise 1.2 ,"Comment out the string header file: 
+  
+ // #include <string> 
+  
+ Now recompile the program. What happens? Now restore the string header and comment out 
+  
+ //using namespace std; 
+  
+ What happens? 
+  
+ 5",NA
+Exercise 1.3 ,"Change the name of 
+ main()
+  to 
+ my_main()
+  and recompile the program. What happens?",NA
+Exercise 1.4,"Try to extend the program: (1) Ask the user to enter both a first and last name and (2) modify the output to 
+ write out both names.",NA
+1.2 Defining and Initializing a Data Object ,"Now that we have the user's attention, let's challenge her to a quiz. We display two numbers representing a 
+ numerical sequence and then request our user to identify the next value in the sequence. For example, 
+  
+ The values 2,3 form two consecutive 
+  
+  elements of a numerical sequence.  
+  
+ What is the next value? 
+  
+ These values are the third and fourth elements of the Fibonacci sequence: 1, 1, 2, 3, 5, 8, 13, and so on. A 
+ Fibonacci sequence begins with the first two elements set to 1. Each subsequent element is the sum of its 
+ two preceding elements. (In 
+ Chapter 2
+  we write a function to calculate the elements.) 
+  
+ If the user enters 5, we congratulate her and ask whether she would like to try another numerical sequence. 
+ Any other entered value is incorrect, and we ask the user whether she would like to guess again. 
+  
+ To add interest to the program, we keep a running score based on the number of correct answers divided 
+ by the number of guesses. 
+  
+ Our program needs at least five objects: the string class object to hold the name of the user; three integer 
+ objects to hold, in turn, the user's guess, the number of guesses, and the number of correct guesses; and a 
+ floating point object to hold the user's score. 
+  
+ To define a data object, we must both name it and provide it with a data type. The name can be any 
+ combination of letters, numbers, and the underscore. Letters are case-sensitive. Each one of the names 
+ user_name
+ , 
+ User_name
+ , 
+ uSeR_nAmE
+ , and 
+ user_Name
+  refers to a distinct object. 
+  
+ A name cannot begin with a number. For example, 
+ 1_name
+  is illegal but 
+ name_1
+  is OK. Also, a name 
+ must not match a language keyword exactly. For example, 
+ delete
+  is a language keyword, and so we can't 
+ use it for an entity in our program. (This explains why the operation to remove a character from the string 
+ class is 
+ erase()
+  and not 
+ delete()
+ .) 
+  
+ Each object must be of a particular data type. The name of the object allows us to refer to it directly. The 
+ data type determines the range of values the object can hold and the amount of memory that must be 
+ allocated to hold those values. 
+  
+ We saw the definition of 
+ user_name
+  in the preceding section. We reuse the same definition in our new 
+ program: 
+  
+ #include <string> 
+  
+ string user_name; 
+  
+ 6",NA
+1.3 Writing Expressions ,"The built-in data types are supported by a collection of arithmetic, relational, logical, and compound 
+ assignment operators. The arithmetic operators are unsurprising except for integer division and the 
+ remainder operator: 
+  
+ // Arithmetic Operators 
+  
+ +    addition       a + b 
+  
+ -    subtraction    a - b 
+  
+ *    multiplication a * b 
+  
+ /    division       a / b 
+  
+ %    remainder      a % b 
+  
+ The division of two integer values yields a whole number. Any remainder is truncated; there is no 
+ rounding. The remainder is accessed using the 
+ %
+  operator: 
+  
+ 5 / 3 evaluates to 1 while 5 % 3 evaluates to 2 
+ 5 / 4 evaluates to 1 while 5 % 4 evaluates to 1 
+ 5 / 5 evaluates to 1 while 5 % 5 evaluates to 0 
+  
+ When might we actually use the remainder operator? Imagine that we want to print no more than eight 
+ strings on a line. If the number of words on the line is less than eight, we output a blank space following 
+ the word. If the string is the eighth word on the line, we output a newline. Here is our implementation: 
+  
+ const int line_size = 8; 
+  
+ int cnt = 1; 
+  
+ // these statements are executed many times, with // 
+ a_string representing a different value each time // 
+ and cnt growing by one with each execution ... 
+  
+ cout << a_string 
+  
+  
+  << (cnt % line_size ? ' ' : '\n');  
+  
+ The parenthetical expression following the output operator likely makes no sense to you unless you are 
+ already familiar with the conditional operator (
+ ?:
+ ). The result of the expression is to output either a space 
+ or a newline character depending on whether the remainder operator evaluates to a zero or a nonzero value. 
+ Let's see what sense we can make of it. 
+  
+ 9",NA
+Operator Precedence ,"There is one ''gotcha'' to the use of the built-in operators: When multiple operators are combined in a single 
+ expression, the order of expression evaluation is determined by a predefined precedence level for each 
+ operator. For example, the result of 
+ 5+2*10
+  is always 25 and never 70 because the multiplication operator 
+ has a higher precedence level than that of addition; as a result, 2 is always multiplied by 10 before the 
+ addition of 5. 
+  
+ We can override the built-in precedence level by placing parentheses around the operators we wish to be 
+ evaluated first. 
+ (5+2)*10
+ , for example, evaluates to 70. 
+  
+ For the operators I've introduced, the precedence order is listed next. An operator has a higher precedence 
+ than an operator under it. Operators on the same line have equal precedence. In these cases, the order of 
+ evaluation is left to right. 
+  
+ logical NOT 
+  
+ arithmetic (*, /, %) 
+  
+ arithmetic (+, -) 
+  
+ relational (<, >, <=, >=) 
+  
+ relational (==, !=) 
+  
+ logical AND 
+  
+ logical OR 
+  
+ assignment 
+  
+ For example, to determine whether 
+ ival
+  is an even number, we might write 
+  
+ ! ival % 2 // not quite right 
+  
+ Our intention is to test the result of the remainder operator. If 
+ ival
+  is even, the result is zero and the 
+ logical 
+ NOT
+  operator evaluates to true; otherwise, the result is nonzero, and the logical 
+ NOT
+  operator 
+ evaluates to false. Or at least that is our intention. 
+  
+ Unfortunately, the result of our expression is quite different. Our expression always evaluates to false 
+ except when ival is 0! 
+  
+ Team-Fly
+ ®",NA
+1.4 Writing Conditional and Loop Statements ,"By default, statements are executed once in sequence, beginning with the first statement of 
+ main()
+ . In the 
+ preceding section, we had a peek at the 
+ if
+  statement. The 
+ if
+  statement allows us to execute conditionally 
+ one or a sequence of statements based on the truth evaluation of an expression. An optional 
+ else
+  clause 
+ allows us to test multiple truth conditions. A looping statement allows us to repeat one or a sequence of 
+ statements based on the truth evaluation of an expression. The following pseudo-code program makes use 
+ of two looping statements (
+ #1
+  and 
+ #2
+ ), one 
+ if
+  statement (
+ #5
+ ), one 
+ if-else
+  statement (
+ #3
+ ), and a second 
+ conditional statement called a 
+ switch
+  statement (
+ #4
+ ). 
+  
+ // Pseudo code: General logic of our program 
+  
+ while the user wants to guess a sequence 
+  
+ { #1 
+  
+  
+  display the sequence  
+  
+  
+  while the guess is not correct and  
+  
+  
+  
+  
+  the user wants to guess again  
+  
+  
+  { #2  
+  
+  
+  
+  read guess  
+  
+  
+  
+  increment number-of-tries count  
+  
+  
+  
+  if the guess is correct  
+  
+  
+  
+  { #3  
+  
+  
+  
+   
+  increment correct-guess count  
+  
+  
+  
+   
+  set got_it to true  
+  
+  
+  
+  } else {  
+  
+  
+  
+   
+  express regret that the user has guessed wrong  
+  
+  
+   
+  
+  generate a different response based on the  
+  
+  
+   
+  
+  current number of guesses by the user // #4  
+  
+  
+   
+  ask the user if she wants to guess again  
+  
+  
+  
+   
+  read response  
+  
+  
+  
+   
+  if user says no // #5  
+  
+  
+  
+   
+  set go_for_it to false  
+  
+  
+  
+  }  
+  
+  
+  }  
+  
+ }",NA
+Conditional Statements ,13,NA
+Loop Statements ,"A loop statement executes a statement or statement block as long as the condition expression evaluates as 
+ true. Our program requires two loop statements, one nested within the other: 
+  
+ while the user wants to guess a sequence { 
+  
+  
+  display the sequence  
+  
+  
+  while the guess is not correct and  
+  
+  
+  the user wants to guess again  } 
+  
+ The C++ 
+ while
+  loop maps nicely to our needs: 
+  
+ bool next_seq = true;   // show next sequence? 
+  
+ bool go_for_it = true;  // user wants to guess? 
+  
+ bool got_it = false;    // user guessed correctly? 
+  
+ int  num_tries = 0;     // number of user guesses int  
+ num_right = 0;     // number of correct answers 
+  
+ while (next_seq == true) 
+  
+ { 
+  
+  
+  // display sequence to user  
+  
+  
+  while ((got_it == false) &&  
+  
+  
+  
+  
+  (go_for_it == true))  
+  
+  
+  {  
+  
+  
+  
+  int usr_guess;  
+  
+  
+  
+  cin >> usr_guess;  
+  
+  
+  
+  num_tries++;  
+  
+  if (usr_guess == next_elem)  
+  
+  {  
+  
+  
+  
+  got_it = true;  
+  
+  
+  
+  num_cor++;  
+  
+  }  
+  
+  else  
+  
+  {  // user guessed incorrectly  
+  
+  
+  // tell user answer is wrong  
+  
+  
+  // ask user if she wants to try again  
+  
+  if (usr_rsp == 'N' || usr_rsp == 'n')  
+  
+   
+  go_for_it = false;  
+  
+  }  
+  
+ 17",NA
+1.5 How to Use Arrays and Vectors ,"Following are the first eight elements from six numerical sequences: 
+  
+ Fibonacci:  1, 1, 2, 3, 5, 8, 13, 21 
+  
+ Lucas:      1, 3, 4, 7, 11, 18, 29, 47 
+ Pell:       1, 2, 5, 12, 29, 70, 169, 408 
+ Triangular: 1, 3, 6, 10, 15, 21, 28, 36 
+ Square:     1, 4, 9, 16, 25, 36, 49, 64 
+ Pentagonal: 1, 5, 12, 22, 35, 51, 70, 92 
+  
+ Our program must display a pair of elements from a sequence and allow the user to guess the next element. 
+ If the user guesses right and wishes to continue, the program then displays a second pair of elements, then a 
+ third, and so on. How might we do that? 
+  
+ If succeeding element pairs are taken from the same sequence, the user, recognizing one pair, recognizes 
+ them all. That is not very interesting. So we'll pick an element pair from a different numeric sequence with 
+ each iteration of the main program loop. 
+  
+ For now, we'll display a maximum of six element pairs per session: one pair from each of the six 
+ sequences. We'd like to implement this so that we can loop through the display of the element pairs 
+ without having to know which sequence we are displaying with each loop iteration. Each iteration must 
+ have access to three values: the element pair and the element that follows them in the sequence. 
+  
+ The solution we discuss in this section uses a container type that can hold a contiguous sequence of integer 
+ values that we can reference not by name but by position within the container. We store 18 values in the 
+ container as a collection of six tuples: The first two represent the element pair to display; the third represents 
+ the next sequence element. With each iteration of the loop, we add 3 to the index value, in this way stepping 
+ through the six tuples in turn. 
+  
+ In C++, we can define a container as either a built-in array or an object of the stan-dard library vector class. 
+ In general, I recommend the use of the vector class over that of the built-in array. However, a great deal of 
+ existing code uses the built-in array, and it is important to understand how to use both representations. 
+  
+ To define a built-in array, we must specify the type of element the array is to hold, give the array a name, 
+ and specify a dimension — that is, the number of elements the array can hold. The dimension must be a 
+ constant expression — that is, an expression that does not require run-time evaluation. For example, the 
+ following code declares 
+ pell_seq
+  to be an array of 18 integer elements. 
+  
+ const int seq_size = 18; 
+  
+ int pell_seq[seq_size]; 
+  
+ To define a vector class object, we must first include the 
+ vector
+  header file. The vector class is a 
+ template, so we indicate the type of its element in brackets following the name of the class. The dimension 
+  
+ 19",NA
+1.6 Pointers Allow for Flexibility ,"Our display solution in the preceding section has two primary drawbacks. First, it has a fixed upper limit of 
+ six sequences; if the user should guess all six sequences, the program unexpectedly terminates. Second, it 
+ always displays the same six element pairs in the same order. How might we extend our program's 
+ flexibility? 
+  
+ One possible solution is to maintain six vectors, one for each sequence, calculated to some number of 
+ elements. With each iteration of the loop, we draw our element pair from a different vector. When using a 
+ vector a second time, we draw our element pair from a different index within the vector. This approach 
+ resolves both drawbacks. 
+  
+ As with our earlier solution, we'd like to access the different vectors transparently. In the preceding section, 
+ we achieve transparency by accessing each element by index rather than by name. With each loop iteration, 
+ we increment the index value by 3. Otherwise, the code remains invariant. 
+  
+ In this section, we achieve transparency by accessing each vector indirectly by a pointer rather than by 
+ name. A 
+ pointer
+  introduces a level of indirection to a program. Rather than manipulate an object directly, 
+ we manipulate a pointer that holds the address of an object. In our program, we define a pointer that can 
+ address a vector of integers. With each loop iteration, we modify the pointer to address a different vector. 
+ The actual code that manipulates the pointer does not change. 
+  
+ The use of a pointer does two things to our program. It increases the program's flexibility and adds a level 
+ of complexity absent in direct object manipulation. This section should convince you of the truth of both 
+ statements. 
+  
+ We already know how to define an object. The following statement, for example, defines 
+ ival
+  as an 
+ object of type 
+ int
+  initialized to a value of 1,024: 
+  
+ int ival = 1024; 
+  
+ A pointer holds the address of an object of a particular type. To define a pointer of a particular type, we 
+ follow the type name with an asterisk: 
+  
+ int *pi; // pi is a pointer to an object of type int 
+  
+ pi
+  is a pointer to an object of type 
+ int
+ . How do we initialize it to point to 
+ ival
+ ? The evaluation of an 
+ object's name, such as 
+  
+ ival; // evaluates to the value of ival 
+  
+ evaluates to its associated value — 1,024 in this case. To retrieve the address of the object rather than its 
+ value, we apply the address-of operator (
+ &
+ ): 
+  
+ &ival; // evaluates to the address of ival 
+  
+ To initialize 
+ pi
+  to 
+ ival
+ 's address, we write the following: 
+  
+ int *pi = &ival; 
+  
+ To access the object addressed by a pointer, we must 
+ dereference
+  the pointer — that is, retrieve the object 
+ sitting at the address held by the pointer. To do that, we apply an asterisk to the pointer as follows: 
+  
+ // dereference pi to access the object it addresses 
+  
+ 23",NA
+1.7 Writing and Reading Files ,"If a user should happen to run our program a second time, it would be nice to allow her score to reflect 
+ both sessions. To do this, we must (1) write the user's name and session data to a file at the end of the 
+ session and (2) read the user's session data back into the program at the start of the next session. Let's see 
+ how we might do that. 
+  
+ To read and write to a file, we must include the 
+ fstream
+  header file: 
+  
+ #include <fstream> 
+  
+ To open a file for output, we define an ofstream (an output file stream) class object, passing it the name of 
+ the file to open: 
+  
+ // seq_data.txt is opened in output mode 
+  
+ ofstream outfile(""seq_data.txt""); 
+  
+ What happens when we declare 
+ outfile
+ ? If it doesn't exist, the file is created and opened for output. If it 
+ does exist, it is opened for output and any existing data in the file is discarded. 
+  
+ If we wish to add to rather than replace the data within an existing file, we must open the file in append 
+ mode. We do this by providing an 
+ ios_base::app
+  second value to the ofstream object. (At this point in 
+ this book, it is better that you just use this and not inquire too deeply as to what the heck it actually is!) 
+ // 
+ seq_data.txt is opened in append mode 
+  
+ // new data is added at the end of the file 
+  
+ ofstream outfile(""seq_data.txt"", ios_base::app); 
+  
+ A file may fail to open. Before we write to it, we must confirm that it has been opened successfully. The 
+ simplest way to check that is to test the truth value of the class object: 
+  
+ 26",NA
+Exercise 1.5,"Write a program to ask the user his or her name. Read the response. Confirm that the input is at least two 
+ characters in length. If the name seems valid, respond to the user. Provide two implementations: one using a 
+ C-style character string, and the other using a string class object.",NA
+Exercise 1.6,"Write a program to read in a sequence of integers from standard input. Place the values, in turn, in a built-
+ in array and a vector. Iterate over the containers to sum the values. Display the sum and average of the 
+ entered values to standard output.",NA
+Exercise 1.7,"Using your favorite editor, type two or more lines of text into a file. Write a program to open the file, 
+ reading each word into a 
+ vector<string>
+  object. Iterate over the vector, displaying it to 
+ cout
+ . That 
+ done, sort the words using the 
+ sort()
+  generic algorithm, 
+  
+ #include <algorithm> 
+  
+ sort(container.begin(), container.end()); 
+  
+ Then print the sorted words to an output file.",NA
+Exercise 1.8,"The 
+ switch
+  statement of 
+ Section 1.4
+  displays a different consolation message based on the number of 
+ wrong guesses. Replace this with an array of four string messages that can be indexed based on the number 
+ of wrong guesses. 
+  
+ 29",NA
+Chapter 2. Procedural Programming ,"Writing an entire program in 
+ main()
+ , as we did in 
+ Chapter 1
+ , is not very practical except for small 
+ programs written by a single individual. Typically, we factor common operations, such as 
+ calculating the elements of the Fibonacci sequence or generating a random number, into 
+  
+ independent functions. This approach has three primary benefits. First, our programs are simpler to 
+ understand because they are a sequence of function calls rather than the code sequence to 
+ accomplish each operation. Second, we can use the functions across multiple programs. Third, it is 
+ easier to distribute the work across multiple programmers or groups within a project. 
+  
+ This chapter covers the basic rules for writing independent functions. It also briefly discusses 
+ overloaded and template functions and illustrates the use of pointers to functions.",NA
+2.1 How to Write a Function ,"In this section, we write a function that returns the Fibonacci element at a position specified by the 
+ user. For example, if the user asks, ""What is the eighth Fibonacci element?"" our function answers, 
+ ""21."" How do we go about defining this function? 
+  
+ We must define the following four parts to our function: 
+  
+ 1. 
+ The return type of the function.
+  Our function returns the element value at the user-
+ specified position. Its value is of type 
+ int
+ , so our function's return type is also of type 
+ int
+ . A function that does not return a value has a return type of 
+ void
+ . A function that 
+ prints a Fibonacci sequence to the terminal, for example, is likely to declare its return 
+ type 
+ void
+ . 
+  
+ 2. 
+ The name of the function.
+ foo()
+  is a common name. It is not a good name, however, 
+  
+ because it is not helpful in identifying the operation provided by the function. 
+  
+ fibon_elem()
+  is a somewhat better name, although no doubt you can think of an even 
+ better name. 
+  
+ 3. 
+ The parameter list of the function.
+  The parameters of a function serve as placeholders for 
+ values that are later supplied by the user during each invocation of the function. A 
+ parameter, that is, represents what varies with each invocation of a function. Our function, 
+ for example, defines one parameter: the element's position in the sequence. The user will 
+ supply this position each time our function is invoked. A parameter specifies both a type and 
+ a name. For our function, we define a single parameter of type 
+ int
+ . A function can have an 
+ empty parameter list. For example, a function to greet the user and read in the user's name is 
+ unlikely to require parameters. 
+  
+ 4. 
+ The body of the function.
+  The body of the function implements the logic of the operation. 
+ Typically, it manipulates the named parameters of the function. The function body is 
+ enclosed in curly braces and appears after the parameter list. 
+  
+ Before a function can be called within our program, it must be declared. A function declaration 
+ allows the compiler to verify the correctness of its use — whether there are enough parameters, 
+ whether they are of the correct type, and so on. The function declaration specifies the return type, 
+ the name, and the parameter list but not the function body. This is called the 
+ function prototype
+ . 
+  
+ // a declaration of our function 
+  
+ int fibon_elem(int pos); 
+  
+ 30",NA
+Exercise 2.1,"main()
+ , presented earlier, allows the user to enter only one position value and then terminates. If 
+ a user wishes to ask for two or more positions, she must execute the program two or more times. 
+ Modify 
+ main()
+  to allow the user to keep entering positions until she indicates she wishes to stop.",NA
+2.2 Invoking a Function ,"In this section we implement a function to sort a vector of integer values so that we can explore the 
+ behavior of passing parameters both by reference and by value. The sorting algorithm is a simple 
+ bubble sort implemented by two nested 
+ for
+  loops. The outer 
+ for
+  loop walks through the vector 
+ elements from 
+ ix
+ , which begins at 0 and ends at 
+ size-1
+ . The idea is that upon completion of 
+ each iteration of the outer loop, the element indexed by 
+ ix
+  is in its proper place. When 
+ ix
+  is 0, the 
+ smallest element is found and placed at position 0, and when 
+ ix
+  is 1, the second smallest element 
+ is in place, and so on. The placement is executed by the inner 
+ for
+  loop. 
+ jx
+  begins at 
+ ix+1
+  and 
+ ends at 
+ size-1
+ . It compares the element value at 
+ ix
+  with the element value at 
+ jx
+ . If the element 
+ value at 
+ jx
+  is smaller, the two element values are swapped. Our first implementation fails. The 
+ purpose of this section is to explain why. Here we go. 
+  
+ void display(vector<int> vec) 
+  
+ { 
+  
+  
+  for (int ix = 0; ix < vec.size(); ++ix)  
+  
+  
+  cout << vec[ix] << ' ';  
+  
+  
+  cout << endl;  
+  
+ } 
+  
+ void swap(int val1, int val2) 
+  
+ { 
+  
+  
+  int temp = val1;  
+  
+  
+  val1 = val2;  
+  
+  
+  val2 = temp;  
+  
+ } 
+  
+ void bubble_sort(vector<int> vec) 
+  
+ { 
+  
+  
+  for (int ix = 0; ix < vec.size(); ++ix)  
+  
+  
+  
+  for (int jx = ix+1; jx < vec.size(); ++jx)  
+  
+  
+  
+  if (vec[ix] > vec[jx])  
+  
+  
+  
+  
+  
+  swap(vec[ix], vec[jx]);  
+  
+ } 
+  
+ int main() 
+  
+ { 
+  
+  
+  int ia[8] = { 8, 34, 3, 13, 1, 21, 5, 2 };  
+  
+  vector<int> vec(ia, ia+8);  
+  
+  cout << ""vector before sort: "";  
+  
+  display(vec);  
+  
+  bubble_sort(vec);  
+  
+  cout << ""vector after sort:  "";  
+  
+ 35",NA
+Pass by Reference Semantics ,"A reference serves as an indirect handle to an object. We declare a reference by sandwiching an 
+ ampersand (
+ &
+ ) between the type's name and the name of the reference: 
+  
+ int ival = 1024;  // an object of type int 
+  
+ int *pi  = &ival; // a pointer to an object of type int 
+ int &rval = ival; // a reference to an object of type int 
+  
+ When we write 
+  
+ int jval = 4096; 
+  
+ rval = ival; 
+  
+ we assign 
+ ival
+ , the object 
+ rval
+  refers to, the value stored by 
+ jval
+ . We do not cause 
+ rval
+  to 
+ now refer to 
+ jval
+ . A reference cannot be reassigned to refer to another object. When we write 
+  
+ pi = &rval; 
+  
+ we assign 
+ pi
+  the address of 
+ ival
+ , the object 
+ rval
+  refers to. We do not cause 
+ pi
+  to point to 
+ rval
+ . All manipulation of a reference acts on the object the reference refers to. This is also true 
+ when the reference is a function parameter. 
+  
+ When we assign 
+ val1
+  with 
+ val2
+  within 
+ swap()
+ , 
+  
+ void swap(int &val1, int &val2) 
+  
+ { 
+  
+  
+  // the actual arguments are modified ...  
+  
+  int temp = val1;  
+  
+  val1 = val2;  
+  
+ 39",NA
+Scope and Extent ,"Objects defined within a function, with the requisite one exception, exist only while the function is 
+ executing. Returning the address of one of these 
+ local
+  objects results in serious run-time program 
+ errors. Recall that a function is temporarily placed on the program stack in a special area of 
+ memory for the extent of its execution. Local objects are stored in this area of memory. When the 
+ function completes, this area of memory is discarded. The local objects no longer exist. 
+  
+ Addressing a nonexisting object in general is a bad programming idiom. For example, 
+ fibon_seq()
+  returns a vector of Fibonacci elements of some user-specified size: 
+  
+ vector<int> fibon_seq(int size) 
+  
+ { 
+  
+  
+  if (size <= 0 || size > 1024)  
+  
+  
+  {  
+  
+  
+  
+  cerr << ""Warning: fibon_seq(): ""  
+  
+  
+  
+  
+  << size << "" not supported -- resetting to 8\n"";  
+  
+  }  
+  
+  size = 8;  
+  
+  vector<int> elems(size);  
+  
+  for (int ix = 0; ix < size; ++ix)  
+  
+  
+  if (ix == 0 || ix == 1)  
+  
+  
+  
+  elems[ix] =  1;  
+  
+  
+  else elems[ix] =  elems[ix-1] + elems[ix-2];  
+  
+  
+  return elems;  
+  
+ } 
+  
+ It would be incorrect to return 
+ elems
+  by either reference or pointer because 
+ elems
+  ceases to exist 
+ with the completion of 
+ fibon_seq()
+ . Returning 
+ elems
+  by value is OK: The copy of the object 
+ returned exists outside the function. 
+ [2]
+  
+ [2]
+  A class object returned by value is optimized by most C++ compilers into an additional reference 
+ parameter. For a discussion of the 
+ name return value
+  optimization, see Section 14.8 of 
+  
+ [
+ LIPPMAN98
+ ]. 
+  
+ 41",NA
+Dynamic Memory Management ,"Both local and file extent are managed for us automatically. There is a third form of storage 
+ duration called 
+ dynamic extent
+ . This memory comes from the program's 
+ free store
+  and is 
+ sometimes called 
+ heap memory
+ . This memory must be managed explicitly by the programmer. 
+ Memory allocation is done using the 
+ new
+  expression, whereas memory deallocation is done using 
+ the 
+ delete
+  expression. 
+  
+ The 
+ new
+  expression is written this way: 
+  
+ new Type; 
+  
+ Here, 
+ Type
+  can be any built-in or class type known to the program, or the 
+ new
+  expression can be 
+ written as 
+  
+ new Type(initial_value); 
+  
+ For example, 
+  
+ int *pi; 
+  
+ pi = new int; 
+  
+ assigns 
+ pi
+  the address of an object of type 
+ int
+  allocated in heap memory. By default, an object 
+ allocated on the heap is uninitialized. The second form of the 
+ new
+  expression allows us to specify 
+ an initial value. For example, 
+  
+ pi = new int(1024); 
+  
+ also assigns 
+ pi
+  the address of an object of type 
+ int
+  allocated in heap memory. This object, 
+ however, is initialized to a value of 1,024. 
+  
+ To allocate an array of heap elements, we write 
+  
+ int *pia = new int[24]; 
+  
+ Team-Fly
+ ®",NA
+2.3 Providing Default Parameter Values ,"Printing a trace of our bubble sort program to 
+ ofil
+  required that I make 
+ ofil
+  available to the 
+ multiple functions I wished to debug. Because I was responding to unexpected and unwelcomed 
+ behavior, I chose the quickest solution to the problem of making an object visible across multiple 
+ functions: I defined 
+ ofil
+  at file scope. 
+  
+ As a general programming rule, however, it is better to communicate between functions using 
+ parameters rather than use objects defined at file scope. One reason is that a function that is 
+ dependent on an object defined at file scope is harder to reuse in a different context. The function is 
+ also harder to modify: We must understand not only the logic specific to the function but also the 
+ logic of the objects defined at file scope. 
+  
+ Let's see how we might revise 
+ bubble_sort()
+  to do away with its reliance on the file scope 
+ instance of 
+ ofil
+ : 
+  
+ void bubble_sort(vector<int> &vec, ofstream &ofil) 
+  
+ { 
+  
+  
+  for (int ix = 0; ix < vec.size(); ++ix)  
+  
+  
+  
+  for (int jx = ix+1; jx < vec.size(); ++jx)  
+  
+  
+  
+  
+  if (vec[ix] > vec[jx])  
+  
+  
+  
+  
+  {  
+  
+  
+  
+  
+  
+  ofil << ""about to call swap! ix: "" << ix  
+  
+  
+  
+  
+  
+  
+  << "" jx: "" << jx << ""\tswapping: ""  
+  
+  
+  
+  
+  
+  
+  << vec[ix] << "" with "" << vec[jx] << endl;  
+  
+ 43",NA
+2.4 Using Local Static Objects ,45,NA
+2.5 Declaring a Function Inline ,"Recall that 
+ fibon_elem()
+  returns the Fibonacci element at a user-specified position within the 
+ sequence. In our original implementation, it calculates the sequence up to the requested position 
+ with each invocation. It also tests whether the requested position is reasonable. We can simplify 
+ its implementation by factoring subtasks into separate functions: 
+  
+ bool is_size_ok(int size) 
+  
+ { 
+  
+  
+  const int max_size = 1024;  
+  
+  
+  if (size <= 0 || size > max_size)  
+  
+  
+  {  
+  
+  
+  
+  cerr << ""Oops: requested size is not supported : ""  
+  
+  
+  
+  << size << "" -- can't fulfill request.\n"";  
+  
+  
+  return false;  
+  
+  
+  }  
+  
+  
+  return true;  
+  
+ } 
+  
+ // calculate up to size elements of Fibonacci sequence 
+ // return address of static container holding elements 
+ const vector<int> *fibon_seq(int size) 
+  
+ { 
+  
+  
+  static vector<int> elems;  
+  
+  
+  if (! is_size_ok(size))  
+  
+  
+  
+  return 0;  
+  
+  
+  for (int ix = elems.size(); ix < size; ++ix)  
+  
+  
+  
+  if (ix == 0 || ix == 1)  
+  
+  
+  
+  
+  elems.push_back(1);  
+  
+  
+  
+  else elems.push_back(elems[ix-1]+elems[ix-2]);  
+  
+  return &elems;  
+  
+ } 
+  
+ // returns the Fibonacci element at position pos 
+  
+ // (we must adjust by 1 because first element is stored at 0) 
+ // returns false if position is unsupported 
+  
+ bool fibon_elem(int pos, int &elem) 
+  
+ { 
+  
+  
+  const vector<int> *pseq = fibon_seq(pos);  
+  
+ 47",NA
+2.6 Providing Overloaded Functions ,"Rather than have each function generate its own diagnostic messages, let's provide a general 
+ display_message()
+  function. It might be used as follows: 
+  
+ bool is_size_ok(int size) 
+  
+ { 
+  
+  
+  const int max_size = 1024;  
+  
+  
+  const string msg(""Requested size is not supported"");  
+  
+ } 
+  
+  if (size <= 0 || size > max_size){  
+  
+  display_message(msg, size);  
+  
+  return false;  
+  
+  }  
+  
+  return true;  
+  
+ 48",NA
+2.7 Defining and Using Template Functions ,49,NA
+2.8 Pointers to Functions Add Flexibility ,"We must provide a function to return a vector of elements similar to 
+ fibon_seq()
+  for each of 
+ our other five numerical sequences. The full set of functions might be declared as follows: 
+ const vector<int> *fibon_seq(int size); 
+  
+ const vector<int> *lucas_seq(int size); 
+  
+ const vector<int> *pell_seq(int size); 
+  
+ const vector<int> *triang_seq(int size); 
+  
+ const vector<int> *square_seq(int size); 
+  
+ const vector<int> *pent_seq(int size); 
+  
+ What about 
+ fibon_elem()
+ ? Must we also provide six separate instances of this, one for each 
+ numeric sequence? The definition of 
+ fibon_elem()
+  is as follows: 
+  
+ bool fibon_elem(int pos, int &elem) 
+  
+ { 
+  
+  
+  const vector<int> *pseq = fibon_seq(pos);  
+  
+  
+  if (! pseq)  
+  
+  
+  
+  {  elem = 0; return false; }  
+  
+ } 
+  
+  elem = (*pseq)[pos-1];   
+ return true;  
+  
+ The only sequence-dependent aspect of 
+ fibon_elem()
+  is the call to the associated sequence 
+ function to retrieve the vector of elements. If we eliminate this dependency, we eliminate the need 
+ for more than a single instance of the function. We achieve this independence using a pointer — 
+ specifically, a pointer to function. 
+  
+ The definition of a 
+ pointer to function
+  is complicated. It must specify the return type and parameter 
+ list of the function it is addressing. In our case, the parameter list is a single 
+ int
+ , and the return 
+ type is 
+ const vector<int>*
+ . In addition, the definition must place a 
+ *
+  somewhere to indicate 
+ that the object being defined is a pointer. Finally, of course, we must give the pointer a name. Let's 
+ call it 
+ seq_ptr
+ . As usual, our first attempt is almost correct. 
+  
+ const vector<int>* *seq_ptr(int); // almost correct 
+  
+ This code defines 
+ seq_ptr
+  as a function that has a parameter list of a single 
+ int
+  and has a return 
+ type of a pointer to a pointer to a 
+ const
+  vector of elements of type 
+ int
+ ! To have 
+ seq_ptr
+  be 
+ recognized as a pointer, we must override the default precedence of 
+ *
+  with parentheses: 
+  
+ const vector<int>* (*seq_ptr)(int); // ok 
+  
+ seq_ptr
+  can address any function with the same return type and parameter list. This means that it 
+ can address each of the six numeric sequence functions. Let's rewrite 
+ fibon_elem()
+  as the more 
+ general 
+ seq_elem()
+  as follows: 
+  
+ bool seq_elem(int pos, int &elem, 
+  
+  
+  const vector<int>* (*seq_ptr)(int))  
+  
+ { 
+  
+ Team-Fly
+ ®",NA
+2.9 Setting Up a Header File ,"Before I can invoke 
+ seq_elem()
+ , I must first declare it to the program. If it is invoked in five 
+ program text files, there must be five declarations available. Rather than separately declare 
+ seq_elem()
+  in each of the five files, we place the function declaration in a header file. The 
+ header file is then included in each program text file that wishes to use the function. 
+  
+ Using this convention, we need maintain only a single declaration of a function. If its parameter 
+ list or return type changes, only this one declaration needs to be modified. All users of the 
+ function automatically include the updated function declaration. 
+  
+ Header files by convention are given a 
+ .h
+  suffix — except for the standard library header files, 
+ which have no suffix. We'll call our header file 
+ NumSeq.h
+  and place in it a declaration of all the 
+ functions related to our numeric sequences: 
+  
+ // NumSeq.h 
+  
+ bool               seq_elem(int pos, int &elem); 
+ const vector<int> *fibon_seq(int size); 
+  
+ const vector<int> *lucas_seq(int size); 
+  
+ const vector<int> *pell_seq(int size); 
+  
+ const vector<int> *triang_seq(int size); 
+  
+ const vector<int> *square_seq(int size); 
+  
+ const vector<int> *pent_seq(int size); 
+  
+ // and so on ... 
+  
+ There can be only one definition of a function in a program. However, there can be multiple 
+ declarations. We don't put definitions in a header file because the header file is included in 
+ multiple text files within a program. 
+  
+ One exception to this one-definition rule is the definition of an inline function. To expand an 
+ inline function, the definition must be available to the compiler at each invocation point. This 
+ means that we must place the inline function definitions inside a header file rather than in a 
+ separate program text file. 
+  
+ Objects defined at file scope are also declared in a header file if multiple files may need to access 
+ the objects. This is because an object can not be referred to until it has been declared to the 
+  
+ 54",NA
+Exercise 2.2,"The formula for the Pentagonal numeric sequence is 
+ Pn=n*(3n-1)/2
+ . This yields the sequence 
+ 1, 5, 12, 22, 35, and so on. Define a function to fill a vector of elements passed in to the function 
+ calculated to some user-specified position. Be sure to verify that the position specified is valid. 
+  
+ Write a second function that, given a vector, displays its elements. It should take a second 
+ parameter identifying the type of numeric series the vector represents. Write a 
+ main()
+  function to 
+ exercise these functions. 
+  
+ 55",NA
+Exercise 2.3,"Separate the function to calculate the Pentagonal numeric sequence implemented in 
+ Exercise 2.2 
+ into two functions. One function should be inline; it checks the validity of the position. A valid 
+ position not as yet calculated causes the function to invoke a second function that does the actual 
+ calculation.",NA
+Exercise 2.4,"Introduce a static local vector to hold the elements of your Pentagonal series. This function returns 
+ a 
+ const
+  pointer to the vector. It accepts a position by which to grow the vector if the vector is not 
+ as yet that size. Implement a second function that, given a position, returns the element at that 
+ position. Write a 
+ main()
+  function to exercise these functions.",NA
+Exercise 2.5,"Implement an overloaded set of 
+ max()
+  functions to accept (a) two integers, (b) two floats, (c) two 
+ strings, (d) a vector of integers, (e) a vector of floats, (f) a vector of strings, (g) an array of integers 
+ and an integer indicating the size of the array, (h) an array of floats and an integer indicating the 
+ size of the array, and (i) an array of strings and an integer indicating the size of the array. Again, 
+ write a 
+ main()
+  function to exercise these functions.",NA
+2.6 ,NA,NA
+Exercise 2.6,"Reimplement the functions of 
+ Exercise 2.5
+  using templates. Modify the 
+ main()
+  function 
+ accordingly. 
+  
+ 56",NA
+Chapter 3. Generic Programming ,"The Standard Template Library (STL) consists of two primary components: a set of container 
+ classes, including the vector, list, set, and map classes, and a set of generic algorithms to operate 
+ over these containers, including 
+ find()
+ , 
+ sort()
+ , 
+ replace()
+ , and 
+ merge()
+ . 
+  
+ The vector and list container classes represent sequential containers. A 
+ sequential container 
+ maintains a first element, a second element, and so on through a last element. We primarily iterate 
+ over a sequential container. The map and set classes represent associative containers. An 
+ associative container
+  supports fast lookup of a value. 
+  
+ A 
+ map
+  is a key/value pair: The key is used for lookup, and the value represents the data we store 
+ and retrieve. A telephone directory, for example, is easily represented by a map. The key is the 
+ individual's name. The value is the associated phone number. 
+  
+ A 
+ set
+  contains only key values. We query it as to whether a value is present. For example, if we 
+ were to build an index of words that occur in news stories, we would want to exclude neutral words 
+ such as 
+ the
+ , 
+ an
+ , 
+ but
+ , and so on. Before a word is entered into the index, we query an 
+ excluded_word
+  set. If the word is present, we discard it; otherwise, we include the word in our 
+ index. 
+  
+ The generic algorithms provide a large number of operations that can be applied both to the 
+ container classes and to the built-in array. The algorithms are called generic because they are 
+ independent of both the type of element they are operating on (for example, whether it is an 
+ int
+ , 
+ double
+ , or string) and the type of container within which the elements are held (whether it is a 
+ vector, list, or built-in array). 
+  
+ The generic algorithms achieve type independence by being implemented as function templates. 
+ They achieve container independence by not operating directly on the container. Rather, they are 
+ passed an 
+ iterator
+  pair (
+ first
+ ,
+ last)
+ , marking the range of elements over which to iterate. 
+ While 
+ first
+  is unequal to 
+ last
+ , the algorithm operates on the element addressed by 
+ first
+ , 
+ increments 
+ first
+  to address the next element, and then recompares 
+ first
+  and 
+ last
+  for 
+ equality. A good first question is, what is an iterator? The next two sections try to answer that.",NA
+3.1 The Arithmetic of Pointers ,"We are assigned the following programming task. We are given a vector of integers and an integer 
+ value. If the value is contained within the vector, we must return a pointer to it; otherwise, we 
+ return 0, indicating that the value is not present. Here is an implementation: 
+  
+ int* find(const vector<int> &vec, int value) 
+ { 
+  
+  
+  for (int ix = 0; ix < vec.size(); ++ix)  
+  
+  
+  if (vec[ix] == value)  
+  
+  
+  
+  
+  return &vec[ix];  
+  
+  
+  return 0;  
+  
+ } 
+  
+ We test the function and are satisfied that it works. We are next assigned the task of having the 
+ function work not only with integers but also with any type in which the equality operator is 
+  
+ 57",NA
+3.2 Making Sense of Iterators ,"The obvious question is, how do we implement this layer of abstraction? We need a collection of 
+ objects that support the same set of operators as the built-in pointer (
+ ++
+ , 
+ *
+ , 
+ ==
+ , 
+ !=
+ ) but allow us to 
+ provide a unique implementation of those operators. 
+ We can do exactly this with the C++ class 
+ mechanism
+ . We'll design a set of 
+ iterator
+  classes that are programmed using the same syntax as 
+ that of a pointer. For example, if 
+ first
+  and 
+ last
+  are list class iterators, we can write 
+  
+ // first and last are iterator class objects 
+ while (first != last) 
+  
+ { 
+  
+  
+  cout << *first << ' ';  
+  
+  
+  ++first;  
+  
+ } 
+  
+ the same as if 
+ first
+  and 
+ last
+  are actual pointers. The difference is that the dereference operator 
+ (
+ *
+ ), the inequality operator (
+ !=
+ ), and the increment operator (
+ ++
+ ) represent inline function calls 
+ associated with the iterator classes. For the list class iterator, for example, the associated 
+  
+ increment function advances to the next element by following the list pointer. For the vector class 
+ iterator, the increment function advances to the next element by adding the size of one element to 
+ the current address. 
+  
+ In 
+ Chapter 4
+  we look at how to implement an iterator class, including how to provide function 
+ instances of particular operators. In this section, we look at how to define and use the iterators 
+ associated with the standard library container classes. 
+  
+ Where do we get iterators? Each container class provides a 
+ begin()
+  operation that returns an 
+ iterator that addresses the first element of the container and an 
+ end()
+  operation that returns an 
+ iterator that addresses 1 past the last element of the container. For example, disregarding how we 
+ define an iterator object for the moment, we assign, compare, increment, and dereference an 
+ iterator as follows: 
+  
+ for (iter = svec.begin(); 
+  
+  
+  iter != svec.end(); ++iter)  
+  
+  
+  
+  cout << *iter << ' ';  
+  
+ Before we look at how to define an iterator, let's think for a moment about the information its 
+ definition must provide: the type of the container over which it iterates, which determines how it 
+ accesses the next element; and the type of the element being addressed, which determines the 
+ value returned from a dereference of the iterator. 
+  
+ One possible syntax for an iterator definition might be to pass these two types as parameters to an 
+ iterator class: 
+  
+ Team-Fly
+ ®",NA
+3.3 Operations Common to All Containers ,"The following operations are common to all the container classes (as well as the string class): 
+  
+ • 
+  
+ • 
+  
+ • 
+  
+ • 
+  
+ • 
+  
+ The equality (
+ ==
+ ) and inequality (
+ !=
+ ) operators return true or false. 
+  
+ The assignment (
+ =
+ ) operator copies one container into another. 
+  
+ empty()
+  returns true if the container holds no elements. 
+  
+ size()
+  returns a count of the elements currently held within the container. 
+ clear()
+  deletes all the elements. 
+  
+ The following function exercises each of these operations: 
+  
+ void comp(vector<int> &v1, vector<int> &v2) 
+ { 
+  
+  
+  // are the two vectors equal?  
+  
+  if (v1 == v2)  
+  
+  
+  return;  
+  
+  // is either vector empty?  
+  
+  if (v1.empty() || v2.empty()) return;  
+  
+  // no point defining it unless we are going to use it!   
+ vector<int> t;  
+  
+  // assign t the largest vector  
+  
+  t = v1.size() > v2.size() ? v1 : v2;  
+  
+  // ... use t ...  
+  
+  // ok. empty t of its elements  
+  
+  // t.empty() will now return true  
+  
+  // t.size() will now return 0  
+  
+  t.clear();  
+  
+ } 
+  
+  // ... ok, fill up t and use it some more ...  
+  
+ 65",NA
+3.4 Using the Sequential Containers ,"A sequential container holds an ordered collection of elements of a single type. There is a first 
+ element, a second element, and so on, until the last element. The vector and the list are the two 
+ primary sequential containers. A vector holds its elements in a contiguous area of memory. 
+  
+ Random access — for example, accessing element 5, then 17, and then 9 — is efficient; each 
+ element is a fixed offset from the beginning of the vector. Insertion of an element at any position 
+ other than the end of the vector, however, is inefficient; each element to the right of the inserted 
+ element must be shifted one by copying the value of each element in turn. Similarly, the deletion 
+ of any element other than the last element of a vector is inefficient. 
+  
+ A list represents noncontiguous memory double-linked to allow both forward and backward 
+ traversal. Each element of a list contains three fields: the value, a back pointer to the preceding 
+ element of the list, and a front pointer to the next element of the list. Insertion and deletion of 
+ elements at any position within the list is efficient. The list must simply set the appropriate back 
+ and front pointers. Random access, on the other hand, is less efficiently supported. To access 
+ element 5, then 17, and then 9 requires traversal of the intervening elements. (Think of the 
+ difference between a CD and a cassette tape in going from one track to another.) 
+  
+ To represent the elements of a numeric sequence, a vector is the more appropriate container. Why? 
+ There is a great deal of random access of the elements. 
+ fibon_elem()
+ , for example, indexes into 
+ the container based on the position passed to it by the user. Moreover, we never delete elements, and 
+ the elements are always inserted at the end of the vector. 
+  
+ When is a list more appropriate? If we were reading test scores from a file and wished to store 
+ each score in ascending order, we are likely to be randomly inserting into the container with each 
+ score we read. In this case, the list container is preferred. 
+  
+ A third sequential container is a 
+ deque
+  (pronouced 
+ deck
+ ). A deque behaves pretty much like a 
+ vector — the elements are stored contiguously. Unlike a vector, however, a deque supports 
+ efficient insertion and deletion of its front element (as well as its back element). If, for example, 
+ we need to insert elements at the front of the container and delete them from the back, a deque is 
+ the most appropriate container type. (The standard library queue class is implemented using a 
+ deque to hold the queue's elements.) 
+  
+ To use a sequential container, we must include its associated header file, one of the following: 
+  
+ 66",NA
+3.5 Using the Generic Algorithms ,"To use the generic algorithms, we must include the associated 
+ algorithm
+  header file: 
+  
+ #include <algorithm> 
+  
+ Let's exercise the generic algorithms with our numeric sequence vector. 
+ is_elem()
+  must return 
+ true
+  if a value is an element in the sequence; otherwise, it returns 
+ false
+ . Four possible generic 
+ search algorithms are as follows: 
+  
+ 1. 
+ find()
+  searches an unordered collection marked by the iterator pair 
+ first,last
+  for 
+ some value. If the value is found, 
+ find()
+  returns an iterator addressing the value; 
+ otherwise, it returns an iterator addressing 
+ last
+ . 
+  
+ 2. 
+ binary_search()
+  searches a sorted collection. It returns 
+ true
+  if the value is found; 
+  
+ otherwise, it returns 
+ false
+ . 
+ binary_search()
+  is more efficient than 
+ find()
+ . 
+  
+ 3. 
+ count()
+  returns a count of the number of elements matching some value. 
+  
+ 4. 
+ search()
+  matches a subsequence within a container. For example, given the sequence 
+ {1,3,5,7,2,9}
+ , a search for the subsequence 
+ {5,7,2}
+  returns an iterator to the 
+ beginning of the subsequence. If the subsequence is not present, an iterator to the end of 
+ the container is returned. 
+  
+ 69",NA
+3.6 How to Design a Generic Algorithm ,"Here is our task. We are given a vector of integer values. We are asked to return a new vector 
+ holding all the values that are less than 10. A quick but inflexible solution is the following: 
+  
+ vector<int> less_than_10(const vector<int> &vec) 
+ { 
+  
+  
+  vector<int> nvec;  
+  
+  
+  for (int ix = 0; ix < vec.size(); ++ix)  
+  
+  
+  if (vec[ix] < 10)  
+  
+  
+  
+  
+  nvec.push_back(vec[ix]);  
+  
+  
+  return nvec;  
+  
+ } 
+  
+ If the user wants all the elements less than 11, we must either create a new function or generalize 
+ this one to allow the user to specify a value against which to compare the elements. For example, 
+  
+ vector<int> less_than(const vector<int> &vec, int less_than_val); 
+  
+ But our next task is actually somewhat more difficult. We must allow the user to specify an 
+ alternative operation, such as greater-than, less-than, and so on. How can we parameterize an 
+ operation? 
+  
+ One solution is to replace the less-than operator with a function call. We add a third parameter, 
+ pred
+ , specifying a pointer to function having a parameter list of two integers and returning a 
+ bool
+ . 
+ less_than()
+  isn't the right name any longer, so let's call it 
+ filter()
+ : 
+  
+ vector<int> filter(const vector<int> &vec,  
+ int filter_value,  
+  
+  bool (*pred)(int, int));  
+  
+ For our user's convenience, we also define a number of relational functions that can be passed to 
+ filter()
+ : 
+  
+ bool less_than(int v1, int v2) 
+  
+  
+  { return v1 < v2 ? true : false; }  
+  
+ bool greater_than(int v1, int v2) 
+  
+ 71",NA
+Function Objects ,"Before we reimplement 
+ filter()
+  to support 
+ find_if()
+ , let's look at the predefined function 
+ objects provided by the standard library. A 
+ function object
+  is an instance of a class that provides 
+ an overloaded instance of the function call operator. Overloading the call operator allows a 
+ function object to be used just as if it were a function. 
+  
+ A function object implements what we would otherwise define as an independent function. Why do 
+ we bother? The primary reason is efficiency. We can inline the call operator, thereby 
+  
+ eliminating the function call overhead that comes with invoking the operation through a pointer to 
+ function. 
+  
+ The standard library predefines a set of arithmetic, relational, and logical function objects. In the 
+ following list, 
+ type
+  is replaced by a built-in or class type in an actual use of the function object: 
+  
+ • 
+  
+ • 
+  
+ • 
+  
+ Six arithmetic function objects: 
+ plus<type>
+ , 
+ minus<type>
+ , 
+ negate<type>
+ , 
+ multiplies<type>
+ , 
+ divides<type>
+ , 
+ modulus<type> 
+  
+ Six relational function objects: 
+ less<type>
+ , 
+ less_equal<type>
+ , 
+ greater<type>
+ , 
+ greater_equal<type>
+ , 
+ equal_to<type>
+ , 
+ not_equal_to<type> 
+  
+ Three logical function objects, using the 
+ &&
+ , 
+ ||
+ , and 
+ !
+  operators, respectively: 
+  
+ logical_and<type>
+ , 
+ logical_or<type>
+ , and 
+ logical_not<type>
+  
+ To use the predefined function objects, we must include the associated header file: 
+  
+ #include <functional> 
+  
+ For example, by default, 
+ sort()
+  orders its elements in ascending order using the less-than 
+ operator of the underlying element type. If we pass 
+ sort()
+  the greater-than function object, the 
+ elements are now sorted in descending order: 
+  
+ sort(vec.begin(), vec.end(), greater<int>()); 
+  
+ The syntax 
+  
+ greater<int>() 
+  
+ causes an unnamed greater class template object to be created and passed into 
+ sort()
+ . 
+  
+ binary_search()
+  expects the elements it searches to be sorted by the less-than operator. For it 
+ to search our vector correctly, we must now pass it an instance of the function object used to sort 
+ our vector: 
+  
+ binary_search(vec.begin(), vec.end(), elem, greater<int>()); 
+  
+ 73",NA
+Function Object Adapters ,"These function objects do not quite work with what we need to do with 
+ find_if()
+ . The 
+ less<type>
+  function object, for example, expects two values. It evaluates to true if the first 
+ value is less than the second. In our case, each element must be compared against the value 
+ specified by the user. Ideally, what we need to do is to turn 
+ less<type>
+  into a unary operator by 
+ binding the second value to that specified by the user. In this way, 
+ less<type>
+  compares each 
+ element against that value. Can we actually do that? Yes. The standard library provides an 
+ adapter 
+ mechanism to do just that. 
+  
+ A function object adapter modifies a function object. A 
+ binder
+  adapter converts a binary function 
+ object into a unary object by binding one of the arguments to a particular value. This is just what 
+ we need. There are two binder adapters: 
+ bind1st
+ , which binds the value to the first operand, and 
+ bind2nd
+ , which binds the value to the second. Here is a possible modification of 
+ filter() 
+ using the 
+ bind2nd
+  adapter: 
+  
+ vector<int> filter(const vector<int> &vec, 
+  
+  
+  
+  int val, less<int> &lt)  
+  
+ { 
+  
+  
+  vector<int> nvec;  
+  
+  
+  vector<int>::const_iterator iter = vec.begin();  
+  
+  // bind2nd(less<int>, val)  
+  
+  // binds val to the second value of less<int>   // 
+ less<int> now compares each value against val  
+  
+  while ((iter =  
+  
+  
+  find_if(iter, vec.end(),  
+  
+  
+  
+  bind2nd(lt, val))) != vec.end())   
+ {  
+  
+ 74",NA
+3.7 Using a Map ,"A 
+ map
+  is defined as a pair of values: a key, typically a string that serves as an index and a value 
+ associated with that key. A dictionary is one example of a map. A program analyzing the 
+ occurrence count of words in a text keeps a map with a string key and an integer value 
+ representing an occurrence count: 
+  
+ #include <map> 
+  
+ #include <string> 
+  
+ map<string,int> words; 
+  
+ The simplest way to enter a key/value pair is 
+  
+ words[""vermeer""] = 1; 
+  
+ For our word occurrence program, we can write the following: 
+  
+ string tword; 
+  
+ while (cin >> tword) 
+  
+  
+  words[tword]++;  
+  
+ The expression 
+  
+ words[tword] 
+  
+ retrieves the value associated with the string 
+ tword
+  contains. If 
+ tword
+  is not present in the map, it 
+ is entered into the map with a default value of 0. The increment operator increments that value by 
+ 1. 
+  
+ The following 
+ for
+  loop prints the word and its occurrence count: 
+  
+ map<string,int>::iterator it = words.begin(); 
+ for (; it != words.end(); ++it) 
+  
+  
+  cout << ""key: ""   << it->first  
+  
+  
+  
+  << ""value: "" << it->second << endl;  
+  
+ The member named 
+ first
+  accesses the map's key, in this case the string representing the word. 
+ The member named 
+ second
+  accesses the value, in this case the word's occurrence count. 
+  
+ 77",NA
+3.8 Using a Set ,"A set is a collection of key values. A set is used when we need to know whether a value is present. 
+ In a graph traversal algorithm, for example, we might use a set to hold each visited node. Before 
+ we move to the next node, we query the set to see whether the node has already been visited. 
+  
+ The word occurrence program of the preceding section, for example, may choose not to count 
+ common words. To do this, we define a word-exclusion set of type string: 
+  
+ #include <set> 
+  
+ #include <string> 
+  
+ set<string> word_exclusion; 
+  
+ 78",NA
+3.9 How to Use Iterator Inserters ,"In our implementation of 
+ filter()
+  back in 
+ Section 3.6
+ , we assign each element of the source 
+ container that matches the predicate test into the target container: 
+  
+ while ((first = 
+  
+  
+  find_if(first, last, bind2nd(pred, val))) != last)  
+  
+  
+  *at++ = *first++;  
+  
+ This requires that the target container be large enough to hold each assigned value. 
+ filter()
+  has 
+ no way of knowing whether, after each increment, 
+ at
+  continues to address a valid container slot. It 
+ is up to the programmer to ensure that the target container pointed to by 
+ at
+  is large enough. In our 
+ test program of 
+ Section 3.6
+ , we ensure that by defining the target container to be the same size as 
+ the source container: 
+  
+ int ia[elem_size] = { 12, 8, 43, 0, 6, 21, 3, 7 }; 
+ vector<int> ivec(ia, ia+elem_size); 
+  
+ int ia2[elem_size]; 
+  
+ vector<int> ivec2(elem_size); 
+  
+ The problem with this solution is that in most cases the target container is too large. An alternative 
+ approach is to define an empty container and expand it as needed through element insertion. 
+ Unfortunately, 
+ filter()
+  is currently implemented to assign into an existing container slot. If we 
+ reimplement 
+ filter()
+  to do insertion, what happens to our existing programs using the 
+ assignment implementation of 
+ filter()
+ ? Moreover, what sort of insertion should we provide? 
+  
+ The generic algorithms that copy elements, such as 
+ copy()
+ , 
+ copy_backwards()
+ , 
+  
+ remove_copy()
+ , 
+ replace_copy()
+ , 
+ unique_copy()
+ , and so on, are similar in 
+  
+ implementation to 
+ filter()
+ . Each is passed an iterator that marks the position within a 
+ container to begin copying. With each element copy, the value is assigned and the iterator 
+ incremented. Each copy requires that we guarantee that the target container is of a sufficient size 
+ to hold the set of assigned elements. With these algorithms we don't have the option of 
+  
+ reimplementing them. 
+  
+ Does this mean that we must always pass in a fixed-size container for those algorithms? That's 
+ hardly in the spirit of the STL. Rather, the standard library provides three insertion adapters
+ .
+  These 
+ adapters allow us to override a container's assignment operator. 
+  
+ • 
+  
+ back_inserter()
+  causes the container's 
+ push_back()
+  operator to be invoked in 
+ place of the assignment operator. This is the preferred inserter for vectors. The argument 
+ to 
+ back_inserter
+  is the container: 
+  
+ vector<int> result_vec; 
+  
+ unique_copy(ivec.begin(), ivec.end(), 
+  
+  
+ back_inserter(result_vec)); 
+  
+ • 
+  
+ inserter()
+  causes the container's 
+ insert()
+  operation to be invoked. 
+ inserter() 
+ takes two arguments: the container, and an iterator into the container indicating the 
+ position at which insertion should begin. For a vector, we would write the following: 
+  
+ vector<string> svec_res; 
+  
+ unique_copy(svec.begin(), svec.end(), 
+  
+ 80",NA
+3.10 Using the iostream Iterators ,"Imagine that we have been given the task of reading a sequence of string elements from standard 
+ input, storing them into a vector, sorting them, and then writing the words back to standard output. 
+  
+ A typical solution looks like this: 
+  
+ #include <iostream> 
+  
+ #incluse <string> 
+  
+ #include <vector> 
+  
+ 81",NA
+Exercise 3.1,"Write a program to read a text file. Store each word in a map. The key value of the map is the 
+ count of the number of times the word appears in the text. Define a word exclusion set containing 
+ words such as 
+ a
+ , 
+ an
+ , 
+ or
+ , 
+ the
+ , 
+ and
+ , and 
+ but
+ . Before entering a word in the map, make sure it is not 
+ present in the word exclusion set. Display the list of words and their associated count when the 
+ reading of the text is complete. As an extension, before displaying the text, allow the user to query 
+ the text for the presence of a word.",NA
+Exercise 3.2,"Read in a text file — it can be the same one as in 
+ Exercise 3.1
+  — storing it in a vector. Sort the 
+ vector by the length of the string. Define a function object to pass to 
+ sort()
+ ; it should accept two 
+ strings and return 
+ true
+  if the first string is shorter than the second. Print the sorted vector.",NA
+Exercise 3.3,"Define a map for which the index is the family surname and the key is a vector of the children's 
+ names. Populate the map with at least six entries. Test it by supporting user queries based on a 
+ surname and printing all the map entries.",NA
+Exercise 3.4,"Write a program to read a sequence of integer numbers from standard input using an 
+  
+ istream_iterator. Write the odd numbers into one file using an ostream_iterator. Each value should 
+ be separated by a space. Write the even numbers into a second file, also using an ostream_iterator. 
+ Each of these values should be placed on a separate line. 
+  
+ 84",NA
+Chapter 4. Object-Based Programming ,"Although we've yet to write a class of our own, we've used classes extensively since 
+ Chapter 1
+ : 
+ the string and vector classes, the iostream classes supporting input and output, and so on. In this 
+ chapter, we design and implement our own classes. 
+  
+ What do we know about classes from our use of them? Before we can use a class, we must make it 
+ known to the program because the class is not built into the language. Usually, we do this by 
+ including a header file: 
+  
+ #include <string> 
+  
+ string pooh[4] = 
+  
+  
+  { ""winnie"", ""robin"", ""eeyore"", ""piglet"" };  
+  
+ The class name serves as a type name in the same way as the built-in type names such as 
+ int
+  and 
+ double
+ . Often, there are multiple ways to initialize an object of a class: 
+  
+ #include <vector> 
+  
+ string dummy(""dummy""); 
+  
+ vector<string> svec1(4); 
+  
+ vector<string> svec2(4, dummy); 
+  
+ vector<string> svec3(pooh, pooh+4); 
+  
+ Each class provides a set of operations we can apply to objects of the class. These operations 
+ typically consist of named functions, such as 
+ size()
+  and 
+ empty()
+ , and overloaded instances of 
+ the predefined operators, such as inequality and assignment: 
+  
+ if (svec2 != svec3 && ! svec3.empty()) 
+  
+  svec2 = svec3;  
+  
+ if (svec2.size() == 4) 
+  
+  
+  // all is well ...  
+  
+ What we don't know, generally, is how the class is implemented. Does the string class calculate its 
+ size at each request, or does it store the size within each class object? Are the elements of the 
+ vector stored within the vector object, or are the elements stored elsewhere and addressed within 
+ the vector object by a pointer? 
+  
+ In general, a class consists of two parts: a public set of operations and operators, and a private 
+ implementation. These operations and operators are called class 
+ member functions
+  and represent 
+ the 
+ public interface
+  of the class. As users of a class, we can access only the public interface. This, 
+ in fact, is how we have used the string class, the vector class, and so on. For example, all we know 
+ about the 
+ size()
+  member function of string is its prototype: It has a void parameter list and 
+ returns an integer value. 
+  
+ The private implementation of a class consists of the member function definitions and any data 
+ associated with the class. For example, if the string class object calculates the length of its string 
+ with each invocation of 
+ size()
+ , no associated data is required and the definition of 
+ size()
+  is 
+ likely to involve a 
+ for
+  loop walking the length of the string. If the string class object stores the 
+ length of its string, a private 
+ data member
+  must be defined within each class object. This 
+ definition of 
+ size()
+  returns the value of that member. Each time the length of the string is 
+ modified, the data member must be updated. 
+  
+ 85",NA
+4.1 How to Implement a Class ,"OK, where do we start? In general, we start with an abstraction. Consider a stack. A stack is a 
+ fundamental abstraction of computer science. It allows for the nesting and retrieval of values in a 
+ last-in, first-out sequence. We nest values by 
+ pushing
+  a new value onto the stack, and we retrieve 
+ them by 
+ popping
+  the last value pushed on the stack. Other operations that users often require are to 
+ ask whether a stack is 
+ full
+  or 
+ empty
+  and to determine the 
+ size
+  of the stack. A stack may also support 
+ peeking
+  at the last value pushed on the stack. 
+  
+ In the description of a stack I italicized the words that represent operations that users will likely 
+ want to apply to objects of our stack class. 
+  
+ What type of elements should we store? A general stack should store all types. We do this by 
+ defining the stack as a class template. Because class templates are the topic of 
+ Chapter 6
+  and we're 
+ only in 
+ Chapter 4
+ , we'll define a nontemplate stack class to hold string class objects. 
+  
+ A class declaration begins with the keyword 
+ class
+  followed by a user-specified class name: 
+  
+ class Stack; 
+  
+ This statement serves as a forward declaration of the Stack class; it introduces the class name to the 
+ compiler but provides no details of the operations it supports or the data members it contains. A 
+ forward declaration allows us to define class pointers and to use the class as a type specifier for 
+ class declarations: 
+  
+ // ok: these uses require a forward declaration of the class 
+ Stack *pt = 0; 
+  
+ void process(const Stack&); 
+  
+ The class definition is necessary before we can define an actual Stack class object or refer to any 
+ members of the class. The skeleton of a class definition looks like this: 
+  
+ class Stack { 
+  
+ public: 
+  
+  
+  // ... public interface  
+  
+ private: 
+  
+  
+  // ... private implementation  
+  
+ }; 
+  
+ The definition of a class consists of the class declaration followed by the class body enclosed in 
+ curly braces and terminated by a semicolon. The 
+ public
+  and 
+ private
+  keywords within the 
+ class body control access to the members declared within each section. Public members can be 
+ accessed from anywhere within the program. Private members can be accessed only by the 
+ member functions and 
+ friends
+  of the class — later I explain what a friend is (or at least what a 
+ friend within the C++ language is). Here is the beginning of our Stack class definition: 
+  
+ 86",NA
+Exercise 4.1,"Create a 
+ Stack.h
+  and a 
+ Stack.suffix
+ , where 
+ suffix
+  is whatever convention your compiler 
+ or project follows. Write a 
+ main()
+  function to exercise the full public interface, and compile and 
+ execute it. Both the program text file and 
+ main()
+  must include 
+ Stack.h
+ : 
+  
+ #include ""Stack.h""",NA
+Exercise 4.2,88,NA
+4.2 What Are Class Constructors and the Class Destructor? ,"Each of our numeric sequences is a good candidate for a class. A numeric sequence class object 
+ represents a range of elements within its associated sequence. By default, the beginning position is 
+ 1. For example, 
+  
+ Fibonacci fib1(7, 3); 
+  
+ defines a Fibonacci class object of 7 elements beginning at position 3, and 
+  
+ Pell pel(10); 
+  
+ defines a Pell class object of 10 elements beginning at the default position of 1. Finally, 
+  
+ Fibonacci fib2(fib1); 
+  
+ initializes 
+ fib2
+  to a copy of 
+ fib1
+ . 
+  
+ Each class must keep track both of its length — how many elements of the series are 
+  
+ represented — and of a beginning position. A 0 or negative beginning position or length is not 
+ permitted. We store both the length and the beginning position as integers. For the moment, we 
+ define a third member, 
+ _next
+ , which keeps track of the next element to iterate over: 
+  
+ class Triangular { 
+  
+ public: 
+  
+  
+  // ...  
+  
+ private: 
+  
+  
+  int _length; // number of elements  
+  
+  
+  int _beg_pos; // beginning position of range  
+  
+  int _next;    // next element to iterate over  
+ }; 
+  
+ The data members are stored within each Triangular class object. When I write 
+  
+ Triangular tri(8, 3); 
+  
+ tri
+  contains an instance of 
+ _length
+  (initialized to 8), 
+ _beg_pos
+  (initialized to 3), and 
+ _next 
+ (initialized to 2 because the third element is indexed within the vector at position 2). Notice that it 
+ doesn't contain an instance of the actual vector holding the triangular sequence elements. Why? It's 
+ because we don't want a copy of that vector in each class object; one instance is enough for all 
+ class objects. (In 
+ Section 4.5
+  we look at how to support that.) 
+  
+ How do these data members get initialized? No, magic is not an option; the compiler does not do 
+ it for us. However, if we provide one or more special initialization functions, the compiler does 
+ invoke the appropriate instance each time a class object is defined. These special initialization 
+ functions are called 
+ constructors
+ . 
+  
+ 89",NA
+The Member Initialization List ,"A second initialization syntax within the constructor definition uses the 
+ member initialization list
+ : 
+  
+ Triangular::Triangular(const Triangular &rhs) 
+  
+  
+ : _length (rhs._length),  
+  
+  
+  
+  _beg_pos(rhs._beg_pos),_next(rhs._beg_pos-1)  
+ {} // yes, empty! 
+  
+ The member initialization list is set off from the parameter list by a colon. It is a comma-separated 
+ list in which the value to be assigned the member is placed in parentheses following the member's 
+ name; it looks like a constructor call. 
+  
+ In this example, the two alternative constructor definitions are equivalent. There is no significant 
+ benefit in choosing one form over the other. 
+  
+ The member initialization list is used primarily to pass arguments to member class object 
+ constructors. For example, let's redefine the Triangular class to contain a string class member: 
+  
+ class Triangular { 
+  
+ public: 
+  
+  
+  // ...  
+  
+ private: 
+  
+  
+  string _name;  
+  
+  
+  int    _next, _length, _beg_pos;  
+  
+ }; 
+  
+ To pass the string constructor the value with which to initialize 
+ _name
+ , we use the member 
+ initialization list. For example, 
+  
+ Triangular::Triangular(int len, int bp) 
+  
+  : _name(""Triangular"")  
+  
+ { 
+  
+  
+  _length = len > 0 ? len : 1;  
+  
+  
+  _beg_pos = bp > 0 ? bp  : 1;  
+  
+  
+  _next = _beg_pos-1;  
+  
+ } 
+  
+ 91",NA
+Memberwise Initialization ,"By default, when we initialize one class object with another, as in 
+  
+ Triangular tri1(8); 
+  
+ Triangular tri2 = tri1; 
+  
+ the data members of the class are copied in turn. In our example, 
+ _length
+ , 
+ _beg_pos
+ , and 
+ _next
+  are copied in turn from 
+ tri1
+  to 
+ tri2
+ . This is called 
+ default memberwise initialization
+ . 
+  
+ In the case of the Triangular class, default memberwise initialization correctly copies the class 
+ data members and there is nothing we need to do explicitly. In the case of the Matrix class 
+ introduced earlier, the default memberwise behavior is not adequate. For example, consider the 
+ following: 
+  
+ { 
+  
+ } 
+  
+  Matrix mat(4, 4);  
+  
+  // constructor applied here  
+  
+  {  
+  
+  
+  Matrix mat2 = mat;  
+  
+  
+  
+  // default memberwise copy applied  
+  
+  // ... use mat2 here  
+  
+  
+  // destructor applied here for mat2   
+ }  
+  
+  // ... use mat here  
+  
+  // destructor applied here for mat  
+  
+ The default initialization of the 
+ _pmat
+  member of 
+ mat2
+  with that of 
+ mat
+ , 
+  
+ mat2._pmat = mat._pmat; 
+  
+ causes the two instances of 
+ _pmat
+  to address the same array in heap memory. When the Matrix 
+ destructor is applied to 
+ mat2
+ , the array is deallocated. Unfortunately, the 
+ _pmat
+  member of 
+ mat 
+ continues to address and manipulate the now deallocated array. This is a serious program bug. 
+  
+ How can we fix this? In this case, we must override the default memberwise behavior. We do that 
+ by providing an explicit instance of the Matrix class copy constructor. (By 
+ we
+  I mean the designer 
+ of the Matrix class. The users of the Matrix class just presume we have done the right thing.) 
+  
+ If the designer of the class provides an explicit instance of the copy constructor, that instance is 
+ used in place of default memberwise initialization. The source code of the user need not change, 
+ although it must be recompiled. 
+  
+ What does our copy constructor look like? Its single argument is a 
+ const
+  reference to an object 
+ of the Matrix class: 
+  
+ Matrix::Matrix(const Matrix &rhs){ 
+  
+  
+  // what should go here?  
+  
+ } 
+  
+ How should it be implemented? Let's create a separate copy of the array so that the destruction of 
+ one class object does not interfere with the behavior of the second: 
+  
+ 93",NA
+4.3 What Are ,mutable,NA
+ and ,const,NA
+? ,"Consider the following small function: 
+  
+ int sum(const Triangular &trian) 
+  
+ { 
+  
+  
+  int beg_pos = trian.beg_pos();  
+  
+  
+  int length  = trian.length();  
+  
+  
+  int sum = 0;  
+  
+  
+  for (int ix = 0; ix < length; ++ix)  
+  
+  
+  sum += trian.elem(beg_pos+ix);  
+  
+  return sum;  
+  
+ } 
+  
+ trian
+  is a 
+ const
+  reference parameter. The compiler, therefore, must guarantee that 
+ trian
+  is not 
+ modified within 
+ sum()
+ . Potentially, 
+ trian
+  is modified within any member function that it 
+ invokes. To be certain that 
+ trian
+  is not modified, the compiler must be sure that 
+ beg_pos()
+ , 
+ length()
+ , and 
+ elem()
+  do not change the class object that invokes them. How does the compiler 
+ know that? The class designer must tell the compiler by labeling as 
+ const
+  each member function 
+ that does not modify the class object: 
+  
+ class Triangular { 
+  
+ public: 
+  
+  
+  // const member functions  
+  
+  
+  int length()        const { return _length;  }  
+  
+  int beg_pos()       const { return _beg_pos; }  
+  
+  int elem(int pos) const;  
+  
+  // non-const member functions  
+  
+  bool next(int &val);  
+  
+  void next_reset() { _next = _beg_pos - 1; }  
+  
+  // ...  
+  
+ private: 
+  
+  int _length; // number of elements  
+  
+  int _beg_pos; // beginning position of range   
+ int _next;    // next element to iterate over  
+  
+ 94",NA
+Mutable Data Member ,"Here is an alternative implementation of 
+ sum()
+  using the 
+ next()
+  and 
+ next_reset()
+  member 
+ functions to iterate across the elements of 
+ trian
+ . 
+  
+ int sum(const Triangular &trian) 
+  
+ { 
+  
+  
+  if (! trian.length())  
+  
+  
+  
+  return 0;  
+  
+  int val, sum = 0;  
+  
+  trian.next_reset();  
+  
+  while (trian.next(val))  
+  
+  
+  sum += val;  
+  
+ } 
+  
+  return sum;  
+  
+ Will this code compile? No, at least not yet. 
+ trian
+  is a 
+ const
+  class object. 
+ next_reset()
+  and 
+ next()
+  are not 
+ const
+  member functions because both functions modify 
+ _next
+ . Their 
+  
+ invocation by 
+ trian
+ , therefore, is flagged as an error. 
+  
+ If we are to use this implementation of 
+ sum()
+ , both 
+ next()
+  and 
+ next_reset()
+  must become 
+ const
+  member functions. We can do that by making a fine distinction. 
+  
+ _length
+  and 
+ _beg_pos
+  support the attributes of the numeric series abstraction. If we change the 
+ length or beginning position of 
+ trian
+ , in a sense we change its identity. It is no longer equal to 
+ what it was before the change. 
+ _next,
+  however, supports our implementation of an iterator 
+ mechanism; it does not itself support the numeric sequence abstraction. Changing the value of 
+ _next
+  does not semantically change the class object and, one might claim, does not violate the 
+ const
+ -ness of the object. (I said we would be making a fine distinction.) The 
+ mutable
+  keyword 
+ provides us with a way of making just such a claim. By identifying 
+ _next
+  as mutable, we are 
+ saying that changes to it do not violate the 
+ const
+ -ness of our class object. 
+  
+ class Triangular { 
+  
+ public: 
+  
+  
+  bool next(int &val) const;  
+  
+  
+  void next_reset() const { _next = _beg_pos - 1; }  
+  
+  // ...  
+  
+ private: 
+  
+ 96",NA
+4.4 What Is the ,this,NA
+ Pointer? ,"We must implement a 
+ copy()
+  member function that initializes one Triangular class object with 
+ another. For example, given 
+  
+ Triangular tr1(8); 
+  
+ Triangular tr2(8, 9); 
+  
+ the invocation of 
+  
+ tr1.copy(tr2); 
+  
+ assigns 
+ tr1
+  the length and beginning position of 
+ tr2
+ . In addition, 
+ copy()
+  must return the class 
+ object that is the target of the copy. In our example, 
+ tr1
+  is both the target and the object that must 
+ be returned. How can we do that? For example, here is an implementation of 
+ copy()
+ : 
+  
+ Triangular& Triangular:: 
+  
+ copy(const Triangular &rhs) 
+  
+ { 
+  
+  
+  _length = rhs._length;  
+  
+  
+  _beg_pos = rhs._beg.pos;  
+  
+  
+  _next = rhs._beg_pos-1;  
+  
+ 97",NA
+4.5 Static Class Members ,"In our procedural implementation of 
+ Chapter 2
+ , we maintain one container instance to hold the 
+ elements of the Fibonacci sequence through use of a local 
+ static
+  vector. Our class 
+  
+ implementation also needs only one container instance to hold the elements of each numeric 
+ sequence. The 
+ static
+  keyword again provides the solution, although it means something 
+ different when used within a class. 
+  
+ A static data member represents a single, shared instance of that member that is accessible to all 
+ the objects of that class. In the following class definition, for example, we declare 
+ _elems
+  as a 
+ static data member of the Triangular class: 
+  
+ class Triangular { 
+  
+ public: 
+  
+  
+  // ...  
+  
+ private: 
+  
+  
+  static vector<int> _elems;  
+  
+ }; 
+  
+ Because only a single instance of a static data member exists, we must provide an explicit 
+ definition of that instance within a program text file. The definition looks like the global definition 
+ of an object except that its name is qualified with the class scope operator: 
+  
+ // placed in program text file, such as Triangular.cpp 
+ vector<int> Triangular::_elems; 
+  
+ An initial value, if desired, can also be specified: 
+  
+ int Triangular::_initial_size = 8; 
+  
+ The member functions of the class can access a static data member the same as if it were an 
+ ordinary data member: 
+  
+ Triangular::Triangular(int len, int beg_pos) 
+  
+  
+  : _length(len > 0 ? len : 1),  
+  
+  
+   
+  _beg_pos(beg_pos > 0 ? beg_pos : 1)  { 
+  
+  
+  _next = _beg_pos-1;  
+  
+  
+  int elem_cnt = _beg_pos + _length;  
+  
+  
+  if (_elems.size() < elem_cnt)  
+  
+  
+  
+  gen_elements(elem_cnt);  
+  
+ } 
+  
+ A 
+ conststaticint
+  data member, such as 
+ buf_size
+ , next, is the one instance in which a 
+ class member can be explicitly initialized within its declaration: 
+  
+ class intBuffer { 
+  
+ public: 
+  
+  
+  // ...  
+  
+ private: 
+  
+ 99",NA
+Static Member Functions ,"Consider the following implementation of 
+ is_elem()
+ . Given a value, it returns true or false 
+ depending on whether the value is an element of the Triangular sequence: 
+  
+ bool Triangular:: 
+  
+ is_elem(int value) 
+  
+ { 
+  
+  
+  if (! _elems.size() ||  
+  
+  
+  
+  _elems[_elems.size()-1] < value)  
+  
+  
+  
+  gen_elems_to_value(value);  
+  
+  vector<int>::iterator found_it;  
+  
+  vector<int>::iterator end_it = _elems.end();  
+  
+  
+  found_it = find(_elems.begin(), end_it, value);  
+  
+  return found_it != end_it;  
+  
+ } 
+  
+ Ordinarily, a member function must be invoked through an object of the class. The object is bound 
+ to the member function's 
+ this
+  pointer. It is through the 
+ this
+  pointer that a member function 
+ accesses the nonstatic data members stored within each class object. 
+  
+ is_elem()
+ , however, does not access any nonstatic data members. Its operation is independent 
+ of any particular class object, and it would be convenient to invoke it as a freestanding function. 
+  
+ We can't write 
+  
+ if (is_elem(8)) ... 
+  
+ however, because there is no way for the compiler or reader to know which 
+ is_elem()
+  we want 
+ to invoke. Use of the class scope operator clears up that ambiguity: 
+  
+ if (Triangular::is_elem(8)) ... 
+  
+ A static member function can be invoked independently of a class object in exactly this way. A 
+ member function can be declared as static only if it does not access any nonstatic class members. 
+  
+ We make it static by prefacing its declaration within the class definition with the keyword 
+ static
+ : 
+  
+ class Triangular { 
+  
+ public: 
+  
+  
+  static bool is_elem(int);  
+  
+  
+  static void gen_elements(int length);  
+  
+  
+  static void gen_elems_to_value(int value);  
+  
+  
+  static void display(int len, int beg_pos, ostream &os = cout);  
+  
+  // ...  
+  
+ private: 
+  
+  static const int   _max_elems = 1024;   
+ static vector<int> _elems;  
+  
+  // ...  
+  
+ }; 
+  
+ 100",NA
+4.6 Building an Iterator Class ,"To illustrate how to overload a set of operators for a class, let's walk through the implementation 
+ of an iterator class. We must support the following usage: 
+  
+ Triangular trian(1, 8); 
+  
+ Triangular::iterator 
+  
+  
+  it = trian.begin(),  
+  
+  
+  end_it = trian.end();  
+  
+ while (it != end_it) 
+  
+ { 
+  
+  
+  cout << *it << ' ';  
+  
+  
+  ++it;  
+  
+ } 
+  
+ For this to work, of course, the operators 
+ !=
+ , 
+ *
+ , and 
+ ++
+  must be defined for objects of the iterator 
+ class. How do we do this? We define them as operator member functions. An operator function 
+ looks like an ordinary function except that rather than provide the function with a name, we specify 
+ the keyword 
+ operator
+  followed by the operator we wish to overload. For example, 
+  
+ class Triangular_iterator 
+  
+ { 
+  
+ public: 
+  
+ //  set _index to index-1 in order not to subtract 1 with 
+ //  each element access ... 
+  
+ Team-Fly
+ ®",NA
+Nested Types ,"A typedef introduces an alternative name for a type, and takes this general form: 
+  
+ typedef existing_type new_name; 
+  
+ Here, 
+ existing_type
+  can be a built-in, compound, or class type. In our example, we provide 
+ iterator
+  as a synonym for the Triangular_iterator class in order to simplify its use. The syntax 
+ for defining an object of type 
+ iterator
+  
+ Triangular::iterator it = trian.begin(); 
+  
+ uses the class scope operator to direct the compiler to look in the Triangular class definition for 
+ the declaration of 
+ iterator
+ . If we simply write 
+  
+ iterator it = trian.begin(); // error 
+  
+ 105",NA
+4.7 Collaboration Sometimes Requires Friendship ,"The nonmember instance of 
+ operator*()
+  directly accesses both the private member 
+ _elems
+  of 
+ the Triangular class and the private member function 
+ check_integrity()
+  of the 
+  
+ Triangular_iterator class. 
+  
+ inline int operator*(const Triangular_iterator &rhs) { 
+  
+  
+  rhs.check_integrity();  
+  
+  
+  return Triangular::_elems[rhs.index()];  
+  
+ } 
+  
+ Why does this compile? A class can designate functions and classes as friends. The 
+ friends
+  of a 
+ class can access the private members of that class in the same way as the member functions of that 
+ class. For this instance of 
+ operator*()
+  to compile, it must be a friend to both the Triangular and 
+ the Triangular_iterator class: 
+  
+ class Triangular { 
+  
+  friend int operator*(const Triangular_iterator &rhs);   
+ // ...  
+  
+ }; 
+  
+ class Triangular_iterator { 
+  
+  friend int operator*(const Triangular_iterator &rhs);   
+ // ...  
+  
+ }; 
+  
+ We declare a function a friend to a class by prefacing its prototype with the 
+ friend
+  keyword. The 
+ declaration can appear anywhere in the class definition. It is not affected by the 
+ private
+  or 
+ public
+  access levels of the class. (To make multiple instances of an overloaded function friends 
+ of a class, we must explicitly list each instance.) 
+  
+ The Triangular_iterator instance of 
+ operator*()
+ , as well as its 
+ check_integrity() 
+ member function, both directly access the private members of the Triangular class. We can declare 
+ both instances as friends of the Triangular class: 
+  
+ class Triangular { 
+  
+  friend int Triangular_iterator::operator*();  
+  
+  friend void Triangular_iterator::check_integrity();   
+ // ...  
+  
+ }; 
+  
+ 106",NA
+4.8 Implementing a Copy Assignment Operator ,"By default, when we assign one class object with another, as in 
+  
+ Triangular tri1(8), tri2(8, 9); 
+  
+ tri1 = tri2; 
+  
+ the data members of the class are copied in turn. In our example, 
+ _length
+ , 
+ _beg_pos
+ , and 
+ _next
+  are copied from 
+ tri2
+  to 
+ tri1
+ . This is called default memberwise copy. 
+  
+ In the case of the Triangular class, the default memberwise copy semantics are sufficient; there is 
+ nothing we need to do explicitly. In the case of the 
+ Section 4.2
+  Matrix class, however, the default 
+ memberwise behavior is not adequate. The reasons for this are discussed in the Default 
+  
+ Memberwise Initialization subsection of 
+ Section 4.2
+ . 
+  
+ The Matrix class requires both a copy constructor and a copy assignment operator. Here is how we 
+ might define the Matrix copy assignment operator: 
+  
+ Matrix& Matrix:: 
+  
+ operator=(const Matrix &rhs) 
+  
+ { 
+  
+  
+  if (this != &rhs)  
+  
+  
+  {  
+  
+  
+  
+  _row = rhs._row; _col = rhs._col;  
+  
+  
+  int elem_cnt = _row * _col;  
+  
+  }  
+  
+  delete [] _pmat;  
+  
+  _pmat = new double[elem_cnt];  
+  
+  for (int ix = 0; ix < elem_cnt; ++ix]  
+  
+  _pmat[ix] = rhs._pmat[ix];  
+  
+ 108",NA
+4.9 Implementing a Function Object ,"In 
+ Section 3.6
+ , we looked at the predefined function objects of the standard library. In this section, 
+ we look at how to implement our own function objects. A function object is a class that provides an 
+ overloaded instance of the function call operator. 
+  
+ When the compiler encounters what appears to be a function call, such as 
+  
+ lt(ival); 
+  
+ lt
+  can be the name of a function, a pointer to function, or an object of a class that has provided an 
+ instance of the function call operator. If 
+ lt
+  is a class object, the compiler internally transforms the 
+ statement as follows: 
+  
+ lt.operator()(ival); // internal transformation 
+  
+ The function call operator can take any number of parameters: none, one, two, and so on. It is used, 
+ for example, to support multidimensional subscripting of a Matrix class because the actual subscript 
+ operator is limited to accepting one parameter. 
+  
+ Let's implement an overloaded instance of the call operator to test whether a value passed to it is 
+ less than some other value. We'll call the class LessThan. Each object must be initialized with a 
+ value against which to compare. In addition, we support read and write access of that value. Here's 
+ our implementation: 
+  
+ class LessThan { 
+  
+ public: 
+  
+  
+  LessThan(int val) : _val(val){}  
+  
+  
+  int  comp_val() const    { return _val; }  
+  
+  void comp_val(int nval){ _val = nval; }  
+  
+  bool operator()(int value) const;  
+  
+ private: 
+  
+  
+  int _val;  
+  
+ }; 
+  
+ The implementation of the function call operator looks like this: 
+  
+ inline bool LessThan:: 
+  
+ operator()(int value) const { return value < _val; } 
+  
+ We can explicitly define a LessThan class object in the same way as any other class object: 
+  
+ 109",NA
+4.10 Providing Class Instances of the iostream Operators ,"Often, we wish to both read and write objects of a class. For example, to display our 
+ trian
+  class 
+ object, we want to be able to write 
+  
+ cout << trian << endl; 
+  
+ To support this, we must provide an overloaded instance of the output operator: 
+  
+ ostream& operator<<(ostream &os, const Triangular &rhs) 
+ { 
+  
+  
+  os << ""("" << rhs.beg_pos() << "", ""  
+  
+  
+  
+  << rhs.length()       << "") "";  
+  
+ } 
+  
+  rhs.display(rhs.length(), rhs.beg_pos(), os);   
+ return os;  
+  
+ We return the same ostream object passed into the function. This allows multiple output operators 
+ to be concatenated. Both objects are passed by reference. The ostream operand is not declared as 
+ const
+  because each output operation modifies the internal state of the ostream object. The class 
+ object to be output, such as 
+ rhs
+ , is declared as 
+ const
+  because we are passing it by reference for 
+ efficiency rather than to modify the object itself. For example, given the object 
+  
+ Triangular tri(6, 3); 
+  
+ the statement 
+  
+ cout << tri << '\n'; 
+  
+ generates 
+  
+ (3 , 6) 6 10 15 21 28 36 
+  
+ Why is the output operator a nonmember function? A member function requires that its left 
+ operand be an object of the class. Were the output operator a member function, then the 
+ tri
+  class 
+ object would need to be placed to the left of the output operator: 
+  
+ tri << cout << '\n'; 
+  
+ This would certainly confuse users of the class! 
+  
+ The following input operator reads only the first four elements representing the Triangular class. 
+ The beginning position and its length are the only unique aspects of a Triangular class object. The 
+ actual element values are invariant; they are not stored within a particular class object. 
+  
+ istream& 
+  
+ operator>>(istream &is, Triangular &rhs) { 
+  
+  
+  char ch1, ch2;  
+  
+  
+  int bp, len;  
+  
+  // given the input: (3 , 6) 6 10 15 21 28 36   
+ // ch1 == '(', bp == 3, ch2 == ',', len == 6   
+ is >> ch1 >> bp  
+  
+  
+  >> ch2 >> len;  
+  
+ 111",NA
+4.11 Pointers to Class Member Functions ,"The classes supporting the Fibonacci, Pell, Lucas, Square, and Pentagonal sequences are identical 
+ to those of the Triangular class except for the algorithm to generate the element sequence. In 
+ Chapter 5
+  we organize these classes into an object-oriented class hierarchy. In this section, we 
+ implement a general sequence class, num_sequence, to support all six sequences in a single class 
+ object. Here is our 
+ main()
+  program: 
+  
+ int main() 
+  
+ { 
+  
+  
+  num_sequence ns;  
+  
+  
+  const int pos = 8;  
+  
+  
+  for (int ix = 1; ix < num_sequence::num_of_sequences(); ++ix)  
+  
+  {  
+  
+  
+  
+  ns.set_sequence(num_sequence::nstype(ix));  
+  
+  
+  
+  int elem_val = ns.elem(pos);  
+  
+  
+  
+  display(cout, ns, pos, elem_val);  
+  
+  
+  }  
+  
+ } 
+  
+ Team-Fly
+ ®",NA
+Exercise 4.3,"Consider the following global data: 
+  
+ string program_name; 
+  
+ string version_stamp; 
+  
+ int version_number; 
+  
+ int tests_run; 
+  
+ int tests_passed; 
+  
+ Write a class to wrap around this data.",NA
+Exercise 4.4,"A user profile consists of a login, the actual user name, the number of times logged on, the number 
+ of guesses made, the number of correct guesses, the current level — one of beginner, intermediate, 
+ advanced, or guru — and the percentage correct (this latter may be computed or stored). Provide a 
+ UserProfile class. Support input and output, equality and inequality. The constructors should allow 
+ for a default user level and default login name of ""guest."" How might you guarantee that each guest 
+ login for a particular session is unique?",NA
+Exercise 4.5,"Implement a 4x4 Matrix class supporting at least the following general interface: addition and 
+ multiplication of two Matrix objects, a 
+ print()
+  member function, a compound 
+ +=
+  operator, and 
+ subscripting supported through a pair of overloaded function call operators, as follows: 
+  
+ float& operator()(int row, int column); 
+  
+ float  operator()(int row, int column) const; 
+  
+ Provide a default constructor taking an optional 16 data values and a constructor taking an array of 
+ 16 elements. You do not need a copy constructor, copy assignment operator, or destructor for this 
+ class (these are required in 
+ Chapter 6
+  when we reimplement the Matrix class to support arbitrary 
+ rows and columns). 
+  
+ 116",NA
+Chapter 5. Object-Oriented Programming ,"As you saw in 
+ Chapter 4
+ , the primary use of a class is to introduce a new type that more directly 
+ represents an entity in our application domain. In a library check-out application, for example, it is 
+ generally easier to program the classes Book, Borrower, and DueDate directly than to translate the 
+ program logic to the underlying character, arithmetic, and Boolean data types. 
+  
+ The object-based programming model proves cumbersome when our application begins to be filled 
+ with class types that represent an 
+ is-a-kind-of
+  instance of a type. For example, imagine that over 
+ time our library check-out application must add support for a RentalBook class, an 
+  
+ AudioBook class, and an InteractiveBook class in addition to the original Book class. Each class is 
+ likely to share data members and the member functions to manage the data. Each class also 
+ requires additional unique data members to represent its state. Each class may (or may not) have a 
+ separate check-out and overdue fine algorithm, although each class shares the same interface. 
+  
+ The object-based class mechanisms of 
+ Chapter 4
+  cannot easily model both the commonality and 
+ the differences of these four 
+ are-a-kind-of
+  Book classes. Why? It's because this model does not 
+ provide support for specifying relationships among classes. For this kind of support, we need the 
+ object-oriented programming
+  model.",NA
+5.1 Object-Oriented Programming Concepts ,"The two primary characteristics of object-oriented programming are inheritance and 
+  
+ polymorphism. 
+ Inheritance
+  allows us to group classes into families of related types, allowing for 
+ the sharing of common operations and data. 
+ Polymorphism
+  allows us to program these families as a 
+ unit rather than as individual classes, giving us greater flexibility in adding or removing any 
+ particular class. 
+  
+ Inheritance defines a parent/child relationship. The 
+ parent
+  defines the public interface and private 
+ implementation that are common to all its children. Each 
+ child
+  adds to or overrides what it inherits 
+ to implement its own unique behavior. An AudioBook child class, for example, in addition to the 
+ title and author it inherits from its parent Book class, introduces support for a speaker and a count 
+ of the number of cassettes. In addition, it overrides the inherited 
+ check_out()
+  member function 
+ of its parent. 
+  
+ In C++, the parent is called the 
+ base
+  class and the child is called the 
+ derived
+  class. The 
+  
+ relationship between the parent or base class and its children is called an 
+ inheritance hierarchy
+ . At 
+ a design review meeting, for example, we might say, ""We intend to implement an AudioBook 
+ derived class. It will override the 
+ check_out()
+  method of its Book base class. However, it will 
+ reuse the inherited Book class data members and member functions to manage its shelf location, 
+ author's name, and title."" 
+  
+ Figure 5.1
+  pictures a portion of a possible library lending material class hierarchy. The root of the 
+ class hierarchy is an abstract base class, LibMat. LibMat defines all the operations that are 
+ common to all the different types of library lending materials: 
+ check_in()
+ , 
+ check_out()
+ , 
+ due_date()
+ , 
+ fine()
+ , 
+ location()
+ , and so on. LibMat does not represent an actual lending 
+ material object; rather, it is an artifact of our design. In fact, it is the key artifact. We call it an 
+ abstract base class. 
+  
+ Figure 5.1. Portion of Library Lending Material Class Hierarchy 
+  
+ 117",NA
+5.2 A Tour of Object-Oriented Programming ,"Let's implement a simple three-level class hierarchy to introduce the C++ language constructs and 
+ programming idioms that support object-oriented programming. We root our class hierarchy with 
+ the abstract LibMat base class. We derive a Book class from LibMat and in turn derive an 
+ AudioBook class from Book. We limit our interface to a single function, 
+ print()
+ , together with a 
+ constructor and destructor. I've instrumented each member function to output its presence so that 
+ we can trace the behavior of the program. 
+  
+ By default, a member function is resolved statically at compile-time. To have a member function 
+ resolved dynamically during run-time, we preface its declaration with the 
+ virtual
+  keyword. The 
+ LibMat class declares its destructor and 
+ print()
+  to be virtual: 
+  
+ class LibMat { 
+  
+ public: 
+  
+  
+  LibMat(){ cout << ""LibMat::LibMat() default constructor!\n""; }  
+  
+  
+  virtual ~LibMat(){ cout << ""LibMat::~LibMat() destructor!\n""; }  
+  
+  virtual void print() const  
+  
+  
+  
+  { cout << ""LibMat::print() -- I am a LibMat object!\n""; }  
+ }; 
+  
+ Let's now define a nonmember 
+ print()
+  function that takes as a single parameter a 
+ const 
+ LibMat reference: 
+  
+ void print(const LibMat &mat) 
+  
+ { 
+  
+  
+  cout << ""in global print(): about to print mat.print()\n"";  
+  
+  // this resolves to a print() member function  
+  
+  //      based on the actual object mat refers to ...  
+  
+  
+  mat.print();  
+  
+ } 
+  
+ 119",NA
+5.3 Polymorphism without Inheritance ,"The num_sequence class of 
+ Section 4.10
+  simulates polymorphism. Each class object can be made 
+ into any of the six numerical sequences at any point in the program through the 
+ set_sequence() 
+ member function: 
+  
+ for (int ix = 1; ix < num_sequence::num_of_sequences(); ++ix) 
+ { 
+  
+  
+  ns.set_sequence(num_sequence::nstype(ix));  
+  
+  
+  int elem_val = ns.elem(pos);  
+  
+  
+  // ...  
+  
+ } 
+  
+ The ability to change the sequence type of 
+ ns
+  is supported through programming rather than 
+ through direct support of the language. Each class object contains an 
+ _isa
+  data member that 
+ identifies the current numeric sequence that it represents: 
+  
+ class num_sequence { 
+  
+ public: 
+  
+  
+  // ...  
+  
+ private: 
+  
+  vector<int> *_elem; // addresses current element vector   
+ PtrType      _pmf;  // addresses current element generator   
+ ns_type      _isa;  // identifies current sequence type   // 
+ ...  
+  
+ }; 
+  
+ _isa
+  is set to a named constant value that represents one of the supported numeric sequence types. 
+ The constant values are grouped in an enumerated type I've named 
+ ns_type
+ : 
+  
+ class num_sequence { 
+  
+ public: 
+  
+  
+  enum ns_type {  
+  
+  
+  
+  ns_unset, ns_fibonacci, ns_pell, ns_lucas,  
+  
+  
+  ns_triangular, ns_square, ns_pentagonal  
+  
+  
+ };  
+  
+  
+  // ...  
+  
+ }; 
+  
+ 123",NA
+5.4 Defining an Abstract Base Class ,"In this section we redesign the num_sequence class of the preceding section into an abstract base 
+ class from which we inherit each of the numeric sequence classes. How do we go about that? 
+  
+ The first step in defining an abstract base class is to identify the set of operations common to its 
+ children. For example, what are the operations common to all numeric sequence classes? These 
+ operations represent the public interface of the num_sequence base class. Here is a first iteration: 
+  
+ class num_sequence { 
+  
+ public: 
+  
+  
+  // elem(pos): return element at pos  
+  
+  
+  // gen_elems(pos): generate the elements up to pos  
+  
+  
+ // what_am_i() : identify the actual sequence  
+  
+  
+  // print(os) : write the elements to os  
+  
+  
+  //check_integrity(pos) : is pos a valid value?  
+  
+  
+ // max_elems() : returns maximum position supported  
+  
+  
+ int         elem(int pos);  
+  
+  
+  void        gen_elems(int pos);  
+  
+  
+  const char* what_am_i() const;  
+  
+  
+  ostream&    print(ostream &os = cout) const;  
+  
+  
+  bool        check_integrity(int pos);  
+  
+  
+  static int  max_elems();  
+  
+  
+  // ...  
+  
+ }; 
+  
+ elem()
+  returns the element at the user-requested position. 
+ max_elems()
+  returns the maximum 
+ number of elements supported by our implementation. 
+ check_integrity()
+  determines 
+ whether 
+ pos
+  is a valid position. 
+ print()
+  displays the elements. 
+ gen_elems()
+  generates the 
+ elements for the sequence. 
+ what_am_i()
+  returns a character string identifying the sequence. 
+  
+ 125",NA
+5.5 Defining a Derived Class ,"IThe derived class consists of two parts: the subobject of its base class (consisting of the nonstatic 
+ base class data members, if any) and the derived class portion (consisting of the nonstatic derived 
+ class data members). (Think of a blue Lego block snapped together with a red one.) This composite 
+ nature of the derived class is reflected in its declaration syntax: 
+  
+ // the header file contains the base class definition 
+ #include ""num_sequence.h"" 
+  
+ class Fibonacci : public num_sequence { 
+ public: 
+  
+  
+  // ...  
+  
+ }; 
+  
+ The derived class name is followed by a colon, the 
+ public
+  keyword, and the name of the base 
+ class. 
+ [3]
+  The only rule is that the base class definition must be present before a class can inherit 
+ from it (this is why the header file containing the num_sequence class definition is included). 
+  
+ [3]
+  As I mentioned in 
+ Section 5.1
+ , there is also support for private and protected inheritance, as well 
+ as multiple and virtual inheritance. These are complicated, advanced design topics that I do not 
+ cover here. See Chapter 18 of [
+ LIPPMAN98
+ ] for a complete discussion. 
+  
+ The Fibonacci class must provide an implementation of each of the pure virtual functions inherited 
+ from its base class. In addition, it must declare those members that are unique to the Fibonacci 
+ class. Here is the class definition: 
+  
+ class Fibonacci : public num_sequence { 
+  
+ public: 
+  
+  
+  Fibonacci(int len = 1, int beg_pos = 1)  
+  
+  
+  
+  : _length(len), _beg_pos(beg_pos){}  
+  
+  
+  virtual int         elem(int pos) const;  
+  
+  
+  virtual const char* what_am_i() const { return ""Fibonacci""; }  
+  
+  virtual ostream&    print(ostream &os = cout) const;  
+  
+  
+  int                 length()  const { return _length;  }  
+  
+  
+ int                 beg_pos() const { return _beg_pos; }  
+ protected: 
+  
+  
+  virtual void       gen_elems(int pos) const;  
+  
+  
+  int                _length;  
+  
+  
+  int                _beg_pos;  
+  
+  
+  static vector<int> _elems;  
+  
+ }; 
+  
+ In this design, length and beginning position are data members of each derived class. The read 
+ access functions 
+ length()
+  and 
+ beg_pos()
+  are declared as nonvirtual because there is no base 
+ class instance to override. Because they are not part of the base class interface, they cannot be 
+ accessed when we're programming through a base class pointer or reference. For example, 
+  
+ 128",NA
+5.6 Using an Inheritance Hierarchy ,"Let's presume we've defined the five other numeric sequence classes (Pell, Lucas, Square, 
+ Triangular, and Pentagonal) in the same manner as the Fibonacci class. We now have a two-level 
+ inheritance hierarchy: an abstract num_sequence base class and the six inheriting derived classes. 
+ How might we use them? 
+  
+ Here is a simple 
+ display()
+  function whose second parameter is 
+ ns
+ , a 
+ const
+  reference to a 
+ num_sequence object. 
+  
+ inline void display(ostream &os, 
+  
+  
+  
+  
+  const num_sequence &ns, int pos)  
+ { 
+  
+  
+  os << ""The element at position ""  
+  
+  
+  
+  << pos            << "" for the ""  
+  
+  
+  
+  << ns.what_am_i() << "" sequence is ""  
+  
+  
+  
+  << ns.elem(pos) << endl;  
+  
+ } 
+  
+ Within 
+ display()
+ , we call the two virtual functions 
+ what_am_i()
+  and 
+ elem()
+ . Which 
+ instances of these functions are invoked? We cannot say for certain. We know that 
+ ns
+  does not 
+ refer to an actual num_sequence class object but rather to an object of a class derived from 
+ num_sequence. The two virtual function calls are resolved at run-time based on the type of the 
+  
+ 133",NA
+5.7 How Abstract Should a Base Class Be? ,"Under our current design, the abstract base class provides an interface but does not provide an 
+ implementation. Each derived class must not only provide the unique algorithm for generating its 
+ elements but also provide support for finding the element, printing the element, maintaining the 
+ length and beginning position of the sequence object, and so on. Is this a bad design? 
+  
+ If the designer of the abstract base class is also providing the derived numeric sequence classes and 
+ if they are not expected to be added to very often, this design works quite well. If, however, a 
+ primary activity is the delivery of new numeric sequence classes and if that activity has been 
+ farmed out to individuals who are more comfortable with mathematics than programming, this 
+ design complicates the delivery of each derived class. 
+  
+ The following alternative base class design factors implementation support of the shared derived 
+ class data into the base class. The interface is unchanged. The program of the preceding section 
+ need not be modified, although it must be recompiled. The design change simplifies the work 
+ necessary to provide a derived class. 
+  
+ Here is the revised num_sequence base class definition. The two data members — 
+ _length
+  and 
+ _beg_pos
+  — are now num_sequence data members. We declare them as 
+ protected
+  to allow 
+ the derived classes direct access to them. The supporting access member functions — 
+ length() 
+ and 
+ beg_pos()
+  — are now also num_sequence class members. We declare them as 
+ public
+  to 
+ allow the general program read access to these values. 
+  
+ A new data member has also been added to the num_sequence class. 
+ _relems
+ , a reference to a 
+ vector of integers, refers to the static vector of the derived class.Why is it declared a reference 
+ rather than a pointer? As we say in 
+ Section 2.3
+ , a reference can never refer to a null object, 
+ whereas a pointer may or may not be null. By making it a reference, we spare ourselves from 
+ having to check for a null pointer. 
+  
+ A reference data member must be initialized within the constructor's member initialization list and, 
+ once initialized, can never be changed to refer to a different object. A pointer data member has 
+ neither restriction: We can either initialize it within the constructor or initialize it to null and 
+  
+ 135",NA
+"5.8 Initialization, Destruction, and Copy ","Now that num_sequence declares actual data members, we must provide for their initialization. 
+ We could leave it to each derived class to initialize these data members, but that's potentially 
+  
+ 136",NA
+5.9 Defining a Derived Class Virtual Function ,"When we define a derived class, we must decide whether to override or inherit each of the base 
+ class virtual functions. If we inherit a pure virtual function, the derived class is then also 
+ considered an abstract class, and no independent objects of the class can be defined. 
+  
+ If we choose to override the base class instance, the prototype of the derived class instance must 
+ match the base class protoype exactly: the parameter list and the return type and whether the 
+ virtual function is 
+ const
+  or non-
+ const
+ . For example, the following definition of 
+  
+ Fibonacci::what_am_i()
+  is not quite right: 
+  
+ class Fibonacci : public num_sequence { 
+  
+ public: 
+  
+  
+  virtual const char* what_am_i() // not quite right ...  
+  
+  
+  { return ""Fibonacci""; }  
+  
+  // ...  
+  
+ }; 
+  
+ Although the Fibonacci instance of 
+ what_am_i()
+  is not quite right, it is not wrong, and that's 
+ where the confusion comes in. When I compile it under the Intel C++ compiler, I get the following 
+ warning message: 
+  
+ warning #653: ""const char *Fibonacci::what_am_i()""  
+ does not match ""num_sequence::what_am_i""   -- 
+ virtual function override intended?  
+  
+ What is this telling us? It is saying that the derived class declaration of 
+ what_am_i()
+  does not 
+ exactly match the base class declaration. The base class instance is declared to be a 
+ const
+  
+ 138",NA
+Static Resolution of a Virtual Function ,"There are two circumstances under which the virtual mechanism does not behave as we expect: (1) 
+ within the base class constructor and destructor and (2) when we use a base class object rather than a 
+ base class pointer or reference. 
+  
+ When we construct a derived class object, the base class constructor is invoked first. What 
+ happens if within the base class constructor a virtual function is called? Should the derived class 
+ instance be invoked? 
+  
+ The problem is that the derived class data members are not yet initialized. If the derived class 
+ instance of the virtual function is invoked, it is likely to access data members that are uninitialized, 
+ and that is not a good thing. 
+  
+ For that reason, within the base class constructor, the derived class virtual functions are never 
+ invoked! Within the num_sequence constructor, for example, a call of 
+ what_am_i()
+  resolves to 
+ the num_sequence instance even if a Fibonacci class object is being defined. The same holds true 
+ for virtual functions invoked within the base class destructor. 
+  
+ Consider the following program fragment, which uses the LibMat and AudioBook classes of 
+ Section 5.1
+ . Recall that 
+ print()
+  is a virtual function of that class hierarchy. 
+  
+ void print(LibMat object, 
+  
+  
+  
+  const LibMat *pointer,  
+  
+  
+  const LibMat &reference)  { 
+  
+  
+  // always invokes LibMat::print()  
+  
+  object.print();  
+  
+ } 
+  
+  // always resolved through the virtual mechanism  
+  
+  // we don't know what instance of print() this invokes   
+ pointer->print();  
+  
+  reference.print();  
+  
+ 140",NA
+5.10 Run-Time Type Identification ,"Our implementation of 
+ what_am_i()
+  has each class providing a virtual instance that returns a 
+ string literal identifying the class: 
+  
+ class Fibonacci : public num_sequence { 
+  
+ public: 
+  
+  
+  virtual const char* what_am_i() const { return ""Fibonacci""; }  
+  
+  // ...  
+  
+ }; 
+  
+ An alternative design is to provide a single num_sequence instance of 
+ what_am_i()
+  that each 
+ derived class reuses through inheritance. This design frees each derived class from having to 
+ provide its own instance of 
+ what_am_i()
+ . 
+  
+ One way to implement this might be to add a string member to num_sequence. Each derived class 
+ constructor would then pass its class name as an argument to the num_sequence constructor. For 
+ example, 
+  
+ inline Fibonacci:: 
+  
+ Fibonacci(int len, int beg_pos) 
+  
+  
+  : num_sequence(len, beg_pos, &_elems, ""Fibonacci"")  
+ {} 
+  
+ An alternative implementation is to use the 
+ typeid
+  operator. The 
+ typeid
+  operator is part of the 
+ run-time type identification (RTTI) language support. It allows us to ask a polymorphic class 
+ pointer or reference the actual type of the object it refers to. 
+  
+ #include <typeinfo> 
+  
+ inline const char* num_sequence:: 
+  
+ what_am_i() const 
+  
+ 141",NA
+Exercise 5.1,"Implement a two-level stack hierarchy. The base class is a pure abstract Stack class that minimally 
+ supports the following interface: 
+ pop()
+ , 
+ push()
+ , 
+ size()
+ , 
+ empty()
+ , 
+ full()
+ , 
+ peek()
+ , and 
+ print()
+ . The two concrete derived classes are LIFO_Stack and Peekback_Stack. The 
+  
+ Peekback_Stack allows the user to retrieve the value of any element in the stack without 
+  
+ modifying the stack itself.",NA
+Exercise 5.2,"Reimplement the class hierarchy of 
+ Exercise 5.1
+  so that the base Stack class implements the 
+ shared, type-independent members.",NA
+Exercise 5.3,"A type/subtype inheritance relationship in general reflects an 
+ is-a
+  relationship: A range-checking 
+ ArrayRC is a kind of Array, a Book is a kind of LibraryRentalMaterial, an AudioBook is a kind of 
+ Book, and so on. Which of the following pairs reflects an is-a relationship? 
+  
+ (a) member function isA_kindOf function (b) 
+ member function isA_kindOf class 
+  
+ (c) constructor isA_kindOf member function 
+ (d) airplane isA_kindOf vehicle 
+  
+ (e) motor isA_kindOf truck 
+  
+ (f) circle isA_kindOf geometry 
+  
+ (g) square isA_kindOf rectangle 
+  
+ (h) automobile isA_kindOf airplane 
+  
+ (i) borrower isA_kindOf library",NA
+Exercise 5.4,"A library supports the following categories of lending materials, each with its own check-out and 
+ check-in policy. Organize these into an inheritance hierarchy: 
+  
+ book         audio book 
+  
+ record       children's puppet 
+  
+ video        Sega video game 
+  
+ rental book  Sony Playstation video game 
+ CD-ROM book  Nintendo video game 
+  
+ 143",NA
+Chapter 6. Programming with Templates ,"When Bjarne Stroustrup worked out the original C++ language design for templates, he referred to 
+ them as 
+ parameterized types
+ : 
+ ""
+ parameterized"" because they are factored out of the template 
+ definition, and ""types"" because each class or function template typically varies by one or a set of 
+ types being operated on or contained. The actual type is later specified by the user. 
+  
+ Stroustrup later changed the name to the more general 
+ template
+ . A single template definition 
+ serves as a prescription for the automatic generation of a unique instance of a function or class 
+ based on a user-specified value or type. 
+  
+ Although we have extensively used class templates, such as the vector and string classes, we 
+ haven't yet implemented one of our own. We do that in this chapter, walking through the 
+ implementation of a binary tree class template. 
+  
+ If you're unfamiliar with the binary tree abstraction, the following is a brief review. A tree consists 
+ of nodes and vertices, or links, connecting the nodes. A binary tree maintains two links between 
+ nodes, typically called the 
+ left
+  and 
+ right child
+ . The tree has a first node called the 
+ root
+ . Each left or 
+ right child may itself serve as root to a subtree. A node without children is called a 
+ leaf
+  node. 
+  
+ Our binary tree implementation consists of two classes: a BinaryTree class, which holds a pointer 
+ to the root, and a BTnode helping class, which holds both the actual value and the left and right 
+ child links. It is the type of the node value that we parameterize. 
+  
+ What are the operations our BinaryTree must support? Users must both 
+ insert
+  and 
+ remove
+  an 
+ element as well as 
+ find
+  whether an element is present, 
+ clear
+  all tree elements, and 
+ print
+  the tree in 
+ one of three traversal algorithms: 
+ inorder
+ , 
+ preorder
+ , or 
+ postorder
+ . 
+  
+ In our implementation, the first value inserted into an empty tree becomes the root. Each 
+  
+ subsequent value is inserted so that all values less than the root are placed in the root's left subtree. 
+  
+ All values greater than the root are placed in the root's right subtree. A value occurs only once 
+ within a tree. An occurrence count keeps track of multiple insertions of the same value. For 
+ example, given the code sequence 
+  
+ BinaryTree<string> bt; 
+  
+ bt.insert(""Piglet""); 
+  
+ Piglet
+  becomes the root of our binary tree. Suppose that we next insert 
+ Eeyore
+ : 
+  
+ bt.insert(""Eeyore""); 
+  
+ Because 
+ Eeyore
+  is alphabetically less than 
+ Piglet
+ , 
+ Eeyore
+  becomes the left child of 
+ Piglet
+ . 
+ Then suppose we next insert 
+ Roo
+ : 
+  
+ bt.insert(""Roo""); 
+  
+ Because 
+ Roo
+  is greater than 
+ Piglet
+ , 
+ Roo
+  becomes the right child of 
+ Piglet
+ , and so on. Let's 
+ complete our tree by inserting the following elements: 
+  
+ bt.insert(""Tigger""); 
+  
+ bt.insert(""Chris""); 
+  
+ bt.insert(""Pooh""); 
+  
+ bt.insert(""Kanga""); 
+  
+ 144",NA
+6.1 Parameterized Types ,"Here is a nontemplate declaration of the BTnode class in which the stored value is a string class 
+ object. I call it string_BTnode because we must define other instances that store values of type 
+ int
+ , 
+ double
+ , and so on. 
+  
+ class string_BTnode { 
+  
+ public: 
+  
+  
+  //  ...  
+  
+ private: 
+  
+  
+  string _val;  
+  
+  
+  int _cnt;  
+  
+  
+  int_BTnode *_lchild;  
+  
+  
+  int_BTnode *_rchild;  
+  
+ }; 
+  
+ Without the template mechanism, each type would need its own separately implemented BTnode 
+ class, and each would need to be named uniquely. 
+  
+ The template mechanism allows us to separate the type-dependent and invariant portions of our 
+ class definition. The code that traverses the tree, inserts and removes nodes, and maintains the 
+ occurrence count is the same regardless of the value's type. This code is reused with each instance 
+ of the class template. 
+  
+ 145",NA
+6.2 The Template Class Definition ,"Here is a partial definition of our BinaryTree class template: 
+  
+ template <typename elemType> 
+  
+ class BinaryTree { 
+  
+ public: 
+  
+  
+  BinaryTree();  
+  
+  
+  BinaryTree(const BinaryTree&);  
+  
+  
+  ~BinaryTree();  
+  
+  
+  BinaryTree& operator=(const BinaryTree&);  
+  
+  
+  bool empty() { return _root == 0; }  
+  
+  void clear();  
+  
+ private: 
+  
+  
+  BTnode<elemType> *_root;  
+  
+  
+  // copy a subtree addressed by src to tar  
+  
+  
+  void copy(BTnode<elemType>*tar, BTnode<elemType>*src);  
+ }; 
+  
+ Defining an inline member function for a class template is the same as for a nonclass template, as 
+ the definition of 
+ empty()
+  illustrates. The syntax for defining a class template member function 
+ outside the class body, however, looks very different, at least at first blush: 
+  
+ template <typename elemType> 
+  
+ inline BinaryTree<elemType>:: 
+  
+ BinaryTree() : _root(0) 
+  
+ {} 
+  
+ 147",NA
+6.3 Handling Template Type Parameters ,"Handling a template type parameter is somewhat more complicated than handling an explicit 
+ parameter type. For example, to declare an explicit 
+ int
+  parameter to a function, we write 
+  
+ bool find(int val); 
+  
+ passing it by value. However, to declare an explicit Matrix class parameter to a function, we 
+ instead write 
+  
+ bool find(const Matrix &val); 
+  
+ 148",NA
+6.4 Implementing the Template Class ,"Each time we insert a new value, we must create a BTnode object, initialize it, and link it 
+ somewhere within the tree. We manage the allocation and deallocation of each node explicitly 
+ using the 
+ new
+  and 
+ delete
+  expressions. 
+  
+ insert()
+ , for example, allocates a new BTnode from the program's free store if 
+ _root
+  is unset; 
+ otherwise, it calls the BTnode 
+ insert_value()
+  method to insert the new value into the tree: 
+  
+ template <typename elemType> 
+  
+ inline void 
+  
+ BinaryTree<elemType>:: 
+  
+ insert(const elemType &elem) 
+  
+ { 
+  
+  
+  if (! _root)  
+  
+  
+  
+  _root = new BTnode<elemType>(elem);  
+  
+  else _root->insert_value(elem);  
+  
+ } 
+  
+ There are two steps to the operation of the 
+ new
+  expression. (1) Memory is requested of the 
+ program's free store. If sufficient memory is available, a pointer to the object is returned. (If 
+ sufficient memory is not available, a 
+ bad_alloc
+  exception is raised. We discuss the C++ 
+ exception handling facility in 
+ Chapter 7
+ .) (2) If the first step succeeds and an initial value is 
+ specified, the object is appropriately initialized. For a class type, as in 
+  
+ _root = new BTnode<elemType>(elem); 
+  
+ elem
+  is passed to the BTnode constructor. If the allocation step fails, the initialization step is not 
+ carried out. 
+  
+ insert_value()
+  is invoked only if a root node is present. The root's left subtree holds values 
+ that are less than its value, and the right subtree holds values that are greater. 
+ insert_value()
+  
+ 150",NA
+6.5 A Function Template Output Operator ,"We'd like to provide an output operator for our BinaryTree class template. For a nontemplate class, 
+ we write 
+  
+ ostream& operator<<(ostream&, const int_BinaryTree&); 
+  
+ For the class template, we could provide an explicit instance for each generated class definition: 
+  
+ ostream& operator<<(ostream&, const BinaryTree<int>&); 
+  
+ But that's Sisyphus work: It's tedious, and it never ends. A better solution is to define the output 
+ operator as a function template: 
+  
+ template <typename elemType> 
+  
+ inline ostream& 
+  
+ operator<<(ostream &os, const BinaryTree<elemType> &bt) 
+ { 
+  
+  
+  os << ""Tree: "" << endl;  
+  
+  
+  bt.print(os);  
+  
+  
+  return os;  
+  
+ } 
+  
+ When we write 
+  
+ BinaryTree< string > bts; 
+  
+ cout << bts << endl; 
+  
+ an instance of the output operator is generated to support a second parameter of 
+ BinaryTree<string>
+ . When we write 
+  
+ BinaryTree< int > bti; 
+  
+ cout << bti << endl; 
+  
+ 155",NA
+6.6 Constant Expressions and Default Parameters ,"Template parameters are not limited only to types, although until now I've limited my discussion 
+ to them. We can also declare constant expressions as parameters. For example, our numeric 
+ sequence class hierarchy might be redefined as a template class in which the number of elements 
+ an object contains is parameterized: 
+  
+ template <int len> 
+  
+ class num_sequence { 
+  
+ public: 
+  
+  
+  num_sequence(int beg_pos=1);  
+  
+  
+  // ...  
+  
+ }; 
+  
+ template <int len> 
+  
+ class Fibonacci : public NumericSeries<len> { 
+ public: 
+  
+  
+  Fibonacci(int beg_pos=1)  
+  
+  
+  
+  : num_sequence<len>(beg_pos){}  
+  
+  
+  // ...  
+  
+ }; 
+  
+ When a Fibonacci object is created, as in 
+  
+ Fibonacci< 16 > fib1; 
+  
+ Fibonacci< 16 > fib2(17); 
+  
+ instances of both the Fibonacci derived class and the num_sequence base class are generated with 
+ len
+  bound to 16. Alternatively, we might parametermize both the length and the beginning 
+ position: 
+  
+ template < int len, int beg_pos > 
+  
+ class NumericSeries; 
+  
+ However, because most class objects begin their range with position 1, this is convenient only if 
+ we provide a default value for the position: 
+  
+ template <int len, int beg_pos> 
+  
+ class num_sequence { ... }; 
+  
+ 156",NA
+6.7 Template Parameters as Strategy ,"Our LessThan class function object of 
+ Section 4.9
+  is a natural candidate for transforming into a 
+ template class: 
+  
+ template <typename elemType> 
+  
+ class LessThan { 
+  
+ public: 
+  
+  
+  LessThan(const elemType &val) : _val(val){}  
+  
+  bool operator()(const elemType &val) const  
+  
+  
+  { return val < _val; }  
+  
+  
+  void val(const elemType &newval) { _val = newval; }  
+  
+  elemType val() const { return _val; }  
+  
+ private: 
+  
+  
+  elemType _val;  
+  
+ }; 
+  
+ LessThan<int>    lti(1024); 
+  
+ LessThan<string> lts(""Pooh""); 
+  
+ A potential problem with this implementation is that it fails if the type supplied by the user does 
+ not define a less-than operator. One possible strategy is to provide a second template class with the 
+ comparison operator factored out of the class definition. Even if this second class provides the 
+ same general semantics as LessThan, however, we must provide a unique name for it because a 
+ class template cannot be overloaded based on its parameter list. Let's call this class LessThanPred 
+ because the less-than class function object is specified as the default parameter: 
+  
+ template <typename elemType, typename Comp = less<elemType> > 
+ class LessThanPred { 
+  
+ public: 
+  
+  
+  LessThanPred(const elemType &val) : _val(val){}  
+  
+  
+  bool operator()(const elemType &val) const  
+  
+  
+  
+  { return Comp(val, _val); }  
+  
+  
+  void val(const elemType &newval) { _val = newval; }  
+  
+  elemType val() const { return _val; }  
+  
+ private: 
+  
+  
+  elemType _val;  
+  
+ }; 
+  
+ // alternative function object comparison 
+  
+ 160",NA
+6.8 Member Template Functions ,"It is also possible to define a member template function. Let's look at an example and then walk 
+ through it: 
+  
+ 161",NA
+Exercise 6.1,"Rewrite the following class definition to make it a class template: 
+  
+ class example { 
+  
+ public: 
+  
+  
+  example(double min, double max);  
+  
+  
+  example(const double *array, int size);  
+  
+  double& operator[](int index);  
+  
+  
+  bool operator==(const example1&) const;  
+  
+  bool insert(const double*, int);  
+  
+  
+  bool insert(double);  
+  
+  
+  double min() const { return _min; }  
+  
+  
+ double max() const { return _max; }  
+  
+  void 
+ min(double);  
+  
+  
+  void max(double);  
+  
+  
+  int count(double value) const;  
+  
+ private: 
+  
+  
+  int size;  
+  
+  
+  double *parray;  
+  
+  
+  double _min;  
+  
+  
+  double _max;  
+  
+ };",NA
+Exercise 6.2,"Reimplement the Matrix class of 
+ Exercise 4.3
+  as a template. In addition, extend it to support 
+ arbitrary row and column size using heap memory. Allocate the memory in the constructor and 
+ deallocate it in the destructor. 
+  
+ 163",NA
+Chapter 7. Exception Handling ,"During the implementation of our Triangular_iterator class in 
+ Section 4.6
+ , we realized that the 
+ iterator can potentially fall into an error state. The 
+ _index
+  data member might become set to a 
+ value greater than the maximum number of elements stored in the static vector of the Triangular 
+ class. On the face of it, this seems an unlikely thing to happen. If it does happen, however, that's 
+ bad because the program that is using the value is likely to fail. It's also bad because the 
+ programmer using the iterator class has no easy way to recognize or resolve the problem. 
+  
+ As the designer of the iterator class, we can recognize the problem: The iterator is no longer in a 
+ valid state and must no longer be used within the program. But we do not know how serious the 
+ problem is to the overall program. Only the user of the iterator has that knowledge. Our job is to 
+ notify the user. To do this, we use the C++ exception handling facility, the topic of this chapter.",NA
+7.1 Throwing an Exception ,"The exception handling facility consists of two primary components: the recognition and raising 
+ of an exception and the eventual handling of the exception. Typically, an exception is raised and 
+ handled within various member or nonmember functions. After an exception is raised, normal 
+ program execution is suspended. The exception handling facility searches for a portion of the 
+ program that is capable of handling the raised exception. After the exception has been handled, 
+ program execution resumes in the portion of the program that has handled the exception. 
+  
+ In C++, we raise an exception by using the 
+ throw
+  expression: 
+  
+ inline void Triangular_iterator:: 
+  
+ check_integrity() 
+  
+ { 
+  
+  
+  if (_index > Triangular::_max_elems)  
+  
+  
+  
+  throw iterator_overflow(_index,  
+  
+  
+  
+  
+  Triangular::_max_elems);  
+  
+  if (_index > Triangular::_elems.size())  
+  
+  
+  
+  Triangular::gen_elements(_index);  
+  
+ } 
+  
+ The 
+ throw
+  expression looks somewhat like a function call. In this example, if 
+ _index
+  is greater 
+ than 
+ _max_elems
+ , an exception object of type 
+ iterator_overflow
+  is thrown. The second 
+ if 
+ statement is never executed, and control does not return to this point in the program after the 
+ exception is handled. If 
+ _index
+  is less than or equal to 
+ _max_elems
+ , no exception is raised, and 
+ the program executes as we expect. 
+  
+ What is the exception that gets thrown? An exception is an object of some type. A simple 
+ exception object might be an integer or a string: 
+  
+ throw 42; 
+  
+ throw ""panic: no buffer!""; 
+  
+ Most often, thrown exceptions are class objects of an explicitly provided exception class or 
+ exception class hierarchy. For example, here is the definition of the iterator_overflow class: 
+  
+ class iterator_overflow{ 
+  
+ public: 
+  
+ 164",NA
+7.2 Catching an Exception ,"We catch exception objects by their type using one or a series of catch clauses. A catch clause 
+ consists of three parts: the keyword 
+ catch
+ , the declaration of a single type or single object within 
+ parentheses, and a set of statements within curly braces that does the actual handling of the 
+ exception. For example, consider the following set of catch clauses: 
+  
+ // defined elsewhere ... 
+  
+ extern void log_message(const char*); 
+ extern string err_messages[]; 
+  
+ exterm ostream log_file; 
+  
+ bool some_function() 
+  
+ { 
+  
+  
+  bool status = true;  
+  
+  // ... we'll get to this part!  
+  
+  catch(int errno){  
+  
+  
+  log_message(err_messages[errno]);  
+  
+  status = false;  
+  
+  }  
+  
+  catch(const char *str){  
+  
+  
+  log_message(str);  
+  
+  
+  status = false;  
+  
+  }  
+  
+  catch(iterator_overflow &iof){  
+  
+  
+  iof.what_happened(log_file);  
+  
+ 165",NA
+7.3 Trying for an Exception ,"Catch clauses are associated with 
+ try blocks
+ . A try block begins with the 
+ try
+  keyword followed by 
+ a sequence of program statements enclosed in braces. The catch clauses are placed at the end of the 
+ try block, and they represent the exceptions that are handled if an exception is thrown during 
+ execution of the statements within the try block. 
+  
+ For example, the following function looks for 
+ elem
+  within a range of elements marked by 
+ first
+ , 
+ last
+ . The iteration over the range can potentially result in an 
+ iterator_overflow
+  exception 
+ being thrown, so we place that code within a try block followed by a catch clause that contains an 
+ iterator_overflow
+  exception declaration: 
+  
+ bool has_elem(Triangular_iterator first, 
+  
+  
+  
+  Triangular_iterator last, int elem)  
+ { 
+  
+  
+  bool status = true;  
+  
+  try  
+  
+  {  
+  
+  
+  while (first != last)  
+  
+  
+  {  
+  
+  
+  
+  if (*first == elem)  
+  
+  
+  
+  
+  return status;  
+  
+  
+  
+  ++first;  
+  
+  
+  }  
+  
+  }  
+  
+  // only exceptions of type iterator_overflow  
+  
+  // are caught if thrown while the code  
+  
+  // sequence within the try block is executed  
+  
+  catch(iterator_overflow &iof)  
+  
+  {  
+  
+  
+  log_message(iof.what_happened());  
+  
+  
+  log_message(""check if iterators address same container"");   
+ }  
+  
+ } 
+  
+  status = false;  
+  
+  return status;  
+  
+ The expression 
+  
+ *first 
+  
+ invokes the overloaded dereference operator: 
+  
+ inline int Triangular_iterator:: 
+  
+ operator*() 
+  
+ { 
+  
+  
+  check_integrity();  
+  
+  
+  return Triangular::_elems[_index];  
+ } 
+  
+ That in turn invokes 
+ check_integrity():
+  
+ inline void Triangular_iterator:: 
+  
+ check_integrity() 
+  
+ { 
+  
+ 167",NA
+7.4 Local Resource Management ,"Consider the following function in which resources are acquired at the start of the function, some 
+ processing takes place, and then the resources are released at the end of the function. Given our 
+ discussion so far, what is wrong with this function? 
+  
+ extern Mutex m; 
+  
+ void f() 
+  
+ { 
+  
+  
+  // resource acquisition  
+  
+  
+  int *p = new int;  
+  
+  
+  m.acquire();  
+  
+  process(p);  
+  
+  
+  // freeing up of resources  
+  
+  
+  m.release();  
+  
+  
+  delete p;  
+  
+ } 
+  
+ The problem is that we cannot guarantee that the resources acquired at the start of the function are 
+ ever released. If 
+ process()
+  or a function invoked within 
+ process()
+  throws an exception, the 
+ two resource-freeing statements following the invocation of 
+ process()
+  are never executed. This 
+ is not an acceptable implementation in the presence of exception handling. 
+  
+ One solution is to introduce a try block and associated catch clause. We'll catch all exceptions, 
+ free our resources, and then rethrow the exception: 
+  
+ void f() 
+  
+ { 
+  
+  
+  try {  
+  
+   
+  // same as above  
+  
+  
+  }  
+  
+  
+  catch(...) {  
+  
+   
+  
+  m.release();  
+  
+   
+  
+  delete p;  
+  
+   
+  
+  throw;  
+  
+  
+  }  
+  
+ } 
+  
+ Although this solves our problem, it is not a completely satisfactory solution. We've duplicated the 
+ code to free our resources. We've prolonged the search for a handler while we catch the exception, 
+ free our resources, and then rethrow the exception. Moreover, the code itself feels considerably 
+ more complicated. We'd prefer a less invasive, more autonomous solution. In C++, this usually 
+ means defining a class. 
+  
+ Bjarne Stroustrup, the inventor of C++, introduced an idiom for resource management that he 
+ describes in the phrase ""resource acquisition is initialization."" For a class object, initialization 
+ occurs within the class constructor. Resource acquisition is accomplished within the constructor of 
+ a class. The resource is freed within the destructor. This not only automates resource management 
+ but also simplifies our programs: 
+  
+ 170",NA
+7.5 The Standard Exceptions ,"If the 
+ new
+  expression cannot acquire memory from the program's free store, it throws a 
+ bad_alloc
+  exception object. For example, 
+  
+ vector<string>* 
+  
+ init_text_vector(ifstream &infile) 
+  
+ { 
+  
+  
+  vector<string> *ptext = 0;  
+  
+  
+  try {  
+  
+  
+  
+  ptext = new vector<string>;  
+  
+  
+  
+  // open file and file vector  
+  
+  
+  }  
+  
+  
+  catch(bad_alloc) {  
+  
+  
+  
+  cerr << ""ouch. heap memory exhausted!\n"";  
+  
+  
+  // ... clean up and exit  
+  
+  
+  }  
+  
+  
+  return ptext;  
+  
+ } 
+  
+ Ordinarily, the assignment statement 
+  
+ ptext = new vector<string>; 
+  
+ allocates the necessary memory, applies the default 
+ vector<string>
+  constructor on the heap 
+ object, and then assigns the address of that object to 
+ ptext
+ . 
+  
+ If the memory to represent a 
+ vector<string>
+  object is not available, the default constructor is 
+ not invoked, and 
+ ptext
+  is not assigned. A 
+ bad_alloc
+  exception object is thrown, and control 
+ transfers to the associated catch clause following the try block. The exception declaration 
+  
+ catch(bad_alloc) 
+  
+ does not declare an exception object because we are interested only in catching the exception type 
+ and not in actually manipulating the object within the catch clause. 
+ [2]
+  
+ [2]
+  To suppress the throw of the 
+ bad_alloc
+  exception, we can write 
+  
+ ptext = new (nothrow) vector<string>; 
+  
+ If the 
+ new
+  expression fails, it returns 0. Any use of 
+ ptext
+  must first check that it is not zero. 
+  
+ If we wanted to manipulate the 
+ bad_alloc
+  exception object, what operations does it support? 
+  
+ The standard library defines an exception class hierarchy rooted by an abstract base class named 
+ exception
+ . The 
+ exception
+  class declares a virtual function named 
+ what()
+  that returns a 
+ constchar*
+ . Its purpose is to provide a textual description of the exception thrown. 
+  
+ The 
+ bad_alloc
+  class is derived from the base 
+ exception
+  class. It provides its own instances 
+ of 
+ what()
+ . Under Visual C++, the 
+ bad_alloc
+  instance of 
+ what()
+  generates the message 
+ bad 
+ allocation
+ . 
+  
+ We can also derive our iterator_overflow class from the base 
+ exception
+  class. To do so, we 
+ must include the 
+ exception
+  standard header file and provide an instance of 
+ what()
+ : 
+  
+ #include <exception> 
+  
+ Team-Fly
+ ®",NA
+Exercise 7.1,"The following function provides absolutely no checking of either possible bad data or possible 
+ failure of an operation. Identify all the things that might possibly go wrong within the function (in 
+ this exercise, we don't yet worry about possible exceptions raised). 
+  
+ int *alloc_and_init(string file_name) { 
+  
+  
+  ifstream infile(file_name);  
+  
+  
+  int elem_cnt;  
+  
+  
+  infile >> elem_cnt;  
+  
+  
+  int *pi = allocate_array(elem_cnt);  
+  
+  int elem;  
+  
+  int index = 0;  
+  
+  while (infile >> elem)  
+  
+  
+  pi[index++] = elem;  
+  
+  sort_array(pi, elem_cnt);  
+  
+  register_data(pi);  
+  
+ } 
+  
+  return pi;",NA
+Exercise 7.2,174,NA
+Exercise 7.3,"Add a pair of exceptions to the Stack class hierarchy of 
+ Exercise 5.2
+  to handle the cases of 
+ attempting to pop a stack that is empty and attempting to push a stack that is full. Show the 
+ modified 
+ pop()
+  and 
+ push()
+  member functions. 
+  
+ 175",NA
+Appendix A. Exercise Solutions ,"Exercise 1.4 
+  
+ Exercise 1.5 
+  
+ Exercise 1.6 
+  
+ Exercise 1.7 
+  
+ Exercise 1.8 
+  
+ Exercise 2.1 
+  
+ Exercise 2.2 
+  
+ Exercise 2.3 
+  
+ Exercise 2.4 
+  
+ Exercise 2.5 
+  
+ Exercise 2.6 
+  
+ Exercise 3.1 
+  
+ Exercise 3.2 
+  
+ Exercise 3.3 
+  
+ Exercise 3.4 
+  
+ Exercise 4.1 
+  
+ Exercise 4.2 
+  
+ Exercise 4.3 
+  
+ Exercise 4.4 
+  
+ Exercise 4.5 
+  
+ Exercise 5.1 
+  
+ Exercise 5.2 
+  
+ Exercise 5.3 
+  
+ Exercise 5.4 
+  
+ Exercise 6.1 
+  
+ Exercise 6.2 
+  
+ Exercise 7.1 
+  
+ Section 7.2.  Exercise 7.2 
+  
+ Section 7.3.  Exercise 7.3",NA
+Exercise 1.4,"Try to extend the program: (1) Ask the user to enter both a first and last name, and (2) 
+ modify the output to write out both names.
+  
+ 176",NA
+Exercise 1.5,"Write a program to ask the user his or her name. Read the response. Confirm that the input 
+ is at least two characters in length. If the name seems valid, respond to the user. Provide two 
+ implementations: one using a C-style character string, and the other using a string class 
+ object.
+  
+ The two primary differences between a string class object and a C-style character string are that (1) 
+ the string class object grows dynamically to accommodate its character string, whereas the C-style 
+ character string must be given a fixed size that is (hopefully) large enough to contain the assigned 
+  
+ 177",NA
+Exercise 1.6,"Write a program to read in a sequence of integers from standard input. Place the values, in 
+ turn, in a built-in array and a vector. Iterate over the containers to sum the values. Display 
+ the sum and average of the entered values to standard output.
+  
+ The built-in array and the vector class differ in primarily the same ways as the C-style character 
+ string (which is implemented as an array of 
+ char
+  elements) and the string class: (1) The built-in 
+ array must be of a fixed size, whereas the vector can grow dynamically as elements are inserted, 
+ and (2) the built-in array does not know its size. The fixed-size nature of the built-in array means 
+ that we must be concerned with potentially overflowing its boundary. Unlike the C-style string, 
+ the built-in array has no sentinel value (the null) to indicate its end. Particularly for beginners, I 
+ recommend that the vector class be used in favor of the built-in array. Here is the program using 
+ the vector class: 
+  
+ #include <iostream> 
+  
+ #include <vector> 
+  
+ using namespace std; 
+  
+ int main() 
+  
+ { 
+  
+  
+  vector<int> ivec;  
+  
+  
+  int ival;  
+  
+  
+  while (cin >> ival)  
+  
+  
+  
+  ivec.push_back(ival);  
+  
+  // we could have calculated the sum as we entered the   // 
+ values, but the idea is to iterate over the vector ...  
+  
+  for (int sum = 0, ix = 0; ix < ivec.size(); ++ix)  
+  
+  sum += ivec[ix];  
+  
+  int average = sum / ivec.size();  
+  
+ 179",NA
+Exercise 1.7,"Using your favorite editor, type two or more lines of text into a file. Write a program to open 
+ the file, reading each word into a 
+ vector<string>
+  object. Iterate over the vector, 
+  
+ displaying it to 
+ cout
+ . That done, sort the words using the 
+ sort()
+  generic algorithm.
+  
+ #include <algorithm> 
+  
+ sort(container.begin(), container.end());
+  
+ Then print the sorted words to an output file.
+  
+ I open both the input and the output file before reading in and sorting the text. I could wait to open 
+ the output file, but what would happen if for some reason the output file failed to open? Then all 
+ the computations would have been for nothing. (The file paths are hard-coded and reflect Windows 
+ conventions. The 
+ algorithm
+  header file contains the forward declaration of the 
+ sort()
+  generic 
+ algorithm.) 
+  
+ #include <iostream> 
+  
+ #include <fstream> 
+  
+ #include <algorithm> 
+  
+ #include <string> 
+  
+ #include <vector> 
+  
+ using namespace std; 
+  
+ int main() 
+  
+ { 
+  
+ 180",NA
+Exercise 1.8,"The 
+ switch
+  statement of 
+ Section 1.4
+  displays a different consolation message based on the 
+ number of wrong guesses. Replace this with an array of four string messages that can be 
+ indexed based on the number of wrong guesses.
+  
+ The first step is to define the array of string messages in which to index. One strategy is to 
+ encapsulate them in a display function that, passed the number of incorrect user guesses, returns 
+ the appropriate consolation message. Here is a first implementation. Unfortunately, it is not 
+ correct. Do you see the problems? 
+  
+ const char* msg_to_usr(int num_tries) 
+ { 
+  
+  
+  static const char* usr_msgs[] = {  
+  
+ 181",NA
+Exercise 2.1,"main()
+  [in 
+ Section 2.1
+ ] allows the user to enter only one position value and then terminates. 
+ If a user wishes to ask for two or more positions, he must execute the program two or more 
+ times. Modify 
+ main()
+  [in 
+ Section 2.1
+ ] to allow the user to keep entering positions until he 
+ indicates he wishes to stop.
+  
+ We use a 
+ while
+  loop to execute the ""solicit position, return value"" code sequence. After each 
+ iteration, we ask the user whether he wishes to continue. The loop terminates when he answers no. 
+ We'll jump-start the first iteration by setting the 
+ bool
+  object 
+ more
+  to 
+ true
+ . 
+  
+ #include <iostream> 
+  
+ using namespace std; 
+  
+ extern bool fibon_elem(int, int&); 
+  
+ Team-Fly
+ ®",NA
+Exercise 2.2,"The formula for the Pentagonal numeric sequence is 
+ Pn=n*(3n-1)/2
+ . This yields the 
+ sequence 1, 5, 12, 22, 35, and so on. Define a function to fill a vector of elements passed in to 
+ the function calculated to some user-specified position. Be sure to verify that the position 
+ specified is valid. Write a second function that, given a vector, displays its elements. It should 
+ take a second parameter identifying the type of numeric series the vector represents. Write a 
+ main()
+  function to exercise these functions.
+  
+ #include <vector> 
+  
+ #include <string> 
+  
+ #include <iostream> 
+  
+ using namespace std; 
+  
+ bool calc_elements(vector<int> &vec, int pos); 
+  
+ void display_elems(vector<int> &vec, 
+  
+  
+  const string &title, ostream &os=cout);  
+  
+ int main() 
+  
+ { 
+  
+ 183",NA
+Exercise 2.3,"Separate the function to calculate the Pentagonal numeric sequence implemented in 
+ Exercise 
+ 2.2
+  into two functions. One function should be inline; it checks the validity of the position. A 
+ valid position not as yet calculated causes the function to invoke a second function that does 
+ the actual calculation.
+  
+ 184",NA
+Exercise 2.4,"Introduce a static local vector to hold the elements of your Pentagonal series. This function 
+ returns a const pointer to the vector. It accepts a position by which to grow the vector if the 
+ vector is not that size as yet. Implement a second function that, given a position, returns the 
+ element at that position. Write a 
+ main()
+  function to exercise these functions.
+  
+ #include <vector> 
+  
+ #include <iostream> 
+  
+ using namespace std; 
+  
+ inline bool check_validity(int pos) 
+  
+  
+  {  return (pos <= 0 || pos > 64) ? false : true; }  
+  
+ bool pentagonal_elem(int pos, int &elem) 
+  
+ { 
+  
+  
+  if (! check_validity(pos)){  
+  
+  
+  
+  cout << ""Sorry. Invalid position: "" << pos << endl;  
+  
+  
+  elem = 0;  
+  
+  
+  
+  return false;  
+  
+  
+  }  
+  
+  
+  const vector<int> *pent = pentagonal_series(pos);  
+  
+  
+ elem = (*pent)[pos-1];  
+  
+  
+  return true;  
+  
+ } 
+  
+ const vector<int>* 
+  
+ pentagonal_series(int pos) 
+  
+ { 
+  
+  
+  static vector<int> _elems;  
+  
+  
+  if (check_validity(pos) && (pos > _elems.size()))  
+  
+  
+  for (int ix = _elems.size()+1; ix <= pos; ++ix)  
+  
+  
+  
+  _elems.push_back((ix*(3*ix-1))/2);  
+  
+  
+  return &_elems;  
+  
+ } 
+  
+ 185",NA
+Exercise 2.5,"Implement an overloaded set of 
+ max()
+  functions to accept (a) two integers, (b) two floats, (c) 
+ two strings, (d) a vector of integers, (e) a vector of floats, (f) a vector of strings, (g) an array of 
+ integers and an integer indicating the size of the array, (h) an array of floats and an integer 
+ indicating the size of the array, and (i) an array of strings and an integer indicating the size of 
+ the array. Again, write a 
+ main()
+  function to exercise these functions.
+  
+ #include 
+ <string> 
+  
+ #include 
+ <vector> 
+  
+ #include <algorithm> 
+  
+ using namespace std; 
+  
+ inline int max(int t1, int t2) 
+  
+  
+  { return t1 > t2 ? t1 : t2; }  
+  
+ inline float max(float t1, float t2) 
+  
+  { return t1 > t2 ? t1 : t2; }  
+  
+ inline string max(const string& t1, const string& t2) 
+  
+  { return t1 > t2 ? t1 : t2; }  
+  
+ inline int max(const vector<int> &vec) 
+  
+  
+  { return *max_element(vec.begin(), vec.end()); }  
+  
+ inline float max(const vector<float> &vec) 
+  
+  
+  { return *max_element(vec.begin(), vec.end()); }  
+  
+ inline string max(const vector<string> &vec) 
+  
+  
+  { return *max_element(vec.begin(), vec.end()); }  
+  
+ inline int max(const int *parray, int size) 
+  
+  
+  { return *max_element(parray, parray+size); }  
+  
+ inline float max(const float *parray, int size) 
+  
+  
+  { return *max_element(parray, parray+size); }  
+  
+ 186",NA
+Exercise 2.6,"Reimplement the functions of 
+ Exercise 2.5
+  using templates. Modify the 
+ main()
+  function 
+ accordingly.
+  
+ The nine nontemplate 
+ max()
+  functions are replaced by three 
+ max()
+  function templates. 
+ main() 
+ does not require any changes. 
+  
+ #include <string> 
+  
+ #include <vector> 
+  
+ #include <algorithm> 
+  
+ using namespace std; 
+  
+ template <typename Type> 
+  
+ inline Type max(Type t1, Type t2){ return t1 > t2 ? t1 : t2; } 
+  
+ template <typename elemType> 
+  
+ inline elemType max(const vector<elemType> &vec) 
+  
+  
+  { return *max_element(vec.begin(), vec.end()); }  
+  
+ template <typename arrayType> 
+  
+ inline arrayType max(const arrayType *parray, int size) 
+  
+  { return *max_element(parray, parray+size); }  
+  
+ // note: no changes required of main()! 
+  
+ int main() { 
+  
+  
+  // same as in exercise 2.4  
+  
+ } 
+  
+ 187",NA
+Exercise 3.1,"Write a program to read a text file. Store each word in a map. The key value of the map is 
+ the count of the number of times the word appears in the text. Define a word exclusion set 
+ containing words such as
+ a
+ ,
+ an
+ ,
+ or
+ ,
+ the
+ ,
+ and
+ , and
+ but
+ . Before entering a word in the map, make 
+ sure it is not present in the word exclusion set. Display the list of words and their associated 
+ count when the reading of the text is complete. As an extension, before displaying the text, 
+ allow the user to query the text for the presence of a word.
+  
+ #include <map> 
+  
+ #include <set> 
+  
+ #include <string> 
+  
+ #include <iostream> 
+  
+ #include <fstream> 
+  
+ using namespace std; 
+  
+ void initialize_exclusion_set(set<string>&); 
+  
+ void process_file(map<string,int>&, const set<string>&, ifstream&); 
+ void user_query(const map<string,int>&); 
+  
+ void display_word_count(const map<string,int>&, ofstream&); 
+  
+ int main() 
+  
+ { 
+  
+  
+  ifstream ifile(""C:\\My Documents\\column.txt"");  
+  
+  
+  ofstream ofile(""C:\\My Documents\\column.map"");  
+  
+  
+  if (!  ifile || ! ofile){  
+  
+  
+  
+  cerr << ""Unable to open file -- bailing out!\n"";  
+  
+  
+  return -1;  
+  
+  
+  }  
+  
+  set<string> exclude_set;  
+  
+  initialize_exclusion_set(exclude_set);  
+  
+ } 
+  
+  map<string,int> word_count;  
+  
+  process_file(word_count, exclude_set, ifile);   
+ user_query(word_count);  
+  
+  display_word_count(word_count, ofile);  
+  
+ void initialize_exclusion_set(set<string> &exs){ 
+  
+  
+  static string _excluded_words[25] = {  
+  
+  
+  
+  ""the"",""and"",""but"",""that"",""then"",""are"",""been"",  
+  
+  
+  ""can"",""a"",""could"",""did"",""for"", ""of"",  
+  
+  
+  
+  ""had"",""have"",""him"",""his"",""her"",""its"",""is"",  
+  
+  
+  ""were"",""which"",""when"",""with"",""would""  
+  
+  
+  };  
+  
+ } 
+  
+  exs.insert(_excluded_words, _excluded_words+25);  
+  
+ void process_file(map<string,int> &word_count, 
+  
+  
+  
+  const set<string> &exclude_set, ifstream &ifile)  
+ { 
+  
+  
+  string word;  
+  
+ 188",NA
+Exercise 3.2,"Read in a text file — it can be the same one as in 
+ Exercise 3.1
+  — storing it in a vector. Sort 
+ the vector by the length of the string. Define a function object to pass to 
+ sort()
+ ; it should 
+ accept two strings and return 
+ true
+  if the first string is shorter than the second. Print the 
+ sorted vector.
+  
+ Let's begin by defining the function object to pass to 
+ sort()
+ : 
+  
+ class LessThan { 
+  
+ public: 
+  
+  
+  bool operator()(const string & s1,  
+  
+  
+  
+  const string & s2)  
+  
+  
+  { return s1.size() < s2.size(); }  
+ }; 
+  
+ The call to sort looks like this: 
+  
+ sort(text.begin(), text.end(), LessThan()); 
+  
+ The main program looks like this: 
+  
+ int main() 
+  
+ { 
+  
+  
+  ifstream ifile(""C:\\My Documents\\MooCat.txt"");  
+  
+  ofstream ofile(""C:\\My Documents\\MooCat.sort"");  
+  
+  if (!  ifile || ! ofile){  
+  
+  
+  cerr << ""Unable to open file -- bailing out!\n"";  
+  
+  return -1;  
+  
+  }  
+  
+  vector<string> text;  
+  
+  string word;  
+  
+  while (ifile >> word)  
+  
+  
+  text.push_back(word);  
+  
+ } 
+  
+  sort(text.begin(), text.end(), LessThan());   
+ display_vector(text, ofile);  
+  
+ display_vector()
+  is a function template parameterized on the element type of the vector 
+ passed to it to display: 
+  
+ template <typename elemType> 
+  
+ void display_vector(const vector<elemType> &vec, 
+  
+  
+  
+  ostream &os=cout, int len= 8)  { 
+  
+  
+  vector<elemType>::const_iterator  
+  
+  
+  
+  iter = vec.begin(),  
+  
+ 190",NA
+Exercise 3.3,"Define a map for which the index is the family surname and the key is a vector of the 
+ children's names. Populate the map with at least six entries. Test it by supporting user 
+ queries based on a surname and printing all the map entries.
+  
+ The map uses a string as an index and a vector of strings for the children's names. This is declared 
+ as follows: 
+  
+ map< string, vector<string> > families; 
+  
+ To simplify the declaration of the map, I've defined a typedef to alias 
+ vstring
+  as an alternative 
+ name for a vector that contains string elements. (You likely wouldn't have thought of this because 
+ the typedef mechanism is not introduced until 
+ Section 4.6
+ . The typedef mechanism allows us to 
+ provide an alternative name for a type. It is generally used to simplify the declaration of a complex 
+ type.) 
+  
+ #include <map> 
+  
+ typedef vector<string> vstring; 
+  
+ map< string, vstring > families; 
+  
+ We get our family information from a file. Each line of the file stores the family name and the 
+ name of each child: 
+  
+ surname child1 child2 child3 ... childN 
+  
+ Reading the file and populating the map are accomplished in 
+ populate_map()
+ : 
+  
+ void populate_map(ifstream &nameFile, map<string,vstring> &families) 
+ { 
+  
+  
+  string textline;  
+  
+  
+  while (getline(nameFile, textline))  
+  
+ 191",NA
+Exercise 3.4,"Write a program to read a sequence of integer numbers from standard input using an 
+ istream_iterator. Write the odd numbers into one file using an ostream_iterator. Each value 
+ should be separated by a space. Write the even numbers into a second file, also using an 
+ ostream_iterator. Each of these values should be placed on a separate line
+ . 
+  
+ To read a sequence of integers from standard input, we define two istream_iterators: one bound to 
+ cin
+ , and the second representing end-of-file. 
+  
+ istream_iterator<int> in(cin), eos; 
+  
+ Next, we define a vector to hold the elements read: 
+  
+ vector< int > input; 
+  
+ To perform the reading, we use the 
+ copy()
+  generic algorithm: 
+  
+ #include <iterator> 
+  
+ #include <vector> 
+  
+ #include <iostream> 
+  
+ 194",NA
+Exercise 4.1,"Create a 
+ Stack.h
+  and a 
+ Stack.suffix
+ , where 
+ suffix
+  is whatever convention your 
+ compiler or project follows. Write a 
+ main()
+  function to exercise the full public interface, 
+ and compile and execute it. Both the program text file and 
+ main()
+  must include 
+ Stack.h
+ :
+  
+ #include
+  ""
+ Stack.h
+ "" 
+  
+ The header file for our Stack class contains the necessary header file inclusions and the actual 
+ class declaration: 
+  
+ #include 
+ <string> 
+  
+ #include 
+ <vector> 
+  
+ using namespace std; 
+  
+ class Stack { 
+  
+ public: 
+  
+  
+  bool   push(const string&);  
+  
+  
+  bool   pop (string &elem);  
+  
+  
+  bool   peek(string &elem);  
+  
+  
+  bool   empty() const { return _stack.empty(); }  
+  
+  
+  bool   full()  const { return _stack.size() == _stack.max_size(); }  
+  
+  int    size()  const { return _stack.size(); }  
+  
+ private: 
+  
+  
+  vector<string> _stack;  
+  
+ }; 
+  
+ The Stack program text file contains the definition of the 
+ push()
+ , 
+ pop()
+ , and 
+ peek()
+  member 
+ functions. Under Visual C++, the file is named 
+ Stack.cpp
+ . It must include the Stack class 
+ header file. 
+  
+ #include ""Stack.h"" 
+  
+ bool Stack::pop(string &elem){ 
+  
+  
+  if (empty()) return false;  
+  
+  
+  elem = _stack.back();  
+  
+  
+  _stack.pop_back();  
+  
+  
+  return true;  
+  
+ } 
+  
+ bool Stack::peek(string &elem){ 
+  
+  
+  if (empty()) return false;  
+  
+  
+  elem = _stack.back();  
+  
+  
+  return true;  
+  
+ } 
+  
+ bool Stack::push(const string &elem){  
+ if (full()) return false;  
+  
+  _stack.push_back(elem);  
+  
+ 196",NA
+Exercise 4.2,"Extend the Stack class to support both a 
+ find()
+  and a 
+ count()
+  operation. 
+ find()
+  returns 
+ true
+  or 
+ false
+  depending on whether the value is found. 
+ count()
+  returns the number of 
+ occurrences of the string. Reimplement the 
+ main()
+  of 
+ Exercise 4.1
+  to invoke both functions.
+  
+ We implement these two functions simply by using the corresponding generic algorithms of the 
+ same names: 
+  
+ #include <algorithm> 
+  
+ bool Stack::find(const string &elem) const { 
+  
+  
+  vector<string>::const_iterator end_it = _stack.end();  
+  
+  return ::find(_stack.begin(), end_it, elem) != end_it;  
+  
+ 197",NA
+Exercise 4.3,"Consider the following global data:
+  
+ string program_name; 
+  
+ string version_stamp; 
+  
+ int version_number;
+  
+ 198",NA
+Exercise 4.4,"A user profile consists of a login, the actual user name, the number of times logged on, the 
+ number of guesses made, the number of correct guesses, the current level — one of beginner, 
+ intermediate, advanced, guru — and the percentage correct (this latter may be computed or 
+ stored). Provide a UserProfile class. Support input and output, equality and inequality. The 
+ constructors should allow for a default user level and default login name of ""guest."" How 
+ might you guarantee that each guest login for a particular session is unique?
+  
+ 199",NA
+Exercise 4.5,"Team-Fly
+ ®",NA
+Exercise 5.1,"Implement a two-level stack hierarchy. The base class is a pure abstract Stack class that 
+ minimally supports the following interface: 
+ pop()
+ , 
+ push()
+ , 
+ size()
+ , 
+ empty()
+ , 
+ full()
+ , 
+ peek()
+ , and 
+ print()
+ . The derived classes are LIFO_Stack and Peekback_Stack. The 
+ Peekback_Stack allows the user to retrieve the value of any element in the stack without 
+ modifying the stack itself.
+  
+ The two derived classes implement the actual element container using a vector. To display the 
+ vector, I use a 
+ const_reverse_iterator
+ . This supports traversing the vector from the back 
+ to the front. 
+  
+ #include <string> 
+  
+ #include <iostream> 
+  
+ #include <vector> 
+  
+ using namespace std; 
+  
+ typedef string elemType; 
+  
+ 205",NA
+Exercise 5.2,"Reimplement the class hierarchy of 
+ Exercise 5.1
+  so that the base Stack class implements the 
+ shared, type-independent members.
+  
+ The reimplementation of the class hierarchy illustrates a concrete class hierarchy; that is, we 
+ replace our pure abstract Stack class with our implementation of LIFO_Stack, renaming it Stack. 
+  
+ Although Stack serves as a base class, it also represents actual objects within our applications. 
+  
+ Thus it is termed a concrete base class. Peekback_Stack is derived from Stack. In this 
+  
+ implementation, it inherits all the members of Stack except 
+ peek()
+ , which it overrides. Only the 
+ peek()
+  member function and the destructor of Stack are virtual. The definitions of the member 
+ functions are the same and are not shown. 
+  
+ class Stack { 
+  
+ public: 
+  
+  
+  Stack(int capacity = 0): _top(0)  
+  
+  
+ {  
+  
+  
+  
+  if (capacity)  
+  
+  
+  
+  
+  _stack.reserve(capacity);  
+  
+  }  
+  
+  
+  virtual ~Stack(){}  
+  
+  bool pop(elemType&);  
+  
+  bool push(const elemType&);  
+  
+  virtual bool peek(int, elemType&)  
+  
+  
+  { return false; }  
+  
+  int  size()  const { return _stack.size(); }   
+ int  top()   const { return _top; }  
+  
+  bool empty() const { return ! _top; }  
+  
+  bool full()  const { return size() >= _stack.max_size(); }   
+ void print(ostream&=cout);  
+  
+ protected: 
+  
+  
+  vector<elemType> _stack;  
+  
+  
+  int _top;  
+  
+ }; 
+  
+ class Peekback_Stack : public Stack { 
+ public: 
+  
+  
+  Peekback_Stack(int capacity = 0)  
+  
+  
+  : Stack(capacity) {}  
+  
+ 208",NA
+Exercise 5.3,"A type/subtype inheritance relationship in general reflects an
+ is-a
+ relationship: A range-
+ checking ArrayRC is a kind of Array, a Book is a kind of LibraryRentalMaterial, an 
+ AudioBook is a kind of Book, and so on. Which of the following pairs reflects an is-a 
+ relationship?
+  
+ (a) member function isA_kindOf function 
+  
+ This reflects an is-a relationship. A member function is a specialized instance of a function. Both 
+ have a return type, a name, a parameter list, and a definition. In addition, a member function 
+ belongs to a particular class, may or may not be a virtual, const, or static member function, and so 
+ on. Inheritance correctly models the relationship. 
+  
+ (b) member function isA_kindOf class 
+  
+ This does not reflect an is-a relationship. A member function has a class that it is a member of, but 
+ it is not a specialized instance of a class. Inheritance incorrectly models the relationship. 
+  
+ (c) constructor isA_kindOf member function 
+  
+ This reflects an is-a relationship. A constructor is a specialized instance of a member function. A 
+ constructor must be a member function; however, it has specialized characteristics. Inheritance 
+ correctly models the relationship. 
+  
+ (d) airplane isA_kindOf vehicle 
+  
+ This reflects an is-a relationship. An airplane is a kind of vehicle. A vehicle is an abstract class. 
+ Airplane is also an abstract class and subsequently is likely to be inherited from. Inheritance 
+ correctly models the relationship. 
+  
+ (e) motor isA_kindOf truck 
+  
+ This does not reflect an is-a relationship. A motor is part of a truck. A truck has a motor. 
+ Inheritance incorrectly models the relationship. 
+  
+ (f) circle isA_kindOf geometry 
+  
+ This reflects an is-a relationship. A circle is a specialized instance of geometry — of 2D geometry. 
+ Geometry is an abstract base class. Circle is a concrete specialization of geometry. Inheritance 
+ correctly models the relationship. 
+  
+ (g) square isA_kindOf rectangle 
+  
+ This reflects an is-a relationship. Like a circle, a rectangle is a specialized instance of geometry. A 
+ square is a further specialization — a rectangle in which each side is equal. Inheritance correctly 
+ models the relationship. 
+  
+ (h) automobile isA_kindOf airplane 
+  
+ 209",NA
+Exercise 5.4,"A library supports the following categories of lending materials, each with its own check-out 
+ and check-in policy. Organize these into an inheritance hierarchy:
+  
+ book         audio book 
+  
+ record       children
+ '
+ s puppet 
+  
+ video        Sega video game 
+  
+ rental book  Sony Playstation video game 
+ CD-ROM book  Nintendo video game
+  
+ An inheritance hierarchy moves from the most abstract to the most specific. In this example, we 
+ are given concrete instances of materials loaned by a library. Our task is twofold. First, we must 
+ group common abstractions: the four book abstractions and the three video game abstractions. 
+ Second, we must provide additional classes that can serve as an abstract interface for the concrete 
+ instances. This must be done at two levels: at the level of each family of concrete classes, such as 
+ our books, and at the level of the entire library lending hierarchy. 
+  
+ For example, Sega, Sony Playstation, and Nintendo video games are specific instances of video 
+ games. To tie them together, I've introduced an abstract video game class. I've designated the book 
+ class as a concrete base class with the three other kinds of books as specialized instances. Finally, 
+ we need a root base class of our library lending materials. 
+  
+ In the following hierarchy, each tab represents an inheritance relationship. For example, audio, 
+ rental, and CD-ROM are inherited from book, which in turn is inherited from the abstract 
+ library_lending_material. 
+  
+ library_lending_material 
+  
+  
+  book  
+  
+  
+  
+  audio book  
+  
+  
+  
+  rental book  
+  
+  
+  
+  CD-ROM book  
+  
+  
+  children's puppet  
+  
+  
+  record  
+  
+  
+  video  
+  
+  
+  video game  
+  
+  
+  
+  Sega  
+  
+  
+  
+  Sony Playstation 
+  
+  
+  
+  Nintendo",NA
+Exercise 6.1,"Rewrite the following class definition to make it a class template:
+  
+ 210",NA
+Exercise 6.2,"Reimplement the Matrix class of 
+ Exercise 5.3
+  as a template. In addition, extend it to support 
+ arbitrary row and column size using heap memory. Allocate the memory in the constructor 
+ and deallocate it in the destructor.
+  
+ The primary work of this exercise is to add general row and column support. We introduce a 
+ constructor that takes a row and a column size as arguments. The body of the constructor allocates 
+ the necessary memory from the program's free store: 
+  
+ Matrix(int rows, int columns) 
+  
+  
+  
+  : _rows(rows), _cols(columns)  { 
+  
+  
+  int size = _rows * _cols;  
+  
+  
+  _matrix = new elemType[size];  
+  
+  
+  for (int ix = 0; ix < size; ++ix)  
+  
+  
+  
+  _matrix[ix] = elemType();  } 
+  
+ elemType
+  is the template parameter. 
+ _matrix
+  is now an 
+ elemType
+  pointer that addresses the 
+ heap memory allocated through the 
+ new
+  expression. 
+  
+ template <typename elemType> 
+  
+ class Matrix { 
+  
+ public: 
+  
+  
+  // ...  
+  
+ private: 
+  
+  
+  int       _rows;  
+  
+  
+  int       _cols;  
+  
+  
+  elemType *_matrix;  
+  
+ }; 
+  
+ It is not possible to specify an explicit initial value for which to set each element of the Matrix. 
+ The potential actual types that might be specified for 
+ elemType
+  are simply too diverse. The 
+ language allows us, rather, to specify a default constructor: 
+  
+ _matrix[ix] = elemType(); 
+  
+ For an 
+ int
+ , this becomes 
+ int()
+  and resolves to 0. For a 
+ float
+ , this becomes 
+ float()
+  and 
+ resolves to 0.0f. For a string, this becomes 
+ string()
+  and invokes the default string constructor, 
+ and so on. 
+  
+ We must add a destructor to delete the heap memory acquired during the class object's 
+ construction: 
+  
+ ~Matrix(){ delete [] _matrix; } 
+  
+ We also must provide a copy constructor and a copy assignment operator now. Default 
+ memberwise initialization and copy are no longer sufficient when we allocate memory in a 
+ constructor and deallocate it in a destructor. Under the default behavior, the 
+ _matrix
+  pointer 
+ member of both class objects now addresses the same heap memory. This becomes particularly 
+  
+ Team-Fly
+ ®",NA
+Exercise 7.1,"The following function provides absolutely no checking of either possible bad data or the 
+ possible failure of an operation. Identify all the things that might possibly go wrong within 
+ the function (in this exercise, we don't yet worry about possible exceptions raised).
+  
+ int *alloc_and_init(string file_name) { 
+  
+  
+ ifstream infile(file_name); 
+  
+  
+ int elem_cnt; 
+  
+  
+ infile >> elem_cnt; 
+  
+  
+ int *pi = allocate_array(elem_cnt);
+  
+ int elem; 
+  
+ int index = 0; 
+  
+ while (infile >> elem)
+  
+ 216",NA
+7.2 ,NA,NA
+Exercise 7.2,"The following functions invoked in 
+ alloc_and_init()
+  raise the following exception types 
+ if they should fail:
+  
+ allocate_array() noMem 
+  
+ sort_array()     int 
+  
+ register_data()  string
+  
+ Insert one or more try blocks and associated catch clauses where appropriate to handle these 
+ exceptions. Simply print the occurrence of the error within the catch clause.
+  
+ Rather than surround each individual function invocation with a separate try block, I have chosen 
+ to surround the entire set of calls with a single try block that contains three associated catch 
+ clauses: 
+  
+ int *alloc_and_init(string file_name) { 
+  
+  
+  ifstream infile(file_name.c_str());  
+  
+  if (! infile)return 0;  
+  
+ 217",NA
+7.3 ,NA,NA
+Exercise 7.3,"Add a pair of exceptions to the Stack class hierarchy of 
+ Exercise 6.2
+  to handle the cases of 
+ attempting to pop a stack that is empty and attempting to push a stack that is full. Show the 
+ modified 
+ pop()
+  and 
+ push()
+  member functions.
+  
+ We'll define a PopOnEmpty and a PushOnFull pair of exception classes to be thrown, respectively, 
+ in the 
+ pop()
+  and 
+ push()
+  Stack member functions. These classes no longer need to return a success 
+ or failure value: 
+  
+ void pop(elemType &elem) 
+  
+ { 
+  
+  
+  if (empty())  
+  
+  
+   
+  throw PopOnEmpty();  
+  
+  
+  elem = _stack[--_top];  
+  
+  
+  _stack.pop_back();  
+  
+ } 
+  
+ void push(const elemType &elem){ 
+  
+  
+  
+  if (! full()){  
+  
+  
+   
+  
+  _stack.push_back(elem);  
+  
+  
+   
+  
+  ++_top;  
+  
+  
+   
+  
+  return;  
+  
+  
+  
+  }  
+  
+  
+  
+  throw PushOnFull();  
+  
+ 218",NA
+Appendix B. Generic Algorithms Handbook ,"Each generic algorithm, with the fistful of exceptions that make the rule, begins with a pair of 
+ iterators that marks the range of elements within the container over which to traverse. The range 
+ begins with the first iterator and ends with but does 
+ not
+  include the second: 
+  
+ const int array_size = 7; 
+  
+ int iarray[array_size] = { 1, 10, 8, 4, 3, 14, 8 }; 
+ vector<int> vec(iarray, iarray+ array_size); 
+  
+ vector<int>::iterator it = find(vec.begin(), vec.end(), value); 
+ int *pi = find(iarray, iarray+array_size, value); 
+  
+ The algorithms are generally overloaded to support two versions: one that uses either the built-in 
+ equality or the less-than operator of the underlying element type, and a second one that accepts 
+ either a function object or a pointer to function providing an alternative implementation of that 
+ operator. For example, by default 
+ sort()
+  orders the container elements using the less-than 
+ operator. To override that, we can pass in the predefined greater-than function object: 
+  
+ sort(vec.begin(), vec.end()); 
+  
+ sort(vec.begin(), vec.end(), greater<int>()); 
+  
+ Other algorithms, however, are separated into two uniquely named instances; the predicate instance 
+ in each case ends with the suffix 
+ _if
+ , as in 
+ find_if()
+ . For example, to find an element less than 
+ 10, we might write 
+  
+ find_if(vec.begin(), vec.end(), bind2nd(less<int>, 10)) 
+  
+ Many of the algorithms that modify the container they are applied to come in two flavors: an in-
+ place version that changes the container, and a version that returns a copy of the container with the 
+ changes applied. For example, there is both a 
+ replace()
+  and a 
+ replace_copy()
+  algorithm. 
+ The copy version always contains 
+ _copy
+  in its name. It accepts a third iterator that points to the 
+ first element of the container in which to copy the modified elements. By default, the copy is 
+ achieved by assignment. We can use one of three inserter adapters to override the assignment 
+ semantics and have the elements instead inserted. (See 
+ Section 3.9
+  for a discussion and examples.) 
+  
+ As programmers, we must quickly be able to look up which algorithms are available and how they 
+ are generally used. That is the purpose of this handbook. 
+ [1]
+  The following built-in arrays, vectors, 
+ and lists are used as arguments to the algorithms: 
+  
+ [1]
+  This handbook is an abridged and recast version of the C++ Primer Appendix, which provides a 
+ program example and discussion of each generic algorithm. Here I've listed a subset of the 
+ algorithms that are, in my opinion, the most frequently used. 
+  
+ int ia[8]={ 1, 3, 6, 10, 15, 21, 28, 36 }; 
+ vector<int> ivec(ia, ia+8); 
+  
+ list<int> ilist(ia, ia+8); 
+  
+ string sa[10] = { ""The"", ""light"", ""untonsured"", ""hair"", 
+  
+  
+ ""grained"", ""and"", ""hued"", ""like"", ""pale"", ""oak"" };  
+ vector<string> svec(sa, sa+10); 
+  
+ list<string> slist(sa, sa+10); 
+  
+ Each listing provides a brief description of the algorithm, indicates the header file that must be 
+ included (either algorithm or numeric), and provides one or two usage examples. 
+  
+ 220",NA

@@ -1,0 +1,1958 @@
+Larger Text,Smaller Text,Symbol
+Category Theory ,NA,NA
+for Programmers,NA,NA
+Bartosz Milewski,NA,NA
+Contents,"Preface 
+  
+ xiii
+  
+ I
+  
+ Part One
+  
+ 1 
+ 1
+  
+ Category: The Essence of Composition
+  
+ 1.1 Arrows as Functions 
+  
+ . . . . . . . . . . . . . . . . . . . 
+ 2 
+  
+ 2 
+ 2
+  
+ 1.2
+  
+ Properties of Composition
+  . . . . . . . . . . . . . . . . 
+ 5 
+ 1.3
+  
+ Composition is the Essence of Programming
+  . . . . . . 
+ 8 
+ 1.4
+  
+ Challenges
+  . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 10 
+ Types and Functions 
+  
+ 2.1 Who Needs Types?
+  . . . . . . . . . . . . . . . . . . . . 
+ 11 
+ 1
+ 1 
+ 2.2
+  
+ Types Are About Composability
+  . . . . . . . . . . . . . 
+ 13 
+ 2.3
+  
+ What Are Types?
+  . . . . . . . . . . . . . . . . . . . . . 
+ 14 
+ 2.4
+  
+ Why Do We Need a Mathematical Model?
+  . . . . . . . 
+ 17 
+ 2.5
+  
+ Pure and Dirty Functions
+  . . . . . . . . . . . . . . . . . 
+ 20 
+ 2.6
+  
+ Examples of Types
+  . . . . . . . . . . . . . . . . . . . . . 
+ 21 
+ 2.7
+  
+ Challenges
+  . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 25 
+ iii",NA
+Preface,"For some time now I’ve been floating the idea of 
+ writing a book about category theory that would be 
+ targeted at programmers. Mind you, not computer 
+ scientists but pro-grammers — engineers rather than 
+ scientists. I know this sounds crazy and I am properly 
+ scared. I can’t deny that there is a huge gap between 
+ science and engineering be-cause I have worked on 
+ both sides of the divide. But I’ve al-ways felt a very 
+ strong 
+ compulsion 
+ to 
+ explain 
+ things. 
+ I 
+ have 
+ tremendous admiration for Richard Feynman who was 
+ the master of simple explanations. I know I’m no 
+ Feynman, but I will try my best. I’m starting by 
+ publishing this pref-ace — which is supposed to 
+ motivate the reader to learn category theory — in 
+ hopes of starting a discussion and soliciting feedback.
+ 1",NA
+I ,"will attempt, in the space of a few paragraphs, to convince you 
+ that this book is written for you, and whatever objections you 
+ might have to learning one of the most abstract branches of 
+ mathematics in your “copious spare time” are totally unfounded. 
+ 1
+ You may also watch me
+  teaching this material
+  to a live audience.",NA
+Part I ,NA,NA
+Part One,1,NA
+1,NA,NA
+Category: The Essence of Composition,NA,NA
+A ,"category is an embarrassingly simple concept. A category con-
+ sists of
+  objects
+  and
+  arrows
+  that go between them. That’s why cate-
+ gories are so easy to represent pictorially. An object can be drawn 
+ as a circle or a point, and an arrow… is an arrow. (Just for variety, I 
+ will occasionally draw objects as piggies and arrows as fireworks.) 
+ But the essence of a category is
+  composition
+ . Or, if you prefer, the 
+ essence of composition is a category. Arrows compose, so if you 
+ have an arrow from object A to object B, and another arrow from 
+ object B to object C, then there must be an arrow — their 
+ composition — that goes from A to C.",NA
+1.1,NA,NA
+ Arrows as Functions,"Is this already too much abstract nonsense? Do not despair. Let’s 
+ talk concretes. Think of arrows, which are also called
+  morphisms
+ , 
+ as func-tions. You have a function
+  f
+  that takes an argument of type 
+ A and 
+ 2",NA
+1.2,NA,NA
+ Properties of Composition,"There are two extremely important properties that the 
+ composition in any category must satisfy. 
+ 1. Composition is associative. If you have three morphisms, f, g, 
+ and h, that can be composed (that is, their objects match end-
+ to-end), you don’t need parentheses to compose them. In 
+ math notation this is expressed as: 
+ h◦(g◦f) = (h◦g)◦f = h◦g◦f
+  
+ In (pseudo) Haskell: 
+ f :: A -> B
+  
+ g :: B -> C
+  
+ h :: C -> D
+  
+ h . (g . f) == (h . g) . f == h . g . f
+  
+ 5",NA
+1.3,NA,NA
+ Composition is the Essence of Programming,"Functional programmers have a peculiar way of approaching 
+ problems. They start by asking very Zen-like questions. For 
+ instance, when de-signing an interactive program, they would ask: 
+ What is interaction? When implementing Conway’s Game of Life, 
+ they would probably pon-der about the meaning of life. In this 
+ spirit, I’m going to ask: What is programming? At the most basic 
+ level, programming is about telling the computer what to do. “Take 
+ the contents of memory address x and add it to the contents of the 
+ register EAX.” But even when we program in assembly, the 
+ instructions we give the computer are an expression of something 
+ more meaningful. We are solving a non-trivial problem (if it were 
+ trivial, we wouldn’t need the help of the computer). And how do 
+ we solve problems? We decompose bigger problems into smaller 
+ problems. If the smaller problems are still too big, we decompose 
+ them further, and so on. Finally, we write code that solves all the 
+ small prob-lems. And then comes the essence of programming: we 
+ compose those",NA
+1.4,NA,NA
+ Challenges,"1. Implement, as best as you can, the identity function in your 
+ fa-vorite language (or the second favorite, if your favorite 
+ language happens to be Haskell). 
+ 2. Implement the composition function in your favorite 
+ language. 
+ It takes two functions as arguments and returns a function 
+ that is their composition. 
+ 3. Write a program that tries to test that your composition 
+ function  
+ respects identity. 
+ 4. Is the world-wide web a category in any sense? Are links 
+ mor- 
+ phisms? 
+ 5. Is Facebook a category, with people as objects and 
+ friendships as  
+ morphisms? 
+ 6. When is a directed graph a category?",NA
+2,NA,NA
+Types and Functions,NA,NA
+T ,"he category of types and functions plays an important role 
+   
+ in programming, so let’s talk about what types are and why we 
+ need them.",NA
+2.1,NA,NA
+ Who Needs Types?,"There seems to be some controversy about the advantages of static 
+ vs. dynamic and strong vs. weak typing. Let me illustrate these 
+ choices with a thought experiment. Imagine millions of monkeys at 
+ computer keyboards happily hitting random keys, producing 
+ programs, compil-ing, and running them. 
+ With machine language, any combination of bytes produced by 
+ monkeys would be accepted and run. But with higher level 
+ languages, we do appreciate the fact that a compiler is able to 
+ detect lexical and grammatical errors. Lots of monkeys will go 
+ without bananas, but the remaining programs will have a better 
+ chance of being useful. Type 
+ 11",NA
+2.2,NA,NA
+ Types Are About Composability,"Category theory is about composing arrows. But not any two 
+ arrows can be composed. The target object of one arrow must be 
+ the same as the source source object of the next arrow. In 
+ programming we pass the results on one function to another. The 
+ program will not work if the target function is not able to correctly 
+ interpret the data produced by the source function. The two ends 
+ must fit for the composition to work. The stronger the type system 
+ of the language, the better this match can be described and 
+ mechanically verified. 
+ The only serious argument I hear against strong static type 
+ check-ing is that it might eliminate some programs that are 
+ semantically cor-rect. In practice, this happens extremely rarely 
+ and, in any case, every language provides some kind of a backdoor 
+ to bypass the type sys-tem when that’s really necessary. Even 
+ Haskell has
+  unsafeCoerce
+ . But such devices should be used 
+ judiciously. Franz Kafka’s character, Gre-gor Samsa, breaks the 
+ type system when he metamorphoses into a giant bug, and we all 
+ know how it ends. 
+ Another argument I hear a lot is that dealing with types 
+ imposes too much burden on the programmer. I could sympathize 
+ with this sen-timent after having to write a few declarations of 
+ iterators in C++ my-self, except that there is a technology called
+  
+ type inference
+  that lets the compiler deduce most of the types from 
+ the context in which they are used. In C++, you can now declare a 
+ variable
+  auto
+  and let the compiler figure out its type. 
+ In Haskell, except on rare occasions, type annotations are 
+ purely optional. Programmers tend to use them anyway, because 
+ they can tell a lot about the semantics of code, and they make 
+ compilation errors eas-ier to understand. It’s a common practice in 
+ Haskell to start a project by",NA
+2.3,NA,NA
+ What Are Types?,"The simplest intuition for types is that they are sets of values. The 
+ type 
+ Bool
+  (remember, concrete types start with a capital letter in 
+ Haskell) is",NA
+2.4,NA,NA
+ Why Do We Need a Mathematical Model?,"As a programmer you are intimately familiar with the syntax and 
+ gram-mar of your programming language. These aspects of the 
+ language are usually described using formal notation at the very 
+ beginning of the language spec. But the meaning, or semantics, of 
+ the language is much harder to describe; it takes many more pages, 
+ is rarely formal enough, and almost never complete. Hence the 
+ never ending discussions among language lawyers, and a whole 
+ cottage industry of books dedicated to the exegesis of the finer 
+ points of language standards. 
+ There are formal tools for describing the semantics of a 
+ language but, because of their complexity, they are mostly used 
+ with simplified academic languages, not real-life programming 
+ behemoths. One such tool called
+  operational semantics
+  describes 
+ the mechanics of program execution. It defines a formalized 
+ idealized interpreter. The semantics of 
+ 1
+ Nils Anders Danielsson, John Hughes, Patrik Jansson, Jeremy Gibbons,
+  Fast 
+ and Loose Reasoning is Morally Correct
+ . This paper provides justification for 
+ ignoring bot-toms in most contexts.",NA
+2.5,NA,NA
+ Pure and Dirty Functions,"The things we call functions in C++ or any other imperative 
+ language, are not the same things mathematicians call functions. A 
+ mathematical function is just a mapping of values to values. 
+ We can implement a mathematical function in a programming 
+ lan-guage: Such a function, given an input value will calculate the 
+ output value. A function to produce a square of a number will 
+ probably multi-ply the input value by itself. It will do it every time 
+ it’s called, and it’s guaranteed to produce the same output every 
+ time it’s called with the same input. The square of a number 
+ doesn’t change with the phases of the Moon. 
+ Also, calculating the square of a number should not have a side 
+ effect of dispensing a tasty treat for your dog. A “function” that 
+ does that cannot be easily modelled as a mathematical function. 
+ In programming languages, functions that always produce the 
+ same result given the same input and have no side effects are 
+ called
+  pure func-tions
+ . In a pure functional language like Haskell all 
+ functions are pure. Because of that, it’s easier to give these 
+ languages denotational seman-tics and model them using category 
+ theory. As for other languages, it’s always possible to restrict 
+ yourself to a pure subset, or reason about side effects separately. 
+ Later we’ll see how monads let us model all kinds of",NA
+2.6,NA,NA
+ Examples of Types,"Once you realize that types are sets, you can think of some rather 
+ exotic types. For instance, what’s the type corresponding to an 
+ empty set? No, it’s not C++
+  void
+ , although this type
+  is
+  called
+  Void
+  in 
+ Haskell. It’s a type that’s not inhabited by any values. You can 
+ define a function that takes 
+ Void
+ , but you can never call it. To call it, 
+ you would have to provide a value of the type
+  Void
+ , and there just 
+ aren’t any. As for what this function can return, there are no 
+ restrictions whatsoever. It can return any type (although it never 
+ will, because it can’t be called). In other words it’s a function that’s 
+ polymorphic in the return type. Haskellers have a name for it: 
+ absurd :: Void -> a
+  
+ (Remember,
+  a
+  is a type variable that can stand for any type.) The 
+ name is not coincidental. There is deeper interpretation of types 
+ and functions in terms of logic called the Curry-Howard 
+ isomorphism. The type
+  Void 
+ represents falsity, and the type of the 
+ function
+  absurd
+  corresponds to the statement that from falsity 
+ follows anything, as in the Latin adage“ex falso sequitur quodlibet.” 
+  
+ Next is the type that corresponds to a singleton set. It’s a type 
+ that has only one possible value. This value just “is.” You might not 
+ immedi-ately recognise it as such, but that is the C++
+  void
+ . Think of 
+ functions from and to this type. A function from
+  void
+  can always be 
+ called. If it’s a pure function, it will always return the same result. 
+ Here’s an example of such a function: 
+ 21",NA
+2.7,NA,NA
+ Challenges,"1. Define a higher-order function (or a function object)
+  memoize
+  
+ in your favorite language. This function takes a pure function
+  
+ f
+  as an argument and returns a function that behaves almost 
+ exactly like
+  f
+ , except that it only calls the original function 
+ once for every argument, stores the result internally, and 
+ subsequently returns this stored result every time it’s called 
+ with the same argument. 
+ You can tell the memoized function from the original by 
+ watch-ing its performance. For instance, try to memoize a 
+ function that takes a long time to evaluate. You’ll have to 
+ wait for the result the first time you call it, but on subsequent 
+ calls, with the same argument, you should get the result 
+ immediately. 
+ 2. Try to memoize a function from your standard library that 
+ you  normally use to produce random numbers. Does it work? 
+ 3. Most random number generators can be initialized with a 
+ seed. 
+ Implement a function that takes a seed, calls the random 
+ number generator with that seed, and returns the result. 
+ Memoize that function. Does it work? 
+ 4. Which of these C++ functions are pure? Try to memoize them 
+ and observe what happens when you call them multiple 
+ times: memoized and not. 
+ (a) The factorial function from the example in the 
+ text. (b)
+  std::getchar()
+  
+ (c)
+  bool f() {
+  
+ std::cout << ""Hello!"" << std::endl;
+  
+ return true;
+  
+ }
+  
+ (d)
+  int f(int x)",NA
+3,NA,NA
+Categories Great and Small,NA,NA
+Y ,"ou can get real appreciation for categories by studying a 
+ variety   
+ of examples. Categories come in all shapes and sizes 
+ and often pop up in unexpected places. We’ll start with something 
+ really simple.",NA
+3.1,NA,NA
+ No Objects,"The most trivial category is one with zero objects and, 
+ consequently, zero morphisms. It’s a very sad category by itself, 
+ but it may be impor-tant in the context of other categories, for 
+ instance, in the category of all categories (yes, there is one). If you 
+ think that an empty set makes sense, then why not an empty 
+ category?",NA
+3.2,NA,NA
+ Simple Graphs,"You can build categories just by connecting objects with arrows. 
+ You can imagine starting with any directed graph and making it 
+ into a cat-egory by simply adding more arrows. First, add an 
+ identity arrow at each node. Then, for any two arrows such that 
+ the end of one coincides with the beginning of the other (in other 
+ words, any two
+  composable 
+ arrows), add a new arrow to serve as 
+ their composition. Every time you add a new arrow, you have to 
+ also consider its composition with any other arrow (except for the 
+ identity arrows) and itself. You usually end up with infinitely many 
+ arrows, but that’s okay. 
+ Another way of looking at this process is that you’re creating a 
+ category, which has an object for every node in the graph, and all 
+ pos-sible
+  chains
+  of composable graph edges as morphisms. (You 
+ may even consider identity morphisms as special cases of chains of 
+ length zero.) Such a category is called a
+  free category
+  generated by 
+ a given graph. It’s an example of a free construction, a process of 
+ completing a given structure by extending it with a minimum 
+ number of items to satisfy its laws (here, the laws of a category). 
+ We’ll see more examples of it in the future.",NA
+3.3,NA,NA
+ Orders,"And now for something completely different! A category where a 
+ mor-phism is a relation between objects: the relation of being less 
+ than or equal. Let’s check if it indeed is a category. Do we have 
+ identity mor-phisms? Every object is less than or equal to itself: 
+ check! Do we have composition? If
+  a <= b
+  and
+  b <= c
+  then
+  a <= c
+ : check! 
+ Is composition associative? Check! A set with a relation like this is 
+ called a
+  preorder
+ ,",NA
+3.4,NA,NA
+ Monoid as Set,"Monoid is an embarrassingly simple but amazingly powerful 
+ concept. It’s the concept behind basic arithmetics: Both addition 
+ and multipli-cation form a monoid. Monoids are ubiquitous in 
+ programming. They show up as strings, lists, foldable data 
+ structures, futures in concurrent",NA
+3.5,NA,NA
+ Monoid as Category,"That was the “familiar” definition of the monoid in terms of 
+ elements of a set. But as you know, in category theory we try to get 
+ away from sets and their elements, and instead talk about objects 
+ and morphisms. So let’s change our perspective a bit and think of 
+ the application of the binary operator as “moving” or “shifting” 
+ things around the set. 
+ For instance, there is the operation of adding 5 to every natural 
+ number. It maps 0 to 5, 1 to 6, 2 to 7, and so on. That’s a function 
+ defined on the set of natural numbers. That’s good: we have a 
+ function and a set. In general, for any number n there is a function 
+ of adding n— the “adder” of n. 
+ How do adders compose? The composition of the function that 
+ adds 5 with the function that adds 7 is a function that adds 12. So 
+ the compo-sition of adders can be made equivalent to the rules of 
+ addition. That’s good too: we can replace addition with function 
+ composition. 
+ But wait, there’s more: There is also the adder for the neutral 
+ ele-ment, zero. Adding zero doesn’t move things around, so it’s the 
+ identity function in the set of natural numbers. 
+ Instead of giving you the traditional rules of addition, I could as 
+ well give you the rules of composing adders, without any loss of 
+ infor-mation. Notice that the composition of adders is associative, 
+ because the composition of functions is associative; and we have 
+ the zero adder corresponding to the identity function. 
+ An astute reader might have noticed that the mapping from 
+ inte-gers to adders follows from the second interpretation of the 
+ type signa-ture of
+  mappend
+  as
+  m->(m->m)
+ . It tells us that
+  mappend
+  maps 
+ an element of a monoid set to a function acting on that set. 
+ Now I want you to forget that you are dealing with the set of 
+ natural",NA
+3.6,NA,NA
+ Challenges,"1. Generate a free category from: 
+ (a) A graph with one node and no edges  
+ (b) A graph with one node and one (directed) edge (hint: 
+ this  
+  
+ edge can be composed with itself)  
+ (c) A graph with two nodes and a single arrow between 
+ them (d) A graph with a single node and 26 arrows marked 
+ with the  
+  
+ letters of the alphabet: a, b, c … z. 
+ 2. What kind of order is this? 
+ (a) A set of sets with the inclusion relation: A is included in 
+ B  if every element of A is also an element of B. 
+ (b) C++ types with the following subtyping relation: T1 is a 
+ subtype of T2 if a pointer to T1 can be passed to a 
+ function that expects a pointer to T2 without triggering 
+ a compila-tion error. 
+ 3. Considering that Bool is a set of two values True and False, 
+ show that it forms two (set-theoretical) monoids with 
+ respect to, re-spectively, operator
+  &&
+  (AND) and
+  ||
+  (OR). 
+ 37",NA
+4,NA,NA
+Kleisli Categories,NA,NA
+Y ,"ou’ve seen how to model types and pure functions as a cate-
+ gory. I also mentioned that there is a way to model side effects, or 
+ non-pure functions, in category theory. Let’s have a look at one 
+ such example: functions that log or trace their execution. 
+ Something that, in an imperative language, would likely be 
+ implemented by mutating some global state, as in: 
+ string logger;
+  
+ bool negate(bool b) {
+  
+ logger += ""Not so! "";
+  
+ return !b;
+  
+ }
+  
+ You know that this is not a pure function, because its memoized 
+ version would fail to produce a log. This function has
+  side effects
+ . 
+ 39",NA
+4.1,NA,NA
+ The Writer Category,"The idea of embellishing the return types of a bunch of functions in 
+ order to piggyback some additional functionality turns out to be 
+ very fruitful. We’ll see many more examples of it. The starting 
+ point is our regular category of types and functions. We’ll leave the 
+ types as objects, but redefine our morphisms to be the embellished 
+ functions. 
+ For instance, suppose that we want to embellish the function
+  
+ isEven 
+ that goes from
+  int
+  to
+  bool
+ . We turn it into a morphism that is 
+ repre-sented by an embellished function. The important point is 
+ that this mor-phism is still considered an arrow between the 
+ objects
+  int
+  and
+  bool
+ , even though the embellished function returns a 
+ pair: 
+ pair<bool, string> isEven(int n) {
+  
+ return make_pair(n % 2 == 0, ""isEven "");
+  
+ }
+  
+ By the laws of a category, we should be able to compose this 
+ morphism with another morphism that goes from the object
+  bool
+  to 
+ whatever. In particular, we should be able to compose it with our 
+ earlier
+  negate
+ : 
+ pair<bool, string> negate(bool b) {
+  
+ return make_pair(!b, ""Not so! "");
+  
+ }
+  
+ Obviously, we cannot compose these two morphisms the same way 
+ we compose regular functions, because of the input/output 
+ mismatch. 
+ Their composition should look more like this: 
+ pair<bool, string> isOdd(int n) {
+  
+ pair<bool, string> p1 = isEven(n);",NA
+4.2,NA,NA
+ Writer in Haskell,"The same thing in Haskell is a little more terse, and we also get a lot 
+ more help from the compiler. Let’s start by defining the
+  Writer
+  type: 
+ type Writer a = (a, String)
+  
+ Here I’m just defining a type alias, an equivalent of a
+  typedef
+  (or
+  
+ using
+ ) in C++. The type
+  Writer
+  is parameterized by a type variable
+  a
+  
+ and is equivalent to a pair of
+  a
+  and
+  String
+ . The syntax for pairs is 
+ minimal: just two items in parentheses, separated by a comma. 
+  
+ Our morphisms are functions from an arbitrary type to some
+  
+ Writer 
+ type: 
+ a -> Writer b
+  
+ We’ll declare the composition as a funny infix operator, sometimes 
+ called the “fish”: 
+ (>=>) :: (a -> Writer b) -> (b -> Writer c) -> (a -> Writer c)
+  
+ It’s a function of two arguments, each being a function on its own, 
+ and returning a function. The first argument is of the type
+  (a->Writer 
+ b)
+ , the second is
+  (b->Writer c)
+ , and the result is
+  (a->Writer c)
+ . 
+  
+ Here’s the definition of this infix operator — the two arguments
+  
+ m1 
+ and
+  m2
+  appearing on either side of the fishy symbol: 
+ m1 >=> m2 = \x ->
+  
+ let (y, s1) = m1 x
+  
+ (z, s2) = m2 y
+  
+ in (z, s1 ++ s2)
+  
+ 48",NA
+4.3,NA,NA
+ Kleisli Categories,"You might have guessed that I haven’t invented this category on 
+ the spot. It’s an example of the so called Kleisli category — a 
+ category based on a monad. We are not ready to discuss monads 
+ yet, but I wanted to give you a taste of what they can do. For our 
+ limited purposes, a Kleisli category has, as objects, the types of the 
+ underlying programming lan-guage. Morphisms from type A to 
+ type B are functions that go from A to a type derived from B using 
+ the particular embellishment. Each Kleisli category defines its own 
+ way of composing such morphisms, as well as the identity 
+ morphisms with respect to that composition. (Later we’ll see that 
+ the imprecise term “embellishment” corresponds to the notion of 
+ an endofunctor in a category.)  
+  
+ The particular monad that I used as the basis of the category in 
+ this post is called the
+  writer monad
+  and it’s used for logging or 
+ tracing the execution of functions. It’s also an example of a more 
+ general mecha-nism for embedding effects in pure computations. 
+ You’ve seen previ-ously that we could model programming-
+ language types and functions in the category of sets (disregarding 
+ bottoms, as usual). Here we have extended this model to a slightly 
+ different category, a category where morphisms are represented 
+ by embellished functions, and their com-position does more than 
+ just pass the output of one function to the input of another. We 
+ have one more degree of freedom to play with: the composition 
+ itself. It turns out that this is exactly the degree of free-dom which 
+ makes it possible to give simple denotational semantics to 
+ programs that in imperative languages are traditionally 
+ implemented",NA
+4.4,NA,NA
+ Challenge,"A function that is not defined for all possible values of its argument 
+ is called a partial function. It’s not really a function in the 
+ mathematical sense, so it doesn’t fit the standard categorical mold. 
+ It can, however, be represented by a function that returns an 
+ embellished type
+  optional
+ : 
+ template<class A> class optional { 
+  
+  
+ bool _isValid; 
+  
+  
+ A _value; 
+  
+ public: 
+  
+  
+ optional() 
+  
+ : _isValid(false) {} 
+  
+  
+ optional(A v) : _isValid(true), _value(v) {} 
+  
+ bool isValid() 
+ const { return _isValid; } 
+  
+ A value() const { return _value; } 
+  
+ };
+  
+ As an example, here’s the implementation of the embellished 
+ function 
+ safe_root
+ : 
+ optional<double> safe_root(double x) { 
+  
+  
+ if (x >= 0) return optional<double>{sqrt(x)}; 
+  
+ else return 
+ optional<double>{}; 
+  
+ }
+  
+ Here’s the challenge: 
+ 1. Construct the Kleisli category for partial functions (define 
+ com- 
+ position and identity). 
+ 51",NA
+5,NA,NA
+Products and Coproducts,NA,NA
+T ,"he Ancient Greek playwright Euripides once said: “Every man 
+ is like the company he is wont to keep.” We are defined by our 
+ relationships. Nowhere is this more true than in category theory. If 
+ we want to single out a particular object in a category, we can only 
+ do this by describing its pattern of relationships with other objects 
+ (and itself). These relationships are defined by morphisms. 
+ There is a common construction in category theory called the
+  
+ uni-versal construction
+  for defining objects in terms of their 
+ relationships. One way of doing this is to pick a pattern, a 
+ particular shape con-structed from objects and morphisms, and 
+ look for all its occurrences in the category. If it’s a common enough 
+ pattern, and the category is large, chances are you’ll have lots and 
+ lots of hits. The trick is to es-tablish some kind of ranking among 
+ those hits, and pick what could be considered the best fit. 
+ This process is reminiscent of the way we do web searches. A 
+ query",NA
+5.1,NA,NA
+ Initial Object,"The simplest shape is a single object. Obviously, there are as many 
+ in-stances of this shape as there are objects in a given category. 
+ That’s a lot to choose from. We need to establish some kind of 
+ ranking and try to find the object that tops this hierarchy. The only 
+ means at our disposal are morphisms. If you think of morphisms as 
+ arrows, then it’s possible that there is an overall net flow of arrows 
+ from one end of the category to another. This is true in ordered 
+ categories, for instance in partial orders. We could generalize that 
+ notion of object precedence by saying that object
+  a
+  is “more initial” 
+ than object
+  b
+  if there is an arrow (a morphism) going from
+  a
+  to
+  b
+ . 
+ We would then define
+  the
+  initial object as one that has arrows 
+ going to all other objects. Obviously there is no guarantee that such 
+ an object exists, and that’s okay. A bigger problem is that there 
+ may be too many such objects: The recall is good, but pre-cision is 
+ lacking. The solution is to take a hint from ordered categories— 
+ they allow at most one arrow between any two objects: there is 
+ only one way of being less-than or equal-to another object. Which 
+ leads us to this definition of the initial object: 
+ The
+  initial object
+  is the object that has one and only one 
+ morphism going to any object in the category. 
+ 54",NA
+5.2,NA,NA
+ Terminal Object,"Let’s continue with the single-object pattern, but let’s change the 
+ way we rank the objects. We’ll say that object
+  a
+  is “more terminal” 
+ than object
+  b
+  if there is a morphism going from
+  b
+  to
+  a
+  (notice the 
+ reversal of direction). We’ll be looking for an object that’s more 
+ terminal than any other object in the category. Again, we will insist 
+ on uniqueness: 
+ The
+  terminal object
+  is the object with one and only one 
+ mor-phism coming to it from any object in the category. 
+  
+ And again, the terminal object is unique, up to isomorphism, which 
+ I will show shortly. But first let’s look at some examples. In a poset, 
+ 56",NA
+5.3,NA,NA
+ Duality,"You can’t help but to notice the symmetry between the way we 
+ defined the initial object and the terminal object. The only 
+ difference between",NA
+5.4,NA,NA
+ Isomorphisms,"As programmers, we are well aware that defining equality is a non-
+ trivial task. What does it mean for two objects to be equal? Do they 
+ have to occupy the same location in memory (pointer equality)? Or 
+ is it enough that the values of all their components are equal? Are 
+ two complex numbers equal if one is expressed as the real and 
+ imaginary part, and the other as modulus and angle? You’d think 
+ that mathe-maticians would have figured out the meaning of 
+ equality, but they haven’t. They have the same problem of multiple 
+ competing defini-",NA
+5.6,NA,NA
+ Coproduct,"Like every construction in category theory, the product has a dual, 
+ which is called the coproduct. When we reverse the arrows in the 
+ prod-uct pattern, we end up with an object
+  c
+  equipped with two
+  
+ injections
+ ,
+  i 
+ and
+  j
+ : morphisms from
+  a
+  and
+  b
+  to
+  c
+ . 
+ 66",NA
+5.7,NA,NA
+ Asymmetry,"We’ve seen two set of dual definitions: The definition of a terminal 
+ object can be obtained from the definition of the initial object by 
+ re-versing the direction of arrows; in a similar way, the definition 
+ of the coproduct can be obtained from that of the product. Yet in 
+ the cate-gory of sets the initial object is very different from the 
+ final object, and coproduct is very different from product. We’ll see 
+ later that product behaves like multiplication, with the terminal 
+ object playing the role of one; whereas coproduct behaves more 
+ like the sum, with the initial object playing the role of zero. In 
+ particular, for finite sets, the size of the product is the product of 
+ the sizes of individual sets, and the size of the coproduct is the sum 
+ of the sizes. 
+  
+ This shows that the category of sets is not symmetric with 
+ respect to the inversion of arrows. 
+ Notice that while the empty set has a unique morphism to any 
+ set (the
+  absurd
+  function), it has no morphisms coming back. The 
+ singleton set has a unique morphism coming to it from any set, but 
+ it
+  also
+  has outgoing morphisms to every set (except for the empty 
+ one). As we’ve seen before, these outgoing morphisms from the 
+ terminal object play a very important role of picking elements of 
+ other sets (the empty set has no elements, so there’s nothing to 
+ pick). 
+ It’s the relationship of the singleton set to the product that sets 
+ it apart from the coproduct. Consider using the singleton set, 
+ represented by the unit type
+  ()
+ , as yet another — vastly inferior — 
+ candidate for the",NA
+5.8,NA,NA
+ Challenges,"1. Show that the terminal object is unique up to unique isomor-
+  
+ phism. 
+ 2. What is a product of two objects in a poset? Hint: Use the uni-
+  
+ versal construction. 
+ 3. What is a coproduct of two objects in a poset? 
+ 4. Implement the equivalent of Haskell
+  Either
+  as a generic type in 
+  
+ your favorite language (other than Haskell). 
+ 5. Show that
+  Either
+  is a “better” coproduct than
+  int
+  equipped with 
+  
+ two injections: 
+ int i(int n) { return n; }
+  
+ int j(bool b) { return b? 0: 1; }
+  
+ Hint: Define a function 
+ int m(Either const & e);
+  
+ that factorizes
+  i
+  and
+  j
+ . 
+ 6. Continuing the previous problem: How would you argue that
+  
+ int 
+  with the two injections
+  i
+  and
+  j
+  cannot be “better” than
+  Either
+ ? 7. 
+ Still continuing: What about these injections? 
+ int i(int n) {
+  
+ if (n < 0) return n;
+  
+ return n + 2;
+  
+ }
+  
+ int j(bool b) { return b? 0: 1; }
+  
+ 8. Come up with an inferior candidate for a coproduct of
+  int
+  and 
+ bool
+  that cannot be better than
+  Either
+  because it allows 
+ multiple 
+ 73",NA
+5.9,NA,NA
+ Bibliography ,"1. The Catsters,
+  Products and Coproducts
+  video. 
+ 74",NA
+6,NA,NA
+Simple Algebraic Data Types,NA,NA
+W ,"e’ve seen two basic ways of combining types: using a 
+ product and a coproduct. It turns out that a lot of data structures in 
+ ev-eryday programming can be built using just these two 
+ mechanisms. This fact has important practical consequences. Many 
+ properties of data structures are composable. For instance, if you 
+ know how to compare values of basic types for equality, and you 
+ know how to generalize these comparisons to product and 
+ coproduct types, you can automate the derivation of equality 
+ operators for composite types. In Haskell you can automatically 
+ derive equality, comparison, conversion to and from string, and 
+ more, for a large subset of composite types. 
+  
+ Let’s have a closer look at product and sum types as they 
+ appear in programming. 
+ 75",NA
+6.1,NA,NA
+ Product Types,"The canonical implementation of a product of two types in a 
+ program-ming language is a pair. In Haskell, a pair is a primitive 
+ type construc-tor; in C++ it’s a relatively complex template defined 
+ in the Standard Library. 
+ Pairs are not strictly commutative: a pair
+  (Int, Bool)
+  cannot be sub-
+ stituted for a pair
+  (Bool, Int)
+ , even though they carry the same in-
+ formation. They are, however, commutative up to isomorphism — 
+ the isomorphism being given by the
+  swap
+  function (which is its own 
+ in-verse): 
+ swap :: (a, b) -> (b, a)
+  
+ swap (x, y) = (y, x)
+  
+ You can think of the two pairs as simply using a different format 
+ for storing the same data. It’s just like big endian vs. little endian. 
+ You can combine an arbitrary number of types into a product 
+ by nesting pairs inside pairs, but there is an easier way: nested 
+ pairs are equivalent to tuples. It’s the consequence of the fact that 
+ different ways of nesting pairs are isomorphic. If you want to 
+ combine three types in a product,
+  a
+ ,
+  b
+ , and
+  c
+ , in this order, you can 
+ do it in two ways: 
+ ((a, b), c)
+  
+ 76",NA
+6.2,NA,NA
+ Records,"Let’s have a look at a simple example. We want to describe 
+ chemical elements by combining two strings, name and symbol; 
+ and an inte-ger, the atomic number; into one data structure. We 
+ can use a tuple 
+ (String, String, Int)
+  and remember which component 
+ represents what. We would extract components by pattern 
+ matching, as in this function that checks if the symbol of the 
+ element is the prefix of its name (as in
+  He
+  being the prefix of
+  
+ Helium
+ ): 
+ startsWithSymbol :: (String, String, Int) -> Bool
+  
+ startsWithSymbol (name, symbol, _) = isPrefixOf symbol name
+  
+ This code is error prone, and is hard to read and maintain. It’s 
+ much better to define a record: 
+ data Element = Element { name :: String
+  
+ , symbol :: String
+  
+ , atomicNumber :: Int }
+  
+ The two representations are isomorphic, as witnessed by these 
+ two con-version functions, which are the inverse of each other: 
+ tupleToElem :: (String, String, Int) -> Element
+  
+ tupleToElem (n, s, a) = Element { name = n
+  
+ , symbol = s
+  
+ , atomicNumber = a }
+  
+ elemToTuple :: Element -> (String, String, Int)
+  
+ elemToTuple e = (name e, symbol e, atomicNumber e)
+  
+ 80",NA
+6.3,NA,NA
+ Sum Types,"Just as the product in the category of sets gives rise to product 
+ types, the coproduct gives rise to sum types. The canonical 
+ implementation of a sum type in Haskell is: 
+ data Either a b = Left a | Right b
+  
+ And like pairs,
+  Either
+ s are commutative (up to isomorphism), can be 
+ nested, and the nesting order is irrelevant (up to isomorphism). So 
+ we can, for instance, define a sum equivalent of a triple: 
+ 81",NA
+6.4,NA,NA
+ Algebra of Types,"Taken separately, product and sum types can be used to define a 
+ variety of useful data structures, but the real strength comes from 
+ combining the two. Once again we are invoking the power of 
+ composition. 
+ Let’s summarize what we’ve discovered so far. We’ve seen two 
+ commutative monoidal structures underlying the type system: We 
+ have the sum types with
+  Void
+  as the neutral element, and the 
+ product types with the unit type,
+  ()
+ , as the neutral element. We’d 
+ like to think of them as analogous to addition and multiplication. In 
+ this analogy,
+  Void 
+ would correspond to zero, and unit,
+  ()
+ , to one. 
+ Let’s see how far we can stretch this analogy. For instance, does 
+ multiplication by zero give zero? In other words, is a product type 
+ with one component being
+  Void
+  isomorphic to
+  Void
+ ? For example, is 
+ it pos-sible to create a pair of, say
+  Int
+  and
+  Void
+ ? 
+ To create a pair you need two values. Although you can easily 
+ come up with an integer, there is no value of type
+  Void
+ . Therefore, 
+ for any type
+  a
+ , the type
+  (a, Void)
+  is uninhabited — has no values — 
+ and is therefore equivalent to
+  Void
+ . In other words,
+  a*0 = 0
+ . 
+  
+ Another thing that links addition and multiplication is the 
+ distribu-tive property: 
+ a * (b + c) = a * b + a * c
+  
+ Does it also hold for product and sum types? Yes, it does — up to 
+ iso-morphisms, as usual. The left hand side corresponds to the 
+ type: 
+ (a, Either b c)
+  
+ and the right hand side corresponds to the type:",NA
+6.5,NA,NA
+ Challenges,"1. Show the isomorphism between
+  Maybe a
+  and
+  Either () a
+ . 2. 
+ Here’s a sum type defined in Haskell: 
+ data Shape = Circle Float
+  
+ | Rect Float Float
+  
+ When we want to define a function like
+  area
+  that acts on a
+  
+ Shape
+ , we do it by pattern matching on the two constructors: 
+ area :: Shape -> Float
+  
+ area (Circle r) = pi * r * r
+  
+ area (Rect d h) = d * h
+  
+  
+ Implement
+  Shape
+  in C++ or Java as an interface and create two 
+  
+ classes:
+  Circle
+  and
+  Rect
+ . Implement
+  area
+  as a virtual function. 3. 
+ Continuing with the previous example: We can easily add a new 
+  
+ function
+  circ
+  that calculates the circumference of a
+  Shape
+ . We 
+  
+ can do it without touching the definition of
+  Shape
+ : 
+ 90",NA
+7,NA,NA
+Functors,NA,NA
+A ,"t the risk of sounding like a broken record, I will say this about 
+ functors: A functor is a very simple but powerful idea. Category 
+ theory is just full of those simple but powerful ideas. A functor is a 
+ mapping between categories. Given two categories, C and D, a 
+ functor F maps objects in C to objects in D — it’s a function on 
+ objects. If
+  a
+  is an object in C, we’ll write its image in D as
+  F a
+  (no 
+ parentheses). But a category is not just objects — it’s objects and 
+ morphisms that connect them. A functor also maps morphisms — 
+ it’s a function on morphisms. But it doesn’t map morphisms willy-
+ nilly — it preserves connections. 
+ So if a morphism
+  f
+  in C connects object
+  a
+  to object
+  b
+ , 
+ f :: a -> b
+  
+ the image of
+  f
+  in D,
+  F f
+ , will connect the image of
+  a
+  to the image of
+  b
+ : 
+ F f :: F a -> F b
+  
+ 92",NA
+7.1,NA,NA
+ Functors in Programming,"Let’s get down to earth and talk about programming. We have our 
+ cat-egory of types and functions. We can talk about functors that 
+ map this category into itself — such functors are called 
+ endofunctors. So what’s an endofunctor in the category of types? 
+ First of all, it maps types to types. We’ve seen examples of such 
+ mappings, maybe without realiz-ing that they were just that. I’m 
+ talking about definitions of types that were parameterized by 
+ other types. Let’s see a few examples. 
+ 7.1.1 
+  
+ The Maybe Functor
+  
+ The definition of
+  Maybe
+  is a mapping from type
+  a
+  to type
+  Maybe a
+ : 
+ data Maybe a = Nothing | Just a
+  
+ Here’s an important subtlety:
+  Maybe
+  itself is not a type, it’s a
+  type 
+ con-structor
+ . You have to give it a type argument, like
+  Int
+  or
+  Bool
+ , in 
+ order to turn it into a type.
+  Maybe
+  without any argument represents 
+ a func-tion on types. But can we turn
+  Maybe
+  into a functor? (From 
+ now on, when I speak of functors in the context of programming, I 
+ will almost always mean endofunctors.) A functor is not only a 
+ mapping of objects (here, types) but also a mapping of morphisms 
+ (here, functions). For any function from
+  a
+  to
+  b
+ : 
+ f :: a -> b
+  
+ we would like to produce a function from
+  Maybe a
+  to
+  Maybe b
+ . To 
+ define such a function, we’ll have two cases to consider, 
+ corresponding to the 
+ 96",NA
+7.2,NA,NA
+ Functors as Containers,"We’ve seen some examples of functors in programming languages 
+ that define general-purpose containers, or at least objects that 
+ contain some value of the type they are parameterized over. The 
+ reader functor seems to be an outlier, because we don’t think of 
+ functions as data. But we’ve seen that pure functions can be 
+ memoized, and function execution can be turned into table lookup. 
+ Tables are data. Conversely, because of Haskell’s laziness, a 
+ traditional container, like a list, may actually be implemented as a 
+ function. Consider, for instance, an infinite list of natural numbers, 
+ which can be compactly defined as: 
+ 110",NA
+7.3,NA,NA
+ Functor Composition,"It’s not hard to convince yourself that functors between categories 
+ compose, just like functions between sets compose. A composition 
+ of two functors, when acting on objects, is just the composition of 
+ their respective object mappings; and similarly when acting on 
+ morphisms. After jumping through two functors, identity 
+ morphisms end up as identity morphisms, and compositions of 
+ morphisms finish up as com-positions of morphisms. There’s 
+ really nothing much to it. In particular, it’s easy to compose 
+ endofunctors. Remember the function
+  maybeTail
+ ? 
+ I’ll rewrite it using the Haskell’s built in implementation of lists: 
+ maybeTail :: [a] -> Maybe [a]
+  
+ maybeTail [] = Nothing
+  
+ maybeTail (x:xs) = Just xs
+  
+ (The empty list constructor that we used to call
+  Nil
+  is replaced with 
+ the empty pair of square brackets
+  []
+ . The
+  Cons
+  constructor is 
+ replaced with",NA
+7.4,NA,NA
+ Challenges,"1. Can we turn the
+  Maybe
+  type constructor into a functor by 
+ defin- 
+ ing: 
+ fmap _ _ = Nothing
+  
+  
+ which ignores both of its arguments? (Hint: Check the 
+ functor  
+ laws.)  
+ 2. Prove functor laws for the reader functor. Hint: it’s really 
+ simple. 3. Implement the reader functor in your second favorite 
+ language  
+ (the first being Haskell, of course). 
+ 4. Prove the functor laws for the list functor. Assume that the 
+ laws are true for the tail part of the list you’re applying it to 
+ (in other words, use
+  induction
+ ). 
+ 116",NA
+8,NA,NA
+Functoriality,NA,NA
+N ,"ow that you know what a functor is, and have seen a few 
+ exam-ples, let’s see how we can build larger functors from smaller 
+ ones. In particular it’s interesting to see which type constructors 
+ (which cor-respond to mappings between objects in a category) 
+ can be extended to functors (which include mappings between 
+ morphisms).",NA
+8.1,NA,NA
+ Bifunctors,"Since functors are morphisms in
+  Cat
+  (the category of categories), a 
+ lot of intuitions about morphisms — and functions in particular — 
+ apply to functors as well. For instance, just like you can have a 
+ function of two arguments, you can have a functor of two 
+ arguments, or a
+  bifunctor
+ . On objects, a bifunctor maps every pair 
+ of objects, one from category C, and one from category D, to an 
+ object in category E. Notice that this is just saying that it’s a 
+ mapping from a
+  cartesian product
+  of categories 
+ 117",NA
+8.2,NA,NA
+ Product and Coproduct Bifunctors,"An important example of a bifunctor is the categorical product — a 
+ product of two objects that is defined by a
+  universal construction
+ . 
+ If the product exists for any pair of objects, the mapping from 
+ those objects to the product is bifunctorial. This is true in general, 
+ and in Haskell in particular. Here’s the
+  Bifunctor
+  instance for a pair 
+ constructor — the simplest product type: 
+ instance Bifunctor (,) where
+  
+ bimap f g (x, y) = (f x, g y)
+  
+ There isn’t much choice:
+  bimap
+  simply applies the first function to 
+ the first component, and the second function to the second 
+ component of a pair. The code pretty much writes itself, given the 
+ types: 
+ bimap :: (a -> c) -> (b -> d) -> (a, b) -> (c, d)
+  
+ The action of the bifunctor here is to make pairs of types, for 
+ instance: 
+ (,) a b = (a, b)
+  
+ 121",NA
+8.3,NA,NA
+ Functorial Algebraic Data Types,"We’ve seen several examples of parameterized data types that 
+ turned out to be functors — we were able to define
+  fmap
+  for them. 
+ Complex data types are constructed from simpler data types. In 
+ particular, algebraic data types (ADTs) are created using sums and 
+ products. We have just seen that sums and products are functorial. 
+ We also know that functors 
+ 122",NA
+8.4,NA,NA
+ Functors in C++,"If you are a C++ programmer, you obviously are on your own as far 
+ as implementing functors goes. However, you should be able to 
+ rec-ognize some types of algebraic data structures in C++. If such a 
+ data 
+ 126",NA
+8.5,NA,NA
+ The Writer Functor,"I promised that I would come back to the
+  Kleisli category
+  I 
+ described earlier. Morphisms in that category were represented as 
+ “embellished”functions returning the
+  Writer
+  data structure. 
+ type Writer a = (a, String)
+  
+ I said that the embellishment was somehow related to 
+ endofunctors. And, indeed, the
+  Writer
+  type constructor is functorial 
+ in
+  a
+ . We don’t even have to implement
+  fmap
+  for it, because it’s just a 
+ simple product type. 
+ But what’s the relation between a Kleisli category and a functor 
+ —in general? A Kleisli category, being a category, defines 
+ composition and identity. Let’ me remind you that the composition 
+ is given by the fish operator: 
+ (>=>) :: (a -> Writer b) -> (b -> Writer c) -> (a -> Writer c)
+  
+ m1 >=> m2 = \x ->
+  
+ 129",NA
+8.6,NA,NA
+ Covariant and Contravariant Functors,"Now that we’ve reviewed the writer functor, let’s go back to the 
+ reader functor. It was based on the partially applied function-
+ arrow type con-structor: 
+ (->) r
+  
+ We can rewrite it as a type synonym: 
+ type Reader r a = r -> a
+  
+ for which the
+  Functor
+  instance, as we’ve seen before, reads: 
+ instance Functor (Reader r) where
+  
+ fmap f g = f . g
+  
+ But just like the pair type constructor, or the
+  Either
+  type 
+ constructor, the function type constructor takes two type 
+ arguments. The pair and 
+ Either
+  were functorial in both arguments 
+ — they were bifunctors. Is the function constructor a bifunctor 
+ too? 
+ 131",NA
+8.7,NA,NA
+ Profunctors,"We’ve seen that the function-arrow operator is contravariant in its 
+ first argument and covariant in the second. Is there a name for 
+ such a beast? It turns out that, if the target category is
+  Set
+ , such a 
+ beast is called a 
+ profunctor
+ . Because a contravariant functor is 
+ equivalent to a covariant functor from the opposite category, a 
+ profunctor is defined as: 
+ C
+ op
+ × D → Set 
+  
+  
+ Since, to first approximation, Haskell types are sets, we apply 
+ the name
+  Profunctor
+  to a type constructor
+  p
+  of two arguments, which 
+ is contra-functorial in the first argument and functorial in the 
+ second. Here’s the appropriate typeclass taken from the
+  
+ Data.Profunctor
+  li-brary: 
+ 134",NA
+8.8,NA,NA
+ Challenges,"1. Show that the data type: 
+ data Pair a b = Pair a b
+  
+ is a bifunctor. For additional credit implement all three 
+ meth-ods of
+  Bifunctor
+  and use equational reasoning to show 
+ that these definitions are compatible with the default 
+ implementa-tions whenever they can be applied. 
+ 2. Show the isomorphism between the standard definition of
+  
+ Maybe 
+  
+ and this desugaring: 
+ type Maybe' a = Either (Const () a) (Identity a)
+  
+ Hint: Define two mappings between the two 
+ implementations. 
+ For additional credit, show that they are the inverse of each 
+ other using equational reasoning. 
+ 3. Let’s try another data structure. I call it a
+  PreList
+  because it’s a 
+ precursor to a
+  List
+ . It replaces recursion with a type 
+ parameter 
+ b
+ . 
+ data PreList a b = Nil | Cons a b
+  
+ 136",NA
+9,NA,NA
+Function Types,NA,NA
+S ,"o far I’ve been glossing over the meaning of function types. A 
+ function type is different from other types.  
+ Take
+  Integer
+ , for instance: It’s just 
+ tween two objects in any category is 
+ called a hom-set. It just so happens 
+ that in the category
+  Set
+  every hom-set 
+ is itself an object in the same category 
+ —because it is, after all, a
+  set
+ . 
+  
+ a set of integers.
+  Bool
+  is a two element 
+ set. But a function type is more 
+ The same is not true of other cate-
+ gories where hom-sets are external to a 
+ Hom-set in Set is just a set
+  
+ category. They are even called
+  external
+  hom-sets. 
+ 138",NA
+9.1,NA,NA
+ Universal Construction,"Let’s forget for a moment that function 
+  
+  
+  
+ types are sets and try to construct a 
+ func-tion type, or more generally, an 
+ inter- 
+ Hom-set in category C is an external 
+ set
+  
+ nal hom-set, from scratch. As usual, we’ll  
+ take our cues from the
+  Set
+  category, but carefully avoid using any 
+ prop-erties of sets, so that the construction will automatically 
+ work for other categories. 
+ A function type may be considered a composite type because of 
+ its relationship to the argument type and the result type. We’ve 
+ already seen the constructions of composite types — those that 
+ involved rela-tionships between objects. We used universal 
+ constructions to define a 
+ product type and a coproduct types
+ . We 
+ can use the same trick to de-fine a function type. We will need a 
+ pattern that involves three objects: the function type that we are 
+ constructing, the argument type, and the result type. 
+ The obvious pattern that connects these three types is called
+  
+ func-tion application
+  or
+  evaluation
+ . Given a candidate for a function 
+ type, let’s call it
+  z
+  (notice that, if we are not in the category
+  Set
+ , this 
+ is just an object like any other object), and the argument type
+  a
+  (an 
+ object), the application maps this pair to the result type
+  b
+  (an 
+ object). We have 
+ 139",NA
+9.2,NA,NA
+ Currying ,"This is why, in Haskell, we interpret the function type
+  a->b
+  as the 
+ Let’s have a second look at all the candidates for the function 
+ object. This time, however, let’s think of the morphism
+  g
+  as a 
+ function of two variables,
+  z
+  and
+  a
+ .",NA
+9.3,NA,NA
+ Exponentials,"In mathematical literature, the function object, or the internal 
+ hom-object between two objects
+  a
+  and
+  b
+ , is often called the
+  
+ exponential
+  and denoted by
+  ba
+ . Notice that the argument type is in 
+ the exponent. This notation might seem strange at first, but it 
+ makes perfect sense if you think of the relationship between 
+ functions and products. We’ve al-ready seen that we have to use 
+ the product in the universal construc-tion of the internal hom-
+ object, but the connection goes deeper than that. 
+ This is best seen when you consider functions between finite 
+ types— types that have a finite number of values, like
+  Bool
+ ,
+  Char
+ , or 
+ even
+  Int 
+ or
+  Double
+ . Such functions, at least in principle, can be fully 
+ memoized or turned into data structures to be looked up. And this 
+ is the essence of the equivalence between functions, which are 
+ morphisms, and function types, which are objects. 
+ For instance a (pure) function from
+  Bool
+  is completely specified 
+ by a pair of values: one corresponding to
+  False
+ , and one 
+ corresponding to 
+ True
+ . The set of all possible functions from
+  Bool
+  to, 
+ say,
+  Int
+  is the set of all pairs of
+  Int
+ s. This is the same as the product
+  
+ Int × Int
+  or, being a little creative with notation,
+  Int2
+ . 
+ For another example, let’s look at the C++ type
+  char
+ , which con-
+ tains 256 values (Haskell
+  Char
+  is larger, because Haskell uses 
+ Unicode). There are several functions in the part of the C++ 
+ Standard Library 
+ 148",NA
+9.4,NA,NA
+ Cartesian Closed Categories,"Although I will continue using the category of sets as a model for 
+ types and functions, it’s worth mentioning that there is a larger 
+ family of categories that can be used for that purpose. These 
+ categories are called 
+ cartesian closed
+ , and
+  Set
+  is just one example of 
+ such a category.",NA
+9.5,NA,NA
+ Exponentials and Algebraic Data Types,"The interpretation of function types as exponentials fits very well 
+ into the scheme of algebraic data types. It turns out that all the 
+ basic iden-tities from high-school algebra relating numbers zero 
+ and one, sums,",NA
+9.6,NA,NA
+ Curry-Howard Isomorphism,"I have already mentioned the correspondence between logic and 
+ alge-braic data types. The
+  Void
+  type and the unit type
+  ()
+  correspond 
+ to false tion ∧ (AND) and disjunction ∨ (OR). In this scheme, the 
+ function type 
+ interpreted as a proposition — a statement or a judgment that may 
+ be true or false. Such a proposition is considered true if the type is 
+ inhabited and false if it isn’t. In particular, a logical implication is 
+ true if the function type corresponding to it is inhabited, which 
+ means that there exists a function of that type. An implementation 
+ of a function is therefore a proof of a theorem. Writing programs is 
+ equivalent to proving theorems. Let’s see a few examples. 
+  
+ Let’s take the function
+  eval
+  we have introduced in the definition 
+ of the function object. Its signature is: 
+ eval :: ((a -> b), a) -> b
+  
+ It takes a pair consisting of a function and its argument and 
+ produces a result of the appropriate type. It’s the Haskell",NA
+9.7,NA,NA
+ Bibliography,"1. Ralph Hinze, Daniel W. H. James,
+  Reason Isomorphically!
+ . This 
+ paper contains proofs of all those high-school algebraic 
+ identities in category theory that I mentioned in this chapter. 
+ 157",NA
+10,NA,NA
+Natural Transformations,NA,NA
+W ,"e talked about functors as mappings between categories that 
+ preserve their structure.  
+ A functor “embeds” one cat- 
+ a functor we are modeling  
+ one 
+ category 
+ inside 
+ another.  
+ The 
+ source 
+ category 
+ serves  
+ as a model, a blueprint, for  
+ some structure that’s part 
+ of  
+ the target category. 
+ There may be many ways 
+ 158",NA
+10.1,NA,NA
+Polymorphic Functions,"We talked about the role of functors (or, more specifically, 
+ endofunc-tors) in programming. They correspond to type 
+ constructors that map types to types. They also map functions to 
+ functions, and this mapping is implemented by a higher order 
+ function
+  fmap
+  (or
+  transform
+ ,
+  then
+ , and the like in C++). 
+ To construct a natural transformation we start with an object, 
+ here a type,
+  a
+ . One functor,
+  F
+ , maps it to the type
+  F a
+ . Another 
+ functor,
+  G
+ , maps it to
+  G a
+ . The component of a natural 
+ transformation
+  alpha
+  at
+  a",NA
+10.2,NA,NA
+Beyond Naturality,"A parametrically polymorphic function between two functors 
+ (includ-ing the edge case of the
+  Const
+  functor) is always a natural 
+ transforma-tion. Since all standard algebraic data types are 
+ functors, any polymor-phic function between such types is a 
+ natural transformation. 
+ 168",NA
+10.3,NA,NA
+Functor Category,"Now that we have mappings between functors — natural 
+ transforma-tions — it’s only natural to ask the question whether 
+ functors form a category. And indeed they do! There is one 
+ category of functors for each pair of categories, C and D. Objects in 
+ this category are functors from C to D, and morphisms are natural 
+ transformations between those functors. 
+ We have to define composition of two natural transformations, 
+ but that’s quite easy. The components of natural transformations 
+ are mor-phisms, and we know how to compose morphisms. 
+ Indeed, let’s take a natural transformation α from functor F to 
+ G. 
+ Its component at object
+  a
+  is some morphism:",NA
+10.4,NA,NA
+2-Categories,"With that out of the way, let’s have a closer look at
+  Cat
+ . By 
+ definition, any Hom-set in
+  Cat
+  is a set of functors. But, as we have 
+ seen, functors between two objects have a richer structure than 
+ just a set. They form a category, with natural transformations 
+ acting as morphisms. Since functors are considered morphisms in
+  
+ Cat
+ , natural transformations are morphisms between morphisms. 
+ This richer structure is an example of a 2-category, a 
+ generalization of a category where, besides objects and morphisms 
+ (which might be called 1-morphisms in this context), there are also 
+ 2-morphisms, which are morphisms between morphisms. 
+ In the case of
+  Cat
+  seen as a 2-category we have: 
+ • Objects: (Small) categories 
+ • 1-morphisms: Functors between categories 
+ • 2-morphisms: Natural transformations between 
+ functors. 
+ Instead 
+ of 
+ a 
+ Hom-set 
+ between two categories C 
+ and D, we have a Hom-
+ category — the functor 
+ category 
+ D
+ C
+ . 
+ We 
+ have 
+ regular 
+ functor 
+ composition: a functor F 
+ from D
+ C
+ composes with a 
+ functor G from E
+ D
+ to give G 
+ ◦ F from E
+ C
+ . But we also 
+ have 
+ composition 
+ inside 
+ each 
+ Hom-category 
+ — 
+ vertical 
+  
+  
+  
+ composition of natural trans- 
+ formations, or 2-morphisms, between 
+ functors. 
+ 175",NA
+10.5,NA,NA
+Conclusion,"This concludes the first part of the book. We’ve learned the basic 
+ vo-cabulary of category theory. You may think of objects and 
+ categories as nouns; and morphisms, functors, and natural 
+ transformations as verbs. Morphisms connect objects, functors 
+ connect categories, natural trans-formations connect functors. 
+ But we’ve also seen that, what appears as an action at one level 
+ of abstraction, becomes an object at the next level. A set of 
+ morphisms",NA
+10.6,NA,NA
+Challenges,"1. Define a natural transformation from the
+  Maybe
+  functor to the 
+  
+ list functor. Prove the naturality condition for it. 
+ 2. Define at least two different natural transformations between 
+ Reader ()
+  and the list functor. How many different lists of
+  () 
+ are 
+ there? 
+ 3. Continue the previous exercise with
+  Reader Bool
+  and
+  Maybe
+ . 4. 
+ Show that horizontal composition of natural transformation sat-
+  
+ isfies the naturality condition (hint: use components). It’s a 
+ good  
+ exercise in diagram chasing. 
+ 5. Write a short essay about how you may enjoy writing down 
+ the  evident diagrams needed to prove the interchange law. 
+ 6. Create a few test cases for the opposite naturality condition of 
+ transformations between different
+  Op
+  functors. Here’s one 
+ choice:",NA
+Part II ,NA,NA
+Part Two,183,NA
+11,NA,NA
+Declarative Programming,NA,NA
+I ,"n the first part of the book I argued that both category theory 
+ and programming are about composability. In programming, you 
+ keep decomposing a problem until you reach the level of detail 
+ that you can deal with, solve each subproblem in turn, and re-
+ compose the solutions bottom-up. There are, roughly speaking, 
+ two ways of doing it: by telling the computer what to do, or by 
+ telling it how to do it. One is called declarative and the other 
+ imperative. 
+  
+ You can see this even at the most basic level. Composition itself 
+ may be defined declaratively; as in,
+  h
+  is a composite of
+  g
+  after
+  f
+ : 
+ h = g . f
+  
+ or imperatively; as in, call
+  f
+  first, remember the result of that call, 
+ then call
+  g
+  with the result: 
+ h x = let y = f x
+  
+ in g y
+  
+ 184",NA
+12,NA,NA
+Limits and Colimits,NA,NA
+I ,"seems like in category theory everything is related to 
+ everything and everything can be viewed from many angles. Take 
+ for instance the universal construction of the
+  product
+ . Now that we 
+ know more about
+  functors
+  and
+  natural transformations
+ , can we 
+ simplify and, pos-sibly, generalize it? Let us try. 
+  
+  
+ The construction of a product starts with the selection of two 
+ objects
+  a 
+ and
+  b
+ , whose product we want to construct. But what does 
+ it mean to 
+ select objects
+ ? Can we rephrase this action in more 
+ categorical terms? Two objects form a pattern — a very simple 
+ pattern. We can abstract 
+ 192",NA
+12.1,NA,NA
+Limit as a Natural Isomorphism,"There is still something unsatisfying about this definition of a limit. 
+ I mean, it’s workable, but we still have this commutativity 
+ condition for the triangles that are linking any two cones. It would 
+ be so much more elegant if we could replace it with some 
+ naturality condition. But how? We are no longer dealing with one 
+ cone but with a whole collection (in fact, a category) of cones. If the 
+ limit exists (and — let’s make it clear — there’s no guarantee of 
+ that), one of those cones is the universal maps its apex, let’s call it",NA
+12.2,NA,NA
+Examples of Limits ,"by a simple category we called 222. first impulse would be to think 
+ of a singleton category as leading to a  There is an even simpler 
+ example of a limit: the terminal object. The We’ve seen that the 
+ categorical product is a limit of a diagram generated 
+ terminal object, but the truth is even starker than that: the 
+ terminal object is a limit generated by an empty category. A 
+ functor from an empty category selects no object, so a cone shrinks 
+ to just the apex. The universal cone is the lone apex that has a 
+ unique morphism coming to it from any other apex. You will 
+ recognize this as the definition of the terminal object.",NA
+12.3,NA,NA
+Colimits,"Just like all constructions in category theory, limits have their dual 
+ im-age in opposite categories. When you invert the direction of all 
+ arrows in a cone, you get a co-cone, and the universal one of those 
+ is called a colimit. Notice that the inversion also affects the 
+ factorizing morphism, which now flows from the universal co-cone 
+ to any other co-cone. 
+ 211",NA
+12.4,NA,NA

@@ -1,0 +1,3482 @@
+Larger Text,Smaller Text,Symbol
+Nils M Holm,NA,NA
+Sketchy LISP ,NA,NA
+An Introduction to Functional Programming in ,NA,NA
+Scheme ,NA,NA
+Third Edition,NA,NA
+Preface,"A lot has happened since the release of the previous edition of
+  Sketchy 
+ LISP
+ . The ‘‘Six’th Revised Report on the Algorithmic Language 
+ Scheme’’(R
+ 6
+ RS)wasratified and Scheme isno longer the language it 
+ used to be.
+  
+ Thisedition isdedicated to the principle that made Scheme a language 
+ that was esteemed by researchers, educators, and creative coders all 
+ around the world:
+  
+ Programming languages should be designed not by piling feature on 
+ top of feature, but by removing the weaknesses and restrictions that 
+ make additional features appear necessary.
+ -- R
+ n
+ RS introduction
+  
+ Unfortunately this principle was abandoned in the R
+ 6
+ RSprocess.I 
+ created this edition in the hope that enough people will stay interested 
+ in the small and beautiful language that Scheme used to be, so the R
+ 5
+ RS 
+ will remain a de-facto standard
+  
+ After publishing the second edition of Sketchy LISP a lot of people 
+ mailed me with really good ideas on how to improve the book. I consid-
+ ered all of them and implemented most of them:
+  
+ This edition uses a more consistent style in the examples, which is 
+ partic-ularly important to beginners. A style guide was added to the 
+ appendix.
+  
+ A new chapter was added that illustrates what ‘‘real-world’’Scheme 
+ code looks like by discussing a more complex program in great detail.
+  
+ Some subtle flaws in the code were fixed. In particular the
+  case
+  syntax 
+ of chapter 3 now works in exactly the same way as the actual Scheme 
+ syntax.
+  
+ Have fun reading the new edition!
+  
+ Nils M Holm, August 2008
+  
+ Acknowledgements
+  
+ Thanks to all the people who pointed out subtle flaws in the code, 
+ suggest-ed improvements, and proposed additions.",NA
+Preface to the Second Edition,"This is the revised and extended second edition of
+  Sketchy LISP
+ . This 
+ edition discusses the Scheme language in much more general terms and 
+ makes fewer references to an actual implementation. The terminology is 
+ much more ‘‘schemy’’, for example ‘‘functions’’are called 
+ ‘‘procedures’’now and pseudo functions are explained in terms of 
+ syntax transfor-mation.
+  
+ This edition adds various topics that were not covered in the previous 
+ edition. The section about Scheme syntax has been extended and now 
+ covers macros, there is a new section about quasiquotation, and there 
+ are two additional appendices containing a table of example programs 
+ and brief summary of all Scheme functions discussed in the book.
+  
+ Overall, the book has been made more general. All references to proce-
+ dures that were part of a specific implementation have been removed. 
+ For example,
+  letrec
+  is explained in terms of
+  let
+  and
+  set!
+  now 
+ rather than introducing an implementation-dependent model.
+  
+ Finally, the prose was revised, some typos were removed, and the text 
+ was streamlined for easier reading. I hope that you enjoy reading this 
+ new edition!
+  
+ Nils M Holm, May 2007
+  
+ Acknowledgements
+  
+ Thanks to Diana Jeschag for catching some typos that slipped past me.",NA
+Preface to the First Edition,"This book presents an overview of the Scheme programming language 
+ with strong emphasis on functional programming. Language elements 
+ and programming techniques are explained by means of simple 
+ examples which are used to form more complex programs.
+  
+ Functional programming is an approach that focuses on the evaluation 
+ of expressions.Programsare formed by combiningfunctions.Most 
+ functions are free of side effects which allows to examine programs 
+ formally and prove properties of algorithms.
+  
+ The first chapter of thisbook introducesbasicconceptssuch asdefinitions, 
+ conditional evaluation, recursion, procedures, and elementary data 
+ types.
+  
+ While the second chapter continues this tour, it puts emphasis on more 
+ complex programs by introducing problems of varying complexity and 
+ then outlining the way to their solution step by step.
+  
+ The last chapter takes up some lose ends and briefly introduces 
+ continua-tions, one of the more advanced features of Scheme. It also 
+ demonstrates how Scheme can be viewed as a formal system by 
+ constructing a Y com-binator.
+  
+ To make best use of this book, experimenting with the given examples 
+ is strongly recommended. See the appendix for download URLs and a 
+ brief introduction to the program development cycle.
+  
+ The Scheme language achieves what only few languages have managed 
+ before:to bring fun back to programming. Its simple syntax, clean 
+ seman-tics, and powerful functions open the door to a fresh perspective 
+ on pro-gram design. Programming in Scheme is fun, and this book is an 
+ attempt to share some of that fun.
+  
+ Nils M Holm, Feb. 2006
+  
+ Acknowledgements
+  
+ Thanks to Diana Jeschag for proof reading, to Al Petrofsky for 
+ explaining some of the more subtle details of binding constructs and 
+ continuations, and to Jens Axel Søgaard, Anton van Straaten, and other 
+ regulars of the
+  comp.lang.scheme
+  newsgroup for helping me to get 
+ used to the concept of continuations.",NA
+Contents,NA,NA
+1 Basic Scheme Programming,NA,NA
+ . . . . . . . . . . . . . . . 9 ,"1.1 
+  
+ Notation . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9 
+ 1.2 
+  
+ Functional Programming . . . . . . . . . . . . . . . . . . . 11 
+ 1.3 
+  
+ Loops in Functional Programs . . . . . . . . . . . . . . . . 14 
+ 1.3.1
+  
+ Cond Revisited . . . . . . . . . . . . . . . . . . . . . . . . 18 
+ 1.4 
+  
+ Basic Data 
+ Types . . . . . . . . . . . . . . . . . . . . . . . 21 
+ 1.4.1
+  Integers . . . . . . . . . . . . . . . 
+ . . . . . . . . . . . . . 21 
+ 1.4.2
+  Booleans . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 22 
+ 1.4.3
+  Chars, Strings, and External Representation . . . . . . . . . 23 
+ 1.4.4
+  Lists, Symbols, and Quotation . . . . . . . . . . . . . . . . 24 
+ 1.5 
+  
+ Some Things You Can Do with Lists . . . . . . . . . . . . . 28 
+ 1.6 
+  
+ Procedures and Local Scopes . . . . . . . . . . . . . . . . . 31 
+ 1.6.1
+  
+ What are Closures Good for? . . . . . . . . . . . . . . . . . 36 
+ 1.7 
+  
+ Different Ways of Binding Symbols . . . . . . . . . . . . . 38 
+ 1.7.1
+  
+ Binding Recursive Procedures . . . . . . . . . . . . . . . . 41 
+ 1.8 
+  
+ Lists, 
+ Pairs, and History . . . . . . . . . . . . . . . . . . . . 44 
+ 1.8.1
+  Association Lists . 
+ . . . . . . . . . . . . . . . . . . . . . . 46 
+ 1.8.2
+  Nested Lists . . . . . . . . . . . . . . . . . 
+ . . . . . . . . . 47 
+ 1.8.3
+  A Historical Note . . . . . . . . . . . . . . . . . . . . . . . 51",NA
+2 Less Basic Scheme Programming,NA,NA
+ . . . . . . . . . . . 53 ,"2.1 
+  
+ Variable Argument Procedures . . . . . . . . . . . . . . . . 53 
+ 2.2 
+  
+ Identity and Equality . . . . . . . . . . . . . . . . . . . . . 57 
+ 2.2.1
+  A 
+ More General Form of Equality . . . . . . . . . . . . . . 61 
+ 2.2.2
+  Using 
+ Identity and Equality . . . . . . . . . . . . . . . . . 66 
+ 2.3 
+  
+  
+ Higher Order Functions . . . . . . . . . . . . . . . . . . . . 68 
+ 2.3.1
+  
+ Some Fun with Higher Order Functions . . . . . . . . . . . 72 
+ 2.4 
+  
+ Dynamic Typing . . . . . . . . . . . . . . . . . . . . . . . 75 
+ 2.5 
+  
+ Type 
+ Conversion . . . . . . . . . . . . . . . . . . . . . . . 79 
+ 2.5.1
+  Arithmetics with 
+ Lists . . . . . . . . . . . . . . . . . . . . 82 
+ 2.6 
+  
+  
+ Arithmetics . . . . . . . . . . . . . . . . . . . . . . . . . . 84 
+ 2.7 
+  
+ Strings 
+ and Characters Recycled . . . . . . . . . . . . . . . 88 
+ 2.7.1
+  Garbage 
+ Collection . . . . . . . . . . . . . . . . . . . . . . 96 
+ 2.8 
+  
+ Input, Output, and Side 
+ Effects . . . . . . . . . . . . . . . 100 
+ 2.8.1
+  Input and Output . . . . . . . . . . . . . . 
+ . . . . . . . . 101",NA
+Contents,NA,NA
+3 Some Missing Pieces,NA,NA
+ . . . . . . . . . . . . . . . . . . 109,"3.1 
+  
+ Syntax Transformation . . . . . . . . . . . . . . . . . . . 109 
+ 3.1.1
+  
+ Pattern Matching . . . . . . . . . . . . . . . . . . . . . . 110 
+ 3.1.2
+  Substitution . . 
+ . . . . . . . . . . . . . . . . . . . . . . . 111 
+ 3.1.3
+  Recursive Syntax . . . . . . . . . . . 
+ . . . . . . . . . . . 114 
+ 3.2 
+  
+ Quasiquotation . . . . . . . . . . . . . . . . . . . . . . . 
+ 116 
+ 3.2.1
+  Metaprogramming . . . . . . . . . . . . . . . . . . . . . . 118 
+ 3.3 
+  
+ Tail-Recursive Programs . . . . . . . . . . . . . . . . . . 120 
+ 3.4 
+  
+ Continuations . . . . . . . . . . . . . . . . . . . . . . . . 123 
+ 3.4.1
+  Non-
+ Local Exits . . . . . . . . . . . . . . . . . . . . . . . 126 
+ 3.4.2
+  Exposing some 
+ Gory Details . . . . . . . . . . . . . . . . 128 
+ 3.5 
+  
+ Lambda Calculus and 
+ the Y Combinator . . . . . . . . . . 133 
+ 3.5.1
+  Scheme vs Lambda Calculus 
+ . . . . . . . . . . . . . . . . 140",NA
+4 Scheme in the Wild,NA,NA
+ . . . . . . . . . . . . . . . . . . 145,"4.1 
+  
+ Drawing Box Diagrams . . . . . . . . . . . . . . . . . . . 145 
+ 4.2 
+  
+ The DRAW-TREE Program . . . . . . . . . . . . . . . . . 148",NA
+The End,NA,NA
+ . . . . . . . . . . . . . . . . . . . . . . . . . 155,NA,NA
+Appendix,NA,NA
+ . . . . . . . . . . . . . . . . . . . . . . . . . 157,"A.1 
+  
+ First Steps in Scheme . . . . . . . . . . . . . . . . . . . . 157 
+ A.2 
+  
+ Scheme Style Guide . . . . . . . . . . . . . . . . . . . . . 160 
+ A.2.1
+  
+ Definitions and Bindings . . . . . . . . . . . . . . . . . . 161 
+ A.2.2
+  Procedure 
+ Application . . . . . . . . . . . . . . . . . . . . 164 
+ A.2.3
+  Conditionals, Logic, 
+ Etc . . . . . . . . . . . . . . . . . . . 164 
+ A.2.4
+  Data and Quotation . . . . . . . . . . . 
+ . . . . . . . . . . 166 
+ A.3 
+  
+ Table of Example Programs . . . . . . . . . . . . . . . . 
+ . 167 
+ A.4 
+  
+ Scheme Syntax and Procedures . . . . . . . . . . . . . . . 168",NA
+Index,NA,NA
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 177,NA,NA
+1 Basic Scheme Programming,NA,NA
+1.1 Notation,"Scheme is a small language with simple syntax and clean semantics. It
+  
+ uses a uniform notation for all of its constructs. Here are some simple 
+ ex-
+  
+ amples:
+  
+ ; Scheme notation Math notation
+  
+ (+ 5 7 9) ; 5+7+9
+  
+ (- n) ; -n
+  
+ (f x) ; f(x)
+  
+ (+ a (* b c)) ; a + b * c
+  
+ Note that there are no precedence or associativity rules. All operations 
+ are
+  
+ explicitly grouped by parentheses:
+  
+ (* (+ a b) (- c d)) ; in math: (a + b) * (c - d)
+  
+ The semicolon introduces a
+  comment
+ . Everything between the
+  ;
+  and 
+ the
+  
+ end of the same line is ignored by Scheme systems.
+  
+ In Scheme, operators like
+  +
+  or
+  *
+  are ordinary
+  procedures
+ . A procedure 
+ is
+  
+ a small program that receives some values and returns a result, just like 
+ a
+  
+ mathematical
+  function
+ . The terms ‘‘procedure’’ and ‘‘function’’ are 
+ used
+  
+ as synonyms in this text.
+  
+ The values passed to a procedure are called
+  arguments
+ . Because all
+  
+ procedure applications
+  are delimited using parentheses, many 
+ procedures
+  
+ can have any number of arguments.For example,the expression
+  
+ a+b+c+d
+  
+ would be written as
+  
+ (+ a b c d)
+  
+ Like math functions, Scheme procedures return a result that depends on
+  
+ the values passed to the procedure:
+  
+ (+ 5 7) => 12
+  
+ (+ 7 9) => 16
+  
+ The double arrow
+  =>
+  is not really part of Scheme, but it is frequently 
+ used",NA
+1.2 Functional Programming,"The majority of popular languages, like C, C++, and Java, is based on 
+ the paradigm of
+  imperative programming
+ . Each program ultimately 
+ consists 
+ of 
+ statementsthat 
+ ‘‘dosomething’’,where‘‘doingsomething’’includesac-tions like storing 
+ values in variables, repeating sections of code, or select-ingcode based 
+ on 
+ conditions.Imperativelanguagestypicallyincludesome 
+ functional 
+ aspects,too.For example,the C expression
+  5+7
+  evaluates to
+  12, just like
+  
+ (+ 5 7)
+  does in Scheme. You can even write simple functional 
+ programs in some imperative languages like C:
+  
+ /* Factorial function in C */ 
+ int fact(int n) { 
+  
+  
+ return n==0? 1: 
+  
+  
+ n*fact(n-1); }
+  
+ This function computes the factorial of its argument and returns it. 
+ There are no assignments or explicit repetitions in the program. In 
+ functional Scheme, all programs are written in this way. Each program 
+ has a number of arguments and a result. The Scheme version of the 
+ above functions looks like this:
+  
+ (define (fact n) 
+  
+  
+ (cond ((zero? n) 1) 
+  
+  
+  
+ (#t (* n (fact (- n 1))))))
+  
+ Define
+  looks like a procedure, but is in fact part of the Scheme syntax. 
+ Because its application looks like the application of a procedure or func-
+ tion, it is also called a
+  pseudo function
+ . Pseudo functions and Scheme 
+ syn-tax will be discussed later in detail. For now, it is sufficient to know 
+ that 
+ define
+  defines a new procedure. Its general form is:
+  
+ (define (
+ procedure-name variable
+ 1
+  ... variable
+ n
+ ) 
+  
+ body
+ )
+  
+ 11",NA
+1.3 Loops in Functional Programs,"Typical Scheme procedures have much in common with math functions. 
+ Their sole purpose is to map a number of values (its arguments) to 
+ another value, the function result. For example the math function",NA
+1.3.1 Cond Revisited,"While
+  cond
+  may give the impression that it is used to write programs 
+ in a declarative way, there is one important difference:
+  the order of 
+ clauses",NA
+1.4 Basic Data Types,"Up to this point only two data types have been introduced:the integer 
+ and the boolean. There are more types in Scheme, though. Some of 
+ them will be introduced in this section.",NA
+1.4.1 Integers,"The
+  integer
+  is the only numeric type that is required to be supported by 
+ all Scheme implementations. Most implementations also provide 
+ floating point, rational and complex numbers, but these are not 
+ discussed in detail here. While Scheme uses a highly interesting and 
+ mathematically correct model for numeric computations involving 
+ floating point arithmetics, most of the numeric code in this book deals 
+ with integers.
+  
+ One interesting property of Scheme arithmetics is that computations do 
+ not overflow. There are still some popular languages that will silently 
+ provide a wrong result for expressions like
+  
+ 1234567890 + 9876543210
+  
+ For instance, the following C program will print -1773790788 (on a 
+ two’s-complement 32-bit machine), which is plain wrong:
+  
+ #include <stdio.h> 
+  
+ int main(void) { 
+  
+  
+ printf(""%ld\n"", 1234567890 + 9876543210); 
+  
+ return 0; 
+  
+ }
+  
+ Of course, modern computers have 64-bit integers, but there will always",NA
+1.4.2 Booleans,"The
+  boolean
+  is used to represent logical truth and falsity. There are only 
+ two literals representing theses states, which is why this sub-section is 
+ rather short.
+  
+ The object
+  #t
+  represents logical truth (or just ‘‘truth’’) and
+  #f
+  
+ represents logical falsity (‘‘falsity’’, the ‘‘false’’value). There is only 
+ one false value, but any object except for
+  #f
+  is considered a true value. 
+ This is why the following expression works fine:
+  
+ (cond (0 ’foo)) => foo
+  
+ Do not worry about the sub-expression
+  ’foo
+  -- it will be explained real 
+ soon now. What is more interesting is the fact that 0 is considered to be 
+ true. This might look odd at a first glance, but it simplifies some code 
+ sig-nificantly.
+  
+ For example, the
+  member
+  procedure searches a given object in a list. 
+ When it finds a matching member, it returns a sublist with that member 
+ at the first position. When it does not find a match, it returns
+  #f
+ . 
+ Because all non-
+ #f
+  values are considered true, you can write code like 
+ this:",NA
+"1.4.3 Chars, Strings, and External Representation","Like most other languages, Scheme provides data types for holding 
+ single characters and sequences of characters. Single characters are 
+ represented by
+  chars
+ , and sequences of characters are represented by 
+ strings.
+  
+ At this point, it is time to introduce something called
+  external 
+ representa-tion
+ .The external representation of an object is what the 
+ programmer keys in in order to create an object of a given type. For 
+ instance, 123 is typed to create a numeric object with a value of 123. Of 
+ course, the computer does not really store the number 123in this form, 
+ but it converts it to some 
+ internal representation
+  that is more efficient 
+ from the machine’s point of view.
+  
+ Because the internal representation of 123 would be something like 
+ 01111010,which ishard to decode for a human being,each Scheme 
+ object maps to exactly one single external representation. Numbers map 
+ to their decimal forms, logical falsity maps to
+  #f
+ , etc.
+  
+ The Scheme procedures
+  read
+  and
+  write
+  translate between internal 
+ and external representation.
+  Read
+  maps external representation to the 
+ internal one:
+  
+ (read) 12345 => 12345
+  
+ Because Scheme environments use
+  write
+  to output their results, 
+ though, you cannot see the internal representation. In fact, the internal 
+ represen-tation is
+  never
+  of any interest to Scheme programmers. You do 
+ not have to care about things like byte ordering, memory layout, etc. 
+ Scheme hides these details from you and allows you to concentrate on 
+ real problems instead.
+  
+ The external representation of a char consists of the prefix
+  #\
+  and the 
+ character to represent, for example:
+  
+ #\H #\e #\l #\l #\o 
+  
+ #\\ #\( #\5 #\+ #\
+  
+ 23",NA
+"1.4.4 Lists, Symbols, and Quotation","In fact I was lying when I told you that you only had learned about two 
+ data types at the beginning of this section. Actually, it were four, 
+ because programs like
+  
+ (define (fact n) 
+  
+  
+ (cond ((zero? n) 1) 
+  
+  
+  
+ (else (* n (fact (- n 1))))))
+  
+ are nothing but
+  lists
+  of integers, booleans, other lists, and
+  symbols
+ . So 
+ you already have seen quite a few lists and symbols in this book. You 
+ even
+  
+ 24",NA
+1.5 Some Things You Can Do with Lists,"Scheme is a language of the LISP family, and ‘‘
+ LISP
+ ’’ is short for 
+ ‘‘LISt Processor’’, so it is not surprising that Scheme has quite a few 
+ procedures for processing lists. The list is a simple yet very flexible data 
+ structure that can be used to implement a lot of useful algorithms. In the 
+ previous section, the list was described as a sequence of objects 
+ delimited by parentheses. While this is true, it is a simplified 
+ description. This section will explain lists a little more in depth.
+  
+ The most basic procedures for processing lists are called
+  cons
+ ,
+  car
+ , 
+ and
+  cdr
+ .
+  Car
+  and
+  cdr
+  are used to decompose lists and
+  cons
+  is used 
+ to 
+ cons
+ truct lists:
+  
+  
+ (car ’(a b c)) => a 
+  
+  
+ (cdr ’(a b c)) => (b c) 
+ (cons ’a ’(b c)) => (a b 
+ c)
+  
+ The following relation exists between these procedures:For any non-
+ emp-ty list
+  x
+ , the subsequent proposition holds:
+  
+ x
+  
+ =
+  
+ (cons (car x) (cdr x))",NA
+1.6 Procedures and Local Scopes,"You may have wondered what the
+  lambda
+  in procedures like
+  fact2 
+ is 
+ about:
+  
+ (define (fact n) 
+  
+  
+ (letrec 
+  
+  
+  
+ ((fact2 
+  
+  
+  
+  
+ (lambda (n r) 
+  
+  
+  
+  
+  
+ (cond ((zero? n) r) 
+  
+  
+  
+  
+  
+ (else (fact2 (- n 1) (* n r))))))) 
+  
+  
+ (fact2 n 1)))
+  
+ Again, there is a simple explanation and a more complex one. The 
+ simple explanation is that ‘‘lambda’’ is just a placeholder name for 
+ anonymous procedures. For instance,
+  
+ (lambda (x) (* x x))
+  
+ creates an anonymous procedure that computes the square of its ar-
+ gument:
+  
+ (lambda (x) (* x x)) => #<procedure (x)>
+  
+ 31",NA
+1.6.1 What are Closures Good for?,"In case you wonder what the use of lambda is:it can be used to create 
+ new procedures on the fly. Here is a rather classic example:
+  
+ (define (compose f g) 
+  
+  
+ (lambda (x) (f (g x))))
+  
+ The
+  compose
+  procedure takes two arguments
+  f
+  and
+  g
+  (which must be 
+ procedures themselves). It evaluates to a procedure of one argument 
+ that applies the two procedurespassed to
+  compose
+  to its own argument 
+ (
+ x
+ ).The variables
+  f
+  and
+  g
+  belong to the outer context of the
+  lambda
+ , so 
+ they are captured by the resulting closure.One says that
+  lambda
+  closes 
+ over f
+  and 
+ g
+ :
+  
+ (compose car cdr) => #<procedure (x)> ; 
+ body = (f (g x)) ; 
+ f = car, g = cdr
+  
+ The resulting procedure applies the composition of
+  car
+  and
+  cdr
+  to its 
+ argument, thereby extracting the second member of a list:
+  
+ ((compose car cdr) ’(a b c)) => b
+  
+ BTW: The procedure
+  (compose
+  
+ car
+  
+ cdr)
+  is part of the Scheme
+  
+ standard. Its name is
+  cadr
+ . Of course, you could define
+  cadr
+  in a 
+ much more straight forward way:
+  
+ 36",NA
+1.7 Different Ways of Binding Symbols,"In the previous section, two facilities for binding symbols locally were 
+ mentioned, but there is a third one, so Scheme has in fact three variants 
+ of 
+ let
+ :
+  
+ let let* letrec
+  
+ This section explains the differences between these constructs.
+  Let
+  is 
+ the most straight-forward one of them.As outlined before,it is basically 
+ equal to a procedure application:
+  
+ (let ((x 3)) (* x x))
+  
+ is just another way of writing:
+  
+ ((lambda (x) (* x x)) 3)
+  
+ Procedureapplicationsaretypicallydivided intothe procedurepart (which 
+ is bound to a name) and the arguments to which the procedure is 
+ applied:
+  
+ (define square 
+  
+  
+ (lambda (x) (* x x))) 
+  
+ (square 3) => 9 
+  
+ (square 5) => 25 
+  
+ (square 7) => 49
+  
+ Let
+ , on the other hand, is mainly used to name parts of more complex 
+ expressions in order to increase efficiency and/or readabiliy. For 
+ instance, the following procedure searches an environment of the form 
+ that is used in
+  let
+ :
+  
+ (define (value-of sym env) 
+  
+  
+ (cond ((null? env) #f) 
+  
+  
+  
+ ((eq? sym (car (car env))) (car 
+ env)) 
+  
+  
+ (else (value-of sym (cdr 
+ env)))))
+  
+ When the search for the symbol
+  sym
+  in the environment
+  env
+  is 
+ successful,",NA
+1.7.1 Binding Recursive Procedures,"In the code so far
+  letrec
+  was used to bind procedures and
+  let
+  was 
+ used to bind all other values. However, this is not really the difference 
+ between these two binding constructs.
+  Letrec
+  can be used to bind 
+ values, too:",NA
+"1.8 Lists, Pairs, and History","A good definition of the list is still lacking. To give one, another type 
+ that already has occurred in this book will be explained first: the
+  pair
+ . A 
+ pair is what you get when you
+  cons
+  together two
+  atoms
+ . An atom, as the 
+ name suggests, is a type that cannot be decomposed. (‘‘Atomos’’ is the 
+ Greek word for ‘‘indivisible’’.) A Scheme object that cannot be 
+ decomposed is said to be ‘‘atomic’’. The following objects are atomic:
+  
+ -- Symbols
+  
+ -- Booleans
+  
+ -- Procedures
+  
+ -- Numbers
+  
+ 44",NA
+1.8.1 Association Lists,"A list that consists of pairs exclusively is called an
+  association list
+  (or 
+ alist
+ ). Alists are frequently used to form environments. Some Scheme 
+ implementations even use them to store their own environments, like 
+ the lexical environments of closures.",NA
+1.8.2 Nested Lists,"Another thing you might want to know about lists is how to access 
+ mem-bers of nested lists efficiently.Of course, the
+  car
+  and
+  cdr
+  
+ procedures can be combined to achieve this, but nested applications of 
+ these procedures soon become a mess to read:
+  
+ 47",NA
+1.8.3 A Historical Note,"The names
+  car
+  and
+  cdr
+  date back to the very first implementation of 
+ LISP in the late 1950’s. This version of LISP ran on an ‘‘IBM Type 704 
+ Electronic Data Processing Machine’’, which was a vacuum tube-based 
+ computer.
+  
+ The memory of that computer consisted of up to 32768 machine words 
+ of magnetic core, so 15 bits were sufficient to address each word of 
+ storage. A machine word on the IBM 704 had 36 bits, so a complete 
+ cons object could be stored in a single word or register.
+  
+ The 
+ registersof 
+ the 
+ 704 
+ had 
+ four 
+ parts 
+ named 
+ ‘‘prefix’’,‘‘address’’,‘‘tag’’, and ‘‘decrement’’. The address and 
+ decrement parts were used to store addresses,so they had a size of 15 
+ bits each.Hence they were used to store the references to the car and cdr 
+ part of a cons cell.
+  
+ The routine for extracting the head of a cons cell was called
+  CAR
+ , which
+  
+ 51",NA
+2 Less Basic Scheme Programming,NA,NA
+2.1 Variable Argument Procedures,"Many languages provide a means of defining procedures that take a 
+ vari-able number of arguments, and Scheme is among them. Normally 
+ each variable is bound to one argument during a procedure call. For 
+ example, the following
+  max
+  procedure takes two arguments and returns 
+ the greater one of them:
+  
+ (define (max a b) 
+  
+  
+ (if (> a b) a b))
+  
+ When
+  max
+  is called, its argument
+  a
+  is bound to the first argument and
+  b
+  
+ is bound to its second argument:
+  
+ (max 34 43)
+  
+ -> (if (> 34 43) 34 43)
+  
+ However, the real
+  max
+  procedure of Scheme is a
+  variadic
+  procedure, 
+ which means that it accepts any positive number of arguments:
+  
+ (max 5 1 3 8 9 7 2 6 4) => 9
+  
+ In the previoussection,the
+  max-list
+  procedure wasdefined.Thisprocedure 
+ extracted the greatest member from a
+  list
+  of values.It had to be called 
+ with a single argument which was a list of the numbers to process:
+  
+ (max-list ’(5 1 3 8 9 7 2 6 4)) => 9
+  
+ So the algorithm is already there. The only problem left is to stop 
+ Scheme from decomposing the list of arguments when calling a 
+ procedure. This is where improper lists come into play. A procedure 
+ with an improper argument list takes any number of arguments, but
+  at 
+ least
+  as many as it has variables before the dot. Here is an example:
+  
+ (define (fv2 a b . c) c)
+  
+ This procedure accepts
+  at least two
+  arguments. Its first argument will be 
+ bound to
+  a
+  and the second one to
+  b
+ . The list of remaining arguments 
+ will be bound to
+  c
+ :
+  
+ (fv2 ’foo ’bar ’baz) 
+  
+ => (baz) 
+  
+ (fv2 ’a ’b ’c ’d ’e ’f) => (c d e f)
+  
+ 53",NA
+2.2 Identity and Equality,"In Scheme, there are many procedures for testing for equality, but there 
+ is only one procedure for testingfor
+  identity
+ .Asoutlined earlier,only 
+ appear-ances of
+  the same
+  object can be identical. The definition of 
+ ‘‘equality’’is a much broader one.
+  
+ There are only three types of objects that can be tested for identity: the 
+ symbol, the boolean, and the empty list. It would be incorrect to state 
+ that‘‘
+ two symbols are identical,if they have the same name
+ ’’, because 
+ identity is a relation that only existsbetween an object and itself.If there 
+ are two or more symbols,they cannot be identical.However,the name of 
+ one symbol can be written down any number of times, like this:
+  
+ foo
+  
+ foo
+  
+ foo
+  
+ foo
+  
+ foo
+  
+ 57",NA
+2.2.1 A More General Form of Equality,"The predicates discussed in the previous section express identity and 
+ equivalence. Identity, the sameness of two objects, already has been dis-
+  
+ 61",NA
+2.2.2 Using Identity and Equality,"The rules for using
+  eq?
+ ,
+  eqv?
+ , and
+  equal?
+  are simple. When in 
+ doubt, use
+  equal?
+ . When you are sure about the types to compare, use
+  
+ eqv?
+ . When you are absolutelysure about the type,use the 
+ predicatesspecialized in that type. For example, use
+  =
+  to compare 
+ numbers and
+  string=?
+  or
+  
+ 2
+  Quicksort and bubblesort are both sorting procedures, but quicksort is known to be 
+ highly efficient while bubblesort is known to be one of the worst sorting algo-rithms 
+ around.
+  
+ 66",NA
+2.3 Higher Order Functions,"A
+  higher order function
+  is a procedure that either takes a procedure as 
+ an
+  
+ argument or returns a procedure (or both). For instance, the
+  complement
+  
+ and
+  compose
+  procedures introduced earlier in this book were higher 
+ order
+  
+ functions (HOFs). A classic among the HOFs is the
+  mapcar
+  procedure,
+  
+ which used to be part of early versions of LISP.
+ Mapcar
+  maps a 
+ procedure
+  
+ over a list. It is defined as follows:
+  
+ (define (mapcar a f) 
+  
+  
+ (cond ((null? a) ’()) 
+  
+  
+  
+ (else (cons (f (car a)) 
+  
+  
+  
+ (mapcar (cdr a) f)))))
+  
+ Using this procedure you can do quite a few useful things like 
+ computing the sum of squares of a set of numbers:
+  
+ (define (sum-of-squares . x) 
+  
+  
+ (apply + (mapcar x (lambda (x) (* x x)))))
+  
+ or find the member with the least absolute value in a list of numbers:
+  
+ (define (least-abs x) 
+  
+  
+ (apply min (mapcar x abs)))
+  
+ In both of these procedures,
+ mapcar
+  createsan argument list for a 
+ variadic
+  
+ procedure such as
+  +
+  or
+  min
+ . This combination can be seen frequently 
+ in
+  
+ Scheme programs. The following sample reduction of
+  sum-of-squares
+  
+ illustrates how
+  apply
+  and
+  mapcar
+  interact:",NA
+2.3.1 Some Fun with Higher Order Functions,"In an earlier section, two versions of the
+  depth
+  procedure were shown. 
+ The section ended with the question whether
+  depth
+  can be written in any 
+ simpler way. Using higher order procedures, indeed, it can:
+  
+ (define (depth a) 
+  
+  
+ (if (pair? a) 
+  
+  
+  
+ (+ 1 (apply max (map depth a))) 
+  
+  
+ 0))
+  
+ Higher order functions are a quite powerful tool. They actually do add 
+ expressiveness to a language, because they allow it to do things that 
+ could not be done without them. Another previous section explained 
+ why
+  if 
+ cannot be implemented as an ordinary procedure. The 
+ reasoning was as follows. Given a procedure
+  xif
+  which implements
+  if
+ , 
+ the expression
+  
+ (letrec 
+  
+  
+ ((down 
+  
+  
+  
+ (lambda (n) 
+  
+  
+  
+  
+ (xif (zero? n) 
+  
+  
+  
+  
+ 0 
+  
+  
+  
+  
+ (down (- n 1)))))) 
+  
+ (down 1))
+  
+ would reduce to bottom, because both the trivial and the recursive 
+ branch of
+  
+ (xif (zero? n) 0 (down (- n 1)))
+  
+ would be evaluated
+  before xif
+  was applied and therefore the procedure 
+ could never terminate. Higher order functions help here, too, because 
+ they can be used to ‘‘wrap up’’ expressions for later evaluation. 
+ Consider the expression
+  
+ (lambda () (down (- n 1)))
+  
+ This expression reduces to a procedure whose body is the branch that 
+ causes trouble in the above application of
+  xif
+ . Because the troublesome 
+ expression is wrapped up in a procedure, it is not evaluated before the 
+ procedure is applied (to zero arguments) by writing:
+  
+ ((lambda () (down (- n 1))))
+  
+ 72",NA
+2.4 Dynamic Typing,"Like most popular languages, Scheme is a
+  typed
+  language which means 
+ that there are different types of objects, like numbers, booleans, chars, 
+ strings, etc. Most contemporary languages like C or Java are statically 
+ typed languages, though, while Scheme uses a system called
+  dynamic 
+ typing
+ . In statically typed languages, types are associated with variables. 
+ A variable of a given type can be used to store objects of that type. The 
+ dynamic typing approach is much more flexible.It is made possible by 
+ the fact that Scheme does not store data in variables but only stores 
+ references to data.
+  
+ Scheme variables do not have types. They are just symbolic names and 
+ you can bind any type of object to them. The type information is carried 
+ in the objects themselves. For example, the object
+  127
+  is of the type 
+ integer
+ ,the object
+  ""Hello, World!""
+  is of the type
+  string
+ ,and the 
+ object 
+ (a b c)
+  is of the type
+  pair
+ . A value that carries its type 
+ information with it is also called a
+  boxed value
+ .
+  
+ Many proceduresaccept only argumentsof one specifictype.For instance, 
+ the
+  reverse
+  procedure expects a list:
+  
+ (reverse ’(a b c)) => (c b a)
+  
+ Passing any other type to the procedure will make it fail:
+  
+ (reverse ’non-list) => bottom
+  
+ 75",NA
+2.5 Type Conversion,"Sometimes it would make sense to apply a procedure that is specific to 
+ one type to a different type. For example, it would be nice if the
+  
+ reverse",NA
+2.5.1 Arithmetics with Lists,"This little digression introduces two type conversion procedures that are 
+ not part of Scheme:
+  int->list
+  and
+  list->int
+ . These two procedures show 
+ how bignum arithmetics can be performed in terms of single digits.
+  
+ The
+  int->list
+  procedure converts an integer number into a list of digits:
+  
+ (define (int->list x) 
+  
+ (letrec 
+  
+  
+ ((convert 
+  
+    
+ (lambda (in out) 
+  
+    
+ (if (zero? in) 
+  
+    
+   
+ out 
+  
+    
+   
+ (convert (quotient in 10) 
+  
+    
+   
+  
+ (cons (remainder in 10) out)))))) 
+  
+ (if (zero? x) ’(0) (convert x ’()))))
+  
+ Lists of digits open the way to a simple and portable (although 
+ inefficient) method of performing bignum arithmetics. Of course, it is 
+ not normally done in this way, but the the approach illustrates the 
+ fundamental princi-ples of arithmetics with arbitrary precision. Here is a 
+ procedure that adds two lists of digits:
+  
+ (define (add a b) 
+  
+ (letrec 
+  
+  
+ ((result 
+  
+    
+ (lambda (a b c) 
+  
+    
+ (if (> (+ a b c) 9) 
+  
+    
+   
+ (- (+ a b c) 10) 
+  
+    
+   
+ (+ a b c))))
+  
+ 82",NA
+2.6 Arithmetics,"Because numbers are a very common thing in programs,the first 
+ examples in this book used numbers, and many arithmetic procedures 
+ already have been introduced in the sections so far.Like other 
+ programming languages, Scheme can add, subtract and multiply 
+ numbers:
+  
+ (+ 5 7 9) => 21 
+  
+ (- 5 7 9) => -11 
+  
+ (* 5 7 9) => 315
+  
+ Unlike most languages, Scheme allows a variable number of arguments 
+ in these procedures.
+  +
+  and
+  *
+  accept zero or more arguments. They 
+ return the neutral element of the corresponding operation when applied 
+ to zero arguments:
+  
+ (+) => 0 
+  
+ (*) => 1
+  
+ The
+  -
+  procedure expects at least one argument. When a single 
+ argument is passed to it, it negates it, and otherwise it computes the 
+ difference of its arguments.
+  
+ You might have observed that none of the programs discussed before 
+ the previous section involved a division, though. This is not because 
+ Scheme does not have a procedure for dividing numbers, but because 
+ there are several of them. The most versatile of them is the
+  /
+  function, 
+ which takes at least one argument and returnsthe reciprocal value of a 
+ single argument",NA
+2.7 Strings and Characters Recycled,"This section will demonstrate some things you can do with strings and 
+ characters. In an earlier section, predicates for comparing chars have 
+ been introduced, but chars have some other attributes as well. For exam-
+ ple, there are upper and lower case characters. Scheme provides a set of 
+ predicates for testing the properties of chars such as
+  char-alphabet-
+ ic?
+ ,
+  char-numeric?
+ ,
+  char-upper-case?
+ ,
+  char-lower-case?
+  
+ and 
+ char-whitespace?
+ . The effects of these procedures are quite 
+ obvious, so they will not be explained in detail. The following 
+ procedure prints all properties of a given char using these predicates:
+  
+ (define (char-properties x) 
+  
+ (apply append 
+  
+  
+ (map (lambda (prop) 
+  
+    
+ (cond (((car prop) x) (cdr prop)) 
+  
+    
+   
+  
+ (else ’()))) 
+  
+   
+ (list (cons char-alphabetic? ’(alphabetic)) 
+  
+    
+ (cons char-numeric?
+  
+ ’(numeric)) 
+  
+    
+  
+ (cons char-upper-case? ’(upper-case)) 
+  
+    
+ (cons char-lower-case? ’(lower-case)) 
+  
+    
+ (cons char-whitespace? ’(whitespace))))))
+  
+ 88",NA
+2.7.1 Garbage Collection,"Procedures like
+  permute
+  seem to allocate
+  vast
+  amounts of memory. 
+ When
+  
+ 3
+  Results where obtained using SketchyLISP’s
+  :statistics
+  option. SketchyLISP 
+ is a now obsolete interpreter that was described in the first edition of this book.",NA
+"2.8 Input, Output, and Side Effects","All Scheme procedures have an
+  effect
+  which is to map a number of 
+ argu-ments to a value. This is even true with most pseudo functions. For 
+ exam-ple
+  cond
+  maps a number of clauses to a value.Given the same 
+ arguments, a procedure always returns the same value.
+  
+ There are constructs, though, which have an effect that cannot be ex-
+ plained by mapping arguments to values. In section 1.7, one of them 
+ was introduced in order to explain
+  letrec
+ :
+  set!
+  changes the value of 
+ a vari-able, thereby mutating the state of the current environment. This 
+ can eas-ily be observed by checking the value of the variable before and 
+ after the application of
+  set!
+ :
+  
+ (define x ’foo) 
+  
+ x => foo 
+  
+ (set! x ’bar) 
+  
+ x => bar
+  
+ Because this effect of
+  set!
+  on
+  x
+  cannot be explained by mapping argu-
+ ments to values, it is called a
+  side effect
+ . There are two common kinds 
+ of side effects in Scheme. One is the mutation of objects, and the other 
+ is caused by input and output operations.
+  
+ Scheme, being a multi-paradigm language, provides several constructs 
+ for mutating state.The names of these constructs end with an 
+ exclamation mark (like
+  set!
+ ) to indicate that they have side effects on 
+ objects.
+  
+ In this book a ‘‘purely applicative’’subset of Scheme is discussed,so 
+ there are only few procedures with side effects. The only constructs 
+ discussed here that alter values are
+  set!
+  and
+  letrec
+ .
+  Letrec
+  does 
+ this ‘‘behind the scenes’’, which is why its name has no trailing 
+ exclamation mark.
+  
+ An
+  applicative
+  language is a language in which programs are formed by 
+ combining the applicatitions of procedures and pseudo functions. 
+ Strictly speaking, it is
+  purely
+  applicative, if its procedures do not have 
+ any side effectsat all.So,strictly speaking again,the language discussed 
+ here is not 
+ purely
+  applicative, because some of its constructs do have 
+ side effects.
+  
+ In fact, terms like ‘‘purely applicative’’ or ‘‘purely functional’’ are a bit 
+ blurry. There are a few real-world languages that claim to be ‘‘pure’’ in",NA
+2.8.1 Input and Output,"To cause side effectsis in the nature of input and output procedures.In 
+ fact many I/O procedures do not even have any observable effect other 
+ than returning an unspecific value. The side effects of I/O procedures 
+ are often more important than their effects.
+  
+ The most abstract I/O procedures of Scheme are called
+  read
+  and
+  
+ write
+ . These procedures translate between internal and external 
+ representation. 
+ Read
+  is used by Scheme environments to parse 
+ programs, and
+  write
+  is used to write the external representations of 
+ normal forms to the user’s terminal.
+  
+ Most output that is written by
+  write
+  can be read back using
+  read
+ . 
+ There are some objects that do not have any external representation, 
+ though, like procedures. Such objects are represented by some 
+ informative text enclosed by
+  #<
+  and
+  >
+ :
+  
+ (write cons)
+  
+ writes
+  
+ #<primitive cons>
+  
+ (write (lambda () ’foo))
+  
+ writes
+  
+ #<procedure ()>
+  
+ Any attempt to read such a form results in bottom:
+  
+ (read) #<primitive cons> => bottom
+  
+ In case you wonder what applications of
+  write
+  reduce to:it is 
+ something called an
+  unspecific value
+ , frequently represented by
+  
+ #<unspecific>
+  or 
+ #<void>
+ .Unspecific values are used to indicate 
+ that the value returned by a procedure or pseudo function is not 
+ interesting. You cannot do anything useful with such a value, and they 
+ cause a type error when passed to most procedures. Output procedures 
+ typically reduce to an unspecific value, because their effect is not 
+ important.
+  
+ Write
+  writes its output to the same output stream as the Scheme system 
+ itself, so the output of
+  write
+  and the system itself are mixed:
+  
+ (write ""Hello, World!"") 
+  
+ ""Hello, World!""=> #<unspecific>
+  
+ You already know
+  read
+ , too, because all programs you have typed in 
+ so",NA
+3 Some Missing Pieces,NA,NA
+3.1 Syntax Transformation,"Throughout this book
+  pseudo functions
+  were described as something 
+ that not really is a function but whose application looks like a procedure 
+ ap-plication. This is only half of the truth, though. Keywords like
+  
+ define
+ , 
+ lambda
+ , and
+  quote
+  form the
+  syntax
+  of Scheme. The syntax 
+ is the very core of the language.It describes the lexical form of 
+ programs. For exam-ple,
+  define
+  is not really a procedure, but part of 
+ the language itself. This is why just typing
+  define
+  at the Scheme 
+ prompt yields a syntax error in all standard-compliant implementations:
+  
+ define => bottom
+  
+ This happens because the syntax of
+  define
+  has only two valid forms 
+ which are
+  
+ (define symbol value)
+  
+ and
+  
+ (define (symbol variable ...) body)
+  
+ and just
+  define
+  without any parentheses and arguments is neither of 
+ them.
+  
+ What is particularly interesting about Scheme syntax is that you can 
+ extend
+  it just like you can extend the Scheme procedure library with 
+ own procedures. The process that maps user-defined syntax to existing 
+ syntax is called
+  syntax transformation
+ .
+  
+ Here is a simple example:
+  
+ (define-syntax when 
+  
+  
+ (syntax-rules () 
+  
+  
+  
+ ((_ predicate . commands) 
+  
+  
+  
+  
+ (if predicate (begin . commands)))))
+  
+ In this example
+  define-syntax
+  is used to create a new pseudo 
+ function named
+  when
+ . Whenever Scheme finds an application of
+  when
+ , 
+ it re-writes it accordingto the
+  syntax-rules
+  associated with 
+ it.Although other vari-
+  
+ 109",NA
+3.1.1 Pattern Matching,"A pattern
+  P
+  is matched against a form
+  F
+  as follows:
+  
+ If
+  P
+  is a symbol, it matches any form
+  F
+ . For example,
+  
+ x matches 123 
+  
+ x matches ""hello world"" 
+  
+ x matches (foo bar)
+  
+ If
+  P
+  is an atom other than a symbol,
+  F
+  must be exactly the same atom. 
+ For example,
+  
+ 123 matches 123 
+  
+ ""hello world"" matches ""hello world"" 
+  
+ #\q matches #\q
+  
+ If
+  P
+  is a keyword,
+  F
+  must be the same keyword (keywords will be ex-
+ plained below).
+  
+ If
+  P
+  is a pair,
+  F
+  must also be a pair and the car and cdr parts of
+  P
+  must
+  
+ 110",NA
+3.1.2 Substitution,"The application of a pseudo function is re-written by replacing it with 
+ the template that is associated with the matching pattern. At the same 
+ time, each variable of the template is substituted by the value assigned 
+ to it while matching the pattern.
+  
+ Given the user-defined
+  when
+  syntax
+  
+ (define-syntax when 
+  
+  
+ (syntax-rules () 
+  
+  
+  
+ ((_ predicate . commands) 
+  
+  
+  
+  
+ (if predicate (begin . commands)))))
+  
+ and the application
+  
+ (when (= 1 1) (display ""yes!"") (newline))
+  
+ the pattern of the first (and only) syntax rule",NA
+3.1.3 Recursive Syntax,"Recursion works even in syntax definitions. A syntax transformation 
+ terminates only if no more opportunities for a syntax transformation can 
+ be found in a resulting form. The following pseudo function reverses a 
+ list: 
+  
+ (define-syntax reverse-syntax 
+  
+  
+ (syntax-rules () 
+  
+  
+  
+ ((_ lst) (reverse-syntax lst ())) 
+  
+  
+  
+ ((_ () r) r) 
+  
+  
+  
+ ((_ (a . d) r) (reverse-syntax d (a . r)))))
+  
+ When
+  reverse-syntax
+  is applied to a list, the application is re-written to 
+ an application of
+  reverse-syntax
+  to that list and
+  ()
+  by rule #1:(the
+  -->
+  
+ arrow means ‘‘
+ is re-written to
+ ’’) 
+  
+ (reverse-syntax (1 2 3)) --> (reverse-syntax (1 2 3) ())
+  
+ Because the result contains another application of
+  reverse-syntax
+ , the 
+ transformation continues. Rule #3 is applied three times: 
+  
+ (reverse-syntax (1 2 3) ()) --> (reverse-syntax (2 3) (1)) 
+ (reverse-syntax (2 3) (1)) --> (reverse-syntax (3) (2 1)) 
+ (reverse-syntax (3) (2 1)) --> (reverse-syntax () (3 2 1))
+  
+ At this point, rule #2 is invoked which extracts the second 
+ argument: 
+ (reverse-syntax () (3 2 1)) --> (3 2 1)
+  
+ The resultinglist doesnot contain any applicationsof syntax transformers, 
+ so it is the final result of the transformation.Using
+  reverse-syntax
+ , you 
+ can reverse a list
+  before
+  it is evaluated: 
+  
+ (reverse-syntax (7 5 cons)) => (5 . 7)
+  
+ The following recursive syntax transformer implements the
+  case
+  
+ pseudo
+  
+ 114",NA
+3.2 Quasiquotation,"Quasiquote
+  is like
+  quote
+ , but only
+  quasi
+ . At a first glance they look 
+ equal:
+  
+ (quote (1 2 (+ 1 2))) => (1 2 (+ 1 2)) 
+ (quasiquote (1 2 (+ 1 2))) => (1 2 (+ 1 2))
+  
+ But
+  quasiquote
+  has a companion keyword named
+  unquote
+  which, 
+ as its name suggests, allows to
+  unquote
+  individual parts of a 
+ quasiquoted ex-pression:
+  
+ (quasiquote (1 2 (unquote (+ 1 2)))) => (1 2 3)
+  
+ Quasiquote
+  and
+  unquote
+  have single-character abbreviations (just 
+ like 
+ quote
+ ) which are much more handy than their pseudo function 
+ forms. The
+  ‘‘
+ \\\
+ ’’ (backquote)
+  character equals an application of
+  
+ quasiquote
+  and the
+  ‘‘,’’ (comma)
+  character equals an application of
+  
+ unquote
+ :
+  
+ \\\
+ (1 2 ,(+ 1 2))
+  
+ =
+  
+ (quasiquote (1 2 (unquote (+ 1 2))))
+  
+ It is technically possible to quasiquote and unquote single atoms:
+  
+ \\\
+ foo
+  
+ =
+  
+ ’foo
+  
+ \\\
+ ,foo
+  
+ =
+  
+ foo
+  
+ However, quasiquoting an atom is equal to quoting it, and quasiquoting 
+ and then unquoting it is equal to not quoting it at all.The major purpose 
+ of quasiquotation is the construction of fixed list structures that contain 
+ only few variable parts:",NA
+3.2.1 Metaprogramming,"A metaprogram is a program that writes to re-writes a program.
+  
+ Metapro-gramming
+  is the art of writing metaprograms.
+  
+ The previous section introduced some simple metaprograms, such as
+  
+ (let ((var ’x)) 
+  
+  
+ \\\
+ (lambda (,var) 
+  
+  
+  
+ (* ,var ,var)))
+  
+ which generates the code of a procedure that squares its argument. Here 
+ is a more interesting metaprogram that makes heavy use of quotation 
+ and quasiquotation:
+  
+ ((lambda (x)
+  
+ \\\
+ (,x ’,x)) ’(lambda (x)
+  
+ \\\
+ (,x ’,x)))
+  
+ Can you find out what it does without reading ahead?
+  
+ Programs like the above are widely known as
+  quines
+  in computer 
+ science, named after the logician W.V.O. Quine. What they do is to 
+ print a copy of their own code. Above quine makes use of the fact that 
+ Scheme environ-ments print normal forms of expressions.It reduces to 
+ its own code which is then printed by the Scheme system. Some systems 
+ may print some-thing like
+  
+ 118",NA
+3.3 Tail-Recursive Programs,"Earlier in this book, a tail-recursive program was described as a 
+ program that ‘‘does not do anything after calling itself’’. However, this 
+ is only half of the truth, as even this trivial example illustrates:
+  
+ (define (down n) 
+  
+  
+ (cond ((zero? n) 0) 
+  
+  
+  
+ (else (down (- n 1)))))
+  
+ When stating that the application of
+  down
+  is the last thing that
+  down 
+ does in the general case,
+  cond
+  was silently excluded. Of course,
+  cond
+  
+ is required to distinguish between the general case and the trivial case, 
+ so it 
+ has to be
+  an exception,or tail-recursion could not work at all.It 
+ does work because a
+  cond
+  with a true predicate can be re-written this 
+ way:
+  
+ (cond (#t expr)) = expr
+  
+ As soon as a true predicate is reached, there is nothing left to do for
+  
+ cond
+ . This is why bodies of
+  cond
+  are safe positions for
+  tail calls
+ . A 
+ tail call is a call to a procedure that occurs right before the
+  calling
+  
+ procedure returns. When a procedure uses tail calls exclusively to 
+ implement recursion, it is tail-recursive.
+  
+ The predicates of
+  cond
+  are
+  not
+  valid positions for tail calls, because",NA
+3.4 Continuations,"Each point in an evaluation has a past and a future. The past is gone and 
+ has condensed to a value. The future, which waits for its past to 
+ complete, expects exactly that value. For instance, the application of
+  
+ car
+  in the following sample expression waits for the completion of the 
+ application of
+  reverse
+ :
+  
+ (car (reverse ’(a b c)))
+  
+ At the point where
+  reverse
+  returns, the past of the evaluation has 
+ con-densed to the value
+  (c b a)
+ , and the future can be expressed as a 
+ proce-dure application that awaits that value:
+  
+ (car _)
+  
+ 123",NA
+3.4.1 Non-Local Exits,"The
+  length
+  procedure takes a ‘‘proper’’ list as its argument. Checking 
+ for an improper list takes linear time, because the complete list has to be 
+ traversed before it can be recognized as an improper one:
+  
+ (define (checked-length x) 
+  
+  
+ (letrec 
+  
+  
+  
+ ((proper-list?
+  
+   
+ (lambda (x) 
+  
+   
+  
+ (cond ((null? x) #t) 
+  
+   
+  
+ ((not (pair? x)) #f) 
+  
+   
+  
+ (else (proper-list? (cdr x)))))) 
+  
+ (length 
+  
+   
+ (lambda (x) 
+  
+   
+  
+ (cond ((null? x) 0) 
+  
+   
+  
+ (else (+ 1 (length (cdr x)))))))) (and 
+ (proper-list? x) (length x))))
+  
+ 126",NA
+3.4.2 Exposing some Gory Details,"What makes continuations special is that they are
+  first class objects
+  with 
+ indefinite extent
+ . A first class object is an object that can be bound to 
+ vari-ables, passed to procedures and returned by procedures. You can 
+ do this with all Scheme objectsexcept for keywords.An object with 
+ indefinite ex-",NA
+3.5 Lambda Calculus and the Y Combinator,"Earlier in this book, the self-application combinator
+  S
+  was introduced as 
+ a device for the construction of anonymous recursive functions:
+  
+ (lambda (f x) (f f x))
+  
+ A
+  combinator
+  is a function that does not make use of any free variables, 
+ which is why it cannot even use basic operations like
+  +
+  or
+  car
+ . So it is 
+ basically limited to binding constructs, function applications, and its 
+ (bound) variables.
+  
+ While the self-application combinator works fine, it has one limitation. 
+ It requires two arguments: the function to be applied and the value the 
+ function is to be applied to. It would be much more elegant, if it could 
+ just 
+ transform
+  a function into a recursive function. Such an operator 
+ would turn the following factorial function (which does not work 
+ because
+  (lamb-da (x) ...)
+  closes over the free variable
+  f
+ ) into a working 
+ recursive function 
+ R
+ :
+  
+ (lambda (f)
+  
+ (lambda (x)
+  
+ ----------------->
+  
+ R
+  
+ (cond ((zero? x) 1)
+  
+ mystery
+  
+  
+ (else (* f (- x 1))))))
+  
+ transformation",NA
+3.5.1 Scheme vs Lambda Calculus,"Lambda calculus
+  (LC) is the basis of all programming languages of the 
+ LISP family. Above conversion rules, like eta conversion or beta reduc-
+ tion, actually belong to lambda calculus, but many of these rules apply 
+ to Scheme as well. In a way, Scheme may be considered a kind of 
+ ‘‘applied lambda calculus’’. This is why the Y combinator can be 
+ implemented in both LC and Scheme.
+  
+ This sub-section will explain how the Y combinator works and why the 
+ second self-application of the combinator may not be eta-reduced in 
+ Scheme.
+  
+ In fact, the operation performed by
+  Y
+  is rather simple: ‘‘
+ Y
+  is a function 
+ of a function
+  f
+  that applies self-application to the application of
+  f
+  to self-
+ ap-plication.’’
+  
+ Although this description is brief and correct, an example may be more 
+ helpful.The 
+ following 
+ reduction 
+ showshow 
+ the 
+ anonymousfactorialfunc-tion (which already has been stretched a bit far 
+ at this point) is converted into a recursive function:
+  
+ (lambda (r) 
+  
+   
+ ((lambda (f) (f f)) 
+  
+     
+ (lambda (f) (r (lambda (x) ((f f) x)))))) 
+  
+ (lambda (s) 
+  
+    
+ (lambda (a) 
+  
+     
+ (cond ((zero? a) 1) 
+  
+     
+  
+ (else (* a (s (- a 1))))))))
+  
+ In the first step,the factorial function [
+ (lambda (s)...)
+ ]replacesthe 
+ variable 
+ r
+  in the body of the combinator by beta reduction:
+  
+ ; beta-reduce ((lambda (r) ...) ...)
+  
+ -> ((lambda (f) (f f)) 
+  
+  
+ (lambda (f) ((lambda (s) 
+  
+  
+  
+ (lambda (a) 
+  
+  
+  
+  
+  
+ (cond ((zero? a) 1) 
+  
+  
+  
+  
+  
+  
+ (else (* a (s (- a 1))))))) 
+  
+ (lambda (x) ((f f) x)))))
+  
+ 140",NA
+4 Scheme in the Wild,"This chapter illustrates what ‘‘real-world’’ Scheme code looks like by 
+ means of a small, self-contained, and heavily commented utility pro-
+ gram.
+  
+ There isa notation called
+  box notation
+  which isvery useful for 
+ understand-ing Scheme data structures. Using box notation, forms like 
+ this one
+  
+ (a b (c . d) e f)
+  
+ are represented by diagrams like this one:
+  
+ [o|o]---[o|o]---[o|o]---[o|o]---[o|/]
+  
+ |
+  
+ |
+  
+ |
+  
+ |
+  
+ |
+  
+ a
+  
+ b
+  
+ |
+  
+ e
+  
+ f
+  
+  
+ | 
+  
+ [o|o]--- d 
+  
+  
+ | 
+  
+  
+ c
+  
+ In a box diagram each object of the type cons is represented by a box: 
+ [o|o]
+ . The first
+  o
+  of the box points to the car part of the cons, the 
+ second one to its cdr part:
+  
+ (car . cdr)
+  
+ =
+  
+ [o|o]--- cdr
+  
+ | 
+  
+ car
+  
+ The empty list
+  ()
+  is represented by a slash when it occurs at the end of 
+ a list:
+  
+ (a () b)
+  
+ =
+  
+ [o|o]---[o|o]---[o|/]
+  
+ |
+  
+ |
+  
+ |
+  
+ a
+  
+ ()
+  
+ c
+  
+ While drawing box diagrams may be a nice exercise, it is a cumbersome 
+ task that begs for automation.The program discussed in the following 
+ sec-tions will accept any Scheme datum as input and write the 
+ corresponding box diagram to its output.",NA
+4.1 Drawing Box Diagrams,"The
+  draw-tree
+  program, whose code will be shown in the following
+  
+ 145",NA
+4.2 The DRAW-TREE Program,"The
+  draw-tree
+  program draws box diagrams of its input, which may be 
+ a Scheme atom or pair. It does not support vectors. The program is 
+ purely functional and uses side effects only for output. It works by 
+ rewriting the internal structure discussed in the previous section.
+  
+ The first lines of the code already contain a subtle hack that needs some 
+ explanation:
+  
+ (define *nothing* (cons ’N ’()))
+  
+ (define *visited* (cons ’V ’()))
+  
+ The tags used to represent visited lists and ‘‘nothing’’ in the internal 
+ structure impose a problem: how do you render a structure like
+  ((N))
+ , 
+ which contains the ‘‘nothing’’ tag as data?
+  Draw-tree
+  renders this input 
+ just fine, but how does it do it?
+  
+ The above definitions of
+  *nothing*
+  and
+  *visited*
+  make use of a subtle 
+ side effect which is caused by the following two properties of Scheme:
+  
+ --
+  Cons
+  always returns a
+  fresh
+  pair.
+  
+ --
+  Eq
+  returns
+  #t
+  only for
+  identical
+  objects.
+  
+ So the formula
+  
+ (eq? (cons x ’()) (cons x ’())) => #f
+  
+ holds for any value of
+  x
+ .
+  
+ 148",NA
+The End,"In 
+ case 
+ you 
+ arrived 
+ here 
+ after 
+ reading 
+ the 
+ complete 
+ book:Congratulations. You should now be able to read some more 
+ serious texts about Scheme. Some titles that may be of interest to you 
+ are cited below.
+  
+ The R
+ 5
+ RS is the climax of Scheme standards (so far) and a great 
+ improve-ment over its immediate successor.
+  
+ R.Kelsey,W.Clinger,J.Rees (eds.)
+  
+ ‘‘Revised
+ 5
+ Report on the Algorithmic Language Scheme’’
+  
+ Higher-Order and Symbolic Computation, 
+  
+ Vol.11,No.1,August,1998 
+  
+ ACM SIGPLAN Notices,Vol.33,No.9,September,1998 
+  
+ Full text: 
+ http://www.schemers.org/Documents/Standards/R5RS/
+  
+ The following titles occur in order of increasing complexity:
+  
+ Daniel P.Friedman,Matthias Felleisen
+  
+ ‘‘The Little Schemer’’
+  
+ MIT Press,1995 (4th Edition) 
+  
+ ISBN 978-0-262-56099-3 
+  
+ Info: http://www.ccs.neu.edu/home/matthias/BTLS/
+  
+ Hal Abelson,Jerry Sussman,Julie Sussman
+  
+ ‘‘Structure and Interpretation of Computer 
+ Programs’’MIT Press,1996 (2nd Edition) 
+  
+ ISBN 978-0-262-51087-5 
+  
+ Full text: http://mitpress.mit.edu/sicp/
+  
+ Christian Queinnec
+  
+ ‘‘Lisp In Small Pieces’’
+  
+ Cambridge University Press,1994 
+  
+ ISBN 978-0-521-54566-2 
+  
+ Info: http://www-spi.lip6.fr/~queinnec/WWW/LiSP.html",NA
+Appendix,NA,NA
+A.1 First Steps in Scheme,NA,NA
+Getting an Interpreter,"Because there is a lot of examples to try in this book, the first thing you 
+ will want is a Scheme environment.For your first steps you should 
+ choose 
+ a 
+ stable, 
+ well-documented, 
+ and 
+ easy-to-use 
+ implementation.Make sure to get an R5RS or R4RS-compliant version. 
+ Here are a few suggestions:
+  
+ PLT Scheme
+  comes in two flavors:
+  MzScheme
+  is a command line 
+ envi-ronment with very good error reporting.For those who cannot live 
+ without it:
+  DrScheme
+  has an IDE. The 3.x versions of both variants use 
+ on the fly compilation. PLT Scheme is open source software with an 
+ unrestrictive license. The 2.x and 3.x versions are fine.
+  
+ URL:
+  http://www.plt-scheme.org/
+  
+ Scheme 48
+  is a very clean implementation that is quite picky about the 
+ programs that it accepts (this is a good thing). It is free software.
+  
+ URL:
+  http://www.s48.org/
+  
+ Scheme 9 from Empty Space
+  is a free, small, and portable 
+ implementa-tion that compiles out of the box on a wide variety of 
+ systems. It imple-ments only a subset of R4RS, though.
+  
+ URL:
+  http://www.t3x.org/bits/s9fes/
+  
+ If you prefer the big picture, here is a collection of lots of implementa-
+ tions. Have a look and see for yourself:
+  
+ http://community.schemewiki.org/?scheme-faq-
+ standards#implementations
+  
+ The FreeBSD Project’s ports collection has a Scheme section, 
+ too: 
+ http://www.freebsd.org/ports/scheme.html",NA
+Running the Interpreter,"Once you have chosen an environment, installed it, and launched it, it 
+ will greet you with some kind of banner:
+  
+ Foo Scheme ready 
+  
+ > _",NA
+Testing Programs,"You will not want to enter programs with a size of more than two or 
+ three lines directly at the REPL. Something you definitely want is a 
+ decent programmer’s editor.
+  Vi
+  or
+  Emacs
+  are fine, if you are used to 
+ them. In fact,
+  any
+  editor will do, but one thing that
+  really
+  helps is the 
+ capability to show matching parentheses, so you should get an editor 
+ that can do this. When using
+  vi
+ , you can use the
+  :set showmatch
+  
+ option and/or the 
+ %
+  command.
+  
+ To test a program, launch your editor in one command line window and 
+ the Scheme environment in another. Make sure that your editor saves to 
+ the directory in which you started Scheme.
+  
+ Key in your program in the editor window and save the text when you 
+ are done. Here is a sample program to try:
+  
+ (define (hello) 
+  
+ (display ""Hello, 
+ World!"") (newline))
+  
+ 158",NA
+Batch Mode,"Maybe you are used to working on a command line and prefer to run 
+ programs in batch mode. Most Scheme implementations can do this, 
+ too. See the documentation for the actual command line options that are 
+ required to do so. Because there is no interaction in batch mode, you 
+ have to include the function application that starts your program in the 
+ program file, so you would have to change above example to:
+  
+ (define (hello) 
+  
+ (display ""Hello, World!"") 
+ (newline))
+  
+ (hello) ; start the program
+  
+ You can then run the program from the shell prompt or DOSprompt 
+ using a command like this:
+  
+ your-scheme -f hello.scm
+  
+ 159",NA
+A.2 Scheme Style Guide,"The rules and templates listed in this appendix are useful for writing 
+ read-
+  
+ able Scheme programs.They are intended to reflect the logical structure 
+ of programs. Of course,
+  style
+  is a highly personal matter, so feel 
+ encouraged
+  
+ to develop your own one.
+  
+ Conventions are there to be bent or broken occasionally. When the rules 
+ get in your way, feel free to ignore them. Make your
+  code
+  as readable as
+  
+ you can. Your code is a document written in an abstract language that 
+ describes how to solve a specific problem. It just happens to be ‘‘ex-
+  
+ ecutable’’.
+  
+ Here are the most basic rules for formatting Scheme programs:
+  
+ -- Use a monospace font for editing Scheme code;
+  
+ -- Use blanks rather than TABs for indentation;
+  
+ -- Indentation of code is done in steps of two 
+ characters;-- Indentation of data is done in steps of one 
+ character;",NA
+A.2.1 Definitions and Bindings,"Most variable definitions are one-liners:
+  
+ (define variable value)
+  
+ 161",NA
+A.2.2 Procedure Application,"There are not many choices for procedures of no arguments: 
+ (procedure)
+  
+ Applications that fit in a single line are placed in a single line: 
+ (procedure argument ...)
+  
+ In longer expressions, the arguments are lined up with respect to a com-
+ mon column: 
+  
+ (procedure
+  argument 
+  
+  
+ ...
+  
+ argument
+ )
+  
+ If there is insufficient horizontal space, arguments may be indented in 
+ the lines following the procedure: 
+  
+ (procedure 
+  
+  
+ argument 
+  
+  
+ ...
+  
+ argument
+ )
+  
+ Short lambda function applications are placed in a single line: 
+ ((lambda (variable ...) body) argument ...)
+  
+ The arguments of more complex applications are indented by
+  one
+  blank 
+ so that they share the first column with the beginning of the lambda 
+ function itself: 
+  
+ (
+ (
+ lambda (variable ...) 
+  
+   
+ body) 
+  
+  
+ argument 
+  
+  
+ ...
+  
+ argument
+ )
+  
+ You will rarely need this, though, unless you are dealing with lambda 
+ cal-culus.",NA
+"A.2.3 Conditionals, Logic, Etc","Applications of
+  and
+ ,
+  begin
+ ,
+  if
+ , and
+  or
+  are preferably indented in 
+ the
+  
+ 164",NA
+A.2.4 Data and Quotation,"When quoted lists fit in a single line, this is how it should be done:
+  
+ ’(member ...) 
+  
+ (quote(member ...))
+  
+ Otherwise members are indented by a
+  single character
+ :
+  
+ ’(member (quote (member 
+  
+ ... 
+  
+  
+ ...
+  
+ member) 
+  
+ member))
+  
+ ’((member ...) (quote ((member ...) 
+  
+ ... 
+  
+  
+ ...
+  
+ (member ...))
+  
+ 166
+  
+ (member ...)))",NA
+A.3 Table of Example Programs,"add 
+  
+ add lists of digits . . . . . . . . . . . . . . . . . . . 82
+  
+ append2 
+  
+ append lists, tail recursive version . . . . . . . . . . . 30
+  
+ case 
+  
+ case
+  syntax . . . . . . . . . . . . . . . . . . . . . 115
+  
+ checked-len length
+  with non-local exit . . . . . . . . . . . . . 127
+  
+ complement
+  negate predicates . . . . . . . . . . . . . . . . . . . 37
+  
+ compose 
+  
+ function composition . . . . . . . . . . . . . . . . . 57
+  
+ copy 
+  
+ copy files . . . . . . . . . . . . . . . . . . . . . . . 106
+  
+ depth 
+  
+ depth of lists . . . . . . . . . . . . . . . . . . . . . . 50
+  
+ depth 
+  
+ depth of lists, using HOFs . . . . . . . . . . . . . . . 72
+  
+ draw-tree 
+  
+ draw box diagrams of Scheme data . . . . . . . . . 148
+  
+ eql? 
+  
+ equality of lists of symbols . . . . . . . . . . . . . . 62
+  
+ equal? 
+  
+ general equality predicate . . . . . . . . . . . . . . . 64
+  
+ expand-qq 
+  
+ quasiquote expander . . . . . . . . . . . . . . . . . 119
+  
+ explode 
+  
+ explode symbols . . . . . . . . . . . . . . . . . . . . 80
+  
+ fact 
+  
+ factorial function . . . . . . . . . . . . . . . . . . . 11
+  
+ fact 
+  
+ factorial function, tail recursive version . . . . . . . . 18
+  
+ filter 
+  
+ extract list elements . . . . . . . . . . . . . . . . . . 37
+  
+ implode 
+  
+ implode lists of symbols . . . . . . . . . . . . . . . . 81
+  
+ int->list 
+  
+ convert integer to list . . . . . . . . . . . . . . . . . 82
+  
+ 167",NA
+A.4 Scheme Syntax and Procedures,"This is a summary of the Scheme syntax and procedures discussed in 
+ this book.",NA
+Key,"body
+  a sequence of expressions 
+ proc
+ n
+ a procedure of
+  n
+  arguments 
+ char
+  
+ a char 
+  
+ str 
+ a string 
+  
+ expr
+  any type 
+  
+ sym 
+ a symbol 
+  
+ form
+  any datum 
+  
+ tval
+  a truth value 
+  
+ int 
+  
+ an integer 
+  
+ void
+  an unspecific value 
+  
+ list
+  a list 
+  
+ [x] 
+ x
+  is optional 
+  
+ num 
+  
+ any numeric type 
+  
+ x ...
+  zero or more occurrences of
+  x 
+ pair
+  a pair 
+  
+ x|y 
+ x
+  or
+  y 
+  
+ proc
+  a procedure
+  
+ 168",NA
+Syntax,"’form => form 
+  
+ Turn
+  form
+  into a datum. Alias:
+  quote
+ .
+  
+ ,expr => form 
+  
+ Evaluate
+  expr
+  in a
+  quasiquote
+  template. Alias:
+  unquote
+ .
+  
+ ,@expr => spliced-form 
+  
+ Evaluate
+  expr
+  in a
+  quasiquote
+  template and splice into 
+ surround-ing list. Alias:
+  unquote-splicing
+ .
+  
+ \\\
+ qq-template => form
+  
+ Quasiquote
+  
+ the
+  
+ quasiquote
+  
+ template
+  
+ qq-template
+ .
+  
+ Alias
+ :
+  
+ quasiquote
+ .
+  
+ (expr
+ 0
+  expr
+ 1
+  ...) 
+  
+ Apply
+  expr
+ 0
+  to 
+  
+ expr
+ 1
+ ...
+  Expr
+ 0
+  must reduce to a procedure.
+  
+ (and expr
+ 1
+  ...) => form 
+  
+ Evaluate expressions in sequence until one gives
+  #f
+ .
+  
+ (begin expr
+ 1
+  ...) => form 
+  
+ Evaluate expressions in sequence.
+  
+ (case expr (list
+ 1
+  body
+ 1
+ ) (list
+ 2
+  body
+ 2
+ ) ...) => form 
+ Evaluate first
+  body
+  whose
+  list
+  contains
+  expr
+ .
+  
+ (cond (expr
+ 1
+  body
+ 1
+ ) (expr
+ 2
+  body
+ 2
+ ) ...) => form 
+ Evaluate first
+  body
+  whose
+  expr
+  reduces to truth.
+  
+ (define sym expr) => void 
+  
+ Introduce
+  sym
+  and bind it to (a location referring to)
+  expr
+ .
+  
+ (define (sym
+ 1
+  sym
+ 2
+  ...) body) => void 
+  
+ (define (sym
+ 1
+  sym
+ 2
+  ... . sym
+ n
+ ) body) => void 
+  
+ Introduce
+  sym
+ 1
+  and bind it to (a location referring to) a procedure 
+  
+ with the variables
+  sym
+ 2
+ ...
+ and the given
+  body
+ .
+  
+ (define-syntax keyword transformer) => void 
+  
+ Introduce the keyword
+  keyword
+  and bind it to the syntax trans-
+ former
+  transformer
+ . See also:
+  syntax-rules
+ .
+  
+ (if expr
+ 1
+  expr
+ 2
+  [expr
+ 3
+ ]) => form 
+  
+ Evaluate to
+  expr
+ 2
+  if
+  expr
+ 1
+  reduces to truth, and to
+  expr
+ 3
+  otherwise.
+  
+ (lambda sym body) => proc 
+  
+ (lambda (sym
+ 1
+  sym
+ 2
+  ... . sym
+ n
+ ) body) => proc 
+  
+ Evaluate to a variadic procedure with the variable
+  sym
+  (or the variables
+  
+ sym
+ 1
+ ...
+ ) and the given
+  body
+ .
+  
+ 169",NA
+Procedures,"(* num
+ 1
+  ...) => num 
+  
+ Evaluate to the product of the given numbers.
+  
+ (+ num
+ 1
+  ...) => num 
+  
+ Evaluate to the sum of the given numbers.
+  
+ (- num
+ 1
+  num
+ 2
+  ...) => num 
+  
+ Evaluate to the difference of the given numbers. If only one argu-
+ ment
+  n
+  is given, return
+  -n
+ .
+  
+ 170",NA
+Index,NA,NA
+# ,"#f
+  22 
+  
+ #t
+  22 
+  
+ #\newline
+  24 
+ #\space
+  24
+  
+ ’
+  27, 166 
+  
+ ()
+  45 
+  
+ *
+  84, 14, 66 
+  
+ +
+  84, 10, 66 
+  
+ ,
+  116, 167 
+  
+ ,@
+  117, 167
+  
+ ->
+  13
+  
+ -
+  84, 10 
+  
+ ...
+  111 
+  
+ /
+  84 
+  
+ <
+  59 
+  
+ <=
+  59 
+  
+ =
+  59 
+  
+ =>
+  9 
+  
+ >
+  50 
+  
+ >=
+  59
+  
+ \\\
+  116, 167",NA
+A ,"alist 46 
+  
+ alpha conversion 141 
+  
+ and
+  63, 121, 164 
+  
+ append
+  29 
+  
+ applicative language 100 
+ applicative order 143 
+  
+ apply
+  56, 69 
+  
+ argument 9 
+  
+ assoc
+  47
+  
+ assq
+  67 
+  
+ assv
+  67 
+  
+ atom 44",NA
+B ,"begin
+  103, 121, 164 
+  
+ beta reduction 139 
+  
+ bignum arithmetics 22, 82 
+  
+ binding 12, 26, 111 
+  
+ boolean 22 
+  
+ bottom 10, 150 
+  
+ bottom
+  54 
+  
+ bound variable 34 
+  
+ box notation 145 
+  
+ boxed value 75",NA
+C ,"caaaar...cddddr
+  48 
+  
+ cadr
+  36 
+  
+ call by name 56, 143 
+  
+ call by value 56, 143 
+  
+ call/cc
+  125 
+  
+ call-with-current-continuation 
+ 125 
+  
+ car
+  28, 51 
+  
+ case
+  114, 165 
+  
+ case insensitive 61 
+  
+ cdr
+  28, 51 
+  
+ character predicates 60 
+  
+ char>?
+  77 
+  
+ char<=?
+  77 
+  
+ char-alphabetic?
+  88 
+  
+ char-downcase
+  89 
+  
+ char-lower-case?
+  88 
+  
+ char-numeric?
+  88
+  
+  
+ association list 46
+  
+ char-upcase
+  89",NA
+F,"clause 12, 115 
+  
+ file 105
+  
+ close over 36 
+  
+ first class object 128
+  
+ closure 32 
+  
+ fixed point 134
+  
+ code 160 
+  
+ floor
+  86
+  
+ combinator 133 
+  
+ free variable 34
+  
+ comment 9 
+  
+ freelist 97
+  
+ cond
+  12, 120, 106, 165 
+  
+ full numeric tower 88
+  
+ cons
+  28, 45 
+  
+ function 9
+  
+ cons object 45, 145 
+  
+ function body 12, 104
+  
+ continuation 125",NA
+G,"current continuation 125 
+  
+ garbage collection 98
+  
+ currying 135 
+  
+ gcd
+  87",NA
+D ,NA,NA
+H,"default input port 105 
+  
+ define
+  11, 161 
+  
+ define-syntax
+  109, 162
+  
+ head (of a list) 29 
+  
+ head (of a procedure) 12 
+ higher order function 68
+  
+ disjointness of types 78",NA
+I,"display
+  102, 24 
+  
+ identity 57, 27
+  
+ dotted pair 45 
+  
+ dynamic scoping 36 
+ dynamic context 129 
+ dynamic typing 75
+  
+ identity
+  128 
+  
+ if
+  20, 72, 164 
+  
+ imperative programming 11 
+ improper list 46",NA
+E ,"indefinite extent 128
+  
+ effect (of a function) 100 
+  
+ indirect recursion 123
+  
+ ellipsis 111 
+  
+ inner context 33
+  
+ else
+  (of
+  cond
+ ) 19 
+  
+ integer 21
+  
+ empty list 29, 45",NA
+K,"eof object 106 
+  
+ keyword 115
+  
+ eof-object?
+  106",NA
+L,"eq?
+  27, 11, 58 
+  
+ lambda
+  31, 54, 73, 163
+  
+ equal?
+  64 
+  
+ lambda calculus 140, 164
+  
+ equality 62, 57 
+  
+ lcm
+  87
+  
+ eqv?
+  62 
+  
+ length
+  49
+  
+ eta conversion 138 
+ evaluation 10
+  
+ 178
+  
+ let*
+  41, 122, 163 
+  
+ let
+  33, 91, 122, 
+ 163",NA
+M ,NA,NA
+Q,"map
+  69 
+  
+ quasiquote
+  116, 167
+  
+ max
+  53 
+  
+ quine 118
+  
+ member
+  22 
+  
+ memory compation 99 
+  
+ memory fragmentation 99
+  
+ quotation 25, 166, 116 
+ quote
+  25, 166 
+  
+ quotient
+  85, 10
+  
+ memq
+  67",NA
+R,"memv
+  67 
+  
+ rational value 85
+  
+ metaprogramming 118 
+ modulo
+  85 
+  
+ mutual recursion 42, 123
+  
+ read-char
+  104 
+  
+ read eval print loop 158 
+ read
+  101, 23",NA
+N ,"recursion 15, 114
+  
+ negative?
+  87 
+  
+ reduce 10
+  
+ newline
+  104 
+  
+ remainder
+  85
+  
+ non-local exit 127",NA
+S,"normal form 14 
+  
+ self application 74, 133
+  
+ normal order 143 
+  
+ set!
+  43
+  
+ not
+  67 
+  
+ side effect 100, 148, 43
+  
+ null?
+  29 
+  
+ signature 55
+  
+ number?
+  37 
+  
+ spine 146
+  
+ numeric predicate 59 
+  
+ sqrt
+  88
+  
+ numeric tower 88 
+  
+ strict function 10",NA
+O ,"string->list
+  80
+  
+ or
+  65, 121, 164 
+  
+ order of evaluation 40, 130 
+ outer context 33
+  
+ string->symbol
+  81 
+ string-ci<?
+  61 
+  
+ string-ci=?
+  61",NA
+P ,"string
+  81
+  
+ pair 44 
+  
+ string-length
+  91
+  
+ pair?
+  78
+  
+ string predicate 61",NA
+T ,"tail (of a list) 29 
+  
+ tail call 120 
+  
+ tail call optimization 17, 123 
+  
+ tail recursive 17, 120 
+  
+ truth value 12 
+  
+ type checking 64 
+  
+ type conversion 80 
+  
+ type predicate 64",NA
+U ,"unquote
+  116, 167 
+  
+ unquote-splicing
+  117, 167 
+  
+ unspecific value 101",NA
+V ,"value 14 
+  
+ variable 12 
+  
+ variadic procedure 53",NA
+W ,"with-input-from-file
+  105 
+  
+ with-output-to-file
+  106 
+  
+ write
+  101, 23",NA
+Y ,Y combinator 134,NA
+Z ,"zero?
+  12
+  
+ 180",NA

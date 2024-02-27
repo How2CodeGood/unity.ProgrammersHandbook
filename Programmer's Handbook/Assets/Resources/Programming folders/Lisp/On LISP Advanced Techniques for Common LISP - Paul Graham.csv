@@ -1,0 +1,1639 @@
+Larger Text,Smaller Text,Symbol
+Preface,"This book is intended for anyone who wants to become a better Lisp 
+ programmer. It assumes some familiarity with Lisp, but not necessarily 
+ extensive programming experience. The first few chapters contain a fair amount 
+ of review. I hope that these sections will be interesting to more experienced 
+ Lisp programmers as well, because they present familiar subjects in a new light.
+  
+  
+ It’s difficult to convey the essence of a programminglanguage in one 
+ sentence, but John Foderaro has come close:
+  
+ Lisp is a programmable programming language.
+  
+ There is more to Lisp than this, but the ability to bend Lisp to one’s will is a 
+ large part of what distinguishes a Lisp expert from a novice. As well as writing 
+ their programs down toward the language, experienced Lisp programmers build 
+ the language up toward their programs. This book teaches how to program in 
+ the bottom-up style for which Lisp is inherently well-suited.
+  
+ Bottom-up Design
+  
+ Bottom-up design is becoming more important as software grows in 
+ complexity. Programs today may have to meet specifications which are 
+ extremely complex, or even open-ended. Under such circumstances, the 
+ traditional top-down method sometimes breaks down. In its place there has 
+ evolved a style of programming
+  
+ v",NA
+Contents,"1. The Extensible Language
+  
+ 1
+  
+ 4.4.
+  
+ Search
+  
+ 48
+  
+ 76
+  
+ 1.1.
+  
+ Design by Evolution
+  
+ 1
+  
+ 4.5.
+  
+ Mapping
+  
+ 53
+  
+ 4.6.
+  
+ I/O
+  
+ 56
+  
+ 1.2.
+  
+ Programming Bottom-Up
+  
+ 3
+  
+ 4.7.
+  
+ Symbols and 
+ Strings
+  
+ 57
+  
+ 1.3.
+  
+ Extensible Software
+  
+ 5
+  
+ 4.8.
+  
+ Density
+  
+ 59
+  
+ 1.4.
+  
+ Extending Lisp
+  
+ 6
+  
+ 1.5.
+  
+ Why Lisp (or 
+ When)
+  
+ 8
+  
+ 5. Returning Functions
+  
+ 61
+  
+ 2. Functions
+  
+ 9
+  
+ 5.1.
+  
+ Common Lisp Evolves
+  
+ 61
+  
+ 2.1.
+  
+ Functions as Data
+  
+ 9
+  
+ 5.2.
+  
+ Orthogonality
+  
+ 63
+  
+ 5.3.
+  
+ Memoizing
+  
+ 65
+  
+ 2.2.
+  
+ Defining Functions
+  
+ 10
+  
+ 5.4.
+  
+ Composing Functions
+  
+ 66
+  
+ 2.3.
+  
+ Functional Arguments
+  
+ 13
+  
+ 5.5.
+  
+ Recursion on Cdrs
+  
+ 68
+  
+ 2.4.
+  
+ Functions as Properties
+  
+ 15
+  
+ 5.6.
+  
+ Recursion on Subtrees
+  
+ 70
+  
+ 2.5.
+  
+ Scope
+  
+ 16
+  
+ 5.7.
+  
+ When to Build Functions
+  
+ 75
+  
+ 2.6.
+  
+ Closure
+ s
+  
+ 17
+  
+ 2.7.
+  
+ Local Functions
+  
+ 21
+  
+ 6. Functions as Representation
+  
+ 2.8.
+  
+ Tail-Recursion
+  
+ 22
+  
+ 2.9.
+  
+ Compilation
+  
+ 24
+  
+ 6.1.
+  
+ Networks
+  
+ 76
+  
+ 2.10.
+  
+ Functions from 
+ Lists
+  
+ 27
+  
+ 6.2.
+  
+ Compiling 
+ Networks
+  
+ 79
+  
+ 3. Functional 
+ Programming
+  
+ 28
+  
+ 6.3.
+  
+ Looking Forward
+  
+ 81
+  
+ 3.1.
+  
+ Functional Design
+  
+ 28
+  
+ 7. Macros
+  
+ 82
+  
+ 3.2.
+  
+ Imperative Outside-In
+  
+ 33
+  
+ 7.1.
+  
+ How Macros Work
+  
+ 82
+  
+ 3.3.
+  
+ Functional Interfaces
+  
+ 35
+  
+ 7.2.
+  
+ Backquote
+  
+ 84
+  
+ 3.4.
+  
+ Interactive Programming
+  
+ 37
+  
+ 7.3.
+  
+ Defining Simple 
+ Macros
+  
+ 88
+  
+ 4. Utility Functions
+  
+ 40
+  
+ 7.4.
+  
+ Testing 
+ Macroexpansion
+  
+ 91
+  
+ 7.5.
+  
+ Destructuring in Parameter
+  
+ 4.1.
+  
+ Birth of a Utility
+  
+ 40
+  
+ Lists
+  
+ 93
+  
+ 4.2.
+  
+ Invest in 
+ Abstraction
+  
+ 43
+  
+ 7.6.
+  
+ A Model of Macros
+  
+ 95
+  
+ 4.3.
+  
+ Operations on Lists
+  
+ 44
+  
+ 7.7.
+  
+ Macros as Programs
+  
+ 96
+  
+ xi",NA
+1,NA,NA
+The Extensible Language,"Not long ago, if you asked what Lisp was for, many people would have 
+ answered“for artificial intelligence.” In fact, the association between Lisp and
+  
+ AI
+  is just an accident of history. Lisp was invented by John McCarthy, who also 
+ invented the term “artificial intelligence.” His students and colleagues wrote 
+ their programs in Lisp, and so it began to be spoken of as an
+  AI
+  language. This 
+ line was taken up and repeated so often during the brief
+  AI
+  boom in the 1980s 
+ that it became almost an institution.
+  
+ Fortunately, word has begun to spread that
+  AI
+  is not what Lisp is all about. 
+ Recent advances in hardware and software have made Lisp commercially 
+ viable: it is now used in Gnu Emacs, the best Unix text-editor; Autocad, the 
+ industry stan-dard desktop
+  CAD
+  program; and Interleaf, a leading high-end 
+ publishing program.
+  
+ The way Lisp is used in these programs has nothing whatever to do with
+  AI
+ .
+  
+ If Lisp is not the language of
+  AI
+ , what is it? Instead of judging Lisp by the 
+ company it keeps, let’s look at the language itself. What can you do in Lisp that 
+ you can’t do in other languages? One of the most distinctive qualities of Lisp is 
+ the way it can be tailored to suit the program being written in it. Lisp itself is a 
+ Lisp program, and Lisp programs can be expressed as lists, which are Lisp data 
+ structures. Together, these two principles mean that any user can add operators 
+ to Lisp which are indistinguishable from the ones that come built-in.
+  
+ 1.1 
+  
+ Design by Evolution
+  
+ Because Lisp gives you the freedom to define your own operators, you can 
+ mold it into just the language you need. If you’re writing a text-editor, you can 
+ turn
+  
+ 1",NA
+2,NA,NA
+Functions,"Functions are the building-blocks of Lisp programs. They are also the building-
+ blocks of Lisp. In most languages the
+  +
+  operator is something quite different 
+ from user-defined functions. But Lisp has a single model, function application, 
+ to describe all the computation done by a program. The Lisp
+  +
+  operator is a 
+ function, just like the ones you can define yourself.
+  
+ In fact, except for a small number of operators called
+  special forms
+ , the core 
+ of Lisp is a collection of Lisp functions. What’s to stop you from adding to this 
+ collection? Nothing at all: if you think of something you wish Lisp could do, 
+ you can write it yourself, and your new function will be treated just like the 
+ built-in ones.
+  
+ This fact has important consequences for the programmer. It means that any 
+ new function could be considered either as an addition to Lisp, or as part of a 
+ specific application. Typically, an experienced Lisp programmer will write 
+ some of each, adjusting the boundary between language and application until 
+ the two fit one another perfectly. This book is about how to achieve a good fit 
+ between language and application. Since everything we do toward this end 
+ ultimately depends on functions, functions are the natural place to begin.
+  
+ 2.1 
+  
+ Functions as Data
+  
+ Two things make Lisp functions different. One, mentioned above, is that Lisp 
+ itself is a collection of functions. This means that we can add to Lisp new 
+ operators of our own. Another important thing to know about functions is that 
+ they are Lisp objects.
+  
+ 9",NA
+3,NA,NA
+Functional Programming,"The previous chapter explained how Lisp and Lisp programs are both built out 
+ of a single raw material: the function. Like any building material, its qualities 
+ influence both the kinds of things we build, and the way we build them.
+  
+ This chapter describes the kind of construction methods which prevail in the 
+ Lisp world. The sophistication of these methods allows us to attempt more 
+ ambitious kinds of programs. The next chapter will describe one particularly 
+ important class of programs which become possible in Lisp: programs which 
+ evolve instead of being developed by the old plan-and-implement method.
+  
+ 3.1 
+  
+ Functional Design
+  
+ The character of an object is influenced by the elements from which it is made. 
+ A wooden building looks different from a stone one, for example. Even when 
+ you are too far away to see wood or stone, you can tell from the overall shape 
+ of the building what it’s made of. The character of Lisp functions has a similar 
+ influence on the structure of Lisp programs.
+  
+  
+ Functional programming
+  means writing programs which work by returning 
+ values instead of by performing side-effects. 
+  
+ Side-effects include destructive 
+ changes to objects (e.g. by
+  rplaca
+ ) and assignments to variables (e.g. by
+  setq
+ ). 
+ If side-effects are few and localized, programs become easier to read, test, and 
+ debug. Lisp programs have not always been written in this style, but over time 
+ Lisp and functional programming have gradually become inseparable.
+  
+ An example will show how functional programming differs from what you 
+ might do in another language. Suppose for some reason we want the elements of
+  
+ 28",NA
+4,NA,NA
+Utility Functions,"Common Lisp operators come in three types: functions and macros, which you 
+ can write yourself, and special forms, which you can’t. This chapter describes 
+ techniques for extending Lisp with new functions. But “techniques” here means 
+ something different from what it usually does. The important thing to know 
+ about such functions is not how they’re written, but where they come from. An 
+ extension to Lisp will be written using mostly the same techniques you would 
+ use to write any other Lisp function. The hard part of writing these extensions is 
+ not deciding how to write them, but deciding which ones to write.
+  
+ 4.1 
+  
+ Birth of a Utility
+  
+ In its simplest form, bottom-up programming means second-guessing whoever 
+ designed your Lisp. At the same time as you write your program, you also add 
+ to Lisp new operators which make your program easy to write. These new 
+ operators are called
+  utilities.
+  
+ The term “utility” has no precise definition. A piece of code can be called a 
+ utility if it seems too small to be considered as a separate application, and too 
+ general-purpose to be considered as part of a particular program. A database 
+ program would not be a utility, for example, but a function which performed a 
+ single operation on a list couldbe. Most utilities resemble the functions 
+ andmacros that Lisp has already. In fact, many of Common Lisp’s built-in 
+ operators began life as utilities. The function
+  remove-if-not
+ , which collects all 
+ the elements of a list satisfying some predicate, was defined by individual 
+ programmers for years before it became a part of Common Lisp.
+  
+ 40",NA
+5,NA,NA
+Returning Functions,"The previous chapter showed how the ability to pass functions as arguments 
+ leads to greater possibilities for abstraction. The more we can do to functions, 
+ the more we can take advantage of these possibilities. By defining functions to 
+ build and return new functions, we can magnify the effect of utilities which 
+ take functions as arguments.
+  
+ The utilities in this chapter operate on functions. It would be more natural, 
+ at least in Common Lisp, to write many of them to operate on expressions—
+ that is, as macros. A layer of macros will be superimposed on some of these 
+ operators in Chapter 15. However, it is important to know what part of the task 
+ can be done with functions, even if we will eventually call these functions only 
+ through macros.
+  
+ 5.1 
+  
+ Common Lisp Evolves
+  
+ Common Lisp originally provided several pairs of complementary functions. 
+ The functions
+  remove-if
+  and
+  remove-if-not
+  make one such pair. If
+  pred
+  is a 
+ predicate of one argument, then
+  
+ (remove-if-not #’pred lst)
+  
+ is equivalent to
+  
+ (remove-if #’(lambda (x) (not (pred x))) lst)
+  
+ 61",NA
+6,NA,NA
+Functions as Representation,"Generally, data structures are used to
+  represent. 
+  
+ An array could represent a 
+ geometric transformation; a tree could represent a hierarchy of command; a 
+ graph could represent a rail network. 
+  
+ In Lisp we can sometimes 
+ use closures as a representation. Within a closure, variable bindings can store 
+ information, and can also play the role that pointers play in constructing 
+ complex data structures. By making a group of closures which share bindings, 
+ or can refer to one another, we can create hybrid objects which combine the 
+ advantages of data structures and programs.
+  
+ Beneath the surface, shared bindings
+  are
+  pointers. Closures just bring us the 
+ convenience of dealingwith themat ahigher levelofabstraction. By using 
+ closures to represent something we would otherwise represent with static data 
+ structures, we can often expect substantial improvements in elegance and 
+ efficiency.
+  
+ 6.1 
+  
+ Networks
+  
+ Closures have three useful properties: they are active, they have local state, and 
+ we can make multiple instances of them. Where could we use multiple copies 
+ of active objects with local state? In applications involving networks, among 
+ others. In many cases we can represent nodes in a network as closures. As well 
+ as having its own local state, a closure can refer to another closure. Thus a 
+ closure representing a node in a network can know of several other nodes 
+ (closures) to which it must send its output. This means that we may be able to 
+ translate some networks straight into code.
+  
+ 76",NA
+7,NA,NA
+Macros,"Lisp’s macro facility allows you to define operators that are implemented by 
+ transformation. The definition of a macro is essentially a function that generates 
+ Lisp code—a program that writes programs. From these small beginnings arise 
+ great possibilities, and also unexpected hazards. Chapters 7–10 form a tutorial 
+ on macros. This chapter explains how macros work, gives techniques for 
+ writing and testing them, and looks at the issue of macro style.
+  
+ 7.1 
+  
+ How Macros Work
+  
+ Since macros can be called and return values, they tend to be associated with 
+ func-tions. Macro definitions sometimes resemble function definitions, and 
+ speaking informally, people call
+  do
+ , which is actually a macro, a “built-in 
+ function.” But pushing the analogy too far can be a source of confusion. Macros 
+ work differently from normal functions, and knowing how and why macros are 
+ different is the key to using them correctly. A function produces results, but a 
+ macro produces 
+ expressions
+ —which, when evaluated, produce results.
+  
+ The best way to begin is to move straight into an example. Suppose we want 
+ to write a macro
+  nil!
+ , which sets its argument to
+  nil
+ . We want
+  (nil! x)
+  to have 
+ the same effect as
+  (setq x nil)
+ . We do it by defining
+  nil!
+  as a macro which turns 
+ instances of the first form into instances of the second.
+  
+ > (defmacro nil! (var)
+  
+ (list ’setq var nil))
+  
+ NIL!
+  
+ 82",NA
+8,NA,NA
+When to Use Macros,"◦
+  
+ How do we know whether a given function should really be a function, rather 
+ than a macro? Most of the time there is a clear distinction between the cases 
+ which call for macros and those which don’t. By default we should use 
+ functions: it is inelegant to use a macro where a function would do. We should 
+ use macros only where they bring us some specific advantage.
+  
+ When do macros bring advantages? That is the subject of this chapter. 
+ Usually the question is not one of advantage, but necessity. Most of the things 
+ we do with macros, we could not do with functions. Section 8.1 lists the kinds 
+ of operators which can only be implemented as macros. However, there is also 
+ a small (but interesting) class of borderline cases, in which an operator might 
+ justifiably be
+  
+ written as a function or a macro.
+  
+ For these situations, Section 8.2 gives the
+  
+ arguments for and against macros. Finally, having considered what macros are 
+ capable of doing, we turn in Section 8.3 to a related question: what kinds of 
+ things do people do with them?
+  
+ 8.1
+  
+ When Nothing Else Will Do
+  
+ It’s a general principle of good design that if you find similar code appearing at 
+ several points in a program, you should write a subroutine and replace the 
+ similar sequences of code with calls to the subroutine. When we apply this 
+ principle to Lisp programs, we have to decide whether the “subroutine” should 
+ be a function or a macro.
+  
+ In some cases it’s easy to decide to write a macro instead of a function, 
+ because only a macro can do what’s needed. A function like
+  1+
+  could 
+ conceivably
+  
+ 106",NA
+9,NA,NA
+Variable Capture,"Macros are vulnerable to a problem called
+  variable capture.
+  Variable capture 
+ occurs when macroexpansion causes a name clash: when some symbol ends up 
+ referring to a variable from another context. Inadvertent variable capture can 
+ cause extremely subtle bugs. This chapter is about how to foresee and avoid 
+ them. However, intentional variable capture is a useful programming technique, 
+ and Chapter 14 is full of macros which rely on it.
+  
+ 9.1 
+  
+ Macro Argument Capture
+  
+ A macro vulnerable to unintended variable capture is a macro with a bug. To 
+ avoid writing such macros, we must know precisely when capture can occur. 
+ Instances of variable capture can be traced to one of two situations: macro 
+ argument capture and free symbol capture. In argument capture, a symbol 
+ passed as an argument in the macro call inadvertentlyrefers to a 
+ variableestablished by the macro expansion itself. Consider the following 
+ definition of the macro
+  for
+ , which iterates over a body of expressions like a 
+ Pascal
+  for
+  loop:
+  
+ (defmacro for ((var start stop) &body body) 
+  
+ ; wrong
+  
+ ‘(do ((,var ,start (1+ ,var))
+  
+ (limit ,stop))
+  
+ ((> ,var limit))
+  
+ ,@body))
+  
+ This macro looks correct at first sight. It even seems to work fine:
+  
+ 118",NA
+10,NA,NA
+Other Macro Pitfalls,"Writing macros requires an extra degree of caution. A function is isolated in its 
+ own lexical world, but a macro, because it is expanded into the calling code, 
+ can give the user an unpleasant surprise unless it is carefully written. Chapter 9 
+ explained variable capture, the biggest such surprise. This chapter discusses 
+ four more problems to avoid when defining macros.
+  
+ 10.1 
+  
+ Number of Evaluations
+  
+  
+ Several incorrectversions of
+  for
+  appearedin the previouschapter. Figure 10.1 
+ shows two more, accompanied by a correct version for comparison.
+  
+ Though not vulnerable to capture, the second
+  for
+  contains a bug. It will 
+ generate an expansion in which the form passed as
+  stop
+  will be evaluated on 
+ each iteration. In the best case, this kind of macro is inefficient, repeatedly 
+ doing what it could have done just once. If
+  stop
+  has side-effects, the macro 
+ could actually produce incorrect results. For example, this loop will never 
+ terminate, because the goal recedes on each iteration:
+  
+ > (let ((x 2))
+  
+ (for (i 1 (incf x))
+  
+ (princ i)))
+  
+ 12345678910111213...
+  
+ In writing macros like
+  for
+ , one must remember that the arguments to a 
+ macro are forms, not values. Depending on where they appear in the expansion, 
+ they
+  
+ 133",NA
+11,NA,NA
+Classic Macros,"This chapter shows how to define the most commonly used types of macros. 
+ They fall into three categories—with a fair amount of overlap. The first group 
+ are macros which create context. Any operator which causes its arguments to be 
+ evaluated in a new context will probably have to be defined as a macro. The 
+ first two sections describe the two basic types of context, and show how to 
+ define macros for each.
+  
+ The next three sections describe macros for conditional and repeated 
+ evalua-tion. An operator whose arguments are to be evaluated less than once, or 
+ more than once, must also be defined as a macro. There is no sharp distinction 
+ between operators for conditional and repeated evaluation: some of the 
+ examples in this chapter do both (as well as binding). The final section explains 
+ another similarity between conditional and repeated evaluation: in some cases, 
+ both can be done with functions.
+  
+ 11.1 
+  
+ Creating Context
+  
+ Context here has two senses. One sort of context is a lexical environment. The 
+ let
+  special form creates a new lexical environment; the expressions in the body 
+ of a
+  let
+  will be evaluated in an environment which may contain new variables.
+  
+ If
+  x
+  is set to
+  a
+  at the toplevel, then
+  
+ (let ((x ’b)) (list x))
+  
+ will nonetheless return
+  (b)
+ , because the call to
+  list
+  will be made in an environ-
+ ment containing a new
+  x
+ , whose value is
+  b
+ .
+  
+ 143",NA
+12,NA,NA
+Generalized Variables,"Chapter 8 mentioned that one of the advantages of macros is their ability to 
+ transform their arguments. One macro of this sort is
+  setf
+ . This chapter looks at 
+ the implications of
+  setf
+ , and then shows some examples of macros which can be 
+ built upon it.
+  
+ Writing correct macros on
+  setf
+  is surprisingly difficult. To introduce the 
+ topic, the first section will provide a simple example which is slightly incorrect. 
+ The next section will explain what’s wrong with this macro, and show how to 
+ fix it. The third and fourth sections present examples of utilities built on
+  setf
+ , 
+ and the final section explains how to define your own
+  setf
+  inversions.
+  
+ 12.1 
+  
+ The Concept
+  
+ The built-in macro
+  setf
+  is a generalization of
+  setq
+ . The first argument to
+  setf 
+ can be a call instead of just a variable:
+  
+ > (setq lst ’(a b c))
+  
+ (A B C)
+  
+ > (setf (car lst) 480)
+  
+ 480
+  
+ > lst
+  
+ (480 B C)
+  
+ In general
+  (setf
+  x y
+ )
+  can be understood as saying “see to it that
+  x
+  evaluates to 
+ y
+ .” 
+ As a macro,
+  setf
+  can look inside its arguments to see what needs to be done to 
+ make such a statement true. If the first argument (after macroexpansion) is a
+  
+ 165",NA
+13,NA,NA
+Computation at Compile-Time,"The preceding chapters described several types of operators which have to be 
+ implemented by macros. This one describes a class of problems which could be 
+ solved by functions, but where macros are more efficient. Section 8.2 listed the 
+ pros and cons of using macros in a given situation. Among the pros 
+ was“computation at compile-time.” By defining an operator as a macro, you 
+ can sometimes make it do some of its work when it is expanded. This chapter 
+ looks at macros which take advantage of this possibility.
+  
+ 13.1 
+  
+ New Utilities
+  
+ Section 8.2 raised the possibility of using macros to shift computation to 
+ compile-time. There we had as an example the macro
+  avg
+ , which returns the 
+ average of its arguments:
+  
+ > (avg pi 4 5)
+  
+ 4.047...
+  
+ Figure 13.1 shows
+  avg
+  defined first as a function and then as a macro. When
+  
+ avg 
+ is defined as a macro, the call to
+  length
+  can be made at compile-time. In 
+ the macro version we also avoid the expense of manipulating the
+  &rest
+  
+ parameter at runtime. In many implementations,
+  avg
+  will be faster written as a 
+ macro.
+  
+ The kind of savings which comes from knowing the number of arguments 
+ at expansion-time can be combined with the kind we get from
+  in
+  (page 152), 
+ where it was possible to avoid even evaluating some of the arguments. Figure 
+ 13.2 contains two versions of
+  most-of
+ , which returns true if most of its 
+ arguments do:
+  
+ 181",NA
+14,NA,NA
+Anaphoric Macros,"Chapter 9 treated variable capture exclusively as a problem—as something 
+ which happens inadvertently, and which can only affect programs for the 
+ worse. This chapter will show that variable capture can also be used 
+ constructively. There are some useful macros which couldn’t be written without 
+ it.
+  
+ It’s not uncommon in a Lisp program to want to test whether an expression 
+ returns a non-nil value, and if so, to do something with the value. If the 
+ expression is costly to evaluate, then one must normally do something like this:
+  
+ (let ((result (big-long-calculation)))
+  
+ (if result
+  
+ (foo result)))
+  
+ Wouldn’t it be easier if we could just say, as we would in English:
+  
+ (if (big-long-calculation)
+  
+ (foo it))
+  
+ By taking advantage of variable capture, we can write a version of
+  if
+  which 
+ works just this way.
+  
+ 14.1 
+  
+ Anaphoric Variants
+  
+ In natural language, an
+  anaphor
+  is an expression which refers back in the con-
+ versation. The most common anaphor in English is probably “it,” as in “Get the 
+ wrench and put it on the table.” Anaphora are a great convenience in everyday
+  
+ 189",NA
+15,NA,NA
+Macros Returning Functions,"Chapter 5 showed how to write functions which return other functions. Macros 
+ make the task of combining operators much easier. This chapter will show how 
+ to use macros to build abstractions which are equivalentto those defined in 
+ Chapter 5, but cleaner and more efficient.
+  
+ 15.1 
+  
+ Building Functions
+  
+ If
+  f
+  and
+  g
+  are functions, then
+  f
+ ◦
+ g
+ (
+ x
+ ) =
+  f
+ (
+ g
+ (
+ x
+ )). 
+  
+ Section 5.4 showed how to 
+ implement the
+  ◦
+  operator as a Lisp function called
+  compose
+ :
+  
+ > (funcall (compose #’list #’1+) 2)
+  
+ (3)
+  
+ In this section, we consider ways to define better function builders with 
+ macros. Figure 15.1 contains a general function-buildercalled
+  fn
+ , which builds 
+ compound functions from their descriptions. Its argument should be an 
+ expression of the form
+  (
+ operator
+  .
+  arguments
+ )
+ . The
+  operator
+  can be the name of 
+ a function or macro—or
+  compose
+ , which is treated specially. The
+  arguments
+  
+ can be names of functions or macros of one argument, or expressions that could 
+ be arguments to 
+ fn
+ . For example,
+  
+ (fn (and integerp oddp))
+  
+ yields a function equivalent to
+  
+ #’(lambda (x) (and (integerp x) (oddp x)))
+  
+ 201",NA
+16,NA,NA
+Macro-Defining Macros,"Patterns in code often signal the need for new abstractions. This rule holds just 
+ as much for the code in macros themselves. When several macros have 
+ definitions of a similar form, we may be able to write a macro-defining macro 
+ to produce them. This chapter presents three examples of macro-defining 
+ macros: one to define abbreviations, one to define access macros, and a third to 
+ define anaphoric macros of the type described in Section 14.1.
+  
+ 16.1 
+  
+ Abbreviations
+  
+ The simplest use of macros is as abbreviations. Some Common Lisp operators 
+ have rather long names. Ranking high among them (though by no means the 
+ longest) is
+  destructuring-bind
+ , which has 18 characters. Steele’s principle (page 
+ 43) is that commonly used operators ought to have short A corollary of
+  ◦
+  
+ names. (“We think of addition as cheap partly because we can notate it with a 
+ single character: ‘+’.”) The built-in
+  destructuring-bind
+  macro introduces a 
+ new layer of abstraction, but the actual gain in brevity is masked by its long 
+ name:
+  
+ (let ((a (car x)) (b (cdr x))) ...)
+  
+ (destructuring-bind (a . b) x ...)
+  
+ A program, like printed text, is easiest to read when it contains no more than 
+ about 70 characters per line. We begin at a disadvantage when the lengths of 
+ individual names are a quarter of that.
+  
+ 213",NA
+17,NA,NA
+Read-Macros,"The three big moments in a Lisp expression’s life are read-time, compile-time, 
+ and runtime. Functions are in control at runtime. Macros give us a chance to 
+ perform transformations on programs at compile-time. This chapter discusses 
+ read-macros, which do their work at read-time.
+  
+ 17.1 
+  
+ Macro Characters
+  
+ In keeping with the general philosophy of Lisp, you have a great deal of control 
+ over the reader. Its behavior is controlled by properties and variables that can 
+ all be changed on the fly. The reader can be programmed at several levels. The 
+ easiest way to change its behavior is by defining new macro characters.
+  
+ A
+  macro character
+  is a character which exacts special treatment from the 
+ Lisp reader. A lower-case
+  a
+ , for example, is ordinarily handled just like a 
+ lower-case 
+ b
+ , but a left parenthesis is something different: it tells Lisp to begin 
+ reading a list. Each such character has a function associated with it that tells the 
+ Lisp reader what to do when the character is encountered. You can change the 
+ function associated with an existing macro character, or define new macro 
+ characters of your own.
+  
+  
+ The built-in function
+  set-macro-character
+  provides one way to define read-
+ macros. It takes a character and a function, and thereafter when
+  read 
+ encounters 
+ the character, it returns the result of calling the function.
+  
+ One of the oldest read-macros in Lisp is
+  ’
+ , the quote. You could do without
+ ’
+  
+ by always writing
+  (quote a)
+  instead of
+  ’a
+ , but this would be tiresome and would 
+ make your code harder to read. The quote read-macro makes it possible to use
+  
+ ’a
+  as an abbreviation for
+  (quote a)
+ . We could define it as in Figure 17.1.
+  
+ 224",NA
+18,NA,NA
+Destructuring,"Destructuring is a generalization of assignment. The operators
+  setq
+  and
+  setf 
+ do 
+ assignments to individual variables. Destructuring combines assignment with 
+ access: instead of giving a single variable as the first argument, we give a 
+ pattern of variables, which are each assigned the value occurring in the 
+ corresponding position in some structure.
+  
+ 18.1 
+  
+ Destructuring on Lists
+  
+ As of
+  CLTL
+ 2, Common Lisp includes a new macro called
+  destructuring-bind
+ . 
+ This macro was briefly introduced in Chapter 7. Here we consider it in more 
+ detail. Suppose that
+  lst
+  is a list of three elements, and we want to bind
+  x
+  to the 
+ first,
+  y
+  to the second, and
+  z
+  to the third. In raw
+  CLTL
+ 1 Common Lisp, we would 
+ have had to say:
+  
+ (let ((x (first lst))
+  
+ (y (second lst))
+  
+ (z (third lst)))
+  
+ ...)
+  
+ With the new macro we can say instead
+  
+ (destructuring-bind (x y z) lst
+  
+ ...)
+  
+ 230",NA
+19,NA,NA
+A Query Compiler,"Some of the macros defined in the preceding chapter were large ones. To 
+ generate its expansion,
+  if-match
+  needed all the code in Figures 18.7 and 18.8, 
+ plus 
+ destruc
+  from Figure 18.1. Macros of this size lead naturally to our last 
+ topic, embedded languages. If small macros are extensions to Lisp, large 
+ macros define sub-languages within it—possibly with their own syntax or 
+ control structure. We saw the beginning of this in
+  if-match
+ , which had its own 
+ distinct representation for variables.
+  
+ A language implemented within Lisp is called an
+  embedded language.
+  
+ Like“utility,” the term is not a precisely defined one;
+  if-match
+  probably still 
+ counts as a utility, but it is getting close to the borderline.
+  
+ An embedded language is not a like a language implemented by a 
+ traditional compiler or interpreter. It is implemented within some existing 
+ language, usually by transformation. There need be no barrier between the base 
+ language and the extension: it should be possible to intermingle the two freely. 
+ For the implementor, this can mean a huge saving of effort. You can embed just 
+ what you need, and for the rest, use the base language.
+  
+ Transformation, in Lisp, suggests macros. To some extent, you could imple-
+ ment embedded languages with preprocessors. But preprocessors usually 
+ operate only on text, while macros take advantage of a unique property of Lisp: 
+ between the reader and the compiler, your Lisp program is represented as lists 
+ of Lisp objects. Transformations done at this stage can be much smarter.
+  
+ The best-known example of an embedded language is
+  CLOS
+ , the Common 
+ Lisp Object System. If youwanted to make an object-orientedversionof a 
+ conventional language, you would have to write a new compiler. Not so in 
+ Lisp. Tuning the
+  
+ 246",NA
+20,NA,NA
+Continuations,"◦
+  
+ A continuation is a program frozen in action: a single functional object 
+ containing the state of a computation. When the object is evaluated, the stored 
+ computation
+  
+ is restarted where it left off.
+  
+ In solving certain types of problems it can be
+  
+ a great help to be able to save the state of a program and restart it later.
+  
+ In
+  
+ multiprocessing, for example, a continuation conveniently represents a 
+ suspended process. In nondeterministic search programs, a continuation can 
+ represent a node in the search tree.
+  
+ Continuations can be difficult to understand. This chapter approaches the 
+ topic in two steps. The first part of the chapter looks at the use of continuations 
+ in Scheme, which has built-in support for them. Once the behavior of 
+ continuations has been explained,the second part shows how to use macros to 
+ build continuations in Common Lisp programs. Chapters 21–24 will all make 
+ use of the macros defined here.
+  
+ 20.1
+  
+ Scheme Continuations
+  
+  
+ One of the principal ways in which Scheme differs from Common Lisp is its 
+ explicit support for continuations. This section shows how continuations work 
+ in Scheme. (Figure 20.1 lists some other differences between Scheme and 
+ Common Lisp.) 
+  
+  
+ A continuation is a function representing the future of a computation. When-
+ ever an expression is evaluated, something is waiting for the value it will return.
+  
+ For example, in
+  
+ 258",NA
+21,NA,NA
+Multiple Processes,"The previous chapter showed how continuations allow a running program to get 
+ hold of its own state, and store it away to be restarted later. This chapter deals 
+ with a model of computation in which a computer runs not one single
+  program, 
+ but a collection of independent
+  processes.
+  The concept of a process corresponds 
+ closely with our concept of the state of a program. By writing an additional 
+ layer of macros on top of those in the previous chapter, we can embed 
+ multiprocessing in Common Lisp programs.
+  
+ 21.1 
+  
+ The Process Abstraction
+  
+ Multiple processes are a convenient way of expressing programs which must do 
+ several things at once. A traditional processor executes one instruction at a 
+ time. To say that multiple processes do more than one thing at once is not to say 
+ that they somehow overcome this hardware limitation: what it means is that 
+ they allow us to think at a new level of abstraction, in which we don’t have to 
+ specify exactly what the computer is doing at any given time. Just as virtual 
+ memory allows us to act as though the computer had more memory than it 
+ actually does, the notion of a process allows us to act as if the computer could 
+ run more than one program at a time.
+  
+ The study of processes is traditionally in the domain of operating systems. 
+ But the usefulness of processes as an abstraction is not limited to operating 
+ systems.
+  
+ They are equally useful in other real-time applications, and in simulations.
+  
+ Much of the work done on multiple processes has been devoted to avoiding 
+ certain types of problems. Deadlock is one classic problem with multiple pro-
+  
+ 275",NA
+22,NA,NA
+Nondeterminism,"Programming languages save us from being swamped by a mass of detail. Lisp 
+ is a good language because it handles so many details itself, enabling 
+ programmers to make the most of their limited tolerance for complexity. This 
+ chapter describes how macros can make Lisp handle another important class of 
+ details: the details of transforming a nondeterministic algorithm into a 
+ deterministic one.
+  
+ This chapter is divided into five parts. The first explains what 
+ nondeterminism 
+ is. 
+ The 
+ second 
+ describes 
+ a 
+ Scheme 
+ implementationofnondeterministic
+  choose
+  and 
+ fail
+  which uses continuations. 
+ The third part presents Common Lisp versions of 
+ choose
+  and
+  fail
+  which build 
+ upon the continuation-passing macros of Chapter 20. The fourth part shows 
+ how the cut operator can be understood independently of Prolog. The final part 
+ suggests refinements of the original nondeterministic operators.
+  
+  
+ The nondeterministic choice operators defined in this chapter will be used to 
+ write an
+  ATN
+  compiler in Chapter 23 and an embedded Prolog in Chapter 24.
+  
+ 22.1 
+  
+ The Concept
+  
+ A nondeterministic algorithm is one which relies on a certain sort of 
+ supernatural foresight. Why talk about such algorithms whenwe don’t 
+ haveaccess tocomputers with supernaturalpowers? Because a 
+ nondeterministicalgorithmcan be
+  simulated 
+ by a deterministic one. 
+  
+ For 
+ purely functional programs—that is, those with no side-effects—simulating 
+ nondeterminism is particularly straightforward. In purely functional programs, 
+ nondeterminism can be implemented by search with backtracking.
+  
+ 286",NA
+23,NA,NA
+Parsing with ATNs,"This chapter shows how to write a nondeterministic parser as an embedded lan-
+ guage. 
+  
+ The first part explains what
+  ATN
+  parsers are, and how they represent 
+ grammar rules. The second part presents an
+  ATN
+  compiler which uses the 
+ nonde-terministic operators defined in the previous chapter. The final sections 
+ present a small
+  ATN
+  grammar, and show it in action parsing sample input.
+  
+ 23.1 
+  
+ Background
+  
+ Augmented Transition Networks, or
+  ATN
+ s, are a form of parser described by Bill 
+ Woods in 1970. Since then they have become a widely used formalism for
+  
+ ◦
+ parsing natural language. In an hour you can write an
+  ATN
+  grammar which parses 
+ interesting English sentences. For this reason, people are often held in a sort of 
+ spell when they first encounter them.
+  
+ In the 1970s, some people thought that
+  ATN
+ s might one day be components 
+ of truly intelligent-seeming programs. Though few hold this position today,
+  
+ ATN
+ s have found a niche. They aren’t as good as you are at parsing English, but 
+ they can still parse an impressive variety of sentences.
+  
+ A
+ TN
+ s are useful if you observe the following four restrictions:
+  
+ 1. Use them in a semantically limited domain—in a front-end to a particular 
+  
+ database, for example.
+  
+ 2. Don’t feed them very difficult input. Among other things, don’t expect 
+  
+ them to understand wildly ungrammatical sentences the way people can.
+  
+ 305",NA
+24,NA,NA
+Prolog,"This chapter describes how to write Prolog as an embedded language. Chapter 
+ 19 showed how to write a program which answered complex queries on 
+ databases. Here we add one new ingredient: rules, which make it possible to 
+ infer facts from those already known. A set of rules defines a tree of 
+ implications. In order to use rules which would otherwise imply an unlimited 
+ number of facts, we will search this implication tree nondeterministically.
+  
+  
+ Prolog makes an excellent example of an embedded language. It combines 
+  
+  
+ Chapters 18 
+ three ingredients: pattern-matching, nondeterminism, and rules.
+  
+ and 22 give us the first two independently. By building Prolog on top of the 
+ pattern-matching and nondeterministic choice operators we have already, we 
+ will have an example of a real, multi-layer bottom-up system. Figure 24.1 
+ shows the layers of abstraction involved.
+  
+ The secondary aim of this chapter is to study Prolog itself. For experienced 
+ programmers, the most convenient explanation of Prolog may be a sketch of its 
+ implementation. Writing Prolog in Lisp is particularly interesting, because it 
+ brings out the similarities between the two languages.
+  
+ 24.1 
+  
+ Concepts
+  
+ Chapter 19 showed how to write a database system which would accept 
+ complex queries containing variables, and generate all the bindings which made 
+ the query true in the database. In the following example, (after calling
+  clear-db
+ ) 
+ we assert two facts and then query the database:
+  
+ 321",NA
+25,NA,NA
+Object-Oriented Lisp,"This chapter discusses object-oriented programming in Lisp. 
+  
+ Common Lisp 
+ includes a set of operators for writing object-oriented programs. Collectively 
+ they are called the Common Lisp Object System, or
+  CLOS
+ . Here we consider
+  
+ CLOS
+  not just as a way of writing object-oriented programs, but as a Lisp 
+ program itself. Seeing
+  CLOS
+  in this light is the key to understanding the relation 
+ between Lisp and object-oriented programming.
+  
+ 25.1 
+  
+ Plus c¸a Change
+  
+ Object-oriented programming means a change in the way programs are 
+ organized. This change is analogous to the one that has taken place in the 
+ distribution of processor power. In 1970, a multi-user computer system meant 
+ one or two big mainframes connected to a large number of dumb terminals. 
+ Now it is more likely to mean a large number of workstations connected to one 
+ another by a network. The processing power of the system is now distributed 
+ among individual users instead of centralized in one big computer.
+  
+  
+ Object-oriented programming breaks up traditional programs in much the 
+ same way: instead of having a single program which operates on an inert mass 
+ of data, the data itself is told how to behave, and the program is implicit in the 
+ interactions of these new data “objects.”
+  
+  
+ For example, suppose we want to write a program to find the areas of two-
+ dimensional shapes. One way to do this would be to write a single function 
+ which looked at the type of its argument and behaved accordingly:
+  
+ 348",NA
+Appendix: Packages,"Packages are Common Lisp’s way of grouping code into modules. Early 
+ dialects of Lisp contained a symbol-table, called the
+  oblist
+ , which listed all the 
+ symbols read so far by the system. Through a symbol’s entry on the oblist, the 
+ system had access to things like its value and its property list. A symbol listed 
+ in the oblist was said to be
+  interned.
+  
+ Recent dialects of Lisp have split the concept of the oblist into multiple 
+ packages.
+  Now a symbol is not merely interned, but interned in a particular 
+ package. Packages support modularity because symbols interned in one 
+ package are only accessible in other packages (except by cheating) if they are 
+ explicitly declared to be so.
+  
+ A package is a kind of Lisp object. The current package is always stored in 
+ the global variable
+  *package*
+ . When Common Lisp starts up, the current 
+ package will be the user package: either
+  user
+  (in
+  CLTL
+ 1 implementations), or 
+ common-lisp-user
+  (in
+  CLTL
+ 2 implementations).
+  
+  
+ Packages are usually identified by their names, which are strings. To find 
+ the name of the current package, try:
+  
+ > (package-name *package*)
+  
+ ""COMMON-LISP-USER""
+  
+  
+ Usually a symbol is interned in the package that was current at the time it 
+ was read. To find the package in which a symbol is interned, we can use 
+ symbol-package
+ :
+  
+ > (symbol-package ’foo)
+  
+ #<Package ""COMMON-LISP-USER"" 4CD15E>
+  
+ 381",NA
+Notes,"This section is also intended as a bibliography. All the books and papers listed here should 
+ be considered recommended reading.
+  
+ v Foderaro, John K. Introduction to the Special Lisp Section.
+  CACM
+  34, 9 (September 
+  
+ 1991), p. 27.
+  
+ viii The final Prolog implementation is 94 lines of code. It uses 90 lines of utilities 
+ from previous chapters. The
+  ATN
+  compiler adds 33 lines, for a total of 217. Since 
+ Lisp has no formal notion of a line, there is a large margin for error when 
+ measuring the length of a Lisp program in lines.
+  
+ ix Steele, Guy L., Jr.
+  Common Lisp: the Language,
+  2nd Edition. Digital Press, Bedford 
+  
+ (MA), 1990.
+  
+ 5 Brooks, Frederick P.
+  The Mythical Man-Month.
+  Addison-Wesley, Reading (MA), 
+  
+ 1975, p. 16.
+  
+ 18 Abelson, Harold, and Gerald Jay Sussman, with Julie Sussman. 
+ Interpretation of Computer Programs.
+  MIT Press, Cambridge, 1985.
+  
+ Structure and
+  
+ 21 Moreprecisely, wecannotdefinearecursivefunctionwithasinglelambda-expression. We 
+ can, however, generate a recursive function by writing a function to take
+  itself 
+ as an 
+ additional argument,
+  
+ (setq fact
+  
+ #’(lambda (f n)
+  
+ (if (= n 0)
+  
+ 1
+  
+ (* n (funcall f f (- n 1))))))
+  
+ and then passing it to a function that will return a closure in which original function 
+ is called on itself:
+  
+ 387",NA
+Index,"aand
+  191 
+  
+ abbrev
+  214 
+  
+ abbrevs
+  214 
+  
+ abbreviations 213 
+  
+ Abelson, Harold 18 
+  
+ Abelson, Julie 18 
+  
+ ablock
+  193 
+  
+ Abrahams, Paul W. 391 
+  
+ :accessor
+  365 
+  
+ accumulators 23, 47, 394 
+  
+ acond
+  191 
+  
+ acond2
+  198, 239 
+  
+ Adams, Norman I. 396 
+  
+ after
+  50 
+  
+ aif
+  191 
+  
+ aif2
+  198 
+  
+ alambda
+  193 
+  
+ Algol 8 
+  
+ allf
+  169 
+  
+ :allocation
+  367 
+  
+ always
+  227 
+  
+ alrec
+  205 
+  
+ anaphora—see macros, anaphoric 
+ A
+ NSI
+  Common Lisp ix 
+  
+ antecedent 322
+  
+ append 
+  
+  
+ Prolog implementation 331 
+ append1
+  45 
+  
+ apply
+  13 
+  
+  
+ with macros 110 
+  
+  
+ on
+  &rest
+  parameters 137
+  
+ 401",NA

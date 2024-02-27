@@ -1,0 +1,2501 @@
+Larger Text,Smaller Text,Symbol
+"Programming Erlang, Second ",NA,NA
+Edition,"This second edition of Joe’s seminal 
+ Programming Erlang
+  is a welcome update, covering not 
+ only the core language and framework fundamentals but also key community projects such as 
+ rebar and cowboy. Even experienced Erlang program-mers will find helpful tips and new 
+ insights throughout the book, and beginners to the language will appreciate the clear and 
+ methodical way Joe introduces and explains key language concepts.
+  
+ ➤
+  Alexander Gounares 
+  
+  
+ Former AOL CTO, advisor to Bill Gates, and founder/CEO of Concurix Corp.
+  
+ A gem; a sensible, practical introduction to functional programming.
+  
+ ➤
+  Gilad Bracha 
+  
+ Coauthor of the Java language and Java Virtual Machine specifications, creator of the 
+ Newspeak language, member of the Dart language team
+  
+ Programming Erlang
+  is an excellent resource for understanding how to program with 
+ Actors. It’s not just for Erlang developers, but for anyone who wants to understand why 
+ Actors matters and why they are such an important tool in building reactive, scalable, 
+ resilient, and event-driven systems.
+  
+ ➤
+  Jonas Bonér 
+  
+ Creator of the Akka Project and the AspectWerkz Aspect-Oriented Programming (AOP) 
+ framework, co-founder and CTO of Typesafe",NA
+"Programming Erlang, Second Edition ",NA,NA
+Software for a Concurrent World,NA,NA
+Joe Armstrong,NA,NA
+The Pragmatic Bookshelf ,"Dallas, Texas • Raleigh, North 
+ Carolina",NA
+Contents,"Introduction
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ xiii
+  
+ Part I — Why Erlang?
+  
+ 1.
+  
+ Introducing Concurrency
+  .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+  
+ .
+  
+  
+ .
+  
+ 3
+  
+  
+ 1.1
+  
+ Modeling Concurrency
+  
+     
+ 3
+  
+  
+ 1.2
+  
+ Benefits of Concurrency
+  
+     
+ 6
+  
+  
+ 1.3
+  
+ Concurrent Programs and Parallel Computers
+  
+     
+ 8
+  
+  
+ 1.4
+  
+ Sequential vs. Concurrent Programming Languages
+  
+     
+ 9
+  
+ 2.
+  
+ A Whirlwind Tour of Erlang
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+  
+ .
+  
+  
+ 11
+  
+  
+ 2.1
+  
+ The Shell
+  
+     
+ 11
+  
+  
+ 2.2
+  
+ Processes, Modules, and Compilation
+  
+     
+ 13
+  
+  
+ 2.3
+  
+ Hello, Concurrency
+  
+     
+ 15
+  
+ Part II — Sequential Programming
+  
+ 3.
+  
+ Basic Concepts
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 25
+  
+  
+ 3.1
+  
+ Starting and Stopping the Erlang Shell
+  
+  
+  
+  
+  
+  
+ 25
+  
+  
+ 3.2
+  
+ Simple Integer Arithmetic
+  
+  
+  
+  
+  
+  
+ 27
+  
+  
+ 3.3
+  
+ Variables
+  
+  
+  
+  
+  
+  
+ 28
+  
+  
+ 3.4
+  
+ Floating-Point Numbers
+  
+  
+  
+  
+  
+  
+ 32
+  
+  
+ 3.5
+  
+ Atoms
+  
+  
+  
+  
+  
+  
+ 33
+  
+  
+ 3.6
+  
+ Tuples
+  
+  
+  
+  
+  
+  
+ 34
+  
+  
+ 3.7
+  
+ Lists
+  
+  
+  
+  
+  
+  
+ 37
+  
+  
+ 3.8
+  
+ Strings
+  
+  
+  
+  
+  
+  
+ 39
+  
+  
+ 3.9
+  
+ Pattern Matching Again
+  
+  
+  
+  
+  
+  
+ 41
+  
+ 4.
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 43
+  
+ Modules and Functions
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+  
+ 4.1
+  
+ Modules Are Where We Store Code
+  
+  
+  
+  
+  
+  
+ 43
+  
+  
+ 4.2
+  
+ Back to Shopping
+  
+  
+  
+  
+  
+  
+ 50
+  
+ www.it-ebooks.info",NA
+Introduction,"New hardware is increasingly parallel, so new programming languages must support 
+ concurrency or they will die.
+  
+ “The way the processor industry is going is to add more and more cores, but nobody knows 
+ how to program those things. I mean, two, yeah; four, not really; eight, forget it.” —
+ Steve 
+ Jobs, Apple
+ 1
+  
+ Well, Steve was wrong; we do know how to program multicores. We program them in 
+ Erlang, and many of our programs just go faster as we add more cores.
+  
+ Erlang was designed from the bottom up to program concurrent, distributed, fault-
+ tolerant, scalable, soft, real-time systems. Soft real-time systems are systems such as 
+ telephone exchanges, banking systems, and so on, where rapid response times are 
+ important but it’s not a disaster if the odd timing deadline is missed. Erlang systems 
+ have been deployed on a massive scale and control significant parts of the world’s 
+ mobile communication networks.
+  
+ If your problem is concurrent, if you are building a multiuser system, or if you are 
+ building a system that evolves with time, then using Erlang might save you a lot of 
+ work, since Erlang was explicitly designed for building such systems.
+  
+ “It’s the mutable state, stupid.” —
+ Brian Goetz, Java Concurrency in Practice
+  
+ Erlang belongs to the family of 
+ functional programming languages
+ . Functional 
+ programming forbids code with side effects. Side effects and concurrency don’t mix. In 
+ Erlang it’s OK to mutate state within an individual process but not for one process to 
+ tinker with the state of another process. Erlang has no mutexes, no synchronized 
+ methods, and none of the paraphernalia of shared memory programming.
+  
+ 1.
+  
+ http://bits.blogs.nytimes.com/2008/06/10/apple-in-parallel-turning-the-pc-world-
+ upside-down/
+  
+  
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+Part I,NA,NA
+Why Erlang?,"We introduce concurrency and talk about the differ-ence 
+ between concurrency and parallelism. You’ll learn about 
+ the benefits of writing concurrent programs and take a 
+ whirlwind tour of Erlang, introducing the main features 
+ of the language.
+  
+ www.it-ebooks.info",NA
+1,NA,NA
+Introducing Concurrency,"Let’s forget about computers for a moment; I’m going to look out of my window and tell 
+ you what I see.
+  
+ I see a woman taking a dog for a walk. I see a car trying to find a parking space. I see a 
+ plane flying overhead and a boat sailing by. All these things happen 
+ in parallel
+ . In this 
+ book, we will learn how to describe parallel activities as sets of communicating parallel 
+ processes. We will learn how to write 
+ con-current programs
+ .
+  
+ In everyday language, words like 
+ concurrent
+ , 
+ simultaneous
+ , and 
+ parallel
+  mean almost 
+ the same thing. But in programming languages, we need to be more precise. In 
+ particular, we need to distinguish between concurrent and parallel programs.
+  
+ If we have only a single-core computer, then we can never run a parallel program on it. 
+ This is because we have one CPU, and it can do only one thing at a time. We can, 
+ however, run concurrent programs on a single-core com-puter. The computer time-
+ shares between the different tasks, maintaining the illusion that the different tasks run 
+ in parallel.
+  
+ In the following sections, we’ll start with some simple concurrency modeling, move on 
+ to see the benefits of solving problems using concurrency, and finally look at some 
+ precise definitions that highlight the differences between concurrency and parallelism.
+  
+ 1.1 Modeling Concurrency
+  
+ We’ll start with a simple example and build a concurrent model of an everyday scene. 
+ Imagine I see four people out for a walk. There are two dogs and a large number of 
+ rabbits. The people are talking to each other, and the dogs want to chase the rabbits.
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+2,NA,NA
+A Whirlwind Tour of Erlang,"In this chapter, we’ll build our first concurrent program. We’ll make a file server. The 
+ file server has two concurrent processes; one process represents the server, and the 
+ other represents the client.
+  
+ We’ll start with a small Erlang subset so we can show some broad principles without 
+ getting bogged down with the details. At a minimum we have to understand how to run 
+ code in the shell and compile modules. That’s all we need to know to get started.
+  
+ The best way to learn Erlang is to type in the examples into a live Erlang system and 
+ see whether you can reproduce what’s in this book. To install Erlang, refer to 
+ http://joearms.github.com/installing.html
+ . We try to keep the install instructions up-to-
+ date. This is difficult since there are many different plat-forms configured in many 
+ different ways. If the instructions fail or are not up-to-date, please send a mail to the 
+ Erlang mailing list, and we’ll try to help.
+  
+ 2.1 The Shell
+  
+ The Erlang shell is where you’ll spend most of your time. You enter an expression, and 
+ the shell evaluates the expression and prints the result.
+  
+ $
+  erl 
+  
+ Erlang R16B ...
+  
+ Eshell V5.9 (abort with ^G) 
+  
+ 1>
+  123456 * 223344.
+  
+ 27573156864
+  
+ So, what happened? 
+ $
+  is the operating system prompt. We typed the command 
+ erl
+ , which 
+ started the Erlang shell. The Erlang shell responds with a banner and the numbered prompt 
+ 1>
+ . Then we typed in an expression, which was evaluated and printed. Note that each 
+ expression 
+ must
+  be finished with a dot followed by a whitespace character. In this context, 
+ whitespace means a space, tab, or carriage return character.
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+Part II,NA,NA
+Sequential Programming,"In this part, you’ll learn to write sequential Erlang 
+ programs. We’ll cover all of sequential Erlang and also 
+ talk about ways of compiling and running your programs 
+ and using the type system to describe the types of Erlang 
+ functions and to statically detect programming errors.
+  
+ www.it-ebooks.info",NA
+3,NA,NA
+Basic Concepts,"This chapter sets the scene for Erlang programming. All Erlang programs, parallel or 
+ sequential, use pattern matching, single-assignment variables, and the basic types that 
+ Erlang uses to represent data.
+  
+ In this chapter, we’ll use the Erlang shell to experiment with the system and see how it 
+ behaves. We’ll start with the shell.
+  
+ 3.1 Starting and Stopping the Erlang Shell
+  
+ On a Unix system (including Mac OS X), you start the Erlang shell from a command 
+ prompt; on a Windows system, click the Erlang icon in the Windows Start menu.
+  
+ $
+  erl 
+  
+ Erlang R16B (erts-5.10.1) [source] [64-bit] [smp:4:4] [async-threads:10] 
+  
+ [hipe] 
+ [kernel-poll:false] 
+  
+ Eshell V5.10.1 (abort with ^G) 
+  
+ 1>
+  
+ This is the Unix command to start the Erlang shell. The shell responds with a banner 
+ telling you which version of Erlang you are running. The easiest way to stop the system 
+ is just to press Ctrl+C (Windows Ctrl+Break) followed by 
+ a
+  (short for abort), as follows:
+  
+ BREAK: (a)bort (c)ontinue (p)roc info (i)nfo (l)oaded 
+  
+ (v)ersion (k)ill (D)b-tables (d)istribution a 
+  
+ $
+  
+ Typing 
+ a
+  will immediately stop the system and may result in some data cor-ruption. For 
+ a controlled shutdown, you can type 
+ q()
+  (short for quit).
+  
+ 1>
+  q(). 
+  
+ ok 
+  
+ $
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+4,NA,NA
+Modules and Functions,"Modules and functions are the basic units from which sequential and parallel programs 
+ are built. Modules contain functions, and the functions can be run sequentially or in 
+ parallel.
+  
+ This chapter builds upon the ideas of pattern matching from the previous chapter and 
+ introduces all the control statements we need for writing code. We’ll be talking about 
+ higher-order functions (called 
+ funs
+ ) and how they can be used to create your own 
+ control abstractions. Also, we’ll talk about list comprehensions, guards, records, and 
+ case
+  expressions and show how they are used in small fragments of code.
+  
+ Let’s get to work.
+  
+ 4.1 Modules Are Where We Store Code
+  
+ Modules are the basic units of code in Erlang. Modules are contained in files with 
+ .erl
+  
+ extensions and must be compiled before the code in the modules can be run. Compiled 
+ modules have the extension 
+ .beam
+ .
+  
+ Before we write our first module, we’ll remind ourselves about pattern matching. All we’re 
+ going to do is create a couple of data structures representing a rectangle and a square. Then 
+ we’re going to unpack these data structures and extract the sides from the rectangle and the 
+ square. Here’s how:
+  
+ 1>
+  Rectangle = {rectangle, 10, 5}.
+  
+ {rectangle, 10, 5}.
+  
+ 2>
+  Square = {square, 3}.
+  
+ {square, 3} 
+  
+ 3>
+  {rectangle, Width, Height} = Rectangle.
+  
+ {rectangle,10,5} 
+  
+ 4>
+  Width.
+  
+ 10 
+  
+ 5>
+  Height.
+  
+ 5
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+5,NA,NA
+Records and Maps,"So far we have talked about two containers for data, namely, 
+ tuples
+  and 
+ lists
+ . Tuples are 
+ used to store a fixed number of elements, and lists are used for a variable number of 
+ elements.
+  
+ This chapter introduces 
+ records
+  and 
+ maps
+ . Records are really just tuples in disguise. 
+ Using records we can associate a name with each element in a tuple.
+  
+ Maps are associative collections of key-value pairs. The key can be any Erlang term. In 
+ Perl and Ruby they are called hashes; in C++ and Java they are called maps, in Lua they 
+ are called tables, and in Python they are called dictionaries.
+  
+ Using records and maps makes programming easier; instead of remembering where a 
+ data item is stored in a complex data structure, we just use the name of the item and 
+ the system figures out where the data is stored. Records use a fixed and predefined set 
+ of names; maps can add new names dynamically.
+  
+ 5.1 When to Use Maps or Records
+  
+ Records are just tuples in disguise, so they have the same storage and perfor-mance 
+ characteristics as tuples. Maps use more storage than tuples and have slower lookup 
+ properties. On the other hand, maps are far more flexible than tuples.
+  
+ Records should be used in the following cases:
+  
+ • When you can represent your data using a fixed number of predetermined atoms
+  
+ • When the number of elements in the record and the names of the elements will not 
+ change with time
+  
+ • When storage is an issue, typically when you have a large array of tuples and each 
+ tuple has the same structure
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+6,NA,NA
+Error Handling in Sequential ,NA,NA
+Programs,"Erlang was originally designed for programming fault-tolerant systems, sys-tems that 
+ in principle should never stop. This means that dealing with errors at runtime is 
+ crucially important. We take error handling very seriously in Erlang. When errors 
+ occur, we need to detect them, correct them, and continue.
+  
+ Typical Erlang applications are composed of dozens to millions of concurrent 
+ processes. Having large numbers of processes changes how we think about error 
+ handling. In a sequential language with only one process, it is crucially important that 
+ this process does not crash. If we have large numbers of pro-cesses, it is not so 
+ important if a process crashes, provided some other process can detect the crash and 
+ take over whatever the crashed process was supposed to be doing.
+  
+ To build really fault-tolerant systems, we need more than one computer; after all, the 
+ entire computer might crash. So, the idea of detecting failure and resuming the 
+ computation elsewhere has to be extended to networked computers.
+  
+ To fully understand error handling, we first need to look at error handling in 
+ sequential programs and then, having understood this, see how to handle errors in 
+ collections of parallel processes. This chapter looks at the former problem. Handling 
+ errors in parallel processes is dealt with in 
+ Chapter 13, 
+ Errors in Concurrent Programs
+ , 
+ on page 199
+ , and building sets of processes that collaborate to correct errors is the 
+ subject of 
+ Section 23.5, 
+ The Supervision Tree
+ , on page 396
+ .
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+7,NA,NA
+Binaries and the Bit Syntax,"A 
+ binary
+  is a data structure designed for storing large quantities of raw data in a space-
+ efficient manner. The Erlang VM is optimized for the efficient input, output, and 
+ message passing of binaries.
+  
+ Binaries should be used whenever possible for storing the contents of large quantities 
+ of unstructured data, for example large strings or the contents of files.
+  
+ In most circumstances, the number of bits in a binary will be exactly divisible by 8 and 
+ thus corresponds to a sequence of bytes. If the number of bits is not exactly divisible by 
+ 8, we use the name 
+ bitstring
+  to refer to the data. When we say bitstring, it is to 
+ emphasize the fact that the number of bits in the data is not an exact multiple of 8.
+  
+ Binaries, bitstrings, and bit-level pattern matching were introduced in Erlang to 
+ simplify network programming where we often want to probe into the bit-and byte-
+ level structure of protocol packets.
+  
+ In this chapter, we’ll first take a detailed look at binaries. Most of the opera-tions on 
+ binaries work in the same way on bitstrings, so after understanding binaries, we’ll look 
+ at bitstrings emphasizing where they differ from binaries.
+  
+ 7.1 Binaries
+  
+ Binaries are written and printed as sequences of integers or strings, enclosed in double 
+ less-than and greater-than brackets. Here’s an example:
+  
+ 1>
+  <<5,10,20>>.
+  
+ <<5,10,20>> 
+  
+ 2>
+  <<""hello"">>.
+  
+ <<""hello"">> 
+  
+ 3>
+  
+ <<65,66,67>> 
+  
+ <<""ABC"">>
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+8,NA,NA
+The Rest of Sequential Erlang,"What remains to sequential Erlang are a number of small odds and ends that you have 
+ to know but that don’t fit into any of the other topics. There’s no particular logical 
+ order to these topics, so they are just presented in alphabetic order for ease of 
+ reference. The topics covered are as follows:
+  
+ Apply 
+  
+ This computes the value of a function from its name and arguments when the 
+ function and module name are computed dynamically.
+  
+ Arithmetic expressions 
+  
+  
+ All legal arithmetic expressions are defined here.
+  
+ Arity 
+  
+  
+ The arity of a function is a number of arguments that a function accepts.
+  
+ Attributes 
+  
+ This section covers the syntax and interpretation of the Erlang module attributes.
+  
+ Block expressions 
+  
+  
+ These are expressions using 
+ begin
+  and 
+ end
+ .
+  
+ Booleans 
+  
+  
+ These are things represented by the atoms 
+ true
+  or 
+ false
+ .
+  
+ Boolean expressions 
+  
+  
+ This section covers all the boolean expressions.
+  
+ Character set 
+  
+  
+ This is the character set that Erlang uses.
+  
+ Comments 
+  
+  
+ This section covers the syntax of comments.
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+9,NA,NA
+Types,"Erlang has a type notation that we can use to define new data types and add type 
+ annotations to our code. The type annotations make the code easier to understand and 
+ maintain and can be used to detect errors at compile time.
+  
+ In this chapter we’ll introduce the type notation and talk about two programs that can 
+ be used to find errors in our code.
+  
+ The programs we’ll discuss are called 
+ dialyzer
+  and 
+ typer
+  and are included in the 
+ standard Erlang distribution. Dialyzer stands for “DIscrepancy AnaLYZer for ERlang 
+ programs,” and it does precisely that which is implied by its name: it finds 
+ discrepancies in Erlang code. 
+ typer
+  provides information about the types used in your 
+ programs. Both the dialyzer and typer work perfectly well with no type annotations at 
+ all, but if you add type annotations to your pro-gram, the quality of the analysis 
+ performed by these tools will be improved.
+  
+ This is a fairly complex chapter, so we’ll start with a simple example, and then we’ll go 
+ a bit deeper and look at the type grammar; following this, we’ll have a session with the 
+ dialyzer. We’ll talk about a workflow we should use with the dialyzer and about the 
+ kind of errors that the dialyzer cannot find. We’ll wrap up with a little theory of how 
+ the dialyzer works, which will help us understand the errors that the dialyzer finds.
+  
+ 9.1 Specifying Data and Function Types
+  
+ We are going on a walking tour and are lucky enough to have a module that we can use 
+ to plan our walks. The module starts like this:
+  
+ walks.erl
+  
+ -module
+ (walks).
+  
+ -export
+ ([plan_route/2]).
+  
+ -spec
+  plan_route(point(), point()) -> route().
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+10,NA,NA
+Compiling and Running Your Program,"In the previous chapters, we didn’t say much about compiling and running your 
+ programs—we just used the Erlang shell. This is fine for small examples, but as your 
+ programs become more complex, you’ll want to automate the process in order to make 
+ life easier. That’s where makefiles come in.
+  
+ There are actually three different ways to run your programs. In this chapter, we’ll 
+ look at all three so you can choose the best method for any particular occasion.
+  
+ Sometimes things will go wrong: makefiles will fail, environment variables will be 
+ wrong, and your search paths will be incorrect. We’ll help you deal with these issues by 
+ looking at what to do when things go wrong.
+  
+ 10.1 Modifying the Development Environment
+  
+ When you start programming in Erlang, you’ll probably put all your modules and files 
+ in the same directory and start Erlang from this directory. If you do this, then the 
+ Erlang loader will have no trouble finding your code. However, as your applications 
+ become more complex, you’ll want to split them into manageable chunks and put the 
+ code into different directories. And when you include code from other projects, this 
+ external code will have its own directory structure.
+  
+ Setting the Search Paths for Loading Code
+  
+ The Erlang runtime system makes use of a code autoloading mechanism. For this to 
+ work correctly, you must set a number of search paths in order to find the correct 
+ version of your code.
+  
+ The code-loading mechanism is actually programmed in Erlang—we talked about this 
+ earlier in 
+ Section 8.10, 
+ Dynamic Code Loading
+ , on page 122
+ . Code loading is performed 
+ “on demand.”
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+Part III,NA,NA
+Concurrent and Distributed Programs,"This part covers concurrent and distributed Erlang. 
+ Building on sequential Erlang, you’ll learn how to write 
+ concurrent programs and how to run these on distributed 
+ networks of computers.
+  
+ www.it-ebooks.info",NA
+11,NA,NA
+Real-World Concurrency,"Let’s forget about programming for a while and think about what happens in the real 
+ world.
+  
+  
+ We understand concurrency.
+  
+ A deep understanding of concurrency is hardwired into our brains. We react to 
+ stimulation extremely quickly, using a part of the brain called the 
+ amygdala
+ . 
+ Without this reaction, we would die. Conscious thought is just too slow; by the 
+ time the thought “hit the brakes” has formed itself, we have already done it.
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+12,NA,NA
+Concurrent Programming,"Writing concurrent programs is easy once we know sequential Erlang. All we need are 
+ three new primitives: 
+ spawn
+ , 
+ send
+ , and 
+ receive. spawn
+  creates a parallel process. 
+ send
+  
+ sends a message to a process, and receive receives messages.
+  
+ Erlang concurrency is based on 
+ processes
+ . These are small, self-contained virtual 
+ machines that can evaluate Erlang functions.
+  
+ I’m sure you’ve met processes before, but only in the context of operating systems. 
+ In 
+ Erlang, processes belong to the programming language and not the operating system.
+  
+ This means that Erlang processes will have the same logical behavior on any operating 
+ system, so we can write portable concurrent code that can run on any operating 
+ system that supports Erlang.
+  
+ In Erlang:
+  
+ • Creating and destroying processes is very fast.
+  
+ • Sending messages between processes is very fast.
+  
+ • Processes behave the same way on all operating systems.
+  
+ • We can have very large numbers of processes.
+  
+ • Processes share no memory and are completely independent.
+  
+ • The only way for processes to interact is through message passing.
+  
+ For these reasons Erlang is sometimes called a 
+ pure message passing language
+ .
+  
+ If you haven’t programmed with processes before, you might have heard rumors that it 
+ is rather difficult. You’ve probably heard horror stories of memory violations, race 
+ conditions, shared-memory corruption, and the like. In Erlang, programming with 
+ processes is easy.
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+13,NA,NA
+Errors in Concurrent Programs,"Handling errors in concurrent programs involves a completely different way of 
+ thinking than handling errors in sequential programs. In this chapter, we’ll build upon 
+ the principles you learned about in 
+ Chapter 6, 
+ Error Handling in Sequential Programs
+ , 
+ on page 87
+ , extending the ideas to concurrent programs.
+  
+ We’ll look at the underlying philosophy of error handling and at the details of how 
+ errors are propagated between processes and trapped by other process-es. Finally 
+ we’ll round off with some small examples that form a basis for programming fault-
+ tolerant software.
+  
+ Imagine a system with only one sequential process. If this process dies, we might be in 
+ deep trouble since no other process can help. For this reason, sequential languages 
+ have concentrated on the prevention of failure and an emphasis on 
+ defensive 
+ programming
+ .
+  
+ In Erlang we have a large number of processes at our disposal, so the failure of any 
+ individual process is not so important. We usually write only a small amount of 
+ defensive code and instead concentrate on writing 
+ corrective code
+ . We take measures 
+ to detect the errors and then correct them after they have occurred.
+  
+ 13.1 Error Handling Philosophy
+  
+ Error handling in concurrent Erlang programs is based on the idea of 
+ remote detection 
+ and handling of errors
+ . Instead of handling an error in the process where the error 
+ occurs, we let the process die and correct the error in some other process.
+  
+ When we design a fault-tolerant system, we assume that errors will occur, that 
+ processes will crash, and that machines will fail. Our job is to detect the errors after 
+ they have occurred and correct them if possible. Users of the
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+14,NA,NA
+Distributed Programming,"Writing distributed programs in Erlang is only a small step from writing concurrent 
+ programs. In distributed Erlang, we can spawn processes on remote nodes and 
+ machines. Having spawned a remote process, we’ll see that all the other primitives, 
+ send
+ , 
+ receive
+ , 
+ link
+ , and so on, work transparently over a network in the same way as 
+ they worked on a single node.
+  
+ In this chapter, we’ll introduce the libraries and Erlang primitives that we’ll use to 
+ write distributed Erlang programs. 
+ Distributed programs
+  are programs that are 
+ designed to run on networks of computers and that can coordinate their activities only 
+ by message passing.
+  
+ Here are some reasons why we might want to write distributed applications:
+  
+ Performance 
+  
+ We can make our programs go faster by arranging that different parts of the 
+ program are run in parallel on different machines.
+  
+ Reliability 
+  
+ We can make fault-tolerant systems by structuring the system to run on several 
+ machines. If one machine fails, we can continue on another machine.
+  
+ Scalability 
+  
+ As we scale up an application, sooner or later we will exhaust the capabil-ities of 
+ even the most powerful machine. At this stage, we have to add more machines to 
+ add capacity. Adding a new machine should be a simple operation that doesn’t 
+ require large changes to the application architecture.
+  
+ Intrinsically distributed application 
+  
+ Many applications are inherently distributed. If we write a multiuser game or chat 
+ system, different users will be scattered all over the globe. If we have a large 
+ number of users in a particular geographic location, we want to place the 
+ computation resources near the users.
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+Part IV,NA,NA
+Programming Libraries and Frameworks,"This part of the book covers the major libraries for 
+ programming with files, sockets, and databases. We also 
+ cover debugging techniques and the OTP framework.
+  
+ www.it-ebooks.info",NA
+15,NA,NA
+Interfacing Techniques,"Building systems often involves interfacing applications written in different 
+ programming languages with our system. We might use C for efficiency or writing low-
+ level hardware drivers, or we might want to integrate a library written in Java or Ruby 
+ or some other programming language. We can interface foreign language programs to 
+ Erlang in a number of ways.
+  
+ • By running the programs 
+ outside
+  the Erlang virtual machine in an external 
+ operating system process. This is the 
+ safe
+  way of doing things. If the for-eign 
+ language code is incorrect, it will not crash the Erlang system. Erlang controls the 
+ external process through a device called a 
+ port
+  and commu-nicates with the 
+ external process through a byte-oriented communication channel. Erlang is 
+ responsible for starting and stopping the external program and can monitor and 
+ restart it if it crashes. The external process is called a 
+ port process
+  since it is 
+ controlled through an Erlang port.
+  
+ • By running an OS command from within Erlang and capturing the result.
+  
+ • By running the foreign language code 
+ inside
+  the Erlang virtual machine. This 
+ involves linking the code with the code for the Erlang virtual machine. This is the 
+ unsafe
+  way of doing things. Errors in the foreign language code might crash the 
+ Erlang system. Although it is unsafe, it is useful since it is more efficient than using 
+ an external process.
+  
+ Linking code into the Erlang kernel can be used only for languages like C that 
+ produce native object code and can’t be used with languages like Java that have 
+ their own virtual machines.
+  
+ In this chapter we’ll look at interfacing Erlang using ports and OS commands. In 
+ addition, there are a number of advanced interfacing techniques using linked-in 
+ drivers, natively implemented functions (NIFs), and C-nodes. The advanced techniques 
+ are not covered in the book, but at the end of the
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+16,NA,NA
+Programming with Files,"In this chapter, we’ll look at some of the most commonly used functions for 
+ manipulating files. The standard Erlang release has a large number of func-tions for 
+ working with files. We’re going to concentrate on the small fraction of these that I use 
+ to write most of my programs and that you’ll use the most frequently as well. We’ll also 
+ see a few examples of techniques for writing efficient file handling code. In addition, I’ll 
+ briefly mention some of the more rarely used file operations so you’ll know they exist. 
+ If you want more details of the rarely used techniques, consult the manual pages.
+  
+ We’ll concentrate on the following areas:
+  
+ • Overview of the main modules used for manipulating files• 
+ Different ways of reading a file
+  
+ • Different ways of writing to a file
+  
+ • Directory operations
+  
+ • Finding information about a file
+  
+ 16.1 Modules for Manipulating Files
+  
+ The functions for file manipulation are organized into four modules.
+  
+ file
+   This has routines for opening, closing, reading, and writing files; listing directories; 
+ and so on. A short summary of some of the more frequently used functions in 
+ file
+  is 
+ shown in 
+ Table 7, 
+ Summary of file operations (in module file)
+ , on page 245
+ . For full 
+ details, consult the manual page for the 
+ file
+  module.
+  
+ filename
+  This module has routines that manipulate filenames in a platform-
+ independent manner, so you can run the same code on a number of different 
+ operating systems.
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+17,NA,NA
+Programming with Sockets,"Most of the more interesting programs that I write involve sockets one way or another. 
+ Programming with sockets is fun because it allows applications to interact with other 
+ machines on the Internet, which has far more potential than just performing local 
+ operations.
+  
+ A socket is a communication channel that allows machines to communicate over the 
+ Internet using the Internet Protocol (IP). In this chapter, we’ll concen-trate on the two 
+ core protocols of the Internet: 
+ Transmission Control Protocol 
+ (TCP) and 
+ User Datagram 
+ Protocol
+  (UDP).
+  
+ UDP lets applications send short messages (called 
+ datagrams
+ ) to each other, but there 
+ is no guarantee of delivery for these messages. They can also arrive out of order. TCP, 
+ on the other hand, provides a reliable stream of bytes that are delivered in order as 
+ long as the connection is established. Sending data by TCP incurs a larger overhead 
+ than sending data by UDP. You can choose between a reliable and slower channel 
+ (TCP) or a faster and unreliable channel (UDP).
+  
+ There are two main libraries for programming with sockets: 
+ gen_tcp
+  for pro-gramming 
+ TCP applications and 
+ gen_udp
+  for programming UDP applications.
+  
+ In this chapter, we’ll see how to program clients and servers using TCP and UDP 
+ sockets. We’ll go through the different forms of servers that are possible (parallel, 
+ sequential, blocking, and nonblocking) and see how to program traffic-shaping 
+ applications that can control the flow of data to the application.
+  
+ 17.1 Using TCP
+  
+ We’ll start our adventures in socket programming by looking at a simple TCP program 
+ that fetches data from a server. After this, we’ll write a simple
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+18,NA,NA
+Browsing with Websockets and ,NA,NA
+Erlang,"In this chapter, we will see how to build applications in the browser and extend the 
+ idea of using message passing to outside Erlang. This way, we can easily build 
+ distributed applications and integrate them with a web browser. Erlang thinks that the 
+ web browser is just another Erlang process, which simplifies our programming model, 
+ putting everything into the same concep-tual framework.
+  
+ We’re going to pretend that a web browser is an Erlang process. If we want the 
+ browser to do something, we’ll send it a message; if something happens within the 
+ browser that we need to attend to, the browser will send us a message. All of this is 
+ possible thanks to 
+ websockets
+ . Websockets are part of the HTML5 standard and are 
+ bidirectional asynchronous sockets that can be used to pass messages between a 
+ browser and an external program. In our case, the external program is the Erlang 
+ runtime system.
+  
+ To interface the Erlang runtime system to websockets, we run a simple Erlang web 
+ server, called 
+ cowboy
+ , to manage the socket and the websocket protocol. Details of how 
+ to install cowboy are covered in 
+ Chapter 25, 
+ Third-Party Pro-grams
+ , on page 425
+ . To 
+ simplify things, we assume that all messages between Erlang and the browser are JSON 
+ messages.
+  
+ On the Erlang side of the application these messages appear as Erlang maps (see 
+ Section 5.3, 
+ Maps: Associative Key-Value Stores
+ , on page 79
+ ), and in the browser these 
+ messages appear as JavaScript objects.
+  
+ In the rest of this chapter, we’ll look at six example programs, including the code that 
+ runs in the browser and the code that runs in the server. Finally, we’ll look at the 
+ client-server protocol and see how messages from Erlang to the browser are 
+ processed.",NA
+19,NA,NA
+Storing Data with ETS and DETS,"ets
+  and 
+ dets
+  are two system modules that you can use for the efficient storage of large 
+ numbers of Erlang terms. ETS is short for 
+ Erlang term storage
+ , and DETS is short for 
+ disk ETS
+ .
+  
+ ETS and DETS perform basically the same task: they provide large key-value lookup 
+ tables. ETS is memory resident, while DETS is disk resident. ETS is highly efficient—
+ using ETS, you can store colossal amounts of data (if you have enough memory) and 
+ perform lookups in constant (or in some cases logarithmic) time. DETS provides 
+ almost the same interface as ETS but stores the tables on disk. Because DETS uses disk 
+ storage, it is far slower than ETS but will have a much smaller memory footprint when 
+ running. In addition, ETS and DETS tables can be shared by several processes, making 
+ interprocess access to common data highly efficient.
+  
+ ETS and DETS tables are data structures for associating 
+ keys
+  with 
+ values
+ . The most 
+ commonly performed operations on tables are 
+ insertions
+  and 
+ lookups
+ . An ETS or DETS 
+ table is just a collection of Erlang tuples.
+  
+ Data stored in an ETS table is stored in RAM and is 
+ transient
+ . The data will be deleted 
+ when the ETS table is disposed of or the owning Erlang process terminates. Data 
+ stored in DETS tables is 
+ persistent
+  and should survive an entire system crash. When a 
+ DETS table is opened, it is checked for consis-tency. If it is found to be corrupt, then an 
+ attempt is made to repair the table (which can take a long time since all the data in the 
+ table is checked).
+  
+ This should recover all data in the table, though the last entry in the table might be lost 
+ if it was being made at the time of the system crash.
+  
+ ETS tables are widely used in applications that have to manipulate large amounts of 
+ data in an efficient manner and where it is too costly to program with nondestructive 
+ assignment and “pure” Erlang data structures.
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+20,NA,NA
+Mnesia: The Erlang Database,"Suppose you want to write a multiuser game, make a new website, or create an online 
+ payment system. You’ll probably need a database management system (DBMS).
+  
+ Mnesia is a database written in Erlang for demanding telecommunications 
+ applications, and it is part of the standard Erlang distribution. It can be configured with 
+ RAM replicates on two physically separated nodes to provide a fast fault-tolerant data 
+ store. It provides transactions and comes with its own query language.
+  
+ Mnesia is extremely fast, and it can store any type of Erlang data structure. It’s also 
+ highly configurable. Database tables can be stored in RAM (for speed) or on disk (for 
+ persistence), and the tables can be replicated on different machines to provide fault-
+ tolerant behavior.
+  
+ 20.1 Creating the Initial Database
+  
+ Before we can do anything, we have to create an Mnesia database. You need to do this 
+ only once.
+  
+ $
+  erl 
+  
+ 1>
+  
+ mnesia:create_schema([node()]).
+  
+ ok 
+  
+ 2>
+  init:stop().
+  
+ ok 
+  
+ $
+  ls 
+  
+ Mnesia.nonode@nohost
+  
+ mnesia:create_schema(NodeList)
+  initiates a new Mnesia database on all the nodes in 
+ NodeList
+  (which must be a list of valid Erlang nodes). In our case, we gave the node list 
+ as 
+ [node()]
+ , that is, the current node. Mnesia is initialized and creates a directory 
+ structure called 
+ Mnesia.nonode@nohost
+  to store the database.
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+21,NA,NA
+"Profiling, Debugging, and Tracing","In this chapter, we’ll look at a number of techniques that you can use to tune your 
+ program, find bugs, and avoid errors.
+  
+ Profiling 
+  
+ We use profiling for performance tuning to find out where the hot spots in our 
+ programs are. I think it’s almost impossible to guess where the bottlenecks in our 
+ programs are. The best approach is to first write our programs, then confirm that 
+ they are correct, and finally 
+ measure
+  to find out where the time goes. Of course, if 
+ the program is fast enough, we can omit the last step.
+  
+ Coverage analysis 
+  
+ We use coverage analysis to count the number of times each line of code in our 
+ programs has been executed. Lines that have been executed zero times might 
+ indicate an error or dead code that you might be able to remove. Finding lines that 
+ are executed a large number of times might help you optimize your program.
+  
+ Cross-referencing 
+  
+ We can use cross-referencing to find out whether we have any missing code and to 
+ find out who calls what. If we try to call a function that does not exist, then the 
+ cross-reference analysis will detect this. This is mostly useful for large programs 
+ with dozens of modules.
+  
+ Compiler diagnostics 
+  
+  
+ This section explains the compiler diagnostics.
+  
+ Runtime error messages 
+  
+ The runtime system produces many different error messages. We’ll explain what 
+ the most common error messages mean.
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+22,NA,NA
+Introducing OTP,"OTP stands for the Open Telecom Platform. The name is actually misleading, because 
+ OTP is far more general than you might think. It’s an application operating system and 
+ a set of libraries and procedures used for building large-scale, fault-tolerant, 
+ distributed applications. It was developed at the Swedish telecom company Ericsson 
+ and is used within Ericsson for building fault-tolerant systems. The standard Erlang 
+ distribution contains the OTP libraries.
+  
+ OTP contains a number of powerful tools—such as a complete web server, an FTP 
+ server, a CORBA ORB, 
+ 1
+  and so on—all written in Erlang. OTP also contains state-of-the-
+ art tools for building telecom applications with imple-mentations of H248, SNMP, and 
+ an ASN.1-to-Erlang cross-compiler (these are commonly used protocols in the 
+ telecommunications industry). I’m not going to talk about these here; you can find a lot 
+ more about these subjects 
+  
+ 2 
+  
+ at the Erlang website.
+  
+ If you want to program your own applications using OTP, then the central concept that 
+ you will find useful is the OTP 
+ behavior
+ . A behavior encapsulates common behavioral 
+ patterns—think of it as an application framework that is parameterized by a 
+ callback
+  
+ module.
+  
+ The power of OTP comes from the fact that properties such as fault tolerance, 
+ scalability, dynamic-code upgrade, and so on, can be provided by the behavior itself. In 
+ other words, the writer of the callback does not have to worry about things such as 
+ fault tolerance because this is provided by the behavior. For the Java-minded, you can 
+ think of a behavior as a J2EE container.
+  
+ Put simply, the behavior solves the nonfunctional parts of the problem, while the 
+ callback solves the functional parts. The nice part about this is that the
+  
+ 1.
+  
+ http://en.wikipedia.org/wiki/Common_Object_Request_Broker_Architecture
+  
+  
+ 2.
+  
+ http://www.erlang.org/
+  
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+23,NA,NA
+Making a System with OTP,"In this chapter, we’re going to make a system that could function as the back end of a 
+ web-based company. Our company has two items for sale: prime numbers and areas. 
+ Customers can buy a prime number from us, or we’ll calculate the area of a geometric 
+ object for them. I think our company has great potential.
+  
+ We’ll build two servers: one to generate prime numbers and the other to compute 
+ areas. To do this, we’ll use the 
+ gen_server
+  framework that we talked about in 
+ Section 
+ 22.2, 
+ Getting Started with gen_server
+ , on page 368
+ .
+  
+ When we build the system, we have to think about errors. Even though we have 
+ thoroughly tested our software, we might not have caught all the bugs. We’ll assume 
+ that one of our servers has a fatal error that crashes the server. In fact, we’ll introduce 
+ a 
+ deliberate error
+  into one of the servers that will cause it to crash.
+  
+ When the server crashes, we’ll need some mechanism to detect the fact that it has 
+ crashed and to restart it. For this we’ll use the idea of a 
+ supervision tree
+ . We’ll create a 
+ supervisor that watches over our servers and restarts them if they crash.
+  
+ Of course, if a server does crash, we’ll want to know why it crashed so that we can fix 
+ the problem later. To log all errors, we’ll use the OTP error logger. We’ll show how to 
+ configure the error logger and how to generate error reports from the error logs.
+  
+ When we’re computing prime numbers and, in particular, large prime num-bers, our 
+ CPU might overheat. To prevent this, we’ll need to turn on a powerful fan. To do so, 
+ we’ll need to think about 
+ alarms
+ . We’ll use the OTP event han-dling framework to 
+ generate and handle alarms.
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+Part V,NA,NA
+Building Applications,"In this part, we’ll look at some programming idioms that 
+ are commonly used when writing Erlang pro-grams. We’ll 
+ also see how to integrate third-party code into our 
+ applications. This way, we can build upon the work of 
+ others to obtain results far more quickly than if we had 
+ done all the work ourselves. We’ll learn how to parallelize 
+ programs on a multi-core, and finally we’ll solve 
+ Sherlock’s last case.
+  
+ www.it-ebooks.info",NA
+24,NA,NA
+Programming Idioms,"In this chapter, we’ll investigate some programming idioms and look at differ-ent 
+ techniques for structuring Erlang code. We’ll start with an example that shows how we 
+ should perceive the programming world and the objects that we find in this world.
+  
+ 24.1 Maintaining the Erlang View of the World
+  
+ The Erlang view of the world is that 
+ everything is a process
+  and that processes can 
+ interact only by exchanging messages. Having such a view of the world imposes 
+ conceptual integrity
+  on our designs, making them easier to under-stand.
+  
+ Imagine we want to write a web server in Erlang. A user requests a page called 
+ hello.html
+  from our web server. The simplest possible web server looks like this:
+  
+ web_server(Client) -> 
+  
+  
+ receive 
+  
+  
+   
+ {Client, {get, Page}} -> 
+  
+  
+   
+ case
+  file:read(Page)
+  of 
+  
+  
+   
+  
+  
+ {ok, Bin} -> 
+  
+  
+   
+  
+  
+  
+ Client ! {self(), {data, Bin}}; 
+  
+  
+   
+  
+ {error, _} -> 
+  
+  
+   
+  
+  
+  
+ Client ! {self(), error} 
+  
+  
+   
+ end
+ , 
+  
+  
+   
+ web_server(Client) 
+  
+  
+  
+ end
+ .
+  
+ But this code is simple only because all it does is receive and send Erlang terms. 
+ But 
+ clients don’t send us Erlang terms; they send us HTTP requests, which are far more 
+ complicated.
+  The HTTP requests come over TCP connections, and the requests might 
+ themselves be fragmented, all of which makes the server program far more 
+ complicated than the simple code shown previously.
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+25,NA,NA
+Third-Party Programs,"This chapter talks about third-party programs, that is, Erlang programs that have been 
+ written and distributed by our users. The principal source for such programs is GitHub. 
+ In this chapter we’ll look at three popular programs that are available from GitHub. 
+ We’ll also see how to create and publicize a new project on GitHub and how to include 
+ a GitHub project in your own applica-tion. We’ll take a look at the following:
+  
+ Rebar.
+  
+  Rebar, written by Dave Smith, has become the de facto standard for 
+  
+ managing Erlang projects. Using rebar, the user can create new projects, 
+  
+ compile 
+ the projects, package them, and integrate them with other 
+  
+ projects. Rebar is 
+ integrated with GitHub so users can easily fetch other 
+  
+ rebar projects from 
+ GitHub and integrate them with their applications.
+  
+ Bitcask.
+  Bitcask, written by the folks at Basho, 
+ 1
+  is a persistent key-value 
+  
+ disk 
+ store. It is fast and “crash friendly,” which means it can recover 
+  
+ quickly when 
+ restarted after a crash.
+  
+ Cowboy.
+   Cowboy, written by Loïc Hoguin, is a high-performance web server written in 
+ Erlang that is becoming popular for implementing embedded web servers. We 
+ used a cowboy server for the code developed in 
+ Chapter 18, 
+ Browsing with 
+ Websockets and Erlang
+ , on page 287
+ .
+  
+ 25.1 Making a Shareable Archive and Managing Your Code with Rebar
+  
+ In this section we’ll go through the steps necessary to make an open source Erlang 
+ project that we’ll host on GitHub. I’ll assume that you have an account on GitHub. We’ll 
+ use rebar to manage the project.
+  
+ 1.
+  
+ http://basho.com
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+26 ,NA,NA
+Programming ,NA,NA
+Multicore CPUs,"How can we write programs that run faster on a multicore CPU? It’s all about mutable 
+ state and concurrency.
+  
+ Back in the old days (twenty-odd years ago), there were two models of concurrency.
+  
+  
+ • Shared state concurrency
+  
+  
+ • Message passing concurrency 
+  
+ The programming world went one way (toward shared state). The Erlang community 
+ went the other way. (Few other languages followed the “message passing concurrency” 
+ road; some others were Oz and Occam.) 
+  
+ In message passing concurrency, there is no shared state. All computations are done in 
+ processes, and the 
+ only
+  way to exchange data is through asyn-chronous message 
+ passing.
+  
+ Why is this good?
+  
+ Shared state concurrency involves the idea of “mutable state” (memory that can be 
+ changed)—all languages such as C, Java, C++, and so on, have the notion that there is 
+ this stuff called 
+ state
+  and that we can change it.
+  
+ This is fine as long as you have only 
+ one
+  process doing the changing. If you have multiple 
+ processes sharing and modifying the 
+ same
+  memory, you have a recipe for disaster—
+ madness lies here.
+  
+ To protect against the simultaneous modification of shared memory, we use a locking 
+ mechanism. Call this a mutex, a synchronized method, or what you will, but it’s still a 
+ lock.
+  
+ If programs crash in the critical region (when they hold the lock), disaster results. All 
+ the other programs don’t know what to do. If programs corrupt
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+27 ,NA,NA
+Sherlock’s ,NA,NA
+Last Case,"“All we have is a fragment of the program,” said Armstrong, “but we haven’t a clue 
+ where it came from or what it’s about.”
+  
+ “Show me,” said Holmes.
+  
+ “It’s like this,” said Armstrong, and he leaned over to Holmes and showed him a small 
+ scrap of paper filled with strange symbols, brackets, and arrows interleaved with 
+ English text.
+  
+ “What is it?” asked Armstrong. “Lestrade said it was some kind of powerful black magic, 
+ come from the future.”
+  
+ “It’s part of a computer program,” said Holmes, puffing on his pipe. “As part of my 
+ experiments with time travel I’ve managed to teleport a computer and a large set of 
+ files from the future. In these files I discovered that there were 73,445 mails in the 
+ Erlang mailing list. I think that by comparing the text on your piece of paper with these 
+ mails that we will be able to discover the meaning of the strange symbols. But how? I 
+ took out my Stradivarius and played a piece by Paganini. Then it came to me. The most 
+ similar posting in the mailing list to the text on your scrap of paper must be that which 
+ maxi-mizes the cosine similarity of the TF*IDF scores of the words in the document....”
+  
+ “That’s brilliant,” said Armstrong, “but what’s a TF*IFD score?”
+  
+ “It’s elementary, my dear Armstrong,” said Holmes. “It’s the term frequency times the 
+ inverse document frequency. I shall explain….”
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+1,NA,NA
+OTP Templates,"This appendix contains a full listing of the 
+ gen_server
+  and the 
+ supervisor
+  and 
+ application
+  
+ templates. These templates are built into Emacs mode.
+  
+ A1.1 The Generic Server Template
+  
+ gen_server_template.full
+  
+ %%%-------------------------------------------------------------------%%% @author 
+ some name <me@hostname.local> 
+  
+ %%% @copyright (C) 2013, some name 
+  
+ %%% @doc 
+  
+ %%% 
+  
+ %%% @end 
+  
+ %%% Created : 26 May 2013 by some name <me@hostname.local> 
+  
+ %%%-------------------------------------------------------------------
+ -module
+ ().
+  
+ -behaviour
+ (gen_server).
+  
+ %% API
+  
+ -export
+ ([start_link/0]).
+  
+ %% gen_server callbacks
+  
+ -export
+ ([init/1, handle_call/3, handle_cast/2, handle_info/2, 
+  
+ terminate/2, code_change/3]).
+  
+ -define
+ (SERVER, ?MODULE).
+  
+ -record
+ (state, {}).
+  
+ %%%===============================================
+ ==================== %%% API 
+  
+ %%%===============================================
+ ====================
+  
+ %%--------------------------------------------------------------------%% @doc",NA
+2,NA,NA
+A Socket Application,"This appendix is devoted to the implementation of the library 
+ lib_chan
+ , which was 
+ introduced in 
+ Controlling Processes with lib_chan
+ , on page 224
+ . The code for 
+ lib_chan
+  
+ implements an entire layer of networking on top of TCP/IP, providing both 
+ authentication and streams of Erlang terms. Once we understand the principles used in 
+ lib_chan
+ , we should be able to tailor-make our own commu-nication infrastructure and 
+ layer it on top of TCP/IP.
+  
+ In its own right, 
+ lib_chan
+  is a useful component for building distributed systems.
+  
+ To make the appendix self-contained, there is a considerable amount of overlap with the 
+ material in 
+ Controlling Processes with lib_chan
+ , on page 224
+ .
+  
+ The code in this appendix is some of the most complex code I’ve introduced so far, so 
+ don’t worry if you don’t understand it all on the first reading. If you just want to use 
+ lib_chan
+  and don’t care about how it works, read the first section and skip the rest.
+  
+ A2.1 An Example
+  
+ We’ll start with a simple example that shows how to use 
+ lib_chan
+ . We’re going to create 
+ a simple server that can compute factorials and Fibonacci numbers. We’ll protect it 
+ with a password.
+  
+ The server will operate on port 2233.
+  
+ We’ll take four steps to create this server.
+  
+ 1.
+  
+ Write a configuration file.
+  
+ report erratum  •  discuss
+  
+ 2.
+  
+ Write the code for the server.
+  
+ 3.
+  
+ Start the server.
+  
+ 4.
+  
+ Access the server over the network.
+  
+ www.it-ebooks.info",NA
+3,NA,NA
+A Simple Execution Environment,"In this appendix we’ll build a simple execution environment (SEE) for running Erlang 
+ programs. The code is in an appendix rather than the main body of the book since it is 
+ rather different in character. All the code in the book is intended to be run in the 
+ standard Erlang/OTP distribution, whereas this code deliberately makes minimal use 
+ of Erlang library code and tries to use only the Erlang primitives.
+  
+ When confronted with Erlang for the first time, it’s often unclear what belongs to the 
+ language and what belongs to the operating environment. OTP provides a rich 
+ environment, akin to an operating system for running long-lived dis-tributed Erlang 
+ applications. But exactly what functionality is provided by Erlang (the language) and 
+ OTP (the environment) is unclear.
+  
+ SEE provides an environment that is “nearer to the metal,” giving a much clearer 
+ distinction between what is provided by Erlang and what is provided by OTP. All that 
+ is provided by SEE is contained in a single module. OTP starts by loading 60-odd 
+ modules, and it’s not immediately apparent how things work, but none of this is 
+ particularly complicated if you know where to look. The place to start is in the boot file. 
+ Start by looking at the boot file and then by reading the code in 
+ init.erl
+ , and all will be 
+ revealed.
+  
+ The SEE environment can be used for scripting, since it starts very quickly, or for 
+ embedding, since it is very small. To achieve this, you’ll learn how Erlang starts and 
+ how the code autoloading system works.
+  
+ When you start a “standard” Erlang system (with the shell command 
+ erl
+ ), sixty-seven 
+ modules get loaded and twenty-five processes are started, and only then your program 
+ gets to run. This takes about a second. If the program we want to execute doesn’t need 
+ all the goodies provided by the standard system, we can cut this time down to a few 
+ tens of milliseconds.
+  
+ www.it-ebooks.info
+  
+ report erratum  •  discuss",NA
+Index,"SYMBOLS
+  
+ alarm handler, 
+ 392
+  
+ B
+  
+ anagrams, 
+ 63
+  
+ "" operator, 
+ 39
+  
+ backup, 
+ 337
+  
+ analyzing
+  
+ $ syntax integers, 
+ 132
+  
+ base K, of integers, 
+ 132
+  
+ data, 
+ 469
+  
+ % operator, 
+ 26
+ , 
+ 122
+  
+ errors, 
+ 390
+  
+ Basho, 
+ 425
+  
+ ’ operator, 
+ 34
+  
+ and
+  operator, 
+ 67
+  
+ basics, exercises, 
+ 20
+ , 
+ 42
+  
+ ++ operator, 
+ 61
+ , 
+ 71
+ , 
+ 129
+  
+ Beautiful Soup program, 
+ 469
+  
+ andalso
+  operator, 
+ 67
+  
+ , operator, 
+ 49
+ , 
+ 65
+  
+ BIFs (built-in functions)
+  
+ anonymous variable, 
+ 37
+  
+ – operator, 
+ 129
+  
+ application building
+  
+ for distributed program-
+  
+ . operator, 
+ 49
+  
+ ming, 
+ 219
+  
+ multicore CPUs, 
+ 439
+  
+ incorrect arguments to,
+  
+ programming idioms, 
+ 413
+  
+ := operator, 
+ 80
+  
+ 150
+  
+ Sherlock, 
+ 457
+  
+ ; operator, 
+ 49
+ , 
+ 170
+  
+ incorrect use of return
+  
+ third-party programs,
+  
+ = operator, 
+ 12
+ , 
+ 30
+ , 
+ 36
+ , 
+ 78
+  
+ values, 
+ 149
+  
+ 425
+  
+ manipulating dictionary
+  
+ =/= operator, 
+ 136
+  
+ application monitor, 
+ 406
+  
+ using, 
+ 134
+  
+ =:= operator, 
+ 136
+  
+ application servers, 
+ 394
+  
+ that operate on maps, 
+ 82
+  
+ == operator, 
+ 136
+  
+ application template, 
+ 471
+  
+ tracing, 
+ 352
+  
+ @ operator, 
+ 34
+  
+ apply
+  BIF, 
+ 115
+  
+ binaries
+  
+ [] operator, 
+ 4
+  
+ area
+  function, 
+ 183
+  
+ about, 
+ 99
+  
+ _ operator, 
+ 34
+ , 
+ 37
+  
+ exercises, 
+ 112
+  
+ area server, 
+ 395
+  
+ “blackboard system”, 
+ 310
+  
+ reading files into, 
+ 248
+  
+ area/2
+  function, 
+ 188
+  
+ working with, 
+ 100
+  
+ “find” utility, 
+ 258
+  
+ arguments
+  
+ binary_to_term
+ , 
+ 417
+  
+ “fragmented” tables, 
+ 334
+  
+ command-line, 
+ 165
+  
+ binding the variable, 
+ 12
+  
+ DIGITS
+  
+ functions with funs as
+  
+ their, 
+ 54
+  
+ bit comprehension, 
+ 111
+  
+ 11-bit frame sync, 
+ 105
+  
+  
+ bit syntax
+  
+ arithmetic expressions, 
+ 65
+ , 
+  
+ 16-bit colors, packing/un-
+  
+ 116
+  
+ about, 
+ 101
+  
+ packing, 
+ 102
+  
+ arity, 
+ 44
+ , 
+ 116
+  
+ exercises, 
+ 112
+  
+ expressions, 
+ 103
+  
+ A
+  
+ atoms
+  
+ real-world examples, 
+ 105
+  
+  
+ abstraction violation, 
+ 148
+  
+  
+ bit-level data, processing, 
+ 110
+  
+ syntax of, 
+ 13
+  
+ abstractions, 
+ 446
+  
+ bit-level storage, 
+ 110
+  
+ value of, 
+ 34
+  
+ accumulators, 
+ 71
+  
+ Bitcask, 
+ 425
+ , 
+ 428
+  
+ attributes
+  
+ active message reception
+  
+ about, 
+ 117
+  
+ bitstrings, 
+ 99
+ , 
+ 110
+  
+ (nonblocking), 
+ 273
+  
+ predefined module, 
+ 117
+  
+ block expressions, 
+ 120
+  
+ user-defined, 
+ 119
+  
+ active sockets, 
+ 272
+  
+ body, of clauses, 
+ 44
+  
+ adapter patterns, 
+ 419
+  
+ www.it-ebooks.info",NA
+Put the “Fun” in Functional ,"Elixir puts the ""fun"" back into functional programming, on top of the robust, battle-tested, industrial-
+ strength environment of Erlang, and Joe Kutner puts the fun back in staying fit.
+  
+ You want to explore functional programming, but are put off 
+ by the academic feel (tell me about monads just one more 
+ time). You know you need concurrent appli-cations, but also 
+ know these are almost impossible to get right. Meet Elixir, a 
+ functional, concurrent language built on the rock-solid Erlang 
+ VM. Elixir’s pragmatic syntax and built-in support for 
+ metaprogramming will make you productive and keep you 
+ interested for the long haul. This book is 
+ the
+  introduction to 
+ Elixir for experienced programmers.
+  
+ Dave Thomas 
+  
+ (240 pages) 
+ ISBN
+ : 9781937785581. $36 
+ http://pragprog.com/book/elixir
+  
+  
+  
+ To keep doing what you love, you need to maintain your own 
+ systems, not just the ones you write code for. Regular 
+ exercise and proper nutrition help you learn, remember, 
+ concentrate, and be creative—skills critical to doing your job 
+ well. Learn how to change your work habits, master exercises 
+ that make working at a computer more comfortable, and 
+ develop a plan to keep fit, healthy, and sharp for years to 
+ come.
+  
+ This book is intended only as an informative guide for those 
+ wishing to know more about health issues. In no way is this 
+ book intended to replace, countermand, or conflict with the 
+ advice given to you by your own 
+  
+ healthcare provider including Physician, Nurse Practi-tioner, 
+ Physician Assistant, Registered Dietician, and other licensed 
+ professionals.
+  
+ Joe Kutner 
+  
+ (254 pages) 
+ ISBN
+ : 9781937785314. $36 
+ http://pragprog.com/book/jkthp
+  
+ www.it-ebooks.info",NA
+Long Live the ,NA,NA
+Command Line! ,"Use tmux and vim 
+ for incredible mouse-free productivity.
+  
+ Your mouse is slowing you down. The time you spend context 
+ switching between your editor and your con-soles eats away 
+ at your productivity. Take control of your environment with 
+ tmux, a terminal multiplexer that you can tailor to your 
+ workflow. Learn how to customize, script, and leverage 
+ tmux’s unique abilities and keep your fingers on your 
+ keyboard’s home row.
+  
+ Brian P. Hogan 
+  
+ (88 pages) 
+ ISBN
+ : 9781934356968. $16.25 
+ http://pragprog.com/book/bhtmux
+  
+  
+  
+ Vim is a fast and efficient text editor that will make you a 
+ faster and more efficient developer. It’s available on almost 
+ every OS—if you master the techniques in this book, you’ll 
+ never need another text editor. In more than 100 Vim tips, 
+ you’ll quickly learn the editor’s core functionality and tackle 
+ your trickiest editing and writing tasks.
+  
+ Drew Neil 
+  
+ (346 pages) 
+ ISBN
+ : 9781934356982. $29 
+ http://pragprog.com/book/dnvim
+  
+  
+  
+ www.it-ebooks.info",NA
+"Seven Databases, Seven ",NA,NA
+Languages ,"There’s so much new to learn with the latest crop of NoSQL databases. And instead of learning a 
+ language a year, how about seven?
+  
+ Data is getting bigger and more complex by the day, and so 
+ are your choices in handling it. From traditional RDBMS to 
+ newer NoSQL approaches, 
+ Seven Databases in Seven Weeks
+  
+ takes you on a tour of some of the hottest open source 
+ databases today. In the tradition of Bruce A. Tate’s 
+ Seven 
+ Languages in Seven Weeks
+ , this book goes beyond your basic 
+ tutorial to explore the essential concepts at the core of each 
+ technology.
+  
+ Eric Redmond and Jim R. Wilson 
+  
+ (354 pages) 
+ ISBN
+ : 9781934356920. $35 
+ http://pragprog.com/book/rwdata
+  
+  
+  
+ You should learn a programming language every year, as 
+ recommended by 
+ The Pragmatic Programmer
+ . But if one per 
+ year is good, how about 
+ Seven Languages in Seven Weeks
+ ? In 
+ this book you’ll get a hands-on tour of Clojure, Haskell, Io, 
+ Prolog, Scala, Erlang, and Ruby. Whether or not your favorite 
+ language is on that list, you’ll broaden your perspective of 
+ programming by examining these languages side-by-side. 
+ You’ll learn something new from each, and best of all, you’ll 
+ learn how to learn a language quickly.
+  
+ Bruce A. Tate 
+  
+ (330 pages) 
+ ISBN
+ : 9781934356593. $34.95 
+ http://pragprog.com/book/btlang
+  
+ www.it-ebooks.info",NA
+Web and Mobile Apps ,"Get a handle on responsive web apps and easier iOS mobile apps with Ruby.
+  
+ With the advent of HTML5, front-end MVC, and 
+  
+ Node.js, JavaScript is ubiquitous—and still messy. This book 
+ will give you a solid foundation for managing async tasks 
+ without losing your sanity in a tangle of callbacks. It’s a fast-
+ paced guide to the most essential techniques for dealing with 
+ async behavior, including PubSub, evented models, and 
+ Promises. With these tricks up your sleeve, you’ll be better 
+ prepared to manage the complexity of large web apps and 
+ deliver responsive code.
+  
+ Trevor Burnham 
+  
+ (104 pages) 
+ ISBN
+ : 9781937785277. $17 
+ http://pragprog.com/book/tbajs
+  
+  
+  
+ Make beautiful apps with beautiful code: use the ele-gant and 
+ concise Ruby programming language with RubyMotion to 
+ write truly native iOS apps with less code while having more 
+ fun. You’ll learn the essentials of creating great apps, and by 
+ the end of this book, you’ll have built a fully functional API-
+ driven app. Whether you’re a newcomer looking for an 
+ alternative to Objective-C or a hardened Rails veteran, 
+ RubyMotion allows you to create gorgeous apps with no 
+ compromise in performance or developer happiness.
+  
+ Clay Allsopp 
+  
+ (112 pages) 
+ ISBN
+ : 9781937785284. $17 
+ http://pragprog.com/book/carubym
+  
+  
+  
+ www.it-ebooks.info",NA
+The Joy of Math and ,NA,NA
+Programming ,"Rediscover the joy and fascinating weirdness of pure mathematics, or get your kids started 
+ programming in JavaScript.
+  
+ Mathematics is beautiful—and it can be fun and excit-ing as 
+ well as practical. 
+ Good Math
+  is your guide to some of the most 
+ intriguing topics from two thousand years of mathematics: 
+ from Egyptian fractions to Tur-ing machines; from the real 
+ meaning of numbers to proof trees, group symmetry, and 
+ mechanical compu-tation. If you’ve ever wondered what lay 
+ beyond the proofs you struggled to complete in high school 
+ geom-etry, or what limits the capabilities of the computer on 
+ your desk, this is the book for you.
+  
+ Mark C. Chu-Carroll 
+  
+ (282 pages) 
+ ISBN
+ : 9781937785338. $34 
+ http://pragprog.com/book/mcmath
+  
+  
+  
+ You know what’s even better than playing games? Creating 
+ your own. Even if you’re an absolute beginner, this book will 
+ teach you how to make your own online games with 
+ interactive examples. You’ll learn program-ming using 
+ nothing more than a browser, and see cool, 3D results as you 
+ type. You’ll learn real-world program-ming skills in a real 
+ programming language: Java-Script, the language of the web. 
+ You’ll be amazed at what you can do as you build interactive 
+ worlds and fun games.
+  
+ Chris Strom 
+  
+ (250 pages) 
+ ISBN
+ : 9781937785444. $36 
+ http://pragprog.com/book/csjava
+  
+ www.it-ebooks.info",NA
+The Pragmatic Bookshelf,"The Pragmatic Bookshelf features books written by developers for developers. The titles
+  
+ continue the well-known Pragmatic Programmer style and continue to garner awards and
+  
+ rave reviews. As development gets more and more difficult, the Pragmatic Programmers will
+  
+ be there with more titles and products to help you stay on top of your game.",NA
+Visit Us Online,"This Book’s Home Page
+  
+ http://pragprog.com/book/jaerlang2
+  
+ Source code from this book, errata, and other resources. Come give us feedback, too!
+  
+ Register for Updates
+  
+ http://pragprog.com/updates
+  
+ Be notified when updates and new books become available.
+  
+ Join the Community
+  
+ http://pragprog.com/community
+  
+ Read our weblogs, join our online discussions, participate in our mailing list, interact with
+  
+ our wiki, and benefit from the experience of other Pragmatic Programmers.
+  
+ New and Noteworthy
+  
+ http://pragprog.com/news
+  
+ Check out the latest pragmatic developments, new titles and other offerings.",NA
+Buy the Book,"If you liked this eBook, perhaps you'd like to have a paper copy of the book. It's available
+  
+ for purchase at our store: 
+ http://pragprog.com/book/jaerlang2",NA
+Contact Us,"Online Orders: 
+  
+ http://pragprog.com/catalog
+  
+ Customer Service: 
+  
+ support@pragprog.com
+  
+ International Rights: 
+  
+ translations@pragprog.com
+  
+ Academic Use: 
+  
+ academic@pragprog.com
+  
+ Write for Us: 
+  
+ http://pragprog.com/write-for-us
+  
+ Or Call: 
+  
+ +1 800-699-7764
+  
+ www.it-ebooks.info",NA

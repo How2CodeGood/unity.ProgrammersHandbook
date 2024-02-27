@@ -1,0 +1,9050 @@
+Larger Text,Smaller Text,Symbol
+Exploring Generic Haskell,NA,NA
+Generic Haskell van alle kanten ,NA,NA
+(met een samenvatting in het Nederlands),"Proefschrift ter verkrijging van de graad van doctor aan de Universiteit Utrecht op 
+ gezag van de Rector Magnificus, Prof. dr. W. H. Gispen, ingevolge het besluit van het 
+ College voor Promoties in het openbaar te verdedigen op donderdag 2 september 
+ 2004 des ochtends te 10.30 uur 
+  
+ door",NA
+Andres L¨oh,"geboren op 18 augustus 1976 te L¨ubeck, Duitsland",NA
+Contents,"1
+  
+ Adventure Calls!
+  
+ 1
+  
+  
+ 1.1
+  
+ From static types to generic programming
+  
+ . . . . . . . . . . . . . . . .
+  
+ 2
+  
+ 1.2
+  
+ History of Generic Haskell and contributions of this thesis . . . . . . .
+  
+ 4
+  
+ 1.3
+  
+ Related work on generic programming
+  
+ . . . . . . . . . . . . . . . . . .
+  
+ 7
+  
+ 1.4
+  
+ Selecting a route . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 11
+  
+ 2
+  
+ Choosing the Equipment
+  
+ 15
+  
+ 2.1
+  
+ Prerequisites . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 15
+  
+ 2.2
+  
+ The Generic Haskell compiler . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 16
+  
+ 2.3
+  
+ A note on notation
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 16
+  
+ 3
+  
+ A Functional Core
+  
+ 21
+  
+ 3.1
+  
+ Syntax of the core language fc . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 22
+  
+ 3.2
+  
+ Scoping and free variables . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 24
+  
+ 3.3
+  
+ Types and kinds . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 24
+  
+ 3.4
+  
+ Well-formed programs . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 29
+  
+ 3.5
+  
+ Operational semantics
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 30
+  
+ 3.6
+  
+ Recursive let . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 37
+  
+ iii",NA
+List of Figures,"2.1
+  
+ Sample deduction rule
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 19
+  
+ 3.1
+  
+ Syntax of the core language fc . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 23
+  
+ 3.2
+  
+ Kind checking for core language of Figure 3.1 . . . . . . . . . . . . . .
+  
+ 26
+  
+ 3.3
+  
+ Type checking for core language of Figure 3.1 . . . . . . . . . . . . . .
+  
+ 27
+  
+ 3.4
+  
+ Type checking for patterns, extends Figure 3.3
+  
+ . . . . . . . . . . . . .
+  
+ 28
+  
+ 3.5
+  
+ Subsumption relation on core types, extends Figure 3.3 . . . . . . . .
+  
+ 28
+  
+ 3.6
+  
+ Well-formed data declarations . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 31
+  
+ 3.7
+  
+ Well-formed programs
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 31
+  
+ 3.8
+  
+ Syntax of values, extends Figure 3.1 . . . . . . . . . . . . . . . . . . . .
+  
+ 32
+  
+ 3.9
+  
+ Type rule for run-time failure, extends Figure 3.3 . . . . . . . . . . . .
+  
+ 32
+  
+ 3.10
+  
+ Reduction rules for core language of Figure 3.1 . . . . . . . . . . . . .
+  
+ 34
+  
+ 3.11
+  
+ Pattern matching for the core language of Figure 3.1, extends Fig-
+  
+ 35
+  
+ ure 3.10 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 3.12
+  
+ Syntax of fcr, modifies the core language fc of Figure 3.1 . . . . . . .
+  
+ 38
+  
+ 3.13
+  
+ Translation of fcr to fc
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 38
+  
+ 3.14
+  
+ Type checking for recursive let, modifies Figure 3.3 . . . . . . . . . . .
+  
+ 39
+  
+ vii",NA
+Acknowledgements,"The story of me ending up in Utrecht to do a Ph.D. on Generic Haskell is full of lucky 
+ coincidences. Therefore, first of all, I want to thank fate, if there is such a thing, for 
+ the fact that everything turned out so well.
+  
+ When I arrived in Utrecht, I did not even know my supervisor, Johan Jeuring– 
+ well, okay, I had read papers authored by him. Now, four years later, I can 
+ confidently say that I could not imagine a better supervisor. He has proved to be a 
+ patient listener, encouraged me where needed, warned me when I was about to be 
+ carried away by some spontaneous idea, let me participate in his insights, and 
+ shared his experiences regarding survival in the academic world. Most of all, he has 
+ become a friend. My whole time here would have been far less enjoyable if it were 
+ not for him. Johan, thank you very much.
+  
+ Although on second position in these acknowledgments, Doaitse Swierstra may 
+ well have deserved the first. After all, he is “responsible” for the fact that I 
+ abandoned everything else, moved to Utrecht, and started working on a Ph.D. When 
+ I first met him at a conference, I asked him about possibilities to do a Ph.D. in 
+ Utrecht and to work in the area of functional programming. Afterwards, I had a hard 
+ time convincing him that it would not be possible for me to start immediately, but 
+ that I still had almost a year to go until finishing my “Diplom”. During my time here, 
+ Doaitse has been a constant source of interesting ideas and enlightening 
+ discussions. I envy his seemingly unshakable enthusiasm for his work, and hope 
+ that this enthusiasm will inspire many others as it did inspire me.
+  
+ I want to thank Ralf Hinze, who had the doubtful privilege to share an office with 
+ me during my first year, and as another German eased the transition to the 
+ Netherlands. For me, working on generic programming, he has been the ideal 
+ person to have close by and to learn from. I thank him for showing an interest in me 
+ and my work, also after he left.
+  
+ Jeremy Gibbons, Ralf Hinze, Lambert Meertens, Rinus Plasmeijer, and Peter 
+ Thiemann are the members of the reading committee. I am grateful that they took 
+ the time to read this thesis, and for several helpful comments and insights. I am 
+ sorry that I could not act on all of them due to time constraints.
+  
+ One of the really amazing things about Utrecht University has been the at-
+ mosphere in the software technology group. There are so many people that are 
+ interested in each other’s work, and if there ever was a problem just outside my 
+ own area of expertise, I was very likely to find a helpful answer just a few steps 
+ away next door. Many of my colleagues have provided interesting ideas and 
+ valuable discussions. I would like to mention Daan Leijen, Eelco Dolstra,
+  
+ xiii",NA
+1 ,NA,NA
+Adventure Calls!,"This thesis is an exploration – an exploration of a language extension of the func-
+ tional programming language Haskell. The extension is called
+  Generic Haskell
+ , albeit 
+ the name has been used to refer to different objects over the last several years: 
+ Many papers have described different proposals, features, variations, and 
+ generations of the language. One purpose of this thesis is to do away with at least 
+ part of this fuzziness: everything is described in a common notation and from a 
+ single starting point. The other purpose is to simply give a complete overview of the 
+ language: we will systematically explain the core features of Generic Haskell, and 
+ several extensions, all with motivating examples and details on how the fea-tures 
+ can be implemented.
+  
+ Before we start our exploration, though, Section 1.1 will explain the idea and 
+ motivation behind
+  generic programming
+  which, at the same time, is the motivation 
+ for the design of Generic Haskell. After that, Section 1.2 will give an overview of the 
+ history of Generic Haskell. In Section 1.3 we discuss other important ap-proaches to 
+ generic programming. In the last section of this chapter, Section 1.4, we give an 
+ overview of all the chapters of this thesis, their contents, the papers they are based 
+ on, and how they are interconnected.
+  
+ 1",NA
+1.1 ,NA,NA
+From static types to generic programming,"Static types are used in many programming languages to facilitate the creation of 
+ error-free software. 
+  
+ While static types cannot guarantee the correctness of all 
+ programs written in a language, a sound static type system is capable of eliminating 
+ a certain class of runtime errors, which result in particularly nasty program crashes, 
+ because operating systems usually do not allow us to catch such errors. These 
+ errors result from the program inadvertently accessing a memory position that does 
+ not belong to the program. With static types, a program is checked at compile time, 
+ to prevent this kind of behaviour. Ideally, the successful type checking process 
+ together with the translation semantics of the language make up a proof that the 
+ programs cannot “go wrong” (Milner 1978).
+  
+ In a less perfect world, these proofs often do not fully exist, because the trans-
+ lation that the compilers perform is too complex and involves too many external 
+ factors. Nevertheless, statically checked types in the user’s programs result in less 
+ error-prone programs.
+  
+ The amount of information about the program that a type checker can verify is 
+ not fixed. Some static type systems can type more programs than others, some can 
+ catch more errors than others – other kinds of errors, which are less nasty, but still 
+ inconvenient enough, such as divisions by zero or array indices that are out of 
+ bound. Nevertheless, there is a constant struggle: if too much cleverness is 
+ incorporated into the types, the type checking becomes inefficient or even unde-
+ cidable. If too little information is covered by the type checker, programmers find 
+ themselves fighting the type system: programs that would behave correctly are 
+ nevertheless rejected as incorrect, because the type system is not capable of find-
+ ing out that a potentially unsafe construct is only used in safe contexts throughout a 
+ particular program.
+  
+ The Hindley-Milner type system (Hindley 1969; Milner 1978) with the Damas-
+ Milner inference algorithm (Damas and Milner 1982) is a great historical achieve-
+ ment, because it is an expressive type system which allows to type day-to-day 
+ programs without any problems, and not only has an efficient type checking al-
+ gorithm, but even permits efficient type inference! Thus, the programmer is not 
+ forced to annotate a program with types or declare the types of entities used –
+ everything is inferred by the compiler automatically and checked for consistency. 
+ One of the highlights of this type system is the possibility for
+  parametrically poly-
+ morphic functions
+ . Functions that work in the same way for all datatypes need not 
+ be instantiated over and over again, making a new copy for each new datatype, but 
+ can be written once and used everywhere.
+  
+ Haskell (Peyton Jones 2003), along with other languages such as sml (Milner 
+ et al.
+  
+ 1997) or Clean (Plasmeijer and van Eekelen 2001), are based on the Hindley-
+  
+ 2",NA
+1.2 ,NA,NA
+History of Generic Haskell and ,NA,NA
+contributions of this thesis,"In this section, we present a brief summary of how Generic Haskell came to life, and 
+ which language(s) it refers to. In this context, it will also become clear on whose 
+ work this thesis is based and what the contributions of this thesis are. 
+  
+ The 
+ first generic programming language extension that has been designed for Haskell is 
+ PolyP (Jansson and Jeuring 1997; Jansson 2000). 
+  
+ In PolyP, generic 
+ functions are called
+  polytypic
+ . 
+  
+ The language introduces a special construct in 
+ which such polytypic functions can be defined via structural induction over the 
+ structure of the pattern functor of a regular datatype. Regular datatypes in PolyP 
+ are a subset of Haskell datatypes. A regular datatype
+  t
+  must be of kind
+  ∗ → ∗
+ , and if
+  
+ a
+  is the formal type argument in the definition, then all recursive calls to
+  t 
+ must have 
+ the form
+  t a
+ . These restrictions rule out higher kinded datatypes as well as
+  nested
+  
+ datatypes, where the recursive calls are of a different form. 
+  
+ In the lecture 
+ notes for a Summer School (Backhouse
+  et al.
+  1999), theoretical background on
+  
+ generic programming
+  is combined with an introduction to PolyP, thereby 
+ establishing generic programming as a synonym for polytypic program-ming in the 
+ context of Haskell.
+  
+ Ralf Hinze reused the term
+  generic programming
+  for the ability to define type-
+ indexed functions during his own presentation of a programming language ex-
+ tension for Haskell (Hinze 1999
+ a
+ , 2000
+ b
+ ). As in PolyP, Haskell is extended with a 
+ construct to define type-indexed functions. Type indices can be of kind
+  ∗
+  (for 
+ generic equality, or showing values) or
+  ∗ → ∗
+  (for mapping functions or reduc-
+ tions), and in principle, for all kinds of the form
+  ∗ → · · · → ∗
+ . The approach
+  
+ 4",NA
+1.3 ,NA,NA
+Related work on generic programming,"First of all, it should be mentioned that
+  generic programming
+  is not an ideal term for 
+ the structural polymorphism that we talk about in this thesis, because the term is 
+ used by different communities in different meanings. Most notably, the object-
+ oriented programming community, when talking about generic programming, mean 
+ about the same as is captured by parametric polymorphism in Hindley-Milner 
+ based type systems. Nevertheless, generic programming is the term that has been 
+ used for a while now (Bird
+  et al.
+  1996) in the functional programming community 
+ to refer to structural polymorphism, i.e., functions defined over the structure of 
+ datatypes, and we will continue the habit.
+  
+ 7",NA
+1.4 ,NA,NA
+Selecting a route,"In Chapter 2, we make a remark about previous knowledge that we assume from 
+ readers, and discuss notational conventions.
+  
+ We start our tour of Generic Haskell slowly, first introducing a core language in 
+ Chapter 3. This language consists of a subset of Haskell, and is held in a syntactic 
+ style that is mostly compatible with Haskell. Haskell can be relatively easily 
+ desugared to the core language. In this chapter, we also give type checking rules for 
+ the language and present a small step operational semantics.
+  
+ In most of the other chapters, we will – step by step – introduce the features that 
+ make up Generic Haskell. We usually present some examples, both to mo-tivate the 
+ need for the features that are presented, and to show how they can be used. For the 
+ examples, we usually use full Haskell syntax, to give an impression of what actual 
+ programs look like. After this leisurely introduction of a new fea-ture, we generally 
+ discuss its implementation. We extend the core language with new constructs as 
+ necessary, and discuss the semantics of the new constructs,
+  
+ usually by presenting a translation back into the original core language. In these 
+ theoretical parts, we work exclusively on the core language and its extensions.
+  
+ Often, such theoretical parts are marked by a “Lambda”. The “Lambdas” are
+  
+  
+ friendly fellows and experts on both functional and generic programming. They 
+ accompany the reader during his or her explorations. In this case, the “Lambda”is 
+ advising the reader who is interested more in practical usage of the language
+  
+ than in the gritty details, that the “Lambda”-marked section could be skipped 
+ without danger (at least on a first reading).
+  
+ Similarly, on rare occasions, the “Lambda” warns that a certain area has not
+  
+  
+ yet been explored in full detail, and that the following text describes future or 
+ ongoing work.
+  
+ The chapters on additions to the core language are grouped into two parts. 
+ Chapters 4 to 11 introduce a basic language for generic programming, which is 
+ already quite powerful, but in many places not as convenient as would be de-
+ sirable. Therefore, the remaining chapters focus on several extensions that allow 
+ writing generic programs more easily, but also aim at enhancing the expressive-
+ ness of the language even further.
+  
+ Chapter 4 covers the first extension of the core language, the possibility to define 
+ type-indexed functions. Generic functions are type-indexed functions that fulfill 
+ specific conditions. It thus makes sense to introduce type-indexed functions first, in 
+ this chapter, and to discuss genericity later.
+  
+ The idea of
+  dependencies
+  between type-indexed functions, as introduced in the 
+ paper “Dependency-style Generic Haskell” (L¨oh
+  et al.
+  2003), forms the core of this 
+ thesis. Dependencies are first discussed in a limited setting in Chapter 5,
+  
+ 11",NA
+2 ,NA,NA
+the ,NA,NA
+Equipment ,NA,NA
+Choosing,"In this chapter, we will prepare for our exploration. Section 2.1 briefly discusses 
+ prerequisites for the material presented in this thesis and pointers to introductory 
+ material to gain the assumed knowledge. In Section 2.2, we discuss the status of the 
+ Generic Haskell compiler. In Section 2.3, we explain several notational conventions 
+ that are used in the remainder of this thesis.",NA
+2.1 ,NA,NA
+Prerequisites,"I have tried to write this thesis in such a way that it is understandable without a 
+ heavy background in generic programming in the context of functional lan-guages. 
+ Because the thesis describes a language extension of Haskell, a familiar-ity with 
+ Haskell is very advisable. I recommend Bird’s excellent textbook (Bird 1998), but 
+ the very readable language report (Peyton Jones 2003) might do as well, especially",NA
+2.2 ,NA,NA
+The Generic Haskell compiler,"There exists a Generic Haskell compiler. There have been two formal releases, 
+ Amber (Clarke
+  et al.
+  2001) and Beryl (Clarke
+  et al.
+  2002), and the current devel-
+ opment version supports a couple of features that the two released versions do not. 
+ Nevertheless, the compiler lags considerably behind the development of the theory. 
+ The compiler translates into Haskell, and leaves all type checking to the Haskell 
+ compiler. Furthermore, the support for Dependency-style Generic Haskell, as it is 
+ used in this thesis, is rudimentary at best, and type signatures have to be written 
+ using kind-indexed types (cf. Section 6.6). The syntax used in the compiler is 
+ discussed in the User’s Guides for the two releases, and the Sum-mer School 
+ material (Hinze and Jeuring 2003
+ a
+ ,
+ b
+ ) contains examples and exercises that are 
+ specifically targeted at the language that is implemented by the compiler.
+  
+ Even with its limitations, the compiler can be used to implement a large num-ber 
+ of the examples in this thesis and provide valuable insight into the prac-tice of 
+ generic programming. The current version is available from http://www. generic-
+ haskell.org/. It is my hope that in the future this site will have a version with full 
+ support for the features discussed in this thesis.",NA
+2.3 ,NA,NA
+A note on notation,"This section lists several notational conventions that we adhere to in this thesis.
+  
+ 16",NA
+3,NA,NA
+A Functional Core,"Before we will start on our tour into the field of generic functions, we will stick to 
+ the known for a while. While we will describe generic programming in the context 
+ of Generic Haskell, an extension to the Haskell language, in an informal way, we also 
+ need a vehicle for formal analysis of the generic features, a solid core language to 
+ base our extensions on. To this end, we will introduce a basic functional core 
+ language, named fc, in this chapter, much like what the Haskell Language Report 
+ (Peyton Jones 2003) uses as the target of translation for all of the advanced 
+ constructs defined in the Haskell language.
+  
+ The language fc is designed to be sufficiently rich that, in conjunction with the 
+ gradual extensions following in future chapters, it can be used to demonstrate the 
+ full power of generic programming in a formal setting.
+  
+ Although there are no language constructs specific to generic functions in this 
+ chapter and the language may look very familiar, this chapter also introduces some 
+ notations and mechanisms that will be used extensively throughout the rest of the 
+ thesis. This chapter is probably not necessary to understand the rest of the thesis, 
+ but is a good reference to look up unfamiliar notation or terminology.
+  
+ Type systems and their properties for very similar languages are given in Pierce’s 
+ book (2002).
+  
+ 21",NA
+3.1 ,NA,NA
+Syntax of the core language fc,"The syntax of the core language is shown in Figure 3.1.
+  
+  
+ A program is a list of datatype declarations followed by a special expression 
+ called
+  main
+ .
+  
+  
+ Datatype declarations are modelled after Haskell’s
+  data
+  construct. A datatype 
+ may be parametrized (we write the type arguments using a type-level Λ, which may 
+ only occur in a datatype definition). 
+  
+ A datatype has zero or more
+  con-
+ structors
+ , each of which has a number of arguments (or
+  fields
+ ).
+  
+ assigned to expressions, whereas parametrized datatypes (also called type con-
+  
+ Kinds are the types of types. 
+  
+ Kind
+  ∗
+  is reserved for all types that can be
+  
+ structors) have functional kinds.
+  
+ The type language has variables and
+  named types
+  (types that have been de-fined 
+ as datatypes). Two types can be applied to each other. We can universally quantify 
+ over a type variable. Function types are not explicitly included in the syntax, but we 
+ assume that the function type constructor
+  (
+ →
+ )
+  is part of the named types
+  T
+ , and 
+ available as a built-in type constant.
+  
+ In expressions, one can refer to variables and constructors. Application and 
+ lambda abstraction deal with functions. An expression can be analyzed in a case 
+ statement. We call this expression the
+  head
+  of that case statement.
+  
+ A case statement consists of multiple
+  arms
+ , where each arm consists of an 
+ expression that is
+  guarded
+  by a pattern. Patterns are a restricted form of expres-
+ sions, consisting of (fully applied) constructors and variables only. All variables in a 
+ pattern must be distinct.
+  
+ A let statement allows to locally define a new function via a function decla-ration. 
+ The value bound in the let is visible in the expression that constitutes the
+  body
+  of 
+ the let. It is, however, not visible in the definition of the local value itself, i.e., this is
+  
+ not
+  a recursive let. The
+  fix
+  statement can be used to introduce recursion.
+  
+ Using
+  fix
+  and assuming that we have
+  n
+ -ary tuples for arbitrary
+  n
+ , we can define a 
+ recursive let statement
+  letrec
+  as a derived form. In Section 3.6, we will formally 
+ introduce recursive let as a language extension, and subsequently replace
+  let
+  with 
+ letrec
+ , as in Haskell.
+  
+ We will often assume that certain datatypes, such as tuples and lists or inte-gers, 
+ and some primitive functions on them, are predefined. We will also often use more 
+ convenient notation for some operations and constructs, such as the tuple and list 
+ notation that is standard in Haskell, grouping of multiple lambda abstractions, and 
+ infix operators. In particular (and probably most important), we will write
+  
+ t
+ 1
+  →
+  t
+ 2
+  
+ 22",NA
+3.2 ,NA,NA
+Scoping and free variables,"The language fc has the usual scoping rules. 
+  
+ Type variables are bound only by 
+ type-level lambda Λ in datatype declarations, and by universal quantifiers. 
+ Abstracted type variables in datatypes are visible in the entire datatype definition; 
+ quantified type variables everywhere underneath the quantifier. We use dv
+ (
+ t
+ )
+  to 
+ refer to the free type variables of a type
+  t
+ .
+  
+ Constructor and type names scope over the whole program.
+  
+ Value-level variables are introduced by a let statement, by a lambda abstraction, 
+ and by the patterns in a case statement. A let binds all variables that occur on the 
+ left hand side of its declarations in its body. A lambda abstraction binds its variable 
+ in its body, too. A pattern binds all variables that occur in the pattern in the 
+ expression that corresponds to the pattern. Patterns are only legal if all variables in 
+ one pattern are different. We use fev
+ (
+ e
+ )
+  to refer to the free variables of an 
+ expression
+  e
+ .
+  
+  
+ Programs are equivalent under alpha-conversion, i.e., bound variables can be 
+ renamed without changing the meaning of the program.
+  
+ Substitution is generally meant to be capture-avoiding: if the substituted ex-
+ pression contains variables that would be captured by a binding construct, it is 
+ assumed that alpha-conversion is performed so that no name capture takes place. If 
+ name capture is intended, we will explicitly mention that fact.",NA
+3.3 ,NA,NA
+Types and kinds,"For the large part of this thesis, we will not consider type
+  inference
+  (an exception is 
+ Chapter 13). Nevertheless, type
+  safety
+  is an essential part of generic programming 
+ and thus of Generic Haskell. Therefore we present rules that specify when a 
+ program in the core language can be assigned a type. We will not, however, present 
+ algorithms to find a suitable type.
+  
+ We annotate all type variables with kinds; therefore finding the kind of a type is 
+ straightforward, given the kind rules that follow. On the value level, however, we do 
+ not use type annotations explicitly, but assume that they are given as needed, in 
+ addition to the program.
+  
+ 24",NA
+3.4 ,NA,NA
+Well-formed programs,"Some loose ends remain to be tied: for example, constructors need to be present in 
+ the environments, but are nowhere inserted. In fact, constructors are defined by the 
+ data declarations.
+  
+ Figure 3.6 shows how: each type that occurs in one of the constructors (i.e., all the
+  
+ t
+ j
+ ,
+ k
+ ’s) must be of kind
+  ∗
+ , where the kind environment is extended with the type 
+ variables that constitute the parameters of the datatype. For each constructor, a 
+ type is added to the resulting environment.
+  
+ A whole program can now be checked as shown in Figure 3.7: checking pro-ceeds 
+ against two environments K
+ 0
+  and Γ
+ 0
+ , which may contain
+  external
+  types
+  
+ 29",NA
+3.5 ,NA,NA
+Operational semantics,"We define
+  values
+ , which are intended to be results of programs, in Figure 3.8. 
+ Values are a subset of the expression language, built from constructors (construc-
+ tors are distinguished from functions by the fact that they cannot be reduced) and 
+ lambda abstractions. In addition, there is
+  fail
+ , which represents run-time failure. 
+ Failure will be used as the result of a case expression where none of the patterns 
+ matches the expression in the head.
+  
+ Heads of case expressions are evaluated to weak head-normal form to reveal the 
+ top-level constructor during pattern matching. The syntax for weak head-normal 
+ form expressions is like the syntax for values, only that the arguments of the top-
+ level constructor do not have to be evaluated and can be arbitrary expressions.
+  
+ We extend the expression language with failure as well, as failure can occur while 
+ reducing expressions. The new type rule for
+  fail
+  is given in Figure 3.9: as 
+ fail
+  
+ represents failure, it can have any type.
+  
+ Figure 3.10 presents small-step reduction rules to reduce expressions to values.
+  
+ We write
+  
+ ∗
+  e
+ 1
+  ↣
+  e
+ 2
+  
+ to denote that
+  e
+ 1
+  reduces to
+  e
+ 2
+  in one reduction step.
+  
+  
+ The reduction of a program is equivalent to the reduction of the main expres-sion. 
+ In other words, the datatype declarations are not needed for the reduction of an 
+ expression. Constructors are syntactically distinguished, and knowing that a name 
+ represents a constructor is enough to formulate the reduction rules. 
+  
+ The 
+ reduction rules can be extended by additional rules for built-in functions. If a 
+ program is type checked under an initial type environment Γ
+ 0
+  containing primitive 
+ functions (not constructors), it is necessary to provide reduction rules for these 
+ functions as well.
+  
+ 30",NA
+3.6,NA,NA
+Recursive let,"We introduce
+  letrec
+  as a derived syntactic construct, defined by its translation to a 
+ combination of
+  fix
+ ,
+  let
+ , and
+  case
+ , as in Figure 3.13. We only show rule (tr-letrec)
+  
+ 37",NA
+4 ,NA,NA
+Type-indexed Functions,"We are now going to leave the known territory of the functional core language. Over 
+ the next chapters, we will introduce the theory necessary to compile generic 
+ functions in several small steps.
+  
+ As we have learned in the introduction, generic functions are type-indexed 
+ functions. 
+  
+ We will therefore, in this chapter, explain type-indexed functions, which 
+ are functions that take an explicit type argument and can have behaviour that 
+ depends on the type argument. The next chapter extends the class of type 
+ arguments we admit in both definition and call sites of type-indexed functions. After 
+ that, in Chapter 7, we will really make type-indexed functions generic, such that 
+ they work for a significantly larger class of type arguments than those that they are 
+ explicitly defined for.",NA
+4.1 ,NA,NA
+Exploring type-indexed functions,"We call a function
+  type-indexed
+  if it takes an explicit type argument and can have 
+ behaviour that depends on the type argument. Let us jump immediately to a first
+  
+ 41",NA
+4.2 ,NA,NA
+Relation to type classes,"It should be mentioned once more that what we have seen so far is not very 
+ exciting; everything we have done can also – probably even better – be done by 
+ using type classes.
+  
+ Instead of defining
+  add
+  as a generic function, we could also define a type class with a 
+ method named
+  add
+ :
+  
+ class 
+ Add
+  a 
+ where 
+  
+ add
+  ::
+  a
+  →
+  a
+  →
+  a 
+  
+ instance
+  Add Bool
+  where 
+  
+ add
+  = (
+ ∗
+ ) 
+  
+ instance
+  Add Int 
+ where 
+  
+ add
+  = (+)
+  
+ instance
+  Add Char
+  where 
+  
+ add
+  =
+  λx y
+  →
+  chr
+  (
+ ord x
+  +
+  ord y
+ )
+  
+ This code has nearly the same effect as definition of the type-indexed function
+  add 
+ before. The Haskell type for the class method
+  add
+  is
+  
+ add
+  ::
+  (
+ Add
+  a
+ )
+  ∗
+  a
+  →
+  a
+  →
+  a
+  ,
+  
+ 43",NA
+4.3 ,NA,NA
+Core language with type-indexed functions fcr,NA,NA
++,NA,NA
+tif,"Having introduced the concept of type-indexed functions informally in the con-text 
+ of Haskell, we will now extend the core language of Chapter 3 with type-indexed 
+ functions and formally analyze their properties and semantics. 
+  
+ This 
+ extended language is called fcr
+ +
+ tif, and the syntax modifications with respect to fcr 
+ are shown in Figure 4.1.
+  
+ The language extension introduces a new form of value declarations, for type-
+ indexed functions, using a type-level case statement to pattern match on types. The 
+ notation that we have seen in the beginning of this chapter serves as syntactic sugar 
+ for the
+  typecase
+  construct: the function
+  
+ add
+  ∗
+ Bool
+ ∗
+  = (
+ ∗
+ ) 
+ add
+  ∗
+ Int
+ ∗
+  
+ = 
+ (+) 
+  
+ add
+  ∗
+ Char
+ ∗
+  =
+  λx y
+  →
+  chr
+  (
+ ord x
+  +
+  ord y
+ )
+  
+ can be written as
+  
+ add
+  ∗
+ a
+ ∗
+  =
+  typecase
+  a
+  of 
+  
+  
+ Bool
+  →
+  (
+ ∗
+ )",NA
+4.4 ,NA,NA
+Translation and specialization,"We will define the semantics of fcr
+ +
+ tif not by providing additional reduction rules 
+ for the generic constructs, but by giving a translation into the original core
+  
+ 45",NA
+4.5 ,NA,NA
+Type checking,"To make fcr
+ +
+ tif a “real” language extension, we extend the type rules for the 
+ functional core language fcr to cover the constructs for defining and calling type-
+ indexed functions as well. The additional rules are shown in Figure 4.3 and 4.4. 
+ Together with the type checking rules of Figure 3.3 and 3.14, they form the type 
+ checking judgments for fcr
+ +
+ tif. The judgments still have the same shape, namely
+  
+ K; Γ
+  ∗
+  e
+  ::
+  t
+  ,
+  
+ but the environment Γ can now, next to the usual entries of the form
+  x
+  ::
+  t
+ , also 
+ contain entries of the form
+  x
+  ∗
+ a
+  ::
+  ∗∗
+  ::
+  t
+ , associating a type with a type-indexed 
+ function. As type-indexed and ordinary functions share the same name space, there 
+ can only be one active binding for any name
+  x
+ , either as a type-indexed or as an 
+ ordinary function.
+  
+ K; Γ
+  ∗
+  e
+  ::
+  t
+  
+ K
+  ∗
+  T
+  ::
+  ∗
+  
+ x
+  ∗
+ a
+  ::
+  ∗∗
+  ::
+  t
+ 0
+  ∗
+  Γ
+  
+ K; Γ
+  ∗
+  x
+  ∗
+ T
+ ∗
+  ::
+  t
+ 0
+ [
+ T
+  /
+  a
+ ]
+  
+ Γ
+ ′
+ ≡
+  Γ
+  {
+ , Γ
+ i
+ }
+ i
+ ∗
+ 1..
+ n 
+  
+ {
+ Γ
+ ′
+ ∗
+ decl
+ d
+ i
+  ⇝
+  Γ
+ i
+ }
+ i
+ ∗
+ 1..
+ n
+  
+ Γ
+ ′
+ ∗
+  e
+  ::
+  t
+  
+ Γ
+  ∗
+  let
+  {
+ d
+ i
+ }
+ i
+ ∗
+ 1..
+ n 
+ in
+  e
+  ::
+  t
+  
+ (e-genapp)
+  
+ (e-let)
+  
+ Figure 4.3: Type checking for fcr
+ +
+ tif, extends Figure 3.3
+  
+ and that
+  x
+  is a type-indexed function in scope. The type is the type of the type-The 
+ rule for generic application checks that the kind of the type argument is
+  ∗",NA
+5,NA,NA
+Parametrize,NA,NA
+d Type ,NA,NA
+Patterns,NA,NA
+5.1 ,NA,NA
+Goals,"In the type-indexed functions that we have treated so far, one deficiency stands out: 
+ types of a kind other than
+  ∗
+  are nowhere allowed, not in type patterns nor in type 
+ arguments. A consequence is that also composite types of kind
+  ∗
+  – such as
+  [
+ Int
+ ]
+ , 
+ where the list type constructor
+  [ ]
+ , of kind
+  ∗ → ∗
+ , is involved – are not allowed.
+  
+ What if we want a type-indexed function that computes something based on a data 
+ structure of kind
+  ∗ → ∗
+ , for example the size of a data structure, i.e., the number of 
+ “elements” in that structure?
+  
+ A definition such as
+  
+ size
+  ∗
+ [
+ α
+ ]
+ ∗
+ size
+  ∗
+ Maybe
+  
+ α
+ ∗
+  Nothing 
+  
+ size
+  ∗
+ Maybe
+  α
+ ∗
+  (
+ Just 
+  
+ size
+  ∗
+ Tree
+  α
+ ∗
+  
+ x
+  
+  
+ Leaf 
+  
+ ) 
+  
+  
+ =
+  length x
+  
+ =
+  0
+  
+ 53",NA
+5.2 ,NA,NA
+Parametrized type patterns,"We now allow patterns such as
+  ∗
+ [
+ α
+ ]
+ ∗
+  or
+  ∗
+ Either
+  α β
+ ∗
+  in the definitions of type-
+ indexed functions. A pattern must be of kind
+  ∗
+ , and of the form that a named type 
+ constructor is applied to variables to satisfy the type constructor. 
+  
+ Thus
+ ∗
+ Eith
+ er
+  α
+ ∗
+  is not allowed because Either is only partially applied. 
+  
+ Of course, 
+ types of kind
+  ∗
+  are a special case of this rule: the type pattern
+  ∗
+ Int
+ ∗
+  is the nullary 
+ type constructor Int applied to no type variables at all.
+  
+ All type variables in type patterns have to be distinct, just as we require vari-
+ ables in ordinary patterns to be distinct. A pattern such as
+  ∗
+ (
+ α
+ ,
+  α
+ )
+ ∗
+  is illegal. Also, 
+ we do
+  not
+  allow
+  nested
+  type patterns:
+  ∗
+ [
+ Int
+ ]
+ ∗
+  is forbidden, and so is
+  
+ ring in a type pattern, the rest are all type variables. This restriction on type
+ ∗
+ Either
+  
+ α
+  Char
+ ∗
+ . The top-level type constructor is the only named type occur-
+  
+ patterns is not essential. One could allow nested type patterns, or multiple pat-terns 
+ for the same type, such as they are allowed in Haskell
+  case
+  statements. This would 
+ significantly complicate the future algorithms for the translation of type-indexed 
+ functions with issues that are not directly related to generic pro-gramming. With 
+ our restriction, performing pattern matching on the cases of a type-indexed",NA
+5.3 ,NA,NA
+Dependencies between type-indexed functions,"When a type-indexed function is called within the definition of another type-
+ indexed function, we must distinguish different sorts of calls, based on the type 
+ argument: calls with type arguments that are constant are treated differently from 
+ calls where the type argument contains variables.
+  
+  
+ Let us look at the
+  add
+  function once more, in particular at the Int and Char cases 
+ of the function:
+  
+ add
+  ∗
+ Int
+ ∗
+ add
+  ∗
+ Char
+ ∗
+  x y 
+  
+ = (+) 
+  
+ =
+  chr
+  (
+ ord x
+  +
+  ord y
+ )
+  
+ The
+  ord
+  of a character is an integer, therefore we could equivalently have written
+  
+ add
+  ∗
+ Char
+ ∗
+  x y 
+ =
+  chr add
+  ∗
+ Int
+ ∗
+  (
+ ord x
+ ) (
+ ord y
+ ) 
+  
+ During translation, we can generate a component cp
+ (
+ add
+ , Char
+ )
+  as usual: we 
+ specialize the call
+  add
+  ∗
+ Int
+ ∗
+  on the right hand side to refer to cp
+ (
+ add
+ , Int
+ )
+ . The type 
+ argument Int is statically known during the translation of the function definition, 
+ therefore the compiler can locate and access the appropriate component.
+  
+ 56",NA
+5.4 ,NA,NA
+Type application in type arguments,"Assuming we have successfully defined a type-indexed function such as
+  add
+  to work 
+ on lists, it is only natural that we also want to use it somewhere. In Chap-ter 4, a 
+ generic application had the form
+  x
+  ∗
+ T
+ ∗
+ , i.e., the language of type argu-ments was 
+ restricted to named types.
+  
+ We are going to extend the syntax for
+  type arguments
+  (as opposed to type pat-
+ terns) to include type application. We have already used such type arguments in the 
+ examples in the previous sections; for instance, the definition of
+  size
+  on page 53 
+ contains the call
+  size
+  ∗
+ Tree
+  α
+ ∗
+  on the right hand side of the case for trees.
+  
+ thus an application of two named types to each other. Perhaps more interesting, the 
+ function
+  cpr
+  uses the call
+  allEqual
+  ∗
+ [
+ CprResult
+ ]
+ ∗
+ ,
+  
+ A comparable situation would be a call to
+  add
+  ∗
+ [
+ Int
+ ]
+ ∗
+ . For example, the call
+  
+ add
+  ∗
+ [
+ Int
+ ]
+ ∗
+  [
+ 1, 2, 3
+ ] [
+ 2, 3, 5
+ ]
+  
+ should have type
+  [
+ Int
+ ]
+  and evaluate to
+  [
+ 3, 5, 8
+ ]
+ . The question is, how is
+  add
+  special-
+ ized to
+  [
+ Int
+ ]
+ ? The answer is that an application in the type argument is translated 
+ into an application of specializations. There is a definition for
+  add
+  ∗
+ [
+ α
+ ]
+ ∗
+  – we thus 
+ know how to add two lists, provided that we know how to add list elements, i.e., 
+ that we have access to
+  add
+  ∗
+ α
+ ∗
+ . We have also defined the case
+  add
+  ∗
+ Int
+ ∗
+ , therefore",NA
+6 ,NA,NA
+Dependencie,NA,NA
+s,"This chapter constitutes a formalization of the language extensions that have been 
+ introduced in the previous Chapter 5. We will introduce a new language fcr
+ +
+ tif
+ +
+ par, 
+ based on fcr
+ +
+ tif, that can handle parametrized type patterns and type-indexed 
+ functions with dependencies. The syntax of the language is intro-duced in Section 
+ 6.1. Subsequently, we delve into the details of dependencies and discuss 
+ dependency variables in Section 6.2 and dependency types in Sec-tion 6.3. We will 
+ then explain how to translate programs in the extended language fcr
+ +
+ tif
+ +
+ par to",NA
+6.1 ,NA,NA
+Core language with parametrized type patterns,"We will now extend the language fcr
+ +
+ tif of Figure 4.1 – our functional core lan-
+ guage with type-indexed functions – to cover the extensions necessary to handle the 
+ new forms of type patterns and type arguments, and dependencies between
+  
+ 69",NA
+6.2,NA,NA
+Dependency variables and kinds,"Dependency variables are a new form of variables. They do not occur in normal
+  
+ type expressions, but only in type patterns and type arguments – as a rule of thumb, 
+ only within the special
+  ∗·∗
+  parentheses. They are completely independent of 
+ normal type variables. We use fdv
+ (
+ A
+ )
+  to refer to the free dependency variables of a 
+ type argument (or pattern)
+  A
+ , and continue to refer to the disjoint set of free type 
+ variables by dv
+ (
+ A
+ )
+ .
+  
+ Dependency variables are bound by a type pattern. The arguments appearing in a 
+ pattern scope over the expression belonging to the branch (note that ordinary type 
+ variables never scope over expressions; they are only bound by lambdas in 
+ datatype declarations and by universal quantification). Furthermore, dependency 
+ variables can be local to a dependency constraint, if the dependency variable of the 
+ constraint is of higher kind and thus has additional parameters. Bound dependency 
+ variables can be renamed, as other sorts of bound variables, and we will assume 
+ that this is implicitly done during substitutions to prevent name capture.
+  
+ The kind checking rules need to be extended to cover type arguments and type 
+ patterns, and qualified types. The form of judgment for arguments is, as for 
+ ordinary types,
+  
+ K
+  ∗
+  A
+  ::
+  κ
+  ,
+  
+ stating the type argument
+  A
+  has kind
+  κ
+  under environment K. The environment K 
+ may now also contain assumptions for dependency variables, of the form
+  α
+  ::
+  κ
+ . 
+ These bindings may also be contained in K during the checking of normal type 
+ expressions – they are not used there, though, only propagated.
+  
+ Kind checking for type arguments makes use of the rules for ordinary types in 
+ Figure 3.2 and only needs one new judgment for dependency variables, shown in 
+ Figure 6.2. The judgment is what one would expect for a variable: we look up the 
+ variable in the environment.
+  
+ 72",NA
+6.3 ,NA,NA
+Dependency types,"This section is a formalization of Section 5.3. We explain how qualified types can be 
+ assigned to both calls of type-indexed functions and arms of a typecase.
+  
+ 6.3.1 Type signatures of type-indexed functions
+  
+ During type checking, we have to verify that arms of type-indexed functions and 
+ occurrences of calls to type-indexed functions are type correct. In the situation of 
+ Chapter 4, this was relatively easy: for each generic function
+  x
+ , we added a
+  type 
+ signature
+  of form
+  
+ x
+  ∗
+ a
+  ::
+  ∗∗
+  ::
+  t
+  
+ to the type environment Γ; and to compute the type of
+  x
+  ∗
+ T
+ ∗
+  (or, similarly, the type 
+ of the right hand side of the arm for
+  T
+  in the definition of
+  x
+ ), we just returned
+  
+ t
+ [
+ T
+  /
+  a
+ ]
+  .
+  
+ 74",NA
+6.4,NA,NA
+Types and translation,"We will now discuss the translation of fcr
+ +
+ tif
+ +
+ par to fcr. First, we will have a
+  
+ close look at how types are translated: we use qualified types for arms of type-
+ indexed functions and calls to type-indexed functions. 
+  
+ In fcr, these qualified 
+ types are represented as ordinary functions. Section 6.4.1 shows the details. In the 
+ following Section 6.4.2, we sketch which environment we need for type checking 
+ and translating fcr
+ +
+ tif
+ +
+ par. Section 6.4.3 contains more about qualified types, 
+ before Sections 6.4.4 and 6.4.5 talk about the actual translation of expressions and 
+ declarations, respectively. In Section 6.4.6, we show how fcr
+ +
+ tif
+ +
+ par environ-ments 
+ can be mapped to fcr environments, and in Section 6.4.7, we discuss the critical 
+ question of how to translate generic applications, i.e., calls to type-indexed 
+ functions.
+  
+ 6.4.1 
+  
+ Translation of qualified types
+  
+ In the translation of fcr
+ +
+ tif
+ +
+ par to fcr, we represent values of types with depen-
+ dency constraints as functions, where the constraints are represented as explicit 
+ arguments. The translation has to ensure that the dependency arguments that are 
+ needed are also provided.
+  
+ Dependency constraints may be reordered, whereas function arguments usu-ally 
+ may not. To save us from a lot of tedious and – even worse – confusing reordering 
+ work, we make use of the canonical ordering
+  <
+ lex
+ defined in Sec-tion 6.1.
+  
+ Figure 6.9 shows how such a canonically ordered qualified type can be trans-lated 
+ into an fcr type. The judgments are of the form
+  
+ q
+ fcr
+ +
+ tif
+ +
+ parpar
+ ≡
+  t
+ fcr
+  
+ or
+  
+ 81",NA
+6.5,NA,NA
+Correctness of the translation,"In the previous section, we have explained how the additional features that we have 
+ introduced in fcr
+ +
+ tif
+ +
+ par, such as parametrized type patterns, dependen-
+  
+ cies, and compound type arguments in calls to type-indexed functions, can be 
+ translated into the core language fcr. This is significantly more difficult than 
+ translating the plain type-indexed functions in language fcr
+ +
+ tif, which was the topic 
+ of Chapter 4.
+  
+ We have defined a translation on expressions, declarations, (qualified) types, and 
+ environments, and it is of course desirable that the result of the translation is 
+ indeed a correct fcr program.
+  
+ Theorem 6.2 (Correctness of
+  fcr
+ +
+ tif
+ +
+ par
+ ).
+  If we can check and translate an ex-
+ pression in fcr
+ +
+ tif
+ +
+ par, i.e.,
+  
+ e
+  ::
+  q
+ par K;Γ;∆;Σ
+ ≡
+  e
+ ′
+  ,
+  
+ then the translation is type correct in fcr, and
+  
+ K; Γ; ∆; Σ
+ par K;Γ
+ ∗
+  e
+ ′
+  ::
+ q
+ par
+  .
+  
+ The theorem does not only state that the translation is type correct, but also that 
+ the fcr type of the translated expression is the translated qualified type of the 
+ original expression. The following corollary summarizes a few interesting special 
+ cases:
+  
+ 95",NA
+6.6 ,NA,NA
+Kind-indexed types?,"Ralf Hinze has introduced two styles of generic function definitions, which he 
+ named after the conferences where he first presented papers on them, mpc-style 
+ (Hinze 2000
+ c
+ ) and popl-style (Hinze 2000
+ b
+ ). Generic Haskell has originally been 
+ based on mpc-style definitions of type-indexed functions.
+  
+ In his mpc paper, Hinze revealed that a type-indexed value possesses a
+  kind-
+ indexed type
+ . Where a type-indexed function is defined over the structure of types, a 
+ kind-indexed type is defined over the (much simpler) structure of kinds. A function 
+ such as
+  add
+  would make use of the following kind-indexed type:
+  
+ type
+  Add
+  ∗∗∗∗∗
+  
+ a
+  =
+  a
+  →
+  a
+  →
+  a 
+  
+ type
+  Add
+  ∗∗
+ κ
+  →
+  κ
+ ′
+ ∗∗
+  a
+  =
+  ∗
+ b
+  ::
+  κ
+ . Add
+  ∗∗
+ κ
+ ∗∗
+  b
+  →
+  Add
+  ∗∗
+ κ
+ ′
+ ∗∗
+  
+ (
+ a b
+ ) 
+ add
+  ∗
+ a
+  ::
+  κ
+ ∗
+  
+ :: Add
+  ∗∗
+ κ
+ ∗∗
+  a
+  
+ The first two lines declare a kind-indexed type – the
+  type
+  keyword indicates that 
+ we define a type-level entity, and we use double angle brackets
+  ∗∗·∗∗
+  to denote 
+ the kind index. There are two arms, one for the kind
+  ∗
+ , and one for functional kinds 
+ of the form
+  κ
+  →
+  κ
+ ′
+ . The argument
+  a
+  is supposed to be of the kind that is associated 
+ with the particular branch, so that we could assign the kind
+  
+ Add
+  ∗
+ κ
+ ∗
+  ::
+  κ
+  → ∗
+  
+ to the kind-indexed type Add. The final line assigns the kind-indexed type to the 
+ function
+  add
+ .
+  
+ For comparison, this is the type signature that we use for
+  add
+ :
+  
+ add
+  ∗
+ a
+  ::
+  ∗∗
+  ::
+  (
+ add
+ )
+  ∗
+  a
+  →
+  a
+  →
+  a
+  .
+  
+ The Dependency-style that we use is essentially a generalization of mpc-style. For 
+ kind
+  ∗
+  type arguments without dependency variables, both signatures match: if
+  A
+  is 
+ a type argument of kind
+  ∗
+  with fdv
+ (
+ A
+ )
+  ≡
+  ε
+ , the kind-indexed type is used at Add
+  
+ ∗∗∗∗∗
+  A
+ , which expands to
+  A
+  →
+  A
+  →
+  A
+ . Similarly gapp
+ (
+ x
+  ∗
+ A
+ ∗
+ )
+  ≡
+ base
+ (
+ x
+  ∗
+ A
+ ∗
+ )
+  ≡
+  A
+  
+ →
+  A
+  →
+  A
+  in this case. Differences occur if type constructors of higher kind are 
+ involved in the type arguments. In mpc-style, there are no dependency variables, 
+ nor are there de-pendency constraints. mpc-style. Using dependency variables, we 
+ defined
+  add
+  for lists as follows: But neither are type arguments restricted to kind
+  ∗
+  
+ in",NA
+7,NA,NA
+Going Generic,"With the additions of Chapter 6, we have extended the type-indexed definitions of 
+ Chapter 4 significantly, but there is still no genericity: the set of type arguments that 
+ a type-indexed function can be specialized to is exactly the set of types that can be 
+ built from the named types that are in the signature of the function.
+  
+ The idea of genericity, however, is that we can write type-indexed algorithms 
+ based on the
+  structure
+  of datatypes, surpassing the differences that the names of 
+ datatypes make.
+  
+ As it turns out, the remaining step, from a programmer’s point of view, is a very 
+ small one. The programmer must only write a few additional arms of a type-
+ indexed definition, for a number of special purpose datatypes, and suddenly, the 
+ function can be specialized to nearly all Haskell datatypes!
+  
+ Later in this chapter, we discuss several examples of generic functions. All of 
+ them have been mentioned before and are more or less “classics” in the world of 
+ generic functions. Presenting them in the framework of Generic Haskell should give 
+ a good intuition about the way generic functions are defined and used in Generic 
+ Haskell.
+  
+ 107",NA
+7.1 ,NA,NA
+"Unit, Sum, and Prod","Let Unit, Sum and Prod be datatypes defined as follows:
+  
+ data
+  Unit 
+ =
+  Unit 
+  
+ data
+  Sum
+  (
+ a
+  ::
+  ∗
+ ) (
+ b
+  ::
+  ∗
+ ) =
+  Inl a
+  |
+  Inr b 
+  
+ data
+  Prod
+  (
+ a
+  ::
+  ∗
+ ) (
+ b
+  ::
+  ∗
+ ) =
+  a
+  ×
+  b
+  .
+  
+ These types are very basic, and in fact have their isomorphic counterparts in 
+ Haskell: Unit is isomorphic to the unit type
+  ()
+ , a type with just one value (with the 
+ exception of the undefined value
+  ∗
+ , of course); Sum is isomorphic to Either, which 
+ gives a choice between two alternatives. The constructors are
+  Inl
+  (read“in-left”) and
+  
+ Inr
+  (“in-right”). Finally Prod is the same as a pair, but we use
+  ×
+  as an infix 
+ constructor, instead of Haskell’s standard pair constructor
+  (
+ ,
+ )
+ .
+  
+ These three types play a special role in the definition and use of generic func-
+ tions, which is also the reason why we choose to introduce our own new types, 
+ instead of reusing the standard Haskell types. This way,
+  ()
+ , Either, and
+  (
+ ,
+ )
+  can still be 
+ used as any other type.
+  
+  
+ Recall the type-indexed function
+  add
+ . In Chapter 4, we had defined it for Bool, Int, 
+ and Char:
+  
+ add
+  
+ ∗
+ Bool
+ ∗
+ add
+  
+ ∗
+ Int
+ ∗
+  
+ add
+  
+ ∗
+ Char
+ ∗
+  
+ x
+  
+ y
+  
+ = (
+ ∗
+ ) = (+)
+  
+ =
+  chr
+  (
+ ord x
+  +
+  ord y
+ )
+  .
+  
+ It is easy to add an extra arm for Unit: there is only one value of that type, so we 
+ decide that the sum of two
+  Unit
+ ’s should be
+  Unit
+  again:
+  
+ add
+  ∗
+ Unit
+ ∗
+  
+ Unit
+  
+ Unit
+  
+ =
+  Unit
+  .
+  
+ Later, in Chapter 6 we defined additional cases for lists and pairs. Just as for Haskell 
+ pairs, we can of course also define addition for products of type Prod, adding the 
+ two components pointwise:
+  
+ add
+  ∗
+ Prod
+  α β
+ ∗
+  (
+ x
+ 1
+  ×
+  x
+ 2
+ ) (
+ y
+ 1
+  ×
+  y
+ 2
+ ) = (
+ add
+  ∗
+ α
+ ∗
+  x
+ 1
+  y
+ 1
+ )
+  ×
+  (
+ add
+  ∗
+ β
+ ∗
+  x
+ 2
+  y
+ 2
+ )
+  .
+  
+ Of the three types just introduced, only a case for Sum remains to be defined. Here 
+ we take an approach similar to what we did when we tried to define ad-dition of 
+ lists: we defined addition pointwise on the elements, provided the lists were of the 
+ same shape, i.e., length. Two values of the Sum type are of the same shape if they 
+ belong to the same alternative.",NA
+7.2 ,NA,NA
+Generic enumeration,"A very simple generic function computes a default value (that should somehow 
+ represent null or empty) for each datatype.
+  
+ empty
+  ∗
+ a
+  ::
+  ∗∗
+  
+  
+ ::
+  (
+ empty
+ )
+  ∗
+  a 
+  
+ empty
+  ∗
+ Int
+ ∗
+ empty
+  ∗
+ Char
+ ∗
+ empty
+  
+ ∗
+ Float
+ ∗
+ empty
+  ∗
+ Unit
+ ∗
+  
+ =
+  0 
+  
+ =
+  ’ ’
+  
+ =
+  0.0 
+  
+ =
+  Unit 
+  
+ empty
+  ∗
+ Sum
+  α β
+ ∗
+  =
+  Inl
+  (
+ empty
+  ∗
+ α
+ ∗
+ ) 
+  
+ empty
+  ∗
+ Prod
+  α β
+ ∗
+  =
+  empty
+  ∗
+ α
+ ∗ ×
+  empty
+  
+ ∗
+ β
+ ∗
+ empty
+  ∗
+ α
+  →
+  β
+ ∗
+  
+ =
+  const
+  (
+ empty
+  
+ ∗
+ β
+ ∗
+ )
+  
+ The function is defined on the abstract types Int, Char, Float to return an ap-
+ propriate value. For the Unit type, there is not much choice but to return the Unit 
+ value. For a Sum, we decide to prefer the left alternative. In a Prod, we return a pair 
+ of two empty values. Finally, we have also defined an arm for functions. Functions 
+ are another example of an abstract type: if there is no explicit arm, function types 
+ could not be handled generically. Here, we decide to return the constant function 
+ returning the empty value of the result type.
+  
+ Therefore, the call
+  
+ map
+  
+ λ
+ (
+ x
+ ,
+  y
+ ,
+  z
+ )
+  →
+  (
+ x
+  ’A’,
+  y
+ ,
+  z
+ ) 
+ empty
+  ∗
+ (
+ Char
+  →
+  [
+ Int
+ ]
+ , Tree Float, Bool
+ )
+ ∗
+ can 
+ successfully be translated, and evaluates to
+  ([ ]
+ ,
+  Leaf
+ ,
+  False
+ )
+ . The signature of 
+ empty
+  
+ is Int, Char, Float, Unit, Sum, Prod,
+  (
+ →
+ )
+ , thus Bool is not contained in the signature. 
+ Nevertheless, the call above succeeds. This indicates that Bool is not considered 
+ abstract. Instead, we assume that Bool is defined via the following datatype 
+ declaration:
+  
+ data
+  Bool
+  =
+  False
+  |
+  True
+  .",NA
+7.3 ,NA,NA
+Generic equality,"Next, we look at the prototypical example of a generic function. An equality test is 
+ probably the most often needed operation on values of a particular datatype. 
+ Haskell has an overloaded equality function, and provides a built-in
+  deriving 
+ mechanism that – on demand – automatically generates the equality function for a 
+ user-defined datatype. It seems a safe bet to guess that the reason that
+  deriving 
+ is 
+ present in Haskell, is mainly the equality function. In Standard ml (Milner
+  et al. 
+ 1997) equality is also treated specially, and can be automatically generated for a 
+ large class of types.
+  
+ With Generic Haskell, we can now
+  define
+  the equality function.
+  
+ equal
+  ∗
+ Int
+ ∗
+  
+  
+  
+ = (
+ ≡
+ ) 
+ equal
+  ∗
+ Char
+ ∗
+  
+  
+  
+ = (
+ ≡
+ ) 
+ equal
+  ∗
+ Float
+ ∗
+ equal
+  ∗
+ Unit
+ ∗
+  
+ equal
+  ∗
+ Sum
+  α β
+ ∗
+  (
+ Inl x
+ ) 
+  
+ equal
+  ∗
+ Sum
+  α β
+ ∗
+  (
+ Inr x
+ ) 
+  
+ equal
+  ∗
+ Sum
+  α β
+ ∗
+  
+ Unit 
+  
+ Unit
+  
+ (
+ Inl y
+ )
+  
+ (
+ Inr y
+ ) 
+  
+ = (
+ ≡
+ ) =
+  True
+  
+ =
+  equal
+  ∗
+ α
+ ∗
+  x y 
+  
+ =
+  equal
+  ∗
+ β
+ ∗
+  x y 
+ =
+  False
+  
+ equal
+  ∗
+ Prod
+  α β
+ ∗
+  (
+ x
+ 1
+  ×
+  x
+ 2
+ ) (
+ y
+ 1
+  ×
+  y
+ 2
+ ) =
+  equal
+  ∗
+ α
+ ∗
+  x
+ 1
+  x
+ 2
+  ∗
+  equal
+  ∗
+ β
+ ∗
+  y
+ 1
+  y
+ 2
+  
+ For the primitive types Int, Char, and Float, we use Haskell’s equality func-
+  
+ tion
+  (
+ ≡
+ )
+ . We could also use primitive equality functions on these types, but
+  
+ Haskell gives us access to them only via the overloaded
+  (
+ ≡
+ )
+  function. Two Unit 
+ values are easy to compare. In the situation that we are given two
+  
+ sums, we distinguish three cases: both values are from the left alternative, both are 
+ from the right alternative, or they are from different alternatives. In the last case, 
+ they cannot be equal. In the other two cases, we compare the two values embedded 
+ in the sum. Products are tested for equality pointwise.
+  
+  
+ Functions are hard to compare in general, but if their domain is finite, it is 
+ possible, using
+  enum
+ :
+  
+ equal
+  ∗
+ α
+  →
+  β
+ ∗
+  
+ fx
+  
+ fy
+  
+ =
+  equal
+  ∗
+ [
+ β
+ ]
+ ∗
+  
+ map fx
+  (
+ enum
+  ∗
+ α
+ ∗
+ ) 
+ map fy
+  (
+ enum
+  ∗
+ α
+ ∗
+ )
+  
+ .
+  
+ This function will correctly compare functions with a finite domain, and it will 
+ sooner or later return
+  False
+  for functions with an infinite domain that are not equal. 
+ If two equal functions of infinite domain are compared, the call will not terminate. 
+ (Using the generic cardinality test that is defined in Section 17.1.3, we could add a 
+ run-time check if the domain type of the function is infinite, and return a run-time 
+ error instead of a nonterminating computation.) The equality
+  
+ 112",NA
+7.4 ,NA,NA
+Generic compression,"A classic application area of generic functions is parsing and unparsing, i.e., read-ing 
+ values of different types from some universal representation, or writing val-ues to 
+ that universal representation. The universal representation can be aimed at being 
+ human-readable (such as the result of Haskell’s
+  show
+  function; see also Section 
+ 17.1.2), or it can be intended for data exchange, such as xml (W3C 2004)
+  
+ 113",NA
+7.5 ,NA,NA
+Extending the language,"From a user perspective, there are almost no changes needed to allow generic 
+ functions: the syntax is unchanged, and so are the kind and type checking rules. The 
+ only thing that we have to assume is that Unit, Sum, and Prod are in the 
+ environments, together with their constructors.
+  
+ What needs to be modified, though, is the translation: for datatypes, a
+  structural 
+ representation
+  is generated, replacing the toplevel structure of a datatype by a type 
+ expression constructed from the Unit, Sum, and Prod types. This is what makes it 
+ possible to reduce such a large class of types to these three datatypes.
+  
+ Next to that, the translation of type-indexed functions needs to be modified. So 
+ far, we have generated components for the types in the signature of a generic 
+ function. Now, we have to generate additional components for datatypes that do not 
+ occur in the signature, but appear in the type arguments of calls to a generic 
+ function. The specialization mechanism has to be adapted to record the components 
+ that are required.
+  
+ We will sketch the changes in the following, and treat them in detail in Chap-ters 10 
+ and 11.
+  
+ 7.5.1 
+  
+ Structural representation of datatypes
+  
+ Each datatype consists of multiple constructors, and each of the constructors has a 
+ number of fields. Constructors represent choice: a value can be constructed by 
+ means of one constructor or another, but not by both. The fields of a constructor 
+ represent pairing: the fields translate to arguments of the constructor, and if a 
+ constructor has
+  n
+  fields, then it could also be written as having one
+  n
+ -tuple as 
+ argument, or, isomorphically, a nested pair of in total
+  n
+  components.
+  
+ The idea of the translation of datatypes is thus: replace the choice between the 
+ constructors by a nested application of Sum, and for each constructor, replace the 
+ sequence of fields by a nested application of Prod. Only if a constructor is nullary, 
+ the type Unit is used instead of the product. The fields of the constructors are
+  not 
+ translated.
+  
+ 115",NA
+8 ,NA,NA
+Local Redefinition,"In Chapter 6, we have introduced dependencies and dependency constraints. A 
+ type-indexed function can depend on other type-indexed functions. Depen-dencies 
+ are caused whenever one type-indexed function is called within another, with a 
+ variable type argument.
+  
+ Internally, dependency constraints can be seen as hidden arguments that are 
+ made explicit by the translation. Seen in this light, dependencies play a role in two 
+ situations: during the definition of a type-indexed function, where calls to 
+ dependent functions translate into lambda abstractions that need to be supplied by 
+ the compiler whenever the component is called; and during the call of generic 
+ functions, where an application in the type argument is translated into an ap-
+ plication of components, where the arguments required are determined by the 
+ dependencies of the function that is called.
+  
+ Dependency constraints are recorded on the type level. The type checking rules 
+ of Chapter 6 make use of an environment ∆ to store dependency constraints, and 
+ this environment is only modified in the arm of a generic function, where the 
+ dependencies of the generic function are added while checking the arm, and during 
+ applications of generic functions, where the entries in ∆ are used to supply the 
+ arguments needed in the call.
+  
+ 121",NA
+8.1 ,NA,NA
+Enhanced equality,"For some datatypes, there are different ways to determine equality, or even dif-
+ ferent notions of equality. For lists, we can compare the lengths of the lists first and 
+ only then check the elements, and thereby save a lot of work in cases where we have 
+ to compare lists of which the prefixes are frequently identical. Other datatypes may 
+ have an amount of redundancy encoded, that is superfluous to compare or even 
+ should be ignored. For strings, which are lists of characters in Haskell, we may have 
+ applications for which it is irrelevant if something is writ-ten in upper- or lowercase 
+ letters or any mixture thereof. The string ""laMBdA"" might be considered equal to 
+ ""Lambda"" in some situations, but not in others. 
+  
+ The first two example cases are 
+ easy to solve with generic functions: if we decide that we want to check the length 
+ when testing lists for equality, then we must make sure that the definition of
+  equal
+  
+ (the original definition is on page 112) has a specific case for the list type 
+ constructor
+  [ ]
+  that instructs the compiler to do so. The generic functionality for 
+ other datatypes is not compromised by this specific case. Similarly, if special 
+ equality algorithms are required for specific datatypes, they should also be included 
+ in the definition of the generic
+  equal 
+ definition. More problematic is the latter case: 
+ we have some situations in which we want to compare case-insensitively, and 
+ others in which case-sensitivity is desired.
+  
+ One solution is to define two functions,
+  equal
+  and
+  equalCaseInsensitive
+ , where the 
+ former compares strictly, and the latter ignores the case for strings. Both definitions 
+ look the same, except for the case on characters. There are a couple of 
+ disadvantages to this approach.
+  
+  
+ First, it is a lot of work. This problem can be alleviated, which is exactly what 
+ default cases are for (cf. Chapter 14).
+  
+ Second, we might need a lot of different equality functions. If there are two ways 
+ to compare characters and two ways to compare floats, then there are al-ready at 
+ least four ways to compare data structures containing floats and charac-
+  
+ 122",NA
+8.2 ,NA,NA
+Size of data structures,"We will now write a truly generic
+  size
+  function, to determine the number of 
+ elements in a data structure. This definition replaces the old
+  size
+  function from page 
+ 53 that works only for a limited number of datatypes.
+  
+ size
+  ∗
+ a
+  ::
+  
+ ∗∗
+ size
+  
+ ∗
+ Int
+ ∗
+  
+ size
+  
+ ∗
+ Char
+ ∗
+  
+ x
+  
+ ::
+  (
+ size
+ )
+  ∗
+  a
+  →
+  Int 
+  
+ =
+  0
+  
+ x
+  
+ =
+  0
+  
+ 124",NA
+8.3 ,NA,NA
+Short notation,"Very frequently, a type-indexed function depends only on one function (usually 
+ itself). In this case, the syntax for local redefinition is unnecessarily verbose. It 
+ requires to write the name of the dependency which should be redefined, but if 
+ there is only one, there is not much of a choice.
+  
+ e
+ fcr
+ +
+ tif
+ +
+ par
+  ::
+  t
+ fcr
+ +
+ tif
+ +
+ parpar K;Γ;∆;Σ
+ ≡
+  e
+ fcr
+  
+  
+ K
+  ∗
+  A
+  ::
+  κ
+ 1
+  →
+  κ
+ 2 
+ dependencies
+ Γ
+ (
+ x
+ )
+  ≡
+  y
+  
+ gapp
+ K;Γ
+ (
+ x
+  ∗
+ A
+ ∗
+ )
+  ≡
+  q 
+  
+ x
+  ∗
+ A
+ ∗
+ gtrans K;Γ;Σ
+ ≡
+  
+ e
+  
+ K; ∆
+  ∗
+  q
+  ⩽
+  t
+  
+ x
+  ∗
+ A
+ ∗
+  ::
+  t
+ par K;Γ;∆;Σ
+ ≡
+  e
+  
+  
+ (e/tr-genapp-short)
+  
+ Figure 8.1: Short notation for local redefinition
+  
+ 126",NA
+8.4 ,NA,NA
+Local redefinition within type-indexed functions,"The possibility for local redefinition is not just a useful addition to the language, but 
+ it can be absolutely necessary to have it even to define a type-indexed func-tion.
+  
+ Consider the datatype for fixpoints of functors, given by
+  
+ data
+  Fix
+  (
+ a
+  ::
+  ∗ → ∗
+ ) =
+  In
+  (
+ a
+  (
+ Fix
+  a
+ ))
+  .
+  
+ Using Fix, one can write recursive types in a way that makes the places of the 
+ recursion explicit. For instance, the type Fix NatF, with
+  
+ data
+  NatF
+  (
+ a
+  ::
+  ∗
+ ) =
+  ZeroF
+  |
+  SuccF a
+  ,
+  
+ is isomorphic to the type
+  
+ data
+  Nat
+  
+ =
+  Zero
+  
+ |
+  Succ
+  Nat
+  
+ of natural numbers, via
+  
+ natf to nat
+  (
+ In ZeroF
+ ) =
+  Zero 
+  
+ natf to nat
+  (
+ In
+  (
+ SuccF a
+ )) =
+  Succ
+  (
+ natf to nat a
+ )
+  
+ nat to natf Zero 
+  
+ nat to natf
+  (
+ Succ a
+ )
+  
+ =
+  In ZeroF 
+  
+ =
+  In
+  (
+ SuccF
+  (
+ nat to natf a
+ ))
+  .
+  
+ The fixpoint view of a datatype has the advantage that operations that work with 
+ the recursive structure, such as cata- and anamorphisms, can be defined easily. 
+ Fixpoints will therefore be our topic again later, in Section 12.3 and Section 17.2. 
+ Fortunately, in most cases, we do not have to care how a generic function can be 
+ defined for datatypes such as Fix. The function is generic, and the compiler derives 
+ the definition of a call such as
+  equal
+  ∗
+ Fix NatF
+ ∗
+  automatically. We could also define 
+ it ourselves:
+  
+ equal
+  ∗
+ Fix
+  α
+ ∗
+  (
+ In x
+ ) (
+ In y
+ ) =
+  equal
+  ∗
+ α
+  (
+ Fix
+  α
+ )
+ ∗
+  x y
+  .
+  
+ 129",NA
+8.5,NA,NA
+Core language with local redefinition,NA,NA
+fcr,NA,NA
++,NA,NA
+tif,NA,NA
++,NA,NA
+par,NA,NA
++,NA,NA
+lr ,"The language extension that is needed to support local redefinition is relatively
+  
+ simple. We extend the syntax for value declarations with one additional case, as 
+ shown in Figure 8.3.
+  
+ Value declarations 
+  
+ d 
+  
+ ::
+ =
+  . . . 
+  
+ everything from Figure 4.1
+  
+ | 
+ x
+  ∗
+ α
+  {
+ (
+ γ
+ i
+  ::
+  κ
+ i
+ )
+ }
+ i
+ ∗
+ 1..
+ n
+ ∗
+  =
+  e 
+ local redefinition
+  
+ Figure 8.3: Core language with local redefinition fcr
+ +
+ tif
+ +
+ par
+ +
+ lr, extends language 
+  
+ fcr
+ +
+ tif
+ +
+ par in Figures 6.1, 4.1, and 3.1
+  
+ We then need a new declaration translation rule, along the lines of the rules of 
+ Figure 6.15. Since local redefinition affects the dependency and kind environ-ments, 
+ we have to extend the form of the judgment to be able to redefine these two 
+ environments:
+  
+ d
+ fcr
+ +
+ tif
+ +
+ par
+ +
+ lr
+  ⇝
+  K
+ 2
+ ; Γ
+ 2
+ ; ∆
+ 2
+ ; Σ
+ 2par K
+ 1
+ ;Γ
+ 1
+ ;∆
+ 1
+ ;Σ
+ 1
+ ≡ {
+ d
+ fcr
+ }
+ i
+ ∗
+ 1..
+ n 
+  
+ .
+  
+ The environments K
+ 2
+  and ∆
+ 2
+  have been added. The rule for recursive let, (e/tr-let), 
+ is adapted to tie the knot for these environments as it already did for Γ andΣ. The 
+ updated rule is shown in Figure 8.4.
+  
+ The translation of a local redefinition declaration is described in Figure 8.5. We 
+ only allow local redefinition for a type-indexed function
+  x
+  that is in scope. Based on 
+ the kinds of the local arguments
+  γ
+ i
+ , we determine the kind
+  κ
+  of
+  α
+ .
+  
+ 130",NA
+9,NA,NA
+Types ,NA,NA
+of Type-indexed ,NA,NA
+Functions,"We have imposed relatively strict conditions on the types of type-indexed func-
+ tions. While a large class of type-indexed and generic functions can be written 
+ within these limits, some other – very useful – functions cannot.
+  
+ Luckily for the programmer, it is not a big step to surpass these limits and write 
+ functions such as
+  map
+ ,
+  zipWith
+ , and
+  concat
+ , all of which will be introduced 
+ throughout the next few sections.
+  
+ After the examples, we will have a look at the implications for the theory of 
+ dependencies and qualified types, which becomes considerably more complex due 
+ to the additional generality.",NA
+9.1 ,NA,NA
+Identity and mapping,"Let us look at the generic identity function
+  gid
+ , which can be defined as follows:
+  
+ gid
+  ∗
+ a
+  ::
+  
+ ∗∗
+ gid
+  
+ ∗
+ Int
+ ∗
+  
+ x
+  
+ ::
+  (
+ gid
+ )
+  ∗
+  a
+  →
+  a 
+  
+ =
+  x
+  
+ 133",NA
+9.2 ,NA,NA
+Zipping data structures,"The Haskell standard prelude contains a list function
+  zipWith
+  of type
+  
+ ∗
+ (
+ a
+  ::
+  ∗
+ ) (
+ b
+  ::
+  ∗
+ ) (
+ c
+  ::
+  ∗
+ )
+ .
+  (
+ a
+  →
+  b
+  →
+  c
+ )
+  →
+  [
+ a
+ ]
+  →
+  [
+ b
+ ]
+  →
+  [
+ c
+ ]
+  .
+  
+ It takes a function to combine a value of type
+  a
+  and one of type
+  b
+  into a value of type
+  
+ c
+ , and uses this function to combine two lists of same length pointwise. (In fact, it 
+ discards the extraneous elements of the longer list, but we will assume that it 
+ should only work on lists of the same length.) The probably better known function
+  
+ zip
+  is an instance of
+  zipWith
+ :
+  
+ zip
+  ::
+  ∗
+ (
+ a
+  ::
+  ∗
+ ) (
+ b
+  ::
+  ∗
+ )
+ .
+  [
+ a
+ ]
+  →
+  [
+ b
+ ]
+  →
+  [(
+ a
+ ,
+  b
+ )] 
+ zip
+  =
+  zipWith
+  (
+ ,
+ )
+  .
+  
+ We are going to generalize the function
+  zipWith
+  to a generic function in a very 
+ similar way as we just have generalized the list function
+  map
+  to a generic function. 
+ The trick is once again to allow more than one type variable parameter in the type 
+ signature: this time, we need even three type variables!
+  
+ zipWith
+  ∗
+ a
+  ::
+  ∗
+ ,
+  b
+  ::
+  ∗
+ ,
+  c
+  ::
+  
+ ∗∗
+ zipWith
+  ∗
+ Int
+ ∗
+  
+ x
+  
+ |
+  x
+  ≡
+  y 
+  
+ |
+  otherwise
+  
+ y
+  
+ ::
+  (
+ zipWith
+  ∗
+ a
+ ,
+  b
+ ,
+  c
+ ∗
+ )
+  ∗
+  a
+  →
+  b
+  →
+  c
+  
+ =
+  x
+  
+ =
+  
+ error
+  ""args must have same shape!""
+  
+ zipWith
+  ∗
+ Unit
+ ∗
+  
+ Unit
+  
+ zipWith
+  ∗
+ Sum
+  α β
+ ∗
+  (
+ Inl x
+ )
+  
+ zipWith
+  ∗
+ Sum
+  α β
+ ∗
+  (
+ Inr x
+ )
+  
+ zipWith
+  ∗
+ Sum
+  α β
+ ∗
+  
+ Unit
+  
+ =
+  Unit
+  
+ (
+ Inl y
+ ) 
+ (
+ Inr y
+ )
+  
+ =
+  zipWith
+  ∗
+ α
+ ∗
+  x y 
+  
+ =
+  zipWith
+  ∗
+ β
+ ∗
+  x y 
+ =
+  
+ error
+  ""args must have same shape!""
+  
+ zipWith
+  ∗
+ Prod
+  α β
+ ∗
+  (
+ x
+ 1
+  ×
+  x
+ 2
+ ) (
+ y
+ 1
+  ×
+  y
+ 2
+ ) = 
+  
+  
+ zipWith
+  ∗
+ α
+ ∗
+  x
+ 1
+  y
+ 1
+  ×
+  zipWith
+  ∗
+ β
+ ∗
+  x
+ 2
+  
+ y
+ 2
+  
+ 136",NA
+9.3 ,NA,NA
+Generically collecting values,"Let us look at another function that is only useful in the context of local redef-
+  
+ inition, but also requires that we again introduce some new syntax for the type",NA
+9.4 ,NA,NA
+More choice,"The generalizations of the type signatures of type-indexed functions that we have 
+ introduced in this chapter so far lead to additional complexity in the theory. One of 
+ the reasons is that functions can depend on each other in more than just one way 
+ now. Therefore, we add variables also to the list of dependencies, such as in the type 
+ signature for
+  map
+ ,
+  
+ map
+  ∗
+ a
+  ::
+  ∗
+ ,
+  b
+  ::
+  ∗∗
+  ::
+  (
+ map
+  ∗
+ a
+ ,
+  b
+ ∗
+ )
+  ∗
+  a
+  →
+  b
+  ,
+  
+ where we now use
+  map
+  ∗
+ a
+ ,
+  b
+ ∗
+  to specify the dependency, instead of just
+  map
+ . We 
+ will look at a few examples that demonstrate why this is necessary. 
+  
+  
+ Assume we have a list-based implementation for sets: defined as follows:
+  
+ data
+  Set
+  (
+ a
+  ::
+  ∗
+ ) =
+  Set
+  [
+ a
+ ]
+  .
+  
+ This datatype is supposed to fulfill the invariant that no duplicates occur in the 
+ list. The generic function
+  map
+  does not respect the invariant, so it is advisable to 
+ add a specific arm to the
+  map
+  function for sets:
+  
+ map
+  ∗
+ Set
+  α
+ ∗
+  (
+ Set xs
+ ) =
+  Set
+  (
+ nubBy
+  (
+ equal
+  ∗
+ α
+ ∗
+ ) (
+ map
+  ∗
+ [
+ α
+ ]
+ ∗
+  xs
+ ))
+  .
+  
+ The function
+  nubBy
+  is defined in the Haskell standard library and has the type 
+ signature
+  
+ nubBy
+  ::
+  ∗
+ a
+  ::
+  ∗
+ .
+  (
+ a
+  →
+  a
+  →
+  Bool
+ )
+  ∗
+  [
+ a
+ ]
+  →
+  [
+ a
+ ]
+  .
+  
+ It removes duplicates from a list, given an equality function for the list element type. 
+ In above definition of
+  map
+  for datatype Set, we first apply
+  map
+  to the un-derlying 
+ list implementation, then use
+  nubBy
+  with argument
+  equal
+  ∗
+ α
+ ∗
+  to remove duplicates, 
+ and finally apply the
+  Set
+  constructor again to create the resulting set. 
+  
+ The 
+ implementation is fine, but it obviously introduces a dependency of func-tion
+  map
+  
+ on function
+  equal
+ . Furthermore, because
+  equal
+  depends on
+  enum
+ , the function
+  map
+  
+ must depend on
+  enum
+  as well. The correct type signature for
+  map 
+ with the 
+ additional arm for Set is thus
+  
+ map
+  ∗
+ a
+  ::
+  ∗
+ ,
+  b
+  ::
+  ∗∗
+  ::
+  (
+ map
+  ∗
+ a
+ ,
+  b
+ ∗
+ ,
+  equal
+  ∗
+ b
+ ∗
+ ,
+  enum
+  ∗
+ b
+ ∗
+ )
+  ∗
+  a
+  →
+  b
+  .",NA
+9.5,NA,NA
+Type tuples,"As we have seen in the examples, we parametrize type signatures (and conse-
+  
+ quently, the types) of type-indexed functions no longer over just one argument,",NA
+9.6,NA,NA
+Multi-argument type signatures,"Type signatures of type-indexed functions are now of the form
+  
+ x
+  ∗
+ π
+ ∗
+  ::
+  
+ {
+ y
+ k
+  ∗
+ ϑ
+ k
+ ∗}
+ k
+ ∗
+ 1..
+ n
+  ∗
+  t
+  .
+  
+ The variables that occur in the pattern
+  π
+  are supposed to be bound in the
+  ϑ
+ k
+  and
+  
+ in
+  t
+  (thus, alpha-conversion is possible). If
+  π
+  is a
+  ∗
+ r
+  |
+  s
+ ∗
+ -ary type tuple pattern, then
+  x
+  
+ is said to be of
+  arity
+  ∗
+ r
+  |
+  s
+ ∗
+ . Two things have changed compared to the situation of 
+ Chapter 6: the type
+  
+ signature has no longer just one argument, but possibly many; the associated kind 
+ is of the same form as that of a type tuple. And the dependencies
+  y
+ k
+  are now 
+ associated with type tuples
+  ϑ
+ k
+ , which specify in what way
+  x
+  depends on 
+ y
+ k
+ . This is a 
+ generalization of the former setting: previously, all type-indexed functions were of 
+ arity
+  ∗
+ 1
+  |
+  0
+ ∗
+ . As a consequence of that, there was no need for the type tuples to go 
+ with the dependencies.
+  
+ In this and the next section, we will revise the theory of Section 6.3 to work with 
+ multi-argument type signatures. Most of the judgments and rules introduced there 
+ are replaced with more general variants. We call the generalized language 
+ fcr
+ +
+ tif
+ +
+ mpar instead of fcr
+ +
+ tif
+ +
+ par.
+  
+ Type signatures
+  
+ σ
+  
+ ::
+ = (
+ {
+ y
+ k
+  ∗
+ ϑ
+ k
+ ∗}
+ k
+ ∗
+ 1..
+ n
+  
+ )
+  ∗
+  t
+  
+ type signature of type-indexed function
+  
+ Figure 9.8: Generalized type signatures in fcr
+ +
+ tif
+ +
+ mpar, replaces type signatures from 
+  
+ Figure 6.1
+  
+ We still use
+  σ
+  to abbreviate the right hand side of a type signature, the part that is of 
+ the form
+  (
+ {
+ y
+ k
+  ∗
+ ϑ
+ k
+ ∗}
+ k
+ ∗
+ 1..
+ n
+ )
+  ∗
+  t
+  (cf. Figure 9.8). We also retain the notion of a
+  base 
+ type
+ . It is no longer instantiated to a type argument, but to a type argument tuple. 
+  
+ The revised judgment is shown in Figure 9.9. If the base type of
+  x
+  is instantiated 
+ to Θ, then a type signature for
+  x 
+ must be in Γ. The type argument Θ must be kind 
+ compatible with the pattern
+  π
+ in the type signature. The returned type is the type of 
+ the type signature without dependencies, and the variables from the pattern
+  π
+  
+ substituted by the types inΘ, via substitution
+  ϕ
+ .
+  
+ We still use the function dependencies from Figure 6.6 to access the depen-
+ dencies of a type-indexed function. In addition, we need a function deptt that 
+ determines in which way one function depends on another. We need to access the 
+ information that is encoded in the type tuple associated with the dependency in the 
+ type signature. An invocation of deptt takes the form
+  
+ 145",NA
+9.7,NA,NA
+Revised generic application algorithm,"It is now time to look once more at the generic application algorithm. This algo-
+  
+ rithm does now exist in two versions: one is still parametrized by a single type 
+ argument, because that is the way a type-indexed function is called in a program. 
+ The other is the actual replacement for the former algorithm, which now works on 
+ type argument tuples.
+  
+ The first, the wrapper, is shown in Figure 9.12. Syntactically, this call is of the 
+ same for than the old generic application algorithm in Figure 6.8. The only rule, 
+ (ga), looks up the arity
+  ∗
+ r
+  |
+  s
+ ∗
+  of the generic function
+  x
+  in the environment Γ. The 
+ type argument
+  A
+  is replicated
+  r
+  times, and the
+  s
+  type variables
+  b
+ j
+  are universally 
+ quantified in the resulting type. The computation is then delegated to the type tuple 
+ version of the algorithm, which is called gmapp.
+  
+ The algorithm gmapp directly corresponds to the original gapp in Figure 6.8, 
+ including the additional rule (ga-4) in Figure 6.19 for type arguments of higher",NA
+9.8 ,NA,NA
+Multiple dependencies on one function,"There is a restriction that a dependency constraint set must contain at most one 
+ entry per function and dependency variable. Similarly, the type signature of a type-
+ indexed function must contain at most one dependency on a certain other function.
+  
+ In the situation of Chapter 6, this was not really a limitation, because one type-
+ indexed function could depend on another in only one way. Now, where each 
+ dependency is associated with a type tuple, there might be the need to depend on 
+ the same function more than once, in different ways.
+  
+ As an example, consider the following implementation of a product case for a 
+ hypothetical generic function
+  combine
+  which takes two values and performs some 
+ analysis whether they can be combined:
+  
+ combinable
+  ∗
+ Prod
+  α β
+ ∗
+  (
+ x
+ 1
+  ×
+  x
+ 2
+ ) (
+ y
+ 1
+  ×
+  y
+ 2
+ ) =
+  special
+  ∗
+ α
+ ∗
+  x
+ 1
+  ∗
+  special
+  ∗
+ α
+ ∗
+  y
+ 1
+  .
+  
+ Two pairs can be combined if one of the first components is special in the sense that 
+ another generic function
+  special
+  returns
+  True
+  on the value.
+  
+ If we assume that
+  combinable
+  has the type signature
+  
+ combinable
+  ∗
+ a
+  ::
+  ∗∗
+  
+ ::
+  (
+ combinable
+  ∗
+ a
+ ∗
+ ,
+  special
+  
+ ∗
+ a
+ ∗
+ )
+ ∗
+  a
+  →
+  a
+  →
+  Bool ,",NA
+9.9,NA,NA
+Translation and correctness,"In the translation of fcr
+ +
+ tif
+ +
+ par to fcr that we have introduced in Chapter 6, we
+  
+ refer to the original generic application algorithm gapp. The only change that we 
+ need in order to obtain a translation of fcr
+ +
+ tif
+ +
+ mpar to fcr is to interpret each call to 
+ the original gapp algorithm as a call to the new gapp wrapper. Everything else 
+ works exactly as before.
+  
+ The effect of the change is that in some situations, we allow more liberal types for 
+ generic applications or arms of type-indexed functions. We thus have to verify the 
+ correctness of the translation once more, to ensure that the translation actually 
+ warrants the more liberal types we assign. We require a variant of Theorem 6.5 that 
+ is adapted to type argument tuples.
+  
+ Theorem 9.1 (Correctness of revised generic application).
+  If we have are in the 
+ situation that gmapp
+ K;Γ
+ (
+ x
+  ∗
+ Θ
+ ∗
+ )
+  ≡
+  q
+  and K; ∆
+  ∗
+  q
+  ⩽
+  t
+ , then 
+  
+ K; Γ; ∆; Σ
+ par K;Γ
+ ∗
+ x
+  ∗
+ Θ
+ ∗
+ gtrans K;Γ;Σ
+ ::
+  t
+  .
+  
+ 154",NA
+10 ,NA,NA
+Embedding Datatypes,"In order to specialize a generic function to a type that is not in the signature of that 
+ function (i.e., for which the function is not explicitly defined), it is helpful to realize 
+ that we can map each datatype to an isomorphic
+  structural representation type
+ . 
+  
+ In Section 7.5.1, we have sketched that such a structural representation 
+ replaces the toplevel structure of a datatype with occurrences of the datatypes Unit, 
+ Sum, and Prod (all introduced in Section 7.1), but leaves the fields and possible 
+ recursive calls intact.
+  
+ The details of the translation are not as essential as the fact that the translation is 
+ an embedding of all datatypes into type expressions, making use of a limited 
+ number of additional datatypes. Using this embedding, we can reduce the prob-lem 
+ of specializing a generic function to a new datatype to the following two 
+ subproblems: first, we can specialize the generic function to the structural repre-
+ sentation of the datatype instead. Second, we need to find a way to exploit the fact 
+ that the structural representation is isomorphic to the original type in such a way 
+ that we can turn the specialization on the representation type into a function that 
+ works for the original type.
+  
+ In this chapter, we formally define the embedding of datatypes into the type 
+ language, and we will convince ourselves that the structural representations are
+  
+ 155",NA
+10.1 ,NA,NA
+Zero,"A close look at the grammar of fc in Figure 3.1 reveals that a datatype is allowed to 
+ have no constructors at all. The declaration
+  
+ data
+  Zero
+  =
+  
+ is valid in fc (and thus, in all languages based upon it). In Haskell 98, this is not a 
+ legal declaration, but datatypes without constructors are allowed by some 
+ implementations as an extension – including the ghc, where one can simply write
+  
+ data
+  Zero
+  
+ to define such a type.
+  
+ There is no way to construct a value of the type Zero, therefore Zero is a type 
+ without any values (except for the undefined value
+  ∗
+ ). Nevertheless, the type is 
+ sometimes useful, particularly in combination with other datatypes. For 
+ parametrized types, Zero can be used to exclude certain alternatives – for in-stance, 
+ the type
+  [
+ Zero
+ ]
+  of lists of elements of type Zero has (ignoring
+  ∗
+  values or 
+ combinations therewith) only one value, the empty list
+  [ ]
+ . We will see a useful 
+ application of Zero in the Chapter 16 on type-indexed types.
+  
+ Unfortunately, the structure of a type with no constructors cannot be repre-
+ sented as a type expression involving Unit, Sum, and Prod. We therefore choose 
+ Zero as a fourth special type. Types with no constructors are represented using 
+ Zero. Note that there are also parametrized data types that have no constructors.
+  
+ For
+  
+ data
+  ParZero
+  (
+ f
+  ::
+  ∗ → ∗
+ ) (
+ a
+  ::
+  ∗
+ ) =
+  ,
+  
+ the representation type is
+  
+ type
+  Str
+ (
+ ParZero
+ ) (
+ f
+  ::
+  ∗ → ∗
+ ) (
+ a
+  ::
+  ∗
+ ) =
+  Zero .
+  
+ Does that mean that we now have to add a case for Zero to every generic 
+ definition? Yes and no. Types without values are used very infrequently, and as with 
+ any other type, we do not need a case for it as long as we do not want to use the 
+ function on such types. For example, if we omit the Zero case for the generic 
+ equality function, everything is fine – unless we actually have calls",NA
+10.2 ,NA,NA
+A few examples,"The translation to structural representation types is simple enough. Nevertheless, 
+ we have only seen one example so far, back in Section 7.5.1, and it can do no harm 
+ to discuss the embedding for a few more datatypes.
+  
+ In Section 7.2, we stated that the type Bool is, unlike Int or Char or Float, not 
+ considered abstract, but assumed to be defined as
+  
+ data
+  Bool 
+  
+ =
+  False
+  |
+  True
+  .
+  
+ Indeed, it is easy to give the structural representation of Bool,
+  
+ type
+  Str
+ (
+ Bool
+ ) =
+  Sum Unit Unit ,
+  
+ and the associated embedding-projection pair is trivial.
+  
+ Likewise, the type of lists, although we assume special syntax for it, is not 
+ considered abstract, but assumed to be defined as
+  
+ data
+  [
+ a
+  ::
+  ∗
+ ]
+  
+ = [ ]
+  
+ |
+  a
+  :
+  [
+ a
+ ]
+  .
+  
+ If we translate the special syntax away and assume the type constructor to be List, 
+ the “nil” constructor to be
+  Nil
+ , and the “cons” constructor to be
+  Cons
+ , this would 
+ correspond to the definition
+  
+ data
+  List 
+  
+ (
+ a
+  ::
+  ∗
+ ) =
+  Nil
+  |
+  Cons a
+  (
+ List
+  a
+ )
+  .
+  
+ The structural representation of lists is
+  
+ type
+  Str
+ ([ ]) (
+ a
+  ::
+  ∗
+ ) =
+  Sum Unit
+  (
+ Prod
+  a
+  [
+ a
+ ])
+  ,
+  
+ 157",NA
+10.3,NA,NA
+Formal translation,"Let us now look at the translation in detail. We define two functions, one to
+  
+ construct a parametrized type from the definition of a datatype, and one to build the 
+ definition of the embedding-projection pair converting between the original type 
+ and its structural representation. A
+  parametrized type
+  is of the form
+  
+ {
+ Λ
+ a
+ i
+  ::
+  κ
+ i
+ .
+ }
+ i
+ ∗
+ 1..
+ ℓ
+ t
+  ,
+  
+ 159",NA
+11,NA,NA
+Translation by ,NA,NA
+Specializatio,NA,NA
+n,"In Chapter 10, we have shown how a datatype can be converted into an iso-morphic 
+ parametrized type that reveals the structure of the datatype definition. A generic 
+ function can be specialized to such a parametrized type expression using the 
+ algorithm discussed in Chapter 6.
+  
+ In this Chapter we show how exactly the isomorphism between a datatype
+  T 
+ and 
+ its generic representation type Str
+ (
+ T
+ )
+  can be exploited to reduce the special-ization 
+ problem for a generic application
+  x
+  ∗
+ T
+  {
+ A
+ i
+ }
+ i
+ ∗
+ 1..
+ n
+ ∗
+  to the specialization problem for
+  x
+  
+ ∗
+ Str
+ (
+ T
+ )
+  {
+ A
+ i
+ }
+ i
+ ∗
+ 1..
+ n
+ ∗
+ . The solution has already been sketched in Sec-tion 7.5.2. In 
+ Section 11.1, we will discuss another example and show that the key to the problem 
+ is to lift the isomorphism between
+  T
+  and Str
+ (
+ T
+ )
+  that is available in an embedding-
+ projection pair to an isomorphism between the types
+  t
+ [
+ T
+  /
+  a
+ ]
+  and 
+ t
+ [
+ Str
+ (
+ T
+ )
+  /
+  a
+ ]
+  for a 
+ type
+  t
+  that is the base type of the generic function
+  x
+ . In Sec-tions 11.2 and 11.3, we 
+ will show how this problem can be solved using a generic function called
+  bimap
+ . 
+ Afterwards, in Section 11.4, we will discuss implications for the dependency 
+ relation and show in Section 11.5 how generic functions can be translated into fcr. 
+ Section 11.6 adds some remarks on how to implement the translation. Having 
+ outlined how translation by specialization works, we discuss
+  
+ 167",NA
+11.1 ,NA,NA
+Problem,"Let us recall the examples from Section 7.5.2. We were trying to specialize the
+  
+ calls
+  encode
+  ∗
+ Tree
+  α
+ ∗
+  and
+  add
+  ∗
+ Tree
+  α
+ ∗
+ . The datatype Tree has been defined as
+  
+ data
+  Tree
+  (
+ a
+  ::
+  ∗
+ ) =
+  Leaf
+  |
+  Node
+  (
+ Tree
+  a
+ )
+  a
+  (
+ Tree
+  a
+ )
+  ,
+  
+ which makes the parametrized type
+  
+ Λ
+ a
+  ::
+  ∗
+ . Sum Unit
+  
+ Prod
+  (
+ Tree
+  a
+ )
+  
+ Prod
+  a
+  (
+ Tree
+  a
+ )
+  
+ its structural representation. We will abbreviate as follows:
+  
+ Str
+ (
+ Tree
+ )
+  A
+  ≡
+  Sum Unit
+  
+ Prod
+  (
+ Tree
+  A
+ )
+  
+ Prod
+  A
+  (
+ Tree
+  A
+ )
+  
+ .
+  
+ The base types of the functions
+  add
+  and
+  encode
+  are
+  
+ mbase
+ (
+ encode
+  ∗
+ A
+ ∗
+ )
+  ≡
+  A
+  →
+  [
+ Bit
+ ] 
+ mbase
+ (
+ add
+  
+ ∗
+ A
+ ∗
+ )
+  ≡
+  A
+  →
+  A
+  →
+  A
+  .
+  
+ Now, we can specialize the calls
+  encode
+  ∗
+ Str
+ (
+ Tree
+ )
+  α
+ ∗
+  and
+  add
+  ∗
+ Str
+ (
+ Tree
+ )
+  α
+ ∗
+  –
+ using the
+ ·
+ gtrans
+ algorithm from Figure 6.18 – to do the main part of the work, but we 
+ still need a wrapper for
+  encode
+  ∗
+ Tree
+  α
+ ∗
+  and
+  add
+  ∗
+ Tree
+  α
+ ∗
+ , because Tree is 
+ recursive, and because the original call in the program refers to the Tree datatype,
+  
+ not to Str
+ (
+ Tree
+ )
+ .
+  
+ According to the gapp algorithm from Figure 9.12, we know that
+  
+ encode
+  ∗
+ Str
+ (
+ Tree
+ )
+  α
+ ∗
+  ::
+  ∗
+ a
+ .
+  (
+ encode
+  ∗
+ α
+ ∗
+  ::
+  a
+  →
+  [
+ Bit
+ ])
+  ∗
+  Str
+ (
+ Tree
+ )
+  a
+  →
+  [
+ Bit
+ ] 
+ encode
+  ∗
+ Tree
+  α
+ ∗
+  
+ ::
+  ∗
+ a
+ .
+  (
+ encode
+  ∗
+ α
+ ∗
+  ::
+  a
+  →
+  [
+ Bit
+ ])
+  ∗
+  Tree
+  a
+  
+ →
+  [
+ Bit
+ ]
+  
+ add
+  
+ ∗
+ Str
+ (
+ Tree
+ )
+  α
+ ∗
+  ::
+  ∗
+ a
+ .
+  (
+ add
+  ∗
+ α
+ ∗
+  ::
+  a
+  →
+  a
+  →
+  a
+ )
+  
+ add
+  
+ ∗
+ Tree
+  α
+ ∗
+  
+ ::
+  ∗
+ a
+ .
+  (
+ add
+  ∗
+ α
+ ∗
+  ::
+  a
+  →
+  a
+  →
+  a
+ )
+  
+  
+  
+ ∗
+  
+ Str
+ (
+ Tree
+ )
+  a
+  →
+  Str
+ (
+ Tree
+ )
+  a
+  →
+  Str
+ (
+ Tree
+ )
+  a
+  
+ ∗
+  Tree
+  a
+  
+ →
+  Tree
+  a
+ →
+  Tree
+  a
+  .
+  
+ We have an isomorphism between Str
+ (
+ Tree
+ )
+  t
+  and Tree
+  t
+  for any type
+  t
+ . Therefore,
+  
+ also the types of the two
+  encode
+  applications as well as the types of the two
+  add
+  
+ 168",NA
+11.2 ,NA,NA
+Lifting isomorphisms,"As it turns out, we can solve the problem just posed. Assume for now that
+  x 
+ is a 
+ type-indexed function of arity
+  ∗
+ r
+  |
+  0
+ ∗
+  for some
+  r
+ , i.e., it has no non-generic 
+ variables. We can then define
+  
+ x
+  ∗
+ T
+  {
+ α
+ j
+ }
+ j
+ ∗
+ 1..
+ n
+ ∗
+  = 
+  
+  
+ let
+  {
+ bimap
+  ∗
+ β
+ i
+ ∗
+  =
+  ep
+ (
+ T
+ )
+ }
+ i
+ ∗
+ 1..
+ r 
+  
+  
+ in
+  to bimap 
+  
+ mbase
+ (
+ x
+  ∗{
+ β
+ i
+ }
+ i
+ ∗
+ 1..
+ r
+ ∗
+ ) 
+  
+ x
+  ∗
+ Str
+ (
+ T
+ )
+  {
+ α
+ j
+ }
+ j
+ ∗
+ 1..
+ n
+ ∗
+  
+ .
+  
+ In above definition, we use local redefinition on a generic function
+  bimap
+  yet to be 
+ defined. This function
+  bimap
+  is a bidirectional variant of
+  map
+  (defined on page 135 
+ in Section 9.1), and computes embedding-projection pairs instead of functions. 
+ While introducing
+  map
+ , we noticed a strong relationship between the identity 
+ function and mapping, and that we can use local redefinition to “plug in” a 
+ modifying function into an identity that works on a complicated datatype. Here, we 
+ use the same idea, only that the function that we plug in is the embedding-
+ projection pair ep
+ (
+ T
+ )
+ . The type we use
+  bimap
+  on is the base type of
+  x
+ , instantiated to 
+ dependency variables
+  β
+ i
+  in the generic slots, because we want to change all 
+ occurrences of the type arguments from an application of Str
+ (
+ T
+ )
+  to an application of
+  
+ T
+ .
+  
+ The definition of
+  bimap
+  is indeed strongly related to
+  map
+ . The type signature is
+  
+ bimap
+  ∗
+ a
+ 1
+  ::
+  ∗
+ ,
+  a
+ 2
+  ::
+  ∗∗
+  ::
+  (
+ bimap
+  ∗
+ a
+ 1
+ ,
+  a
+ 2
+ ∗
+ )
+  ∗
+  EP
+  a
+ 1
+  a
+ 2
+  .",NA
+11.3,NA,NA
+Lifting isomorphisms and,NA,NA
+universal quantification,"In the previous section, we assumed that the arity of the generic function that in the 
+ call is
+  ∗
+ r
+  |
+  0
+ ∗
+  for some
+  r
+ . Now, we turn to the general case where the arity is
+ ∗
+ r
+  |
+  s
+ ∗
+  
+ for natural numbers
+  r
+  and
+  s
+ . The non-generic slots of a base type are usually 
+ universally quantified on the outside; therefore one possible way to generate a 
+ wrapper would be to define
+  
+ x
+  ∗
+ T
+  {
+ α
+ j
+ }
+ j
+ ∗
+ 1..
+ n
+ ∗
+  = 
+  
+  
+ let
+  {
+ bimap
+  ∗
+ β
+ i
+ ∗
+  =
+  ep
+ (
+ T
+ )
+ }
+ i
+ ∗
+ 1..
+ r
+  
+ in
+  to bimap 
+  
+ {∗
+ b
+ j
+  ::
+  κ
+ j
+ .
+ }
+ j
+ ∗
+ 1..
+ s
+ mbase
+  
+ x
+  ∗
+ Str
+ (
+ T
+ )
+  {
+ α
+ j
+ }
+ j
+ ∗
+ 1..
+ n
+ ∗
+  
+ x
+  ∗{
+ β
+ i
+ }
+ i
+ ∗
+ 1..
+ r
+  
+ | {
+ b
+ j
+ }
+ j
+ ∗
+ 1..
+ s
+  
+ ∗
+  
+ where the
+  b
+ j
+  are fresh type variables of suitable kind. However, universal quan-
+ tifications are not allowed in the language of type arguments, and it is not clear how 
+ we should specialize the
+  bimap
+  call in the code fragment above.
+  
+ type variables and outline two possible solutions. Subsequently, we discuss why We 
+ will use this as incentive to discuss universal quantification over kind
+  ∗
+  
+ these approaches are difficult to extend to variables of higher kind.
+  
+  
+ After that, we use the knowledge gained to circumvent the direct need for 
+ universal quantification in type arguments in the situation of
+  bimap
+  above.
+  
+ 172",NA
+ ∗,"default arms
+  
+ A possible extension to our language is to allow a default arm of a generic func-
+  
+ tion for types of kind
+  ∗
+  that do not have an explicit arm. Such an extension can be 
+ useful for several of the functions that we have encountered so far:
+  
+ size
+  
+ ∗
+  
+ map
+  
+ ∗
+  
+ collect
+  ∗
+  
+ ::
+  ∗∗
+  x
+  =
+  0 
+  
+ ::
+  ∗∗
+  x
+  =
+  x 
+  
+ ::
+  ∗∗
+  x
+  = [ 
+ ]
+  
+ In the case of the generic functions
+  map
+ ,
+  zipWith
+  and
+  collect
+ , this makes the ex-plicit 
+ definition of Unit and all kind
+  ∗
+  abstract types such as Int, Float, and Char 
+ superfluous. It not only saves code lines – the function also becomes applicable to 
+ any other abstract type that might be introduced into the program.
+  
+ assumptions about the type. This can be achieved by extending gapp to handle The 
+ kind
+  ∗
+  default must be sufficiently polymorphic – it must not make any
+  
+ kind
+  ∗
+  arms as follows:
+  
+ gapp
+ (
+ x
+  ∗
+  
+ ::
+  ∗∗
+ )
+  ≡ ∗
+ a
+  ::
+  ∗
+ . gapp
+ (
+ x
+  ∗
+ a
+ ∗
+ )
+  .
+  
+ Subsequently, whenever we have to specialize a call
+  x
+  ∗
+ T
+ ∗
+  for a named type
+  T
+  of 
+ kind
+  ∗
+ , we first check if
+  T
+  is in the signature of
+  T
+ . If so, we use the explicit arm. 
+ Otherwise, we check if there is a kind
+  ∗
+  default, and use that if possible. Only if no 
+ kind
+  ∗
+  default and no explicit arm exist, we try to generate a component using the 
+ generic specialization technique outlined in Sections 11.1 and 11.2.
+  
+ Kind
+  ∗
+  default arms also help with universally quantified type variables of kind
+  
+ ∗
+ , because they work for
+  all
+  types of kind
+  ∗
+ , even for a type we do not know. When 
+ encountering a call
+  x
+  ∗∗
+ a
+  ::
+  ∗
+ .
+  A
+ ∗
+ , we can thus skolemize
+  a
+  to a fresh named type
+  T
+ , 
+ and treat the call as
+  x
+  ∗
+ A
+ [
+ T
+  /
+  a
+ ]
+ ∗
+ . As long as there is a kind
+  ∗
+  default for 
+ x
+ , this will 
+ be used during the specialization.
+  
+ For
+  bimap
+ , we can define a kind
+  ∗
+  default arm as follows:
+  
+ bimap
+  ∗
+ a
+  ::
+  ∗∗
+  =
+  EP id id
+  .
+  
+ This will work as intended and makes the explicit definitions for Unit and the 
+ abstract types unnecessary.
+  
+ 11.3.2 
+  
+ Arms for universal quantification
+  
+ A quantification over a kind
+  ∗
+  variable can be viewed as application of a type 
+ constructor of kind
+  (
+ ∗ → ∗
+ )
+  → ∗
+ . If we have a value of type
+  
+ ∗
+ a
+  ::
+  ∗
+ .
+  t
+  
+ 173",NA
+11.4 ,NA,NA
+Reflexivity of the dependency relation,"It turns out that we also need an additional requirement on the dependencies for 
+ generic functions. Consider the following datatype:
+  
+ data
+  Id
+  (
+ a
+  ::
+  ∗
+ ) =
+  Id a
+  .
+  
+ According to the translations defined in Chapter 10, we have
+  
+ data
+  Id
+  =
+  Λ
+ a
+  ::
+  ∗
+ .
+  Id a
+ str
+ ≡
+  Λ
+ a
+  ::
+  ∗
+ .
+  a
+  
+ and
+  
+ data
+  Id
+  =
+  Λ
+ a
+  ::
+  ∗
+ .
+  Id a
+ ep
+ ≡
+  ep
+ (
+ Id
+ ) =
+  let
+  x
+ from
+  =
+  λy
+  →
+  case
+  y
+  of
+  
+ x
+ to 
+  
+ =
+  λy
+  →
+  case
+  y
+  of 
+  
+  
+ Id
+  x
+  →
+  x
+  
+  
+ x
+  
+ →
+  Id
+  x 
+  
+ in
+  EP x
+ from
+  x
+ to
+  .
+  
+ We will write Str
+ (
+ Id
+ )
+  A
+  for
+  A
+ .
+  
+ 178",NA
+11.5,NA,NA
+Translation of generic functions,"In this section, we will adapt the translation rules in such a way that reflexive
+  
+ functions that are defined for at least some of the datatypes Unit, Sum, Prod, and 
+ Zero, can be extended in a generic way to a large class of datatypes.
+  
+ First of all, we have to make the information that is generated by the trans-lations 
+ described in Chapter 10 available where it is needed: the embedding-projection 
+ pairs must be included as declarations into the translation of the pro-gram so that 
+ they can be referred to from everywhere; the information about the structural 
+ representations must be passed in an environment to all places where generic 
+ functions can be defined.
+  
+  
+ Furthermore, we have to assume that the generic
+  bimap
+  function is available, 
+ because we need it to specialize calls to generic functions.
+  
+ Apart from that, we do not need to change a lot. At the declaration site of a 
+ generic function, we now make it possible to generate additional components for a 
+ generic function, and thereby to extend the signature environment in the scope of 
+ the generic function.
+  
+ The language that we define now is called fcr
+ +
+ gf, and includes all the fea-tures we 
+ have seen so far, such as type-indexed functions with parametrized type patterns, 
+ dependencies, and local redefinition.
+  
+ To distribute information, we introduce two new environments. The environ-
+ ment E for declarations of the embedding-projection pairs contains entries of the 
+ form ep
+ (
+ T
+ ) =
+  d
+ . The structural representation types are stored in Ψ, using entries of 
+ the form Str
+ (
+ T
+ )
+  ≡ {
+ Λ
+ a
+ i
+  ::
+  κ
+ i
+ .
+ }
+ i
+ ∗
+ 1..
+ ℓ
+ t
+ . We assume that the number of entries in Ψ
+  
+ 180",NA
+11.6 ,NA,NA
+How to determine the required components,"Translation via rule (d/tr-gf) in Figure 11.2 introduces nondeterminism into the 
+ translation, because it is not exactly specified which additional components are 
+ generated, and in which order. Now, the order is irrelevant, because the new arms 
+ do not depend on the already existing arms, and the order of arms in a typecase is 
+ irrelevant. Furthermore, the rule ensures that a consistent set of additional 
+ components is generated: the generation of additional components extends the 
+ signature environment, but all components that are referred to in the body (i.e., 
+ including the additional components), must be present.
+  
+ But the rule does not specify that no extraneous components must be generated 
+ (and, in fact, it does not do any harm to do so – they will end up as unused 
+ declarations in a let, thus be dead code). Maybe more importantly, it does not give 
+ any hints as to how an actual implementation could proceed to find out which 
+ specializations are needed.
+  
+ First of all, it is reassuring to note that the number of required additional com-
+ ponents will always be finite, simply because all components for
+  x
+  are of the form 
+ are the ones declared in the beginning of the program, plus types contained in 
+ x
+  
+ ∗
+ T
+ ∗
+ , where
+  T
+  is a named type (and not a type expression). Of named types there the 
+ initial kind environment K
+ 0
+ . Provided that K
+ 0
+  is finite, the number of named types in 
+ finite. Even if it is infinite (because, for example, K
+ 0
+  might contain all tuple types), 
+ only finitely many of them can ever be used in one program. Therefore, there is the 
+ conservative option to generate components for any combination of type-indexed 
+ function and datatype that is used in the program, whenever possible. A function 
+ cannot be specialized to a certain datatype if the function is not sufficiently generic 
+ (some of the arms for Unit, Prod, Sum, and Zero are missing, or the function is not 
+ reflexive), if the datatype is abstract and there is no explicit arm, or if the datatype is 
+ defined in terms of a datatype to which the function cannot be specialized.
+  
+ However, we can do much better than that and generate only as many com-
+ ponents as needed to produce a consistent program. To this end, we simply let the 
+ translation drive the generation of additional components. Whenever we spe-cialize 
+ a generic application that requires a certain component of a type-indexed
+  
+ 185",NA
+11.7 ,NA,NA
+Discussion of translation by specialization,"Translation by specialization has one central advantage: the type arguments are 
+ eliminated from the code, and specialized instances are used on the different types. 
+ For a non-generic type-indexed function, there is no performance over-head, 
+ because at compile time, the specialized instances that are required at a call site are 
+ determined and filled in.
+  
+ Furthermore, the translation itself is reasonably simple and efficient. As we have 
+ seen, we can determine the set of additional components that is needed for generic 
+ functions easily by essentially scanning the translated code for references to 
+ components that do not yet exist and then providing them. One very important 
+ point is that the specialization of calls to generic functions is compositional: com-
+ ponents are always generated for a combination of a type-indexed function and a 
+ named type; calls to type expressions can be specialized in a way that the re-sulting 
+ expression is constructed from such basic components. This is absolutely essential 
+ to our approach, and enables to have an always terminating specializa-tion 
+ algorithm, also for nested types or generic functions involving weird forms of 
+ recursion.
+  
+ A disadvantage of specialization is the fact that type-indexed functions are not 
+ first class. In our language, the name of a type-indexed function on its own is not a 
+ legal expression – it may
+  exclusively
+  appear in the context of a generic applica-tion. 
+ If first class generic functions are allowed, it becomes harder to determine which 
+ components are required and where they have to be used. Allowing a more liberal 
+ use of type-indexed functions is the subject of ongoing and future work.
+  
+ Another disadvantage of the specialization approach is that the code for the 
+ derived components of generic functions is not at all efficient: values are con-verted 
+ to isomorphic structural representations and back at runtime, everytime a generic 
+ function is called, and possibly several times if the function is recursive –and the 
+ vast majority of generic functions is recursive.
+  
+ 186",NA
+11.8,NA,NA
+Other translation techniques,"Translation by specialization is not the only possibility to handle type-indexed
+  
+ functions. In this section we sketch two alternative techniques, and evaluate their 
+ differences with the specialization approach.
+  
+ 11.8.1 
+  
+ Explicit type arguments and equality types
+  
+ Cheney and Hinze (2002) developed a method of generic programming within 
+ Haskell, using already available extensions. An important idea is that type equal-ity 
+ can be expressed in Haskell as a datatype:
+  
+ data
+  Equal
+  a b
+  =
+  Proof
+  (
+ ∗
+ f
+  ::
+  ∗ → ∗
+ .
+  f a
+  →
+  f b
+ )
+  .
+  
+ The only possible value for this datatype – undefined aside – is the identity func-tion, 
+ therefore the existence of a value of type Equal
+  a b
+  constitutes a proof that 
+ a
+  and
+  b
+  are 
+ the same type. It is possible to derive coercion functions of types 
+ a
+  →
+  b
+  and
+  b
+  →
+  a
+  
+ from such a proof. This equality type has independently been proposed by Baars and 
+ Swierstra (2002) in order to implement dynamic typing. Cheney and Hinze describe 
+ an application of equality types to generic pro-gramming: a datatype of type 
+ representations is defined using equality types, and type analysis can then proceed as 
+ an ordinary
+  case
+  construct. Generic func-tions written in this style have to be 
+ augmented with several applications of co-ercion functions that employ the proofs 
+ from the type representations to con-vince the type system that certain types are 
+ equal. Furthermore, the automatic translation of datatypes to their structural 
+ representations still requires manual intervention by the programmer.
+  
+ 187",NA
+12,NA,NA
+Generic Abstraction,"In this chapter, we add a new possibility to define type-indexed functions. So far, 
+ generic functions are functions defined by means of a
+  typecase
+  construct. There is 
+ no other way to define a type-indexed function. Every function that makes use of 
+ another generic function must either itself be defined via
+  typecase
+ , or be at most 
+ parametrically polymorphic.
+  
+ Generic abstraction has been used by Hinze since he started to work on generic 
+ programming in Haskell (Hinze 1999
+ a
+ ), to define type-indexed functions in terms of 
+ other type-indexed functions, in a mostly informal way. The term “generic 
+ abstraction” was coined in the “Generic Haskell, specifically” paper (Clarke and L¨oh 
+ 2003), where this technique of defining new functions is one of the extensions 
+ described. The description in that paper, although clearly defined, makes use of a 
+ very naive translation that can lead to non-terminating specializations in some 
+ cases. The implementation that is presented in this chapter does not suffer from 
+ this limitation and integrates smoothly with the dependency type system (L¨oh 
+ et 
+ al.
+  2003).
+  
+ We motivate the use of generic abstractions in Section 12.1. Then we present 
+ some further examples in Sections 12.2 and 12.3, before we discuss the imple-
+  
+ 193",NA
+12.1 ,NA,NA
+Motivation,"Let us recall one of the examples we used to demonstrate the power of local 
+ redefinition: the function
+  size
+ , defined in Section 8.2. If applied to a constant type 
+ argument,
+  size
+  always returns 0. But using local redefinition, we can compute the 
+ size of a data structure, for example the length of a list:
+  
+ let
+  size
+  ∗
+ α
+  ::
+  ∗∗
+  =
+  const
+  1
+  in
+  size
+  ∗
+ [
+ α
+ ]
+ ∗
+  [
+ 1, 2, 3, 4, 5
+ ]
+  
+ evaluates to 5.
+  
+ Likewise, we can count the number of labels in a tree: the expression
+  
+ let
+  size
+  ∗
+ α
+  ::
+  ∗∗
+  =
+  const
+  1
+  in
+  size
+  ∗
+ Tree
+  
+ α
+ ∗
+ evaluates to 1.
+  
+  (
+ Node Leaf
+  ’x’
+  Leaf
+ )
+  
+  
+ If we need the sizes of lists and trees more often, it is also possible to capture the 
+ computation in a function: 
+  
+  
+ sizeList
+  =
+  let
+  size
+  ∗
+ α
+  ::
+  ∗∗
+  =
+  const
+  1
+  in
+  size
+  ∗
+ [
+ α
+ ]
+ ∗
+  
+  
+ sizeTree
+  =
+  let
+  size
+  ∗
+ α
+  ::
+  ∗∗
+  =
+  const
+  1
+  in
+  size
+  ∗
+ Tree
+  α
+ ∗
+  .
+  
+ These functions are polymorphic – their types are 
+ sizeList
+  ::
+  ∗
+ a
+  ::
+  ∗
+ .
+  [
+ a
+ ]
+  
+ →
+  Int 
+  
+ sizeTree
+  ::
+  ∗
+ a
+  ::
+  ∗
+ . Tree
+  a
+  →
+  Int .
+  
+ They are, however, no longer type-indexed. The type argument of the generic 
+ function
+  size
+  has irrevocably been instantiated, once to
+  [
+ α
+ ]
+ , once to Tree
+  α
+ , and what 
+ remains is an ordinary function. In fact, we can write 
+  
+  
+ let
+  size
+  ∗
+ α
+  ::
+  ∗∗
+  =
+  const
+  1
+  in
+  size
+  ∗
+ f α
+ ∗
+  
+ for
+  any
+  functor
+  f
+  of kind
+  ∗ → ∗
+ , but there is no way to capture this expression as a 
+ function, without binding
+  f
+  to one concrete type at the same time.
+  
+ Generic abstraction lifts this limitation. We can define 
+  
+ fsize
+  ∗
+ γ
+  ::
+  ∗ → ∗∗
+  =
+  let
+  size
+  ∗
+ α
+  ::
+  ∗∗
+  =
+  const
+  1
+  in
+  size
+  ∗
+ γ α
+ ∗
+  ,
+  
+ 194",NA
+12.2 ,NA,NA
+Generic reductions,"A very large class of useful generic operations – including
+  size
+  and
+  collect
+  – can be 
+ expressed in terms of
+  reduce
+  via generic abstraction. The function
+  reduce
+  is defined 
+ normally, using a case analysis on the type argument, and takes a (supposedly) 
+ neutral element
+  e
+  and a binary operator
+  ∗
+  as arguments.
+  
+ reduce
+  ∗
+ a
+  ::
+  ∗ |
+  c
+  ::
+  ∗∗
+  ::
+  (
+ reduce
+  ∗
+ a
+  |
+  c
+ ∗ ∗
+  c
+  →
+  (
+ c
+  →
+  c
+  →
+  c
+ )
+  →
+  a
+  →
+  c 
+ reduce
+  ∗
+ Int
+ ∗
+ reduce
+  ∗
+ Char
+ ∗
+  
+ e
+  (
+ ∗
+ )
+  x 
+  
+ e
+  (
+ ∗
+ )
+  x 
+   
+ =
+  e 
+  
+  
+ =
+  e",NA
+12.3 ,NA,NA
+Cata- and anamorphisms,"If we have a representation of a datatype with explicit fixpoints, using the fixpoint
+  
+ datatype
+  
+ data
+  Fix
+  (
+ a
+  ::
+  ∗ → ∗
+ ) =
+  In
+  (
+ a
+  (
+ Fix
+  a
+ ))
+  ,
+  
+ we can express catamorphisms and anamorphisms – their list variants are better
+  
+ known as
+  fold
+  and
+  unfold
+  in the Haskell world – on that datatype using generic
+  
+ abstraction over the generic
+  map
+  function.
+  
+ Assume that
+  out
+  is defined as follows:
+  
+ out
+  (
+ In x
+ ) =
+  x
+  .
+  
+ Then
+  cata
+  and
+  ana
+  are defined by:
+  
+ cata
+  ∗
+ f
+  ::
+  ∗ → ∗ |
+  a
+  ::
+  ∗∗
+  ::
+  (
+ map
+  ∗
+ f
+ ,
+  f
+ ∗
+ )
+  ∗
+  (
+ f a
+  →
+  a
+ )
+  →
+  Fix
+  f
+  →
+  a 
+ ana
+  ∗
+ f
+  ::
+  ∗ → ∗ |
+  a
+  ::
+  ∗∗
+  ::
+  (
+ map
+  ∗
+ f
+ ,
+  f
+ ∗
+ )
+  ∗
+  (
+ a
+  →
+  f a
+ )
+  →
+  a
+  →
+  Fix
+  f",NA
+12.4,NA,NA
+Types and translation of generic abstractions,"Functions defined via generic abstraction have type signatures that are almost like
+  
+ type signatures of ordinary type-indexed functions. As a slight generalization, 
+ generic type variables are not restricted to kind
+  ∗
+ . We have seen several examples 
+ for functions where the generic arguments were of kind
+  ∗ → ∗
+  instead, among them
+  
+ and
+  ∗
+ f
+  ::
+  ∗ → ∗∗
+  
+ ::
+  (
+ reduce
+  ∗
+ f
+  |
+  Bool
+ ∗
+ )
+  ∗
+  f
+  Bool
+  →
+  Bool 
+ cata
+  
+ ∗
+ f
+  ::
+  ∗ → ∗ |
+  a
+  ::
+  ∗∗
+  ::
+  (
+ map
+  ∗
+ f
+ ,
+  f
+ ∗
+ )
+  ∗
+  (
+ f a
+  →
+  a
+ )
+  →
+  Fix
+  f
+  →
+  a
+  .
+  
+ Obviously, the generic type variables may be used in the dependencies, even though 
+ both
+  reduce
+  and
+  map
+  – as ordinary type-indexed functions defined via a typecase – 
+ normally take generic variables of kind
+  ∗
+ . A generic abstraction itself never appears 
+ in dependency constraints.
+  
+ In Figure 12.1, we present the syntax extensions necessary to cover generic 
+ abstractions in our language. We call the extended language fcr
+ +
+ gf
+ +
+ gabs. We 
+ introduce a new form of value declaration to define a function via generic ab-It is 
+ syntactically distinguished from local redefinition by the kind straction.",NA
+12.5 ,NA,NA
+Type indices of higher kind,"Generic abstraction allows us to define type-indexed functions that are indexed
+  
+ by a type argument that is not of kind
+  ∗
+ . In the literature on generic functions,",NA
+12.6,NA,NA
+Multiple type arguments,"In the general case, type-indexed functions with multiple type arguments are
+  
+ not a trivial extension. The reason is that for multiple type arguments, we get an 
+ explosion of dependencies: for one type argument, we need one dependency 
+ constraint per function we depend on and dependency variable. With two type 
+ arguments, we already have one per function and pair of dependency variables. For 
+ instance,
+  poly
+  ∗
+ Sum
+  α
+ 1
+  β
+ 1
+ ∗ ∗
+ Sum
+  α
+ 2
+  β
+ 2
+ ∗
+  could – because four dependency 
+ variables occur – depend up to 4
+ 2
+ ≡
+  16 times on
+  poly
+ . Allowing different 
+ dependencies for each case in a type-indexed function defi-nition could help, but 
+ would be a significant change of the theory and make the type system yet more 
+ complex. The exact implications of such an approach are future work.
+  
+ Perhaps surprisingly, though, multiple type arguments are easy to allow for 
+ functions defined using generic abstraction. The reason is that generic abstrac-tions 
+ do not occur in dependency constraints, hence there is no combinatorial explosion 
+ of dependencies.
+  
+ The following function defines a generic variant of the standard list function 
+ elem
+  
+ that determines whether an element is contained in a data structure.
+  
+ elem
+  ∗
+ a
+  ::
+  ∗∗ ∗
+ f
+  ::
+  ∗ → ∗∗
+  
+ ::
+  (
+ enum
+  ∗
+ a
+ ∗
+ ,
+  equal
+  ∗
+ a
+ ∗
+ ,
+  reduce
+  ∗
+ f
+  |
+  
+ Bool
+ ∗
+ )
+  
+  
+ ∗
+  a
+  →
+  f a
+  →
+  Bool 
+  
+ elem
+  ∗
+ α
+  ::
+  ∗∗ ∗
+ γ
+  ::
+  ∗ → ∗∗
+  x
+  =
+  any
+  ∗
+ γ
+ ∗
+  (
+ equal
+  ∗
+ α
+ ∗
+  x
+ )
+  
+ 207",NA
+13,NA,NA
+Type Inference,"So far in this thesis, we have completely ignored type inference. We have as-sumed 
+ completely type-annotated programs and have only presented rules that can check 
+ programs to be type correct. For practical programming, this is, how-ever, 
+ inadequate. One of the great strengths of Haskell is that, as it is based on the 
+ Hindley-Milner type system (Hindley 1969; Milner 1978), type annotations are 
+ rarely required.
+  
+ Even in standard Haskell we sometimes need type signatures: for polymor-phic 
+ recursion, to circumvent the dreaded monomorphism restriction, or for the 
+ methods of type classes, we have to explicitly specify a signature to give the type 
+ checker a nudge into the right direction. If arbitrary-rank polymorphic types 
+ (Peyton Jones and Shields 2003) are allowed, then functions involving such types 
+ need explicit annotations as well.
+  
+ Therefore, one option to tackle the type inference of type-indexed functions is 
+ simply not to do it. Type-indexed functions have mandatory type signatures, and so 
+ do functions defined via generic abstraction. At the call sites of type-indexed 
+ functions, we always pass an explicit type argument anyway. At all other places, we 
+ can use ordinary Haskell type inference and do not have to annotate. This is
+  
+ 209",NA
+13.1 ,NA,NA
+Type inference of type arguments,"In all languages that we have introduced, generic application – the application of a 
+ type-indexed function to a type argument – is explicit: a type argument has to be 
+ passed to specify to which type the function in question is to be instantiated. 
+  
+ This seems adequate in cases where dependency variables occur in the type 
+ argument – after all, we might want to locally redefine the function for some of 
+ these dependency variables, so it is better to be precise about the details. Recall the 
+ example
+  
+ let
+  size
+  ∗
+ α
+ ∗
+  =
+  const
+  1 
+  
+ in
+  (
+ size
+  ∗
+ [[
+ Int
+ ]]
+ ∗
+  [[
+ 1, 2, 3
+ ]
+ ,
+  [
+ 4, 5
+ ]]
+ , 
+ size
+  ∗
+ [[
+ α
+ ]]
+ ∗
+ size
+  ∗
+ [
+ α
+ ]
+ ∗
+ size
+  ∗
+ α
+ ∗",NA
+13.2,NA,NA
+Dependency inference,"Dependency inference amounts to partially inferring the type signatures of type-
+  
+ indexed functions.
+  
+ We still require the base type of a generic function to be
+  
+ specified, but we would like to infer the dependency list automatically. For 
+ example, the type signature of
+  equal
+  could then be written as
+  
+ equal
+  ∗
+ a
+  ::
+  ∗∗
+  ::
+  a
+  →
+  a
+  →
+  Bool ,
+  
+ and the one for
+  map
+  would become
+  
+ map
+  ∗
+ a
+  ::
+  ∗
+ ,
+  b
+  ::
+  ∗∗
+  ::
+  a
+  →
+  b
+  .
+  
+ 211",NA
+13.3,NA,NA
+Base type inference,"In the presence of polymorphism and subtyping, an expression often can have
+  
+ more than one type. A function such as
+  
+ λx y
+  →
+  x
+  
+ can be assigned any of the types
+  
+ Int Bool
+  
+ →
+  Char
+  →
+  Int
+   
+ →
+  Bool
+  →
+  
+ Bool
+  
+ ∗
+ a
+  ::
+  ∗
+ . Tree
+  a
+  →
+  [
+ a
+ ]
+  
+ →
+  Tree
+  a
+  
+ ∗
+ (
+ a
+  ::
+  ∗
+ ) (
+ b
+  ::
+  ∗
+ )
+ .
+  a
+  
+ →
+  b
+  
+ →
+  a
+  .
+  
+ The type system on which Haskell is based (Damas and Milner 1982) has the 
+ advantage that there always exists a most general type, the
+  principal type
+ , which is 
+ convertible into all other types that the expression can have. Formally, if an 
+ expression
+  e
+  has principal type
+  t
+ , then if also
+  e
+  ::
+  t
+ ′
+ , then
+  t
+  ⩽
+  t
+ ′
+ , where
+  t
+  ⩽
+  t
+ ′
+ means 
+ that every
+  t
+  expression can be used as a
+  t
+ ′
+ expression. In the example of
+ λx y
+  →
+  x
+ , the 
+ last of the four types given above is the principal type. The type inference system 
+ for Haskell is only really helpful because it finds and returns the principal type for 
+ every expression. This way, we can run the inference algorithm on single functions 
+ to learn about their types, and we can be sure that the types that are inferred are 
+ the best we can come up with.
+  
+ In this section, we discuss the question whether there exist principal types for 
+ generic functions. Unfortunately, the answer is no, and we will demonstrate this 
+ negative answer with an example.",NA
+14,NA,NA
+Default Cases,"Experience with generic programming shows that one often writes several minor 
+ variations of one generic function over and over again. The reason is that while one 
+ is interested in generic behaviour for the large part of the datatypes involved, some 
+ particular types should be treated in a special way. An example is the col-lection of 
+ variables from an abstract syntax tree, where the algorithm is basically the generic 
+ function
+  collect
+  (defined on page 137 in Section 9.3), but occurrences of the 
+ datatype Var that holds variables should be added to the list that is collected. A first 
+ approach to solve the problem would probably be to locally redefine 
+ collect
+  
+ somehow and capture the redefined functionality in a generic abstraction:
+  
+ varcollect
+  ∗
+ α
+  ::
+  ∗∗
+  =
+  let
+  collect
+  ∗
+ α
+ ∗
+  (
+ V x
+ ) = [
+ x
+ ] 
+  
+ in
+  collect
+  ∗
+ Expr
+  α
+ ∗
+  ,
+  
+ assuming that Expr is the datatype that holds an expression of the language in 
+ question. This definition is not ideal, because it requires Expr to be parametrized 
+ over the type of variables. If we subsequently want to collect something else, say 
+ type signatures, then we have to parametrize over those as well. It is not acceptable 
+ to change the datatype just to be able to write another function, nor
+  
+ 215",NA
+14.1 ,NA,NA
+Generic Traversals,"Let us assume the following system of datatypes which describe a simple expres-
+ sion language based on the lambda calculus.
+  
+ data
+  Var
+  
+ =
+  V
+  
+ String
+  
+ data
+  Type
+  =
+  TyVar
+  Var
+  
+ |
+  Fun
+  
+ data
+  Expr
+  =
+  Var
+  
+ |
+  App 
+  
+ |
+  Lam 
+  
+ |
+  Let
+  
+ Type Type
+  
+ Var 
+  
+ Expr Expr 
+  
+ (
+ Var, Type
+ )
+  Expr 
+  
+ (
+ Var, Type
+ )
+  Expr Expr
+  
+  
+ Using a default case, a function to collect all variables from an expression can be 
+ written as a type-indexed function:
+  
+ varcollect
+  ∗
+ a
+  ::
+  ∗∗
+  ::
+  (
+ varcollect
+  ∗
+ a
+ ∗
+ )
+  ∗
+  a
+  →
+  [
+ Var
+ ] 
+  
+ varcollect
+  extends
+  collect 
+  
+ varcollect
+  ∗
+ Var
+ ∗
+  
+ x 
+  
+ =
+  x 
+  
+ varcollect
+  ∗
+ Prod
+  α β
+ ∗
+  (
+ x
+ 1
+  ×
+  x
+ 2
+ ) =
+  varcollect
+  ∗
+ α
+ ∗
+  x
+ 1
+  ‘
+ union
+ ‘
+  varcollect
+  ∗
+ β
+ ∗
+  
+ x
+ 2
+  
+ In comparison with the example from the introduction to this chapter, we give a full 
+ definition here, including a type signature, and we add yet another case, 
+ redefining
+  
+ the behaviour for products to use set union and eliminate duplicates
+  
+ 216",NA
+14.2 ,NA,NA
+Variants of equality,"Another example where default cases come in handy is to define a variant of an 
+ existing standard function, such as equality. In Section 7.3, we already discussed 
+ that we have the possibility to define special behaviour for a datatype, and as an 
+ example we added the arm
+  
+ equal
+  ∗
+ Range
+ ∗
+  x y
+  =
+  True
+  .
+  
+ However, this definition robs us of the possibility to use the generic, structural 
+ equality, on the Range type. Maybe we are interested in ignoring ranges in data
+  
+ 218",NA
+14.3 ,NA,NA
+Simulating multiple dependencies on one,NA,NA
+function,"In Section 9.8, we promised that default cases would provide a solution for type-
+ indexed functions that depend on the same function more than once.
+  
+ As an example, let us use the
+  map
+  function. In Section 11.2, we have introduced 
+ the
+  bimap
+  function that produces a pair of functions EP
+  a b
+  instead of a single 
+ function
+  a
+  →
+  b
+ , mainly because we could then easily lift
+  bimap
+  to function types. An 
+ alternative, sketched in Section 11.3, is to define two copies of
+  map
+ , there called
+  
+ from
+  and
+  to
+ , which depend on each other in the function case.
+  
+ Had we multiple dependencies on one function, we could define
+  map
+  for func-tions 
+ directly:
+  
+ map
+  ∗
+ a
+  ::
+  ∗
+ ,
+  b
+  ::
+  ∗∗
+  ::
+  (
+ map
+  ∗
+ a
+ ,
+  b
+ ∗
+ ,
+  map
+  ∗
+ b
+ ,
+  a
+ ∗
+  as
+  comap
+ )
+  ∗
+  a
+  →
+  b
+  .
+  
+ We depend on
+  map
+  as usual, and once more with reversed type variables and using 
+ the name
+  comap
+ . The definition would be as usual, plus the case for the function 
+ type constructor, namely
+  
+ map
+  ∗
+ α
+  →
+  β
+ ∗
+  x
+  =
+  map
+  ∗
+ β
+ ∗ ·
+  x
+  ·
+  comap
+  ∗
+ α
+ ∗
+  
+ In the function case, we need an arrow in the other direction, corresponding to the 
+ contravariance of the first argument of the function arrow.
+  
+ 219",NA
+14.4,NA,NA
+Implementation of default cases,"Value declarations
+  
+ d
+  
+ ::
+ =
+  . . .
+  
+ everything from Figures 4.1, 8.3, and 12.1
+  
+ |
+  
+ x
+ ′
+ extends
+  x
+  where
+  {
+ y
+ k
+  as
+  y
+ ′
+ default case 
+ k
+ }
+ k
+ ∗
+ 1..
+ ℓ
+  
+ Figure 14.1: Core language with default cases fcr
+ +
+ gf
+ +
+ gabs
+ +
+ dc,
+  
+ extends language
+  
+ fcr
+ +
+ gf
+ +
+ gabs in Figures 12.1, 9.4, 8.3, 6.1, 4.1, and 3.1
+  
+ To implement default cases, we need only a very simple extension of the syntax, 
+ that is shown in Figure 14.1. We introduce a new form of value declarations, that 
+ augments a type-indexed function definition in a
+  typecase
+ . A default case thus only 
+ makes if it is paired with a (possibly empty)
+  typecase
+ .
+  
+ Default cases are translated to a number of components for the type-indexed 
+ function that they refer to. To define precisely which components are generated for 
+ a default case, we have to clarify the notion of a type-indexed function’s 
+ signature
+  a 
+ bit: the
+  presignature
+  of a function is the set of type constructors that the 
+ programmer has written arms for in the typecase of the function definition. The
+  
+ signature
+  consists of the type constructors that make up the presignature plus the 
+ type constructors for which additional components are defined via a default case. In 
+ particular, for a type-indexed function that is not defined with a default case, 
+ presignature and signature refer to the same set of type constructors. If
+  x
+ ′
+ extends
+  x
+ , 
+ then the signature of
+  x
+ ′
+ is the union of the presignature of
+  x
+ ′
+ and the signature of
+  x
+ . As 
+ a formula, this is
+  
+ x
+ ′
+ extends
+  x
+  =
+ ∗
+  signature
+ (
+ x
+ ′
+ )
+  ≡
+  signature
+ (
+ x
+ )
+ , presignature
+ (
+ x
+ ′
+ )
+  .
+  
+ The cases that make up the presignature of a function
+  x
+ ′
+ are always taken from 
+ x
+ ′
+ . 
+ The type constructors that are in the signature of
+  x
+ , but not in the presignature of
+  x
+ ′
+ , 
+ are the ones that the default case expands to.
+  
+ is marked with either pre, dc, or gf. All arms that are explicitly defined in the We assume that 
+ every entry in the signature environment Σ of the form
+  x
+  ∗
+ T
+ ∗
+  
+ 221",NA
+14.5,NA,NA
+Typing default cases,"In the previous section, we have shown how a function that has a default case
+  
+ is type checked: all arms that are explicitly defined are type checked against the 
+ type signature of the function as usual; for the default case, the conversions are 
+ generated, and then also type checked against the type signature of the function. We 
+ do not type check the
+  extends
+  construct directly, but rather check its trans-lation. 
+ The reasoning behind this is relatively simple: we want to be as liberal as possible. 
+ In the general case, however, a type-indexed function is very sensitive to any 
+ change in its type.
+  
+ There are several situations in which it is desirable to be able to use a differ-ent 
+ type in the derived function than in the original function. For instance, the function
+  
+ collect
+  is polymorphic in the element type of the resulting list. That is possible 
+ because
+  collect
+ , without local redefinition or an extension via a default case, returns 
+ always the empty list. But surely, we do not want extensions to suffer from the same 
+ restriction, and indeed,
+  varcollect
+  and
+  termcollect
+  return a list of type Var.
+  
+ Other possibilities are that one of the newly defined arms of the function intro-
+ duces an additional dependency that the original function does not have. Or the 
+ original function has multiple generic slots, and we want the new function to have 
+ fewer. For instance, if we do not need or even do not want the possibility of func-
+ tion
+  map
+  to possibly change the type of its argument, we could want to restrict it to 
+ the type of
+  gid
+  in an extension. Both these changes are critical, though, if the 
+ function should be defined for type patterns involving higher-ranked type con-
+ structors. We have discussed in Section 13.3 that reducing the number of generic 
+ type variables can prove fatal in such a situation. Introducing a new dependency
+  
+ 225",NA
+15,NA,NA
+"Type, Newtype, ",NA,NA
+Data,"The Haskell language offers three constructs to define types: next to
+  data
+ , the 
+ general construct to define new datatypes that is also part of all languages dis-
+ cussed in this thesis, there is
+  newtype
+ , a limited version of
+  data
+  that can be used to 
+ declare a new, distinct, datatype that is isomorphic to an already existing type, and
+  
+ type
+ , a construct to define type synonyms, which are symbolic names that can be 
+ used as abbreviations for existing types, but are not considered distinct.
+  
+ In this short chapter, we will discuss how a language with generic functions can 
+ be extended with both
+  newtype
+  and
+  type
+  statements, and what effect the presence 
+ of these additional constructs has on type-indexed functions. In Fig-ure 15.1, the 
+ relevant additional syntax is shown. The language that has all three type-definition 
+ constructs available is called fcrt, and all languages based thereon do also get an fcrt 
+ prefix. For instance, the language including generic functions, generic abstraction, 
+ and default cases on the basis of the full diversity of type-level declarations is called 
+ fcrt
+ +
+ gf
+ +
+ gabs
+ +
+ dc.
+  
+ 229",NA
+15.1 ,NA,NA
+Datatype renamings,"The Haskell Report (Peyton Jones 2003) calls the functionality that is offered by the
+  
+ newtype
+  construct the “renaming” of an existing datatype. The syntactic dif-ference 
+ between a
+  newtype
+  and a
+  data
+  is that a
+  newtype
+  is restricted to exactly one 
+ constructor with exactly one field. We therefore use the following syntax for 
+ newtype
+ :
+  
+ newtype
+  T
+  =
+  {
+ Λ
+ a
+ i
+  ::
+  κ
+ i
+ .
+ }
+ i
+ ∗
+ 1..
+ ℓ
+ C t
+  .
+  
+  
+ In Haskell, there is a subtle difference between a
+  newtype
+  statement and a 
+ data
+  
+ statement of the same form, as for example
+  
+ data 
+  
+ RoomNumber
+  =
+  Room
+  Int 
+  
+ newtype
+  RoomNumber
+  =
+  Room
+  Int .
+  
+ For the
+  data
+  statement, the values
+  Room
+  ∗
+  and
+  ∗
+  are different, whereas for the 
+ newtype
+  statement, they are considered the same. As a consequence, there are 
+ slightly different pattern matching rules for constructors defined via
+  newtype
+ . 
+  
+ Apart from that, and especially as far as type-indexed functions are considered, 
+ any
+  newtype
+  statement
+  
+ newtype
+  T
+  =
+  {
+ Λ
+ a
+ i
+  ::
+  κ
+ i
+ .
+ }
+ i
+ ∗
+ 1..
+ ℓ
+ C t
+  
+ can be treated exactly as the corresponding
+  data
+  statement
+  
+ data 
+  
+ T
+  =
+  {
+ Λ
+ a
+ i
+  ::
+  κ
+ i
+ .
+ }
+ i
+ ∗
+ 1..
+ ℓ
+ C t
+  .
+  
+ In particular, one can define arms of type-indexed functions for datatypes defined in
+  
+ newtype
+  statements, and types defined via
+  newtype
+  do also have structural 
+ representations, embedding-projection pairs and may occur in type arguments.
+  
+ 230",NA
+15.2 ,NA,NA
+Type synonym declarations,"A type synonym introduces a new name for a type expression. Type synonyms can 
+ be parametrized. Other than the
+  data
+  and
+  newtype
+  constructs, the new type names 
+ are not considered to be distinct types. They are rather alternative names for 
+ already existing types.
+  
+ Furthermore, Haskell imposes some severe restrictions on the use of type syn-
+ onyms in programs: they must always appear fully applied, and they must not be 
+ (directly or indirectly) recursive. They also cannot be used in
+  instance
+  declara-
+ tions. All these restrictions together ensure that type synonyms can be expanded to 
+ their definitions, and can be seen as no more than a way to make the program more 
+ readable.
+  
+ As such, type synonyms also pose no problems in a language that allows generic 
+ programming. The syntax for type synonyms is
+  
+ type
+  T
+  =
+  {
+ Λ
+ a
+ i
+  ::
+  κ
+ i
+ .
+ }
+ i
+ ∗
+ 1..
+ ℓ
+ t
+  .
+  
+ The type
+  t
+  that occurs on the right hand side is
+  not
+  required to be of kind
+  ∗
+ . It is thus 
+ possible to define synonyms for higher kinds without eta-expansion, i.e., we can 
+ define
+  
+ type
+  AltMaybe 
+  
+ =
+  Sum Unit
+  
+ instead of
+  
+ type
+  AltMaybe
+ ′
+ a
+  =
+  Sum Unit
+  a
+  ,
+  
+ which is valuable, because the synonym
+  AltMaybe
+  can still be used on its own, 
+ whereas
+  AltMaybe
+ ′
+ must always be applied to its argument.
+  
+ Type synonyms can be used in type arguments that are part of generic appli-
+ cations, as long as long as they are fully applied. The type synonyms can then be 
+ replaced by their definitions, and specialization can proceed as usual.
+  
+ A more problematic question is whether type synonyms could or should be 
+ allowed in type
+  patterns
+  in definitions of type-indexed functions. In the following, 
+ we will outline a simple way to let the answer to this question be “yes”, and outline 
+ the implications.
+  
+ We want to allow type patterns of the form
+  T
+  {
+ α
+ i
+ }
+ i
+ ∗
+ 1..
+ ℓ
+ , where the pattern can be 
+ checked to be of kind
+  ∗
+ , and
+  T
+  is the name of a type synonym. The type 
+ requirements for an arm associated with such a pattern are exactly as for other 
+ arms. The interesting part is to analyze when such an arm should be applied. We 
+ take a very simplistic approach here. Type synonyms can occur in the signatures of 
+ type-indexed functions as any other type. They are not expanded if",NA
+16 ,NA,NA
+Type-indexed ,NA,NA
+Datatypes,"Type-indexed functions are functions that are parametrized by a type argument, 
+ and have access to the structure of the type argument during definition, such that 
+ they can behave differently for different types. If defined for the types and type 
+ constructors Unit, Sum, Prod, and Zero, that make up the standard view on 
+ datatypes (cf. Chapter 10), type-indexed functions become generic, and work for 
+ nearly all Haskell datatypes.
+  
+ The same mechanism can be useful on the type level: a
+  type-indexed datatype 
+ is 
+ a datatype with a type argument, and we can pattern match on the type argu-ment, 
+ making use of its structure while defining the datatype. A type-indexed datatype 
+ can thus have a different implementation depending on the type argu-ment. Type-
+ indexed datatypes can also be
+  generic
+  – if they are defined for the suitable type 
+ constructors, an implementation can be derived for a large class of Haskell 
+ datatypes.",NA
+16.1 ,NA,NA
+Type-indexed tries,"A digital search tree or
+  trie
+  is a search tree scheme that employs the structure of 
+ search keys to organize information efficiently. Searching is useful for various 
+ datatypes, so we would like to allow both keys and information to be of any 
+ datatype.
+  
+ If the key type should be flexible, and the structure of the keys should be used in 
+ the organization of the data structure, then the logical consequence is that we need 
+ a type-indexed – or even better, generic – datatype.
+  
+ Defining a type-indexed datatype is not much different from the definition of a 
+ type-indexed function: we define several cases of a datatype, using different type 
+ patterns. Let us call the datatype of type-indexed tries FMap. It is defined as follows:
+  
+ type
+  FMap
+  ∗
+ Int
+ ∗
+ type
+  FMap
+  ∗
+ Char
+ ∗
+ type
+  FMap
+  
+ ∗
+ Unit
+ ∗
+ v
+  =
+  IntMap
+  v v
+  =
+  CharMap
+  v v
+  =
+  Maybe
+  v 
+  
+ type
+  FMap
+  ∗
+ Sum
+  α β
+ ∗
+  v
+  = (
+ FMap
+  ∗
+ α
+ ∗
+  v
+ , FMap
+  ∗
+ β
+ ∗
+  v
+ ) 
+ type
+  FMap
+  ∗
+ Prod
+  α β
+ ∗
+  v
+  =
+  FMap
+  ∗
+ α
+ ∗
+  (
+ FMap
+  ∗
+ β
+ ∗
+  v
+ )
+  .
+  
+ All cases of the type definition start with the keyword
+  type
+ . This indicates that each 
+ of the cases behaves as if it were a type synonym. 
+  
+ Therefore, the right 
+ hand side is simply a type expression. It is also possible to use
+  newtype
+  and 
+ data
+  
+ constructs in the definition of a type-indexed type, and even to use different 
+ constructs for different cases. The right hand side of a case always reflects the 
+ construct that is used to define that particular case.
+  
+  
+ Each of the cases above takes a type parameter
+  v
+ , for the type of values that is 
+ stored in the trie. For integers and characters, we assume that we have predefined 
+ finite maps, called IntMap and CharMap. 
+  
+ A not very efficient, but working, 
+ possibility to implement these would be as lists of pairs,
+  [(
+ Int,
+  v
+ )]
+  or
+  [(
+ Char,
+  v
+ )]
+ , 
+ respectively, but we could, of course, choose another, more ingenious definition. 
+  
+ A trie for the Unit type is simply Maybe
+  v
+ . We use
+  Nothing
+  to denote the empty 
+ trie in this case, where the key
+  Unit
+  has no associated value. Otherwise, we store the 
+ associated value
+  x
+  as
+  Just x
+ .
+  
+ 236",NA
+16.2 ,NA,NA
+Explicit specialization,"Other than type-indexed functions, type-indexed datatypes have to be special-ized 
+ explicitly. This is because a choice has to be made whether they should be 
+ specialized using a
+  type
+  or a
+  newtype
+  construct, a choice that is hard to make 
+ optimally using only the compiler. Another reason will become apparent when we 
+ discuss modules in Chapter 18.
+  
+ Type indexed datatypes are, similarly to functions, specialized to an application 
+ of several components, thus constructor names can soon prevail and obfuscate the 
+ code. While Haskell type synonyms have the advantage of not introducing 
+ constructors, they are also subject to restrictions: they may not be recursive (not 
+ even indirectly, except if a proper datatype intervenes), and they must always be 
+ fully applied.
+  
+ Because of these restrictions, not all specializations of type-indexed datatypes 
+ can be made using type synonyms only. For example, the specialization to a type 
+ argument that involves a recursive datatype will always be recursive and must thus 
+ always involve a
+  newtype
+ . For systems of mutually recursive datatypes, it is 
+ necessary to use a
+  newtype
+  somewhere, but not necessarily everywhere. Instead of 
+ equipping the compiler with some heuristic that tries to determine when to choose 
+ a
+  newtype
+  and when a
+  type
+ , we leave this choice to the user, and require the user 
+ to explicitly make this choice before using the type.
+  
+ without preparation. Such a call would result in a specialization error, because 
+ Explicit specialization means that we cannot use a call such as
+  lookup
+  ∗
+ [
+ Int
+ ]
+ ∗
+  
+ lookup
+  ∗
+ [
+ Int
+ ]
+ ∗
+  requires an FMap
+  ∗
+ [
+ Int
+ ]
+ ∗
+ . Whereas FMap
+  ∗
+ Int
+ ∗
+  is directly available 
+ as a case of the definition, FMap cannot be automatically specialized to the list type 
+ constructor
+  [ ]
+ . The type constructor
+  [ ]
+  is not in the signature of FMap, and the 
+ compiler has to be instructed whether to generate the component using a 
+ newtype
+  
+ or a
+  type
+  construct.
+  
+ If we first write
+  
+ newtype
+  FMap
+  ∗
+ [ ]
+ ∗
+  as
+  FMapList
+  ,
+  
+ where
+  FMapList
+  is a constructor name, the call
+  lookup
+  ∗
+ [
+ Int
+ ]
+ ∗
+  can be specialized 
+ successfully. Such a construct is called a
+  specialization request
+ , and here asks the 
+ compiler to specialize FMap to the list type using a
+  newtype
+  construct with the 
+ constructor
+  FMapList
+ . As discussed above, we cannot use a type synonym in this 
+ place because
+  [ ]
+  is a recursive datatype. An example for a specialization request for 
+ a type synonym is
+  
+ type
+  FMap
+  ∗
+ Bool
+ ∗
+  .",NA
+16.3 ,NA,NA
+Idea of the translation,"In this section, we will briefly sketch how the FMap example is translated, before 
+ formally discussing the process in Section 16.7.
+  
+ For each of the cases in the FMap definition, a
+  component
+  is generated in the 
+ output program, only that the component is now a type declaration instead of a 
+ function declaration:
+  
+ type
+  Cp
+ (
+ FMap, Int
+ ) 
+  
+   
+ v
+  =
+  IntMap
+  v 
+  
+ type
+  Cp
+ (
+ FMap, Char
+ ) 
+  
+   
+ v
+  =
+  CharMap
+  v 
+  
+ type
+  Cp
+ (
+ FMap, Unit
+ ) 
+  
+   
+ v
+  =
+  Maybe
+  v 
+  
+ type
+  Cp
+ (
+ FMap, Sum
+ )
+  Cp
+ (
+ FMap,
+  α
+ )
+  Cp
+ (
+ FMap,
+  β
+ )
+  v
+  = 
+  
+  
+ (
+ Cp
+ (
+ FMap,
+  α
+ )
+  v
+ , Cp
+ (
+ FMap,
+  β
+ )
+  v
+ ) 
+ type
+  Cp
+ (
+ FMap, Prod
+ )
+  Cp
+ (
+ FMap,
+  α
+ )
+  Cp
+ (
+ FMap,
+  β
+ )
+  v
+  = 
+  
+  
+ Cp
+ (
+ FMap,
+  α
+ ) (
+ Cp
+ (
+ FMap,
+  β
+ )
+  v
+ )
+  .
+  
+ The internal operation Cp is the type level analogue to cp. It produces a named type 
+ if applied to two named types, but a type variable if applied to a named type and a 
+ dependency variable, as in Cp
+ (
+ FMap,
+  α
+ )
+ . The definition of FMap depends on itself, 
+ hence the kind signature
+  
+ FMap
+  ∗
+ a
+  ::
+  ∗∗
+  ::
+  (
+ FMap
+ )
+  ∗ ∗ → ∗
+  .
+  
+ In the translation, we can see this fact reflected in the presence of two type argu-
+ ments for the dependencies that are provided to the Sum and Prod components. A 
+ direct consequence of this translation scheme is that a reference to the type FMap
+  
+ ∗
+ [
+ Int
+ ]
+ ∗
+  ends up as a reference to the type Cp
+ (
+ FMap,
+  [ ])
+  Cp
+ (
+ FMap, Int
+ )
+  in the 
+ resulting program. 
+  
+ Such type applications in type arguments are always",NA
+16.4 ,NA,NA
+Local redefinition on the type level,"What we have just seen while defining the wrapper for
+  lookup
+  ∗
+ [
+ α
+ ]
+ ∗
+ , is an example 
+ of local redefinition on the type level. Local redefinition works on the type level in 
+ much the same way as on the value level (cf. Chapter 8). 
+  
+ However, local 
+ redefinition is a construct that appears within type expressions. For example, we 
+ could write
+  
+ Let type
+  FMap
+  ∗
+ α
+ ∗
+  (
+ a
+  ::
+  ∗
+ ) = [
+ a
+ ] 
+  
+ In
+  FMap
+  ∗
+ Tree
+  α
+ ∗
+  
+ to locally use a list of values as a finite map implementation for keys which are of 
+ the element type of the Tree.",NA
+16.5 ,NA,NA
+Generic abstraction on the type level,"Local redefinition is not the only concept from type-indexed functions that can be 
+ transferred to type-indexed datatypes: type-indexed types can also be defined via 
+ generic abstraction. For instance, if we want to fix the value type of a finite map to 
+ Int, without fixing the key type, we can define
+  
+ type
+  Frequency
+  ∗
+ α
+  ::
+  ∗∗
+  =
+  FMap
+  ∗
+ α
+ ∗
+  Int .
+  
+ Whereas generic abstraction and local redefinition are almost indistinguishable 
+ syntactically on the value level, they are clearly separated on the type level. Type-
+ level local redefinition is a construct in the language of types, whereas generic 
+ abstraction uses a type declaration to define a new entity. Much as a typecase-based 
+ definition, a definition via generic abstraction can also make use of all three type 
+ definition keywords –
+  type
+ ,
+  newtype
+ , and
+  data
+  – with their usual differences.
+  
+ 245",NA
+16.6 ,NA,NA
+The Zipper,"The zipper (Huet 1997) is a data structure that is used to represent a tree together 
+ with a subtree that is the focus of attention, where that focus may move left, right, 
+ up or down in the tree. The zipper is used in applications where the user 
+ interactively manipulates trees; for instance, in editors for structured documents 
+ such as proofs or programs.
+  
+  
+ The focus of the zipper may only move to recursive components. Consider, for 
+ example, the datatype Tree:
+  
+ data
+  Tree
+  (
+ a
+  ::
+  ∗
+ ) =
+  Leaf
+  |
+  Node
+  (
+ Tree
+  a
+ )
+  a
+  (
+ Tree
+  a
+ )
+  .
+  
+ If the left subtree is the current focus, moving right means moving to the right 
+ subtree, not to the label of type
+  a
+ . We therefore must have access to the recursive 
+ positions in the tree, and thus decide to represent datatypes as fixpoints of their 
+ pattern functors, as we have done before in Section 12.3.
+  
+ The zipper works on locations, where locations are pairs of a value of the 
+ datatype over which we navigate (the focus), together with a context (represent-ing 
+ the rest of the structure). The type of locations is a type-indexed type, defined via 
+ generic abstraction:
+  
+ type
+  Loc
+  ∗
+ γ
+  ::
+  ∗ → ∗∗
+  = 
+  
+ Fix
+  (
+ ID
+  ∗
+ γ
+ ∗
+ )
+ , Context
+  ∗
+ γ
+ ∗
+  
+ Fix
+  (
+ ID
+  ∗
+ γ
+ ∗
+ ) 
+  
+ .
+  
+ The location type is parametrized over a type of kind
+  ∗ → ∗
+ , the pattern functor of a 
+ datatype. This requires the datatype we want to navigate on to be transformed 
+ manually into such a form that it can be expressed as a fixpoint of a pattern functor. 
+ The pattern functor thus obtained for the tree type is
+  
+  
+ data
+  TreeF
+  (
+ a
+  ::
+  ∗
+ ) (
+ b
+  ::
+  ∗
+ ) =
+  LeafF
+  |
+  NodeF b a b
+  , 
+  
+ and Tree
+  a
+  is isomorphic to Fix
+  (
+ TreeF
+  a
+ )
+  (cf. Sections 12.3 and 17.2).
+  
+  
+ The type Loc depends on two other type-indexed types, ID and Context, and thus 
+ has kind
+  
+ Loc
+  ∗
+ a
+  ::
+  ∗ → ∗∗
+  ::
+  (
+ Context, ID
+ )
+  ∗ ∗
+  .
+  
+ The type-indexed type ID is built-in and somewhat special. It is the identity type-
+ indexed type and reduces to the type argument for all types. One can think of it as 
+ being implicitly defined as
+  
+ type
+  ID
+  ∗
+ T
+  {
+ α
+ i
+ }
+ i
+ ∗
+ 1..
+ n
+ ∗
+  =
+  T
+  {
+ (
+ ID
+  ∗
+ α
+ i
+ ∗
+ )
+ }
+ i
+ ∗
+ 1..
+ n 
+  
+ for all named types
+  T
+ , including abstract types. Another possible way to look at the 
+ ID type is as a way to convert a dependency variable into a type that can be used in 
+ an ordinary type expression.
+  
+ 246",NA
+16.7,NA,NA
+Implementation of type-indexed datatypes,"In this section, we describe how type-indexed datatypes can be translated. In
+  
+ many aspects, the algorithms needed here correspond to the mechanisms that we 
+ have introduced for type-indexed functions. And because type-indexed types are 
+ not parametrized by type tuples, but always by single types, the analogous situation 
+ for type-indexed functions that is described in Chapter 6 is the closest match.
+  
+ It helps to compare the rules for type-indexed types with the counterparts for 
+ type-indexed functions, therefore the references to the corresponding rules are 
+ always provided.
+  
+ Because it would lead to too much duplication of concepts, we omit some of the 
+ less interesting parts of the translation, such as the translation of environments. 
+ After having introduced the additional syntax in Section 16.7.1, we discuss several 
+ aspects of the translation: qualified kinds, generic application, types and type ar-
+ guments, expressions, type declarations, and finally declarations of type-indexed 
+ functions.
+  
+ 16.7.1 
+  
+ Syntax of fcrt",NA
++,"gftx
+  
+ Figure 16.2 shows all syntactic extensions that are necessary to cover type-indexed 
+ types, including local redefinition and generic abstraction on the type level. We 
+ deviate from the syntax used in the examples and write type-indexed types using a
+  
+ Typecase
+  construct (corresponding to
+  typecase
+  for type-indexed func-tions). 
+ Furthermore, we do not allow
+  type
+ ,
+  newtype
+ , and
+  data
+  to appear directly in type-
+ indexed type definitions, local redefinitions, and generic abstraction, but require all 
+ the right hand sides to be ordinary types. This restriction is made here to simplify 
+ the presentation.
+  
+ It is, however, easy to translate the syntax used in the previous sections to the 
+ syntax that we use for the formal language. The definition for type-indexed tries, as 
+ given in Section 16.1, was
+  
+ type
+  FMap
+  ∗
+ Int
+ ∗
+ type
+  FMap
+  ∗
+ Char
+ ∗
+ type
+  FMap
+  ∗
+ Unit
+ ∗
+  
+ v
+  =
+  IntMap
+  v 
+  
+ v
+  =
+  
+ CharMap
+  v 
+  
+ v
+  =
+  Maybe
+  v 
+  
+ type
+  FMap
+  ∗
+ Sum
+  α β
+ ∗
+  v
+  = (
+ FMap
+  ∗
+ α
+ ∗
+  v
+ , FMap
+  ∗
+ β
+ ∗
+  v
+ ) 
+ type
+  FMap
+  ∗
+ Prod
+  α β
+ ∗
+  v
+  =
+  FMap
+  ∗
+ α
+ ∗
+  (
+ FMap
+  ∗
+ β
+ ∗
+  v
+ )
+  .
+  
+ In a first step, we move all arms under a
+  Typecase
+  construct:
+  
+ FMap
+  ∗
+ a
+ ∗
+  =
+  Typecase
+  a
+  of 
+ Int 
+  
+ Char
+  
+ →
+  type
+  Λ
+ v
+  ::
+  ∗
+ . IntMap
+  v
+   
+ →
+  type
+  Λ
+ v
+  
+ ::
+  ∗
+ . CharMap
+  v
+  .",NA
+16.8,NA,NA
+Translation by specialization and,NA,NA
+type-indexed datatypes ,"Translation by specialization in the presence of type-indexed datatypes requires a
+  
+ stronger interaction between different phases of the translation. The reason is that 
+ applications of type-indexed datatypes can occur nested in type arguments. As a 
+ consequence, the generation of structural representation types and embedding-
+ projection pairs cannot be done once and for all in the beginning; the components
+  
+ 270",NA
+17,NA,NA
+Alternative Views on ,NA,NA
+Datatype,NA,NA
+s,"In Chapter 10, we have shown that we can view a datatype as an isomorphic 
+ representation type, thereby replacing complex concepts such as
+  n
+ -ary choice and 
+ constructors with multiple arguments by simpler ones, and by using a limited set of 
+ abstract datatypes to embody these simple concepts. In particular, we have made 
+ use of three datatypes, Unit, Prod, and Sum. But was this choice a good one? Well, it 
+ certainly is not the only choice possible. In fact, we have already discussed in the 
+ context of the generic
+  bimap
+  function that it can be useful to treat the universal 
+ quantifier over a type variable of kind
+  ∗
+ , written Forall
+ ∗
+ , as a type constructor
+  (
+ ∗ → 
+ ∗
+ )
+  → ∗
+  (cf. Section 11.3). We have also noted that the treatment of identity types 
+ (cf. Section 11.4) might warrant the introduction of Id as a special type, or even a 
+ marker Type for the boundary of a datatype. Furthermore, we have mentioned that 
+ some datatypes can be represented as fixpoints in Section 8.4 and 12.3. Some 
+ functions, including generic functions, can be written more easily using such a 
+ representation of a datatype, because it allows explicit access to the points of 
+ recursion.
+  
+ All the described changes are modifications or variations of the
+  standard view 
+ that 
+ we have described in Chapter 10. These modifications require to adapt the",NA
+17.1 ,NA,NA
+Constructors and labels,"Parsing and pretty-printing are common examples of generic functions: showing 
+ values on screen, storing them on disk in both human readable or compressed for-
+ mat, exchanging data between different programs – all these problems have one 
+ thing in common: a universal representation has to be found for all datatypes and 
+ we need functions to convert between values of the datatypes and the universal 
+ representation.
+  
+ We have already discussed simple encoding and decoding functions, in Sec-tion 
+ 7.4. With
+  encode
+  a value of any type is stored in a list of bits, and, given the type of 
+ the expected value,
+  decodes
+  (or
+  decode
+  from Section 12.1), recovers the value from 
+ such a list.
+  
+ All encodings that we can define so far are either not generic or cannot make use 
+ of the name information that is contained in a datatype, simply because the 
+ structural representation is not equipped to represent such names. For example, 
+ the datatypes
+  
+ data
+  Bool 
+ data
+  Bit 
+  
+ =
+  False 
+  
+ =
+  0 
+  
+ |
+  True 
+  
+  
+ |
+  1 
+  
+ data
+  Motion
+  =
+  Clockwise
+  |
+  Counterclockwise
+  
+ all three have the same structural representation, namely Sum Unit Unit. Conse-
+ quently, the encoding of
+  [
+ False
+ ,
+  True
+ ,
+  True
+ ]
+  is the same as the encoding of
+  [
+ 0, 1, 1
+ ]
+ . 
+ While this might be desirable in some situations, for the purpose of conversion
+  
+ 274",NA
+17.2 ,NA,NA
+Fixpoints of regular functors,"The idea of a fixpoint view on datatypes is that regular datatypes are automati-
+  
+ cally represented as fixpoints of their pattern functors. Regular datatypes are the
+  
+ class of datatypes that generic (or polytypic) functions work on in PolyP (Jansson
+  
+ and Jeuring 1997). A datatype of the form
+  
+ data
+  T 
+ =
+  {
+ Λ
+ a
+ i
+  ::
+  κ
+ i
+ .
+ }
+ i
+ ∗
+ 1..
+ ℓ
+ {
+ C
+ j
+  {
+ t
+ j
+ ,
+ k
+ }
+ k
+ ∗
+ 1..
+ n
+ j
+ }
+ j
+ ∗
+ 1..
+ m
+  
+ is called
+  regular
+  if all recursive references on the right hand side – i.e., in the
+  t
+ j
+ ,
+ k
+  
+ – have the form
+  T
+  {
+ a
+ i
+ }
+ i
+ ∗
+ 1..
+ n
+ . Then, we can define the
+  pattern functor
+  of
+  T
+  to be
+  
+ data
+  PF
+ (
+ T
+ ) =
+  {
+ Λ
+ a
+ i
+  ::
+  κ
+ i
+ .
+ }
+ i
+ ∗
+ 1..
+ ℓ
+ Λ
+ c
+  ::
+  ∗
+ . 
+  
+ {
+ PF
+ (
+ C
+ j
+ )
+  {
+ t
+ j
+ ,
+ k
+ [
+ c
+  /
+  T
+  {
+ a
+ i
+ }
+ i
+ ∗
+ 1..
+ ℓ
+ ]
+ }
+ k
+ ∗
+ 1..
+ n
+ j
+ }
+ j
+ ∗
+ 1..
+ m 
+ |
+  
+ ,
+  
+ where
+  c
+  is a fresh type variable. The type
+  T
+  {
+ a
+ i
+ }
+ i
+ ∗
+ 1..
+ ℓ
+ is isomorphic to the type
+  
+ Fix
+  (
+ PF
+ (
+ T
+ )
+  {
+ a
+ i
+ }
+ i
+ ∗
+ 1..
+ ℓ
+ )
+ , assuming the usual definition of Fix as
+  
+ data
+  Fix
+  (
+ f
+  ::
+  ∗ → ∗
+ ) =
+  In
+  (
+ f
+  (
+ Fix
+  f
+ ))
+  .
+  
+ For example, for the datatype of lists
+  [ ]
+ , we get
+  
+ data
+  PF
+ ([ ]) (
+ a
+  ::
+  ∗
+ ) (
+ c
+  ::
+  ∗
+ ) =
+  PF
+ ([ ])
+  
+ |
+  PF
+ ((
+ :
+ ))
+  a c
+  ,
+  
+ and the isomorphism between
+  [
+ a
+ ]
+  and Fix
+  (
+ PF
+ ([
+ a
+ ]))
+  is witnessed by
+  
+ epf
+ ([ ])
+  ::
+  ∗
+ a
+  ::
+  ∗
+ . EP
+  [
+ a
+ ] (
+ Fix
+  (
+ PF
+ ([
+ a
+ ])))
+  
+ epf
+ ([ ]) =
+  let
+  from
+  [ ] 
+  
+ =
+  In
+  (
+ PF
+ ([ ]))
+  
+ from
+  (
+ x
+  :
+  xs
+ ) =
+  In
+  (
+ PF
+ ((
+ :
+ ))
+  x
+  (
+ from xs
+ ))
+  
+ to 
+ (
+ In
+  (
+ PF
+ ([ ]))) = [ ]
+  
+ to 
+ (
+ In
+  (
+ PF
+ ((
+ :
+ ))
+  x xs
+ )) =
+  x
+  :
+  to xs
+  
+ in
+  EP from to
+  .
+  
+ 280",NA
+17.3 ,NA,NA
+Balanced encoding,"The standard view on datatypes uses a binary representation for sums and prod-
+ ucts. The choice between multiple constructors is expressed as a nested, right-deep, 
+ binary sum. Similarly, multiple fields are translated to a nested, right-associative, 
+ binary product. These encodings are somewhat arbitrary: we could have used a left-
+ deep nesting instead, or a balanced encoding.
+  
+ The direction datatype
+  
+ data
+  Direction
+  =
+  North
+  |
+  East
+  |
+  South
+  |
+  West
+  
+ that is represented as
+  
+ Sum Unit
+  (
+ Sum Unit
+  (
+ Sum Unit Unit
+ ))
+  
+ using the standard view, would be translated to
+  
+ Sum
+  (
+ Sum Unit Unit
+ ) (
+ Sum Unit Unit
+ )
+  
+ in a balanced encoding.
+  
+ The choice of encoding can affect both efficiency and behaviour of generic func-
+ tions. The generic equality function
+  equal
+ , if applied to datatypes with many 
+ constructors, is less efficient using the standard view than it would be with the 
+ balanced encoding. If both values belong to the rightmost constructor, then the 
+ whole sum structure must be traversed in the standard view, whereas we have a 
+ logarithmic complexity for the balanced encoding.
+  
+ This difference is even more visible in the
+  encode
+  function, where it leads to 
+ different results. We need a maximum of three bits to encode a value of type 
+ Direction in the standard view, but two bits are always sufficient using the bal-
+ anced view.",NA
+17.4 ,NA,NA
+List-like sums and products,"Yet another possibility to represent sums and products is to use a right-biased 
+ nesting, but to always use the neutral elements Zero and Unit to mark the end of a 
+ sum or product, respectively. The neutral elements play a similar role as the“nil” 
+ constructor
+  [ ]
+  for lists. The encoding of the Direction type would become
+  
+ Sum Unit
+  (
+ Sum Unit
+  (
+ Sum Unit
+  (
+ Sum Unit Zero
+ )))
+  ,
+  
+ and the type of rose trees, defined as
+  
+ 283",NA
+17.5 ,NA,NA
+Constructor cases,"The “Generic Haskell, specifically” paper (Clarke and L¨oh 2003) describes con-
+ structor cases, which are a way to view constructors themselves as datatypes and 
+ use them in type patterns during the definition of type-indexed functions. For 
+ example, the function
+  freecollect
+ , defined on page 218 in Section 14.1, could be 
+ written in the following way using constructor cases:
+  
+ freecollect
+  ∗
+ a
+  ::
+  ∗∗
+  ::
+  (
+ freecollect
+  ∗
+ a
+ ∗
+ )
+  ∗
+  a
+  →
+  [
+ Var
+ ] 
+  
+ freecollect
+  extends
+  termcollect 
+  
+ freecollect
+  ∗
+ Lam
+ ∗
+  (
+ Lam
+  (
+ v
+ ,
+  t
+ )
+  e
+ ) 
+  
+ =
+  filter
+  (
+ ̸
+ ==
+  v
+ ) (
+ freecollect
+  ∗
+ Expr
+ ∗
+  e
+ ) 
+  
+ freecollect
+  ∗
+ Let
+ ∗
+  (
+ Let
+  (
+ v
+ ,
+  t
+ )
+  e e
+ ′
+ ) =
+  freecollect
+  ∗
+ Expr
+ ∗
+  e 
+  
+  
+  
+ ++
+  filter
+  (
+ ̸
+ ==
+  v
+ ) (
+ freecollect
+  ∗
+ Expr
+ ∗
+  e
+ ′
+ )
+  .
+  
+ We define special behaviour for the
+  Lam
+  and
+  Let
+  constructors of the Expr datatype 
+ simply by writing additional arms. The constructors which are not mentioned still 
+ enjoy generic behaviour. The original definition defines an arm for the Expr 
+ datatype itself, using a
+  case
+  construct to detect the interesting constructors:
+  
+ freecollect
+  ∗
+ Expr
+ ∗
+  e
+  = 
+ case
+  e
+  of
+  
+ Lam
+  (
+ v
+ ,
+  t
+ )
+  e
+ ′
+  
+ →
+  filter
+  (
+ ̸
+ ==
+  v
+ ) (
+ freecollect
+  ∗
+ Expr
+ ∗
+  e
+ ′
+ ) 
+  
+ Let
+  (
+ v
+ ,
+  t
+ )
+  e
+ ′
+ e
+ ′′
+ →
+  freecollect
+  ∗
+ Expr
+ ∗
+  e
+ ′
+  
+  
+  
+ ++
+  filter
+  (
+ ̸
+ ==
+  v
+ ) (
+ freecollect
+  ∗
+ Expr
+ ∗
+  e
+ ′′
+ )
+  
+ →
+  termcollect
+  ∗
+ Expr
+ ∗
+  e
+  .
+  
+ Using constructor cases has a couple of subtle advantages over the approach us-ing 
+ the
+  case
+  construct. The first is that we do not need to specify the fallback
+  
+ 284",NA
+17.6,NA,NA
+A language for views,"The examples discussed in this chapter have demonstrated that some generic
+  
+ functions are easier to define or more efficient using a non-standard view on 
+ datatypes, and some functions cannot even be defined in the standard view from 
+ Chapter 10.
+  
+ In some situations, such as in the case of constructor information (cf. Sec-tion 
+ 17.1), it is possible to extend the standard view in such a way that functions which 
+ do not require the extra information continue to work without modifica-tion. 
+ Nevertheless, additional constructors appear in the encoding and thus in the 
+ translation, which makes the generated code less efficient. Other views, such as the 
+ balanced encoding or the list-like view, are not extensions, but proper variations of 
+ the encoding.
+  
+ In general, a
+  view
+  defines a way to translate a datatype into a type expression, 
+ the
+  structural representation
+ , that is (at least nearly) isomorphic to the original 
+ datatype. An embedding-projection pair is required to witness the conversion. 
+ Generic functions that make use of that particular view can then be defined by 
+ providing cases for the types that occur in the structural representations gener-ated 
+ by the view.
+  
+ Generic Haskell views are related to Wadler’s views (1987), proposed as an 
+ extension for the Haskell language. In Wadler’s proposal, views provide different 
+ ways of viewing one datatype, by providing different sets of data constructors by 
+ which a value of the datatype may be constructed or deconstructed. In this chapter, 
+ we show how to view datatypes in various ways, by providing different sets of type 
+ constructors by which structural representations of datatypes may be constructed 
+ or deconstructed.
+  
+ Because there are many views (our list of examples certainly is not exhaustive), 
+ and because it is unlikely that there is one single best view, it seems desirable to 
+ equip Generic Haskell with a language to define views. The user would then need to 
+ specify for each generic function which view it should use. How exactly this might 
+ be achieved is the subject of ongoing research. It is difficult to guarantee that a user-
+ defined view is correct. If the representations that are produced are
+  
+ 286",NA
+18,NA,NA
+Modules,"Real programs rarely consist of just one huge blob of code. Haskell offers the 
+ possibility to group functions into modules. Modules can be compiled separately, 
+ and code from one module can be reused in several others.
+  
+ All the concepts in Generic Haskell were demonstrated in the limited setting of 
+ single-module programs. All of them can easily be transferred to a language with 
+ multiple modules. However, if we allow multiple modules, this opens up a few new 
+ questions and problems: how can type-indexed functions and type-indexed types be 
+ exported from one and imported into another module, and, probably more 
+ important, how does separate compilation work in the presence of type-indexed 
+ entities and genericity?
+  
+ In this chapter, we will try to answer these questions. To this end, we add 
+ modules both to the language fcrt, resulting in fcrtm, and to fcrt
+ +
+ gftx, yielding 
+ fcrtm
+ +
+ gftx, and discuss how to translate the latter into the former. We will not go 
+ into the details of the semantics of fcrtm or the module system itself, but 
+ concentrate on the additional overhead resulting from type-indexed functions and 
+ datatypes.
+  
+ The new languages are introduced in Section 18.1. The translation of the lan-
+ guage fcrtm
+ +
+ gftx to fcrtm is the topic of Section 18.2. In the end, we discuss two
+  
+ 289",NA
+18.1 ,NA,NA
+A language with modules,"Figure 18.1 shows the syntax extensions necessary to cover programs consisting of 
+ multiple modules, defining language fcrtm as an extension of the functional core 
+ language with recursive let and all type declaration constructs. Compared to 
+ Haskell, there are some modifications – mainly simplifications – because we want to 
+ concentrate on the issues related to type-indexed entities.
+  
+ A program consists of a non-empty sequence of modules now. The last module is 
+ considered the main module. The structure of modules is similar to the former 
+ syntax of programs. There is now a module header, but the body of a module still 
+ consists of declarations that are followed by a main expression. The main 
+ expression of the main module is to be evaluated; all other main expressions are 
+ type checked, but discarded.
+  
+ A module header declares a name for a module, and governs which names are 
+ exported and imported. We allow to hide functions and types by not including
+  
+ 290",NA
+18.2,NA,NA
+Translation of modules containing,NA,NA
+type-indexed entities ,"In this section, we describe how to translate an fcrtm
+ +
+ gftx module, i.e., a module
+  
+ possibly containing type-indexed functions and type-indexed datatypes, into an 
+ fcrtm module.
+  
+  
+ This will inevitably also say some things about the module semantics for nor-mal 
+ functions and datatypes, as they are part of the extended language as well. 
+  
+ As 
+ far as module syntax is concerned, the export list must be simplified. Oc-currences 
+ of type-indexed functions, type-indexed datatypes, and type-indexed datatype 
+ components have to be replaced. For this purpose, we introduce a judg-ment of the 
+ form
+  
+ X
+ fcrtm
+ +
+ gftx
+  ⇝
+  K
+ 2
+ ; Γ
+ 2
+ ; Σ
+ 2
+ ; ¯Σ
+ 2
+ ; Ψ
+ 2
+ ; E
+ 2mod K
+ 1
+ ;Γ
+ 1
+ ;Σ
+ 1
+ ; ¯Σ
+ 1
+ ;Ψ
+ 1
+ ;E
+ 1
+ ≡ {
+ X
+ fcrtm
+  i
+ }
+ i
+ ∗
+ 1..
+ n 
+  
+ .
+  
+ Under all input environments, we process a single export list entry
+  X
+ 1
+ . 
+  
+ This 
+ results in contributions to the environments that will be exported from the current 
+ module, and a number of export list entries in the target program.
+  
+ The translation rules are shown in Figures 18.3 and 18.4. The rule (x-fun) is for 
+ ordinary functions. A function
+  x
+  mentioned in the export list must be a toplevel 
+ function of the current module or imported from somewhere else. This is checked 
+ by testing that
+  x
+  has an entry in the global type environment Γ that is provided as 
+ input. This test also verifies that
+  x
+  is not type-indexed. The resulting program has 
+ the same entry
+  x
+  in its export list. Furthermore, we return a type 
+ environmentΓ
+ ′
+ containing an entry for
+  x
+ , because this is the information we export 
+ to other modules.
+  
+ For a type-indexed function
+  x
+ , the rule (x-tif) checks whether an appropriate type 
+ signature
+  x
+  ∗
+ ϑ
+ ∗
+  ::
+  σ
+  is contained in the input type environment Γ. extract the 
+ signature of
+  x
+  from the input signature environment Σ, using the We
+  
+ signature function explained on page 222 in Section 14.4. Both the type signature 
+ and the signature of
+  x
+  are then exported to other modules through the output 
+ environments Γ
+ ′
+ and Σ
+ ′
+ . The translated module will not contain the type-indexed 
+ function anymore, though. Instead, it contains the components that have been 
+ generated for the function. Therefore, the export list of the target module contains 
+ entries of the form cp
+ (
+ x
+ ,
+  T
+ i
+ )
+  for all types
+  T
+ i
+  that constitute the signature of
+  x
+ .
+  
+ 292",NA
+18.3,NA,NA
+Explicit specialization of type-indexed types,NA,NA
+is necessary ,"Type-indexed types have to be specialized explicitly by the user, by stating
+  spe-
+  
+ cialization requests
+  in the program. This is different from type-indexed functions,
+  
+ 297",NA
+18.4,NA,NA
+Open versus closed type-indexed functions,"We have treated definitions of type-indexed functions (and of type-indexed data-
+  
+ types) as
+  closed
+ . All arms of the
+  typecase
+  construct have to be given at the defi-nition 
+ site of the function. It is not possible to add new cases at a later point. This is not 
+ much of a problem if we consider programs consisting of only one module. If we 
+ discover that we need an additional case for an already existing type-indexed 
+ function, we can just go back to the definition and add it. However, in real programs 
+ consisting of many modules this may be very inconvenient. A datatype for which we 
+ need a special case might not yet be defined in the module where the type-indexed 
+ function is defined, and we might not want the",NA
+Syntax overview,NA,NA
+Complete syntax ,"Here, we list the complete syntax of the language, with all modifications that have 
+ been introduced. For each construct, we state where it has been defined.
+  
+ Programs 
+  
+ P 
+ ::
+ =
+  {
+ D
+ i
+ ;
+  }
+ i
+ ∗
+ 1..
+ n
+ main
+  =
+  e 
+ [type declarations plus main expression, Figure 3.1] 
+  
+  
+ {
+ B
+ }
+ i
+ ∗
+ 1..
+ n 
+  
+ (
+ n
+  ∗
+  1 . .
+ ) 
+ sequence of modules, Figure 18.1 
+ | 
+  
+ Modules
+  
+ B
+  
+ ::
+ =
+  H
+  where
+  {
+ D
+ j
+ ;
+  }
+ j
+ ∗
+ 1..
+ n
+ main
+  =
+  e 
+  
+  
+ type declarations plus main expression, Figure 18.1
+  
+ Module headers 
+  
+ H 
+ ::
+ =
+  module
+  M
+  (
+ {
+ X
+ i
+ }
+ i
+ ∗
+ 1..
+ m 
+ ) (
+ {
+ I
+ j
+ }
+ j
+ ∗
+ 1..
+ n 
+ ) 
+  
+  
+ header with export list, Figure 18.1 Import declarations 
+  
+ I 
+ ::
+ =
+  import
+  M 
+ import module by name, Figure 18.1
+  
+ 303",NA
+All languages,"Here, we provide a list of all languages that are used.
+  
+ Languages without generic programming features (target languages)
+  
+ fc 
+  
+ functional core language
+  
+ fcr 
+  
+ fc with recursive let
+  
+ fcrt 
+  
+ fcr with
+  newtype
+  and
+  type
+  
+ fcrtm 
+  
+ fcrt with modules
+  
+ Languages with generic programming features (source languages)
+  
+ fcr
+ +
+ tif 
+  
+ fcr with type-indexed functions
+  
+ fcr
+ +
+ tif
+ +
+ par 
+  
+ fcr
+ +
+ tif with parametrized type patterns
+  
+ fcr
+ +
+ tif
+ +
+ par
+ +
+ lr 
+  
+ fcr
+ +
+ tif
+ +
+ par with local redefinition
+  
+ fcr
+ +
+ tif
+ +
+ mpar 
+  
+ fcr
+ +
+ tif
+ +
+ par with generalized type signatures
+  
+ fcr
+ +
+ gf 
+  
+ fcr
+ +
+ tif
+ +
+ (m)par
+ +
+ lr with generic components
+  
+ fcr
+ +
+ gf
+ +
+ gabs 
+  
+ fcr
+ +
+ gf with generic abstraction
+  
+ fcr
+ +
+ gf
+ +
+ gabs
+ +
+ dc 
+  
+ fcr
+ +
+ gf
+ +
+ gabs with default cases
+  
+ fcrt
+ +
+ gf
+ +
+ gabs
+ +
+ dc 
+  
+ like fcr
+ +
+ gf
+ +
+ gabs
+ +
+ dc, but based on fcrt
+  
+ fcrt
+ +
+ gftx 
+  
+ fcrt
+ +
+ gf
+ +
+ gabs
+ +
+ dc with type-indexed datatypes
+  
+ fcrtm
+ +
+ gftx 
+  
+ like fcrt
+ +
+ gftx, but based on fcrtm",NA
+Metavariables used,"This is an exhaustive list of all metavariables that are used for entities in the core
+  
+ languages and their several extensions. For each metavariable, we list what it is
+  
+ used for and in which figure it is introduced.
+  
+ a
+  
+ type variable
+  
+ Figure 3.1
+  
+ b
+  
+ type variable
+  
+ Figure 3.1
+  
+ c
+  
+ type variable
+  
+ Figure 3.1
+  
+ d
+  
+ value declaration
+  
+ Figure 3.1
+  
+ e
+  
+ expression
+  
+ Figure 3.1
+  
+ f
+  
+ type variable
+  
+ Figure 3.1
+  
+ i
+  
+ natural number
+  
+ Figure 3.1
+  
+ j
+  
+ natural number
+  
+ k
+  
+ natural number
+  
+ ℓ
+  
+ natural number
+  
+ m
+  
+ natural number
+  
+ n
+  
+ natural number
+  
+ p
+  
+ pattern
+  
+ 307",NA
+Samenvatting in het,NA,NA
+Nederlands,"Dit proefschrift bekijkt Generic Haskell – een uitbreiding van de functionele pro-
+ grammeertaal Haskell – van alle kanten. De naam “Generic Haskell” is namelijk de 
+ afgelopen jaren voor een behoorlijk aantal verschillende idee¨en en talen ge-bruikt. 
+ Er zijn veel artikelen gepubliceerd, die allemaal een iets andere versie van de taal 
+ beschrijven. De verschillen doen zich voor in syntax, features, theorie en meer. E´en 
+ van de doelen van dit proefschrift is om de mogelijke verwarring weg te nemen. De 
+ huidige stand van zaken m.b.t. Generic Haskell wordt in zijn geheel beschreven in 
+ een consistente notatie. Dit proefschrift bevat een integra-le beschrijving van 
+ Generic Haskell samen met voorgestelde uitbreidingen. De taal en de uitbreidingen 
+ worden ge¨ıntroduceerd met aanschouwelijke voorbeel-den. Verder wordt 
+ beschreven hoe de componenten van de taal ge¨ımplementeerd kunnen worden.",NA
+Van statische types naar generiek programmeren,"Statische types ondersteunen het schrijven van correcte programma’s. Veel pro-
+ grammeertalen hebben statische typering. Door gebruik te maken van statische 
+ types kunnen niet alle programmeerfouten worden gevonden, maar een goed ty-
+ pesysteem is in staat om een aantal, soms lastige, run-time fouten te elimineren.
+  
+ 311",NA
+Generic Haskell,"Haskell heeft al een beperkt mechanisme voor de gewenste functionaliteit: met 
+ behulp van het
+  deriving
+  construct kunnen voor een vast aantal type klassen auto-
+ matisch instanties worden gegenereerd, waaronder gelijkheid, het vergelijken van 
+ waardes, het opleveren van een kleinste en grootste waarde van een type, of het 
+ vertalen van een waarde naar een canonieke string-representatie. Haskell heeft
+  
+ 313",NA
+Bibliography,"P. Achten, A. Alimarine, and R. Plasmeijer.
+  When generic functions use dynamic 
+ values
+ . In: R. Pe˜na and T. Arts (editors),
+  Implementation of Functional Languages: 
+ 14th International Workshop, IFL 2002, Madrid, Spain, September 16–18, 2002, Re-
+ vised Selected Papers
+ , volume 2670 of
+  Lecture Notes in Computer Science
+ , pages 
+ 17–33. Springer-Verlag 2003.
+  
+ P. Achten, M. van Eekelen, and R. Plasmeijer. 
+ Generic graphical user interfaces
+ . In:
+  
+ Implementation of Functional Languages: 15th International Workshop, IFL 2003, 
+ Edinburg, Scotland, September 8–10, 2003, Revised Selected Papers
+ . Lecture Notes in 
+ Computer Science, Springer-Verlag 2004. To appear.
+  
+ P. Achten and R. Hinze.
+  Combining generics and dynamics
+ . Technical Report NIII-
+ R0206, Nijmegen Institute for Computing and Information Sciences, Faculty of 
+ Science, University of Nijmegen 2002.
+  
+ A. Alimarine and R. Plasmeijer.
+  A generic programming extension for Clean
+ . In: T. 
+ Arts and M. Mohnen (editors),
+  Proceedings of the 13th International Workshop on 
+ the Implementation of Functional Languages, IFL 2001, Selected Papers, ¨Alvsj¨o, 
+ Swe-den
+ , volume 2312 of
+  Lecture Notes in Computer Science
+ , pages 168–185. 
+ Springer-Verlag 2001.
+  
+ 315",NA
+Index,"∗
+ n
+ ,
+  25 
+ <
+ lex
+ ,
+  71
+ , 81
+  
+ ana
+ ,
+  198
+  
+  
+ anamorphism, 5, 198
+  
+ [ ]
+ ,
+  157
+  
+ and
+ ,
+  197
+ , 200
+  
+  
+ Abs,
+  202 
+  
+ abstract component, 288 
+  
+ abstract syntax tree, 215 
+  
+ abstract type,
+  109
+ , 173, 239, 271,
+  287
+ , 
+  
+  
+ 290 
+  
+ add
+ ,
+  42
+ ,
+  54
+ , 56, 59, 65, 81, 82, 103, 108, 
+  
+  
+ 168 
+  
+ algebra 
+  
+  
+ of a datatype, 279 
+  
+ AlgebraOf,
+  279
+  
+ any
+ ,
+  197
+ , 207 
+  
+ arity,
+  145
+ , 153, 172, 178, 195, 212, 214 
+ arity,
+  268 
+  
+ arms,
+  22 
+  
+ ATerm, 113 
+  
+ automatic testing, 111
+  
+ balanced encoding, 272,
+  280
+ , 284 
+  
+ base kind,
+  251
+ ,
+  254 
+  
+ base type,
+  58
+ ,
+  75
+ ,
+  145
+ , 152, 168, 172, 
+ 202, 211
+  
+ algorithm 
+  
+ base type inference,
+  212
+  
+ generic application, 238 
+  
+ bimap
+ , 167,
+  169
+ , 172, 173, 175, 177, 
+ 180,
+  
+ all
+ ,
+  197 
+ 182, 219, 243, 266, 271
+  
+ allEqual
+ , 63 
+  
+ Bit,
+  114
+ , 272
+  
+ alpha-conversion, 20, 24 
+  
+ bit, 114",NA
+Curriculum vitae,"Andres L¨oh
+  
+ 18 August 1976 
+  
+ born in L¨ubeck, Germany 
+  
+  
+  
+ 1986 – 1995 
+  
+ grammar school, Katharineum zu L¨ubeck, Germany 
+  
+ 10 
+ June 1995 
+  
+ school-leaving exam 
+  
+  
+  
+ 1995 – 2000 
+  
+ studies of Mathematics 
+  
+  
+   
+ with Computer Science as subsidiary subject 
+  
+  
+   
+ at the University of Konstanz, Germany 
+  
+  
+  
+ 1996 – 2000 
+  
+ scholarship granted by the 
+  
+  
+   
+ German National Scholarship Foundation 
+  
+ 17 August 2000
+  
+ “Diplom”
+  
+  
+  
+ 2000 – 2004
+  
+ “assistent in opleiding” at Utrecht University, Netherlands
+  
+ 333",NA

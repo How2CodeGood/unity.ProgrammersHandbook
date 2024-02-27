@@ -1,0 +1,8182 @@
+Larger Text,Smaller Text,Symbol
+TableofContents,"TheNode.jsHandbook
+  
+  
+ Introduction
+  
+  
+ IntroductiontoNode
+  
+  
+ AbriefhistoryofNode
+  
+  
+ HowtoinstallNode
+  
+  
+ HowmuchJavaScriptdoyouneedtoknowtouseNode?
+  
+  
+ DifferencesbetweenNodeandtheBrowser
+  
+  
+ v8
+  
+  
+ Basics
+  
+  
+ RunNode.jsscriptsfromthecommandline
+  
+  
+ HowtoexitfromaNode.jsprogram
+  
+  
+ Howtoreadenvironmentvariables
+  
+  
+ Nodehostingoptions
+  
+  
+ CommandLine
+  
+  
+ UsetheNodeREPL
+  
+  
+ Passargumentsfromthecommandline
+  
+  
+ Outputtothecommandline
+  
+  
+ Acceptinputfromthecommandline
+  
+  
+ Nodemodulesandnpm
+  
+  
+ ExposefunctionalityfromaNodefileusingexports
+  
+  
+ npm",NA
+TheNode.jsHandbook,"TheNodeHandbookfollowsthe80/20rule:learnin20%ofthetimethe80%ofatopic. 
+ Ifindthisapproachgivesawell-roundedoverview.Thisbookdoesnottrytocovereverything 
+ underthesunrelatedtoNode.Ifyouthinksomespecifictopicshouldbeincluded,tellme. 
+ YoucanreachmeonTwitter
+ @flaviocopes
+ .
+  
+ Ihopethecontentsofthisbookwillhelpyouachievewhatyouwant:
+ learnthebasics Node.js
+ .
+  
+ ThisbookiswrittenbyFlavio.I
+ publishwebdevelopmenttutorials
+ everydayonmywebsite 
+ flaviocopes.com
+ .
+  
+ Enjoy!
+  
+ 5",NA
+IntroductiontoNode,"ThispostisagettingstartedguidetoNode.js,theserver-sideJavaScript 
+ runtimeenvironment.Node.jsisbuiltontopoftheGoogleChromeV8 
+ JavaScriptengine,andit'smainlyusedtocreatewebservers-butit'snot 
+ limitedtothat
+  
+  
+ Overview
+  
+ ThebestfeaturesofNode.js
+  
+  
+ Fast
+  
+  
+ Simple
+  
+  
+ JavaScript
+  
+  
+ V8
+  
+  
+ Asynchronousplatform
+  
+  
+ Ahugenumberoflibraries
+  
+ AnexampleNode.jsapplication
+  
+ Node.jsframeworksandtools",NA
+Overview,"Node.jsisa
+ runtimeenvironmentfor
+ JavaScript
+ thatrunsonthe
+ server
+ .
+  
+ Node.jsisopensource,cross-platform,andsinceitsintroductionin2009,itgothugelypopular
+  
+ andnowplaysasignificantroleinthewebdevelopmentscene.IfGitHubstarsareone
+  
+ popularityindicationfactor,having46000+starsmeansbeingverypopular.
+  
+ 6",NA
+ThebestfeaturesofNode.js,NA,NA
+Fast,"OneofthemainsellingpointsofNode.jsis
+ speed
+ .JavaScriptcoderunningonNode.js 
+ (dependingonthebenchmark)canbetwiceasfastthancompiledlanguageslikeCorJava, 
+ andordersofmagnitudefasterthaninterpretedlanguageslikePythonorRuby,becauseofits non-
+ blockingparadigm.",NA
+Simple,"Node.jsissimple.Extremelysimple,actually.",NA
+JavaScript,"Node.jsrunsJavaScriptcode.Thismeansthatmillionsoffrontenddevelopersthatalready 
+ useJavaScriptinthebrowserareabletoruntheserver-sidecodeandfrontend-sidecode 
+ usingthesameprogramminglanguagewithouttheneedtolearnacompletelydifferenttool.
+  
+ Theparadigmsareallthesame,andinNode.jsthenew
+ ECMAScript
+ standardscanbeused 
+ first,asyoudon'thavetowaitforallyouruserstoupdatetheirbrowsers-youdecidewhich 
+ ECMAScriptversiontousebychangingtheNode.jsversion.",NA
+V8,7,NA
+Asynchronousplatform,"Intraditionalprogramminglanguages(C,Java,Python,PHP)allinstructionsareblockingby 
+ defaultunlessyouexplicitly""optin""toperformasynchronousoperations.Ifyouperforma 
+ networkrequesttoreadsomeJSON,theexecutionofthatparticularthreadisblockeduntilthe 
+ responseisready.
+  
+ JavaScriptallowstocreateasynchronousandnon-blockingcodeinaverysimpleway
+ , 
+ byusinga
+ singlethread
+ ,
+ callbackfunctions
+ and
+ event-drivenprogramming
+ .Everytime 
+ anexpensiveoperationoccurs,wepassacallbackfunctionthatwillbecalledoncewecan 
+ continuewiththeprocessing.We'renotwaitingforthattofinishbeforegoingonwiththerest 
+ oftheprogram.
+  
+ Suchmechanismderivesfromthebrowser.Wecan'twaituntilsomethingloadsfromanAJAX 
+ requestbeforebeingabletointerceptclickeventsonthepage.
+ Itallmusthappeninreal 
+ time
+ toprovideagoodexperiencetotheuser.
+  
+ Ifyou'vecreatedanonclickhandlerforawebpageyou'vealreadyusedasynchronous 
+ programmingtechniqueswitheventlisteners.
+  
+ ThisallowsNode.jstohandlethousandsofconcurrentconnectionswithasingleserver 
+ withoutintroducingtheburdenofmanagingthreadsconcurrency,whichwouldbeamajor 
+ sourceofbugs.
+  
+ Nodeprovidesnon-blockingI/Oprimitives,andgenerally,librariesinNode.jsarewrittenusing non-
+ blockingparadigms,makingablockingbehavioranexceptionratherthanthenormal.
+  
+ 8",NA
+Ahugenumberoflibraries,"npm
+ withitssimplestructurehelpedtheecosystemofnode.jsproliferateandnowthenpm 
+ registryhostsalmost500.000opensourcepackagesyoucanfreelyuse.",NA
+AnexampleNode.jsapplication,"ThemostcommonexampleHelloWorldofNode.jsisawebserver:
+  
+ const
+ http=
+ require
+ (
+ 'http'
+ )
+  
+  
+ const
+ hostname=
+ '127.0.0.1'
+  
+  
+ const
+ port=
+ 3000
+  
+  
+ const
+ server=http.createServer((req,res)=>{
+  
+ res.statusCode=
+ 200 
+  
+ res.setHeader(
+ 'Content-Type'
+ ,
+ 'text/plain'
+ ) 
+  
+ res.end(
+ 'HelloWorld\n'
+ )
+  
+ })
+  
+  
+ server.listen(port,hostname,()=>{
+  
+ console
+ .log(
+ `Serverrunningathttp://${hostname}:${port}/`
+ )
+  
+ })
+  
+ Torunthissnippet,saveitasa
+  server.js
+ fileandrun
+  nodeserver.js
+ inyourterminal.
+  
+ ThiscodefirstincludestheNode.js
+  http
+ module
+ .
+  
+ Node.jshasanamazing
+ standardlibrary
+ ,includingafirst-classsupportfornetworking.
+  
+ The
+  createServer()
+ methodof
+  http
+ createsanewHTTPserverandreturnsit.
+  
+ Theserverissettolistenonthespecifiedportandhostname.Whentheserverisready,the 
+ callbackfunctioniscalled,inthiscaseinformingusthattheserverisrunning.
+  
+ Wheneveranewrequestisreceived,the
+  request
+ event
+ iscalled,providingtwoobjects:a request(an
+  
+ http.IncomingMessage
+ object)andaresponse(an
+  http.ServerResponse
+ object).
+  
+ Those2objectsareessentialtohandletheHTTPcall.
+  
+ Thefirstprovidestherequestdetails.Inthissimpleexample,thisisnotused,butyoucould 
+ accesstherequestheadersandrequestdata.
+  
+ 9",NA
+Node.jsframeworksandtools,"Node.jsisalow-levelplatform,andtomakethingseasierandmoreinterestingfordevelopers 
+ thousandsoflibrarieswerebuiltuponNode.js.
+  
+ Manyofthoseestablishedovertimeaspopularoptions.Hereisanon-comprehensivelistto 
+ theonesIconsiderveryrelevantandworthlearning:
+  
+ Express
+ ,oneofthemostsimpleyetpowerfulwaystocreateawebserver.Itsminimalist 
+ approach,unopinionated,focusedonthecorefeaturesofaserver,iskeytoitssuccess.
+  
+ Meteor
+ ,anincrediblypowerfulfull-stackframework,poweringyouwithanisomorphic 
+ approachtobuildingappswithJavaScript,sharingcodeontheclientandtheserver. Onceanoff-
+ the-shelftoolthatprovidedeverything,nowintegrateswithfrontendlibs 
+ React,
+ Vue
+ andAngular.Canbeusedtocreatemobileappsaswell.
+  
+ koa
+ ,builtbythesameteambehindExpress,aimstobeevensimplerandsmaller, 
+ buildingontopofyearsofknowledge.Thenewprojectbornoutoftheneedtocreate 
+ incompatiblechangeswithoutdisruptingtheexistingcommunity.
+  
+  
+  
+  
+ Next.js
+ ,aframeworktorenderserver-siderendered
+ React
+ applications. 
+ Micro
+ ,averylightweightservertocreateasynchronousHTTPmicroservices.
+  
+ Socket.io
+ ,areal-timecommunicationenginetobuildnetworkapplications.
+  
+ 10",NA
+AbriefhistoryofNode,"AlookbackonthehistoryofNode.jsfrom2009totoday
+  
+ Believeitornot,Node.jsisjust9yearsold.
+  
+ Incomparison,JavaScriptis23yearsoldandthewebasweknowit(aftertheintroductionof 
+ Mosaic)is25yearsold.
+  
+ 9yearsissuchalittleamountoftimeforatechnology,butNode.jsseemstohavebeen 
+ aroundforever.
+  
+ I'vehadthepleasuretoworkwithNodesincetheearlydayswhenitwasjust2yearsold,and 
+ despitethelittleinformationavailable,youcouldalreadyfeelitwasahugething.
+  
+ Inthispost,IwanttodrawthebigpictureofNodeinitshistory,toputthingsinperspective.
+  
+ Alittlebitofhistory
+  
+ 2009
+  
+ 2010
+  
+ 2011
+  
+ 2012
+  
+ 2013
+  
+ 2014
+  
+ 2015
+  
+ 2016
+  
+ 2017
+  
+ 2018",NA
+Alittlebitofhistory,"JavaScriptisaprogramminglanguagethatwascreatedatNetscapeasascriptingtoolto 
+ manipulatewebpagesinsidetheirbrowser,
+ NetscapeNavigator
+ .
+  
+ PartofthebusinessmodelofNetscapewastosellWebServers,whichincludedan 
+ environmentcalled
+ NetscapeLiveWire
+ ,whichcouldcreatedynamicpagesusingserver-side 
+ JavaScript.Sotheideaofserver-sideJavaScriptwasnotintroducedbyNode.js,butit'sold 
+ justlikeJavaScript-butatthetimeitwasnotsuccessful.
+  
+ OnekeyfactorthatledtotheriseofNode.jswastiming.JavaScriptsinceafewyearswas 
+ startingbeingconsideredaseriouslanguage,thanksforthe""Web2.0""applicationsthat 
+ showedtheworldwhatamodernexperienceonthewebcouldbelike(thinkGoogleMapsor
+  
+ 11",NA
+2009 ,"Node.jsisbornThefirstformof
+ npm
+ iscreated",NA
+2010 ,"Express
+ isborn
+ Socket.io
+ isborn",NA
+2011 ,"npmhits1.0BigcompaniesstartadoptingNode:LinkedIn,Uber
+ Hapi
+ isborn",NA
+2012 ,Adoptioncontinuesveryrapidly,NA
+2013 ,"FirstbigbloggingplatformusingNode:Ghost
+ Koa
+ isborn",NA
+2014 ,"Bigdrama:
+ IO.js
+ isamajorforkofNode.js,withthegoalofintroducingES6supportandmove
+  
+ faster",NA
+2015 ,12,NA
+2016,"The
+ leftpadincidentYarn
+ isbornNode6",NA
+2017,"npmfocusesmoreonsecurityNode8HTTP/2
+ V8
+ introducesNodeinitstestingsuite,officially 
+ makingNodeatargetfortheJSengine,inadditiontoChrome3billionnpmdownloadsevery week",NA
+2018,"Node10
+ ESmodules
+ .mjsexperimentalsupport
+  
+ 13",NA
+HowtoinstallNode,"HowyoucaninstallNode.jsonyoursystem:apackagemanager,theofficial 
+ websiteinstallerornvm
+  
+ Node.jscanbeinstalledindifferentways.Thisposthighlightsthemostcommonand 
+ convenientones.
+  
+ Officialpackagesforallthemajorplatformsareavailableat
+ https://node.org/en/download/
+ .
+  
+ OneveryconvenientwaytoinstallNode.jsisthroughapackagemanager.Inthiscase,every 
+ operatingsystemhasitsown.
+  
+ OnmacOS,
+ Homebrew
+ isthede-factostandard,and-onceinstalled-allowstoinstallNode.js 
+ veryeasily,byrunningthiscommandintheCLI:
+  
+ brewinstallnode
+  
+ OtherpackagemanagersforLinuxandWindowsarelistedin 
+ https://node.org/en/download/package-manager/
+  
+ nvm
+ isapopularwaytorunNode.ItallowsyoutoeasilyswitchtheNodeversion,andinstall 
+ newversionstotryandeasilyrollbackifsomethingbreaks,forexample.
+  
+ ItisalsoveryusefultotestyourcodewitholdNodeversions.
+  
+ See
+ https://github.com/creationix/nvm
+ formoreinformationaboutthisoption.
+  
+ Mysuggestionistousetheofficialinstallerifyouarejuststartingoutandyoudon'tuse 
+ Homebrewalready,otherwise,Homebrewismyfavoritesolution.
+  
+ 14",NA
+HowmuchJavaScriptdoyouneedtoknow ,NA,NA
+touseNode?,"IfyouarejuststartingoutwithJavaScript,howmuchdeeplydoyouneedto 
+ knowthelanguage?
+  
+ Asabeginner,it'shardtogettoapointwhereyouareconfidentenoughinyourprogramming abilities.
+  
+ Whilelearningtocode,youmightalsobeconfusedatwheredoesJavaScriptend,andwhere 
+ Node.jsbegins,andviceversa.
+  
+ IwouldrecommendyoutohaveagoodgraspofthemainJavaScriptconceptsbeforediving 
+ intoNode.js:
+  
+ LexicalStructure
+  
+ Expressions
+  
+ Types
+  
+ Variables
+  
+ Functions
+  
+ this
+  
+ ArrowFunctions
+  
+ Loops
+  
+ LoopsandScope
+  
+ Arrays
+  
+ TemplateLiterals
+  
+ Semicolons
+  
+ StrictMode
+  
+ ECMAScript6,2016,2017
+  
+ Withthoseconceptsinmind,youarewellonyourroadtobecomeaproficientJavaScript 
+ developer,inboththebrowserandinNode.js.
+  
+ Thefollowingconceptsarealsokeytounderstandasynchronousprogramming,whichisone 
+ fundamentalpartofNode.js:
+  
+  
+  
+  
+  
+  
+  
+ Asynchronousprogrammingandcallbacks 
+  
+ Timers 
+  
+ Promises 
+  
+ AsyncandAwait 
+  
+ Closures 
+  
+ TheEventLoop
+  
+ 15",NA
+DifferencesbetweenNodeandtheBrowser,"HowwritingJavaScriptapplicationinNode.jsdiffersfromprogrammingfor 
+ theWebinsidethebrowser
+  
+ BoththebrowserandNodeuseJavaScriptastheirprogramminglanguage.
+  
+ BuildingappsthatruninthebrowserisacompletelydifferentthingthanbuildingaNode.js 
+ application.
+  
+ Despitethefactthatit'salwaysJavaScript,therearesomekeydifferencesthatmakethe 
+ experienceradicallydifferent.
+  
+ AsafrontenddeveloperthatwritesNodeappshaveahugeadvantage-thelanguageisstill thesame.
+  
+ Youhaveahugeopportunitybecauseweknowhowharditistofully,deeplylearna 
+  
+ programminglanguage,andbyusingthesamelanguagetoperformallyourworkontheweb-
+ bothontheclientandontheserver,you'reinauniquepositionofadvantage.
+  
+ Whatchangesistheecosystem.
+  
+ Inthebrowser,mostofthetimewhatyouaredoingisinteractingwiththe
+ DOM
+ ,orother
+ Web 
+ PlatformAPIs
+ likeCookies.ThosedonotexistinNode,ofcourse.Youdon'thavethe 
+ document
+ ,
+  
+ window
+ andalltheotherobjectsthatareprovidedbythebrowser.
+  
+ Andinthebrowser,wedon'thavealltheniceAPIsthatNode.jsprovidesthroughitsmodules, 
+ likethefilesystemaccessfunctionality.
+  
+ AnotherbigdifferenceisthatinNode.jsyoucontroltheenvironment.Unlessyouarebuilding 
+ anopensourceapplicationthatanyonecandeployanywhere,youknowwhichversionof 
+ Nodeyouwillruntheapplicationon.Comparedtothebrowserenvironment,whereyoudon't 
+ gettheluxurytochoosewhatbrowseryourvisitorswilluse,thisisveryconvenient.
+  
+ Thismeansthatyoucanwriteallthemodern
+ ES6-7-8-9
+ JavaScriptthatyourNodeversion supports.
+  
+ SinceJavaScriptmovessofast,butbrowserscanbeabitslowandusersabitslowto 
+ upgrade,sometimesontheweb,youarestucktouseolderJavaScript/ECMAScriptreleases.
+  
+ YYoucanuseBabeltotransformyourcodetobeES5-compatiblebeforeshippingittothe 
+ browser,butinNode,youwon'tneedthat.
+  
+ AnotherdifferenceisthatNodeusesthe
+ CommonJSmodulesystem
+ ,whileinthebrowserwe 
+ arestartingtoseethe
+ ESModules
+ standardbeingimplemented.
+  
+ 17",NA
+v8,"V8isthenameoftheJavaScriptenginethatpowersGoogleChrome.It'sthe 
+ thingthattakesourJavaScriptandexecutesitwhilebrowsingwith 
+  
+ Chrome.V8providestheruntimeenvironmentinwhichJavaScriptexecutes.
+  
+ TheDOMandtheotherWebPlatformAPIsareprovidedbythebrowser.
+  
+  
+ V8isthenameoftheJavaScriptenginethatpowersGoogleChrome.It'sthethingthattakes 
+ ourJavaScriptandexecutesitwhilebrowsingwithChrome.
+  
+ V8providestheruntimeenvironmentinwhichJavaScriptexecutes.The
+ DOM
+ ,andtheother 
+ WebPlatformAPIs
+ areprovidedbythebrowser.
+  
+ ThecoolthingisthattheJavaScriptengineisindependentbythebrowserinwhichit'shosted. 
+ Thiskeyfeatureenabledtheriseof
+ Node.js
+ .V8waschosenforbeingtheenginechosenby 
+ Node.jsbackin2009,andasthepopularityofNode.jsexploded,V8becametheenginethat 
+ nowpowersanincredibleamountofserver-sidecodewritteninJavaScript.
+  
+ TheNode.jsecosystemishugeandthankstoitV8alsopowersdesktopapps,withprojects 
+ likeElectron.
+  
+ 19",NA
+OtherJSengines,"OtherbrowsershavetheirownJavaScriptengine:
+  
+ Firefoxhas
+ Spidermonkey
+  
+ Safarihas
+ JavaScriptCore
+ (alsocalledNitro)
+  
+ Edgehas
+ Chakra
+  
+ andmanyothersexistaswell.
+  
+ AllthoseenginesimplementtheECMAES-262standard,alsocalled
+ ECMAScript
+ ,the 
+ standardusedbyJavaScript.",NA
+Thequestforperformance,"V8iswritteninC++,andit'scontinuouslyimproved.ItisportableandrunsonMac,Windows, 
+ Linuxandseveralothersystems.
+  
+ InthisV8introduction,IwillignoretheimplementationdetailsofV8:theycanbefoundon 
+ moreauthoritativesites(e.g.theV8officialsite),andtheychangeovertime,oftenradically.
+  
+ V8isalwaysevolving,justliketheotherJavaScriptenginesaround,tospeeduptheWeband 
+ theNode.jsecosystem.
+  
+ Ontheweb,thereisaraceforperformancethat'sbeengoingonforyears,andwe(asusers 
+ anddevelopers)benefitalotfromthiscompetitionbecausewegetfasterandmoreoptimized 
+ machinesyearafteryear.",NA
+Compilation,"JavaScriptisgenerallyconsideredaninterpretedlanguage,butmodernJavaScriptenginesno 
+ longerjustinterpretJavaScript,theycompileit.
+  
+ Thishappenssince2009whentheSpiderMonkeyJavaScriptcompilerwasaddedtoFirefox 
+ 3.5,andeveryonefollowedthisidea.
+  
+ JavScriptisinternallycompiledbyV8with
+ just-in-time
+ (JIT)
+ compilation
+ tospeedupthe 
+ execution.
+  
+ Thismightseemcounter-intuitive,butsincetheintroductionofGoogleMapsin2004, 
+ JavaScripthasevolvedfromalanguagethatwasgenerallyexecutingafewdozensoflinesof 
+ codetocompleteapplicationswiththousandstohundredsofthousandsoflinesrunninginthe browser.
+  
+ 20",NA
+RunNode.jsscriptsfromthecommandline,"HowtorunanyNode.jsscriptfromtheCLI
+  
+ TheusualwaytorunaNodeprogramistocallthe
+  node
+ globallyavailablecommand(once
+  
+ youinstallNode)andpassthenameofthefileyouwanttoexecute.
+  
+ IfyourmainNodeapplicationfileisin
+  app.js
+ ,youcancallitbytyping
+  
+ nodeapp.js
+  
+  
+ 22",NA
+HowtoexitfromaNode.jsprogram,"LearnhowtoterminateaNode.jsappinthebestpossibleway
+  
+ TherearevariouswaystoterminateaNode.jsapplication.
+  
+ Whenrunningaprogramintheconsoleyoucancloseitwith
+  ctrl-C
+ ,butwhatIwantto 
+ discusshereisprogrammaticallyexiting.
+  
+ Let'sstartwiththemostdrasticone,andseewhyyou'rebetteroff
+ not
+ usingit.
+  
+ The
+  process
+ coremoduleisprovidesahandymethodthatallowsyoutoprogrammatically 
+ exitfromaNode.jsprogram:
+  process.exit()
+ .
+  
+ WhenNode.jsrunsthisline,theprocessisimmediatelyforcedtoterminate.
+  
+ Thismeansthatanycallbackthat'spending,anynetworkrequeststillbeingsent,any 
+ filesystemaccess,orprocesseswritingto
+  stdout
+ or
+  stderr
+ -allisgoingtobeungracefully 
+ terminatedrightaway.
+  
+ Ifthisisfineforyou,youcanpassanintegerthatsignalstheoperatingsystemtheexitcode:
+  
+ process.exit(
+ 1
+ )
+  
+ Bydefaulttheexitcodeis
+  0
+ ,whichmeanssuccess.Differentexitcodeshavedifferent 
+ meaning,whichyoumightwanttouseinyourownsystemtohavetheprogramcommunicate 
+ tootherprograms.
+  
+ Youcanreadmoreonexitcodesat
+ https://node.org/api/process.html#process_exit_codes 
+ Youcanalsosetthe
+  process.exitCode
+ property:
+  
+ process.exitCode=
+ 1
+  
+ andwhentheprogramwilllaterend,Nodewillreturnthatexitcode. 
+ Aprogramwillgracefullyexitwhenalltheprocessingisdone. 
+ ManytimeswithNodewestartservers,likethisHTTPserver:
+  
+ const
+ express=
+ require
+ (
+ 'express'
+ )
+  
+  
+ const
+ app=express()
+  
+  
+ app.get(
+ '/'
+ ,(req,res)=>{
+  
+  
+ res.send(
+ 'Hi!'
+ )
+  
+  
+ })
+  
+  
+ 23",NA
+Howtoreadenvironmentvariables ,"LearnhowtoreadandmakeuseofenvironmentvariablesinaNode.js 
+ program 
+  
+ The
+  process
+ coremoduleofNodeprovidesthe
+  env
+ propertywhichhostsallthe 
+ environmentvariablesthatweresetatthemomenttheprocesswasstarted.
+  
+ HereisanexamplethataccessestheNODE_ENVenvironmentvariable,whichissetto 
+ development
+ bydefault.
+  
+ Note:
+  process
+ doesnotrequirea""require"",it'sautomaticallyavailable.
+  
+ process.env.NODE_ENV
+ //""development""
+  
+ Settingitto""production""beforethescriptrunswilltellNodethatthisisaproduction 
+ environment.
+  
+ Inthesamewayyoucanaccessanycustomenvironmentvariableyouset.
+  
+ 25",NA
+Nodehostingoptions,"ANode.jsapplicationcanbehostedinalotofplaces,dependingonyour 
+ needs.Thisisalistofallthevariousoptionsyouhaveatyourdisposal
+  
+ Hereisanon-exhaustivelistoftheoptionsyoucanexplorewhenyouwanttodeployyourapp 
+ andmakeitpubliclyaccessible.
+  
+ Iwilllisttheoptionsfromsimplestandconstrainedtomorecomplexandpowerful.
+  
+ Simplestoptionever:localtunnel
+  
+ Zeroconfigurationdeployments
+  
+  
+ Glitch
+  
+  
+ Codepen
+  
+ Serverless
+  
+ PAAS
+  
+  
+ ZeitNow
+  
+  
+ Nanobox
+  
+  
+ Heroku
+  
+  
+ MicrosoftAzure
+  
+  
+ GoogleCloudPlatform
+  
+ VirtualPrivateServer
+  
+ Baremetal",NA
+Simplestoptionever:localtunnel,"EvenifyouhaveadynamicIP,oryou'reunderaNAT,youcandeployyourappandservethe 
+ requestsrightfromyourcomputerusingalocaltunnel.
+  
+ Thisoptionissuitedforsomequicktesting,demoaproductorsharingofanappwithavery 
+ smallgroupofpeople.
+  
+ Averynicetoolforthis,availableonallplatforms,is
+ ngrok
+ .
+  
+ Usingit,youcanjusttype
+  ngrokPORT
+ andthePORTyouwantisexposedtotheinternet.You 
+ willgetangrok.iodomain,butwithapaidsubscriptionyoucangetacustomURLaswellas 
+ moresecurityoptions(rememberthatyouareopeningyourmachinetothepublicInternet).
+  
+ Anotherserviceyoucanuseis
+ https://github.com/localtunnel/localtunnel",NA
+Zeroconfigurationdeployments,26,NA
+Glitch,"Glitch
+ isaplaygroundandawaytobuildyourappsfasterthanever,andseethemliveontheir 
+ ownglitch.comsubdomain.Youcannotcurrentlyhaveaacustomdomain,andthereareafew 
+ restrictions
+ inplace,butit'sreallygreattoprototype.Itlooksfun(andthisisaplus),andit's 
+ notadumbeddownenvironment-yougetallthepowerofNode.js,aCDN,securestoragefor 
+ credentials,GitHubimport/exportandmuchmore.
+  
+ ProvidedbythecompanybehindFogBugzandTrello(andco-creatorsofStackOverflow).
+  
+ Iuseitalotfordemopurposes.",NA
+Codepen,"Codepen
+ isanamazingplatformandcommunity.Youcancreateaprojectwithmultiplefiles, 
+ anddeployitwithacustomdomain.",NA
+Serverless,"Awaytopublishyourapps,andhavenoserveratalltomanage,isServerless.Serverlessisa 
+ paradigmwhereyoupublishyourappsas
+ functions
+ ,andtheyrespondonanetworkendpoint 
+ (alsocalledFAAS-FunctionsAsAService).
+  
+ Toverypopularsolutionsare
+  
+ ServerlessFramework
+  
+ StandardLibrary
+  
+ TheybothprovideanabstractionlayertopublishingonAWSLambdaandotherFAAS 
+ solutionsbasedonAzureortheGoogleCloudoffering.",NA
+PAAS,"PAASstandsforPlatformAsAService.Theseplatformstakeawayalotofthingsyoushould 
+ otherwiseworryaboutwhendeployingyourapplication.",NA
+ZeitNow,"Zeitisaninterestingoption.Youjusttype
+  now
+ inyourterminal,andittakescareofdeploying 
+ yourapplication.Thereisafreeversionwithlimitations,andthepaidversionismorepowerful. 
+ Yousimplyforgetthatthere'saserver,youjustdeploytheapp.
+  
+ 27",NA
+Nanobox,Nanobox,NA
+Heroku,"Herokuisanamazingplatform.
+  
+ Thisisagreatarticleon
+ gettingstartedwithNode.jsonHeroku
+ .",NA
+MicrosoftAzure,"AzureistheMicrosoftCloudoffering.
+  
+ Checkouthowto
+ createaNode.jswebappinAzure
+ .",NA
+GoogleCloudPlatform,"GoogleCloudisanamazingstructureforyourapps.
+  
+ Theyhaveagood
+ Node.jsDocumentationSection",NA
+VirtualPrivateServer,"Inthissectionyoufindtheusualsuspects,orderedfrommoreuserfriendlytolessuser friendly:
+  
+ DigitalOcean
+  
+ Linode
+  
+ AmazonWebServices
+ ,inparticularImentionAmazonElasticBeanstalkasitabstracts 
+ awayalittlebitthecomplexityofAWS.
+  
+ SincetheyprovideanemptyLinuxmachineonwhichyoucanwork,thereisnospecifictutorial forthese.
+  
+ TherearelotsmoreoptionsintheVPScategory,thosearejusttheonesIusedandIwould 
+ recommend.",NA
+Baremetal,"Anothersolutionistogetabaremetalserver,installaLinuxdistribution,connectittothe 
+ internet(orrentonemonthly,likeyoucandousingthe
+ VultrBareMetal
+ service)
+  
+ 28",NA
+UsetheNodeREPL,"REPLstandsforRead-Evaluate-Print-Loop,andit'sagreatwaytoexplore 
+ theNodefeaturesinaquickway
+  
+ The
+  node
+ commandistheoneweusetorunourNode.jsscripts:
+  
+ nodescript.js
+  
+ Ifweomitthefilename,weuseitinREPLmode:
+  
+ node
+  
+ Ifyoutryitnowinyourterminal,thisiswhathappens:
+  
+ ❯
+ node
+  
+  
+ >
+  
+ thecommandstaysinidlemodeandwaitsforustoentersomething.
+  
+ Tip:ifyouareunsurehowtoopenyourterminal,google""Howtoopenterminalon"".
+  
+ TheREPLiswaitingforustoentersomeJavaScriptcode,tobemoreprecise.
+  
+ Startsimpleandenter
+  
+ >console.log('test')
+  
+  
+ test
+  
+  
+ undefined
+  
+  
+ >
+  
+ Thefirstvalue,
+  test
+ ,istheoutputwetoldtheconsoletoprint,thenwegetundefinedwhich
+  
+ isthereturnvalueofrunning
+  console.log()
+ .
+  
+ WecannowenteranewlineofJavaScript.",NA
+Usethetabtoautocomplete,"ThecoolthingabouttheREPListhatit'sinteractive.
+  
+ Asyouwriteyourcode,ifyoupressthe
+  tab
+ keytheREPLwilltrytoautocompletewhatyou
+  
+ wrotetomatchavariableyoualreadydefinedorapredefinedone.
+  
+ 30",NA
+ExploringJavaScriptobjects,"TryenteringthenameofaJavaScriptclass,like
+  Number
+ ,addadotandpress
+  tab
+ .
+  
+ TheREPLwillprintallthepropertiesandmethodsyoucanaccessonthatclass:",NA
+Exploreglobalobjects,"Youcaninspecttheglobalsyouhaveaccesstobytyping
+  global.
+ andpressing
+  tab
+ :
+  
+ 31",NA
+The_specialvariable,"Ifaftersomecodeyoutype
+  _
+ ,thatisgoingtoprinttheresultofthelastoperation.",NA
+Dotcommands,"TheREPLhassomespecialcommands,allstartingwithadot
+  .
+ .Theyare
+  
+ .help
+ :showsthedotcommandshelp 
+  
+ .editor
+ :enableseditormore,towritemultilineJavaScriptcodewithease.Onceyouare 
+ inthismode,enterctrl-Dtorunthecodeyouwrote.
+  
+ .break
+ :wheninputtingamulti-lineexpression,enteringthe.breakcommandwillabort 
+ furtherinput.Sameaspressingctrl-C.
+  
+ .clear
+ :resetstheREPLcontexttoanemptyobjectandclearsanymulti-lineexpression
+  
+ 32",NA
+Passargumentsfromthecommandline,"HowtoacceptargumentsinaNode.jsprogrampassedfromthecommand line
+  
+ YoucanpassanynumberofargumentswheninvokingaNode.jsapplicationusing
+  
+ nodeapp.js
+  
+ Argumentscanbestandaloneorhaveakeyandavalue.
+  
+ Forexample:
+  
+ nodeapp.jsflavio
+  
+ or
+  
+ nodeapp.jsname=flavio
+  
+ ThischangeshowyouwillretrievethisvalueintheNodecode.
+  
+ Thewayyouretrieveitisusingthe
+  process
+ objectbuiltintoNode.
+  
+ Itexposesan
+  argv
+ property,whichisanarraythatcontainsallthecommandlineinvocation arguments.
+  
+ Thefirstargumentisthefullpathofthe
+  node
+ command.
+  
+ Thesecondelementisthefullpathofthefilebeingexecuted.
+  
+ Alltheadditionalargumentsarepresentfromthethirdpositiongoingforward.
+  
+ Youcaniterateoverallthearguments(includingthenodepathandthefilepath)usingaloop:
+  
+ process.argv.forEach((val,index)=>{
+  
+  
+ console
+ .log(
+ `${index}:${val}`
+ )
+  
+  
+ })
+  
+ Youcangetonlytheadditionalargumentsbycreatinganewarraythatexcludesthefirst2 params:
+  
+ const
+ args=process.argv.slice(
+ 2
+ )
+  
+  
+ 34",NA
+Outputtothecommandline,"HowtoprinttothecommandlineconsoleusingNode,fromthebasic 
+ console.logtomorecomplexscenarios
+  
+ Basicoutputusingtheconsolemodule
+  
+ Cleartheconsole
+  
+ Countingelements
+  
+ Printthestacktrace
+  
+ Calculatethetimespent
+  
+ stdoutandstderr
+  
+ Colortheoutput
+  
+ Createaprogressbar",NA
+Basicoutputusingtheconsolemodule,"Nodeprovidesa
+  console
+ module
+ whichprovidestonsofveryusefulwaystointeractwiththe 
+ commandline.
+  
+ Itisbasicallythesameasthe
+  console
+ objectyoufindinthebrowser.
+  
+ Themostbasicandmostusedmethodis
+  console.log()
+ ,whichprintsthestringyoupasstoit totheconsole.
+  
+ Ifyoupassanobject,itwillrenderitasastring.
+  
+ Youcanpassmultiplevariablesto
+  console.log
+ ,forexample:
+  
+ const
+ x=
+ 'x'
+  
+  
+ const
+ y=
+ 'y'
+  
+  
+ console
+ .log(x,y)
+  
+ andNodewillprintboth.
+  
+ Wecanalsoformatprettyphrasesbypassingvariablesandaformatspecifier.
+  
+ Forexample:
+  
+ console
+ .log(
+ 'My%shas%dyears'
+ ,
+ 'cat'
+ ,
+ 2
+ )
+  
+ %s
+ formatavariableasastring 
+  
+ %d
+ or
+  %i
+ formatavariableasaninteger
+  
+ 36",NA
+Cleartheconsole,"console.clear()
+ clearstheconsole(thebehaviormightdependontheconsoleused)",NA
+Countingelements,"console.count()
+ isahandymethod.
+  
+ Takethiscode:
+  
+ const
+ x=
+ 1
+  
+ const
+ y=
+ 2 
+  
+ const
+ z=
+ 3 
+  
+ console
+ .count( 
+  
+  
+ 'Thevalueofxis'
+ +x+
+ 'andhasbeenchecked..howmanytimes?' 
+ ) 
+  
+ console
+ .count( 
+  
+  
+ 'Thevalueofxis'
+ +x+
+ 'andhasbeenchecked..howmanytimes?' 
+ ) 
+  
+ console
+ .count( 
+  
+  
+ 'Thevalueofyis'
+ +y+
+ 'andhasbeenchecked..howmanytimes?'
+  
+ )
+  
+ Whathappensisthatcountwillcountthenumberoftimesastringisprinted,andprintthe
+  
+ countnexttoit:
+  
+ Youcanjustcountapplesandoranges:
+  
+ const
+ oranges=[
+ 'orange'
+ ,
+ 'orange'
+ ]
+  
+  
+ const
+ apples=[
+ 'justoneapple'
+ ]
+  
+  
+ oranges.forEach(fruit=>{
+  
+  
+ console
+ .count(fruit)
+  
+  
+ })
+  
+  
+ apples.forEach(fruit=>{
+  
+  
+ console
+ .count(fruit)
+  
+  
+ })
+  
+ 37",NA
+Printthestacktrace,"Theremightbecaseswhereit'susefultoprintthecallstacktraceofafunction,maybeto
+  
+ answerthequestion
+ howdidyoureachthatpartofthecode?
+  
+ Youcandosousing
+  console.trace()
+ :
+  
+ const
+ function2=()=>
+ console
+ .trace()
+  
+  
+ const
+ function1=()=>function2()
+  
+  
+ function1()
+  
+ Thiswillprintthestacktrace.Thisiswhat'sprintedifItrythisintheNodeREPL:
+  
+ Trace
+  
+  
+ atfunction2(repl:1:33)
+  
+  
+ atfunction1(repl:1:25)
+  
+  
+ atrepl:1:1
+  
+  
+ atContextifyScript.Script.runInThisContext(vm.js:44:33)
+  
+  
+ atREPLServer.defaultEval(repl.js:239:29)
+  
+  
+ atbound(domain.js:301:14)
+  
+  
+ atREPLServer.runBound[aseval](domain.js:314:12)
+  
+  
+ atREPLServer.onLine(repl.js:440:10)
+  
+  
+ atemitOne(events.js:120:20)
+  
+  
+ atREPLServer.emit(events.js:210:7)",NA
+Calculatethetimespent,"Youcaneasilycalculatehowmuchtimeafunctiontakestorun,using
+  time()
+ and
+  timeEnd()
+  
+ const
+ doSomething=()=>
+ console
+ .log(
+ 'test'
+ )
+  
+  
+ const
+ measureDoingSomething=()=>{
+  
+  
+ console
+ .time(
+ 'doSomething()'
+ )
+  
+  
+ //dosomething,andmeasurethetimeittakes
+  
+  
+ doSomething()
+  
+  
+ console
+ .timeEnd(
+ 'doSomething()'
+ )
+  
+  
+ }
+  
+  
+ measureDoingSomething()",NA
+stdoutandstderr,"Aswesawconsole.logisgreatforprintingmessagesintheConsole.Thisiswhat'scalledthe
+  
+ standardoutput,or
+  stdout
+ .
+  
+ console.error
+ printstothe
+  stderr
+ stream.",NA
+Colortheoutput,"Youcancolortheoutputofyourtextintheconsolebyusingescapesequences.Anescape
+  
+ sequenceisasetofcharactersthatidentifiesacolor.
+  
+ Example:
+  
+ console
+ .log(
+ '\x1b[33m%s\x1b[0m'
+ ,
+ 'hi!'
+ )
+  
+ YoucantrythatintheNodeREPL,anditwillprint
+  hi!
+ inyellow.
+  
+ However,thisisthelow-levelwaytodothis.Thesimplestwaytogoaboutcoloringthe
+  
+ consoleoutputisbyusingalibrary.
+ Chalk
+ issuchalibrary,andinadditiontocoloringitalso
+  
+ helpswithotherstylingfacilities,likemakingtextbold,italicorunderlined.
+  
+ Youinstallitwith
+  npminstallchalk
+ ,thenyoucanuseit:
+  
+ const
+ chalk=
+ require
+ (
+ 'chalk'
+ )
+  
+  
+ console
+ .log(chalk.yellow(
+ 'hi!'
+ ))
+  
+ Using
+  chalk.yellow
+ ismuchmoreconvenientthantryingtoremembertheescapecodes,and
+  
+ thecodeismuchmorereadable.
+  
+ ChecktheprojectlinkIpostedaboveformoreusageexamples.",NA
+Createaprogressbar,"Progress
+ isanawesomepackagetocreateaprogressbarintheconsole.Installitusing
+  npm
+  
+ installprogress
+  
+ Thissnippetcreatesa10-stepprogressbar,andevery100msonestepiscompleted.When
+  
+ thebarcompleteswecleartheinterval:
+  
+ const
+ ProgressBar=
+ require
+ (
+ 'progress'
+ )
+  
+  
+ const
+ bar=
+ new
+ ProgressBar(
+ ':bar'
+ ,{total:
+ 10
+ })
+  
+  
+ const
+ timer=setInterval(()=>{
+  
+  
+ bar.tick()
+  
+  
+ if
+ (bar.complete){
+  
+  
+ clearInterval(timer)
+  
+  
+ }
+  
+  
+ },
+ 100
+ )
+  
+ 39",NA
+Acceptinputfromthecommandline,"HowtomakeaNode.jsCLIprograminteractiveusingthebuilt-inreadline 
+ Nodemodule
+  
+ HowtomakeaNode.jsCLIprograminteractive?
+  
+ Nodesinceversion7providesthe
+  readline
+ module
+ toperformexactlythis:getinputfroma
+  
+ readablestreamsuchasthe
+  process.stdin
+ stream,whichduringtheexecutionofaNode
+  
+ programistheterminalinput,onelineatatime.
+  
+ const
+ readline=
+ require
+ (
+ 'readline'
+ ).createInterface({
+  
+  
+ input:process.stdin,
+  
+  
+ output:process.stdout
+  
+  
+ })
+  
+  
+ readline.question(
+ `What'syourname?`
+ ,(name)=>{
+  
+  
+ console
+ .log(
+ `Hi${name}!`
+ )
+  
+  
+ readline.close()
+  
+  
+ })
+  
+ Thispieceofcodeaskstheusername,andoncethetextisenteredandtheuserpresses
+  
+ enter,wesendagreeting.
+  
+ The
+  question()
+ methodshowsthefirstparameter(aquestion)andwaitsfortheuserinput.It
+  
+ callsthecallbackfunctiononceenterispressed.
+  
+ Inthiscallbackfunction,weclosethereadlineinterface.
+  
+ readline
+ offersseveralothermethods,andI'llletyoucheckthemoutonthepackage
+  
+ documentationIlinkedabove.
+  
+ Ifyouneedtorequireapassword,it'sbesttonowechoitback,butinsteadshowinga
+  *
+  
+ symbol.
+  
+ Thesimplestwayistousethe
+  readline-sync
+ package
+ whichisverysimilarintermsofthe
+  
+ APIandhandlesthisoutofthebox.
+  
+ Amorecompleteandabstractsolutionisprovidedbythe
+ Inquirer.jspackage
+ .
+  
+ Youcaninstallitusing
+  npminstallinquirer
+ ,andthenyoucanreplicatetheabovecodelike
+  
+ this:
+  
+ const
+ inquirer=
+ require
+ (
+ 'inquirer'
+ )
+  
+  
+ var
+ questions=[{
+  
+  
+ type:
+ 'input'
+ ,
+  
+  
+ 41",NA
+ExposefunctionalityfromaNodefileusing ,NA,NA
+exports,"Howtousethemodule.exportsAPItoexposedatatootherfilesinyour 
+ application,ortootherapplicationsaswell
+  
+ Nodehasabuilt-inmodulesystem.
+  
+ ANode.jsfilecanimportfunctionalityexposedbyotherNode.jsfiles.
+  
+ Whenyouwanttoimportsomethingyouuse
+  
+ const
+ library=
+ require
+ (
+ './library'
+ )
+  
+ toimportthefunctionalityexposedinthe
+  library.js
+ filethatresidesinthecurrentfilefolder.
+  
+ Inthisfile,functionalitymustbeexposedbeforeitcanbeimportedbyotherfiles. 
+ Anyotherobjectorvariabledefinedinthefilebydefaultisprivateandnotexposedtothe outerworld.
+  
+ Thisiswhatthe
+  module.exports
+ APIofferedbythe
+  module
+ system
+ allowsustodo.
+  
+ Whenyouassignanobjectorafunctionasanew
+  exports
+ property,thatisthethingthat's 
+ beingexposed,andassuch,itcanbeimportedinotherpartsofyourapp,orinotherappsas well.
+  
+ Youcandosoin2ways.
+  
+ Thefirstistoassignanobjectto
+  module.exports
+ ,whichisanobjectprovidedoutofthebox 
+ bythemodulesystem,andthiswillmakeyourfileexport
+ justthatobject
+ :
+  
+ const
+ car={
+  
+  
+ brand:
+ 'Ford'
+ ,
+  
+  
+ model:
+ 'Fiesta'
+  
+  
+ }
+  
+  
+ module
+ .exports=car
+  
+  
+ //..intheotherfile
+  
+  
+ const
+ car=
+ require
+ (
+ './car'
+ )
+  
+ Thesecondwayistoaddtheexportedobjectasapropertyof
+  exports
+ .Thiswayallowsyou 
+ toexportmultipleobjects,functionsordata:
+  
+ 43",NA
+npm,"Aquickguidetonpm,thepowerfulpackagemanagerkeytothesuccessof 
+ Node.js.InJanuary2017over350000packageswerereportedbeinglistedin 
+ thenpmregistry,makingitthebiggestsinglelanguagecoderepositoryon 
+ Earth,andyoucanbesurethereisapackagefor(almost!)everything.
+  
+ Introductiontonpm
+  
+ Downloads
+  
+  
+ Installingalldependencies
+  
+  
+ Installingasinglepackage
+  
+  
+ Updatingpackages
+  
+ Versioning
+  
+ RunningTasks",NA
+Introductiontonpm,"npm
+ means
+ nodepackagemanager
+ .
+  
+ 45",NA
+Downloads,"npm
+ managesdownloadsofdependenciesofyourproject.",NA
+Installingalldependencies,"Ifaprojecthasa
+  packages.json
+ file,byrunning
+  
+ npminstall
+  
+ itwillinstalleverythingtheprojectneeds,inthe
+  node_modules
+ folder,creatingitifit'snot 
+ existingalready.",NA
+Installingasinglepackage,"Youcanalsoinstallaspecificpackagebyrunning
+  
+ npminstall<package-name>
+  
+ Oftenyou'llseemoreflagsaddedtothiscommand:
+  
+ --save
+ installsandaddstheentrytothe
+  package.json
+ file
+ dependencies
+ --save-
+ dev
+ installsandaddstheentrytothe
+  package.json
+ file
+ devDependencies
+  
+ ThedifferenceismainlythatdevDependenciesareusuallydevelopmenttools,likeatesting 
+ library,while
+  dependencies
+ arebundledwiththeappinproduction.",NA
+Updatingpackages,"Updatingisalsomadeeasy,byrunning
+  
+ npmupdate
+  
+  
+ 46",NA
+Versioning,"Inadditiontoplaindownloads,
+  npm
+ alsomanages
+ versioning
+ ,soyoucanspecifyany
+  
+ specificversionofapackage,orrequireaversionhigherorlowerthanwhatyouneed.
+  
+ Manytimesyou'llfindthatalibraryisonlycompatiblewithamajorreleaseofanotherlibrary.
+  
+ Orabuginthelatestreleaseofalib,stillunfixed,iscausinganissue.
+  
+ Specifyinganexplicitversionofalibraryalsohelpstokeepeveryoneonthesameexact
+  
+ versionofapackage,sothatthewholeteamrunsthesameversionuntilthe
+  package.json
+ file
+  
+ isupdated.
+  
+ Inallthosecases,versioninghelpsalot,and
+  npm
+ followsthesemanticversioning(semver)
+  
+ standard.",NA
+RunningTasks,"Thepackage.jsonfilesupportsaformatforspecifyingcommandlinetasksthatcanberunby
+  
+ using
+  
+ npm<task-name>
+  
+ Forexample:
+  
+ {
+  
+  
+ ""scripts""
+ :{
+  
+  
+ ""start-dev""
+ :
+ ""nodelib/server-development""
+ ,
+  
+  
+ ""start""
+ :
+ ""nodelib/server-production""
+  
+  
+ },
+  
+  
+ }
+  
+ It'sverycommontousethisfeaturetorunWebpack:
+  
+ {
+  
+  
+ ""scripts""
+ :{
+  
+  
+ 47",NA
+Wheredoesnpminstallthepackages,"Howtofindoutwherenpminstallsthepackages
+  
+ Readthe
+ npmguide
+ ifyouarestartingoutwithnpm,it'sgoingtogoinalotofthebasic detailsofit.
+  
+ Whenyouinstallapackageusing
+  npm
+ (or
+ yarn
+ ),youcanperform2typesofinstallation:
+  
+ alocalinstall
+  
+  
+ aglobalinstall 
+  
+ Bydefault,whenyoutypean
+  npminstall
+ command,like:
+  
+ npminstalllodash
+  
+ thepackageisinstalledinthecurrentfiletree,underthe
+  node_modules
+ subfolder. Asthishappens,
+  
+ npm
+ alsoaddsthe
+  lodash
+ entryinthe
+  dependencies
+ propertyofthe 
+ package.json
+ file
+ presentinthecurrentfolder.
+  
+ Aglobalinstallationisperformedusingthe
+  -g
+ flag:
+  
+ npminstall-glodash
+  
+ Whenthishappens,npmwon'tinstallthepackageunderthelocalfolder,butinstead,itwill 
+ useagloballocation.
+  
+ Where,exactly?
+  
+ The
+  npmroot-g
+ commandwilltellyouwherethatexactlocationisonyourmachine. 
+ OnmacOSorLinuxthislocationcouldbe
+  /usr/local/lib/node_modules
+ .OnWindowsitcould be
+  
+ C:�sers\YOU\AppData\Roaming\npm\node_modules
+  
+ Ifyouuse
+  nvm
+ tomanageNode.jsversions,however,thatlocationwoulddiffer. 
+ Iforexampleuse
+  nvm
+ andmypackageslocationwasshownas 
+  
+ /Users/flavio/.nvm/versions/node/v8.9.0/lib/node_modules
+ .
+  
+ 49",NA
+Howtouseorexecuteapackageinstalled ,NA,NA
+usingnpm,"Howtoincludeanduseinyourcodeapackageinstalledinyour 
+ node_modulesfolder
+  
+ Whenyouinstallusing
+  npm
+ apackageintoyour
+  node_modules
+ folder,oralsoglobally,howdo 
+ youuseitinyourNodecode?
+  
+ Sayyouinstall
+  lodash
+ ,thepopularJavaScriptutilitylibrary,using
+  
+ npminstalllodash
+  
+ Thisisgoingtoinstallthepackageinthelocal
+  node_modules
+ folder.
+  
+ Touseitinyourcode,youjustneedtoimportitintoyourprogramusing
+  require
+ :
+  
+ const_=require('lodash)
+  
+ Whatifyourpackageisanexecutable?
+  
+ Inthiscase,itwillputtheexecutablefileunderthe
+  node_modules/.bin/
+ folder.
+  
+ Oneeasywaytodemonstratethisis
+ cowsay
+ .
+  
+ Thecowsaypackageprovidesacommandlineprogramthatcanbeexecutedtomakeacow 
+ saysomething(andotheranimalsaswell ).
+  
+ Whenyouinstallthepackageusing
+  npminstallcowsay
+ ,itwillinstallitselfandafew 
+ dependenciesinthenode_modulesfolder:
+  
+ 50",NA
+Thepackage.jsonfile,"Thepackage.jsonfileisakeyelementinlotsofappcodebasesbasedonthe 
+ Node.jsecosystem.
+  
+ IfyouworkwithJavaScript,oryou'veeverinteractedwithaJavaScriptproject,Node.jsora 
+ frontendproject,yousurelymetthe
+  package.json
+ file.
+  
+ What'sthatfor?Whatshouldyouknowaboutit,andwhataresomeofthecoolthingsyoucan dowithit?
+  
+ The
+  package.json
+ fileiskindofamanifestforyourproject.Itcandoalotofthings,completely 
+ unrelated.It'sacentralrepositoryofconfigurationfortools,forexample.It'salsowhere
+  npm 
+ and
+  
+ yarn
+ storethenamesandversionsofthepackageitinstalled.
+  
+ Thefilestructure
+  
+ Propertiesbreakdown 
+  
+  
+ name 
+  
+  
+ author 
+  
+  
+ contributors 
+  
+  
+ bugs 
+  
+  
+ homepage 
+  
+  
+ version 
+  
+  
+ license 
+  
+  
+ keywords 
+  
+  
+ description 
+  
+  
+ repository 
+  
+  
+ main 
+  
+  
+ private 
+  
+  
+ scripts 
+  
+  
+ dependencies 
+  
+  
+ devDependencies 
+  
+  
+ engines 
+  
+  
+ browserslist
+  
+  
+ Command-specificproperties
+  
+ Packageversions",NA
+Thefilestructure,"Here'sanexamplepackage.jsonfile:
+  
+ 53",NA
+Propertiesbreakdown,"Thissectiondescribesthepropertiesyoucanuseindetail.Ireferto""package""butthesame 
+ thingappliestolocalapplicationswhichyoudonotuseaspackages.
+  
+ Mostofthosepropertiesareonlyusedonthe
+ https://www.npmjs.com/
+ ,otherbyscriptsthat 
+ interactwithyourcode,like
+  npm
+ orothers.",NA
+name,"Setsthepackagename.
+  
+ Example:
+  
+ ""name""
+ :
+ ""test-project""
+  
+ Thenamemustbelessthan214characters,mustnothavespaces,itcanonlycontain 
+ lowercaseletters,hyphens(
+  -
+ )orunderscores(
+  _
+ ).
+  
+ Thisisbecausewhenapackageispublishedon
+  npm
+ ,itgetsitsownURLbasedonthis property.
+  
+ IfyoupublishedthispackagepubliclyonGitHub,agoodvalueforthispropertyistheGitHub 
+ repositoryname.",NA
+author,"Liststhepackageauthorname
+  
+ Example:
+  
+ 56",NA
+contributors,"Aswellastheauthor,theprojectcanhaveoneormorecontributors.Thispropertyisanarray
+  
+ thatliststhem.
+  
+ Example:
+  
+ {
+  
+  
+ ""contributors""
+ :[
+  
+  
+ ""FlavioCopes<flavio@flaviocopes.com>(https://flaviocopes.com)""
+  
+  
+ ]
+  
+  
+ }
+  
+ Canalsobeusedwiththisformat:
+  
+ {
+  
+  
+ ""contributors""
+ :[
+  
+  
+ {
+  
+  
+ ""name""
+ :
+ ""FlavioCopes""
+ ,
+  
+  
+ ""email""
+ :
+ ""flavio@flaviocopes.com""
+ ,
+  
+  
+ ""url""
+ :
+ ""https://flaviocopes.com""
+  
+  
+ }
+  
+  
+ ]
+  
+  
+ }",NA
+bugs,"Linkstothepackageissuetracker,mostlikelyaGitHubissuespage
+  
+ Example:
+  
+ {
+  
+  
+ ""bugs""
+ :
+ ""https://github.com/flaviocopes/package/issues""",NA
+homepage,"Setsthepackagehomepage 
+  
+ Example:
+  
+ {
+  
+  
+ ""homepage""
+ :
+ ""https://flaviocopes.com/package""
+  
+  
+ }",NA
+version,"Indicatesthecurrentversionofthepackage. 
+  
+ Example:
+  
+ ""version""
+ :
+ ""1.0.0""
+  
+ Thispropertyfollowsthesemanticversioning(semver)notationforversions,whichmeansthe 
+ versionisalwaysexpressedwith3numbers:
+  x.x.x
+ .
+  
+ Thefirstnumberisthemajorversion,thesecondtheminorversionandthethirdisthepatch version.
+  
+ Thereisameaninginthesenumbers:areleasethatonlyfixesbugsisapatchrelease,a 
+ releasethatintroducesbackward-compatiblechangesisaminorrelease,amajorreleasecan 
+ havebreakingchanges.",NA
+license,"Indicatesthelicenseofthepackage. 
+  
+ Example:
+  
+ ""license""
+ :
+ ""MIT""",NA
+keywords,"Thispropertycontainsanarrayofkeywordsthatassociatewithwhatyourpackagedoes. 
+ Example:
+  
+ 58",NA
+description,"Thispropertycontainsabriefdescriptionofthepackage
+  
+ Example:
+  
+ ""description""
+ :
+ ""Apackagetoworkwithstrings""
+  
+ Thisisespeciallyusefulifyoudecidetopublishyourpackageto
+  npm
+ sothatpeoplecanfind
+  
+ outwhatthepackageisabout.",NA
+repository,"Thispropertyspecifieswherethispackagerepositoryislocated.
+  
+ Example:
+  
+ ""repository""
+ :
+ ""github:flaviocopes/testing""
+ ,
+  
+ Noticethe
+  github
+ prefix.Thereareotherpopularservicesbakedin:
+  
+ ""repository""
+ :
+ ""gitlab:flaviocopes/testing""
+ ,
+  
+  
+ ""repository""
+ :
+ ""bitbucket:flaviocopes/testing""
+ ,
+  
+ Youcanexplicitlysettheversioncontrolsystem:
+  
+ ""repository""
+ :{
+  
+  
+ ""type""
+ :
+ ""git""
+ ,
+  
+  
+ ""url""
+ :
+ ""https://github.com/flaviocopes/testing.git""
+  
+  
+ }
+  
+ Youcanusedifferentversioncontrolsystems:
+  
+ 59",NA
+main,"Setstheentrypointforthepackage.
+  
+ Whenyouimportthispackageinanapplication,that'swheretheapplicationwillsearchforthe
+  
+ moduleexports.
+  
+ Example:
+  
+ ""main""
+ :
+ ""src/main.js""",NA
+private,"ifsetto
+  true
+ preventstheapp/packagetobeaccidentallypublishedon
+  npm
+  
+ Example:
+  
+ ""private""
+ :
+ true",NA
+scripts,"Definesasetofnodescriptsyoucanrun
+  
+ Example:
+  
+ ""scripts""
+ :{
+  
+  
+ ""dev""
+ :
+ ""webpack-dev-server--inline--progress--configbuild/webpack.dev.conf.js""
+ ,
+  
+  
+ ""start""
+ :
+ ""npmrundev""
+ ,
+  
+  
+ ""unit""
+ :
+ ""jest--configtest/unit/jest.conf.js--coverage""
+ ,
+  
+  
+ ""test""
+ :
+ ""npmrununit""
+ ,
+  
+  
+ ""lint""
+ :
+ ""eslint--ext.js,.vuesrctest/unit""
+ ,
+  
+  
+ ""build""
+ :
+ ""nodebuild/build.js""
+  
+  
+ }
+  
+ Thesescriptsarecommandlineapplications.Youcanrunthembycalling
+  npmrunXXXX
+ or
+  
+ yarnXXXX
+ ,where
+  XXXX
+ isthecommandname.Example:
+  npmrundev
+ .
+  
+ Youcanuseanynameyouwantforacommand,andscriptscandoliterallyanythingyou
+  
+ want.
+  
+ 60",NA
+dependencies,"Setsalistof
+  npm
+ packagesinstalledasdependencies.
+  
+ Whenyouinstallapackageusingnpmoryarn:
+  
+ npminstall<PACKAGENAME>
+  
+  
+ yarnadd<PACKAGENAME>
+  
+ thatpackageisautomaticallyinsertedinthislist.
+  
+ Example:
+  
+ ""dependencies""
+ :{
+  
+  
+ ""vue""
+ :
+ ""^2.5.2""
+  
+  
+ }",NA
+devDependencies,"Setsalistof
+  npm
+ packagesinstalledasdevelopmentdependencies.
+  
+ Theydifferfrom
+  dependencies
+ becausetheyaremeanttobeinstalledonlyonadevelopment
+  
+ machine,notneededtorunthecodeinproduction.
+  
+ Whenyouinstallapackageusingnpmoryarn:
+  
+ npminstall--dev<PACKAGENAME>
+  
+  
+ yarnadd--dev<PACKAGENAME>
+  
+ thatpackageisautomaticallyinsertedinthislist.
+  
+ Example:
+  
+ ""devDependencies""
+ :{
+  
+  
+ ""autoprefixer""
+ :
+ ""^7.1.2""
+ ,
+  
+  
+ ""babel-core""
+ :
+ ""^6.22.1""
+  
+  
+ }",NA
+engines,"SetswhichversionsofNode.jsandothercommandsthispackage/appworkon
+  
+ Example:
+  
+ ""engines""
+ :{
+  
+  
+ 61",NA
+browserslist,"Isusedtotellwhichbrowsers(andtheirversions)youwanttosupport.It'sreferencedby
+  
+ Babel,Autoprefixer,andothertools,toonlyaddthepolyfillsandfallbacksneededtothe
+  
+ browsersyoutarget.
+  
+ Example:
+  
+ ""browserslist""
+ :[
+  
+  
+ "">1%""
+ ,
+  
+  
+ ""last2versions""
+ ,
+  
+  
+ ""notie<=8""
+  
+  
+ ]
+  
+ Thisconfigurationmeansyouwanttosupportthelast2majorversionsofallbrowserswithat
+  
+ least1%ofusage(fromthe
+ CanIUse.com
+ stats),exceptIE8andlower.
+  
+ (
+ seemore
+ )",NA
+Command-specificproperties,"The
+  package.json
+ filecanalsohostcommand-specificconfiguration,forexampleforBabel,
+  
+ ESLint,andmore.
+  
+ Eachhasaspecificproperty,like
+  eslintConfig
+ ,
+  babel
+ andothers.Thosearecommand-
+  
+ specific,andyoucanfindhowtousethoseintherespectivecommand/projectdocumentation.",NA
+Packageversions,"Youhaveseeninthedescriptionaboveversionnumberslikethese:
+  ~3.0.0
+ or
+  ^0.13.0
+ .
+  
+ Whatdotheymean,andwhichotherversionspecifierscanyouuse?
+  
+ Thatsymbolspecifieswhichupdatesyoupackageaccepts,fromthatdependency.
+  
+ Giventhatusingsemver(semanticversioning)allversionshave3digits,thefirstbeingthe
+  
+ majorrelease,thesecondtheminorreleaseandthethirdisthepatchrelease,youhavethese
+  
+ rules:
+  
+ ~
+ :ifyouwrite
+  ~0.13.0
+ ,youwanttoonlyupdatepatchreleases:
+  0.13.1
+ isok,but
+  
+ 62",NA
+Thepackage-lock.jsonfile,"Thepackage-lock.jsonfileisautomaticallygeneratedwheninstallingnode 
+ packages.Learnwhatit'sabout
+  
+ Inversion5,
+ npm
+ introducedthe
+  package-lock.json
+ file.
+  
+ What'sthat?Youprobablyknowaboutthe
+  package.json
+ file
+ ,whichismuchmorecommon 
+ andhasbeenaroundformuchlonger.
+  
+ Thegoalofthefileistokeeptrackoftheexactversionofeverypackagethatisinstalledso 
+ thataproductis100%reproducibleinthesamewayevenifpackagesareupdatedbytheir 
+ maintainers.
+  
+ Thissolvesaveryspecificproblemthat
+  package.json
+ leftunsolved.Inpackage.jsonyoucan 
+ setwhichversionsyouwanttoupgradeto(patchorminor),usingthe
+ semver
+ notation,for example:
+  
+ ifyouwrite
+  ~0.13.0
+ ,youwanttoonlyupdatepatchreleases:
+  0.13.1
+ isok,but
+  0.14.0 
+ isnot.
+  
+ ifyouwrite
+  ^0.13.0
+ ,youwanttoupdatepatchandminorreleases:
+  0.13.1
+ ,
+  0.14.0
+ and soon.
+  
+ ifyouwrite
+  0.13.0
+ ,thatistheexactversionthatwillbeused,always
+  
+ Youdon'tcommittoGityournode_modulesfolder,whichisgenerallyhuge,andwhenyoutry 
+ toreplicatetheprojectonanothermachinebyusingthe
+  npminstall
+ command,ifyou specifiedthe
+  
+ ~
+ syntaxandapatchreleaseofapackagehasbeenreleased,thatoneisgoing tobeinstalled.Samefor
+  
+ ^
+ andminorreleases.
+  
+ Ifyouspecifyexactversions,like
+  0.13.0
+ intheexample,youarenotaffectedbythis problem.
+  
+ Itcouldbeyou,oranotherpersontryingtoinitializetheprojectontheothersideoftheworld byrunning
+  
+ npminstall
+ .
+  
+ Soyouroriginalprojectandthenewlyinitializedprojectareactuallydifferent.Evenifapatch 
+ orminorreleaseshouldnotintroducebreakingchanges,weallknowbugscan(andso,they 
+ will)slidein.
+  
+ The
+  package-lock.json
+ setsyourcurrentlyinstalledversionofeachpackage
+ instone
+ ,and 
+ npm
+ willusethoseexactversionswhenrunning
+  npminstall
+ .
+  
+ Thisconceptisnotnew,andotherprogramminglanguagespackagemanagers(like 
+ ComposerinPHP)useasimilarsystemforyears.
+  
+ 64",NA
+Anexample,"Thisisanexamplestructureofa
+  package-lock.json
+ filewegetwhenwerun
+  npminstall
+  
+ cowsay
+ inanemptyfolder:
+  
+ { 
+  
+ ""requires"":true, 
+  
+ ""lockfileVersion"":1, 
+  
+ ""dependencies"":{ 
+  
+ ""ansi-regex"":{ 
+  
+ ""version"":""3.0.0"", 
+  
+ ""resolved"":""https://registry.npmjs.org/ansi-regex/-/ansi-regex-3.
+  
+ 0.0.tgz"", 
+  
+ ""integrity"":""sha1-7QMXwyIGT3lGbAKWa922Bas32Zg="" 
+  
+ }, 
+  
+ ""cowsay"":{ 
+  
+ ""version"":""1.3.1"", 
+  
+ ""resolved"":""https://registry.npmjs.org/cowsay/-/cowsay-1.3.1.tgz"" , 
+  
+ ""integrity"":""sha512-3PVFe6FePVtPj1HTeLin9v8WyLl+VmM1l1H/5P+BTTDkM 
+ Ajufp+0F9eLjzRnOHzVAYeIYFF5po5NjRrgefnRMQ=="", 
+  
+ ""requires"":{ 
+  
+ ""get-stdin"":""^5.0.1"", 
+  
+ ""optimist"":""~0.6.1"", 
+  
+ ""string-width"":""~2.1.1"", 
+  
+ ""strip-eof"":""^1.0.0"" 
+  
+ } 
+  
+ }, 
+  
+ ""get-stdin"":{ 
+  
+ ""version"":""5.0.1"", 
+  
+ ""resolved"":""https://registry.npmjs.org/get-stdin/-/get-stdin-5.0.
+  
+ 1.tgz"", 
+  
+ ""integrity"":""sha1-Ei4WFZHiH/TFJTAwVpPyDmOTo5g="" 
+  
+ }, 
+  
+ ""is-fullwidth-code-point"":{ 
+  
+ ""version"":""2.0.0"", 
+  
+ ""resolved"":""https://registry.npmjs.org/is-fullwidth-code-point/-/ is-fullwidth-code-point-2.0.0.tgz"", 
+  
+ ""integrity"":""sha1-o7MKXE8ZkYMWeqq5O+764937ZU8="" 
+  
+ }, 
+  
+ ""minimist"":{ 
+  
+ ""version"":""0.0.10"", 
+  
+ ""resolved"":""https://registry.npmjs.org/minimist/-/minimist-0.0.10
+  
+ .tgz"",
+  
+  
+ 65",NA
+Findtheinstalledversionofannpm ,NA,NA
+package,"Howtofindoutwhichversionofaparticularpackageyouhaveinstalledin yourapp
+  
+ Toseethelatestversionofallthenpmpackageinstalled,includingtheirdependencies:
+  
+ npmlist
+  
+ Example:
+  
+ ❯
+ npmlist
+  
+ /Users/flavio/dev/node/cowsay
+  
+ └─┬cowsay@1.3.1
+  
+ ├──get-stdin@5.0.1
+  
+ ├─┬optimist@0.6.1
+  
+ │├──minimist@0.0.10
+  
+ │└──wordwrap@0.0.3
+  
+ ├─┬string-width@2.1.1
+  
+ │├──is-fullwidth-code-point@2.0.0
+  
+ │└─┬strip-ansi@4.0.0
+  
+ │└──ansi-regex@3.0.0
+  
+ └──strip-eof@1.0.0
+  
+ Youcanalsojustopenthe
+  package-lock.json
+ file,butthisinvolvessomevisualscanning.
+  
+ npmlist-g
+ isthesame,butforgloballyinstalledpackages.
+  
+ Togetonlyyourtop-levelpackages(basically,theonesyoutoldnpmtoinstallandyoulisted
+  
+ inthe
+  package.json
+ ),run
+  npmlist--depth=0
+ :
+  
+ ❯
+ npmlist--depth=0
+  
+  
+ /Users/flavio/dev/node/cowsay
+  
+  
+ └──cowsay@1.3.1
+  
+ Youcangettheversionofaspecificpackagebyspecifyingthename:
+  
+ ❯
+ npmlistcowsay
+  
+  
+ /Users/flavio/dev/node/cowsay
+  
+  
+ └──cowsay@1.3.1
+  
+ Thisalsoworksfordependenciesofpackagesyouinstalled:
+  
+ 68",NA
+Howtoinstallanolderversionofannpm ,NA,NA
+package,"Learnhowtoinstallanolderversionofannpmpackage,somethingthat 
+ mightbeusefultosolveacompatibilityproblem
+  
+ Youcaninstallanoldversionofannpmpackageusingthe
+  @
+ syntax:
+  
+ npminstall<package>@<version>
+  
+ Example:
+  
+ npminstallcowsay
+  
+ installsversion1.3.1(atthetimeofwriting).
+  
+ Installversion1.2.0with:
+  
+ npminstallcowsay@1.2.0
+  
+ Thesamecanbedonewithglobalpackages:
+  
+ npminstall-gwebpack@4.16.4
+  
+ Youmightalsobeinterestedinlistingallthepreviousversionofapackage.Youcandoitwith
+  
+ npmview<package>versions
+ :
+  
+ ❯
+ npmviewcowsayversions
+  
+  
+ ['1.0.0',
+  
+ '1.0.1', 
+  
+ '1.0.2', 
+  
+ '1.0.3', 
+  
+ '1.1.0', 
+  
+ '1.1.1', 
+  
+ '1.1.2', 
+  
+ '1.1.3', 
+  
+ '1.1.4', 
+  
+ '1.1.5', 
+  
+ '1.1.6', 
+  
+ '1.1.7', 
+  
+ '1.1.8', 
+  
+ '1.1.9', 
+  
+ '1.2.0',
+  
+ '1.2.1',
+  
+  
+ 70",NA
+HowtoupdatealltheNodedependencies ,NA,NA
+totheirlatestversion,"Howdoyouupdateallthenpmdependenciesstoreinthepackage.jsonfile, 
+ totheirlatestversionavailable?
+  
+ Whenyouinstallapackageusing
+  npminstall<packagename>
+ ,thelatestavailableversionof
+  
+ thepackageisdownloadedandputinthe
+  node_modules
+ folder,andacorrespondingentryis
+  
+ addedtothe
+  package.json
+ and
+  package-lock.json
+ filesthatarepresentinyourcurrentfolder.
+  
+ npm
+ calculatesthedependenciesandinstallsthelatestavailableversionofthoseaswell.
+  
+ Let'ssayyouinstall
+  cowsay
+ ,acoolcommandlinetoolthatletsyoumakeacowsay
+ things
+ .
+  
+ Whenyou
+  npminstallcowsay
+ ,thisentryisaddedtothe
+  package.json
+ file:
+  
+ {
+  
+  
+ ""dependencies""
+ :{
+  
+  
+ ""cowsay""
+ :
+ ""^1.3.1""
+  
+  
+ }
+  
+  
+ }
+  
+ andthisisanextractof
+  package-lock.json
+ ,whereIremovedthenesteddependenciesfor
+  
+ clarity:
+  
+ {
+  
+  
+ ""requires""
+ :
+ true
+ , 
+  
+  
+ ""lockfileVersion""
+ :
+ 1
+ , 
+  
+  
+ ""dependencies""
+ :{ 
+  
+   
+ ""cowsay""
+ :{ 
+  
+    
+ ""version""
+ :
+ ""1.3.1""
+ , 
+  
+    
+ ""resolved""
+ :
+ ""https://registry.npmjs.org/cowsay/-/cowsay-1.3.1.tgz""
+ , 
+  
+    
+ ""integrity""
+ :
+ ""sha512-3PVFe6FePVtPj1HTeLin9v8WyLl+VmM1l1H/5P+BTTDkMAjufp+0F9eLjzRnOHz 
+ VAYeIYFF5po5NjRrgefnRMQ==""
+ , 
+  
+    
+ ""requires""
+ :{ 
+  
+     
+ ""get-stdin""
+ :
+ ""^5.0.1""
+ , 
+  
+     
+ ""optimist""
+ :
+ ""~0.6.1""
+ , 
+  
+     
+ ""string-width""
+ :
+ ""~2.1.1""
+ , 
+  
+     
+ ""strip-eof""
+ :
+ ""^1.0.0"" 
+  
+ } 
+  
+ } 
+  
+ }
+  
+ }
+  
+ 72",NA
+Semanticversioningrules,"SemanticVersioningisaconventionusedtoprovideameaningtoversions
+  
+ Ifthere'sonegreatthinginNode.jspackages,isthatallagreedonusingSemanticVersioning 
+ fortheirversionnumbering.
+  
+ TheSemanticVersioningconceptissimple:allversionshave3digits:
+  x.y.z
+ .
+  
+ thefirstdigitisthemajorversion
+  
+ theseconddigitistheminorversion
+  
+ thethirddigitisthepatchversion
+  
+ Whenyoumakeanewrelease,youdon'tjustupanumberasyouplease,butyouhaverules:
+  
+ youupthemajorversionwhenyoumakeincompatibleAPIchanges
+  
+ youuptheminorversionwhenyouaddfunctionalityinabackward-compatiblemanner
+  
+ youupthepatchversionwhenyoumakebackward-compatiblebugfixes
+  
+ Theconventionisadoptedallacrossprogramminglanguages,anditisveryimportantthat every
+  
+ npm
+ packageadherestoit,becausethewholesystemdependsonthat.
+  
+ Whyisthatsoimportant?
+  
+ Because
+  npm
+ setsomeruleswecanuseinthe
+  package.json
+ file
+ tochoosewhichversionsit 
+ canupdateourpackagesto,whenwerun
+  npmupdate
+ .
+  
+ Therulesusethosesymbols:
+  
+ ^ 
+  
+ ~ 
+  
+ > 
+  
+ >= 
+  
+ < 
+  
+ <= 
+  
+ =
+  
+ -
+  
+ ||
+  
+ Let'sseethoserulesindetail:
+  
+ ^
+ :ifyouwrite
+  ^0.13.0
+ whenrunning
+  npmupdate
+ itcanupdatetopatchandminor releases:
+  0.13.1
+ ,
+  
+ 0.14.0
+ andsoon.
+  
+ ~
+ :ifyouwrite
+  ~0.13.0
+ ,whenrunning
+  npmupdate
+ itcanupdatetopatchreleases: 
+ 0.13.1
+ isok,but
+  
+ 0.14.0
+ isnot.
+  
+ 75",NA
+Uninstallingnpmpackages ,"HowtouninstallannpmNodepackage,locallyorglobally 
+  
+ Touninstallapackageyouhavepreviouslyinstalled
+ locally
+ (using
+  npminstall<package-name>
+ inthe
+  
+ node_modules
+ folder,run
+  
+ npmuninstall<package-name>
+  
+ fromtheprojectrootfolder(thefolderthatcontainsthenode_modulesfolder). Usingthe
+  -
+ S
+ flag,or
+  --save
+ ,thisoperationwillalsoremovethereferenceinthe 
+ package.json
+ file
+ .
+  
+ Ifthepackagewasadevelopmentdependency,listedinthedevDependenciesofthe 
+ package.json
+ file,youmustusethe
+  -D
+ /
+  --save-dev
+ flagtoremoveitfromthefile:
+  
+ npmuninstall-S<package-name>
+  
+  
+ npmuninstall-D<package-name>
+  
+ Ifthepackageisinstalled
+ globally
+ ,youneedtoaddthe
+  -g
+ /
+  --global
+ flag:
+  
+ npmuninstall-g<package-name>
+  
+ forexample:
+  
+ npmuninstall-gwebpack
+  
+ andyoucanrunthiscommandfromanywhereyouwantonyoursystembecausethefolder 
+ whereyoucurrentlyaredoesnotmatter.
+  
+ 77",NA
+Globalorlocalpackages,"Whenisapackagebestinstalledglobally?Why?
+  
+ Themaindifferencebetweenlocalandglobalpackagesisthis:
+  
+ localpackages
+ areinstalledinthedirectorywhereyourun
+  npminstall<package-name>
+ , 
+ andtheyareputinthe
+  node_modules
+ folderunderthisdirectory
+  
+ globalpackages
+ areallputinasingleplaceinyoursystem(exactlywheredependson 
+ yoursetup),regardlessofwhereyourun
+  npminstall-g<package-name>
+  
+ Inyourcode,theyarebothrequiredinthesameway:
+  
+ require
+ (
+ 'package-name'
+ )
+  
+ sowhenshouldyouinstallinonewayoranother?
+  
+ Ingeneral,
+ allpackagesshouldbeinstalledlocally
+ .
+  
+ Thismakessureyoucanhavedozensofapplicationsinyourcomputer,allrunningadifferent 
+ versionofeachpackageifneeded.
+  
+ Updatingaglobalpackagewouldmakeallyourprojectsusethenewrelease,andasyoucan 
+ imaginethismightcausenightmaresintermsofmaintenance,assomepackagesmightbreak 
+ compatibilitywithfurtherdependencies,andsoon.
+  
+ Allprojectshavetheirownlocalversionofapackage,evenifthismightappearlikeawasteof 
+ resources,it'sminimalcomparedtothepossiblenegativeconsequences.
+  
+ Apackage
+ shouldbeinstalledglobally
+ whenitprovidesanexecutablecommandthatyou 
+ runfromtheshell(CLI),andit'sreusedacrossprojects.
+  
+ Youcanalsoinstallexecutablecommandslocallyandrunthemusing
+ npx
+ ,butsome 
+ packagesarejustbetterinstalledglobally.
+  
+ Greatexamplesofpopularglobalpackageswhichyoumightknoware
+  
+ npm
+  
+ create-react-app
+  
+ vue-cli
+  
+ grunt-cli
+  
+ mocha
+  
+ react-native-cli
+  
+ gatsby-cli
+  
+ 78",NA
+npmdependenciesanddevDependencies,"Whenisapackageadependency,andwhenisitadevdependency?
+  
+ Whenyouinstallannpmpackageusing
+  npminstall<package-name>
+ ,youareinstallingitasa 
+ dependency
+ .
+  
+ Thepackageisautomaticallylistedinthe
+ package.jsonfile
+ ,underthe
+  dependencies
+ list(asof 
+ npm5:beforeyouhadtomanuallyspecify
+  --save
+ ).
+  
+ Whenyouaddthe
+  -D
+ flag,or
+  --save-dev
+ ,youareinstallingitasadevelopment 
+ dependency,whichaddsittothe
+  devDependencies
+ list.
+  
+ Developmentdependenciesareintendedasdevelopment-onlypackages,thatareunneeded 
+ inproduction.Forexampletestingpackages,
+ webpack
+ or
+ Babel
+ .
+  
+ Whenyougoinproduction,ifyoutype
+  npminstall
+ andthefoldercontainsa
+  package.json 
+ file,theyareinstalled,asnpmassumesthisisadevelopmentdeploy.
+  
+ Youneedtosetthe
+  --production
+ flag(
+  npminstall--production
+ )toavoidinstallingthose 
+ developmentdependencies.
+  
+ 80",NA
+npx,"npxisaverycoolwaytorunNodecode,andprovidesmanyusefulfeatures
+  
+ Inthispost,Iwanttointroduceaverypowerfulcommandthat'sbeenavailablein
+ npm
+ starting
+  
+ version5.2,releasedinJuly2017:
+ npx
+ .
+  
+ Ifyoudon'twanttoinstallnpm,youcan
+ installnpxasastandalonepackage
+  
+ npx
+ letsyouruncodebuiltwithNodeandpublishedthroughthenpmregistry.",NA
+Easilyrunlocalcommands,"Nodedevelopersusedtopublishmostoftheexecutablecommandsasglobalpackages,in
+  
+ orderforthemtobeinthepathandexecutableimmediately.
+  
+ Thiswasapainbecauseyoucouldnotreallyinstalldifferentversionsofthesamecommand.
+  
+ Running
+  npxcommandname
+ automaticallyfindsthecorrectreferenceofthecommandinsidethe
+  
+ node_modules
+ folderofaproject,withoutneedingtoknowtheexactpath,andwithoutrequiring
+  
+ thepackagetobeinstalledgloballyandintheuser'spath.",NA
+Installation-lesscommandexecution,"Thereisanothergreatfeatureof
+  npm
+ ,whichisallowingtoruncommandswithoutfirst
+  
+ installingthem.
+  
+ Thisisprettyuseful,mostlybecause:
+  
+ 1)youdon'tneedtoinstallanything2)youcanrundifferentversionsofthesamecommand,
+  
+ usingthesyntax@version
+  
+ Atypicaldemonstrationofusing
+  npx
+ isthroughthe
+  cowsay
+ command.
+  cowsay
+ willprinta
+  
+ cowsayingwhatyouwroteinthecommand.Forexample:
+  
+ cowsay""Hello""
+ willprint
+  
+ _______
+  
+  
+ <Hello>
+  
+  
+ -------
+  
+  
+ \^__^
+  
+  
+ \(oo)\_______
+  
+  
+ (__)\)\/\
+  
+  
+ ||----w|
+  
+ 81",NA
+RunsomecodeusingadifferentNodeversion,"Usethe
+  @
+ tospecifytheversion,andcombinethatwiththe
+  node
+ npmpackage
+ :
+  
+ npxnode@6-v
+ #v6.14.3
+  
+  
+ npxnode@8-v
+ #v8.11.3
+  
+ Thishelpstoavoidtoolslike
+  nvm
+ ortheotherNodeversionmanagementtools.",NA
+RunarbitrarycodesnippetsdirectlyfromaURL,"npx
+ doesnotlimityoutothepackagespublishedonthenpmregistry. 
+ Youcanruncodethatsitsina
+ GitHub
+ gist,forexample:
+  
+ npxhttps://gist.github.com/zkat/4bc19503fe9e9309e2bfaa2c58074d32
+  
+ Ofcourse,youneedtobecarefulwhenrunningcodethatyoudonotcontrol,aswithgreat 
+ powercomesgreatresponsibility.
+  
+ 82",NA
+Theeventloop,"TheEventLoopisoneofthemostimportantaspectstounderstandabout 
+ JavaScript.Thispostexplainsitinsimpleterms
+  
+ Introduction
+  
+ Blockingtheeventloop
+  
+ Thecallstack
+  
+ Asimpleeventloopexplanation
+  
+ Queuingfunctionexecution
+  
+ TheMessageQueue
+  
+ ES6JobQueue",NA
+Introduction,"The
+ EventLoop
+ isoneofthemostimportantaspectstounderstandaboutJavaScript.
+  
+ I'veprogrammedforyearswithJavaScript,yetI'venever
+ fully
+ understoodhowthings 
+ workunderthehoods.It'scompletelyfinetonotknowthisconceptindetail,butasusual, 
+ it'shelpfultoknowhowitworks,andalsoyoumightjustbealittlecuriousatthispoint.
+  
+ ThispostaimstoexplaintheinnerdetailsofhowJavaScriptworkswithasinglethread,and 
+ howithandlesasynchronousfunctions.
+  
+ YourJavaScriptcoderunssinglethreaded.Thereisjustonethinghappeningatatime.
+  
+ Thisisalimitationthat'sactuallyveryhelpful,asitsimplifiesalothowyouprogramwithout 
+ worryingaboutconcurrencyissues.
+  
+ Youjustneedtopayattentiontohowyouwriteyourcodeandavoidanythingthatcouldblock 
+ thethread,likesynchronousnetworkcallsorinfinite
+ loops
+ .
+  
+ Ingeneral,inmostbrowsersthereisaneventloopforeverybrowsertab,tomakeevery 
+ processisolatedandavoidawebpagewithinfiniteloopsorheavyprocessingtoblockyour 
+ entirebrowser.
+  
+ Theenvironmentmanagesmultipleconcurrenteventloops,tohandleAPIcallsforexample. 
+ WebWorkers
+ runintheirowneventloopaswell.
+  
+ Youmainlyneedtobeconcernedthat
+ yourcode
+ willrunonasingleeventloop,andwrite 
+ codewiththisthinginmindtoavoidblockingit.
+  
+ 84",NA
+Blockingtheeventloop,"AnyJavaScriptcodethattakestoolongtoreturnbackcontroltotheeventloopwillblockthe 
+ executionofanyJavaScriptcodeinthepage,evenblocktheUIthread,andtheusercannot 
+ clickaround,scrollthepage,andsoon.
+  
+ AlmostalltheI/OprimitivesinJavaScriptarenon-blocking.Networkrequests,
+ Node.js 
+ filesystemoperations,andsoon.Beingblockingistheexception,andthisiswhyJavaScriptis 
+ basedsomuchoncallbacks,andmorerecentlyon
+ promises
+ and
+ async/await
+ .",NA
+Thecallstack,"ThecallstackisaLIFOqueue(LastIn,FirstOut).
+  
+ Theeventloopcontinuouslychecksthe
+ callstack
+ toseeifthere'sanyfunctionthatneedsto run.
+  
+ Whiledoingso,itaddsanyfunctioncallitfindstothecallstackandexecuteseachonein order.
+  
+ Youknowtheerrorstacktraceyoumightbefamiliarwith,inthedebuggerorinthebrowser 
+ console?Thebrowserlooksupthefunctionnamesinthecallstacktoinformyouwhich 
+ functionoriginatesthecurrentcall:
+  
+ 85",NA
+Asimpleeventloopexplanation,"Let'spickanexample:
+  
+ const
+ bar=()=>
+ console
+ .log(
+ 'bar'
+ )
+  
+  
+ const
+ baz=()=>
+ console
+ .log(
+ 'baz'
+ )
+  
+  
+ const
+ foo=()=>{
+  
+  
+ console
+ .log(
+ 'foo'
+ )
+  
+  
+ bar()
+  
+  
+ baz()
+  
+  
+ }
+  
+  
+ foo()
+  
+ 86",NA
+Queuingfunctionexecution,"Theaboveexamplelooksnormal,there'snothingspecialaboutit:JavaScriptfindsthingsto
+  
+ execute,runstheminorder.
+  
+ 88",NA
+TheMessageQueue,"WhensetTimeout()iscalled,theBrowserorNode.jsstartthe
+ timer
+ .Oncethetimerexpires,in 
+ thiscaseimmediatelyasweput0asthetimeout,thecallbackfunctionisputinthe
+ Message Queue
+ .
+  
+ 91",NA
+ES6JobQueue,"ECMAScript2015
+ introducedtheconceptoftheJobQueue,whichisusedbyPromises(also 
+ introducedinES6/ES2015).It'sawaytoexecutetheresultofanasyncfunctionassoonas 
+ possible,ratherthanbeingputattheendofthecallstack.
+  
+ Promisesthatresolvebeforethecurrentfunctionendswillbeexecutedrightafterthecurrent function.
+  
+ Ifindnicetheanalogyofarollercoasterrideatanamusementpark:themessagequeueputs 
+ youbackinqueuewithafteralltheotherpeopleinthequeue,whilethejobqueueisthe 
+ fastpassticketthatletsyoutakeanotherriderightafteryoufinishedthepreviousone.
+  
+ Example:
+  
+ const
+ bar=()=>
+ console
+ .log(
+ 'bar'
+ )
+  
+  
+ const
+ baz=()=>
+ console
+ .log(
+ 'baz'
+ )
+  
+  
+ const
+ foo=()=>{
+  
+  
+ console
+ .log(
+ 'foo'
+ ) 
+  
+ setTimeout(bar,
+ 0
+ ) 
+  
+  
+ new
+ Promise
+ ((resolve,reject)=> 
+  
+ resolve(
+ 'shouldberightafterbaz,beforebar'
+ ) 
+ ).then(resolve=>
+ console
+ .log(resolve)) 
+  
+ baz()
+  
+ }
+  
+  
+ foo()
+  
+ Thisprints
+  
+ foo
+  
+  
+ 92",NA
+nextTick,"TheNode.jsprocess.nextTickfunctioninteractswiththeeventloopina 
+ specialway
+  
+ Asyoutrytounderstandthe
+ Node.jseventloop
+ ,oneimportantpartofitis 
+ process.nextTick()
+ .
+  
+ Everytimetheeventlooptakesafulltrip,wecallitatick.
+  
+ Whenwepassafunctionto
+  process.nextTick()
+ ,weinstructtheenginetoinvokethisfunction 
+ attheendofthecurrentoperation,beforethenexteventlooptickstarts:
+  
+ process.nextTick(()=>{
+  
+  
+ //dosomething
+  
+  
+ })
+  
+ Theeventloopisbusyprocessingthecurrentfunctioncode.
+  
+ Whenthisoperationends,theJSenginerunsallthefunctionspassedto
+  nextTick
+ calls 
+ duringthatoperation.
+  
+ It'sthewaywecantelltheJSenginetoprocessafunctionasynchronously(afterthecurrent 
+ function),butassoonaspossible,notqueueit.
+  
+ Calling
+  setTimeout(()=>{},0)
+ willexecutethefunctioninthenexttick,muchlaterthan whenusing
+  
+ nextTick()
+ .
+  
+ Use
+  nextTick()
+ whenyouwanttomakesurethatinthenexteventloopiterationthatcodeis 
+ alreadyexecuted.
+  
+ 94",NA
+setImmediate,"TheNode.jssetImmediatefunctioninteractswiththeeventloopinaspecial way
+  
+ Whenyouwanttoexecutesomepieceofcodeasynchronously,butassoonaspossible,one 
+ optionistousethe
+  setImmediate()
+ functionprovidedbyNode.js:
+  
+ setImmediate(()=>{
+  
+  
+ //runsomething
+  
+  
+ })
+  
+ AnyfunctionpassedasthesetImmediate()argumentisacallbackthat'sexecutedinthenext 
+ iterationoftheeventloop.
+  
+ Howis
+  setImmediate()
+ differentfrom
+  setTimeout(()=>{},0)
+ (passinga0mstimeout),and from
+  process.nextTick()
+ ?
+  
+ Afunctionpassedto
+  process.nextTick()
+ isgoingtobeexecutedonthecurrentiterationofthe 
+ eventloop,afterthecurrentoperationends.Thismeansitwillalwaysexecutebefore 
+  
+ setTimeout
+ and
+  setImmediate
+ .
+  
+ A
+  setTimeout()
+ callbackwitha0msdelayisverysimilarto
+  setImmediate()
+ .Theexecution 
+ orderwilldependonvariousfactors,buttheywillbebothruninthenextiterationoftheevent loop.
+  
+ 95",NA
+Timers,"WhenwritingJavaScriptcode,youmightwanttodelaytheexecutionofa 
+ function.LearnhowtousesetTimeoutandsetIntervaltoschedulefunctions 
+ inthefuture
+  
+ setTimeout()
+  
+  
+ Zerodelay
+  
+ setInterval()
+  
+  
+ RecursivesetTimeout",NA
+setTimeout(),"Whenwriting
+ JavaScript
+ code,youmightwanttodelaytheexecutionofafunction.
+  
+ Thisisthejobof
+  setTimeout
+ .Youspecifyacallbackfunctiontoexecutelater,andavalue
+  
+ expressinghowlateryouwantittorun,inmilliseconds:
+  
+ setTimeout(()=>{
+  
+  
+ //runsafter2seconds
+  
+  
+ },
+ 2000
+ )
+  
+  
+ setTimeout(()=>{
+  
+  
+ //runsafter50milliseconds
+  
+  
+ },
+ 50
+ )
+  
+ Thissyntaxdefinesanewfunction.Youcancallwhateverotherfunctionyouwantinthere,or
+  
+ youcanpassanexistingfunctionname,andasetofparameters:
+  
+ const
+ myFunction=(firstParam,secondParam)=>{
+  
+  
+ //dosomething
+  
+  
+ }
+  
+  
+ 96",NA
+Zerodelay,"Ifyouspecifythetimeoutdelayto
+  0
+ ,thecallbackfunctionwillbeexecutedassoonas
+  
+ possible,butafterthecurrentfunctionexecution:
+  
+ setTimeout(()=>{
+  
+  
+ console
+ .log(
+ 'after'
+ )
+  
+  
+ },
+ 0
+ )
+  
+  
+ console
+ .log(
+ 'before'
+ )
+  
+ willprint
+  beforeafter
+ .
+  
+ ThisisespeciallyusefultoavoidblockingtheCPUonintensivetasksandletotherfunctions
+  
+ beexecutedwhileperformingaheavycalculation,byqueuingfunctionsinthescheduler.
+  
+ Somebrowsers(IEandEdge)implementa
+  setImmediate()
+ methodthatdoesthissame
+  
+ exactfunctionality,butit'snotstandardand
+ unavailableonotherbrowsers
+ .Butit'sa
+  
+ standardfunctioninNode.js.",NA
+setInterval(),"setInterval
+ isafunctionsimilarto
+  setTimeout
+ ,withadifference:insteadofrunningthe
+  
+ callbackfunctiononce,itwillrunitforever,atthespecifictimeintervalyouspecify(in
+  
+ milliseconds):
+  
+ setInterval(()=>{
+  
+  
+ //runsevery2seconds
+  
+  
+ },
+ 2000
+ )
+  
+ 97",NA
+RecursivesetTimeout,"setInterval
+ startsafunctioneverynmilliseconds,withoutanyconsiderationaboutwhena
+  
+ functionfinisheditsexecution.
+  
+ Ifafunctiontakesalwaysthesameamountoftime,it'sallfine:
+  
+  
+ Maybethefunctiontakesdifferentexecutiontimes,dependingonnetworkconditionsfor
+  
+ example:
+  
+  
+ Andmaybeonelongexecutionoverlapsthenextone:
+  
+ 98",NA
+Callbacks,"JavaScriptissynchronousbydefault,andissinglethreaded.Thismeans 
+ thatcodecannotcreatenewthreadsandruninparallel.Findoutwhat 
+ asynchronouscodemeansandhowitlookslike
+  
+  
+ AsynchronicityinProgrammingLanguages
+  
+ JavaScript
+  
+ Callbacks
+  
+ Handlingerrorsincallbacks
+  
+ Theproblemwithcallbacks
+  
+ Alternativestocallbacks",NA
+AsynchronicityinProgrammingLanguages,"Computersareasynchronousbydesign.
+  
+ Asynchronousmeansthatthingscanhappenindependentlyofthemainprogramflow.
+  
+ 100",NA
+JavaScript,"JavaScriptis
+ synchronous
+ bydefaultandissinglethreaded.Thismeansthatcodecannot 
+ createnewthreadsandruninparallel.
+  
+ Linesofcodeareexecutedinseries,oneafteranother,forexample:
+  
+ const
+ a=
+ 1
+  
+  
+ const
+ b=
+ 2
+  
+  
+ const
+ c=a*b
+  
+  
+ console
+ .log(c)
+  
+  
+ doSomething()
+  
+ ButJavaScriptwasborninsidethebrowser,itsmainjob,inthebeginning,wastorespondto 
+ useractions,like
+  onClick
+ ,
+  onMouseOver
+ ,
+  onChange
+ ,
+  onSubmit
+ andsoon.Howcoulditdothis 
+ withasynchronousprogrammingmodel?
+  
+ Theanswerwasinitsenvironment.The
+ browser
+ providesawaytodoitbyprovidingasetof 
+ APIsthatcanhandlethiskindoffunctionality.
+  
+ Morerecently,Node.jsintroducedanon-blockingI/Oenvironmenttoextendthisconcepttofile 
+ access,networkcallsandsoon.",NA
+Callbacks,101,NA
+Handlingerrorsincallbacks,NA,NA
+Theproblemwithcallbacks,"Callbacksaregreatforsimplecases!
+  
+ Howevereverycallbackaddsalevelofnesting,andwhenyouhavelotsofcallbacks,thecode
+  
+ startstobecomplicatedveryquickly:
+  
+ window
+ .addEventListener(
+ 'load'
+ ,()=>{
+  
+  
+ document
+ .getElementById(
+ 'button'
+ ).addEventListener(
+ 'click'
+ ,()=>{
+  
+  
+ setTimeout(()=>{
+  
+  
+ items.forEach(item=>{
+  
+  
+ //yourcodehere
+  
+  
+ })
+  
+  
+ },
+ 2000
+ )
+  
+  
+ })
+  
+  
+ })
+  
+ Thisisjustasimple4-levelscode,butI'veseenmuchmorelevelsofnestingandit'snotfun.
+  
+ Howdowesolvethis?",NA
+Alternativestocallbacks,"StartingwithES6,JavaScriptintroducedseveralfeaturesthathelpuswithasynchronouscode
+  
+ thatdonotinvolveusingcallbacks:
+  
+  
+  
+ Promises
+ (ES6) 
+  
+ Async/Await
+ (ES8)
+  
+ 103",NA
+Promises,"PromisesareonewaytodealwithasynchronouscodeinJavaScript,without 
+ writingtoomanycallbacksinyourcode.
+  
+ Introductiontopromises
+  
+  
+ Howpromiseswork,inbrief
+  
+  
+ WhichJSAPIusepromises?
+  
+ Creatingapromise
+  
+ Consumingapromise
+  
+ Chainingpromises
+  
+  
+ Exampleofchainingpromises
+  
+ Handlingerrors
+  
+  
+ Cascadingerrors
+  
+ Orchestratingpromises
+  
+ Promise.all()
+  
+ Promise.race()
+  
+ Commonerrors
+  
+  
+ UncaughtTypeError:undefinedisnotapromise",NA
+Introductiontopromises,"Apromiseiscommonlydefinedas
+ aproxyforavaluethatwilleventuallybecome 
+ available
+ .
+  
+ Promisesareonewaytodealwithasynchronouscode,withoutwritingtoomanycallbacksin 
+ yourcode.
+  
+ Althoughbeingaroundsinceyears,theyhavebeenstandardizedandintroducedin
+ ES2015
+ , 
+ andnowtheyhavebeensupersededin
+ ES2017
+ by
+ asyncfunctions
+ .
+  
+ Asyncfunctions
+ usethepromisesAPIastheirbuildingblock,sounderstandingthemis 
+ fundamentalevenifinnewercodeyou'lllikelyuseasyncfunctionsinsteadofpromises.",NA
+"Howpromiseswork,inbrief","Onceapromisehasbeencalled,itwillstartin
+ pendingstate
+ .Thismeansthatthecaller 
+ functioncontinuestheexecution,whileitwaitsforthepromisetodoitsownprocessing,and 
+ givethecallerfunctionsomefeedback.
+  
+ 105",NA
+WhichJSAPIusepromises?,"Inadditiontoyourowncodeandlibrariescode,promisesareusedbystandardmodernWeb
+  
+ APIssuchas:
+  
+ theBatteryAPI
+  
+ the
+ FetchAPI
+  
+ ServiceWorkers
+  
+ It'sunlikelythatinmodernJavaScriptyou'llfindyourself
+ not
+ usingpromises,solet'sstart
+  
+ divingrightintothem.",NA
+Creatingapromise,"ThePromiseAPIexposesaPromiseconstructor,whichyouinitializeusing
+  newPromise()
+ :
+  
+ let
+ done=
+ true
+  
+  
+ const
+ isItDoneYet=
+ new
+ Promise
+ (
+  
+ (resolve,reject)=>{ 
+  
+  
+ if
+ (done){ 
+  
+  
+  
+ const
+ workDone=
+ 'HereisthethingIbuilt' 
+ resolve(workDone) 
+  
+ }
+ else
+ { 
+  
+  
+  
+ const
+ why=
+ 'Stillworkingonsomethingelse' 
+ reject(why) 
+  
+ } 
+  
+ }
+  
+ )
+  
+ Asyoucanseethepromisechecksthe
+  done
+ globalconstant,andifthat'strue,wereturna
+  
+ resolvedpromise,otherwisearejectedpromise.
+  
+ Using
+  resolve
+ and
+  reject
+ wecancommunicatebackavalue,intheabovecasewejust
+  
+ returnastring,butitcouldbeanobjectaswell.",NA
+Consumingapromise,106,NA
+Chainingpromises,"Apromisecanbereturnedtoanotherpromise,creatingachainofpromises.
+  
+ Agreatexampleofchainingpromisesisgivenbythe
+ FetchAPI
+ ,alayerontopofthe
+  
+ XMLHttpRequestAPI,whichwecanusetogetaresourceandqueueachainofpromisesto
+  
+ executewhentheresourceisfetched.
+  
+ TheFetchAPIisapromise-basedmechanism,andcalling
+  fetch()
+ isequivalenttodefining
+  
+ ourownpromiseusing
+  newPromise()
+ .",NA
+Exampleofchainingpromises,"const
+ status=(response)=>{
+  
+  
+ if
+ (response.status>=
+ 200
+ &&response.status<
+ 300
+ ){
+  
+  
+ return
+ Promise
+ .resolve(response)
+  
+  
+ }
+  
+  
+ return
+ Promise
+ .reject(
+ new
+ Error
+ (response.statusText))
+  
+  
+ }
+  
+  
+ const
+ json=(response)=>response.json()
+  
+  
+ fetch(
+ '/todos.json'
+ )
+  
+  
+ .then(status)
+  
+  
+ 107",NA
+Handlingerrors,"Intheexample,intheprevioussection,wehada
+  catch
+ thatwasappendedtothechainof promises.
+  
+ Whenanythinginthechainofpromisesfailsandraisesanerrororrejectsthepromise,the 
+ controlgoestothenearest
+  catch()
+ statementdownthechain.
+  
+ 108",NA
+Cascadingerrors,"Ifinsidethe
+  catch()
+ youraiseanerror,youcanappendasecond
+  catch()
+ tohandleit,and
+  
+ soon.
+  
+ new
+ Promise
+ ((resolve,reject)=>{
+  
+  
+ thrownew
+ Error
+ (
+ 'Error'
+ )
+  
+  
+ })
+  
+  
+ .catch((err)=>{
+ thrownew
+ Error
+ (
+ 'Error'
+ )})
+  
+  
+ .catch((err)=>{
+ console
+ .error(err)})",NA
+Orchestratingpromises,NA,NA
+Promise.all(),"Ifyouneedtosynchronizedifferentpromises,
+  Promise.all()
+ helpsyoudefinealistof
+  
+ promises,andexecutesomethingwhentheyareallresolved.
+  
+ Example:
+  
+ const
+ f1=fetch(
+ '/something.json'
+ )
+  
+  
+ const
+ f2=fetch(
+ '/something2.json'
+ )
+  
+  
+ Promise
+ .all([f1,f2]).then((res)=>{
+  
+  
+ console
+ .log(
+ 'Arrayofresults'
+ ,res)
+  
+  
+ })
+  
+  
+ .catch((err)=>{
+  
+  
+ console
+ .error(err)
+  
+  
+ })
+  
+ The
+ ES2015destructuringassignment
+ syntaxallowsyoutoalsodo
+  
+ Promise
+ .all([f1,f2]).then(([res1,res2])=>{",NA
+Promise.race(),"Promise.race()
+ runswhenthefirstofthepromisesyoupasstoitresolves,anditrunsthe
+  
+ attachedcallbackjustonce,withtheresultofthefirstpromiseresolved.
+  
+ Example:
+  
+ const
+ first=
+ new
+ Promise
+ ((resolve,reject)=>{
+  
+  
+ setTimeout(resolve,
+ 500
+ ,
+ 'first'
+ )
+  
+  
+ })
+  
+  
+ const
+ second=
+ new
+ Promise
+ ((resolve,reject)=>{
+  
+  
+ setTimeout(resolve,
+ 100
+ ,
+ 'second'
+ )
+  
+  
+ })
+  
+  
+ Promise
+ .race([first,second]).then((result)=>{
+  
+  
+ console
+ .log(result)
+ //second
+  
+  
+ })",NA
+Commonerrors,NA,NA
+UncaughtTypeError:undefinedisnotapromise,"Ifyougetthe
+  UncaughtTypeError:undefinedisnotapromise
+ errorintheconsole,makesure
+  
+ youuse
+  newPromise()
+ insteadofjust
+  Promise()
+  
+ 110",NA
+async/await,"DiscoverthemodernapproachtoasynchronousfunctionsinJavaScript.
+  
+ JavaScriptevolvedinaveryshorttimefromcallbackstoPromises,and 
+ sinceES2017asynchronousJavaScriptisevensimplerwiththeasync/await 
+ syntax
+  
+ Introduction
+  
+ Whywereasync/awaitintroduced?
+  
+ Howitworks
+  
+ Aquickexample
+  
+ Promiseallthethings
+  
+ Thecodeismuchsimplertoread
+  
+ Multipleasyncfunctionsinseries
+  
+ Easierdebugging",NA
+Introduction,"JavaScript
+ evolvedinaveryshorttimefromcallbacksto
+ promises
+ (ES2015),andsince 
+ ES2017
+ asynchronousJavaScriptisevensimplerwiththeasync/awaitsyntax.
+  
+ Asyncfunctionsareacombinationofpromisesand
+ generators
+ ,andbasically,theyarea 
+ higherlevelabstractionoverpromises.Letmerepeat:
+ async/awaitisbuiltonpromises
+ .",NA
+Whywereasync/awaitintroduced?,"Theyreducetheboilerplatearoundpromises,andthe""don'tbreakthechain""limitationof 
+ chainingpromises.
+  
+ WhenPromiseswereintroducedinES2015,theyweremeanttosolveaproblemwith 
+ asynchronouscode,andtheydid,butoverthe2yearsthatseparatedES2015andES2017,it 
+ wasclearthat
+ promisescouldnotbethefinalsolution
+ .
+  
+ Promiseswereintroducedtosolvethefamous
+ callbackhell
+ problem,buttheyintroduced 
+ complexityontheirown,andsyntaxcomplexity.
+  
+ Theyweregoodprimitivesaroundwhichabettersyntaxcouldbeexposedtothedevelopers, 
+ sowhenthetimewasrightwegot
+ asyncfunctions
+ .
+  
+ Theymakethecodelooklikeit'ssynchronous,butit'sasynchronousandnon-blockingbehind 
+ thescenes.
+  
+ 111",NA
+Howitworks,"Anasyncfunctionreturnsapromise,likeinthisexample:
+  
+ const
+ doSomethingAsync=()=>{
+  
+  
+ returnnew
+ Promise
+ ((resolve)=>{
+  
+  
+ setTimeout(()=>resolve(
+ 'Ididsomething'
+ ),
+ 3000
+ )
+  
+  
+ })
+  
+  
+ }
+  
+ Whenyouwantto
+ call
+ thisfunctionyouprepend
+  await
+ ,and
+ thecallingcodewillstopuntil
+  
+ thepromiseisresolvedorrejected
+ .Onecaveat:theclientfunctionmustbedefinedas
+  
+ async
+ .Here'sanexample:
+  
+ const
+ doSomething=
+ async
+ ()=>{
+  
+  
+ console
+ .log(
+ await
+ doSomethingAsync())
+  
+  
+ }",NA
+Aquickexample,"Thisisasimpleexampleofasync/awaitusedtorunafunctionasynchronously:
+  
+ const
+ doSomethingAsync=()=>{
+  
+ returnnew
+ Promise
+ ((resolve)=>{
+  
+ setTimeout(()=>resolve(
+ 'Ididsomething'
+ ),
+ 3000
+ )
+  
+ })
+  
+ }
+  
+  
+ const
+ doSomething=
+ async
+ ()=>{
+  
+ console
+ .log(
+ await
+ doSomethingAsync())
+  
+ }
+  
+  
+ console
+ .log(
+ 'Before'
+ )
+  
+ doSomething()
+  
+ console
+ .log(
+ 'After'
+ )
+  
+ Theabovecodewillprintthefollowingtothebrowserconsole:
+  
+ Before
+  
+  
+ After
+  
+  
+ Ididsomething//after3s",NA
+Promiseallthethings,112,NA
+Thecodeismuchsimplertoread,"Asyoucanseeintheexampleabove,ourcodelooksverysimple.Compareittocodeusing
+  
+ plainpromises,withchainingandcallbackfunctions.
+  
+ Andthisisaverysimpleexample,themajorbenefitswillarisewhenthecodeismuchmore
+  
+ complex.
+  
+ Forexamplehere'showyouwouldgetaJSONresource,andparseit,usingpromises:
+  
+ const
+ getFirstUserData=()=>{
+  
+  
+ return
+ fetch(
+ '/users.json'
+ )
+ //getuserslist
+  
+  
+ .then(response=>response.json())
+ //parseJSON
+  
+  
+ .then(users=>users[
+ 0
+ ])
+ //pickfirstuser
+  
+  
+ .then(user=>fetch(
+ `/users/${user.name}`
+ ))
+ //getuserdata
+  
+  
+ .then(userResponse=>response.json())
+ //parseJSON
+  
+  
+ }
+  
+  
+ getFirstUserData()
+  
+ Andhereisthesamefunctionalityprovidedusingawait/async:
+  
+ const
+ getFirstUserData=
+ async
+ ()=>{
+  
+  
+ const
+ response=
+ await
+ fetch(
+ '/users.json'
+ )
+ //getuserslist
+  
+  
+ const
+ users=
+ await
+ response.json()
+ //parseJSON
+  
+  
+ const
+ user=users[
+ 0
+ ]
+ //pickfirstuser
+  
+  
+ const
+ userResponse=
+ await
+ fetch(
+ `/users/${user.name}`
+ )
+ //getuserdata
+  
+  
+ 113",NA
+Multipleasyncfunctionsinseries,"Asyncfunctionscanbechainedveryeasily,andthesyntaxismuchmorereadablethanwith
+  
+ plainpromises:
+  
+ const
+ promiseToDoSomething=()=>{
+  
+ returnnew
+ Promise
+ (resolve=>{
+  
+ setTimeout(()=>resolve(
+ 'Ididsomething'
+ ),
+ 10000
+ )
+  
+ })
+  
+ }
+  
+  
+ const
+ watchOverSomeoneDoingSomething=
+ async
+ ()=>{
+  
+ const
+ something=
+ await
+ promiseToDoSomething()
+  
+ return
+ something+
+ 'andIwatched'
+  
+ }
+  
+  
+ const
+ watchOverSomeoneWatchingSomeoneDoingSomething=
+ async
+ ()=>{
+  
+ const
+ something=
+ await
+ watchOverSomeoneDoingSomething()
+  
+ return
+ something+
+ 'andIwatchedaswell'
+  
+ }
+  
+  
+ watchOverSomeoneWatchingSomeoneDoingSomething().then((res)=>{
+  
+ console
+ .log(res)
+  
+ })
+  
+ Willprint:
+  
+ IdidsomethingandIwatchedandIwatchedaswell",NA
+Easierdebugging,"Debuggingpromisesishardbecausethedebuggerwillnotstepoverasynchronouscode.
+  
+ Async/awaitmakesthisveryeasybecausetothecompilerit'sjustlikesynchronouscode.
+  
+ 114",NA
+TheNodeEventEmitter,"HowtoworkwithcustomeventsinNode
+  
+ IfyouworkedwithJavaScriptinthebrowser,youknowhowmuchoftheinteractionoftheuser 
+ ishandledthroughevents:mouseclicks,keyboardbuttonpresses,reactingtomouse 
+ movements,andsoon.
+  
+ Onthebackendside,Nodeoffersustheoptiontobuildasimilarsystemusingthe
+  events 
+ module
+ .
+  
+ Thismodule,inparticular,offersthe
+  EventEmitter
+ class,whichwe'llusetohandleourevents.
+  
+ Youinitializethatusing
+  
+ const
+ eventEmitter=
+ require
+ (
+ 'events'
+ ).EventEmitter()
+  
+ Thisobjectexposes,amongmanyothers,the
+  on
+ and
+  emit
+ methods.
+  
+  
+  
+ emit
+ isusedtotriggeranevent 
+  
+  
+  
+ on
+ isusedtoaddacallbackfunctionthat'sgoingtobeexecutedwhentheeventis triggered 
+  
+ Forexample,let'screatea
+  start
+ event,andasamatterofprovidingasample,wereactto 
+ thatbyjustloggingtotheconsole:
+  
+ eventEmitter.on(
+ 'start'
+ ,()=>{
+  
+  
+ console
+ .log(
+ 'started'
+ )
+  
+  
+ })
+  
+ Whenwerun
+  
+ eventEmitter.emit(
+ 'start'
+ )
+  
+ theeventhandlerfunctionistriggered,andwegettheconsolelog.
+  
+ Youcanpassargumentstotheeventhandlerbypassingthemasadditionalargumentsto 
+ emit()
+ :
+  
+ eventEmitter.on(
+ 'start'
+ ,(number)=>{
+  
+  
+ console
+ .log(
+ `started${number}`
+ )
+  
+  
+ })
+  
+  
+ eventEmitter.emit(
+ 'start'
+ ,
+ 23
+ )
+  
+ 115",NA
+HTTP,"AdetaileddescriptionofhowtheHTTPprotocol,andtheWeb,work
+  
+ HTTP(
+ HyperTextTransferProtocol
+ )isoneoftheapplicationprotocolsofTCP/IP,thesuiteof 
+ protocolsthatpowerstheInternet.
+  
+ Letmefixthat:it'snot
+ one
+ oftheprotocols,it'sthemostsuccessfulandpopularone,byall means.
+  
+ HTTPiswhatmakestheWorldWideWebwork,givingbrowsersalanguagetocommunicate 
+ toremoteserversthathostwebpages.
+  
+ HTTPwasfirststandardizedin1991,asaresultoftheworkthatTimBerners-Leedidat 
+ CERN,theEuropeanCenterofNuclearResearch,since1989.
+  
+ Thegoalwastoallowresearcherstoeasilyexchangeandinterlinktheirpapers.Itwasmeant 
+ asawayforthescientificcommunitytoworkbetter.
+  
+ BackthentheinternetmainapplicationsbasicallyconsistedinFTP(theFileTransfer 
+ Protocol),EmailandUsenet(newsgroups,todayalmostabandoned).
+  
+ In1993Mosaic,thefirstgraphicalwebbrowser,wasreleased,andthingsskyrocketedfrom there.
+  
+ TheWebbecamethekillerappoftheInternet.
+  
+ OvertimetheWebandtheecosystemaroundithavedramaticallyevolved,butthebasicsstill 
+ remain.Oneexampleofevolution:HTTPnowpowers,inadditiontowebpages,RESTAPIs, 
+ onecommonwaytoprogrammaticallyaccessaserviceovertheInternet.
+  
+ HTTPgotaminorrevisionin1997withHTTP/1.1,andin2015itssuccessor,HTTP/2,was 
+ standardizedandit'snowbeingimplementedbythemajorWebServersusedacrossthe globe.
+  
+ TheHTTPprotocolisconsideredinsecure,justlikeanyotherprotocol(SMTP,FTP..)not 
+ servedoveranencryptedconnection.Thisiswhythereisabigpushnowadaystowardsusing 
+ HTTPS,whichisHTTPservedoverTLS.
+  
+ Thatsaid,thebuildingblocksofHTTP/2andHTTPShavetheirrootsinHTTP,andinthis 
+ articleI'llintroducehowHTTPworks.",NA
+HTMLdocuments,117,NA
+Hyperlinks,"Insideawebbrowser,adocumentcanpointtoanotherdocumentusinglinks.
+  
+ Alinkiscomposedbyafirstpartthatdeterminestheprotocolandtheserveraddress,either 
+ throughadomainnameoranIP.
+  
+ ThispartisnotuniquetoHTTP,ofcourse.
+  
+ Thenthere'sthedocumentpart.Anythingappendedtotheaddresspartrepresentsthe 
+ documentpath.
+  
+ Forexample,thisdocumentaddressis
+  https://flaviocopes.com/http/
+ :
+  
+ https
+ istheprotocol.
+  
+ flaviocopes.com
+ isthedomainnamethatpointstomyserver 
+ /http/
+ isthedocumentURLrelativetotheserverrootpath.
+  
+ Thepathcanbenested:
+  https://flaviocopes.com/page/privacy/
+ andinthiscasethedocument URLis
+  
+ /page/privacy
+ .
+  
+ Thewebserverisresponsibleforinterpretingtherequestand,onceanalyzed,servingthe 
+ correctresponse.",NA
+Arequest,"What'sinarequest?
+  
+ Thefirstthingis
+ theURL
+ ,whichwe'vealreadyseenbefore.
+  
+ Whenweenteranaddressandpressenterinourbrowser,underthehoodstheserversends 
+ tothecorrectIPaddressarequestlikethis:
+  
+ 118",NA
+HTTPmethods,NA,NA
+GET,"GETisthemostusedmethodhere.It'stheonethat'susedwhenyoutypeanURLinthe 
+ browseraddressbar,orwhenyouclickalink.
+  
+ Itaskstheservertosendtherequestedresourceasaresponse.",NA
+HEAD,"HEADisjustlikeGET,buttellstheservertonotsendtheresponsebodyback.Justthe headers.
+  
+ 119",NA
+POST,"TheclientusesthePOSTmethodtosenddatatotheserver.It'stypicallyusedinforms,for 
+ example,butalsowheninteractingwithaRESTAPI.",NA
+PUT,"ThePUTmethodisintendedtocreatearesourceatthatspecificURL,withtheparameters 
+ passedintherequestbody.MainlyusedinRESTAPIs",NA
+DELETE,"TheDELETEmethodiscalledagainstanURLtorequestdeletionofthatresource.Mainly 
+ usedinRESTAPIs",NA
+OPTIONS,"WhenaserverreceivesanOPTIONSrequestitshouldsendbackthelistofHTTPmethods 
+ allowedforthatspecificURL.",NA
+TRACE,"Returnsbacktotheclienttherequestthathasbeenreceived.Usedfordebuggingor 
+ diagnosticpurposes.",NA
+HTTPClient/Servercommunication,"HTTP,asmostoftheprotocolsthatbelongtotheTCP/IPsuite,isa
+ stateless
+ protocol.
+  
+ Servershavenoideawhat'sthecurrentstateoftheclient.Alltheycareaboutisthattheyget 
+ requestandtheyneedtofulfillthem.
+  
+ Anypriorrequestismeaninglessinthiscontext,andthismakesitpossibleforawebserverto 
+ beveryfast,asthere'slesstoprocess,andalsoitgivesitbandwidthtohandlealotof 
+ concurrentrequests.
+  
+ HTTPisalsoverylean,andcommunicationisveryfastintermsofoverhead.Thiscontrasts 
+ withtheprotocolsthatwerethemostusedatthetimeHTTPwasintroduced:TCPand 
+ POP/SMTP,themailprotocols,whichinvolvelotsofhandshakingandconfirmationsonthe 
+ receivingends.
+  
+ 120",NA
+Otherresources,"AnHTTPserverwillnotjusttransferHTMLfiles,buttypicallyitwillalsoserveotherfiles:CSS, 
+ JS,SVG,PNG,JPG,lotsofdifferentfiletypes.
+  
+ Thisdependsontheconfiguration.
+  
+ HTTPisperfectlycapableoftransferringthosefilesaswell,andtheclientwillknowaboutthe 
+ filetype,thusinterpretthemintherightway.
+  
+ Thisishowthewebworks:whenanHTMLpageisretrievedbythebrowser,it'sinterpreted 
+ andanyotherresourceitneedstodisplayproperty(CSS,JavaScript,images..)isretrieved 
+ throughadditionalHTTPrequeststothesameserver.
+  
+ 123",NA
+HowHTTPRequestswork,"WhathappenswhenyoutypeanURLinthebrowser,fromstarttofinish
+  
+ TheHTTPprotocol
+  
+ IanalyzeURLrequestsonly
+  
+ ThingsrelatetomacOS/Linux
+  
+ DNSLookupphase
+  
+  
+ gethostbyname
+  
+ TCPrequesthandshaking
+  
+ Sendingtherequest
+  
+  
+ Therequestline
+  
+  
+ Therequestheader
+  
+  
+ Therequestbody
+  
+ Theresponse
+  
+ ParsetheHTML
+  
+ ThisarticledescribeshowbrowsersperformpagerequestsusingtheHTTP/1.1protocol
+  
+ Ifyoueverdidaninterview,youmighthavebeenasked:""whathappenswhenyoutype 
+ somethingintotheGooglesearchboxandpressenter"".
+  
+ It'soneofthemostpopularquestionsyougetasked.Peoplejustwanttoseeifyoucan 
+ explainsomeratherbasicconceptsandifyouhaveanycluehowtheinternetactuallyworks.
+  
+ Inthispost,I'llanalyzewhathappenswhenyoutypeanURLintheaddressbarofyour 
+ browserandpressenter.
+  
+ It'saveryinterestingtopictodissectinablogpost,asittouchesmanytechnologiesIcandive 
+ intoinseparateposts.
+  
+ Thisistechthatisveryrarelychanged,andpowersonethemostcomplexandwide 
+ ecosystemseverbuiltbyhumans.",NA
+TheHTTPprotocol,"First,ImentionHTTPSinparticularbecausethingsaredifferentfromanHTTPSconnection.",NA
+IanalyzeURLrequestsonly,124,NA
+ThingsrelatetomacOS/Linux,JustFYI.Windowsmightdosomethingsslightlydifferently.,NA
+DNSLookupphase,"ThebrowserstartstheDNSlookuptogettheserverIPaddress.
+  
+ Thedomainnameisahandyshortcutforushumans,buttheinternetisorganizedinsucha 
+ waythatcomputerscanlookuptheexactlocationofaserverthroughitsIPaddress,whichis 
+ asetofnumberslike
+  222.324.3.1
+ (IPv4).
+  
+ First,itcheckstheDNSlocalcache,toseeifthedomainhasalreadybeenresolvedrecently.
+  
+ ChromehasahandyDNScachevisualizeryoucanseeat
+ chrome://net-internals/#dns 
+ Ifnothingisfoundthere,thebrowserusestheDNSresolver,usingthe
+  gethostbyname
+ POSIX 
+ systemcalltoretrievethehostinformation.",NA
+gethostbyname,"gethostbyname
+ firstlooksinthelocalhostsfile,whichonmacOSorLinuxislocatedin 
+ /etc/hosts
+ ,toseeifthesystemprovidestheinformationlocally.
+  
+ Ifthisdoesnotgiveanyinformationaboutthedomain,thesystemmakesarequesttothe 
+ DNSserver.
+  
+ TheaddressoftheDNSserverisstoredinthesystempreferences.
+  
+ Thoseare2popularDNSservers: 
+  
+  
+ 8.8.8.8
+ :theGooglepublicDNSserver 
+  
+  
+ 1.1.1.1
+ :theCloudFlareDNSserver 
+  
+ MostpeopleusetheDNSserverprovidedbytheirinternetprovider.
+  
+ 125",NA
+TCPrequesthandshaking,"WiththeserverIPaddressavailable,nowthebrowsercaninitiateaTCPconnectiontothat. 
+ ATCPconnectionrequiresabitofhandshakingbeforeitcanbefullyinitializedandyoucan 
+ startsendingdata.
+  
+ Oncetheconnectionisestablished,wecansendtherequest",NA
+Sendingtherequest,"Therequestisaplaintextdocumentstructuredinaprecisewaydeterminedbythe 
+ communicationprotocol. 
+  
+ It'scomposedof3parts:
+  
+ therequestline
+  
+ therequestheader
+  
+ therequestbody",NA
+Therequestline,"Therequestlinesets,onasingleline:
+  
+ theHTTPmethod
+  
+ theresourcelocation
+  
+  
+ theprotocolversion 
+  
+ Example:
+  
+ GET/HTTP/1.1",NA
+Therequestheader,"Therequestheaderisasetof
+  field:value
+ pairsthatsetcertainvalues.
+  
+ Thereare2mandatoryfields,oneofwhichis
+  Host
+ ,andtheotheris
+  Connection
+ ,whileallthe 
+ otherfieldsareoptional:
+  
+ Host:flaviocopes.com
+  
+  
+ Connection:close
+  
+ 127",NA
+Therequestbody,"Therequestbodyisoptional,notusedinGETrequestsbutverymuchusedinPOSTrequests 
+ andsometimesinotherverbstoo,anditcancontaindatainJSONformat.
+  
+ Sincewe'renowanalyzingaGETrequest,thebodyisblankandwe'llnotlookmoreintoit.",NA
+Theresponse,"Oncetherequestissent,theserverprocessesitandsendsbackaresponse.
+  
+ Theresponsestartswiththestatuscodeandthestatusmessage.Iftherequestissuccessful 
+ andreturnsa200,itwillstartwith:
+  
+ 200OK
+  
+ Therequestmightreturnadifferentstatuscodeandmessage,likeoneofthese:
+  
+ 404NotFound
+  
+  
+ 403Forbidden
+  
+  
+ 301MovedPermanently
+  
+  
+ 500InternalServerError
+  
+  
+ 304NotModified
+  
+  
+ 401Unauthorized
+  
+ TheresponsethencontainsalistofHTTPheadersandtheresponsebody(which,sincewe're 
+ makingtherequestinthebrowser,isgoingtobeHTML)
+  
+ 128",NA
+ParsetheHTML,"ThebrowsernowhasreceivedtheHTMLandstartstoparseit,andwillrepeattheexactsame 
+ processwedidnotforalltheresourcesrequiredbythepage:
+  
+ CSSfiles
+  
+ images
+  
+ thefavicon
+  
+ JavaScriptfiles
+  
+ ...
+  
+ Howbrowsersrenderthepagethenisoutofthescope,butit'simportanttounderstandthat 
+ theprocessIdescribedisnotjustfortheHTMLpages,butforanyitemthat'sservedover HTTP.
+  
+ 129",NA
+BuildanHTTPserver,"HowtobuildanHTTPserverwithNode.js
+  
+ HereistheHTTPwebserverweusedastheNodeHelloWorldapplicationinthe
+ Node.js
+  
+ introduction
+  
+ const
+ http=
+ require
+ (
+ 'http'
+ )
+  
+  
+ const
+ port=
+ 3000
+  
+  
+ const
+ server=http.createServer((req,res)=>{
+  
+ res.statusCode=
+ 200
+  
+ res.setHeader(
+ 'Content-Type'
+ ,
+ 'text/plain'
+ )
+  
+ res.end(
+ 'HelloWorld\n'
+ )
+  
+ })
+  
+  
+ server.listen(port,()=>{
+  
+ console
+ .log(
+ `Serverrunningathttp://${hostname}:${port}/`
+ )
+  
+ })
+  
+ Let'sanalyzeitbriefly.Weincludethe
+  http
+ module
+ .
+  
+ WeusethemoduletocreateanHTTPserver.
+  
+ Theserverissettolistenonthespecifiedport,
+  3000
+ .Whentheserverisready,the
+  listen
+  
+ callbackfunctioniscalled.
+  
+ Thecallbackfunctionwepassistheonethat'sgoingtobeexecuteduponeveryrequestthat
+  
+ comesin.Wheneveranewrequestisreceived,the
+  request
+ event
+ iscalled,providingtwo
+  
+ objects:arequest(an
+  http.IncomingMessage
+ object)andaresponse(an
+  http.ServerResponse
+  
+ object).
+  
+ request
+ providestherequestdetails.Throughit,weaccesstherequestheadersandrequest
+  
+ data.
+  
+ response
+ isusedtopopulatethedatawe'regoingtoreturntotheclient.
+  
+ Inthiscasewith
+  
+ res.statusCode=
+ 200
+  
+ wesetthestatusCodepropertyto200,toindicateasuccessfulresponse.
+  
+ WealsosettheContent-Typeheader:
+  
+ 130",NA
+MakingHTTPrequests,"HowtoperformHTTPrequestswithNode.jsusingGET,POST,PUTand 
+ DELETE
+  
+ IusethetermHTTP,butHTTPSiswhatshouldbeusedeverywhere,thereforethese
+  
+ examplesuseHTTPSinsteadofHTTP.",NA
+PerformaGETRequest,"const
+ https=
+ require
+ (
+ 'https'
+ )
+  
+ const
+ options={
+  
+ hostname:
+ 'flaviocopes.com'
+ ,
+  
+ port:
+ 443
+ ,
+  
+ path:
+ '/todos'
+ ,
+  
+ method:
+ 'GET'
+  
+ }
+  
+  
+ const
+ req=https.request(options,(res)=>{
+  
+  
+ console
+ .log(
+ `statusCode:${res.statusCode}`
+ )
+  
+  
+ res.on(
+ 'data'
+ ,(d)=>{
+  
+ process.stdout.write(d)
+  
+ })
+  
+ })
+  
+  
+ req.on(
+ 'error'
+ ,(error)=>{
+  
+ console
+ .error(error)
+  
+ })
+  
+  
+ req.end()",NA
+PerformaPOSTRequest,"const
+ https=
+ require
+ (
+ 'https'
+ )
+  
+  
+ const
+ data=
+ JSON
+ .stringify({
+  
+  
+ todo:
+ 'Buythemilk'
+  
+  
+ })
+  
+  
+ const
+ options={
+  
+  
+ hostname:
+ 'flaviocopes.com'
+ ,
+  
+  
+ port:
+ 443
+ ,
+  
+  
+ path:
+ '/todos'
+ ,
+  
+ method:
+ 'POST'
+ ,
+  
+ headers:{
+  
+  
+ 132",NA
+PUTandDELETE,"PUTandDELETErequestsusethesamePOSTrequestformat,andjustchangethe
+  
+ options.method
+ value.
+  
+ 133",NA
+Axios ,"AxiosisaveryconvenientJavaScriptlibrarytoperformHTTPrequestsin 
+ Node.js
+  
+ Introduction
+  
+ Installation
+  
+ TheAxiosAPI
+  
+ GETrequests
+  
+ AddparameterstoGETrequests
+  
+ POSTRequests",NA
+Introduction ,"AxiosisaverypopularJavaScriptlibraryyoucanusetoperformHTTPrequests,thatworksin
+  
+ bothBrowserand
+ Node.js
+ platforms.
+  
+ Itsupportsallmodernbrowsers,includingsupportforIE8andhigher.
+  
+ Itispromise-based,andthisletsuswriteasync/awaitcodetoperform
+ XHR
+ requestsvery
+  
+ easily.
+  
+ UsingAxioshasquiteafewadvantagesoverthenative
+ FetchAPI
+ :
+  
+ 134",NA
+Installation,"Axioscanbeinstalledusing
+ npm
+ :
+  
+ npminstallaxios
+  
+ or
+ yarn
+ :
+  
+ yarnaddaxios
+  
+ orsimplyincludeitinyourpageusingunpkg.com:
+  
+ <scriptsrc=
+ ""https://unpkg.com/axios/dist/axios.min.js""
+ ></script>",NA
+TheAxiosAPI,"YoucanstartanHTTPrequestfromthe
+  axios
+ object:
+  
+ axios({
+  
+  
+ url:
+ 'https://dog.ceo/api/breeds/list/all'
+ ,
+  
+  
+ method:
+ 'get'
+ ,
+  
+  
+ data:{
+  
+  
+ foo:
+ 'bar'
+  
+  
+ }
+  
+  
+ })
+  
+ butforconvenience,youwillgenerallyuse
+  
+ axios.get()
+  
+ axios.post()
+  
+ (likeinjQueryyouwoulduse
+  $.get()
+ and
+  $.post()
+ insteadof
+  $.ajax()
+ )
+  
+ AxiosoffersmethodsforalltheHTTPverbs,whicharelesspopularbutstillused:
+  
+ 135",NA
+GETrequests,"OneconvenientwaytouseAxiosistousethemodern(ES2017)async/awaitsyntax.
+  
+ ThisNode.jsexamplequeriesthe
+ DogAPI
+ toretrievealistofallthedogsbreeds,using 
+ axios.get()
+ ,anditcountsthem:
+  
+ const
+ axios=
+ require
+ (
+ 'axios'
+ )
+  
+  
+ const
+ getBreeds=
+ async
+ ()=>{
+  
+  
+ try
+ { 
+  
+   
+ returnawait
+ axios.get(
+ 'https://dog.ceo/api/breeds/list/all'
+ ) }
+ catch
+ (error){ 
+  
+   
+ console
+ .error(error) 
+  
+ }
+  
+ }
+  
+  
+ const
+ countBreeds=
+ async
+ ()=>{
+  
+  
+ const
+ breeds=
+ await
+ getBreeds()
+  
+  
+ if
+ (breeds.data.message){
+  
+  
+ console
+ .log(
+ `Got${Object.entries(breeds.data.message).length}breeds`
+ ) }
+  
+ }
+  
+  
+ countBreeds()
+  
+ Ifyoudon'twanttouseasync/awaityoucanusethe
+ Promises
+ syntax:
+  
+ const
+ axios=
+ require
+ (
+ 'axios'
+ )
+  
+  
+ const
+ getBreeds=()=>{
+  
+  
+ try
+ {
+  
+  
+ return
+ axios.get(
+ 'https://dog.ceo/api/breeds/list/all'
+ )
+  
+  
+ }
+ catch
+ (error){
+  
+  
+ console
+ .error(error)
+  
+ }
+  
+ }
+  
+  
+ const
+ countBreeds=
+ async
+ ()=>{
+  
+  
+ const
+ breeds=getBreeds()
+  
+  
+ 136",NA
+AddparameterstoGETrequests,"AGETresponsecancontainparametersintheURL,likethis:
+  https://site.com/?foo=bar
+ .
+  
+ WithAxiosyoucanperformthisbysimplyusingthatURL:
+  
+ axios.get(
+ 'https://site.com/?foo=bar'
+ )
+  
+ oryoucanusea
+  params
+ propertyintheoptions:
+  
+ axios.get(
+ 'https://site.com/'
+ ,{
+  
+  
+ params:{
+  
+  
+ foo:
+ 'bar'
+  
+  
+ }
+  
+  
+ })",NA
+POSTRequests,"PerformingaPOSTrequestisjustlikedoingaGETrequest,butinsteadof
+  axios.get
+ ,you
+  
+ use
+  axios.post
+ :
+  
+ axios.post(
+ 'https://site.com/'
+ )
+  
+ AnobjectcontainingthePOSTparametersisthesecondargument:
+  
+ axios.post(
+ 'https://site.com/'
+ ,{
+  
+  
+ foo:
+ 'bar'
+  
+  
+ })
+  
+ 137",NA
+Websockets,"WebSocketsareanalternativetoHTTPcommunicationinWebApplications. 
+ Theyofferalonglived,bidirectionalcommunicationchannelbetweenclient 
+ andserver.
+  
+ WebSocketsareanalternativetoHTTPcommunicationinWebApplications.
+  
+ Theyofferalonglived,bidirectionalcommunicationchannelbetweenclientandserver.
+  
+ Onceestablished,thechanneliskeptopen,offeringaveryfastconnectionwithlowlatency
+  
+ andoverhead.",NA
+BrowsersupportforWebSockets,"WebSocketsaresupportedbyallmodernbrowsers.
+  
+  
+ 139",NA
+HowWebSocketsdifferfromHTTP,"HTTPisaverydifferentprotocol,andalsoadifferentwayofcommunicate.
+  
+ HTTPisarequest/responseprotocol:theserverreturnssomedatawhentheclientrequestsit.
+  
+ WithWebSockets:
+  
+ the
+ servercansendamessagetotheclient
+ withouttheclientexplicitlyrequesting something
+  
+ theclientandtheservercan
+ talktoeachothersimultaneously
+  
+ verylittledataoverhead
+ needstobeexchangedtosendmessages.Thismeansa
+ low 
+ latencycommunication
+ .
+  
+ WebSockets
+ aregreatfor
+ real-time
+ and
+ long-lived
+ communications.
+  
+ HTTP
+ isgreatfor
+ occasionaldataexchange
+ andinteractionsinitiatedbytheclient. 
+ HTTPismuchsimpler
+ toimplement,whileWebSocketsrequireabitmoreoverhead.",NA
+SecuredWebSockets,"Alwaysusethesecure,encryptedprotocolforWebSockets,
+  wss://
+ .
+  
+ ws://
+ referstotheunsafeWebSocketsversion(the
+  http://
+ ofWebSockets),andshouldbe 
+ avoidedforobviousreasons.",NA
+CreateanewWebSocketsconnection,"const
+ url=
+ 'wss://myserver.com/something'
+  
+  
+ const
+ connection=
+ new
+ WebSocket(url)
+  
+ connection
+ isa
+ WebSocket
+ object.
+  
+ Whentheconnectionissuccessfullyestablished,the
+  open
+ eventisfired.
+  
+ Listenforitbyassigningacallbackfunctiontothe
+  onopen
+ propertyofthe
+  connection
+ object:
+  
+ connection.onopen=()=>{
+  
+  
+ //...
+  
+  
+ }
+  
+ Ifthere'sanyerror,the
+  onerror
+ functioncallbackisfired:
+  
+ 140",NA
+SendingdatatotheserverusingWebSockets,"Oncetheconnectionisopen,youcansenddatatotheserver.
+  
+ Youcandosoconvenientlyinsidethe
+  onopen
+ callbackfunction:
+  
+ connection.onopen=()=>{
+  
+  
+ connection.send(
+ 'hey'
+ )
+  
+  
+ }",NA
+Receivingdatafromtheserverusing,NA,NA
+WebSockets,"Listenwithacallbackfunctionon
+  onmessage
+ ,whichiscalledwhenthe
+  message
+ eventis
+  
+ received:
+  
+ connection.onmessage=e=>{
+  
+  
+ console
+ .log(e.data)
+  
+  
+ }",NA
+ImplementaWebSocketsserverinNode.js,"ws
+ isapopularWebSocketslibraryfor
+ Node.js
+ .
+  
+ We'lluseittobuildaWebSocketsserver.Itcanalsobeusedtoimplementaclient,anduse
+  
+ WebSocketstocommunicatebetweentwobackendservices.
+  
+ Easilyinstallitusing
+  
+ yarninit
+  
+  
+ yarnaddws
+  
+ Thecodeyouneedtowriteisverylittle:
+  
+ const
+ WebSocket=
+ require
+ (
+ 'ws'
+ )
+  
+  
+ const
+ wss=
+ new
+ WebSocket.Server({port:
+ 8080
+ })
+  
+  
+ 141",NA
+SeealiveexampleonGlitch,"HereisaliveexampleofaWebSocketsserver:
+ https://glitch.com/edit/#!/flavio-websockets-
+  
+ server-example
+  
+ HereisaWebSocketsclientthatinteractswiththeserver:
+ https://glitch.com/edit/#!/flavio-
+  
+ websockets-client-example
+  
+ 142",NA
+"HTTPS,secureconnections","TheHTTPSprotocolisanextensionofHTTP,theHyperTextTransfer 
+ Protocol,thatprovidesecurecommunication
+  
+ HTTPininsecurebydesign.
+  
+ Whenyouopenyourbrowserandaskawebservertosendyouawebpage,yourdata 
+ performs2trips:1fromthebrowsertothewebserver,and1fromthewebservertothe browser.
+  
+ Then,dependingonthecontentofthewebpage,youmighthavemoreconnectionsrequired 
+ togettheCSSfiles,theJavaScriptfiles,images,andsoon.
+  
+ Duringanyofthoseconnections,anynetworkyourdataisgoingtocrosscanbe
+ inspected 
+ and
+ manipulated
+ .
+  
+ Theconsequencescanbeserious:youmighthaveallyournetworkactivitymonitoredand 
+ logged,bya3rdpartyouarenotevenawareitexist,somenetworks
+ mightinjectads
+ ,andyou 
+ mightbesubjecttoaman-in-the-middleattack,asecuritythreatwheretheattackercan 
+ manipulateyourdataandevenimpersonateyourcomputeroverthenetwork.It'sveryeasyfor 
+ someonetojustlistentoHTTPpacketsbeingtransmittedoverapublicandunencryptedWi-Fi network.
+  
+ HTTPSaimstosolvetheproblemattheroot:theentirecommunicationbetweenyourbrowser 
+ andthewebserverisencrypted.
+  
+ Privacyandsecurityareamajorconcernintoday'sinternet.Afewyearsago,youcouldget 
+ awaywithjustusinganencryptedconnectioninlogin-protectedpages,orduringane-
+ commercecheckout.AlsobecauseofSSLcertificatespricingandcomplications,most 
+ websitesjustusedHTTP.
+  
+ TodayHTTPSisarequirementonanysite.Morethan50%ofthewholeWebusesitnow. 
+ GoogleChromerecentlystartedmarkingHTTPsitesasinsecure,justtogiveyouavalid 
+ reasontohaveHTTPSmandatory(andforced)onallyourwebsites.
+  
+ WhenusingHTTPthedefaultserverportis80,andonHTTPSit's443.Itdoesnotneedtobe 
+ explicitlyaddediftheserverusesthedefaultport,ofcourse.
+  
+ HTTPSisalsosometimescalled
+ HTTPoverSSL
+ ,or
+ HTTPoverTLS
+ .
+  
+ Thedifferencebetweenthetwoissimple:TLSisthesuccessorofSSL.
+  
+ WhenusingHTTPS,theonlythingthatisnotencryptedisthewebserverdomain,andthe 
+ serverport.
+  
+ 143",NA
+Filedescriptors,"HowtointeractwithfiledescriptorsusingNode
+  
+ Beforeyou'reabletointeractwithafilethatsitsinyourfilesystem,youmustgetafile descriptor.
+  
+ Afiledescriptoriswhat'sreturnedbyopeningthefileusingthe
+  open()
+ methodofferedbythe 
+ fs
+ module:
+  
+ const
+ fs=
+ require
+ (
+ 'fs'
+ )
+  
+  
+ fs.open(
+ '/Users/flavio/test.txt'
+ ,
+ 'r'
+ ,(err,fd)=>{
+  
+  
+ //fdisourfiledescriptor
+  
+  
+ })
+  
+ Noticethe
+  r
+ weusedasthesecondparametertothe
+  fs.open()
+ call.
+  
+ Thatflagmeansweopenthefileforreading.
+  
+ Otherflagsyou'llcommonlyuseare
+  
+ r+
+ openthefileforreadingandwriting 
+  
+ w+
+ openthefileforreadingandwriting,positioningthestreamatthebeginningofthe 
+ file.Thefileiscreatedifnotexisting 
+  
+ a
+ openthefileforwriting,positioningthestreamattheendofthefile.Thefileiscreated ifnotexisting 
+  
+ a+
+ openthefileforreadingandwriting,positioningthestreamattheendofthefile.The 
+ fileiscreatedifnotexisting
+  
+ Youcanalsoopenthefilebyusingthe
+  fs.openSync
+ method,whichinsteadofprovidingthe 
+ filedescriptorobjectinacallback,itreturnsit:
+  
+ const
+ fs=
+ require
+ (
+ 'fs'
+ )
+  
+  
+ try
+ {
+  
+  
+ const
+ fd=fs.openSync(
+ '/Users/flavio/test.txt'
+ ,
+ 'r'
+ )
+  
+  
+ }
+ catch
+ (err){
+  
+  
+ console
+ .error(err)
+  
+  
+ }
+  
+ Onceyougetthefiledescriptor,inwhateverwayyouchoose,youcanperformallthe 
+ operationsthatrequireit,likecalling
+  fs.open()
+ andmanyotheroperationsthatinteractwith 
+ thefilesystem.
+  
+ 145",NA
+Filestats,"HowtogetthedetailsofafileusingNode
+  
+ EveryfilecomeswithasetofdetailsthatwecaninspectusingNode.
+  
+ Inparticular,usingthe
+  stat()
+ methodprovidedbythe
+  fs
+ module.
+  
+ Youcallitpassingafilepath,andonceNodegetsthefiledetailsitwillcallthecallback
+  
+ functionyoupass,with2parameters:anerrormessage,andthefilestats:
+  
+ const
+ fs=
+ require
+ (
+ 'fs'
+ )
+  
+  
+ fs.stat(
+ '/Users/flavio/test.txt'
+ ,(err,stats)=>{
+  
+  
+ if
+ (err){
+  
+  
+ console
+ .error(err)
+  
+  
+ return
+  
+  
+ }
+  
+  
+ //wehaveaccesstothefilestatsin`stats`
+  
+  
+ })
+  
+ Nodeprovidesalsoasyncmethod,whichblocksthethreaduntilthefilestatsareready:
+  
+ const
+ fs=
+ require
+ (
+ 'fs'
+ )
+  
+  
+ try
+ {
+  
+  
+ const
+ stats=fs.stat(
+ '/Users/flavio/test.txt'
+ )
+  
+  
+ }
+ catch
+ (err){
+  
+  
+ console
+ .error(err)
+  
+  
+ }
+  
+ Thefileinformationisincludedinthestatsvariable.Whatkindofinformationcanweextract
+  
+ usingthestats?
+  
+ Alot,including:
+  
+ ifthefileisadirectoryorafile,using
+  stats.isFile()
+ and
+  stats.isDirectory()
+  
+ ifthefileisasymboliclinkusing
+  stats.isSymbolicLink()
+  
+ thefilesizeinbytesusing
+  stats.size
+ .
+  
+ Thereareotheradvancedmethods,butthebulkofwhatyou'lluseinyourday-to-day
+  
+ programmingisthis.
+  
+ const
+ fs=
+ require
+ (
+ 'fs'
+ )
+  
+  
+ fs.stat(
+ '/Users/flavio/test.txt'
+ ,(err,stats)=>{
+  
+  
+ if
+ (err){
+  
+  
+ console
+ .error(err)
+  
+  
+ return
+  
+  
+ }
+  
+  
+ 147",NA
+Filepaths,"HowtointeractwithfilepathsandmanipulatetheminNode
+  
+ Gettinginformationoutofapath
+  
+  
+ Workingwithpaths 
+  
+ Everyfileinthesystemhasapath.
+  
+ OnLinuxandmacOS,apathmightlooklike: 
+  
+ /users/flavio/file.txt
+  
+ whileWindowscomputersaredifferent,andhaveastructuresuchas: 
+ C:�sers\flavio\file.txt
+  
+ Youneedtopayattentionwhenusingpathsinyourapplications,asthisdifferencemustbe 
+ takenintoaccount.
+  
+ Youincludethismoduleinyourfilesusing
+  
+ const
+ path=
+ require
+ (
+ 'path'
+ )
+  
+ andyoucanstartusingitsmethods.",NA
+Gettinginformationoutofapath,"Givenapath,youcanextractinformationoutofitusingthosemethods: 
+  
+ dirname
+ :gettheparentfolderofafile 
+  
+  
+ basename
+ :getthefilenamepart 
+  
+  
+ extname
+ :getthefileextension 
+  
+ Example:
+  
+ const
+ notes=
+ '/users/flavio/notes.txt'
+  
+  
+ path.dirname(notes)
+ ///users/flavio
+  
+  
+ path.basename(notes)
+ //notes.txt
+  
+  
+ path.extname(notes)
+ //.txt
+  
+ Youcangetthefilenamewithouttheextensionbyspecifyingasecondargumentto 
+ basename
+ :
+  
+ 149",NA
+Workingwithpaths,"Youcanjointwoormorepartsofapathbyusing
+  path.join()
+ :
+  
+ const
+ name=
+ 'flavio'
+  
+  
+ path.join(
+ '/'
+ ,
+ 'users'
+ ,name,
+ 'notes.txt'
+ )
+ //'/users/flavio/notes.txt'
+  
+ Youcangettheabsolutepathcalculationofarelativepathusing
+  path.resolve()
+ :
+  
+ path.resolve(
+ 'flavio.txt'
+ )
+ //'/Users/flavio/flavio.txt'ifrunfrommyhomefolder
+  
+ InthiscaseNodewillsimplyappend
+  /flavio.txt
+ tothecurrentworkingdirectory.Ifyou 
+ specifyasecondparameterfolder,
+  resolve
+ willusethefirstasabaseforthesecond:
+  
+ path.resolve(
+ 'tmp'
+ ,
+ 'flavio.txt'
+ )
+ //'/Users/flavio/tmp/flavio.txt'ifrunfrommyhomefold
+  
+  
+ er
+  
+ Ifthefirstparameterstartswithaslash,thatmeansit'sanabsolutepath:
+  
+ path.resolve(
+ '/etc'
+ ,
+ 'flavio.txt'
+ )
+ //'/etc/flavio.txt'
+  
+ path.normalize()
+ isanotherusefulfunction,thatwilltryandcalculatetheactualpath,whenit 
+ containsrelativespecifierslike
+  .
+ or
+  ..
+ ,ordoubleslashes:
+  
+ path.normalize(
+ '/users/flavio/..//test.txt'
+ )
+ ///users/test.txt
+  
+ Bothresolveandnormalizewillnotcheckifthepathexists
+ .Theyjustcalculateapath 
+ basedontheinformationtheygot.
+  
+ 150",NA
+Readingfiles,"HowtoreadfilesusingNode
+  
+ ThesimplestwaytoreadafileinNodeistousethe
+  fs.readFile()
+ method,passingitthefile
+  
+ pathandacallbackfunctionthatwillbecalledwiththefiledata(andtheerror):
+  
+ const
+ fs=
+ require
+ (
+ 'fs'
+ )
+  
+  
+ fs.readFile(
+ '/Users/flavio/test.txt'
+ ,(err,data)=>{
+  
+  
+ if
+ (err){
+  
+  
+ console
+ .error(err)
+  
+  
+ return
+  
+  
+ }
+  
+  
+ console
+ .log(data)
+  
+  
+ })
+  
+ Alternatively,youcanusethesynchronousversion
+  fs.readFileSync()
+ :
+  
+ const
+ fs=
+ require
+ (
+ 'fs'
+ )
+  
+  
+ try
+ {
+  
+  
+ const
+ data=fs.readFileSync(
+ '/Users/flavio/test.txt'
+ )
+  
+  
+ console
+ .log(data)
+  
+  
+ }
+ catch
+ (err){
+  
+  
+ console
+ .error(err)
+  
+  
+ }
+  
+ Thedefaultencodingisutf8,butyoucanspecifyacustomencodingusingaasecond
+  
+ parameter.
+  
+ Both
+  fs.readFile()
+ and
+  fs.readFileSync()
+ readthefullcontentofthefileinmemorybefore
+  
+ returningthedata.
+  
+ Thismeansthatbigfilesaregoingtohaveamajorimpactonyourmemoryconsumptionand
+  
+ speedofexecutionoftheprogram.
+  
+ Inthiscase,abetteroptionistoreadthefilecontentusingstreams.
+  
+ 151",NA
+Writingfiles,"HowtowritefilesusingNode
+  
+ TheeasiestwaytowritetofilesinNode.jsistousethe
+  fs.writeFile()
+ API.
+  
+ Example:
+  
+ const
+ fs=
+ require
+ (
+ 'fs'
+ )
+  
+  
+ const
+ content=
+ 'Somecontent!'
+  
+  
+ fs.writeFile(
+ '/Users/flavio/test.txt'
+ ,content,(err)=>{
+  
+  
+ if
+ (err){
+  
+  
+ console
+ .error(err)
+  
+  
+ return
+  
+  
+ }
+  
+  
+ //filewrittensuccessfully
+  
+  
+ })
+  
+ Alternatively,youcanusethesynchronousversion
+  fs.writeFileSync()
+ :
+  
+ const
+ fs=
+ require
+ (
+ 'fs'
+ )
+  
+  
+ const
+ content=
+ 'Somecontent!'
+  
+  
+ try
+ {
+  
+  
+ const
+ data=fs.writeFileSync(
+ '/Users/flavio/test.txt'
+ ,content)
+  
+  
+ //filewrittensuccessfully
+  
+  
+ }
+ catch
+ (err){
+  
+  
+ console
+ .error(err)
+  
+  
+ }
+  
+ Bydefault,thisAPIwill
+ replacethecontentsofthefile
+ ifitdoesalreadyexist.
+  
+ Youcanmodifythedefaultbyspecifyingaflag:
+  
+ fs.writeFile(
+ '/Users/flavio/test.txt'
+ ,content,{flag:
+ 'a+'
+ },(err)=>{})
+  
+ Theflagsyou'lllikelyuseare
+  
+ r+
+ openthefileforreadingandwriting
+  
+ w+
+ openthefileforreadingandwriting,positioningthestreamatthebeginningofthe
+  
+ file.Thefileiscreatedifnotexisting
+  
+ a
+ openthefileforwriting,positioningthestreamattheendofthefile.Thefileiscreated
+  
+ ifnotexisting
+  
+ 152",NA
+Appendtoafile,"Ahandymethodtoappendcontenttotheendofafileis
+  fs.appendFile()
+ (andits
+  
+ fs.appendFileSync()
+ counterpart):
+  
+ const
+ content=
+ 'Somecontent!'
+  
+  
+ fs.appendFile(
+ 'file.log'
+ ,content,(err)=>{
+  
+  
+ if
+ (err){
+  
+  
+ console
+ .error(err)
+  
+  
+ return
+  
+  
+ }
+  
+  
+ //done!
+  
+  
+ })",NA
+Usingstreams,"Allthosemethodswritethefullcontenttothefilebeforereturningthecontrolbacktoyour
+  
+ program(intheasyncversion,thismeansexecutingthecallback)
+  
+ Inthiscase,abetteroptionistowritethefilecontentusingstreams.
+  
+ 153",NA
+Workingwithfolders,"HowtointeractwithfoldersusingNode
+  
+ TheNode.js
+  fs
+ coremoduleprovidesmanyhandymethodsyoucanusetoworkwith
+  
+ folders.",NA
+Checkifafolderexists,"Use
+  fs.access()
+ tocheckifthefolderexistsandNodecanaccessitwithitspermissions.",NA
+Createanewfolder,"Use
+  fs.mkdir()
+ or
+  fs.mkdirSync()
+ tocreateanewfolder.
+  
+ const
+ fs=
+ require
+ (
+ 'fs'
+ )
+  
+  
+ const
+ folderName=
+ '/Users/flavio/test'
+  
+  
+ try
+ {
+  
+  
+ if
+ (!fs.existsSync(dir)){
+  
+  
+ fs.mkdirSync(dir)
+  
+  
+ }
+  
+  
+ }
+ catch
+ (err){
+  
+  
+ console
+ .error(err)
+  
+  
+ }",NA
+Readthecontentofadirectory,"Use
+  fs.readdir()
+ or
+  fs.readdirSync
+ toreadthecontentsofadirectory.
+  
+ Thispieceofcodereadsthecontentofafolder,bothfilesandsubfolders,andreturnstheir
+  
+ relativepath:
+  
+ const
+ fs=
+ require
+ (
+ 'fs'
+ )
+  
+  
+ const
+ path=
+ require
+ (
+ 'path'
+ )
+  
+  
+ const
+ folderPath=
+ '/Users/flavio'
+  
+  
+ fs.readdirSync(folderPath)
+  
+ Youcangetthefullpath:
+  
+ 154",NA
+Renameafolder,"Use
+  fs.rename()
+ or
+  fs.renameSync()
+ torenamefolder.Thefirstparameteristhecurrentpath,
+  
+ thesecondthenewpath:
+  
+ const
+ fs=
+ require
+ (
+ 'fs'
+ )
+  
+  
+ fs.rename(
+ '/Users/flavio'
+ ,
+ '/Users/roger'
+ ,(err)=>{
+  
+  
+ if
+ (err){
+  
+  
+ console
+ .error(err)
+  
+  
+ return
+  
+  
+ }
+  
+  
+ //done
+  
+  
+ })
+  
+ fs.renameSync()
+ isthesynchronousversion:
+  
+ const
+ fs=
+ require
+ (
+ 'fs'
+ )
+  
+  
+ try
+ {
+  
+  
+ fs.renameSync(
+ '/Users/flavio'
+ ,
+ '/Users/roger'
+ )
+  
+  
+ }
+ catch
+ (err){
+  
+  
+ console
+ .error(err)
+  
+  
+ }",NA
+Removeafolder,"Use
+  fs.rmdir()
+ or
+  fs.rmdirSync()
+ toremoveafolder.
+  
+ Removingafolderthathascontentcanbemorecomplicatedthanyouneed.
+  
+ 155",NA
+Thefsmodule,"ThefsmoduleofNode.jsprovidesusefulfunctionstointeractwiththefile 
+ system
+  
+ The
+  fs
+ moduleprovidesalotofveryusefulfunctionalitytoaccessandinteractwiththefile system.
+  
+ Thereisnoneedtoinstallit.BeingpartoftheNodecore,itcanbeusedbysimplyrequiringit:
+  
+ const
+ fs=
+ require
+ (
+ 'fs'
+ )
+  
+ Onceyoudoso,youhaveaccesstoallitsmethods,whichinclude:
+  
+ fs.access()
+ :checkifthefileexistsandNodecanaccessitwithitspermissions 
+ fs.appendFile()
+ :appenddatatoafile.Ifthefiledoesnotexist,it'screated 
+  
+ fs.chmod()
+ :changethepermissionsofafilespecifiedbythefilenamepassed.Related: 
+ fs.lchmod()
+ ,
+  
+ fs.fchmod() 
+  
+ fs.chown()
+ :changetheownerandgroupofafilespecifiedbythefilenamepassed.
+  
+ Related:
+  fs.fchown()
+ ,
+  fs.lchown() 
+  
+ fs.close()
+ :closeafiledescriptor 
+  
+ fs.copyFile()
+ :copiesafile 
+  
+ fs.createReadStream()
+ :createareadablefilestream 
+  
+ fs.createWriteStream()
+ :createawritablefilestream 
+  
+ fs.link()
+ :createanewhardlinktoafile 
+  
+ fs.mkdir()
+ :createanewfolder 
+  
+ fs.mkdtemp()
+ :createatemporarydirectory 
+  
+ fs.open()
+ :setthefilemode 
+  
+ fs.readdir()
+ :readthecontentsofadirectory 
+  
+ fs.readFile()
+ :readthecontentofafile.Related:
+  fs.read() 
+  
+ fs.readlink()
+ :readthevalueofasymboliclink 
+  
+ fs.realpath()
+ :resolverelativefilepathpointers(
+  .
+ ,
+  ..
+ )tothefullpath 
+  
+ fs.rename()
+ :renameafileorfolder 
+  
+ fs.rmdir()
+ :removeafolder 
+  
+ fs.stat()
+ :returnsthestatusofthefileidentifiedbythefilenamepassed.Related: 
+ fs.fstat()
+ ,
+  fs.lstat() 
+  
+ fs.symlink()
+ :createanewsymboliclinktoafile 
+  
+ fs.truncate()
+ :truncatetothespecifiedlengththefileidentifiedbythefilenamepassed.
+  
+ Related:
+  fs.ftruncate() 
+  
+ fs.unlink()
+ :removeafileorasymboliclink
+  
+ 157",NA
+Thepathmodule,"ThepathmoduleofNode.jsprovidesusefulfunctionstointeractwithfile paths
+  
+ The
+  path
+ moduleprovidesalotofveryusefulfunctionalitytoaccessandinteractwiththefile system.
+  
+ Thereisnoneedtoinstallit.BeingpartoftheNodecore,itcanbeusedbysimplyrequiringit:
+  
+ const
+ path=
+ require
+ (
+ 'path'
+ )
+  
+ Thismoduleprovides
+  path.sep
+ whichprovidesthepathsegmentseparator(
+  \
+ onWindows, and
+  
+ /
+ onLinux/macOS),and
+  path.delimiter
+ whichprovidesthepathdelimiter(
+  ;
+ on Windows,and
+  
+ :
+ onLinux/macOS).
+  
+ Thesearethe
+  path
+ methods:
+  
+ path.basename() 
+  
+ path.dirname() 
+  
+ path.extname() 
+  
+ path.isAbsolute() 
+  
+ path.join() 
+  
+ path.normalize() 
+  
+ path.parse() 
+  
+ path.relative() 
+  
+ path.resolve()",NA
+path.basename(),"Returnthelastportionofapath.Asecondparametercanfilteroutthefileextension:
+  
+ require
+ (
+ 'path'
+ ).basename(
+ '/test/something'
+ )
+ //something
+  
+  
+ require
+ (
+ 'path'
+ ).basename(
+ '/test/something.txt'
+ )
+ //something.txt
+  
+  
+ require
+ (
+ 'path'
+ ).basename(
+ '/test/something.txt'
+ ,
+ '.txt'
+ )
+ //something",NA
+path.dirname(),"Returnthedirectorypartofapath:
+  
+ require
+ (
+ 'path'
+ ).dirname(
+ '/test/something'
+ )
+ ///test
+  
+  
+ require
+ (
+ 'path'
+ ).dirname(
+ '/test/something/file.txt'
+ )
+ ///test/something
+  
+ 160",NA
+path.extname(),"Returntheextensionpartofapath
+  
+ require
+ (
+ 'path'
+ ).dirname(
+ '/test/something'
+ )
+ //''
+  
+  
+ require
+ (
+ 'path'
+ ).dirname(
+ '/test/something/file.txt'
+ )
+ //'.txt'",NA
+path.isAbsolute(),"Returnstrueifit'sanabsolutepath
+  
+ require
+ (
+ 'path'
+ ).isAbsolute(
+ '/test/something'
+ )
+ //true
+  
+  
+ require
+ (
+ 'path'
+ ).isAbsolute(
+ './test/something'
+ )
+ //false",NA
+path.join(),"Joinstwoormorepartsofapath:
+  
+ const
+ name=
+ 'flavio'
+  
+  
+ require
+ (
+ 'path'
+ ).join(
+ '/'
+ ,
+ 'users'
+ ,name,
+ 'notes.txt'
+ )
+ //'/users/flavio/notes.txt'",NA
+path.normalize(),"Triestocalculatetheactualpathwhenitcontainsrelativespecifierslike
+  .
+ or
+  ..
+ ,ordouble
+  
+ slashes:
+  
+ require
+ (
+ 'path'
+ ).normalize(
+ '/users/flavio/..//test.txt'
+ )
+ ///users/test.txt",NA
+path.parse(),"Parsesapathtoanobjectwiththesegmentsthatcomposeit:
+  
+ root
+ :theroot
+  
+ dir
+ :thefolderpathstartingfromtheroot
+  
+ base
+ :thefilename+extension
+  
+ name
+ :thefilename
+  
+ ext
+ :thefileextension
+  
+ Example:
+  
+ require
+ (
+ 'path'
+ ).parse(
+ '/users/test.txt'
+ )
+  
+  
+ 161",NA
+path.relative(),"Accepts2pathsasarguments.Returnsthetherelativepathfromthefirstpathtothesecond,
+  
+ basedonthecurrentworkingdirectory.
+  
+ Example:
+  
+ require
+ (
+ 'path'
+ ).relative(
+ '/Users/flavio'
+ ,
+ '/Users/flavio/test.txt'
+ )
+ //'test.txt'
+  
+  
+ require
+ (
+ 'path'
+ ).relative(
+ '/Users/flavio'
+ ,
+ '/Users/flavio/something/test.txt'
+ )
+ //'something
+  
+  
+ /test.txt'",NA
+path.resolve(),"Youcangettheabsolutepathcalculationofarelativepathusing
+  path.resolve()
+ :
+  
+ path.resolve(
+ 'flavio.txt'
+ )
+ //'/Users/flavio/flavio.txt'ifrunfrommyhomefolder
+  
+ Byspecifyingasecondparameter,
+  resolve
+ willusethefirstasabaseforthesecond:
+  
+ path.resolve(
+ 'tmp'
+ ,
+ 'flavio.txt'
+ )
+ //'/Users/flavio/tmp/flavio.txt'ifrunfrommyhomefold
+  
+  
+ er
+  
+ Ifthefirstparameterstartswithaslash,thatmeansit'sanabsolutepath:
+  
+ path.resolve(
+ '/etc'
+ ,
+ 'flavio.txt'
+ )
+ //'/etc/flavio.txt'
+  
+  
+ 162",NA
+Theosmodule,"TheosmoduleofNode.jsprovidesusefulfunctionstointeractwith 
+ underlyingsystem
+  
+ Thismoduleprovidesmanyfunctionsthatyoucanusetoretrieveinformationfromthe 
+ underlyingoperatingsystemandthecomputertheprogramrunson,andinteractwithit.
+  
+ const
+ os=
+ require
+ (
+ 'os'
+ )
+  
+ Thereareafewusefulpropertiesthattellussomekeythingsrelatedtohandlingfiles:
+  
+ os.EOL
+ givesthelinedelimitersequence.It's
+  \n
+ onLinuxandmacOS,and
+  \r\n
+ on Windows.
+  
+ WhenIsayLinuxandmacOSImeanPOSIXplatforms.ForsimplicityIexcludeotherless 
+ popularoperatingsystemsNodecanrunon.
+  
+ os.constants.signals
+ tellsusalltheconstantsrelatedtohandlingprocesssignals,like 
+ SIGHUP,SIGKILLandsoon.
+  
+ os.constants.errno
+ setstheconstantsforerrorreporting,likeEADDRINUSE,EOVERFLOW andmore.
+  
+ Youcanreadthemallon
+ https://node.org/api/os.html#os_signal_constants
+ .
+  
+ Let'snowseethemainmethodsthat
+  os
+ provides:
+  
+ os.arch() 
+  
+ os.cpus() 
+  
+ os.endianness() 
+  
+ os.freemem() 
+  
+ os.homedir() 
+  
+ os.hostname() 
+  
+ os.loadavg() 
+  
+ os.networkInterfaces() 
+  
+ os.platform() 
+  
+ os.release() 
+  
+ os.tmpdir() 
+  
+ os.totalmem() 
+  
+ os.type() 
+  
+ os.uptime() 
+  
+ os.userInfo()
+  
+ 163",NA
+os.arch(),"Returnthestringthatidentifiestheunderlyingarchitecture,like
+  arm
+ ,
+  x64
+ ,
+  arm64
+ .",NA
+os.cpus(),"ReturninformationontheCPUsavailableonyoursystem.
+  
+ Example:
+  
+ [{model:
+ 'Intel(R)Core(TM)2DuoCPUP8600@2.40GHz'
+ ,
+  
+ speed:
+ 2400
+ , 
+  
+ times: 
+  
+ {user:
+ 281685380
+ , 
+  
+ nice:
+ 0
+ , 
+  
+ sys:
+ 187986530
+ , 
+  
+ idle:
+ 685833750
+ , 
+  
+ irq:
+ 0
+ }}, 
+  
+ {model:
+ 'Intel(R)Core(TM)2DuoCPUP8600@2.40GHz'
+ , speed:
+ 2400
+ , 
+  
+ times: 
+  
+ {user:
+ 282348700
+ , 
+  
+ nice:
+ 0
+ , 
+  
+ sys:
+ 161800480
+ , 
+  
+ idle:
+ 703509470
+ ,
+  
+ irq:
+ 0
+ }}]",NA
+os.endianness(),"Return
+  BE
+ or
+  LE
+ dependingifNodewascompiledwith
+ BigEndianorLittleEndian
+ .",NA
+os.freemem(),Returnthenumberofbytesthatrepresentthefreememoryinthesystem.,NA
+os.homedir(),"Returnthepathtothehomedirectoryofthecurrentuser.
+  
+ Example:
+  
+ '/Users/flavio'
+  
+  
+ 164",NA
+os.hostname(),Returnthehostname.,NA
+os.loadavg(),"Returnthecalculationmadebytheoperatingsystemontheloadaverage.
+  
+ ItonlyreturnsameaningfulvalueonLinuxandmacOS.
+  
+ Example:
+  
+ [
+ 3.68798828125
+ ,
+ 4.00244140625
+ ,
+ 11.1181640625
+ ]",NA
+os.networkInterfaces(),"Returnsthedetailsofthenetworkinterfacesavailableonyoursystem.
+  
+ Example:
+  
+ {lo0: 
+  
+ [{address:
+ '127.0.0.1'
+ , 
+  
+ netmask:
+ '255.0.0.0'
+ , 
+  
+ family:
+ 'IPv4'
+ , 
+  
+ mac:
+ 'fe:82:00:00:00:00'
+ , 
+  
+ internal:
+ true
+ }, 
+  
+ {address:
+ '::1'
+ , 
+  
+ netmask:
+ 'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff'
+ , family:
+ 'IPv6'
+ , 
+  
+ mac:
+ 'fe:82:00:00:00:00'
+ , 
+  
+ scopeid:
+ 0
+ , 
+  
+ internal:
+ true
+ }, 
+  
+ {address:
+ 'fe80::1'
+ , 
+  
+ netmask:
+ 'ffff:ffff:ffff:ffff::'
+ , 
+  
+ family:
+ 'IPv6'
+ , 
+  
+ mac:
+ 'fe:82:00:00:00:00'
+ , 
+  
+ scopeid:
+ 1
+ , 
+  
+ internal:
+ true
+ }], 
+  
+ en1: 
+  
+ [{address:
+ 'fe82::9b:8282:d7e6:496e'
+ , 
+  
+ netmask:
+ 'ffff:ffff:ffff:ffff::'
+ , 
+  
+ family:
+ 'IPv6'
+ , 
+  
+ mac:
+ '06:00:00:02:0e:00'
+ , 
+  
+ scopeid:
+ 5
+ , 
+  
+ internal:
+ false
+ }, 
+  
+ {address:
+ '192.168.1.38'
+ , 
+  
+ netmask:
+ '255.255.255.0'
+ , 
+  
+ family:
+ 'IPv4'
+ ,
+  
+ mac:
+ '06:00:00:02:0e:00'
+ ,
+  
+  
+ 165",NA
+os.platform(),"ReturntheplatformthatNodewascompiledfor:
+  
+ darwin 
+  
+ freebsd 
+  
+ linux 
+  
+ openbsd 
+  
+ win32
+  
+  
+ ...more",NA
+os.release(),Returnsastringthatidentifiestheoperatingsystemreleasenumber,NA
+os.tmpdir(),Returnsthepathtotheassignedtempfolder.,NA
+os.totalmem(),Returnsthenumberofbytesthatrepresentthetotalmemoryavailableinthesystem.,NA
+os.type(),"Identifiestheoperatingsystem:
+  
+ Linux 
+  
+ Darwin
+ onmacOS 
+  
+ Windows_NT
+ onWindows",NA
+os.uptime(),166,NA
+os.userInfo(),167,NA
+Theeventsmodule,"TheeventsmoduleofNode.jsprovidestheEventEmitterclass
+  
+ The
+  events
+ moduleprovidesustheEventEmitterclass,whichiskeytoworkingwitheventsin Node.
+  
+ Ipublishedafullarticleonthat
+ ,sohereIwilljustdescribetheAPIwithoutfurtherexampleson howtouseit.
+  
+ const
+ EventEmitter=
+ require
+ (
+ 'events'
+ )
+  
+  
+ const
+ door=
+ new
+ EventEmitter()
+  
+ Theeventlistenereatsitsowndogfoodandusestheseevents:
+  
+ newListener
+ whenalistenerisadded 
+  
+ removeListener
+ whenalistenerisremoved
+  
+ Here'sadetaileddescriptionofthemostusefulmethods:
+  
+ emitter.addListener() 
+  
+ emitter.emit() 
+  
+ emitter.eventNames() 
+  
+ emitter.getMaxListeners() 
+  
+ emitter.listenerCount() 
+  
+ emitter.listeners() 
+  
+ emitter.off() 
+  
+ emitter.on() 
+  
+ emitter.once() 
+  
+ emitter.prependListener() 
+  
+ emitter.prependOnceListener() 
+  
+ emitter.removeAllListeners() 
+  
+ emitter.removeListener() 
+  
+ emitter.setMaxListeners()",NA
+emitter.addListener(),"Aliasfor
+  emitter.on()
+ .",NA
+emitter.emit(),168,NA
+emitter.eventNames(),"ReturnanarrayofstringsthatrepresenttheeventsregisteredonthecurrentEventListener:
+  
+ door.eventNames()",NA
+emitter.getMaxListeners(),"GetthemaximumamountoflistenersonecanaddtoanEventListenerobject,whichdefaults 
+ to10butcanbeincreasedorloweredbyusing
+  setMaxListeners()
+  
+ door.getMaxListeners()",NA
+emitter.listenerCount(),"Getthecountoflistenersoftheeventpassedasparameter:
+  
+ door.listenerCount(
+ 'open'
+ )",NA
+emitter.listeners(),"Getsanarrayoflistenersoftheeventpassedasparameter:
+  
+ door.listeners(
+ 'open'
+ )",NA
+emitter.off(),"Aliasfor
+  emitter.removeListener()
+ addedinNode10",NA
+emitter.on(),"Addsacallbackfunctionthat'scalledwhenaneventisemitted. Usage:
+  
+ door.on(
+ 'open'
+ ,()=>{
+  
+  
+ 169",NA
+emitter.once(),"Addsacallbackfunctionthat'scalledwhenaneventisemittedforthefirsttimeafter
+  
+ registeringthis.Thiscallbackisonlygoingtobecalledonce,neveragain.
+  
+ const
+ EventEmitter=
+ require
+ (
+ 'events'
+ )
+  
+  
+ const
+ ee=
+ new
+ EventEmitter()
+  
+  
+ ee.once(
+ 'my-event'
+ ,()=>{
+  
+  
+ //callcallbackfunctiononce
+  
+  
+ })",NA
+emitter.prependListener(),"Whenyouaddalistenerusing
+  on
+ or
+  addListener
+ ,it'saddedlastinthequeueoflisteners,
+  
+ andcalledlast.Using
+  prependListener
+ it'sadded,andcalled,beforeotherlisteners.",NA
+emitter.prependOnceListener(),"Whenyouaddalistenerusing
+  once
+ ,it'saddedlastinthequeueoflisteners,andcalledlast.
+  
+ Using
+  prependOnceListener
+ it'sadded,andcalled,beforeotherlisteners.",NA
+emitter.removeAllListeners(),"Removesalllistenersofaneventemitterobjectlisteningtoaspecificevent:
+  
+ door.removeAllListeners(
+ 'open'
+ )",NA
+emitter.removeListener(),"Removeaspecificlistener.Youcandothisbysavingthecallbackfunctiontoavariable,when
+  
+ added,soyoucanreferenceitlater:
+  
+ const
+ doSomething=()=>{}
+  
+  
+ door.on(
+ 'open'
+ ,doSomething)
+  
+  
+ door.removeListener(
+ 'open'
+ ,doSomething)
+  
+ 170",NA
+emitter.setMaxListeners(),"SetsthemaximumamountoflistenersonecanaddtoanEventListenerobject,whichdefaults 
+ to10butcanbeincreasedorlowered.
+  
+ door.setMaxListeners(
+ 50
+ )
+  
+  
+ 171",NA
+Thehttpmodule,"ThehttpmoduleofNode.jsprovidesusefulfunctionsandclassestobuildan 
+ HTTPserver
+  
+ TheHTTPcoremoduleisakeymoduletoNodenetworking.
+  
+ Properties 
+  
+  
+ http.METHODS 
+  
+  
+ http.STATUS_CODES 
+  
+  
+ http.globalAgent
+  
+ Methods 
+  
+  
+ http.createServer() 
+  
+  
+ http.request() 
+  
+  
+ http.get()
+  
+ Classes 
+  
+  
+ http.Agent 
+  
+  
+ http.ClientRequest 
+  
+  
+ http.Server 
+  
+  
+ http.ServerResponse 
+  
+  
+ http.IncomingMessage
+  
+ Itcanbeincludedusing
+  
+ const
+ http=
+ require
+ (
+ 'http'
+ )
+  
+ Themoduleprovidessomepropertiesandmethods,andsomeclasses.",NA
+Properties,NA,NA
+http.METHODS,"ThispropertylistsalltheHTTPmethodssupported:
+  
+ >
+ require
+ (
+ 'http'
+ ).METHODS
+  
+  
+ [
+ 'ACL'
+ ,
+  
+  
+ 'BIND'
+ ,
+  
+  
+ 'CHECKOUT'
+ ,
+  
+  
+ 'CONNECT'
+ ,
+  
+ 'COPY'
+ , 
+  
+ 'DELETE'
+ ,
+  
+ 'GET'
+ ,
+  
+  
+ 172",NA
+http.STATUS_CODES,"ThispropertylistsalltheHTTPstatuscodesandtheirdescription:
+  
+ >
+ require
+ (
+ 'http'
+ ).STATUS_CODES 
+  
+ {
+ '100'
+ :
+ 'Continue'
+ , 
+  
+  
+ '101'
+ :
+ 'SwitchingProtocols'
+ , 
+  
+  
+ '102'
+ :
+ 'Processing'
+ , 
+  
+  
+ '200'
+ :
+ 'OK'
+ , 
+  
+  
+ '201'
+ :
+ 'Created'
+ , 
+  
+  
+ '202'
+ :
+ 'Accepted'
+ , 
+  
+  
+ '203'
+ :
+ 'Non-AuthoritativeInformation'
+ , 
+  
+  
+ '204'
+ :
+ 'NoContent'
+ , 
+  
+  
+ '205'
+ :
+ 'ResetContent'
+ , 
+  
+  
+ '206'
+ :
+ 'PartialContent'
+ , 
+  
+  
+ '207'
+ :
+ 'Multi-Status'
+ , 
+  
+  
+ '208'
+ :
+ 'AlreadyReported'
+ , 
+  
+  
+ '226'
+ :
+ 'IMUsed'
+ , 
+  
+  
+ '300'
+ :
+ 'MultipleChoices'
+ , 
+  
+  
+ '301'
+ :
+ 'MovedPermanently'
+ , 
+  
+  
+ '302'
+ :
+ 'Found'
+ , 
+  
+  
+ '303'
+ :
+ 'SeeOther'
+ , 
+  
+  
+ '304'
+ :
+ 'NotModified'
+ , 
+  
+  
+ '305'
+ :
+ 'UseProxy'
+ , 
+  
+  
+ '307'
+ :
+ 'TemporaryRedirect'
+ , 
+  
+  
+ '308'
+ :
+ 'PermanentRedirect'
+ ,
+  
+ '400'
+ :
+ 'BadRequest'
+ ,
+  
+  
+ 173",NA
+http.globalAgent,"PointstotheglobalinstanceoftheAgentobject,whichisaninstanceofthe
+  http.Agent
+ class.
+  
+ It'susedtomanageconnectionspersistanceandreuseforHTTPclients,andit'sakey
+  
+ componentofNodeHTTPnetworking.
+  
+ Moreinthe
+  http.Agent
+ classdescriptionlateron.",NA
+Methods,174,NA
+http.createServer(),"Returnanewinstanceofthe
+  http.Server
+ class.
+  
+ Usage:
+  
+ const
+ server=http.createServer((req,res)=>{
+  
+  
+ //handleeverysinglerequestwiththiscallback
+  
+  
+ })",NA
+http.request(),"MakesanHTTPrequesttoaserver,creatinganinstanceofthe
+  http.ClientRequest
+ class.",NA
+http.get(),"Similarto
+  http.request()
+ ,butautomaticallysetstheHTTPmethodtoGET,andcalls 
+ req.end()
+ automatically.",NA
+Classes,"TheHTTPmoduleprovides5classes:
+  
+ http.Agent 
+  
+ http.ClientRequest 
+  
+ http.Server 
+  
+ http.ServerResponse 
+  
+ http.IncomingMessage",NA
+http.Agent,"Nodecreatesaglobalinstanceofthe
+  http.Agent
+ classtomanageconnectionspersistance 
+ andreuseforHTTPclients,akeycomponentofNodeHTTPnetworking.
+  
+ Thisobjectmakessurethateveryrequestmadetoaserverisqueuedandasinglesocketis reused.
+  
+ Italsomaintainsapoolofsockets.Thisiskeyforperformancereasons.",NA
+http.ClientRequest,"An
+  http.ClientRequest
+ objectiscreatedwhen
+  http.request()
+ or
+  http.get()
+ iscalled.
+  
+ 175",NA
+http.Server,"Thisclassiscommonlyinstantiatedandreturnedwhencreatinganewserverusing 
+ http.createServer()
+ .
+  
+ Onceyouhaveaserverobject,youhaveaccesstoitsmethods:
+  
+ close()
+ stopstheserverfromacceptingnewconnections 
+ listen()
+ startstheHTTPserverandlistensforconnections",NA
+http.ServerResponse,"Createdbyan
+  http.Server
+ andpassedasthesecondparametertothe
+  request
+ eventit fires.
+  
+ Commonlyknownandusedincodeas
+  res
+ :
+  
+ const
+ server=http.createServer((req,res)=>{
+  
+  
+ //resisanhttp.ServerResponseobject
+  
+  
+ })
+  
+ Themethodyou'llalwayscallinthehandleris
+  end()
+ ,whichclosestheresponse,the 
+ messageiscompleteandtheservercansendittotheclient.Itmustbecalledoneach response.
+  
+ ThesemethodsareusedtointeractwithHTTPheaders:
+  
+ getHeaderNames()
+ getthelistofthenamesoftheHTTPheadersalreadyset 
+ getHeaders()
+ getacopyoftheHTTPheadersalreadyset 
+  
+ setHeader('headername',value)
+ setsanHTTPheadervalue 
+  
+ getHeader('headername')
+ getsanHTTPheaderalreadyset 
+  
+ removeHeader('headername')
+ removesanHTTPheaderalreadyset 
+  
+ hasHeader('headername')
+ returntrueiftheresponsehasthatheaderset 
+ headersSent()
+ returntrueiftheheadershavealreadybeensenttotheclient
+  
+ 176",NA
+http.IncomingMessage,"An
+  http.IncomingMessage
+ objectiscreatedby:
+  
+ http.Server
+ whenlisteningtothe
+  request
+ event 
+  
+ http.ClientRequest
+ whenlisteningtothe
+  response
+ event
+  
+ Itcanbeusedtoaccesstheresponse:
+  
+ statususingits
+  statusCode
+ and
+  statusMessage
+ methods
+  
+ headersusingits
+  headers
+ methodor
+  rawHeaders
+  
+ HTTPmethodusingits
+  method
+ method
+  
+ HTTPversionusingthe
+  httpVersion
+ method
+  
+ URLusingthe
+  url
+ method
+  
+ underlyingsocketusingthe
+  socket
+ method
+  
+ Thedataisaccessedusingstreams,since
+  http.IncomingMessage
+ implementstheReadable 
+ Streaminterface.
+  
+ 177",NA
+Streams,"Learnwhatstreamsarefor,whyaretheysoimportant,andhowtousethem.
+  
+ Whatarestreams
+  
+ Whystreams
+  
+ Anexampleofastream
+  
+ pipe()
+  
+ Streams-poweredNodeAPIs
+  
+ Differenttypesofstreams
+  
+ Howtocreateareadablestream
+  
+ Howtocreateawritablestream
+  
+ Howtogetdatafromareadablestream
+  
+ Howtosenddatatoawritablestream
+  
+ Signalingawritablestreamthatyouendedwriting
+  
+ Conclusion",NA
+Whatarestreams,"StreamsareoneofthefundamentalconceptsthatpowerNode.jsapplications.
+  
+ Theyareawaytohandlereading/writingfiles,networkcommunications,oranykindofend-to-
+ endinformationexchangeinanefficientway.
+  
+ StreamsarenotaconceptuniquetoNode.js.TheywereintroducedintheUnixoperating 
+ systemdecadesago,andprogramscaninteractwitheachotherpassingstreamsthroughthe 
+ pipeoperator(
+  |
+ ).
+  
+ Forexample,inthetraditionalway,whenyoutelltheprogramtoreadafile,thefileisreadinto 
+ memory,fromstarttofinish,andthenyouprocessit.
+  
+ Usingstreamsyoureaditpiecebypiece,processingitscontentwithoutkeepingitallin memory.
+  
+ TheNode.js
+  stream
+ module
+ providesthefoundationuponwhichallstreamingAPIsarebuild.",NA
+Whystreams,"Streamsbasicallyprovidetwomajoradvantagesusingotherdatahandlingmethods:
+  
+  
+ Memoryefficiency
+ :youdon'tneedtoloadlargeamountsofdatainmemorybeforeyou
+  
+ 178",NA
+Anexampleofastream,"Atypicalexampleistheoneofreadingfilesfromadisk.
+  
+ UsingtheNode
+  fs
+ moduleyoucanreadafile,andserveitoverHTTPwhenanew
+  
+ connectionisestablishedtoyourhttpserver:
+  
+ const
+ http=
+ require
+ (
+ 'http'
+ )
+  
+  
+ const
+ fs=
+ require
+ (
+ 'fs'
+ )
+  
+  
+ const
+ server=http.createServer(
+ function
+ (
+ req,res
+ )
+ {
+  
+  
+ fs.readFile(__dirname+
+ '/data.txt'
+ ,(err,data)=>{
+  
+  
+ res.end(data)
+  
+  
+ })
+  
+  
+ })
+  
+  
+ server.listen(
+ 3000
+ )
+  
+ readFile()
+ readsthefullcontentsofthefile,andinvokesthecallbackfunctionwhenit'sdone.
+  
+ res.end(data)
+ inthecallbackwillreturnthefilecontentstotheHTTPclient.
+  
+ Ifthefileisbig,theoperationwilltakequiteabitoftime.Hereisthesamethingwrittenusing
+  
+ streams:
+  
+ const
+ http=
+ require
+ (
+ 'http'
+ )
+  
+  
+ const
+ fs=
+ require
+ (
+ 'fs'
+ )
+  
+  
+ const
+ server=http.createServer((req,res)=>{
+  
+  
+ const
+ stream=fs.createReadStream(__dirname+
+ '/data.txt'
+ )
+  
+  
+ stream.pipe(res)
+  
+  
+ })
+  
+  
+ server.listen(
+ 3000
+ )
+  
+ Insteadofwaitinguntilthefileisfullyread,westartstreamingittotheHTTPclientassoonas
+  
+ wehaveachunkofdatareadytobesent.",NA
+pipe(),"Theaboveexampleusestheline
+  stream.pipe(res)
+ :the
+  pipe()
+ methodiscalledonthefile
+  
+ stream.
+  
+ 179",NA
+Streams-poweredNodeAPIs,"Duetotheiradvantages,manyNode.jscoremodulesprovidenativestreamhandling 
+ capabilities,mostnotably:
+  
+ process.stdin
+ returnsastreamconnectedtostdin 
+  
+ process.stdout
+ returnsastreamconnectedtostdout 
+  
+ process.stderr
+ returnsastreamconnectedtostderr 
+  
+ fs.createReadStream()
+ createsareadablestreamtoafile 
+  
+ fs.createWriteStream()
+ createsawritablestreamtoafile 
+  
+ net.connect()
+ initiatesastream-basedconnection 
+  
+ http.request()
+ returnsaninstanceofthehttp.ClientRequestclass,whichisawritable stream 
+  
+ zlib.createGzip()
+ compressdatausinggzip(acompressionalgorithm)intoastream 
+ zlib.createGunzip()
+ decompressagzipstream.
+  
+ zlib.createDeflate()
+ compressdatausingdeflate(acompressionalgorithm)intoa stream 
+  
+ zlib.createInflate()
+ decompressadeflatestream",NA
+Differenttypesofstreams,"Therearefourclassesofstreams:
+  
+ Readable
+ :astreamyoucanpipefrom,butnotpipeinto(youcanreceivedata,butnot 
+ senddatatoit).Whenyoupushdataintoareadablestream,itisbuffered,untila 
+ consumerstartstoreadthedata.
+  
+ Writable
+ :astreamyoucanpipeinto,butnotpipefrom(youcansenddata,butnot
+  
+ 180",NA
+Howtocreateareadablestream,"WegettheReadablestreamfromthe
+  stream
+ module
+ ,andweinitializeit
+  
+ const
+ Stream=
+ require
+ (
+ 'stream'
+ )
+  
+  
+ const
+ readableStream=
+ new
+ Stream.Readable()
+  
+ Nowthatthestreamisinitialized,wecansenddatatoit:
+  
+ readableStream.push(
+ 'hi!'
+ )
+  
+  
+ readableStream.push(
+ 'ho!'
+ )",NA
+Howtocreateawritablestream,"Tocreateawritablestreamweextendthebase
+  Writable
+ object,andweimplementits
+  
+ _write()method.
+  
+ Firstcreateastreamobject:
+  
+ const
+ Stream=
+ require
+ (
+ 'stream'
+ )
+  
+  
+ const
+ writableStream=
+ new
+ Stream.Writable()
+  
+ thenimplement
+  _write
+ :
+  
+ writableStream._write=(chunk,encoding,next)=>{
+  
+  
+ console
+ .log(chunk.toString())
+  
+  
+ next()
+  
+  
+ }
+  
+ Youcannowpipeareadablestreamin:
+  
+ process.stdin.pipe(writableStream)",NA
+Howtogetdatafromareadablestream,181,NA
+Howtosenddatatoawritablestream,"Usingthestream
+  write()
+ method:
+  
+ writableStream.write(
+ 'hey!\n'
+ )",NA
+Signalingawritablestreamthatyouended ,NA,NA
+writing,"Usethe
+  end()
+ method:
+  
+ const
+ Stream=
+ require
+ (
+ 'stream'
+ )
+  
+  
+ const
+ readableStream=
+ new
+ Stream.Readable()
+  
+  
+ const
+ writableStream=
+ new
+ Stream.Writable()
+  
+  
+ writableStream._write=(chunk,encoding,next)=>{
+  
+  
+ console
+ .log(chunk.toString()) 
+  
+ next()
+  
+ }
+  
+  
+ readableStream.pipe(writableStream)
+  
+  
+ 182",NA
+Conclusion,"Thisisanintroductiontostreams.Therearemuchmorecomplicatedaspectstoanalyze,andI
+  
+ hopetocoverthemsoon.
+  
+ 183",NA
+WorkingwithMySQL,"MySQLisoneofthemostpopularrelationaldatabasesintheworld.Findout 
+ howtomakeitworkwithNode.js
+  
+ MySQLisoneofthemostpopularrelationaldatabasesintheworld.
+  
+ TheNodeecosystemofcoursehasseveraldifferentpackagesthatallowyoutointerfacewith
+  
+ MySQL,storedata,retrievedata,andsoon.
+  
+ We'lluse
+  mysqljs/mysql
+ ,apackagethathasover12.000GitHubstarsandhasbeenaround
+  
+ foryears.",NA
+InstallingtheNodemysqlpackage,"Youinstallitusing
+  
+ npminstallmysql",NA
+Initializingtheconnectiontothedatabase,"Youfirstincludethepackage:
+  
+ const
+ mysql=
+ require
+ (
+ 'mysql'
+ )
+  
+ andyoucreateaconnection:
+  
+ const
+ options={
+  
+  
+ user:
+ 'the_mysql_user_name'
+ ,
+  
+  
+ password:
+ 'the_mysql_user_password'
+ ,
+  
+  
+ database:
+ 'the_mysql_database_name'
+  
+  
+ }
+  
+  
+ const
+ connection=mysql.createConnection(options)
+  
+ Youinitiateanewconnectionbycalling:
+  
+ connection.connect(err=>{
+  
+  
+ if
+ (err){
+  
+  
+ console
+ .error(
+ 'AnerroroccurredwhileconnectingtotheDB'
+ )
+  
+  
+ throw
+ err
+  
+  
+ }
+  
+  
+ })
+  
+ 184",NA
+Theconnectionoptions,"Intheaboveexample,the
+  options
+ objectcontained3options:
+  
+ const
+ options={
+  
+  
+ user:
+ 'the_mysql_user_name'
+ ,
+  
+  
+ password:
+ 'the_mysql_user_password'
+ ,
+  
+  
+ database:
+ 'the_mysql_database_name'
+  
+  
+ }
+  
+ Therearemanymoreyoucanuse,including:
+  
+ host
+ ,thedatabasehostname,defaultsto
+  localhost
+  
+ port
+ ,theMySQLserverportnumber,defaultsto3306
+  
+ socketPath
+ ,usedtospecifyaunixsocketinsteadofhostandport
+  
+ debug
+ ,bydefaultdisabled,canbeusedfordebugging
+  
+ trace
+ ,bydefaultenabled,printsstacktraceswhenerrorsoccur
+  
+ ssl
+ ,usedtosetupanSSLconnectiontotheserver(outofthescopeofthistutorial)",NA
+PerformaSELECTquery,"NowyouarereadytoperformanSQLqueryonthedatabase.Thequeryonceexecutedwill
+  
+ invokeacallbackfunctionwhichcontainsaneventualerror,theresultsandthefields.
+  
+ connection.query(
+ 'SELECT*FROMtodos'
+ ,(error,todos,fields)=>{
+  
+  
+ if
+ (error){
+  
+  
+ console
+ .error(
+ 'Anerroroccurredwhileexecutingthequery'
+ )
+  
+  
+ throw
+ error
+  
+  
+ }
+  
+  
+ console
+ .log(todos)
+  
+  
+ })
+  
+ Youcanpassinvalueswhichwillbeautomaticallyescaped:
+  
+ const
+ id=
+ 223
+  
+  
+ connection.query(
+ 'SELECT*FROMtodosWHEREid=?'
+ ,[id],(error,todos,fields)=>{
+  
+  
+ if
+ (error){
+  
+  
+ console
+ .error(
+ 'Anerroroccurredwhileexecutingthequery'
+ )
+  
+  
+ throw
+ error
+  
+  
+ }
+  
+  
+ console
+ .log(todos)
+  
+  
+ })",NA
+PerformanINSERTquery,"Youcanpassanobject
+  
+ const
+ todo={
+  
+  
+ thing:
+ 'Buythemilk'
+  
+  
+ author:
+ 'Flavio'
+  
+  
+ }
+  
+  
+ connection.query(
+ 'INSERTINTOtodosSET?'
+ ,todo,(error,results,fields)=>{
+  
+  
+ if
+ (error){
+  
+  
+ console
+ .error(
+ 'Anerroroccurredwhileexecutingthequery'
+ )
+  
+  
+ throw
+ error
+  
+  
+ }
+  
+  
+ })
+  
+ Ifthetablehasaprimarykeywith
+  auto_increment
+ ,thevalueofthatwillbereturnedinthe
+  
+ results.insertId
+ value:
+  
+ const
+ todo={
+  
+  
+ thing:
+ 'Buythemilk'
+  
+  
+ author:
+ 'Flavio'
+  
+  
+ }
+  
+  
+ connection.query(
+ 'INSERTINTOtodosSET?'
+ ,todo,(error,results,fields)=>{
+  
+  
+ if
+ (error){
+  
+ console
+ .error(
+ 'Anerroroccurredwhileexecutingthequery'
+ )
+  
+ throw
+ error
+  
+ }}
+  
+ const
+ id=results.resultId
+  
+ console
+ .log(id)
+  
+ )",NA
+Closetheconnection,NA,NA
+Differencebetweendevelopmentand ,NA,NA
+production,"Youcanhavedifferentconfigurationsforproductionanddevelopmentenvironments. 
+ Nodeassumesit'salwaysrunninginadevelopmentenvironment.YoucansignalNode.jsthat 
+ youarerunninginproductionbysettingthe
+  NODE_ENV=production
+ environmentvariable.
+  
+ Thisisusuallydonebyexecutingthecommand
+  
+ export
+ NODE_ENV=production
+  
+ intheshell,butit'sbettertoputitinyourshellconfigurationfile(e.g.
+  .bash_profile
+ withthe 
+ Bashshell)becauseotherwisethesettingdoesnotpersistincaseofasystemrestart. 
+ Youcanalsoapplytheenvironmentvariablebyprependingittoyourapplicationinitialization 
+ command:
+  
+ NODE_ENV=productionnodeapp.js
+  
+ Thisenvironmentvariableisaconventionthatiswidelyusedinexternallibrariesaswell. 
+ Settingtheenvironmentto
+  production
+ generallyensuresthat
+  
+ loggingiskepttoaminimum,essentiallevel
+  
+   
+ morecachinglevelstakeplacetooptimizeperformance 
+  
+ ForexamplePug,thetemplatinglibraryusedbyExpress,compilesindebugmodeif 
+ NODE_ENV
+ isnotsetto
+  production
+ .Expressviewsarecompiledineveryrequestin 
+ developmentmode,whileinproductiontheyarecached.Therearemanymoreexamples. 
+ Expressprovidesconfigurationhooksspecifictotheenvironment,whichareautomatically 
+ calledbasedontheNODE_ENVvariablevalue:
+  
+ app.configure(
+ 'development'
+ ,()=>{
+  
+  
+ //...
+  
+  
+ })
+  
+  
+ app.configure(
+ 'production'
+ ,()=>{
+  
+  
+ //...
+  
+  
+ })
+  
+  
+ app.configure(
+ 'production'
+ ,
+ 'staging'
+ ,()=>{
+  
+  
+ //...
+  
+  
+ })
+  
+ 188",NA

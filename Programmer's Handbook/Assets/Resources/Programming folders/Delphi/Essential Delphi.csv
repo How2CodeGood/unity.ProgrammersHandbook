@@ -1,0 +1,1625 @@
+Larger Text,Smaller Text,Symbol
+Essential Delphi,NA,NA
+IDE 10.3,"Sample content of a coming book introducing the Delphi IDE (and updated for Del-
+ phi 10.3). The material is based (with permission) on classic editions of Mastering 
+ Delphi.
+  
+ This ebook is copyright Marco Cantu 1995-2020. All rights reserved.
+  
+ For more information refer to 
+ www.marcocantu.com
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+01: A Form Is A,NA,NA
+Window,"The Delphi IDE is a very complex application, with many feature accumulated 
+ over 25 years the product has been in existence. So the question where to start 
+ covering it is more than legitimate. In this first chapter of the book I want to pro-
+ vide a practical introduction, in case you've never build an application with 
+ Delphi. Starting from the next chapter I'll go deeper in coverage going over each 
+ of the IDE areas in more and more detail.
+  
+ Let's start our exploration of Delphi by looking to the simplest scenario, building 
+ Windows applications using the VCL library. This is the easiest starting point, while 
+ most concept will also apply to mobile and multi-device development. 
+  
+ Windows applications are usually based on windows. So, how are we going to create 
+ our first window? We’ll do it by using a form. As the chapter title suggests, a form 
+ really is a window in disguise. There is no real difference between the two concepts, 
+ at least from a general point of view.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Creating Your First Form,"Even though you have probably already created at least some simple applications in 
+ Delphi, I’m going to show you the process again, to highlight some interesting 
+ points. Creating a form for a Windows application is one of the easiest operations in 
+ the system: You only need to create a new “Windows VCL Application” from the File 
+ | New menu or the Welcome page and Delphi will add to it a new, empty form, as 
+ you can see in the figure below. That’s all there is to it.
+  
+  
+ Believe it or not, you already have a working application. You can run it, using the 
+ Run button on the toolbar or the Run | Run menu command or just pressing F9, and 
+ it will result in a standard Windows program. Of course, this application won’t be 
+ very useful, since it has a single empty window with no capabilities, but the default 
+ behavior of any Windows window.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Adding a Title,"Before we run the application, let’s make a quick change. The title of the form is 
+ Form1. For a user, the title of the main window stands for the name of the applica-
+ tion. Let’s change Form1 to something more meaningful. When you first open 
+ Delphi, the Object Inspector window should appear on the left side of the form (if it 
+ doesn’t, open it by choosing View | Tools Windows | Object Inspector or pressing the 
+ F11 key):
+  
+  
+ The Object Inspector shows the properties of the selected component. The window 
+ contains a tab control with two pages. The first page is labeled Properties. The other 
+ page is labeled Events and shows a list of events that can take place in the form or in 
+ the selected component.
+  
+ The properties are listed in alphabetical order, so it’s quite easy to find the ones you 
+ want to change, but you can also type the name of the property in the search box to 
+ get quickly to it:
+  
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Saving the Form,"Select the Save Project or Save Project As command from the File menu (or the 
+ matching toolbar button), and Delphi will first ask you to give a name to the source 
+ code file, or unit, associated with the form, and then to name the project file. Since 
+ the name of the project should match the caption of the form (Hello), I’ve named the 
+ form source file 
+ HelloForm.pas
+ . I’ve given the project file the name 
+ Hello.dpr
+ .
+  
+ Unfortunately, we cannot use the same name for the project and the unit that 
+ defines the form; for each application, these items must have unique names. You can 
+ add Form, just use Unit, or call every initial form unit MainForm, or choose any 
+ other naming convention you like. I tend to use a name similar to the project name, 
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Using Components,"Now it’s time to start placing something useful in our Hello form. Forms can be 
+ thought of as component containers. Each form can host a number of components 
+ or controls.
+  
+ You can choose a component from the Palette toolbox (by default on the right of the 
+ form designer, under the Project manager. If you choose the Button component 
+ from the Standard page of the Palette, for example, you can do any of the following 
+ four simple ways to place a component on a form:
+  
+ •
+  
+ Click on the component, move the mouse cursor to the form, press the left 
+  
+ mouse button to set the upper-left corner of the button, and drag the mouse 
+  
+ to set the button’s size.
+  
+ •
+  
+ Select the component as above, and then simply click on the form to place a 
+  
+ button of the default height and width.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Changing Properties,"Like the form, the button has a 
+ Caption
+  property that we can use to change its label 
+ (the text displayed inside it). As a better alternative, we can change the name of the 
+ button. The name is a kind of internal property, used only in the code of the pro-
+ gram. However, as I mentioned earlier, if you change the name of a button before 
+ changing its caption, the 
+ Caption
+  property will have the same text as the 
+ Name
+  prop-
+ erty. Changing the 
+ Name
+  property is usually a good choice, and you should generally 
+ do this early in the development cycle, before you write much code.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Responding to Events,"When you press the mouse button on a form or a component, Windows informs 
+ your application of the event by sending it a message. Delphi responds by receiving 
+ an event notification and calling the appropriate event-handler method. As a pro-
+ grammer, you can provide several of these methods, both for the form itself and for 
+ the components you have placed in it. Delphi defines a number of events for each 
+ kind of component. The list of events for a form is different from the list for a but-
+ ton, as you can easily see by clicking on these two components while the Events page 
+ is selected in the Object Inspector. Some events are common to both compo-nents.
+  
+ There are several techniques you can use to define a handler for the OnClick event 
+ of the button:
+  
+ •
+  
+ Select the button, either in the form or by using the Object Inspector’s 
+  
+ combo box (called the Object Selector), select the Events page, and double-
+  
+ click in the white area on the right side of the OnClick event. A new method 
+  
+ name will appear, BtnHelloClick.
+  
+ •
+  
+ Select the button, select the Events page, and enter the name of a new 
+  
+ method in the white area on the right side of the OnClick event. Then press 
+  
+ the Enter key to accept it.
+  
+ •
+  
+ Double-click on the button, and Delphi will perform the default action for 
+  
+ this component, which is to add a handler for the OnClick event. Other com-
+  
+ ponents have completely different default actions.
+  
+ With any of these approaches, Delphi creates a procedure named BtnHelloClick (or 
+ the name you’ve provided) in the code of the form and opens the source code file in 
+ that position:
+  
+  
+ Even if you are not sure of the effect of the default action of a component, you can 
+ still double-click on it. If you end up adding a new procedure you don’t need, just 
+ leave it empty. Empty method bodies generated by Delphi will be removed as soon 
+ as you save the file. In other words, if you don’t put any code in them, they simply go 
+ away.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Compiling and Running a Program,"Before we make any further changes to our Hello program, let’s stop for a moment to 
+ consider what happens when you run the application. When you click on the tool-bar 
+ Run button or select Run | Run, Delphi does the following:
+  
+ 1: Compiles the Pascal source code file (.pas) describing the form
+  
+ 2: Compiles the project file (.dpr)
+  
+ 3: Builds the executable (EXE) file, linking the proper libraries
+  
+ 4: Runs the executable file, usually in debug mode
+  
+ The executable file you obtained by default is a stand-alone executable program 
+ with no dependency on library file or a run-time library (as it happens for many 
+ other competing tools). Delphi allows you also to link the required libraries code 
+ into the executable file, but you can also specify the use of separate run-time pack-
+ ages, making the executable file much smaller but introducing a run-time 
+  
+ dependency.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Changing Properties at Run-Time,"Let’s return to the Hello application. We now want to change some properties at 
+ run-time. For example, we might change the text of HelloButton from 
+ Say hello
+  to 
+ Say hello again
+  after the first time a user clicks on it. You may also need to widen 
+ the button, as the caption becomes longer. This is really simple. You only need to 
+ change the code of the HelloButtonClick procedure as follows:
+  
+ procedure TForm1.HelloButtonClick(Sender: TObject); 
+ begin
+  
+  
+  MessageDlg ('Hello, guys', mtInformation, [mbOK], 0);
+  
+  btnHello.Caption := 'Say Hello Again'; 
+  
+ end;
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Adding Code to the Program,"Our program is almost finished, but we still have a problem to solve, which will 
+ require some real coding. The button starts in the center of the form, but will not 
+ remain there when you resize the form. This problem can be solved in two radically 
+ different ways.
+  
+ One solution is to change the border of the form to a thin frame, so that the form 
+ cannot be resized at run-time. Just move to the 
+ BorderStyle
+  property of the form, 
+ and choose 
+ bsSingle
+  instead of 
+ bsSizeable
+  from the combo box.
+  
+ The other approach is to write some code to move the button to the center of the 
+ form each time the form is resized, and that’s what we’ll do next. Although it might 
+ seem that most of your work in programming with Delphi is just a matter of select-
+ ing options and visual elements, there comes a time when you need to write code, of 
+ course. As you become more expert (and your applications become larger), the per-
+ centage of the time spent writing code will generally increase significantly.
+  
+ When you want to add some code to a program, the first question you need to ask 
+ yourself is 
+ where
+ ? In an event-driven environment, the code is always executed in 
+ response to an event. When a form is resized, an event takes place: 
+ OnResize
+ . Select 
+ the form in the Object Inspector and double-click next to 
+ OnResize
+  in the Events 
+ page. A new procedure (a method, to be precise) is added to the source file of the 
+ form. Now you need to type some code in the editor, as follows:
+  
+ procedure TForm1.FormResize(Sender: TObject); 
+ begin
+  
+  BtnHello.Top := Form1.ClientHeight div 2 -
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+A Two-Way Tool,"In the Hello example, we have written three small portions of code, to respond to 
+ three different events. Each portion of code was part of a different procedure (actu-
+ ally a method). But where does the code we write end up? The source code of a form 
+ is written in a single Pascal language source file, the one we’ve named 
+  
+ HelloForm.pas
+ . This file evolves and grows not only when you code the response of 
+ some events, but also as you add components to the form. The properties of these 
+ components are stored together with the properties of the form in a second file, 
+ named 
+ HelloForm.dfm
+ .
+  
+ Delphi can be defined as a two-way tool, since everything you do in the visual envi-
+ ronment ends up in some code. Nothing is hidden away and inaccessible. You have 
+ the complete code, and although some of it might be fairly complex, you can edit 
+ everything. Of course, it is easier to use only the visual tools, at least until you are an 
+ expert Delphi programmer.
+  
+ The term two-way tool also means that you are free to change the code that has been 
+ produced, and then go back to the visual tools. This is true as long as you follow 
+ some simple rules.",NA
+Looking at the Source Code,"Let’s take a look at what Delphi has generated from our operations so far. Every 
+ action has an effect — in the Pascal code, in the code of the form, or in both. When 
+ you start a new, blank project, the empty form has some code associated with it, as 
+ in the following listing.
+  
+ unit Unit1;
+  
+ interface
+  
+ uses
+  
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, 
+ System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs;
+  
+ type
+  
+  TForm1 = class(TForm)
+  
+  private
+  
+  
+  { Private declarations }
+  
+  public
+  
+  
+  { Public declarations }
+  
+  end;
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The Textual Description of the Form,"As I’ve just mentioned, along with the 
+ PAS
+  file containing the source code, there is 
+ another file describing the form, its properties, its components, and the properties 
+ of the components. This is the 
+ DFM
+  file, a text file with the definition of the configu-
+ ration you create at design time with the form designer and Object Inspector.
+  
+ note
+  
+ In the early versions of Delphi the 
+ DFM
+  file was a binary file. Now this is by default a text file con-
+  
+ verted to a binary resource during the compilation process. The binary version is what gets into the 
+ executable, because it is a more compact representation and a faster to process one. Whatever the 
+ format, if you load this file in the Delphi code editor, it will be converted into a textual descrip-tion. 
+  
+ In any case, you can determine if the DFM is text or binary for a new module by opening the IDE 
+ Tools | Options menu and selecting User Interface | Form Designer going over the Module cre-
+ ation options and using the check box 
+ New forms as text
+ .
+  
+ You can open the textual description of a form simply by selecting the shortcut menu 
+ of the form designer (that is, right-clicking on the surface of the form at design-time) 
+ and selecting the View as Text command. This closes the form, saving it if necessary, 
+ and opens the 
+ DFM
+  file in the editor. You can later go back to the form using the View 
+ as Form command of the local menu of the editor window. The alter-native is to 
+ open the 
+ DFM
+  file directly in the Delphi editor.
+  
+ To understand what is stored in the 
+ DFM
+  file, you can look at the next listing, which 
+ shows the textual description of the form of the first version of the Hello example. 
+ This is exactly the code you’ll see if you give the View as Text command in the local 
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The Project File,"In addition to the two files describing the form (
+ PAS
+  and 
+ DFM
+ ), a third file is vital for 
+ rebuilding the application. This is the Delphi project file (
+ DPR
+ ). This file is built auto-
+ matically, and you seldom need to change it, particularly for small programs. If you 
+ do need to change the behavior of a project, there are basically two ways to do so:
+  
+ •
+ You can use the Delphi Project Manager and set some project options
+  
+ •
+ You can manually edit the project file directly
+  
+ This project file is really a Pascal language source file, describing the overall struc-
+ ture of the program and its start-up code:
+  
+ program Hello;
+  
+ uses
+  
+  Vcl.Forms,
+  
+  HelloForm in 'HelloForm.pas' {Form1};
+  
+ {$R *.res}
+  
+ begin
+  
+  
+  Application.Initialize;
+  
+  
+  Application.MainFormOnTaskbar := True;
+  
+  Application.CreateForm(TForm1, Form1);
+  
+  Application.Run; 
+  
+ end.
+  
+ You can see this file with the Project | View Source menu command (historically it 
+ was View | Project Source). As an alternative, you can select the project node in the 
+ Project manager and use the View Source option of the local menu.",NA
+What’s Next,"In this chapter, we created a simple program, added a button to it, and handled 
+ some basic events, such as a click with the mouse or a resize operation. We also saw 
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+02: Highlights Of,NA,NA
+The Delphi IDE,"In a visual programming tool such as Delphi, the role of the environment is cer-
+ tainly important, and the various tools help you get work done faster. After the 
+ introduction in the last chapter, this second part offers a deeper overview of the IDE 
+ and its features. Now in some cases the topics just introduce deeper coverage in fol-
+ lowing chapters, while in others there isn't much more to say.
+  
+ This chapter won’t discuss all of the features of Delphi, but it will give you the over-
+ all picture and help you to explore some of the environment traits that are not 
+ obvious, while suggesting some tips that may help you. You’ll find more information 
+ about specific commands and operations throughout the book.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Delphi IDE Foundations,"There is a lot to write about the Delphi IDE and I want to start offering a little his-
+ tory and covering the different versions, the different personalities and the start-up 
+ command line parameters you can use.",NA
+Different Versions of Delphi,"Before delving into the details of the Delphi programming environment, let’s take a 
+ side step to underline two key ideas. First, there isn’t a single version of Delphi; 
+ there are two of them, with some variations:
+  
+ •
+  
+ The Professional edition is aimed at professional developers building stand-
+  
+ alone applications or simple database ones (the FireDAC data access library 
+  
+ is included, with limited client/server support). The Professional package 
+  
+ has limitations in multi-tier development, but offers the full set of controls 
+  
+ for UI development on desktop and mobile.
+  
+ •
+  
+ The Community Edition (CE) has the same features of the Professional edi-
+  
+ tion, from a technical point of view, but comes with a limited license:
+  
+ ◦
+  
+ You can use it only if you or your company makes less than 5,000 
+  
+ USD/year in revenues (covering students, hobbyist, retired people, 
+  
+ start-ups, and more) 
+  
+ ◦
+  
+ You can only install a maximum of 5 copies on your local network 
+  
+ (notice that educational institution looking to install many copies on a 
+  
+ lab can use the Academic versions, which are free or have a nominal fee)
+  
+ •
+  
+ The Enterprise edition is aimed at developers building client/server and 
+  
+ multi-tier applications. It includes all FireDAC drivers for most Enterprise 
+  
+ level relational databases, DataSnap and RAD Server multi-tier architec-
+  
+ tures, and support for the Linux target.
+  
+ Besides the different editions available, there are a number of ways to customize the 
+ Delphi environment. You can change the buttons of the toolbar, attach new com-
+ mands to the Tools menu, hide some of the windows or elements, and resize and 
+ move all of them. You can also install a large number of different IDE add-ins, a few 
+ of which are made available directly by Embarcadero and I'll mention in the book.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+A Short History of the Delphi IDE,"The original Delphi IDE, that worked under Windows 3.1, provided the groundwork 
+ for all following versions right up to Delphi 7. Around that time, Borland decided to 
+ redesign the IDE to open it up to multiple programming languages (or personalities, 
+ as they were later called), with the goal to support Microsoft .NET development (a 
+ feature later abandoned), and to integrate several Application Lifetime Manage-
+ ment (ALM) tools they had bought and were focusing on at the time.
+  
+ The so-called “Galileo IDE” project is the foundation of all recent Delphi IDEs, from 
+ Delphi 8 up to the current Delphi 10 series. This IDE also went over different nam-
+ ing changes, partially reflected in some of the folders along with company names 
+ changes.
+  
+ In terms of company, Borland formed a division called CodeGear and put in on sale.
+  
+ A company called Embarcadero acquired it, only to be alter bought by Idera, Inc. 
+  
+ Idera has a large number of products, and Delphi is part of the Developers Tools 
+ division which includes Embarcadero along with other development tools. Each tool 
+ retains its originally brand and web site, like for Delphi 
+ www.embarcadero.com
+ , while 
+ overall company information can be found at 
+ www.ideracorp.com
+ .
+  
+ In terms of the product name, Delphi has always been called Delphi, with C+ 
+ +Builder being its sibling product since the early days. Since debut of the “Galileo 
+ IDE”, it has been possible to combine the two – and additional products – into a 
+ single application, which is also sold as a combined product. For Delphi 2005 and 
+ Delphi 2006 the IDE was called Borland Developer Studio (hence the 
+ BDS
+  name, 
+ which remains the name of the IDE application, 
+ bds.exe
+ ), while from the 2007 ver-
+ sion and until today is has been called RAD Studio.",NA
+A Matter of “Personality” (-p flag),"As mentioned since the introduction of the “Galileo” IDE, RAD Studio encompasses 
+ multiple personalities. If you have a Delphi or C++Builder license, you can install 
+ only the matching personality, while if you own a RAD Studio license you can decide 
+ to install both. The installer lets you decide which personality and also which target 
+ platforms to install, and you can combine than with some flexibility – but not com-
+ pletely at will.
+  
+ note
+  
+ The RAD Studio product over time included additional personalities beside Delphi and C++, 
+  
+ including C#. In other cases additional languages (like PHP and HTML) were supported but not 
+ bundles in the IDE – they required installing a separate development environment.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Installation Folders,"Original Delphi versions were installed under the 
+ Program Files\Borland
+  folder. 
+ With changes in the product ownership, product name, and the need to support 
+ Windows folder permissions, the overall structure has changed considerably. 
+  
+ The main installation folder for 10.3, using the defaults on an English language ver-
+ sion of Windows, is:
+  
+ C:\Program Files (x86)\Embarcadero\Studio\20.0
+  
+ Under this main folder there are many others. The most notable are :
+  
+ •
+  
+ bin
+  for all Win32 binaries, including the IDE, compilers, run-time packages 
+  
+ and many utilities
+  
+ •
+  
+ other 
+ binXyz
+  folders include binaries in other formats, like Win64, Linux 
+  
+ and macOS
+  
+ •
+  
+ lib
+  includes compiled library files (mostly in 
+ dcu
+  format, but not only)
+  
+ •
+  
+ source
+  has extensive run-time libraries source code
+  
+ Other files are installed outside of the 
+ Program Files
+  section of the disk, because 
+ they are meant to be created or modified by the user. These additional folders are 
+ under the 
+ Users
+  section of the disk and some of them can be under the individual 
+ user or the 
+ Public 
+ user depending on installation options. On an English language 
+ version of Windows, and using the defaults, the new projects folder, the examples 
+ folder, the catalog repository, the FireDAC database configuration are respectively:
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Registry Settings and Using Alternative ,NA,NA
+Configurations (-r flag),"Beside the Additional configuration information RAD Studio save a considerable 
+ amount of data in the registry. The default data for the registry is saved under 
+ HKEY_LOCAL_MACHINE
+  (notice the 
+ WOW6432Node): 
+  
+ HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Embarcadero\BDS\20.0
+  
+ The first time the IDE is started, the configuration is copied under:
+  
+ HKEY_CURRENT_USER\Software\Embarcadero\BDS\20.0
+  
+ This is where your configuration is kept with you change IDE options, install pack-
+ ages, and the like. If you know what you are doing, you can tweak some of these 
+ settings in the registry directly. 
+  
+ You can also create a new snapshot of the configuration settings, by starting the IDE 
+ with the 
+ -r
+  flag. This can be handy as you can keep different configurations active at 
+ the same time, for example with different IDE setting and also different third party 
+ packages.
+  
+ You can also create a stripped down version of Delphi (for faster start-up and 
+ reduced memory consumption) whilst keeping the full version ready to use as 
+ needed.
+  
+ Technically, the Delphi 
+ -r
+  command line parameter specifies the base registry key 
+ to use. For example, create a shortcut like this:
+  
+ ""C:\Program Files (x86)\Embarcadero\Studio\20.0\bin\bds.exe"" -rSmall
+  
+ The first time you run it, Delphi creates a brand new set of registry keys, copying the 
+ default settings (not the current ones) into:
+  
+ HKEY_CURRENT_USER\Software\Embarcadero\Small\20.0
+  
+ In other words, the name you provide replaces the BDS name in the registry tree.
+  
+  tip
+  
+ If you want to export the registry keys for the current configuration, or an additional one, and 
+  
+ merge it with another configuration or move it to a different computer, you can leverage the Set-
+ tings Migration Tool included with Delphi (
+ migrationtool.exe
+  in RAD Studio bin folder).
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Delphi IDE Overview,"Now that we have the basics of the configuration, folders, and start-up options, let's 
+ have a first look of the Delphi IDE overall, highlighting some global features. The 
+ first time you start the IDE, it asks you if you want use the light or dark mode:
+  
+  
+ This is a configuration you can easily change later, so don't worry about your initial 
+ selection. I'll start right away covering the style configurations and the desktop con-
+ figurations, and how you can change them.
+  
+ As the Delphi IDE starts it has many area, but the most notable section to start with 
+ are those at the top:
+  
+ •
+  
+ The special toolbar commands hosted in the title bar
+  
+ •
+  
+ The menu bar
+  
+ •
+  
+ The customizable toolbar
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+A Light or Dark IDE,"The Delphi IDE offers two distinct configurations, Light Theme and Dark Theme. 
+ You can pick one in the initial configuration, as in the image in the previous section, 
+ and change the active theme any time.
+  
+  note
+  
+ Both because this is my preference and because very dark images are more complex to print with 
+  
+ good quality, I'm going to stick with using the Light Theme for most images in this book.
+  
+ The easier way to change the theme is to use the corresponding icon with the moon 
+ in the menu bar:
+  
+ As you can see in this menu you can immediately pick the light or dark configura-
+ tion, select a matching set of editor colors with the 
+ Editor
+  submenu or use 
+ Theme 
+ Options
+  to open the Theme Manager page of IDE Options dialog, where you can 
+ configure the editor and Object Inspector color configuration associated with the 
+ Light and Dark themes.
+  
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Desktop Settings,"Programmers can customize the Delphi IDE in various ways—typically, opening 
+ many windows, arranging them, and docking them to each other. However, you’ll 
+ often need to open one set of windows at design time and a different set at debug 
+ time. Similarly, you might need one layout when working with forms and a com-
+ pletely different layout when writing components or low-level code using only the 
+ editor. Rearranging the IDE for each of these needs is a tedious task.
+  
+ For this reason, Delphi lets you save a given arrangement of IDE windows (called a 
+ desktop setting) with a name and restore it easily. For each IDE status you save 
+ multiple desktop settings and pick a default one:
+  
+ •
+  
+ The 
+ Startup Desktop 
+ is selected when the Delphi IDE starts and when no 
+  
+ project is active (for example, after you select the File | Close All menu). The 
+  
+ default option for this desktop configuration is called 
+ Startup Layout
+ .
+  
+ •
+  
+ The 
+ Default Desktop
+  is selected when a project is active in the IDE and you 
+  
+ are editing or using the form designers. The default option for this desktop 
+  
+ configuration is called 
+ Default Layout
+ .
+  
+ •
+  
+ The 
+ Debug Desktop
+  is selected when you start an application and debug it. 
+  
+ The default option for this desktop configuration is called 
+ Debug Layout
+ .
+  
+ You can modify any of these configuration and override these 
+ layouts
+  or add new 
+ ones with new names and define the default one for each IDE status.
+  
+ Desktop settings are saved in files with the 
+ DST
+  extension, which are 
+ INI
+  files in dis-
+ guise. These files are saved in a folder with the version number under 
+  
+ C:�sers\<username>\AppData\Roaming\Embarcadero\BDS\. 
+  
+ The saved settings include the information about the main window, the Project 
+ Manager, the Object Inspector, the editor windows (with the status of the Code 
+ Explorer and the Message View), and many others, plus the docking status of the 
+ various windows.
+  
+ Here are some excerpts from a 
+ DST
+  file, which should be easily readable:
+  
+ [Main Window] 
+  
+ PercentageSizes=1 
+  
+ Create=1 
+  
+ Visible=1
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The Welcome Page,"As you run the IDE, your starting point will be the Welcome page. The Welcome 
+ page is a pane hosting Internet Explorer and allowing you to view some pertinent 
+ information. The Welcome page has common operations and a list of recent projects 
+ you have worked with (empty below), alongside with some direct links to some 
+ Sample Applications. 
+  
+ On the side there are panels with lists of coming events and YouTube videos from 
+ the 
+ EmbarcaderoTechNet
+  channel.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The IDE Overall Structure,"Going back to the structure of the Delphi IDE, notice that on the left and right side 
+ of the main pane (with the Welcome page, the editor and the form designer) there 
+ are several other windows hosting various panes. 
+  
+ By default (and this is something you can fully customize) there are the following 
+ main panes available: 
+  
+ •
+  
+ The Structure View (on the left, above) hosts a tree view with the compo-
+  
+ nents and controls on the current designer or the structure of the code in the 
+  
+ open unit, depending on which of the two is active
+  
+ •
+  
+ The Object Inspector (on the left, below) shows details of the currently 
+  
+ selected component in the designer and can be used to modify the compo-
+  
+ nents. It also shows some information about elements in the project 
+  
+ manager.
+  
+ •
+  
+ A tabbed windows (on the right, above) hosts multiple views:
+  
+ ◦
+  
+ The Project Manager with a tree view structure with the current project 
+  
+ (or multiple projects if a project group is active)
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+IDE Insight,"Both newcomers and expert users can easily get lost in the large number of menu 
+ items, settings, components, and features you can activate in the IDE. At times even 
+ experts get lost because features were moved from a version of Delphi they spent a 
+ lot of time with. That's why it is great to have searching capabilities in several dialog 
+ boxes and an overall search mechanism for the entire IDE, called “IDE Insight”. The 
+ IDE Insight search box is visible in the title bar, between layouts management and 
+ the Help button:
+  
+  
+ Beside clicking it with the mouse, you activate typing in this box by pressing the F6 
+ key (or by using Ctrl + <period>). As you start typing, a pull down will show a fil-
+ tered list of just about anything you might want to look for in the IDE:
+  
+ As you can see above, the results are filtered by category and they can encompass 
+ many different areas of the development environment – some of which depend on 
+ the current selection (editor, form designer, start-up layout):
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Asking for Help,"The next element of the environment I want to mention is the Help system. There 
+ are basically two ways to invoke the Help system: select the proper command in the 
+ Help pull-down menu, or choose an element of the Delphi interface or a token in the 
+ source code and press F1.
+  
+ When you press F1, Delphi doesn’t search for an exact match in the Help Search list.
+  
+ Instead, it tries to understand what you are asking. For example, if you press F1 
+ when the text cursor is on the name of the 
+ Button1
+  component in the source code, 
+ the Delphi Help system automatically opens the description of the 
+ TButton
+  class, 
+ since this is what you are probably looking for. This technique also works when you 
+ give the component a new name. Try naming the button 
+ Foo
+ , then move the cursor 
+ to this word, press F1, and you’ll still get the help for the 
+ TButton
+  class. This means 
+ Delphi looks at the contextual meaning of the word for which you are asking help.
+  
+ You can find almost everything in the Help system, but you need to know what to 
+ search for. Usually this is obvious, but at times it is not. Spending some time just 
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Delphi Menus and Commands,"There are basically three ways to issue a command in the Delphi environment:
+  
+ •
+  
+ Use the main menu
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The File Menu,"Our starting point is the File pull-down menu. The structure of this menu has kept 
+ changing from version to version of Delphi, with menu items for handling specific 
+ types of projects added and removed over time. Still, this menu contains commands 
+ that operate on projects and commands that operate on source code files and offers 
+ options for opening files, creating new ones, saving and closing.
+  
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The File | New Sub-Menu,"The File | New sub-menu offers different options for common operations and the 
+ ability to open the File | New | Other dialog, also known as Object Repository. The 
+ basic options are those that tend to change over time. Currently (in Delphi 10.3) the 
+ menu offers by default the ability to create the following new items:
+  
+ •
+  
+ Windows VCL Application
+  creates a standard, empty project for the Win-
+  
+ dows platform only, based on the classic VCL library
+  
+ •
+  
+ Multi-Device Application
+  creates a FireMonkey application for desktop and 
+  
+ mobile platforms. You can select one of a few predefined structures (with 
+  
+ headers, footers, tabs, and more) or start with an empty form, or 
+ Blank 
+  
+ Application
+ .
+  
+ •
+  
+ Package
+  creates a components package or a package hosting IDE extensions 
+  
+ or other features. Packages are a slightly more advanced topics than we can 
+  
+ really cover in this book.
+  
+ •
+  
+ Console Application
+  creates a text-based console app you can use for differ-
+  
+ ent operating systems (including Linux, if you have the Enterprise version). 
+  
+ A console app can just use direct interaction with the use via standard text 
+  
+ input and output, and is often used for writing test or small utilities. A con-
+  
+ sole application starts with basic, skeleton code.
+  
+ •
+  
+ VCL Form
+ , 
+ Multi-Device Form
+ , and 
+ Unit
+  create a new standard alone Pascal 
+  
+ source code file or add a new one to the current project (if one is active). If a 
+  
+ project is open, however, only the compatible elements are visible (that is, if 
+  
+ you are working on a VCL project you won't see 
+ Multi-Device Form
+  menu 
+  
+ item). In each case the new Pascal source code file (unit) will have a stan-
+  
+ dard basic structure for forms or will be empty if you pick a plan unit.
+  
+ •
+  
+ Other
+  opens the File | New | Other dialog, or Object Repository.
+  
+ •
+  
+ Customize
+  allows you to change the entries of the File | New menu adding 
+  
+ new entries you use often or removing the current ones. The dialog to cus-
+  
+ tomize the File | New menu looks like the following (but actual content 
+  
+ depends on your edition of RAD Studio or Delphi:
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The File | Open Commands,"Let's now get back to the main File menu. There are 4 open commands:
+  
+ •
+ Open
+  can be used to open any file, including units, projects, project groups, but 
+ also plan text files, INI files, configuration files, HTML files or any other file a 
+ text editor can handle. Opening a new file generally doesn't affect the current 
+ open project or open files. Notice that there are different commands for adding 
+ an existing unit to the current project.
+  
+ •
+ Open From Version Control allows you to open a project from a remote 
+ repository in a Version Control System like Subversion, Git or Mercurial. 
+  
+ •
+ Open Project
+  can be used to open an exiting project, replacing the currently 
+ open project if any. Again, there is an alternative option which is add a new 
+ project to the existing project group, keeping both (or many) projects open ant 
+ the same time.
+  
+ •
+ Reopen allows you to open a recently closed project or file. When you select File 
+ | Reopen you see a list of recently closed files and projects. You can also 
+ customize how many of these files are kept in each group and do some cleanup 
+ in the list by using the File | Reopen | Properties menu, which leads to the 
+ following dialog box:
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The Other File Menu Commands,"Saving files and projects is quite straightforward, with the menu commands 
+ Save
+ , 
+ Save As
+ , 
+ Save Project As
+ , 
+ Save All
+ . Notice that if you save a project, Delphi will 
+ prompt you to save the existing units first, and give a name to any newly created 
+ one.
+  
+ The Close and Close All commands are self-explicative. Notice, however, the local 
+ menu of editor tabs offers additional closing operations, like closing all files save for 
+ the current one or all those to the left and right (considering that position generally 
+ depends on the opening sequence).
+  
+ The following File menu command, 
+ Use Unit
+ ,  offers the ability to add a reference 
+ from the current unit to another unit in the project (with a 
+ uses
+  statement). The 
+ interesting point here is that this operation will let you add references to compo-
+ nents in the other unit at design time in the IDE, for example connecting a visual 
+ component to a data source in another unit, like a Data Module.
+  
+ Another peculiar command is Print. If you are editing source code and select this 
+ command, the printer will output the text with syntax highlighting as an option:
+  
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The Edit Menu,"The Edit menu has some typical operations, such as Undo and Redo, and the Cut, 
+ Copy, and Paste commands. The menu adapts to the context somehow (startup, edi-
+ tor, designer, etc). For example, when you work with the editor, the first command 
+ of this pull-down menu is Undo; when you work with the form, it becomes Undelete 
+ instead.
+  
+  note
+  
+ Undo in the form designer is not enabled because a large number of component properties cause 
+  
+ side effects that cannot really be reverted. Consider the active property of a database query, which 
+ opens a connection, loads meta data, populate field definitions, creates fields and fetches some 
+ records… how do you  undo it? Compared to other IDEs where properties only set individual fields, 
+ the fact Delphi frameworks are more rich and offer live data at design time is the reason a general 
+ Undo operation is extremely complex to define. As a partial solution, there is an editor his-tory 
+ that keeps multiple versions of the source code and designer files.
+  
+ The copy and Paste operations (and the standard Ctrl+X, Ctrl+C, and Ctrl+V key-
+ board shortcuts) work both with text and with form components, as covered in the 
+ next section.
+  
+ Besides using cut and paste commands, the Delphi editor allows you to move source 
+ code by selecting and dragging words, expressions, or lines. If you drag text while 
+ pressing the Ctrl key, it will be copied instead of moved. 
+  
+ There are also additional special operations for the code editor, like MultiPaste, 
+ which allows you to add the same modify multiple lines adding the same text before 
+ each of them and after each of them. This is handy for embedding the text of a SQL 
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Copying and Pasting Components,"What you might not have noticed is that you can also copy components from the 
+ form to the editor and back. Delphi places components in the Clipboard along with 
+ their textual description. You can even edit the text version of a component, copy 
+ the text to the Clipboard, and then paste it back into the form as a new component.
+  
+ For example, if you place a button on a form, copy it, and then paste it into an editor 
+ (which can be Delphi’s own source code editor or any word processor), you’ll get the 
+ following description:
+  
+ object Button1: TButton
+  
+  Left = 112
+  
+  Top = 80
+  
+  Width = 75
+  
+  Height = 25
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+More Edit Commands,"Along with the typical commands found on most Edit menus in Windows applica-
+ tions, Delphi includes a number of commands that are mostly related to forms. The 
+ specific operations for forms can also be accessed through the form shortcut menu 
+ (the local menu you can invoke with the right mouse button) and will be covered in 
+ the next chapter.
+  
+ One command not replicated in a form’s local menu is Lock Controls, which is very 
+ useful for avoiding an accidental change to the position of a component in a form. 
+  
+ For example, you might try to double-click on a component and actually end up 
+ moving it. Since there is no Undo operation on forms, protecting from similar errors 
+ by locking the controls after the form has been designed can be really useful.",NA
+The Search Menu,"The Search menu offers some alternative methods for finding text or logical element 
+ of your program and eventually replace them. The basic Search | Find operation 
+ (Ctrl+F) opens a search pane at the bottom of the editor window. Here you can type 
+ your search, press enter and the editor will highlight all the hits, indicating the 
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Syntactic Searches,"In the Search menu there are also a few options that allow you to search specific ele-
+ ments of the code, rather than pure text matches as the operations covered above. 
+  
+ Find Class is a bit of a misnomer, as it allows you to search for data types in general 
+ (indicating the unit a class is into). Given this search is based on the active project, 
+ this encompasses only units included in the project (directly or indirectly via a uses 
+ statement). This is an example of the user interface:
+  
+ Notice that this search work only with full match, that is if you omit the initial 
+ T
+  in 
+ the search above you won't get any of those results. This search will open the unit 
+ with the definition of the symbol (something you can also achieve by using 
+ Cltr+Mouse click
+  on the same symbol in the editor.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The Goto Commands,"Continuing in the Search menu there is IDE Insight (something I've already covered 
+ in details earlier in this chapter) and two 
+ Goto
+  Command:
+  
+ •
+ The Goto Line Number dialog lets you enter the line number (for the current 
+ unit) and jumps to it. Thss is handy if you know the number you are inter-ested 
+ in and the file is fairly long (so that scrolling to it is going to take extra time):
+  
+  
+ •
+ The Goto Address command might seem strange at first. It can be used only 
+ while debugging the application and after you have compiled it, to find the 
+ source code line corresponding to memory address of the compiled code. 
+  
+ This is an information that some error messages and exceptions show in 
+ their display information. (In fact, this Delphi menu item was originally 
+ called Find Error). Often, however, the error is not in one of the lines of your 
+ code, but in a line of library or system code; in this case the Goto Address 
+ command cannot might not be able to locate the offending line. This is the 
+ user interface:",NA
+The View Menu,"Most of the View menu commands can be used to display one of the windows and 
+ panes of the Delphi environment, such as Project Manager, the Breakpoints list, or 
+ the Object Inspector. Some of these panes are active by default, others make sense 
+ only in specific scenarios. As this menu was getting too tall to fit on the screen, it has 
+ been rearranged a few versions back to group the view commands by area:
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The Refactor Menu,"The next menu is fully focused on the refactoring support of the Delphi IDE> While 
+ not updated in a while, this is a collection of nice features that help you write and 
+ modify your source code. Refactoring is covered in details in Chapter 5, so I won't go 
+ over the various menu command here.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The Project Menu,"The next pull-down menu, Project, has commands to manage a Delphi project and 
+ compile it. A number of these menu items (particularly those for adding and remov-
+ ing elements of the project and those for building) are also available in the local 
+ menu of the Project Manager window. Project management is explained in more 
+ detail in Chapter 6.
+  
+ The first section of the menu has these commands:
+  
+ •
+  
+ Add to Project opens an Open File Dialog box to select an existing unit 
+  
+ to be added to the active project
+  
+ •
+  
+ Remove from Project offers a list of the project units and allows you to 
+  
+ pick one to remove.
+  
+ •
+  
+ Add to Repository offers a mechanism for adding a project to the Object 
+  
+ Repository, to be used as starting point for a future project. This is a sel-
+  
+ dom used feature, these days.
+  
+ •
+  
+ View Source opens the main project file source code (we saw an example 
+  
+ in the section “The Project File” towards the end of Chapter 1). 
+  
+ •
+  
+ Format Project Sources offers the ability to format the entire source 
+  
+ code of all of the units of the project. Automatic formatting is covered in 
+  
+ Chapter 4.
+  
+ The second section has two menu items, Add New Project and Add Existing Project 
+ that work at the project group level (Delphi can keep multiple projects open at the 
+ same time in a project group). This is also covered in Chapter 6.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The Run Menu,"The Run menu could have been named Debug as well. Most of its commands are 
+ related to debugging, including the Run command itself. When you run a program 
+ within the Delphi environment, you execute it under the integrated debugger 
+ (unless you disable the corresponding Environment option).  The Run command 
+ and the corresponding toolbar icon are among the most commonly used commands, 
+ since Delphi automatically re-compiles a program before running it — at least if the 
+ source code has changed. Simply hit the F9 key to compile and run a program.
+  
+ As an alternative, the Run without Debugging menu allows you run the program 
+ outside of the debugger. This makes the program faster to start and makes is behave 
+ more like an end user would execute it. Operations the debugger intercepts, like 
+ exceptions for example, won't trigger special processing if you run the program out-
+ side of the debugger.
+  
+ The next command, Parameters, can be used to specify parameters to be passed on 
+ the command line to the program you are going to run, and to provide the name of 
+ an executable file that is loading your compiled code, when you want to debug a DLL 
+ or a package:
+  
+  
+ In the same initial section of the menu there are also commands to attach the 
+ debugger to a running application and detach it. What you can do it start a program 
+ without debugging (or from Explorer) and later 
+ attach
+  the debugger to it. Finally, 
+ the first section has a sub-menu for ActiveX Server operations, which are in fact 
+ COM Server operations, including registration and the like. The Register ActiveX 
+ Server and Unregister ActiveX Server commands basically add or remove the Win-
+ dows Registry information about the ActiveX control defined by the current project.
+  
+ Notice that these operations require to run the IDE with elevated permissions.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The Component Menu,"The commands of the Component menu can be used to write components, add them 
+ to a package, or to install packages in Delphi. The New Component command 
+ invokes a Component Wizard:
+  
+  
+ This wizard shares some logic with the Install Component wizard, which is used to 
+ add a unit with an existing component to a package. 
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Using Component Templates,"Suppose you want to create a brand new application, with a similar button and a 
+ similar event handler to a program you have written, like the Hello program of 
+ Chapter 1. It is possible to copy a component to the Clipboard, and then paste it into 
+ another form to create a perfect clone. However, doing so you copy only the proper-
+ ties of the component, and not the events associated with it.
+  
+ Delphi allows you to copy one or more components, and install them as a new com-
+ ponent template. This way, you also copy the code of the methods connected with 
+ the events of the component. Simply open the Hello example, or any other one, 
+ select the component you want to move to the template (or a group of components), 
+ and then select the Component | Create Component Template menu command. 
+  
+ This opens the Component Template Information dialog box, shown here:
+  
+  
+ Here you enter the name of the template, the page of the Component Palette where it 
+ should appear, and a custom icon. By default, the template name is the name of the 
+ first component you’ve selected followed by the word template. The default tem-
+ plate icon is the icon of the first component you’ve selected, but you can replace it 
+ with an icon file. The name you give to the component template will be used to 
+ describe it in the Tools palette. 
+  
+ In this case you might want to call it 
+ ThelloButton
+  and after installing it you'll find 
+ the following entry among your components:
+  
+ If you select it, the IDE will place the component template in the current form and 
+ you'll get a component with the given properties and also with the event handler's 
+ code attached to it as in the original version.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The Tools Menu,"The Tools offers some global Delphi IDE configuration options (in the first section) 
+ and links to external programs and tools (in the third section) that can be config-
+ ured with the Configure Tools menu item:
+  
+  
+ The first command, Options, opens the extremely detailed and complex Options 
+ dialog (originally called Environment Options dialog) of the Delphi IDE. The dialog 
+ box has many pages related to generic environment settings, packages and library 
+ settings, many editor options, a page to configure the Tools Palette, one for the 
+ Object Inspector, and one of the new Code Insight technology. Discussing those 
+ options goes beyond the scope of this chapter, and many of them are covered in dif-
+ ferent sections of this book.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The Tabs Menu,"Like the Windows menu of a good old MDI application, the Tabs menu lists all 
+ “
+ windows
+ ” open in the IDE, that is all tabs open in the main editor window. It also 
+ suggests the shortcuts you can use for circling over tabs left to right or right to left 
+ (Ctrl+Tab and Ctrl+Shift+Tab).
+  
+ The menu also lists available 
+ floating 
+ windows, if you are not using a docked IDE 
+ configuration. 
+  
+  note
+  
+ Using the 
+ undocked IDE 
+ is not recommended and might be formally deprecated in the future.",NA
+The Help Menu,"The Help menu can be used to get information about Delphi from the local help 
+ installed along with the product (if you selected that option) or from online 
+ resources:
+  
+ •
+  
+ Delphi Help and its sub-menus open local help files, if installed 
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The Local Menus,"Although Delphi has a good number of menu items as we have seen in the sections 
+ above, not all of the commands are available though the pull-down menus. In other 
+ words, a large number of the main menu commands are available also in local 
+ menus of specific windows and panes, but often local menus offer additional com-
+ mands not in the main menu. We'll explore some of the local menus while exploring 
+ various windows of the IDE in coming chapters.",NA
+The Delphi Toolbar,"The most commonly used menu items of the main menu are also available in the 
+ toolbar and in the title menu bar. What is important to notice is that the Delphi IDE 
+ toolbar is fully customizable.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+What’s Next,"In this chapter, I’ve offered you an overview of the Delphi IDE and a fairly detailed 
+ analysis of its menus and the features they activate. Starting with the next chapter 
+ I'm going to focus on specific activities you use the IDE for, like designing the user 
+ interface of an application with the form designer (Chapter 3) or writing code in the 
+ editor (Chapter 4).
+  
+ From there I'll continue getting to more advanced features the Delphi IDE includes, 
+ like code templates and projects management.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+03. Using The,NA,NA
+Form Designer,"Given Delphi is a component-based RAD tool, it expected that developers write code 
+ in its editor but also interact a lot with its visual designer. This can be used to work 
+ on different type of “designer surfaces”:
+  
+ •
+  
+ Forms are the most common type of designer surfaces, and the tool is in 
+  
+ fact generally known as Form Designer. Notice that there are significant 
+  
+ differences when working on working on a VCL form in the designer or a 
+  
+ FireMonkey form.
+  
+ •
+  
+ Data Modules are containers of non-visual components, like database 
+  
+ connection objects or other types of configuration and data access com-
+  
+ ponents
+  
+ •
+  
+ Frames are some sort of panels that can be hosted by forms, offering a 
+  
+ mechanism to replicate a similar design
+  
+ I have already guided you step by step on how to add a component to the form 
+ designer and set its properties in the Object Inspector in Chapter 1. Rather than cov-
+ ering the basics, here I'm going over more detailed and non-obvious information 
+ about the various activities related with designing forms.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The VCL Form Designer,"When you start a new, blank project, Delphi creates an empty form, and you can 
+ start working with it. You can also start with an existing form (using various tem-
+ plates available). A project (an application) can have any number of forms.
+  
+ In is important to remember two key elements of Delphi's architecture:
+  
+ •
+  
+ Every component you place on a form (or data module or frame) and 
+  
+ every property you set is stored in a file describing the form, a 
+ dfm
+  or 
+ fmx 
+  
+ file, that is bundled as part of the executable as a resource
+  
+ •
+  
+ Every operation you do at design time (from adding a component to set-
+  
+ ting properties to defining event handlers) can also be done at run-time 
+  
+ in the application code, even if this might be less convenient
+  
+ Common operations you do with the form designer (or other design surfaces) are 
+ adding components to it, selecting components and chancing their properties, asso-
+ ciating event handlers or creating new ones. These areas are all covered in the 
+ following sections. To add a component you can drag and drop it from the Tool Pal-
+ ette to the Form Designer (or double click in the designer, or select it and than click 
+ on the form in the position you want the component). 
+  
+  note
+  
+ In this section I'll generally refer to the VCL form designer. I'm going to highlight which of the fea-
+  
+ tures are specific to it. Later on I'll cover what's unique in the FireMonkey form designer instead.",NA
+Selecting and Moving a Components,"You can select a component directly with the mouse in the Form Designer, use the 
+ instance list of the Object Inspector, or use the Structure View, which is particularly 
+ handy when a control is behind another one or is very small.  You can see the Struc-
+ ture View for a form with a few panels and buttons here:
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Selecting Multiple Components,"To select several components, click them with the mouse while holding down the 
+ Shift key; or, if all the components fall into a rectangular area, drag the mouse to 
+ “draw” a rectangle surrounding them. To select controls inside a container (say, the 
+ buttons inside a panel), drag the mouse within the panel while holding down the Ctrl 
+ key—otherwise, you move the panel. 
+  
+ To align multiple components or make them the same size, you can select them and 
+ set the Top, Left, Width, or Height property for all of them at the same time. You can 
+ also use some of the toolbar panels to align controls or change their relative position 
+ (bring to front and send to back), as shortly covered in Chapter 1 – but this is a less 
+ common feature compared to the early days of Delphi, where there were fewer 
+ alternatives.
+  
+ When you’ve finished designing a form, you can use the Lock Controls command of 
+ the Edit menu to avoid accidentally changing the position of a component in a form.
+  
+ This is particularly helpful, as there is no real Undo operation on forms (only an 
+ Undelete one).",NA
+Design Guidelines,"The design time guidelines available in Delphi offer you a lot of power for aligning 
+ components to the sides, center, or the text baseline. This is a visual aid to properly 
+ aligning controls on a form. You can align controls to one of their sides, here the top:
+  
+  
+ Not only you can align the sides of a control with those of another one, but you can 
+ even align the text baseline:
+  
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Form Designer Toolbars,"The Delphi toolbar has a few buttons you can use when working with the form 
+ designer, although as I mentioned earlier these are less commonly used compared to 
+ the early days of Delphi when fewer alternative options were available. Still, some of 
+ the commands of these toolbar panes, like those for equally spacing a number of 
+ controls horizontally or vertically are quite handy. Here are the three designer-
+ related toolbar panes (dragged in front of the form to make this picture more 
+ focused, but I generally keep them inside the toolbar at the top of the IDE):
+  
+  
+ Spacing operations are enabled when multiple components are selected and allow to 
+ increase or reduce the spacing horizontally or vertically and to space the selected 
+ controls equally. 
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The Form Positioner,"Another interesting feature is the “Form Positioner” in the bottom right corner of 
+ the designer surface:
+  
+  
+ There you can see, in small, the position of the form on the screen, which is useful if 
+ the form uses absolute positioning (in many cases you let the operating system pick 
+ the position or center the form). You can also use the Form Positioner to modify the 
+ Top and Left properties of the form visually, by dragging that small rectangle.
+  
+ A little known feature is that you can click the Form Positioner to get (temporarily) a 
+ bigger view and use it to position the form more precisely. Finally, if you have a 
+ background active in Windows, this is going to show up in the Form Positioner 
+ background.",NA
+More Form Designer Tip,"Among its other features, the Form Designer offers some additional information 
+ and hints:
+  
+ •
+  
+ The designer will show the name of a nonvisual component if you turn 
+  
+ on the Show Component Captions check box in the Environment 
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Form Designer Local Menu,"While you are working on a form, the local menu has a number of useful features 
+ (some of which are also available in the Edit pull-down of the main menu).
+  
+  
+ Quick Design is part of the Quick Edit operations (along with the Add Control, Add 
+ Component, and Quick edit commands) covered in a later section in this chapter. 
+  
+ The Edit menu has the standard Cut, Copy and Paste operations, while the Control 
+ menu offers the Bring To Front and Send To Back options to change the relative 
+ position of components of the same kind (you can never bring a graphical compo-
+ nent in front of a component based on a window).
+  
+ The Position sub-menu has commands to align controls to the grid, align two or 
+ more selected controls, size them, and scale the entire form. The Align and Size 
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Form Designer Options,"Along with specific local menu commands, you can set some form options by using 
+ the Tools | Options command and choosing the User Interface | Form Designer sec-
+ tion. This page is shown here:
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The Structure View for Designers ,"The Structure View is a window showing the tree-based structure of what's active in 
+ the IDE, either a designer surface or a source code file. I'll cover the first case here 
+ and the second in the next chapter.
+  
+ The Structure View for a designer shows all the components and objects on the form 
+ in a tree representing their relations. The most obvious is the parent/child relation: 
+ if you place a panel on a form, a button inside the panel, and a button outside the 
+ panel, the tree will show one button under the form and the other under the panel, 
+ as shown here:
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The Palette,"Since the introduction of the “Galileo IDE” the Tool Palette (or just Palette, as the 
+ IDE refers to it) replaced the Component Palette as a way to select a new component 
+ to be added to a form or another designer surface. Notice that the Palette is context 
+ sensitive and shows either the list of components (when a designer is active) or the 
+ list of the New Items options (when the editor is active). The content of the Palette 
+ can be filtered by typing it its search box – and we have already seen how you can 
+ directly search for component also in the global IDE Insight search box positioned in 
+ the IDE title bar.
+  
+ As you start typing, the search is smart enough to allow for partial matches (the 
+ results of course depends on the components you have installed):
+  
+  
+ note
+  
+ The search in the Palette does not support the use of wild-cards (?, *). This works in the global 
+  
+ search, which means the global search is more handy when you know portions of the words in the 
+ component name. Try for example “
+ but*gr
+ ” for Button Group, it works in IDE insight, but not in 
+ the Palette search.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The Object Inspector,"When you are designing a form, you use the Object Inspector to set values of com-
+ ponent or form properties. Its window lists the properties (or events) of the selected 
+ element and their values in two re-sizable columns. An Object Selector at the top of 
+ the Object Inspector indicates the current component and its data type; and you can 
+ use it to change the current selection. 
+  
+ The Object Inspector doesn’t list all of the properties of a component. It includes 
+ only the properties that can be set at design-time. As mentioned in Chapter 1, other 
+ properties are accessible only at run-time. To know about all the different properties 
+ of a component, refer to the documentation.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Using Quick Edits,"Quick Edits is a collection of features added to recent versions of Delphi and that 
+ collectively help you design your forms and edit the components faster. All of the 
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+The Quick Edit Dialog,"The most visible feature, available for all components, is the QuickEdit dialog, acti-
+ vated from the local menu of the form on the selected component. While the dialog 
+ is available for all components and controls, its content varies. In the most basic case 
+ of a non-visual component, the only option of the dialog is to edit the compo-nent's 
+ name:
+  
+  
+ Visual controls have a QuickEdit dialog including also the option to edit the caption 
+ or text, with three additional buttons depending on the control features:
+  
+  
+ The Align button opens an alignment surface (here is the VCL one, the FireMonkey 
+ one is a bit overcomplicated):
+  
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Quick Design Form,"Another feature of QuickEdits is the ability to get started with a form predefined 
+ layout. When the form is selected, the form designer local menu has an item that 
+ offers four options, matching different default configurations:
+  
+  
+ Just select one to get going with a ready-to-use layout, like a tabbed dialog:
+  
+  
+ This is a very nice and quick way to get started with a new form.",NA
+Quickly Adding Controls and Components,"Another feature of QuickEdits is the ability to add commonly used controls and 
+ component rapidly via the local menu of the designer. Here for example you can see 
+ the list of controls available on a form:
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Special QuickEdits Options,"The remaining features of QuickEdits depend on the component selected and its 
+ properties. This features show up as additional items of the designer local menu. 
+  
+ For example, a form has a special “Quick Edit Icon” option (see the last image 
+ above) opening the editor for its Icon property.
+  
+ There are many other cases and scenarios, probably too many to offer an exhaustive 
+ list, but here are a few worth noticing.
+  
+ Data-aware controls have a Quick DataSource option (visible only if a data source is 
+ indeed available). It lists available data source component for quick linking. Once 
+ this is set, you can use the Quick Data Field option for connecting a dataset field 
+ compatible with the component you are working on:
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Using Data Modules,"Forms are surfaces where you define an application user interface and they can host 
+ both visual and non visual controls. There are cases in which you want to define 
+ application logic and you don't need a user interface, but still want to take advan-
+ tage of Delphi's design capabilities. In these cases you can use a Data Module, a 
+ container of non visual components like data access ones. A data module lacks all of 
+ the user interface related capabilities and it is lighter both in memory use and time 
+ to create compared to a form.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+Using Frames,"Another designer surface is that of a frame. A frame is a collection of controls and 
+ components that you can “replicate” in one of more forms. Whenever you need to 
+ repeat the same layout in multiple locations, using a frame you can avoid duplicat-
+ ing the code and configuration, but reuse it. The frame defines a template and each 
+ use is not actually a copy, but a reference: changes to the frame itself gets reflected 
+ in each instance. At the same time, you retain the ability to customize and modify 
+ the instances: each property you change gets 
+ disconnected
+  from the original version 
+ (and won't change any more if the original changes) and you can restore it to the 
+ original value.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA
+From Component Templates to Frames,"When you copy one or more components from one form to another, you simply copy 
+ all of their properties. A more powerful approach, as we have seen, is to create a 
+ component template
+ , which makes a copy of both the properties and the source code 
+ of the event handlers. As you paste the template into a new form, by selecting the 
+ pseudo-component from the palette, Delphi will replicate the source code of the 
+ event handlers in the new form.
+  
+ Component templates are handy when different forms need the same group of com-
+ ponents and associated event handlers. The problem is that once you place an 
+ instance of the template in a form, Delphi makes a copy of the components and their 
+ code, which is no longer related to the template. There is no way to modify the tem-
+ plate definition itself, and it is certainly not possible to make the same change 
+ effective in all the forms that use the template. Am I asking too much? Not at all. 
+ This is what the 
+ frames
+  technology in Delphi does.
+  
+ A frame is a sort of panel you can work with at design time in a way similar to a 
+ form. You simply create a new frame, place some controls in it, and add code to the 
+ event handlers. After the frame is ready you can open a form, select the Frame 
+ pseudo-component from the Standard page of the Component Palette, and choose 
+ one of the available frames (of the current project). After placing the frame in a form, 
+ you’ll see it as if the components were copied to it. If you modify the original frame 
+ (in its own designer), the changes will be reflected in each of the instances of the 
+ frame.
+  
+ Like forms, frames define classes, so they fit within the VCL object-oriented model 
+ much more easily than Component Templates. As you might imagine from this 
+ short introduction, frames are a powerful technique.
+  
+ Marco Cantù, Essential Delphi IDE 10.3",NA

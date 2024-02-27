@@ -1,0 +1,1091 @@
+Larger Text,Smaller Text,Symbol
+A First Guide to PostScript,"Peter Weingartner
+  
+ 24 February, 2006
+  
+ This is the fifth edition of the
+  First Guide to PostScript
+ . It differs from the 
+ previous editions in that a number of errors which people have brought to my 
+ attention have been fixed and a number of common reader
+  questions
+  have been 
+ addressed. I have also added some information on how to work with colors and 
+ raster graphics. It is my hope that this document is now stable and reasonably 
+ error-free. If you find an error, please send me
+  e-mail
+  and let me know. I can’t 
+ promise that I’ll fix it right away, but I will at least add it to my list of things to 
+ do.
+  
+ My sincere thanks goes out to everyone who has sent me e-mail concerning the 
+ guide. Whether you were asking a question, or offering me a correction, I 
+ sincerely appreciate it. My only regret is that I have not been able to be as 
+ responsive to questions and corrections as I would like.
+  
+ I left Indiana University quite a long time ago (nearly ten years as of the time of 
+ this writing), and while I still have write access to my old account space I can not 
+ be sure that I always will have access. I will maintain the original copy at Indiana 
+ University while I have access, but from now on the official copy
+ 1 
+ will be 
+ maintained at my personal website
+ 2
+ , where you can also find out a
+  little 
+ more 
+ about me, if you are so inclined.
+  
+ About this Document
+  
+ This is meant to be a simple introduction to programming in the
+  PostScript 
+ page 
+ description language from Adobe
+ 3
+ . This document is not meant to be a 
+ comprehensive reference manual (although it does contain an
+  index
+  of some of 
+ PostScript’s standard operators and a list of various
+  errors
+ ). There are far better 
+ reference
+  books
+ , if this is what you need. Instead, this is meant as an easily 
+ accessible on-line tutorial. It was written with the assumption that you have some 
+ experience programming and are familiar with concepts like arrays and 
+ variables.
+  
+ The scope of this document is fairly limited. I cover only a subset of PostScript 
+ Level 1 (the earliest version). Since I started this guide, Adobe brought out two 
+ revisions to the language: called Level 2 and Level 3. This document was never
+  
+ 1
+ http://www.tailrecursive.org/postscript/postscript.html 
+  
+ 2
+ http://www.tailrecursive.org 
+  
+ 3
+ http://www.adobe.com
+  
+ 1",NA
+Contents ,"What is PostScript? 
+  
+  
+ 3 
+ Graphics Concepts 
+  
+  
+ 4 
+ Language Concepts 
+  
+  
+ 5 
+ Programming in PostScript 
+  
+  
+  
+ 6 
+ Drawing and Filling Shapes 
+  
+  
+ 7 
+ Putting Text on the Page 
+  
+  
+ 9 
+ Adding Color 
+  
+ 11 
+ Transformations 
+  
+  
+ 12 
+ Clipping for Effect 
+  
+ 15 
+ Raster Graphics 
+  
+ 17 
+ Encapsulated PostScript 
+  
+ 22 
+ Funky Stuff 
+  
+  
+ 23 
+ Index of Examples 
+  
+ 29 
+ Index of Operators 
+  
+ 38 
+ Frequently Asked Questions 
+  
+ 39
+  
+ Note
+  
+ PostScript is a registered trademark of Adobe Systems Incorporated. The copy-
+ right to the PostScript language is also held by Adobe Systems Incorporated.",NA
+What is PostScript?,"PostScript is a programming language optimized for printing graphics and text 
+ (whether on paper, film, or CRT is immaterial). In the jargon of the day, it is a
+  
+ page description language
+ . It was introduced by Adobe in 1985 and first (to my 
+ knowledge) appeared in the Apple LaserWriter. The main purpose of PostScript 
+ was to provide a convenient language in which to describe images in a device 
+ independent manner. This device independence means that the image is 
+ described without reference to any specific device features (
+ e.g.
+  printer resolu-
+ tion) so that the same description could be used on any PostScript printer (say, a 
+ LaserWriter or a Linotron) without modification. In practice, some PostScript files 
+ do make assumptions about the target device (such as its resolution or the 
+ number of paper trays it has), but this is bad practice and limits portability.
+  
+ The language itself, which is typically interpreted, is stack-based in the same 
+ manner as an RPN calculator. A program pushes arguments for an operator onto 
+ a stack and then invokes the operator. Typically, the operator will have some 
+ result which is left at the top of the stack. As an example, let us say we want to 
+ multiply 12 and 134. We would use the following PostScript code:
+  
+ 12 134 mul
+  
+ 4
+ http://creativecommons.org/licenses/by-nc-sa/2.5/ 
+  
+ 5
+ http://www.creativecommons.org 
+  
+ 6
+ http://creativecommons.org/licenses/by-nc-sa/2.5/
+  
+ 3",NA
+Graphics Concepts,"There are a few concepts that you need to know about before we dive into the 
+ language itself. These concepts are the concepts PostScript uses to describe and 
+ manipulate images on a page. There are really only a few.
+  
+ Device Space
+  This is the coordinate space understood by the printer hardware.
+  
+ This coordinate system is typically measured in terms of the device’s res-
+ olution. There is really nothing else that can be said about this space, as 
+ PostScript programs are typically not expressed using it.
+  
+ User Space
+  This is the coordinate system used by PostScript programs to 
+ describe the location of points and lines. User space is essentially the same as the 
+ first quadrant of the standard coordinate system used in high school math 
+ classes. Point (0, 0) is in the lower left corner. Coordinates are real numbers, so 
+ there is no set resolution in user space. The interpreter automatically converts 
+ user space coordinates to device space.
+  
+ Current Transformation Matrix
+  The transformation of user space coordi-nates 
+ to device space coordinates is done through the current transforma-tion 
+ matrix. This matrix is a three by three matrix that allows the user to rotate, 
+ scale, and translate the entire user space within the device space.
+  
+ This is the source of a lot of PostScript’s power, as will be demonstrated 
+ later.
+  
+ Path
+  A path is a collection of (possibly disjoint) line segments and curves 
+ arranged on the page. The path does not describe actual ink on the paper; it 
+ merely describes an imaginary tracing over the page. There are operators which 
+ allow the user to draw ink along the path (
+ stroke
+ ), fill an enclosed path with ink 
+ (
+ fill
+ ), or clip out all future images that are outside the path (
+ clip
+ ).
+  
+ Current Path
+  This is the path that the PostScript program is creating at the 
+ moment. The current path is assembled piece by piece.
+  
+ Clipping Path
+  The PostScript rendering system will ignore any part of a line 
+ segment, curve, or bitmap that extends outside a certain region; it will 
+ only draw the parts of those elements which are within the region. The 
+ region is described by a path called the clipping path. The clipping path is 
+ usually a rectangle about a quarter of an inch in from the edge of the page, 
+ but it can easily be set by the user to an arbitrary path.
+  
+ 4",NA
+Language Concepts,"As a programming language, PostScript is particularly simple. There are really 
+ only a few concepts that need to be sketched out.
+  
+ Comment
+  A comment in PostScript is any text preceded by a “%”. The special 
+ comment “%!” as the first two characters of a PostScript program is seen 
+ as a tag marking the file as PostScript code by many systems (including 
+ Unix’s lpr command). It is a good idea to start every PostScript document 
+ with a “%!”… doing so will ensure that every spooler and printer the 
+ document may encounter will recognize it as PostScript code.
+  
+ Stack
+  There are several stacks in a PostScript system, but only two are important 
+ for this guide: the operand stack, and the dictionary stack.
+  
+ The operand stack is where arguments to procedures (or operators, in 
+ PostScript jargon) are pushed prior to use. The dictionary stack is for 
+ dictionaries, and it provides storage for variables.
+  
+ Dictionary
+  A dictionary is a collection of name-value pairs. All named vari-ables 
+ are stored in dictionaries. Also, all available operators are stored in 
+ dictionaries along with their code. The dictionary stack is a stack of all 
+ currently open dictionaries. When a program refers to some key, the in-
+ terpreter wanders down the stack looking for the first instance of that key 
+ in a dictionary. In this manner, names may be associated with variables and 
+ a simple form of scoping is implemented. Conveniently, dictionaries may be 
+ given names and be stored in other dictionaries.
+  
+ Name
+  A name is any sequence of characters that can not be interpreted as a 
+ number. With the exception of spaces and certain reserved characters (the 
+ characters “(”, “)”, “[”, “]”, “<”, “>”, “{”, “}”, “/”, and “%”) any character may be part 
+ of a name. The name may even start with digits (1Z is a name, for example), but 
+ you can get into problems with them (1E10 is a real number). A name is seen as 
+ being a reference to some value in a dictionary on the dictionary stack.
+  
+ It should be noted that there are a couple of names that are legal in PostScript 
+ which do not follow the above definition. These are the “[” and the “]” operators. 
+ Yes, they
+  are
+  operators and are stored in the dictionary. Some other names that 
+ might surprise you are: “=”, “==”, “<<”, and “>>”.
+  
+ If a name is preceded by a slash, PostScript will place the name on the stack as 
+ an operand. If the name has no slash, the interpreter will look up its value in the 
+ dictionary stack. If the value is a procedure object, the procedure will be 
+ evaluated. If the value is not a procedure, the value will be pushed onto the
+  
+ 5",NA
+Programming in PostScript,"Programming in PostScript is really pretty easy. The fundamentals are that you 
+ push operands onto the operand stack by naming them, and then you invoke the 
+ operator to use them. That’s really all there is to it. The real art is knowing which 
+ operator to use. Operators to draw and put text on the screen will be covered 
+ later, and these make up the bulk of PostScript code, but there are a couple that 
+ are used mainly for maintaining the program itself.
+  
+ The first of these operators is
+  def
+ . “def” is responsible for entering a definition 
+ into the top-most dictionary on the dictionary stack. The top operand on the 
+ operand stack is the value, and the operand below the value is the key (and 
+ should be a name). Let’s say that we wanted to define the name “x” to have a 
+ value of 5. The PostScript to do this is: /x 5 def. Notice the use of the slash on the 
+ “x”. The slash ensures that the
+  name
+  “x” will be pushed onto the stack and not 
+ any value it may already have in the dictionary stack.
+  
+ “def” is also used to define new operators. 
+  
+ The value in this case is just a 
+ procedure. The following code defines an operator “foo” which adds its top-most 
+ two operands and multiplies the result with the next operand on the stack: /foo 
+ {add mul} def. Remember, operators that return results push them onto the stack, 
+ where they may be used later.
+  
+ An important point to know when defining procedures is that the elements in 
+ the procedure are not evaluated until the procedure is invoked. That means that 
+ in the procedure {1 2 add 3 mul}, the actual names “add” and “mul” are stored in 
+ the array that is the procedure. This is different from an actual array
+  
+ 6",NA
+Drawing and Filling Shapes,"Principles
+  
+ The main purpose of PostScript is to draw graphics on the page. One of the 
+ elegant aspects of PostScript is that even text is a kind of graphic. The main task 
+ that must be mastered, then, is constructing paths which may be used to create 
+ the image.
+  
+ To draw and fill shapes, the basic sequence is:
+  
+ • Start the path with the
+  newpath
+  operator.
+  
+ • Construct the path out of line segments and curves (the path need not be 
+ contiguous).
+  
+ • Draw the path with the
+  stroke
+  operator or fill it in with the
+  fill
+  operator.
+  
+ This basic sequence can be modified to do more complicated things as we will see 
+ later.
+  
+ Drawing a Box
+  
+ In this first example, we will draw a square inch box toward the lower left corner 
+ of the page. We start off by defining a function to convert inches into PostScript’s 
+ main unit, the point (a point is defined in PostScript as 1/72th of an inch, which is 
+ slightly shorter than a true printer’s point of 1/72.27 inch). The conversion is 
+ simple, we just multiply the number of inches by 72. This gives us the function
+  
+ /inch {72 mul} def
+  
+ To actually draw the square, we start a new path and move the current point to a 
+ point an inch in from both margins. This is accomplished with the code:
+  
+ 7",NA
+Putting Text on the Page,"Printing text on a page is, understandably, a simple process. It consists basically 
+ of these main steps:
+  
+ 9",NA
+Adding Color,"In recent years, color printers have become more common… to the point where 
+ it is almost impossible to buy a black-and-white printer. Fortunately, PostScript 
+ handles color documents quite easily, and you do not have to learn much to add 
+ color to your documents.
+  
+ There are many, many ways to specify color. The science of color reproduction 
+ and perception is very complex and encompasses physics, chemistry, physiology, 
+ and psychology. 
+  
+ PostScript provides a great deal of flexibility on this front, 
+ providing several different methods for specifying color to let you get as close as 
+ possible to the color you want specifying it in the way that is most natural in your 
+ application. I will discuss only two methods here, however, because—frankly—I 
+ know as much about color as a bee knows about ancient Phoenician.
+  
+ RGB
+  
+ The first method I will mention is the so-called RGB colorspace. In this model, you 
+ specify the red, green, and blue components of the color you want to repro-duce. 
+ This is model specifies color using the additive primaries and will be very familiar 
+ to those who work with monitors and computer graphics.
+  
+ To specify a color using the RGB color space, you can use the
+  setrgbcolor
+  opera-
+ tor. This operator takes three operands: the red, green, and blue components of 
+ the color you want (0 means none, 1 means maximum). For example, to specify 
+ red, you can write 1 0 0 
+  
+ setrgbcolor; and to get a dark yellow, you can 
+ write 0.5 0 0.5 setrgbcolor. Black is 0 0 0 
+  
+ setrgbcolor, and 
+ white is 1 1 1 setrgbcolor.
+  
+ CMYK
+  
+ Another way to specify color is through the CMYK colorspace. In this model, you 
+ specify color using the subtractive primaries more common in the printing
+  
+ 11",NA
+Transformations,"The PostScript interpreter keeps track of a matrix called the
+  current transfor-
+ mation matrix
+ . When constructing an image, the interpreter uses this matrix to 
+ convert the world coordinates used by the program into device coordinates used 
+ by the printer itself. Generally, the actual contents of the matrix are of little 
+ interest to a well-written PostScript program; the reason for this is that the 
+ specific contents are device-dependent. A program that uses them might not work 
+ properly. PostScript does provide a number of operators, however, that transform 
+ the matrix in a device-independent way. These operators allow you to transform 
+ the way user space maps onto device space, and they modify
+  
+ 12",NA
+Clipping for Effect,"Within the graphics state of a PostScript system is a special path called the 
+ clipping path. Every bit of ink to be placed on the page is checked against this 
+ path. If PostScript determines that the ink would go outside the current clipping 
+ path, that portion of ink is ignored. If the ink would be within the clipping path, it 
+ is actually placed on the page. For the mathematically inclined, the clipping 
+ process is intersection: the set of pixels to be painted is intersected with the set of 
+ pixels within the current clipping path to get the set of pixels to paint. For objects 
+ that are partly inside and partly outside the clipping path, the natural implication 
+ is that only the part that is within the clipping path is drawn.
+  
+ By default, the clipping path is defined to be a rectangle just within the bound-ary 
+ of the page (usually it is set to about a quarter of an inch). You can set your own 
+ clip path by constructing the path with the normal path construction operators 
+ and invoking the
+  clip
+  operator. There is only one difficulty: once you reduce the 
+ size of the current clipping path, there is no way to expand the size of the clipping 
+ path with clip. The only way to go back to a larger clipping path is to save the one 
+ you would like to restore with
+  gsave
+  and restore it later with 
+ grestore
+ . In fact, it is 
+ always good policy to only set a clipping path withing a bracketing 
+ gsave/grestore pair. You will always be safe if you do this.
+  
+ 15",NA
+Raster Graphics,"One of the common questions I have gotten over the years is how to handle other 
+ graphics file formats in PostScript. 
+  
+ People often ask about including 
+ GIFs, JPEGs, and the like in a PostScript file. While this sort of thing is really 
+ beyond the scope of this guide, the basics of handling so-called raster graphics is 
+ not.
+  
+ Raster Graphics Basics
+  
+ Raster graphics is that style of graphics in which the image is broken up into a 
+ matrix of picture elements (pixels). The matrix will have a certain number of 
+ rows, each containing a certain number of pixels. Each pixel can be assigned any 
+ of a number of colors. The number of colors depending upon the “depth” of the 
+ image, often expressed as the number of bits needed to encode all the colors. 
+ Typical bit depths used today are: 1 (two colors, usually black and white), 2 (four 
+ colors, usually shades of gray), 4 (16 colors), 8 (256 colors), 16 (65,536 colors), 
+ 24 (so-called true color), and 32 (more colors than you can shake a stick at).
+  
+ The numbers of rows and columns gives you the resolution. 
+  
+ If there are
+  c 
+ columns and
+  r
+  rows, the image is referred to as a
+  r
+  x
+  c
+  image. If the image is to 
+ have a certain physical size, this size combined with the number of pixels give 
+ you the number of dots-per-inch (DPI) of the image, which is a measure of its
+  
+ 17",NA
+Encapsulated PostScript,"What is Encapsulated PostScript?
+  
+ At some point, you may want to include some nice PostScript image into a 
+ document. There are a number of problems associated with this, but the main one 
+ is that your page layout program needs to know how big the image is, and how to 
+ move it to the correct place on the page. Encapsulated PostScript (EPS) is that 
+ part of Adobe’s Document Structuring Convention that provides this information.
+  
+ What Is the Document Structuring Convention?
+  
+ The DSC is a special file format for PostScript documents. The full details for the 
+ DSC can (and should) be gotten from Adobe. If you are writing a PostScript 
+ printer driver or other utility which will be used by a large number of people to 
+ create or manipulate PostScript documents, do not even think about writing it 
+ without making it DSC-compliant. You will save yourself and your users a lot of 
+ headaches.
+  
+ Although the full DSC is beyond the scope of this guide, the most basic rules can 
+ be explained. A DSC-compliant document is an ordinary PostScript document 
+ with a number of comments added. These comments provide information to any 
+ post-processors which work with the files. Some comments strictly provide 
+ information, others are used to structure the document into sections, which may 
+ be shuffled or processed in other ways by the post-processor.
+  
+ Every 
+  
+ DSC-compliant 
+  
+ document 
+  
+ is 
+  
+ indicated by 
+  
+ having 
+  
+ the 
+  
+ comment
+  
+ %!PS-Adobe 3.0 as the first line. 
+  
+ This comment is a flag to indicate that 
+ the document is compliant. You should never use this comment unless your 
+ document really is DSC compliant. There are many other parts to proper DSC. A 
+ document which follows the DSC can be manipulated in many ways. In particular, 
+ post-processors can shuffle the pages, print two or more pages on a side, and so 
+ on. The printer drivers from some notable companies do not follow the DSC, and 
+ their PostScript documents are, therefore, impossible to work with once they’ve 
+ been generated.
+  
+ Now, What About EPS?
+  
+ An EPS file is a PostScript file which follows the DSC and which follows a couple 
+ of other rules. These rules can be summarized as follows:
+  
+ • The first line must be %!PS-Adobe EPSF-3.0
+  
+ • The file must make use of the BoundingBox comment
+  
+ • The file should be a single page image (in DSC terms, the %%Pages com-
+ ment must have a value of 0 or 1).
+  
+ • The file should not use any
+  operators
+  which affect the global state.• Finally, 
+ the EPS file should not use
+  showpage
+ . Actually, Adobe says that it is fine to use 
+ showpage in your EPS files. Officially, it is the responsibility
+  
+ 22",NA
+Funky Stuff,"There are often times when you will want to take an existing PostScript docu-
+ ment and manipulate it in some way. For example, you may be publishing a book, 
+ and you want to print the pages with wide margins for proofing notes (but you 
+ don’t want to modify the book’s layout). Maybe you are printing out some 100-
+ page manual, and you want to avoid using most of a rain forest to print it. Maybe 
+ you want to print out some document with the word “Draft”stamped
+  beneath
+  the 
+ pages. All of these things can be done in PostScript by a post-processor (that is, a 
+ program which manipulates an existing PostScript file). Moreover, these are all 
+ things which may be difficult to manage in the program you used to generate the 
+ files.
+  
+ In this section, I’ll show you the basic PostScript code to do each of these jobs 
+ and how to use EPS comments to find the right places to insert the additional 
+ PostScript.
+  
+ You are welcome to use these programs as you will. Bear in mind, however, that 
+ there are professionally written programs that do these jobs and more. I strongly 
+ suggest that you look into buying such a program rather than writing your own. 
+ Generally, they have already solved most of the problems. Also, these packages 
+ usually come with tools you did not even know were possible. These examples, 
+ therefore, are more to give you a taste of what is possible and how to do it, in case 
+ you want to roll your own post-processing utility.
+  
+ By the way, being an American who rarely gets out of the country (or, indeed, off 
+ the sofa), I should warn you that both the “Galley Proofs” and “Two Up”examples 
+ are set up for the U.S. Letter paper size (8.5 inches by 11 inches), since this is the 
+ kind of paper I have and which my printer uses. They can be adapted for other 
+ paper sizes, of course, just the particular scale factors and translation coordinates 
+ will have to be adjusted appropriately.
+  
+ •
+  Galley Proofs
+  
+ •
+  Two Up
+  
+ •
+  Draft
+  
+ 23",NA
+Index of Examples,"•
+  Clipping Text to a Box
+  
+ •
+  Clipping to text
+  
+ •
+  Drawing a box
+  
+ •
+  Drawing a box with rlineto
+  
+ •
+  Filled box
+  
+ •
+  Text
+  
+ •
+  Color
+  
+ •
+  Rotation
+  
+ 29",NA
+Index of Operators,"•
+  add
+  
+ •
+  arc
+  
+ •
+  begin
+  
+ •
+  bind
+  
+ •
+  clip
+  
+ •
+  charpath
+  
+ •
+  closepath
+  
+ •
+  curveto
+  
+ •
+  def
+  
+ •
+  div
+  
+ •
+  dup
+  
+ •
+  end
+  
+ •
+  exch
+  
+ •
+  fill
+  
+ •
+  for
+  
+ •
+  findfont
+  
+ •
+  grestore
+  
+ •
+  gsave
+  
+ •
+  if
+  
+ •
+  ifelse
+  
+ •
+  index
+  
+ •
+  lineto
+  
+ •
+  moveto
+  
+ •
+  mul
+  
+ •
+  newpath
+  
+ •
+  pop
+  
+ •
+  restore
+  
+ •
+  rlineto
+  
+ •
+  rmoveto
+  
+ •
+  rotate
+  
+ •
+  save
+  
+ •
+  scale
+  
+ •
+  scalefont
+  
+ •
+  setfont
+  
+ •
+  setgray
+  
+ •
+  setlinewidth
+  
+ •
+  show
+  
+ •
+  showpage
+  
+ •
+  stroke
+  
+ •
+  sub
+  
+ 38",NA
+Frequently Asked Questions,"I have received a number of questions from readers, and many of them are the 
+ same. Since these seem to be popular questions, I thought I would list them here, 
+ along with my usual answers. Of course, you will also find the FAQ
+ 7
+ for the 
+ comp.lang.postscript Usenet group to be useful. There are far more FAQs in that 
+ list than are here. By the way, if anyone knows of a better answer to any of these 
+ question, let me
+  know
+ .
+  
+ •
+  Is there a utility to convert a PostScript file into my favorite word proces-
+ sors format?
+  
+ •
+  I have a Hawat-Pickford 520xz ink jet printer without PostScript, is there 
+ anyway I can print PostScript files on it?
+  
+ •
+  Can you point me to a good previewer for my computer?
+  
+ •
+  Can you tell me X about Acrobat and PDF files?
+  
+ •
+  How do I print out a PostScript file from my computer?
+  
+ •
+  My company has an Acme Laz-o-Tron typesetter. We’re having problems 
+ printing out a set of color separations for a TIFF photograph processed by 
+ FotoWerks Pro+. Why are the separations coming out wrong?
+  
+ •
+  I’m looking at two printers, one has PostScript while the other does not. 
+ Which should I buy?
+  
+ •
+  Is it possible to concatenate two PostScript files together into a single file?
+ •
+  Is 
+ it possible to create a PDF from a PostScript file?
+  
+ Is there a utility to convert a PostScript file into my favorite word 
+ processors format?
+  
+ Short answer: no.
+  
+ Long answer: Maybe. There is a utility to convert PostScript files into ASCII files 
+ (it tries to extract the text), but it can not work on every PostScript file. The 
+ problem here is that PostScript is a full programming language, and there are 
+ many ways to accomplish a given thing. It would be next to impossible for a 
+ program to look at some piece of PostScript and decide what the contents are. It 
+ would be possible to write a program which would accept some subset of 
+ PostScript files and convert them to some useful format, but it would be difficult 
+ to write (and it could not handle all possible PostScript files).
+  
+ I have a Hawat-Pickford 520xz ink jet printer without PostScript, is there 
+ anyway I can print PostScript files on it?
+  
+ Yep. There are a number of PostScript interpreters which run on your com-puter 
+ and can print out PostScript files. There are versions of these kinds of utilities for 
+ the Mac and for DOS/Windows machines. I have never used one of these utilities, 
+ so I can not recommend any particular one. Go to your friendly neighborhood 
+ dealer or your favorite catalog to see what they have. There is a
+  
+ 7
+ http://www.faqs.org/faqs/by-newsgroup/comp/comp.lang.postscript.html
+  
+ 39",NA
+PostScript Operators,"Operator: add
+  
+ num1 num2
+  add
+  num3
+  
+ This operator returns the addition of the two arguments.
+  
+ •
+  stackunderflow
+  
+ •
+  typecheck
+  
+ •
+  undefinedresult
+  
+ See also:
+  
+ •
+  div
+  
+ •
+  mul
+  
+ •
+  sub
+  
+ Operator: arc
+  
+ x-coord y-coord r ang1 ang2
+  arc -
+  
+ This operator adds an arc to the current path. The arc is generated by sweeping a 
+ line segment of length
+  r
+ , and tied at the point (
+ x-coord y-coord
+ ), in a counter-
+ clockwise direction from an angle
+  ang1
+  to an angle
+  ang2
+ . Note: a straight line 
+ segment will connect the current point to the first point of the arc, if they are not 
+ the same.
+  
+ •
+  limitcheck
+  
+ •
+  stackunderflow
+  
+ •
+  typecheck
+  
+ Operator: begin
+  
+ dict
+  begin -
+  
+ This operator pushes the dictionary
+  dict
+  onto the dictionary stack. Where it can 
+ be used for
+  def
+  and name lookup. This operator allows an operator to set up a 
+ dictionary for its own use (e.g. for local variables).
+  
+ Errors:
+  
+ •
+  dictstackoverflow
+  
+ •
+  invalidaccess
+  
+ •
+  stackunderflow
+  
+ •
+  typecheck
+  
+ 12
+ mailto:pjw@tailrecursive.org?subject=First%20Guide%20to%20PostScript
+  
+ 43",NA
+Errors You Might Encounter,"configurationerror 
+    
+ setpagedevice request can not be satisfied 
+  
+ dictfull 
+   
+ dictionary is full 
+  
+ dictstackoverflow 
+   
+ too many
+  begin
+ s 
+  
+ dictstackundeflow 
+   
+ too many
+  end
+ s 
+  
+ invalidaccess 
+    
+ access attribute violated (e.g. attempted to write a read-only 
+ object) 
+  
+ invalidfont 
+      
+ bad font name or dictionary 
+  
+ invalidrestore 
+   
+ the saved state object is too old to
+  restore 
+  
+ ioerror 
+  
+  
+ some kind of error during input or output 
+ limitcheck 
+  
+  
+  
+  
+ some implementation-dependent size restriction has been exceeded 
+ nocurrentpoint 
+    
+ the current point is not defined, yet 
+  
+ rangecheck 
+      
+ operand is too big or too small 
+  
+ stackoverflow 
+  
+  
+  
+  
+ the stack was full before the last push 
+ stackunderflow 
+  
+  
+  
+ you tried to pop from an empty stack 
+  
+ syntaxerror 
+      
+ PostScript’s syntax has been violated 
+  
+ typecheck 
+    
+ operand is of the wrong type 
+  
+ undefined 
+  
+  
+  
+ name is not defined in any dictionary on the stack 
+ undefinedresult 
+  
+  
+  
+ the result of the last numeric operation is invalid (
+ e.g.
+  divi-sion by zero) 
+  
+ VMerror 
+  
+ virtual memory full",NA
+String Escape Codes,"\n
+  Newline 
+  
+ \r
+  Carriage return 
+  
+ \t
+  Horizontal TAB 
+  
+ \b
+  Backspace 
+  
+ \f
+  Form feed 
+  
+ \\
+  Backslash 
+  
+ \(
+  Left parenthesis 
+  
+ \)
+  Right parenthesis 
+  
+ \ddd
+  The character code ddd, where ddd is in octal.
+  
+ In addition to these basic codes, a backslash just before a newline allows you to 
+ break a string across two lines without inserting a newline into the string. That 
+ is, the string:
+  
+ (This is a \
+  
+ string \
+  
+ that has no \
+  
+ newlines)
+  
+ is equivalent to the string:(This is a string that has no newlines).
+  
+ 58",NA
+Forbidden Operators in EPS,"Here is the list of operators which are not allowed within EPS files. The fact that 
+ none of these operators are listed in my index of operators should tell you 
+ something: they are not operators you would use very often, anyway. There is 
+ also a list of operators you
+  can
+  use but you should probably avoid.
+  
+ Forbidden Operators
+  banddevice, clear, cleardictstack, copypage, erasepage, 
+ exitserver, framedevice, grestoreall, initclip, initgraphics, initmatrix, quit, 
+ renderbands, setglobal, setpagedevice, setshared, startjob 
+  
+ To Avoid
+  nulldevice, setgstate, sethalftone, setmatrix, setscreen, settransfer, 
+ undefinedfont
+  
+ For more details, please see the
+  red book
+ .",NA
+PostScript Books,"There are a number of good books on PostScript. If you do much PostScript 
+ programming at all, I highly recommend that you get one of these print books.
+  
+ PostScript Language Reference Manual: Third Edition
+  This book is put out by 
+ Adobe Systems Incorporated and is published by Addison Wesley. It is
+  the
+  
+ reference manual and pretty much defines the language.
+  
+ The operator reference guide I have here pretty well follows Adobe’s 
+ reference in this manual. Their reference is, however, far more detailed (and 
+ accurate). This book is known as the “Red and White Book.” Adobe also 
+ provides other books (including the “Blue” tutorial and cookbook).
+  
+  
+ The
+  PLRM
+ ’s ISBN is: 0-201-37922-8 
+  
+ PostScript Language Tutorial and Cookbook
+  This book is also put out by 
+  
+ Adobe and is published by Addison Wesley. (Are you starting to see a 
+  
+ pattern here?) This is a very neat book on PostScript and gives a number 
+  
+ of handy examples (two which come to mind are a set of routines to set 
+  
+ text in a circle and a simple text formatter). This is the so-called blue 
+  
+ book. The ISBN is 0-201-10179-3.
+  
+ Learning PostScript: a Visual Approach
+  This book is a fine beginning 
+  
+  
+ text for PostScript. The book emphasizes PostScript’s fantastic graph-
+  
+  
+ ics abilities while illustrating basic language constructs. 
+  
+ The language 
+  
+  
+ concepts are illustrated with graphic design examples, most of which you 
+  
+  
+ will be tempted to use in your own documents. The book also includes a 
+  
+  
+ number of interesting and useful utilities. Author: Ross Smith. Publisher: 
+  
+  
+ Peachpit Press. ISBN 0-938-151-12-6. I do not know if this book is still 
+  
+  
+ in print, but there are copies available on Amazon at the time I write this. 
+  
+ You can probably find it elsewhere, too.",NA
+Contacting Me,"If you wish to contact me with a question, comment, or uncontrollable adula-tion, 
+ please feel free to e-mail me. My address is pjw@tailrecursive.org. I
+  
+ 59",NA

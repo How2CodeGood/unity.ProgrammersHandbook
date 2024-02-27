@@ -1,0 +1,3561 @@
+Larger Text,Smaller Text,Symbol
+Programming in Standard ML ’97: A ,NA,NA
+Tutorial Introduction,NA,NA
+Stephen Gilmore ,NA,NA
+Laboratory for Foundations of Computer Science ,NA,NA
+The University of Edinburgh,NA,NA
+September 1997 ,NA,NA
+"(Revised: July 1998, April 2000, Jan 2003)",NA,NA
+Copyright notice,"This work is copyright c
+ ⃝
+  1997, 1998, 2000, 2003. The copyright resides with the author, 
+ Stephen Gilmore. Copyright and all rights therein are maintained by the author, notwith-
+ standing that he has offered his work for electronic distribution. It is understood that all 
+ persons copying this information will adhere to the terms and constraints invoked by the 
+ author’s copyright. This work may not be reposted without the explicit permission of the 
+ copyright holder. Single copies can be made for personal or scholarly use.",NA
+Disclaimer of warranty,"The computer programs which appear in this tutorial are distributed in the hope that they 
+ will be useful, and of educational value. Although they are not known to contain errors they 
+ are provided without warranty of any kind. We make no warranties, express or implied, 
+ that the example functions and programs are free from error, or are consistent with any 
+ particular standard of merchantability, or that they will meet your requirements for any 
+ particular application. They should not be relied upon for use in circumstances where 
+ incorrect results might lead to injury to persons, loss of income, or damage to property or 
+ equipment. If you do use these programs or functions in such a manner then it is at your 
+ own risk. The author, his institution, and other distributors of this tutorial disclaim all 
+ liability for direct, incidental or consequential damages resulting from your use of any of 
+ the software in this tutorial.",NA
+About this document,"These are the lecture notes from an eighteen-lecture Master of Science course given in the 
+ Department of Computer Science at The University of Edinburgh between 1992 and 1997. 
+ An on-line version was developed in co-operation with Harlequin Ltd. It can be obtained 
+ from the following WWW location:
+  
+ •
+  http://www.dcs.ed.ac.uk/home/stg 
+  
+ The following people have found errors in previous versions of these notes or suggested 
+ improvements: Anthony Bailey, Jo Brook, Arno Eigenwillig, Elaine Farrow, Jon Hanson, 
+ Stefan Kahrs, Jeff Prothero, Dan Russell, Don Sannella, K.C. Shashidar and James Wilson. 
+ Any remaining errors are solely the fault of the author. If you have comments or 
+ suggestions for improvements or clarifications please contact the author at the address 
+ below.
+  
+ Laboratory for Foundations of Computer Science 
+ The James Clerk Maxwell Building 
+  
+ The King’s Buildings 
+  
+ University of Edinburgh 
+  
+ Edinburgh EH9 3JZ, UK
+  
+ Email: stg@dcs.ed.ac.uk",NA
+Contents,"1
+  
+ Introduction
+  
+ 1
+  
+ 2 
+  
+ Simple applicative programming 
+  
+ 6
+  
+ 3 
+  
+ Higher-order programming 
+  
+ 16
+  
+ 4 
+  
+ Types and type inference 
+  
+ 23
+  
+ 5 
+  
+ Aggregates 
+  
+ 33
+  
+ 6 
+  
+ Evaluation 
+  
+ 47
+  
+ 7 
+  
+ Abstract data types 
+  
+ 55
+  
+ 8 
+  
+ Imperative programming 
+  
+ 59
+  
+ 9 
+  
+ Introducing Standard ML Modules 
+  
+ 71
+  
+ 10 Functors, generativity and sharing 
+  
+ 75
+  
+ Bibliography 
+  
+ 81
+  
+ Index 
+  
+ 83
+  
+ i",NA
+Chapter 1,NA,NA
+Introduction,"Standard ML is a functional programming language, and it is more than that. Functional
+  
+ programs have many virtues.
+  
+ They are concise, secure and elegant.
+  
+ They are easier to
+  
+ understand and easier to prove correct than imperative programs.
+  
+ Functional—or applicative—languages relieve the programmer of many of the 
+ difficulties which regrettably occupy much of the attention of a programmer working in 
+ imperative—or procedural—languages. These difficulties range from implementing re-
+ usable routines to conserving memory to mastering the representation of data values. 
+ Some of these have atten-dant responsibilities. Once programmers understand how values 
+ are represented in memory they must subsequently ensure that they are inspected and 
+ updated in a manner which is consistent with that representation. Even after the 
+ difficulties of managing the machine’s primary memory have been comprehended, there 
+ are still the difficulties of transferring data from primary memory to secondary memory 
+ and the complications of disk access mechanisms and input/output libraries.
+  
+ A functional programmer can transcend these matters. Applicative languages have secure 
+ polymorphic type systems which simplify the task of writing re-usable, general-purpose 
+ routines. Applicative programmers delegate the task of memory management to “garbage 
+ collection” routines which need only be written once for the implementation of the 
+ language; Applicative languages not every time that another program is written in the 
+ language.
+  
+ hide the machine representation of data, making it impossible to write programs which are 
+ sensitive to the byte order of the underlying machine or to introduce other unintended 
+ dependencies. Using disk input routines can be avoided because of the interactive nature of 
+ applicative languages which allows data to be entered with the minimum of fuss. Using disk 
+ output routines can be avoided by allowing the user to export the environment bindings as 
+ easily as checkpointing a database. Of course any realistic programming language must 
+ offer input and output routines for disk, screen and keyboard but their use can be avoided 
+ for many applicative programming problems.
+  
+ Functional languages do have shortcomings. It might be said that some programming 
+ problems appear to be inherently state-based. 
+  
+ The uniformity of representation which 
+ applicative programming languages offer then becomes a handicap. Although an applica-
+ tive solution to such a problem would be possible it might have an obscure or unnatural 
+ encoding. Another possible worry is that the functional implementation might be inefficient
+  
+ 1",NA
+1.1 Standard ML,"The Standard ML programming language is defined formally. This definition is presented as 
+ a book of rules [MTHM97] expressed in so-called Natural Semantics, a powerful but concise 
+ formalism which records the essential essence of the language while simultaneously 
+ abstracting away from the uninformative detail which would inevitably be needed in a 
+ programming language implementation. As a comparison, the published model implemen-
+ tation of Standard Pascal [WH86] is five times longer than the definition of Standard ML. 
+ This is a shocking fact because Standard ML is a much more sophisticated language than 
+ Pascal. In these notes we follow the 1997 revision of the language definition.
+  
+ Standard ML consists of a core language for small-scale programming and a module 
+ system for large-scale programming. The Standard ML core language is not a pure applica-
+ tive programming language, it is a higher-order procedural language with an applicative",NA
+1.2 Programming in practice,"Let’s not kid ourselves. Switching to a better programming language or following a 
+ prescribed methodical approach to programming is no panacea to solve all of the problems 
+ which can arise in software development. For example, it is perfectly easy to imagine a 
+ correct program which is difficult or inconvenient to use. It is also perfectly easy to imagine 
+ users finding fault with a correct program which has some missing functionality which they 
+ would like. If a feature is never specified in the first place in an initial, abstract specification 
+ then nothing in a methodical program development approach will go wrong as the program 
+ is being developed. The forgotten feature, in Knuth’s terminology [Knu89], will remain 
+ forgotten.
+  
+ A clean, high-level programming language is simply a powerful tool in a programmer’s 
+ toolset. With it the creation of saleable, efficient, secure and well-engineered programs will 
+ still remain a demanding intellectual activity which requires original, creative and careful 
+ thought.",NA
+1.3 Reading material,"Two excellent textbooks to help anyone learning Standard ML are Paulson’s “ML for the 
+ Working Programmer (Second Edition)” [Pau96] and Ullman’s “Elements of ML Program-
+ ming (ML ’97 edition)” [Ull98]. These textbooks use the 1997 revision of the Standard ML 
+ language—sometimes called SML ’97. Other textbooks refer to the 1990 issue of the 
+ language standard, and some even pre-date that. Another on-line tutorial on SML ’97 is 
+ Harper’s“Programming in Standard ML” which is available from his Web page at Carnegie 
+ Mellon University at http://www.cs.cmu.edu.
+  
+ Good books which refer to the 1990 revision of the language are Sokolowski’s “Applica-
+ tive High-Order Programming” [Sok91] and Reade’s “Elements of Functional Program-
+ ming” [Rea89].
+  
+ Tofte’s “Four lectures on Standard ML” [Tof89] concentrates primarily on modules. A 
+ careful account of the static semantics of modules is given which makes clear the crucial 
+ notions of
+  sharing
+  and
+  signature matching
+ .
+  
+ Textbooks suitable for someone with no programming experience are Bosworth’s “A 
+ practical course in programming using Standard ML”, Michaelson’s “Elementary Stand-ard 
+ ML”, Wikstr¨om’s “Functional programming using Standard ML” and “Programming with 
+ Standard ML” by Myers, Clack and Poon. Wikstr¨om’s book is quite dated and some of the 
+ code fragments which appear in the book will no longer be accepted by Standard ML 
+ because of revisions to the language.
+  
+ The definitive definition of the Standard ML programming language is given in “The 
+ Definition of Standard ML (Revised 1997)” by Milner, Tofte, Harper and MacQueen. This is 
+ not a reference manual for the language: rather it is a formal definition giving rules which 
+ define the simple constructs of the language in terms of familiar mathematical objects and 
+ define the complex constructs of the language in terms of the simpler ones. The definition 
+ is complemented by Milner and Tofte’s “Commentary on Standard ML” which relates the 
+ definition to the user’s view of the language.",NA
+1.4 Other information,"Other material on Standard ML is available from the accompanying World-Wide Web page
+  
+ located at http://www.dcs.ed.ac.uk/home/stg/tutorial/. It is updated frequently.",NA
+Chapter 2,NA,NA
+Simple applicative programming,"Standard ML is an interactive language. Expressions are entered, compiled and then eval-
+ uated. The result of evaluation is displayed and the next expression may then be entered. 
+ This interactive style of working combines well with Standard ML’s
+  type inference
+  mecha-
+ nism to empower the programmer to work in a flexible, experimental way, moving freely 
+ from defining new functions to trying the function on some test data and then either 
+ modifying the function or moving on to define another.
+  
+ The fact that types are assigned by the compiler also has the favourable consequence 
+ that Standard ML functions are usually shorter than comparable routines implemented in 
+ languages in which the types of variables must be supplied when the variable is declared.
+  
+ We will begin to investigate applicative programming by inspecting values, expressions 
+ and functions. The functions defined are short and we will not spend much time describing 
+ the tasks to be computed since they will often be self-evident. Some simple and generally 
+ useful functions are pre-defined in Standard ML; these include arithmetic functions and 
+ others for processing strings and characters. These pre-defined functions are said to be in 
+ the initial SML basis, or environment. In addition, the language also provides a library 
+ which makes available other functions, values and types. We will briefly mention this at the 
+ end of this chapter.",NA
+"2.1 Types, values and functions","A pre-defined type in Standard ML is the type of truth values, called bool. This has exactly 
+ two values, true and false. Another simple type is string. Strings are enclosed in double 
+ quotes (as in ""Hello"") and are joined by “",NA
+^,"” (the caret or up arrow symbol). As expected, 
+ the expression ""Hello""",NA
+ ^,""" world!"" evaluates to ""Hello world!"". There also is a type char for 
+ single characters. A character constant is a string constant of length one preceded by a hash 
+ symbol. Thus #""a"" is the letter a, #""\n"" is the newline character, #""\t"" is tab and the 
+ backslash character can be used in the expected way to quote itself or the double quote 
+ character. Eight-bit characters can be accessed by their ASCII code, with #""\163"" yielding 
+ #""¿"", #""\246"" yielding #""¨o"" and so forth. The function explode turns a string into a list of 
+ single characters and implode goes the other way. The function ord turns a character into 
+ its ASCII code and chr goes the other way. The function size returns the number of
+  
+ 6",NA
+~,"” (tilde) is used for unary minus (with the exception of words of course, which cannot be 
+ negative). Reals must have either a fraction part—as in 4000.0—or an exponent part—as in 
+ 4E3—or both. A word or byte constant is written as a decimal numeral if following the 
+ characters 0w (zero w) or as a hexadecimal numeral if following the characters 0wx (zero 
+ w x). Thus 0w255 and 0wxff are two different ways of writing the word constant 255. 
+ Integers, reals and words are thus lexically distinct and when we see a numeric constant we 
+ can infer its type, if we are not explicitly told what it is. Operators such as +, –, *, div and 
+ mod are provided for integers and words: +, –, * and / are provided for the reals. Functions 
+ such as absolute value, abs, and unary negation are provided for the signed numeric types 
+ only. Relational operators =, <>, <, <=, > and >= are provided for the numeric types.
+  
+ The numeric types which we have mentioned are
+  separate types
+  and we must use 
+ functions to convert an integer to a real or a word or a byte. There is no implicit coercion 
+ between types as found in other programming languages. Standard ML provides two 
+ library functions to convert between integers and reals. Arbitrary precision integer 
+ arithmetic is provided by some implementations of the language. In order to determine 
+ which do and which do not, consult the reference manual for the implementation or 
+ calculate a large integer value, say by multiplying a million by itself.
+  
+ The integer successor function may be denoted by
+  fn
+  x => x+1. Function application is 
+ indicated by juxtaposition of the function—or function expression—and the argument 
+ value—or argument expression. Parentheses are introduced where necessary. If the argu-
+ ment to the function is to be obtained by evaluating an expression then parentheses will be 
+ obligatory. They can be used at other times just to clarify the structure of the function 
+ application. As might be expected, the function application (
+ fn
+  x => x+1) 4 evaluates to 5. 
+ Function application associates to the left in Standard ML so an expression which uses the 
+ successor function twice must use parentheses, as in (
+ fn
+  x => x+1) ((
+ fn
+  x => x+1) 4).
+  
+ Since unary minus is a function the parentheses are necessary in the expression",NA
+ ~,(,NA
+~,"x).
+  
+ Of course, a mechanism is provided for binding names to values; even titchy programs 
+ would be unreadable without it. The declaration
+  val
+  succ =
+  fn
+  x => x+1 binds the name succ 
+ to the successor function and we may now write succ (succ 4) as an abbreviation for the 
+ somewhat lengthy expression (
+ fn
+  x => x+1) ((
+ fn
+  x => x+1) 4).
+  
+ Standard ML is a case-sensitive language. All of the reserved words of the language, 
+ such as
+  val
+  and
+  fn
+ , must be in lower case and occurrences of a program identifier must use 
+ capitalization consistently.",NA
+2.2 Defining a function by cases,"Standard ML provides a mechanism whereby the notation which introduces the function 
+ parameter may constrain the type or value of the parameter by requiring the parameter to 
+ match a given pattern (so-called “pattern matching”). The following function, day, maps 
+ integers to strings.
+  
+ val
+  day =
+  fn
+  1 => ""Monday"" 
+  
+ | 2 => ""Tuesday"" 
+  
+ | 3 => ""Wednesday"" 
+  
+ | 4 => ""Thursday"" 
+  
+ | 5 => ""Friday"" 
+  
+ | 6 => ""Saturday"" 
+  
+ | _ => ""Sunday""
+  
+ The final case in the list is a catch-all case which maps any value other than those listed 
+ above it to ""Sunday"". Be careful to use double quotes around strings rather than single 
+ quotes. Single quote characters are used for other purposes in Standard ML and you may 
+ receive a strange error message if you use them incorrectly.",NA
+2.3 Scope,"Armed with our knowledge about integers and reals and the useful “pattern 
+ matching”mechanism of Standard ML we are now able to implement a simple formula. A 
+ Reverend Zeller discovered a formula which calculates the day of the week for a given date. 
+ If
+  d
+  and
+  m 
+ denote day and month and
+  y
+  and
+  c
+  denote year and century with each month 
+ decremented by two (January and February becoming November and December of the 
+ previous year) then the day of the week can be calculated according to the following 
+ formula.
+  
+ (
+ ⌊
+ 2
+ .
+ 61
+ m −
+  0
+ .
+ 2
+ ⌊
+  +
+  d
+  +
+  y
+  +
+  y ÷
+  4 +
+  c ÷
+  4
+  −
+  2
+ c
+ ) mod 7
+  
+ This is simple to encode as a Standard ML function, zc, with a four-tuple as its argument if 
+ we know where to obtain the conversion functions in the Standard ML library. We will bind 
+ these to concise identifier names for ease of use. We choose the identifier floor for the real-
+ to-integer function and real for the integer-to-real function. Note the potential for 
+ confusion because the name real is simultaneously the name of a function and the name of 
+ a type. Standard ML maintains different name spaces for these.
+  
+ val
+  floor = Real.floor 
+  
+ val
+  real = Real.fromInt 
+  
+ val
+  zc = 
+  
+ fn
+  (d, m, y, c) => 
+  
+  
+ (floor (2.61 * real m – 0.2) + d + y + y div 4 + c div 4 – 2 * c) mod 7
+  
+ Now we may use the pattern matching mechanism of Standard ML to perform the 
+ adjustment required for the formula to calculate the days correctly.",NA
+2.4 Recursion,"Consider the simple problem of summing the numbers from one to
+  n
+ . If we know the 
+ following equation then we can implement the function easily using only our existing 
+ knowledge of Standard ML.
+  
+  
+  
+ n
+ (
+ n
+  + 1)
+  
+ 1 + 2 +
+  · · ·
+  +
+  n
+  
+ =
+  
+ 2
+  
+ The function is simply
+  fn
+  n => (n * (n+1)) div 2. We will call this function sum. But what if 
+ we had not known the above equation? We would require an algorithmic rather than a 
+ formulaic solution to the problem. We would have been forced to break down the 
+ calculation of the sum of the numbers from one to
+  n
+  into a number of smaller calculations 
+ and devise some strategy for recombining the answers. We would immediately use the 
+ associative property of addition for this purpose.
+  
+ 1 + 2 +
+  · · ·
+  +
+  n
+  
+ =
+  
+ (
+ · · ·
+  (1 + 2) +
+  · · ·
+  +
+  n −
+  1)
+  
+ +
+  n
+  
+ Sum of 1 to
+  n −
+  1",NA
+2.5 Scoping revisited,"The construction
+  local
+  ..
+  in
+  ..
+  end
+  which we saw earlier is used to make one or more 
+ declarations local to other declarations. At times we might wish to make some declarations 
+ local to an expression so Standard ML provides
+  let
+  ..
+  in
+  ..
+  end
+  for that purpose. As an 
+ example of its use consider a simple recursive routine which converts a non-negative 
+ integer into a string. For a little extra effort we also make the function able to perform 
+ conversions into bases such as binary, octal and hexadecimal. The function is called radix 
+ and, for example, an application of the form radix (15, ""01"") returns ""1111"", the 
+ representation of fifteen in binary.
+  
+ (* This function only processes non-negative integers. 
+  
+ *)
+  
+ val rec
+  radix =
+  fn
+  (n, base) => 
+  
+ let 
+  
+  
+ val
+  b = size base 
+  
+  
+ val
+  digit =
+  fn
+  n => str (String.sub (base, n)) 
+  
+ val
+  
+ radix
+ '
+ =
+  
+ in
+  
+ fn
+  (true, n) => digit n 
+  
+  
+ | (false, n) => radix (n div b, base)",NA
+ ^,"digit (n mod b)
+  
+ radix
+ '
+ (n < b, n) 
+  
+ end
+  
+ This implementation uses a function called sub to subscript a string by numbering 
+ beginning at zero. The sub function is provided by the String component of the Standard 
+ ML library and is accessed by the long identifier String.sub.",NA
+2.6 The Standard ML library,"As promised, let us consider some of the components in the Standard ML library. We will 
+ focus on those functions which work with the Standard ML types which we have met and 
+ defer inspection of more advanced features of the library until later.
+  
+ The components of the Standard ML library are Standard ML modules, called
+  structures
+ . We 
+ can think of these as boxed-up collections of functions, values and types.",NA
+2.6.1 ,NA,NA
+The Bool structure,"The Bool structure is a very small collection of simple functions to manipulate boolean 
+ values. It includes the boolean negation function, Bool.not, and the string conversion func-
+ tions Bool.toString and Bool.fromString. The latter function is not quite as simple as might 
+ be expected because it must signal that an invalid string does not represent a boolean. This 
+ is achieved though the use of the option datatype and the results from the Bool.fromString 
+ function are either NONE or SOME b, where b is a boolean value. This use of the optional 
+ variant of the result is common to most of the library functions which convert values from 
+ strings.",NA
+2.6.2 ,NA,NA
+The Byte structure,"The Byte structure is another small collection of simple functions, this time for converting 
+ between characters and eight-bit words. The function Byte.byteToChar converts an eight-
+ bit word to a character. The function Byte.charToByte goes the other way.",NA
+2.6.3 ,NA,NA
+The Char structure,"Operations on characters are found in the Char structure. These include the integer equiva-
+ lents of the word-to-character conversion functions, Char.chr and Char.ord. Also included are 
+ successor and predecessor functions, Char.succ and Char.pred. Many functions perform 
+ obvious tests on characters, such as Char.isAlpha, Char.isUpper, Char.isLower, Char.isDigit, 
+ Char.isHexDigit and Char.isAlphaNum. Some exhibit slightly more complicated behaviour, 
+ such as Char.isAscii which identifies seven-bit
+  ASCII
+  characters; and Char.isSpace which 
+ identifies whitespace (spaces, tabulate characters, line break and page break characters); 
+ Char.isPrint identifies printable characters and Char.isGraph identifies printable, non-
+ whitespace characters. The functions Char.toUpper and Char.toLower behave as expected, 
+ leaving non-lowercase (respectively non-uppercase) characters unchanged. The pair of 
+ comple-mentary functions Char.contains and Char.notContains may be used to determine the 
+ presence or absence of a character in a string. Relational operators on characters are also 
+ provided in the Char structure.",NA
+2.6.4 ,NA,NA
+The Int structure,"The Int structure contains many arithmetic operators. Some of these, such as Int.quot and 
+ Int.rem, are subtle variants on more familiar operators such as div and mod. Quotient and 
+ remainder differ from divisor and modulus in their behaviour with negative operands. 
+ Other operations on integers include Int.abs and Int.min and Int.max, which behave as 
+ expected. This structure also provides conversions to and from strings, named Int.toString 
+ and Int.fromString, of course. An additional formatting function provides the ability to 
+ represent integers in bases other than decimal. The chosen base is specified using a type 
+ which is defined in another library structure, the string convertors structure, StringCvt. 
+ This permits very convenient formatting of integers in binary, octal, decimal or 
+ hexadecimal, as shown below.
+  
+ Int.fmt StringCvt.BIN 1024 = ""10000000000"" 
+ Int.fmt StringCvt.OCT 1024 = ""2000"" 
+  
+ Int.fmt StringCvt.DEC 1024 = ""1024"" 
+  
+ Int.fmt StringCvt.HEX 1024 = ""400""
+  
+ The Int structure may define largest and smallest integer values. This is not to say that 
+ structures may arbitrarily shrink or grow in size, Int.maxInt either takes the value NONE or 
+ SOME i, with i being an integer value. Int.minInt has the same type.",NA
+2.6.5 ,NA,NA
+The Real structure,"It would not be very misleading to say that the Real structure contains all of the corre-
+ sponding real equivalents of the integer functions from the Int structure. In addition to 
+ these, it provides conversions to and from integers. For the former we have Real.trunc, 
+ which truncates; Real.round, which rounds up; Real.floor which returns the greatest 
+ integer less than its argument; and Real.ceil, which returns the least integer greater than its 
+ argument. For the latter we have Real.fromInt, which we have already seen. One function 
+ which is",NA
+2.6.6 ,NA,NA
+The String structure,"The String structure provides functions to extract substrings and to process strings at a 
+ character-by-character level. These include String.substring which takes a triple of a string 
+ and two integers to denote the start of the substring and its length. Indexing is from zero, a 
+ convention which is used throughout the library. The String.extract function enables the 
+ programmer to leave the end point of the substring unspecified using the option NONE. The 
+ meaning of this is that there is to be no limit on the amount of the string which is taken, 
+ save that imposed by the string itself. Thus for example, String.extract (s, 0, NONE) is 
+ always the same as s itself, even if s is empty. The String.sub function may be used to 
+ subscript a string to obtain the character at a given position. Lists of strings may be 
+ concatenated using String.concat.
+  
+ Several high-level functions are provided for working with strings. Two of the most 
+ useful are a tokeniser, String.tokens, and a separator, String.fields. These are parameterised 
+ by a function which can be used to specify the delimiter which comes between tokens or 
+ between fields. The principal distinction between a token and a field is that a token may not 
+ be empty, whereas a field may. Used together with the character classification functions 
+ from the Char structure these functions provide a simple method to perform an initial 
+ processing step on a string, such as dividing it into separate words. Another useful function 
+ is String.translate which maps individual characters of a string to strings which are then 
+ joined. Used together with String.tokens, this function provides a very simple method to 
+ write an accurate and efficient lexical analyser for a formal language. The method is simply 
+ to pad out special characters with spaces and then to tokenize the result na¨ıvely.",NA
+2.6.7 ,NA,NA
+The StringCvt structure,"In the string convertors structure, StringCvt, are several of the specifiers for forms of 
+ conver-sion from numbers to strings but also some simple functions which work on strings, 
+ such as",NA
+2.6.8 ,NA,NA
+The Word and Word8 structures,"The Word and Word8 structures provide the same collection of functions which differ in 
+ that they operate on different versions of a type called, respectively, Word.word and 
+ Word8.word. Almost all of the functions are familiar to us now from the Int and Real 
+ structures. The Word and Word8 structures also provide bitwise versions of the operators 
+ and, or, exclusive or and not—andb, orb, xorb and notb.",NA
+Chapter 3,NA,NA
+Higher-order programming,"As we have seen, functions defined by pattern matching associate patterns and expressions. 
+ Functions defined in this way are checked by Standard ML. One form of checking is to 
+ ensure that all of the patterns describe values from the same data type and all of the 
+ expressions produce values of the same type. Both of the functions below will be rejected 
+ because they do not pass these checks.
+  
+ (* error *) 
+  
+  
+ (* error *) 
+  
+ val
+  wrong_pat =
+  fn
+  1 
+  
+ => 1 
+ val
+  wrong_exp =
+  fn
+  1 => true 
+  
+ | true => 1 
+  
+  
+ | n => ""false""
+  
+ Pattern matching provides subsequent checking which, if failed, will not cause the function 
+ to be rejected but will generate warning messages to call attention to the possibility of 
+ error. This subsequent checking investigates both the extent of the patterns and the 
+ overlap between them. The first version of the boolean negation function below is 
+ incomplete because the matches in the patterns are not exhaustive; there is no match for 
+ true. The second version has a redundant pattern; the last one. Both produce compiler 
+ warning messages.
+  
+ (* warning *) 
+  
+ (* warning *)
+  
+ val
+  not
+ 1
+  =
+  fn
+  false => true
+  
+ val
+  not
+ 2
+  =
+  fn
+  false => true | 
+ true => false
+  
+ | false => false
+  
+ Both functions can be used. The first will only produce a result for false but because of the 
+ first-fit pattern matching discipline the second will behave exactly like the Bool.not 
+ function in the Standard ML library. The warning message given for the second version 
+ signals the presence of so-called dead code which will never be executed.
+  
+ The checking of pattern matching by Standard ML detects flawed and potentially flawed 
+ definitions. However, this checking is only possible because the allowable patterns are 
+ much simpler than the expressions of the language. Patterns may contain constants and 
+ variables and the wild card which is denoted by the underscore symbol. They may also use 
+ constructors from a data type—so far we have only met a few of these including false and 
+ true from the bool data type and SOME and NONE from the option data type. Constructors 
+ are distinct from variables in patterns because constructors can denote only themselves, 
+ not
+  
+ 16",NA
+~,"x) => x | 0 
+  
+ => 0
+  
+ | x 
+  
+ => x
+  
+ val
+  even =
+  fn
+  (x + x) => true
+  
+ | (x + x + 1) => false
+  
+ Neither can we decompose functions by structured patterns, say in order to define a test on 
+ functions. Attempts such as the following are disallowed.
+  
+ (* error *) 
+  
+ val
+  is_identity =
+  fn
+  (
+ fn
+  x => x) => true 
+  
+ | _ => false
+  
+ However, we can use pattern matching to bind functions to a local name because one of the 
+ defining characteristics of functional programming languages is that they give the 
+ programmer the ability to manipulate functions as easily as manipulating any other data 
+ item such as an integer or a real or a word. Functions may be passed as arguments or 
+ returned as results. Functions may be composed in order to define new functions or 
+ modified by the application of higher-order functions.",NA
+3.1 Higher-order functions,"In the previous chapter two small functions were defined which performed very similar 
+ tasks. The sum
+ '
+ function added the numbers between 1 and
+  n
+ . The sq function added the 
+ terms 2
+ i −
+  1 for
+  i
+  between 1 and
+  n
+ . We will distill out the common parts of both functions 
+ and see that they can be used to simplify the definitions of a family of functions similar to 
+ sum
+ ' 
+ and sq. The common parts of these two functions are:
+  
+ •
+  a contiguous range with a lower element and upper 
+ element;
+ •
+  a function which is applied to each element in turn;
+  
+ •
+  an operator to combine the results; and
+  
+ •
+  an identity element for the operator.
+  
+ We will define a function which takes a five-tuple as its argument. Two of the elements in 
+ the five-tuple are themselves functions and it is for this reason that the function is termed 
+ higher-order. Functions which take functions as an argument—or, as here, as part of an 
+ argument—are called higher-order functions.
+  
+ The function we will define will be called reduce. Here is the task we wish the reduce 
+ function to perform.",NA
+3.2 Curried functions,"The other question which arises once we have discovered that functions may take 
+ functions as arguments is “Can functions return functions as results?” (Such functions are 
+ called curried functions after Haskell B. Curry.) Curried functions seem perfectly 
+ reasonable tools for the functional programmer to request and we can encode any curried 
+ function using just the subset of Standard ML already introduced, e.g.
+  fn
+  x =>
+  fn
+  y => x.
+  
+ This tempting ability to define curried functions might leave us with the difficulty of 
+ deciding if a new function we wish to write should be expressed in its curried form or take 
+ a tuple as an argument. Perhaps we might decide that every function should be written in 
+ its fully curried form but this decision has the unfortunate consequence that functions 
+ which return tuples as results are sidelined. However, the decision is not really so weighty 
+ since we may define functions to curry or uncurry a function after the fact. We will define 
+ these after some simple examples.
+  
+ A simple example of a function which returns a function as a result is a function which, 
+ when given a function
+  f
+ , returns the function which applies
+  f
+  to an argument and then 
+ applies
+  f
+  to the result. Here is the Standard ML implementation of the twice function.
+  
+ val
+  twice =
+  fn
+  f =>
+  fn
+  x => f (f x)
+  
+ For idempotent functions, twice simply acts as the identity function. The integer successor 
+ function
+  fn
+  x => x+1 can be used as an argument to twice.
+  
+ val
+  addtwo = twice (
+ fn
+  x => x+1)
+  
+ The function twice is simply a special case of a more general function which applies its 
+ function argument a number of times. We will define the iter function for iteration. It is a 
+ curried function which returns a curried function as its result. The function will have the 
+ property that iter 2 is twice. Here is the task we wish the iter function to perform.
+  
+ iter n f x
+  
+ ≡
+  
+ f
+ n
+ (x)
+  
+ ≡
+  
+ f (f (
+  · · ·
+  f n 
+ times
+  
+ (x)
+  · · ·
+  ))
+  
+ In the simplest case we have
+  f
+ 0
+ = id, the identity function. When
+  n
+  is positive we have that 
+ f
+ n
+ (
+ x
+ ) =
+  f
+ (
+ f
+ n−
+ 1
+ (
+ x
+ )). We may now implement the iter function in Standard ML.
+  
+ val rec
+  iter = 
+  
+  
+ fn
+  0 => (
+ fn
+  f =>
+  fn
+  x => x) 
+  
+  
+  
+ | n => (
+ fn
+  f =>
+  fn
+  x => f (iter (n–1) f x))
+  
+ As promised above, we now define two higher-order, curried Standard ML functions which, 
+ respectively, transform a function into its curried form and transform a curried function 
+ into tuple-form.
+  
+  
+ val
+  curry =
+  fn
+  f =>
+  fn
+  x =>
+  fn
+  y => f (x, y) 
+ val
+  
+ uncurry =
+  fn
+  f =>
+  fn
+  (x, y) => f x y
+  
+ If x and y are values and f and g are functions then we always have:
+  
+ (curry f) x y ≡ f (x, y) 
+  
+ (uncurry g) (x, y) ≡ g x y",NA
+3.3 Function composition,"Let us now investigate a simple and familiar method of building functions: composing two 
+ existing functions to obtain another. The function composition
+  f⌊g
+  denotes the function 
+ with the property that (
+ f ⌊ g
+ )(
+ x
+ ) =
+  f
+ (
+ g
+ (
+ x
+ )). This form of composition is known as 
+ composition in functional order. Another form of composition defines
+  g
+ ;
+  f
+  to be
+  f ⌊ g
+ . This is 
+ known as composition in diagrammatic order. This is found in mathematical notation but 
+ not in programming language notation. Standard ML has a semicolon operator but it does 
+ not behave as described above. In fact, for two functions g and f we have instead that g ; f ≡ 
+ f.
+  
+ Notice that function composition is associative, that is:
+  f⌊
+ (
+ g⌊h
+ ) = (
+ f⌊g
+ )
+ ⌊h.
+  The identity 
+ function is both a left and a right identity for composition; id
+  ⌊ f
+  =
+  f ⌊
+  id =
+  f.
+  Notice also the 
+ following simple correspondence between function iteration and function composition.
+  
+ f
+ n
+ = 
+  
+  
+ f ⌊ f ⌊ · · · ⌊ f 
+  
+ f
+  occurs
+  n
+  times
+  
+ Function composition in functional order is provided in Standard ML by the predefined 
+ operator “o”—the letter
+  O
+  in lower case. If f and g are Standard ML functions then f o g is 
+ their composition. However, we will define a compose function which is identical to (
+ op
+  o).
+  
+ val
+  compose =
+  fn
+  (f, g) =>
+  fn
+  x => f (g x)",NA
+3.4 Derived forms,"Standard ML takes pattern matching and binding names to values as essential primitive 
+ operations. It provides additional syntactic constructs to help to make function 
+ declarations compact and concise. This additional syntax does not add to the power of the 
+ language, it merely sweetens the look of the functions which are being defined. Syntactic 
+ constructs which are added to a programming language in order to make programs look 
+ neater or simpler are sometimes called syntactic sugar but Standard ML calls them derived 
+ forms. The use of this more dignified term can be justified because the language has a 
+ formal semantic definition and that terminology seems appropriate in that context.
+  
+ The derived form notation for functions uses the keyword
+  fun
+ . After this keyword 
+ comes the function identifier juxtaposed with the patterns in their turn. For example, the 
+ integer successor function can be declared thus:
+  fun
+  succ x = x + 1. The
+  fun
+  keyword applies 
+ also to recursive functions so we might re-implement the sum function from the previous 
+ chapter as shown here.
+  
+ fun
+  sum 1 = 1 
+  
+ | sum n = sum (n – 1) + n
+  
+ We begin to see that derived forms are needed when we consider curried functions with 
+ several arguments. The definitions of curry, uncurry and compose are much more compact 
+ when written as shown below.
+  
+ fun
+  curry f x y = f (x, y) 
+  
+ fun
+  uncurry f (x, y) = f x y 
+  
+ fun
+  compose (f, g) x = f (g x)",NA
+Chapter 4,NA,NA
+Types and type inference,"Standard ML is a strongly and statically typed programming language. However, unlike 
+ many other strongly typed languages, the types of literals, values, expressions and 
+ functions in a program will be calculated by the Standard ML system when the program is 
+ compiled. This calculation of types is called type inference. Type inference helps program 
+ texts to be both lucid and succinct but it achieves much more than that because it also 
+ serves as a debugging aid which can assist the programmer in finding errors before the 
+ program has ever been executed.
+  
+ Standard ML’s type system allows the use of typed data in programs to be checked 
+ when the program is compiled. This is in contrast to the approach taken in many other 
+ programming languages which generate checks to be tested when the program is running. 
+ Lisp is an example of such a language. Other languages serve the software developer even 
+ less well than this since they neither guarantee to enforce type-correctness when the 
+ program is compiled nor when it is running. The C programming language is an example of 
+ a language in that class. The result of not enforcing type correctness is that data can 
+ become corrupted and the unsafe use of pointers can cause obscure errors. A splendid 
+ introduction to this topic is [Car96].
+  
+ The approach of checking type correctness as early as possible has two clear advantages: 
+ no extra instructions are generated to check the types of data during program execution; 
+ and there are no insecurities when the program is executed. Standard ML programs can be 
+ executed both efficiently and safely and will never ‘dump core’ no matter how 
+ inexperienced the author of the program might have been. The design of the language 
+ ensures that this can never happen. (Of course, any particular compiler might be erroneous: 
+ compilers are large and complex programs. 
+  
+ Such errors should be seen to be 
+ particular to one of the implementations of the language and not general flaws in design of 
+ the language.)",NA
+4.1 Type inference,"Standard ML supports a form of polymorphism. Before going further, we should clarify the 
+ precise nature of the polymorphism which is permitted. It is sometimes referred to as“let-
+ polymorphism”. This name derives from the fact that in this system the term
+  
+ let
+  
+ val
+  Id =
+  fn
+  x => x
+  
+ in
+  
+ (Id 3, Id true)
+  
+ end
+  
+ 23",NA
+4.2 Pairs and record types,"We have used pairs and tuples without stating their type. A pair with an integer as the left 
+ element and a boolean as the right has type “int * bool”. Note that int * bool * real is neither 
+ (int * bool) * real nor int * (bool * real). Pairs and tuples are themselves simply records 
+ with numbered fields. The label for a field can also be a name such as age. Each field has an 
+ associated projection function which retrieves the corresponding value. The projection 
+ function for the age field is called #age. The following record value has type { initial : char, 
+ surname : string, age : int }.
+  
+ val
+  lecturer = { initial = #""S"", surname = ""Gilmore"", age = 40 }
+  
+ Then #surname (lecturer) is ""Gilmore"", as expected.
+  
+ This has shown us another of the derived forms of the language. The pair and tuple 
+ notation is a derived form for the use of record notation. Thus the meaning of the second of 
+ the declarations below is the first.
+  
+ val
+  n : { 1 : int, 2 : bool } = { 1 = 13, 2 = false } 
+ val
+  n : int * 
+ bool = (13, false)",NA
+4.3 Function types and type abbreviations,"On rare occasions, we need to tell Standard ML the type of a function parameter which it 
+ cannot itself infer. If we have to do that then it is convenient to be able to give a name to the 
+ type, rather than including the expression for the type in a constraint on a parameter. One 
+ time when we need to specify a type is when we write a function which projects 
+ information from a record. The following function is not an acceptable Standard ML 
+ function.
+  
+ fun
+  initials p = (#initial p, String.sub (#surname p, 0)) 
+  
+ (
+ ‡
+ )",NA
+4.4 Defining datatypes,"The
+  type
+  mechanism cannot be used to produce a fresh type: only to re-name an existing 
+ type. A Standard ML programmer can introduce a new type, distinct from all the others, 
+ through the use of datatypes.
+  
+ datatype
+  colour = red | blue | green
+  
+ This introduces a new type, colour, and three
+  constructors
+  for that type, red, blue and 
+ green. Equality is defined for this type with the expected behaviour that, for example, red = 
+ red and red <> green. No significance is attached to the order in which the constructors 
+ were listed in the type definition and no ordering is defined for the type. Constructors 
+ differ from values because constructors may be used to form the patterns which appear in 
+ the definition of a function by pattern matching, as in (
+ fn
+  red => 1 | blue => 2 | green => 3). 
+ The pre-defined type bool behaves as if defined thus.",NA
+4.5 Polymorphism,"Many functions which we have defined do not need to know the type of their arguments in 
+ order to produce meaningful results. Such functions are thought of as having many forms 
+ and are thus said to be polymorphic. Perhaps the simplest example of a polymorphic 
+ function is the identity function, id, defined by
+  fun
+  id x = x. Whatever the type of the 
+ argument to this function, the result will obviously be of the same type; it is a homogeneous 
+ function. All that remains is to assign it a homogeneous function type such as X → X. But 
+ what if the type X had previously been defined by the programmer? The clash of names 
+ would be at best quite confusing. We shall give the id function the type α → α and prohibit 
+ the programmer from defining types called α, β, γ and so on.",NA
+4.5.1 ,NA,NA
+Function composition,"For the Standard ML function composition operator to have a well-defined type it is 
+ necessary for the source of the first function to be identical to the target of the second. For 
+ both functions, the other part of the type is not constrained. Recall the definition of the 
+ compose function which is equivalent to (
+ op
+  o).
+  
+ val
+  compose =
+  fn
+  (f, g) =>
+  fn
+  x => f (g (x))
+  
+ We can calculate the type of compose as follows. It is a function which takes a pair so we 
+ may say that it is of the form (
+ ⃝
+  *
+  ⃝
+ ) →
+  ⃝
+ . We do not wish to restrict the argument f and thus we 
+ assign it a type α → β since this is the worst possible type it can have. This forces g to be of 
+ the form
+  ⃝
+  → α and we have ((α → β) * (
+ ⃝
+  → α)) →
+  ⃝
+  as our current type for compose. Of course, 
+ there is no reason to restrict the type of g either so we assign it the type γ → α and thus 
+ calculate ((α → β) * (γ → α)) → (γ → β) as the type of the compose function.
+  
+ Exercise 4.5.4
+  Define a function with type
+  ((α → α) * (α → α)) → (α → α)
+  without using a 
+ type constraint.
+  
+ Exercise 4.5.5
+  What is the type of
+  curry
+ ? What is the type of
+  uncurry
+ ?",NA
+4.5.2 ,NA,NA
+Default overloading,"In Standard ML programs, types are almost always inferred and there are only a few cases 
+ where additional information must be supplied by the programmer in order for the system 
+ to be able to compute the type of an expression or a value in a declaration. These cases 
+ arise because of underdetermined record types—as we saw with the version of the initials 
+ function which is marked (
+ ‡
+ ) on page 24. Another complication is overloading. Overloading 
+ occurs when an identifier has more than one definition and these definitions have different 
+ types. For example, “+” and “–” are overloaded since they are defined for the numeric types: 
+ int, word and real. The “",NA
+~,"” function is overloaded for int and real. The relational operators 
+ are overloaded for the numeric types and the text types, char and string. Overloading is not 
+ polymorphism: there is no way for the Standard ML programmer to define overloaded 
+ operators. To see this, consider the following simple square function.
+  
+ fun
+  square x = x * x
+  
+ Would it be possible to assign the type α → α to this function? No, we should not because 
+ then square could be applied to strings, or even functions, for which no notion of 
+ multiplication is defined. So, Standard ML must choose one of the following possible types 
+ for the function.
+  
+ square: int → int 
+  
+ square: word → word 
+  
+ square: real → real",NA
+4.6 Ill-typed functions,"The Standard ML type discipline will reject certain attempts at function definitions. Some-
+ times these are obviously meaningless but there are complications. 
+  
+ Mads Tofte writes 
+ in [Tof88]:
+  
+ At first it seems a wonderful idea that a type checker can find programming 
+ mistakes even before the program is executed. The catch is, of course, that the 
+ typing rules have to be simple enough that we humans can understand them 
+ and make the computers enforce them. Hence we will always be able to come 
+ up with examples of programs that are perfectly sensible and yet illegal 
+ according to the typing rules. Some will be quick to say that far from having 
+ been offered a type discipline they have been lumbered with a type 
+ bureaucracy.
+  
+ It is Mads Tofte’s view that rejecting some sensible programs which would never go wrong 
+ is inevitable but not everyone is so willing to accept a loss such as this. 
+  
+ Stefan Kahrs 
+ in [Kah96] discusses the notion of completeness—programs which never go wrong can be 
+ type-checked—which complements Milner’s notion of soundness—type-checked programs 
+ never go wrong [Mil78].
+  
+ We will now consider some programs which the type discipline of Standard ML will 
+ reject. We have already noted above that the function (
+ fn
+  g => (g 3, g true)) is not legal. 
+ Other pathological functions also cannot be defined in Standard ML. Consider the 
+ “absorb”function.
+  
+ fun
+  absorb x = absorb
+  
+ This function is attempting to return itself
+  as its own result.
+  The underlying idea is that the 
+ absorb function will greedily gobble up any arguments which are supplied. The arguments 
+ may be of any type and there may be any number of them. Consider the following 
+ evaluation of an application of absorb.",NA
+4.7 Computing types,"Perhaps we might appear to have made too much of the problem of computing types. It 
+ may seem to be just a routine task which can be quickly performed by the Standard ML 
+ system. In fact this is not true. Type inference is computationally hard [KTU94] and there 
+ can be no algorithm which guarantees to find the type of a value in a time proportional to 
+ its “size”. Types can increase exponentially quickly and their representations soon become 
+ textually much longer than an expression which has a value of that type. Fortunately the 
+ worst cases do not occur in useable programs. Fritz Henglein states in [Hen93],
+  
+ . . . in practice, programs have “small types”, if they are well typed at all, and 
+ Milner-Mycroft type inference for small types is tractable. This, we think, also 
+ provides insight into why ML type checking is usable and used in practice 
+ despite its theoretical intractability.
+  
+ Exercise 4.7.1
+  Compute the type of y ⌊ y if y is x ⌊ x and x is pair ⌊ pair.
+  
+ Exercise 4.7.2
+  (This exercise is due to Stuart Anderson.) Work out by hand the type of the 
+ function fun
+  app g f = f (f g)
+ . (It may be helpful also to see this without the use of derived forms 
+ as val
+  app =
+  fn
+  g =>
+  fn
+  f => f (f g)
+ ). What is the type of
+  app app
+  and what is the type of
+  app 
+ (app app)
+ ?
+  
+ Exercise 4.7.3
+  Why can the following function
+  app
+ 2
+  not be typed by the Hindley-Milner type 
+ system? (The formal parameter
+  f
+  is intended to be a curried function.)
+  
+ fun
+  app
+ 2
+  f x
+ 1
+  x
+ 2
+  = (f x
+ 1
+ ) (f x
+ 2
+ )",NA
+Chapter 5,NA,NA
+Aggregates,"Through the use of the datatype mechanism of Standard ML we can equip our programs 
+ with strong and relevant structure which mirrors the natural structure in the data values 
+ which they handle. When writing integer processing functions we were pleased that 
+ natural number induction was available to us to help us to check the correctness of our 
+ recursive function definitions and now the use of datatypes such as lists and trees might 
+ seem to make reasoning about a Standard ML function more difficult. We would be unable 
+ to use the induction principle for the natural numbers without re-formulating the function 
+ to be an equivalent function which operated on integers. The amount of work involved in 
+ the re-formulation would be excessive and it is preferable to have an induction principle 
+ which operates on datatypes directly. This is the basis of structural induction. This chapter 
+ introduces some functions which process lists, trees and vectors and shows how to use 
+ structural induction to check properties of these functions.",NA
+5.1 Lists,"This pleasant datatype is to be found in almost all functional programming languages. In 
+ untyped languages lists are simply collections but in typed languages they are collec-tions 
+ of values of the same type and so a list is always a list
+  of something
+ . 
+  
+ Properly 
+ speaking, in Standard ML list is not a type, it is a type constructor. 
+  
+ When we choose 
+ a particular type for the variable used by the type constructor then we have a type; so 
+  
+ As we saw when we considered 
+ char list is a type and int list is a type and so forth.
+  
+ the definition (page 27) a list can be built up by using two value constructors, one for 
+ empty lists (nil of type α list) and one for non-empty lists (:: of type α * α list → α list). Some 
+ languages also provide destructors often called head and tail (car and cdr in LISP.) The 
+ definition of Standard ML does not insist that these destructors should be available since 
+ they are not needed; a list value may be decomposed by matching it against a pattern which 
+ uses the constructor. If we wished to use these destructors, how could we implement 
+ them? A difficulty which we would encounter in any typed language is that these functions 
+ are undefined for empty lists and so they must fail in these cases. Standard ML provides 
+ exceptions as a mechanism to signal failure. Raising an exception is a different activity from 
+ returning a value. For the purposes of type-checking it is similar to non-termination 
+ because
+  
+ 33",NA
+5.2 Induction for lists,"We will now introduce an induction principle for lists. It is derived directly from the 
+ definition of the list datatype.
+  
+ Induction Principle 5.2.1 (Lists)
+  
+ P
+  [ ]
+  
+ P
+  (
+ t
+ )
+  ⌊ P
+  (
+ h
+  ::
+  t
+ )
+ ⌊l. 
+ P
+  (
+ l
+ )
+  
+  
+ Proposition 5.2.1 (Interchange)
+  The
+  rev
+  function and the append operator obey an inter-
+ change law since the following holds for all
+  α
+  lists
+  l
+ 1
+  and
+  l
+ 2
+ .
+  
+ rev (l
+ 1
+  @ l
+ 2
+ ) = rev l
+ 2
+  @ rev l
+ 1
+  
+ Proof: 
+ The proof is by induction on l
+ 1
+ . The initial step is to show that this proposition holds 
+ when l
+ 1
+  is the empty list, [ ]. Using properties of the append operator, we conclude rev ([ ] @ 
+ l
+ 2
+ ) = rev l
+ 2
+  = rev l
+ 2
+  @ [ ] = rev l
+ 2
+  @ rev [ ] as required.
+  
+ Now assume rev (t @ l
+ 2
+ ) = rev l
+ 2
+  @ rev t and consider h :: t.
+  
+ LHS
+  = rev ((h :: t) @ l
+ 2
+ ) 
+  
+ = rev (h :: (t @ l
+ 2
+ )) 
+  
+  
+ [defn of @] 
+ = (rev (t @ l
+ 2
+ )) @ [ h ] 
+  
+ [defn of
+  rev
+ ]
+  
+ = rev l
+ 2
+  @ rev t @ [ h ] 
+  
+ = rev l
+ 2
+  @ rev (h :: t) 
+  
+ =
+  RHS 
+ [induction 
+ hypothesis] [defn 
+ of
+  rev
+  and @]",NA
+5.3 List processing,"In this section we will look at a collection of simple list processing metaphors. Most of the 
+ functions defined are polymorphic. A simple function which we might define initially is a 
+ membership test. The empty list has no members. A non-empty list has x as a member if x 
+ is the head or it is a member of the tail. The following member function tests for 
+ membership in a given list.
+  
+ fun
+  member (x, [ ]) 
+  
+ = false 
+  
+ | member (x, h :: t) = x = h
+  orelse
+  member (x, t)
+  
+ We might like this function to have type α * α list → bool but it does not. This cannot be a 
+ fully polymorphic function since we make an assumption about the values and lists to 
+ which it can be applied: we assume that equality is defined upon them. Our experience of 
+ the Standard ML language so far would lead us to conclude that this matter would be 
+ settled by the default overloading rule which would assign to this function the type int * int 
+ list →bool. This reasoning, although plausible, is flawed.
+  
+ The equality operator has a distinguished status in Standard ML. It is not an overloaded 
+ operator, it is a qualified polymorphic function. The reason that we make this distinction is 
+ that where possible equality is made available on new types which we define. This does not 
+ happen with overloaded operators because overloaded functions are those which select a 
+ different algorithm to apply depending on the type of values which they are given and it is 
+ not possible for the Standard ML language to ‘guess’ how we wish to have overloaded 
+ operators extended to our new types.
+  
+ The Standard ML terminology is that a type either
+  admits
+  equality or it does not. Those 
+ which do are
+  equality types
+ . When equality type variables are printed by the Stan-dard ML 
+ system they are printed with two leading primes and so the type of the member",NA
+5.3.1 ,NA,NA
+Selecting from a list,"It is useful to have functions which select elements from a list, perhaps selecting the
+  n
+ th 
+ element numbered from zero. This function will have type α list * int → α and should raise 
+ the exception Subscript whenever the
+  n
+ th element cannot be found (either because there 
+ are fewer than
+  n
+  elements or because
+  n
+  is negative).
+  
+ fun
+  nth ([ ], _) 
+  
+ =
+  raise
+  Subscript 
+  
+ | nth (h :: t, 0) = h 
+  
+ | nth (_ :: t, n) = nth (t, n – 1)
+  handle
+  Overflow =>
+  raise
+  Subscript",NA
+5.3.2 ,NA,NA
+Sorting lists,"The sorting routine which we will develop is simple insertion sort. There are two parts to 
+ this algorithm. The first is inserting an element into a sorted list in order to maintain the 
+ ordering; the second is repeatedly applying the insertion function.
+  
+ Inserting an element into a sorted list has a simple base case where the empty list gives 
+ us a singleton (one-element) list. All singleton lists are sorted. For non-empty lists we 
+ compare the new element with the head. If the new element is smaller it is placed at the 
+ front. If larger, it is inserted into the tail.
+  
+ fun
+  insert (x, [ ]) 
+  
+ = [ x ] 
+  
+  
+ | insert (x, h :: t) =
+  if 
+  
+ x <= h 
+  
+  
+  
+ then
+  x :: h :: t 
+  
+  
+  
+ else
+  h :: insert (x, t)
+  
+ This function has type int * int list → int list, due to default overloading resolving the use of 
+ ‘<=’ to take integer operands. Notice the inconvenience of having to reconstruct the list in 
+ the expression x :: h :: t after deconstructing it by pattern matching. We could bind the non-
+ empty list to a single variable, say l, and then use
+  let
+  ..
+  in
+  ..
+  end
+  to destruct it, binding h and t 
+ as before but the
+  as
+  keyword does this much more conveniently. The following 
+ implementation is equivalent to the previous one.
+  
+ fun
+  insert (x, [ ]) = [ x ] 
+  
+ | insert (x, l
+  as
+  h :: t) =
+  if 
+ x <= h 
+  
+  
+  
+  
+ then
+  x :: l 
+  
+  
+  
+  
+ else
+  h :: insert (x, t)
+  
+ To sort a list we need only keep inserting the head element into the sorted tail. All empty 
+ lists are sorted.
+  
+ fun
+  sort [ ] 
+  
+ = [ ] 
+  
+ | sort (h :: t) = insert (h, sort t)
+  
+ Exercise 5.3.4
+  Implement the Quicksort algorithm due to C.A.R. Hoare. (You may find it 
+ useful to use the
+  filter
+  function from Exercise 5.3.3.)",NA
+5.3.3 ,NA,NA
+List functions,"Many simple list processing problems fall into one of two forms. They may involve simply 
+ applying a function to each element of the list in turn or they involve accumulating a result 
+ by applying a function to pairs consisting of an element of the list and the result of a 
+ recursive application. The first form is known as “mapping” a function across a list; the 
+ second is known as “folding” a list.
+  
+ The
+  map
+  function
+  
+ The map function has type (α → β) → ((α list) → (β list)). It behaves as though implemented 
+ by the following definition.
+  
+ fun
+  map f [ ] = [ ] 
+  
+ | map f (h :: t) = f h :: map f t
+  
+ The map function preserves totality: if f is a total function—meaning that it never goes into 
+ an infinite loop and never raises an exception—then so is map f. However, map itself is not 
+ a total function since we can find f and l such that map f l is not defined.
+  
+ Note the rather lack-lustre role of the function parameter f in the implementation of 
+ map above: it is simply passed back into the recursive call of the function unchanged. This 
+ suggests that it can be factored out using a
+  let
+  ..
+  in
+  ..
+  end
+  as shown below.
+  
+ fun
+  map f =
+  let fun 
+  
+ map_f [ ] = [ ] 
+  
+  
+  
+ | 
+  
+ map_f (h :: t) = f h :: map_f t 
+  
+ in 
+  
+ map_f 
+  
+  
+ end
+  
+ Such definitions are not always easy to read! However, depending on the implementation 
+ technique employed by the Standard ML system being used, factoring out the parameter in 
+ this way may lead to a more efficient implementation of map.",NA
+5.4 The tree datatype,"We will introduce a few important definitions for trees as defined by the parameterised 
+ tree datatype which was given earlier (on page 27).
+  
+ Definition 5.4.1 (Nodes)
+  The nodes of an
+  α tree
+  are the values of type
+  α
+  which it contains. 
+ We can easily define a function which counts the number of nodes in a tree.
+  
+ fun
+  nodes (empty) = 0 
+  
+ | nodes (node (_, t
+ 1
+ , t
+ 2
+ )) = 1 + nodes t
+ 1
+  + nodes t
+ 2
+  
+ Definition 5.4.2 (Path)
+  A
+  path
+  (from tree t
+ 1
+  to its subtree t
+ k
+ ) is the list t
+ 1
+ , t
+ 2
+ , . . . , t
+ k
+  of trees 
+ where, for all
+  1
+  ≤ i < k, either t
+ i
+  =
+  node
+  (
+ n, t
+ i
+ +1
+ , t
+ ′
+ )
+  or t
+ i
+  =
+  node
+  (
+ n, t
+ ′
+ , t
+ i
+ +1
+ )
+ . 
+  
+ Definition 5.4.3 (Leaf)
+  A tree t is a
+  leaf
+  if it has the form node
+  (
+ n, empty, empty
+ )
+ .
+  
+ Definition 5.4.4 (Depth)
+  We will now describe two Standard ML functions which calcu-late 
+ the depth of a tree. They both have type
+  α tree → int
+ .
+  
+ fun
+  maxdepth (empty) 
+  
+ = 0 
+  
+  
+ | maxdepth (node (_, t
+ 1
+ , t
+ 2
+ )) = 1 + Int.max (maxdepth t
+ 1
+ , maxdepth t
+ 2
+ )
+  
+ Above,
+  Int.max
+  is the integer maximum function. The
+  mindepth
+  function just uses
+  Int.min 
+ instead of
+  Int.max
+ .
+  
+ Definition 5.4.5 (Perfectly balanced)
+  A tree t is perfectly balanced if its maximum and 
+ minimum depths are equal.",NA
+5.5 Converting trees to lists,"There are many ways to convert a tree into a list. These are termed traversal strategies for 
+ trees. Here we will look at three:
+  preorder
+ ,
+  inorder
+  and
+  postorder
+ .
+  
+ Definition 5.5.1 (Preorder traversal)
+  First visit the root, then traverse the left and right 
+ subtrees in preorder.
+  
+ Definition 5.5.2 (Inorder traversal)
+  First traverse the left subtree in inorder, then visit the 
+ root and finally traverse the right subtree in inorder.
+  
+ Definition 5.5.3 (Postorder traversal)
+  First traverse the left and right subtrees in postorder 
+ and then visit the root.
+  
+ Exercise 5.5.1
+  Define
+  α tree → α list
+  functions,
+  preorder
+ ,
+  inorder
+  and
+  postorder
+ .",NA
+5.6 Induction for trees,"In order to prove using structural induction some properties of functions which process 
+ trees we must first give an induction principle for the tree datatype. Such a principle can be 
+ derived directly from the definition of the datatype.
+  
+ Induction Principle 5.6.1 (Trees)
+  
+ P
+  (
+ empty
+ )
+  
+ (
+ P
+ (
+ l
+ )
+  ⌊ P
+ (
+ r
+ ))
+  ⌊ P
+ (
+ node
+  (
+ n, l, r
+ ))
+ ⌊t. 
+ P
+  (
+ t
+ )",NA
+5.7,NA,NA
+The vector datatype,"The Standard ML library provides vectors.
+  
+ collection of values of type α. Vectors differ from lists in their access properties. A vector is 
+ a random access data structure, whereas lists are strictly sequential access. With a list of a 
+ thousand elements it takes longer to access the last element than the first but with a vector 
+ the times are the same. The penalty to be paid for this convenience is that we are not able 
+ to subdivide a vector as efficiently as a list into its ‘head’ and its ‘tail’ and thus when 
+ programming with vectors we do not write pattern matching function definitions. Indeed, 
+ we
+  cannot
+  write pattern matching function definitions because we do not have access to 
+ the constructors of the vector datatype, they are not exported from the Vector structure in 
+ the Standard ML library. If we ever have occasion to wish to split a vector into smaller parts 
+ then we work with vector slices which are triples of a vector, a start index and a length.
+  
+ Vector constants resemble list constants, only differing in the presence of a hash before the 
+ opening bracket. Thus this is a vector constant of length five and type int vector.
+  
+ #[ 2,4,8,16,32 ]
+  
+ We can obtain a sub-vector by extracting a slice from this one.
+  
+ Vector.extract (#[ 2,4,8,16,32 ], 2, SOME 2) ≡ #[ 8,16 ]
+  
+ We can convert a list into a vector.
+  
+ Vector.fromList [ 2,4,8,16,32 ] ≡ #[ 2,4,8,16,32 ]
+  
+ A suitable use of a vector is in implementing a lookup table. We could revisit our day 
+ function from page 8 and re-implement it using a vector in place of pattern matching.",NA
+5.8 The Standard ML library,NA,NA
+5.8.1 ,NA,NA
+The List structure,"Many of the functions which we defined in Section 5.1 are in the library structure List. For 
+ convenience we have used the same names for functions as the List structure does and our 
+ functions behave in the same way as the corresponding library functions. 
+  
+ Thus for 
+ example, where we defined hd and tl the library provides List.hd and List.tl and these raise 
+ the exception List.Empty when applied to empty lists. 
+  
+ Similarly the List struc-
+ ture provides List.@, List.concat, List.drop, List.foldl, List.foldr, List.last, List.length, 
+ List.mapPartial, List.nth, List.null, List.rev, List.revAppend and List.take. In addition to these 
+ functions List structure also provides others listed below. Most of these are almost self-
+ explanatory when considering the type of the function together with its descriptive iden-
+ tifier.
+  
+ List.all 
+  
+ : (α → bool) → α list → bool 
+  
+ List.exists 
+  
+ : (α → bool) → α list → bool 
+  
+ List.filter 
+  
+ : (α → bool) → α list → α list 
+  
+ List.find 
+  
+ : (α → bool) → α list → α option 
+ List.partition : (α → bool) → α list → α list * α list 
+ List.tabulate : int * (int → α) → α list",NA
+5.8.2 ,NA,NA
+The ListPair structure,"Often we find ourselves working with pairs of lists or lists of pairs. The ListPair structure in 
+ the standard library provides a useful collection of operations on values of such data types. 
+ Once again, the functions provided are self-explanatory.
+  
+ ListPair.all 
+  
+ ListPair.foldl
+  
+ : (α * β → bool) → α list * β list → bool : (α 
+ * β * γ → γ) → γ → α list * β list → γ
+  
+ ListPair.foldr : (α * β * γ → γ) → γ → α list * β list → 
+ γListPair.map : (α * β → γ) → α list * β list → γ list 
+ ListPair.unzip : (α * β) list → α list * β list 
+  
+ ListPair.zip : α list * β list → (α * β) list 
+  
+ ListPair.exists : (α * β → bool) → α list * β list → bool",NA
+5.8.3 ,NA,NA
+The Vector structure,"In addition to the functions which we have seen the Vector structure in the Standard ML 
+ library also provides the following. 
+  
+ The functions Vector.foldli and Vector.foldri differ 
+ from familiar left and right folding in that they also make use of the integer index into the 
+ vector and thus are near relatives of the
+  for
+  loops in Pascal-like programming languages. 
+ Such loops supply an integer loop control variable which is automatically incremented on 
+ each loop iteration (and may not be altered within the loop body). The Vector.foldli and 
+ Vector.foldri functions operate on vector slices.
+  
+ Vector.concat 
+  
+ : α vector list → α vector 
+  
+ Vector.foldl 
+  
+ : (α * β → β) → β → α vector → β
+  
+ Vector.foldr 
+  
+ : (α * β → β) → β → α vector → β
+  
+ Vector.foldli 
+  
+ : (int * α * β → β) → β → α vector * int * int option → 
+ βVector.foldri 
+  
+ : (int * α * β → β) → β → α vector * int * int option → 
+ βVector.length 
+  
+ : α vector → int 
+  
+ Vector.tabulate : int * (int → α) → α vector",NA
+Chapter 6,NA,NA
+Evaluation,"Some functional programming languages are lazy, meaning that an expression will not be 
+ evaluated unless its value is needed. This approach seems to be a very sensible one: the 
+ language implementation is attempting to optimize the execution of programs by avoiding 
+ any unnecessary computation. Perhaps surprisingly, this evaluation strategy will not 
+ always improve the efficiency of programs since it may involve some extra work in 
+ managing the delayed evaluation of expressions.
+  
+ Lazy programming languages are difficult to implement efficiently (see [PJL92]) and 
+ economically ([Jon92] describes the ‘space leaks’ which occur in lazy languages when 
+ dynam-ically allocated memory is lost, never to be reclaimed). There are also the pragmatic 
+ diffi-culties with lazy programming which are mentioned in Robin Milner’s “How ML 
+ Evolved”: the difficulty of debugging lazy programs and the difficulty of controlling state-
+ change or (perhaps interactive) input and output in lazy languages which are not purely 
+ functional. Because of some of these difficulties and the desire to include imperative 
+ features in the language, Standard ML uses a call-by-value evaluation strategy: expressions 
+ are evaluated irrespective of whether or not the result is ever needed. The lazy evaluation 
+ of expressions is then achieved by the programmer rather than by the language. We now 
+ discuss techniques for implementing the lazy evaluation of expressions.",NA
+"6.1 Call-by-value, call-by-name and call-by-need","Unlike many other programming languages, functions in Standard ML can be designated by 
+ arbitrarily complex expressions. 
+  
+ The general form of an application is
+  e e
+ ′
+ , which is 
+ evaluated by first evaluating
+  e
+  to obtain some function and then evaluating
+  e
+ ′
+ to obtain some 
+ value and finally applying the function to the value. In general, the expression
+  e
+  can be quite 
+ complex and significant computation may be required before a function is returned. This 
+ rule for evaluation of function application uses the call-by-value parameter passing 
+ mechanism because the argument to a function is evaluated before the function is applied.
+  
+ An alternative strategy is call-by-name. Here the expression
+  e
+ ′
+ is substituted for all the 
+ occurrences of the formal parameter. The resulting expression is then evaluated as normal. 
+ This might mean that we evaluate some expressions more than once. Clearly, call-by-value 
+ is more efficient. The following important theorems make precise the relationship between
+  
+ 47",NA
+6.2 Delaying evaluation,"One form of delayed evaluation which we have already seen is conditional evaluation. In an 
+ if
+  ..
+  then
+  ..
+  else
+  .. expression only two of the three sub-expressions are evaluated. The 
+ boolean expression will always be evaluated and then, depending on the outcome, one of 
+ the other sub-expressions will be evaluated. The effect of a conditional expression would 
+ be different if all three of the sub-expressions were always evaluated. This explains why 
+ there is no cond function (of type (bool * α * α) → α) in Standard ML.
+  
+ Similarly, a recursive computation sometimes depends upon the outcome of evaluating 
+ a boolean expression (as with the takewhile function (on page 40)). In cases such as these, 
+ the evaluation of expressions can be delayed by placing them in the body of a function. By 
+ packaging up expressions in this way, we can program in a ‘non-strict’ way in Standard ML 
+ and we can describe recursive computations and we can define infinite objects such as the 
+ list of all natural numbers or the list of all primes. Consider the following function.
+  
+ fun
+  FIX f x = f (FIX f) x
+  
+ Exercise 6.2.1
+  What is the type of
+  FIX
+ ? You might benefit from seeing this function with the 
+ derived form removed and some redundant parentheses inserted for clarity.
+  
+ val rec
+  FIX =
+  fn
+  f => (
+ fn
+  x => (f (FIX f)) x)
+  
+ The purpose of the FIX function is to compute fixed points of other functions. (Meaning: 
+ x
+  is 
+ a fixed point of the function
+  f
+  if
+  f
+ (
+ x
+ ) =
+  x
+ .) How is this function used? Consider the facbody 
+ function below. No derived forms are used here in order to make explicit that this is not a 
+ recursive function (not a val rec .. ).
+  
+ val
+  facbody =
+  fn
+  f =>
+  fn
+  0 => 1 
+  
+  
+ | x => x * f (x – 1)",NA
+6.3 Forcing evaluation,"Non-strict programming in Standard ML uses the pre-defined unit type. This peculiar type 
+ has only one element, written “()”, and also called “unit”. This representation for unit is a 
+ derived form for the empty record, “{}”. Horrifyingly, that is also the way to represent the 
+ type
+  of the empty record so we find that we have {} : {} in Standard ML!
+  
+ The use of the unit type serves to convey the idea that the parameter which we pass to 
+ the function will never be used in any way since there are no operations on the unit 
+ element and it also conveys no information because there is only one value of this type. It is 
+ possible to delay the evaluation of expressions with unused values of any type but we 
+ would not wish",NA
+6.4 From call-by-value to call-by-name,"Now that we have all the machinery available to delay the evaluation of expressions we 
+ may ask whether a call-by-name variant can always be found for an existing call-by-value 
+ function. This question can be answered positively and we will now sketch out a recipe.
+  
+ Consider a function f with the following form:",NA
+6.5 Lazy datatypes,"Although any call-by-value function can be transformed into a call-by-name variant the 
+ chief interest in delaying evaluation in functional programming is the ability to create 
+ datatypes such as infinite sequences and infinitely branching trees. In a shocking and 
+ inexcusable abuse of technical terminology we will call these ‘lazy’ datatypes even though 
+ they simulate call-by-name evaluation instead of call-by-need evalution. The most 
+ important point about these datatypes is the representation ability which they offer; not 
+ that they optimise computations.
+  
+ Consider the datatype of infinite sequences of integers. 
+  
+ This can be described as a 
+ Standard ML datatype with a single constructor, cons.
+  
+ datatype
+  seq = cons
+  of
+  int * (seq delayed)
+  
+ This definition provides us with a constructor, cons, of type (int * (seq delayed)) → seq. The 
+ functions to return the head and tail of an infinite sequence are much simpler than those to 
+ return the head and tail of a list. Since the sequence can never be exhausted there is no 
+ exceptional case behaviour. However, note that the tail function is partial since the 
+ evaluation of force t may fail to terminate.
+  
+ fun
+  head (cons (h, _)) = h
+  
+ fun
+  tail 
+  
+ (cons (_, t)) = force t
+  
+ These functions have types seq → int and seq → seq respectively.
+  
+ Exercise 6.5.1
+  Write a function to give a list of the first n integers in a sequence.",NA
+6.6 An example: Computing the digits of,NA,NA
+ e,"(This example is taken from [Tur82] and it was first implemented in David Turner’s 
+ excellent lazy functional programming language Miranda
+ TM
+ (a trademark of Research 
+ Software Ltd.). Trivia fans might like to know that it was proposed to Turner as a challenge 
+ by the famous Dutch computer scientist Edsger W. Dijkstra. It is a folk theorem in computer 
+ science that all challenge problems were initially proposed by Edsger W. Dijkstra.) 
+  
+ As an example of a program which uses infinite sequences, consider the problem of 
+ computing the digits of the transcendental number
+  e
+ . We would like to calculate as many 
+ digits of
+  e
+  as we wish. Notice that the decimal expansion of
+  e
+  is an infinite sequence of inte-
+ gers. (Each integer being a single decimal digit.) We could then use in our implementation 
+ the infinite sequence datatype which we have just defined.
+  
+ The number
+  e
+  can be defined as the sum of a series. The terms in the series are the 
+ reciprocals of the factorial numbers.
+  
+  
+ =
+  
+ ∞
+  
+ 1
+  
+  
+  
+ =
+  
+ i
+ =0
+  
+ i
+ !
+  
+ (base 10)
+  
+ =
+  
+ 0! + 1 1! + 1 2! + 1 3! +
+  · · 
+ ·
+  
+ =
+  
+ 2
+ .
+ 7182818284590
+  . . .
+  
+ a base in which the
+  i
+ th digit has weight 1
+ /
+ 10
+ i−
+ 1
+  
+ = 2
+ .
+ 1111111111111
+  . . .
+  
+ a funny base in which the
+  i
+ th digit has weight 1
+ /i
+ !
+  
+ Both the decimal expansion and the expansion in the funny base where the
+  i
+ th digit has 
+ weight 1
+ /i
+ ! can be expressed as infinite integer sequences. The problem is then to convert 
+ from this funny base to decimal.
+  
+ For any base we have:
+  
+ •
+  take the integer part as a decimal digit;
+  
+ •
+  take the remaining digits, multiply them all by ten and renormalise (using the appro-
+ priate carry factors);
+  
+ •
+  repeat the process with the new integer part as the next decimal digit.
+  
+ Note:
+  The
+  carry factor
+  from the
+  i
+ th digit to the (
+ i −
+  1)th digit is
+  i
+ . I.e. when the
+  i
+ th digit is
+  ≥ i
+  
+ we add 1 to the (
+ i −
+  1)th digit and subtract
+  i
+  from the
+  i
+ th digit.",NA
+Chapter 7,NA,NA
+Abstract data types,"Thus far our programs have been small and simple and it would have seemed excessive to 
+ have structured them into modular units. When we come to write larger programs we will 
+ want to encapsulate some functions together with a datatype in order to control the access 
+ to the elements of the datatype. The construction we use for this purpose is
+  abstype
+  ..
+  with 
+ ..
+  
+ end
+ .
+  
+ We will implement an abstract data type for sets. These are unordered collections of 
+ values. A membership test is provided. Duplications are not significant: there is no way to 
+ test how many times a value occurs in a set. The problem is then to provide a way to 
+ construct sets and test for membership without giving away other information such as the 
+ number of times a value appears in the set.
+  
+ The following abstract data type introduces a type constructor, set, a value emptyset 
+ and two functions, addset and memberset. The constructors null and ins are hidden, they 
+ are not visible.
+  
+ abstype
+  α set = null | ins
+  of
+  α * α set 
+  
+ with 
+  
+  
+ val
+  emptyset = null 
+  
+  
+ val
+  addset = ins 
+  
+  
+ fun
+  memberset (x, null) = false 
+  
+  
+ | memberset (x, ins(v,s)) = x = v
+  orelse
+  memberset (x, s) 
+ end
+  
+ It might seem somewhat futile to hide the names null and ins and then provide emptyset 
+ and addset. The point is that in so doing, we take away the
+  constructor
+  status of null and ins 
+ and that means that they cannot be used in pattern matching to destruct the constructed 
+ value and see inside.
+  
+ But it would seem that nothing we have described could not be achieved with the 
+ features of the Standard ML language which we knew already, albeit in a slightly more 
+ complicated definition.
+  
+ 55",NA
+7.1 Programming with abstract data types,"More than with any other part of Standard ML programming with abstypes requires a 
+ certain discipline. We have in the abstype concept a means of localising the creation of 
+ values of a particular type and the reason for wishing to do this is that we can validate the 
+ creation of these values, rejecting certain undesirable ones, perhaps by raising exceptions. 
+ Moreover, we can exploit the validation within the abstype definition itself. Here we 
+ implement sets as ordered lists without repetitions.
+  
+ abstype
+  α ordered_set = Set
+  of
+  ((α * α) → bool) * α list 
+ with 
+  
+  
+ fun
+  emptyset (
+ op
+  <=) = Set (
+ op
+  <=, [ ])
+  
+ fun
+  addset (x, Set (
+ op
+  <=, s)) = 
+  
+  
+ let 
+  
+  
+ fun
+  ins [ ] = [ x ] 
+  
+  
+  
+  
+ | ins (s
+  as
+  h::t) = 
+  
+  
+  
+  
+  
+ if
+  x = h
+  then
+  s
+  else 
+  
+  
+  
+  
+  
+ if
+  x <= h
+  then
+  x :: s
+  else
+  h :: ins t 
+  
+ in
+  Set 
+ (
+ op
+  <=, ins s) 
+  
+  
+ end
+  
+  
+ fun
+  memberset (x, Set (_, [ ])) = false 
+  
+  
+  
+ | memberset (x, Set (
+ op
+  <=, h::t)) = 
+  
+  
+  
+ h <= x
+  andalso
+  (x = h
+  orelse
+  memberset (x, Set (
+ op
+  <=, t))) 
+ end
+  
+ The abstype mechanism ensures that sets have been created either by the function 
+ emptyset or by the function addset. Both of these functions construct sorted lists and thus 
+ it is safe to exploit this ordering in memberset. By this time, because we are imposing a 
+ particular order on the values in the list it is crucially important we do not provide access 
+ to the Set constructor (say via
+  val
+  mk_set = Set) because otherwise a user of this 
+ ordered_set abstype could create an unordered set thus.
+  
+ val
+  myset = mk_set (
+ op
+  <=, [ 1, 5, 3, 2, 8 ])
+  
+ This directly constructed set value will then give unexpected results, as detailed below.
+  
+ memberset (1, myset) = true 
+  
+ memberset (5, myset) = true 
+  
+ memberset (3, myset) = false 
+  
+ memberset (2, myset) = false 
+  
+ memberset (8, myset) = true
+  
+ In the context of a larger program development these occasional unexpected results might 
+ sometimes lead to observable errors which would be difficult to diagnose.",NA
+Chapter 8,NA,NA
+Imperative programming,"Standard ML is not a pure functional language, it is a higher-order imperative language. We 
+ have already (briefly) considered exceptions and now we consider assignment and input 
+ and output. Consider the following sequence of value declarations.
+  
+ val
+  x = 0; 
+  
+ val
+  x = x + 1;
+  
+ This resembles a sequence of assignments in an imperative program where first the 
+ variable x is given an initial value of zero and then the value of x is incremented. The final 
+ effect is, of course, that x holds the value one. On the basis of this example it might seem 
+ that changes to the environment are like changes of state. To clarify the difference between 
+ a sequence of assignments and a sequence of value declarations consider the declarations 
+ which appear below.
+  
+ val
+  x = 0; 
+  
+ val
+  x = x < 1; 
+  
+ val
+  x =
+  if
+  x
+  then
+  1
+  else
+  0;
+  
+ Once again the final effect is to leave x bound to one but in the middle of this process the 
+ identifier x was re-used to denote a boolean value. In a typed programming language which 
+ distinguishes between integers and booleans no sequence of assignments could ever 
+ achieve this effect and so we see that the value declaration mechanism brings about a
+  re-
+ declaration 
+ or a
+  re-binding
+  of the identifier x. We conclude that it is necessary to distinguish 
+ between the environment and the state.",NA
+8.1 References,"In Standard ML, updatable cells are accessed via references. There is a type constructor, ref 
+ and a value constructor also called ref of type α → α ref. Thus ref 1 is an int ref, ref 1.0 is a 
+ real ref, ref #""A"" is a char ref, ref Empty is an exn ref and so on. We may have references to 
+ functions and even references to other references. In order to see that ref is non-functional 
+ we need only evaluate the expression (ref 0) = (ref 0) in order to discover
+  
+ 59",NA
+8.2 Assignment,"Creating references to values and comparing references is all very jolly but the real reason 
+ to introduce references into the language is to enable the programmer to store values in a 
+ particular location for later retrieval and possible modification. Modification of the stored 
+ value is achieved by the use of the infix “:=” assignment operator. For example, if n is an int 
+ ref then n := 1 and n := !n + 1 are legal assignments but we will never see n := n + 1.
+  
+ The assignment operator has type (α ref * α) → unit. The result type of unit indicates 
+ that this operator achieves its effect by side-effect because we know in advance that the 
+ result returned by the function will be (). This value is needed for the result because an 
+ operator is only an infix function and all Standard ML functions must return some value, 
+ even if their purpose is to change the state.
+  
+ Exercise 8.2.1
+  For the language designers, the other possible choice for the type of the 
+ assignment operator would be
+  (α ref * α) → α
+ . The effect of allowing this choice would be to 
+ allow the use of the value from an assignment. Define an infix operator “
+ ::=
+ ” of type 
+ (α ref * α) 
+ → α
+  which has this property. [Exercise care, there is a potential pitfall.]
+  
+ The assignment operation genuinely increases the power of the language, as references did. 
+ We can now program call-by-need versions of the delay and force functions from page 50. 
+ These functions use references to an auxiliary datatype of suspended evaluations.",NA
+8.3 Sequential composition,"In imperative programming it is essential to have a method of controlling the order in 
+ which the evaluation of the components of a compound expression takes place. We wish to 
+ be able to build a sequence of expressions into a single compound expression. Given 
+ expressions
+  e
+ 1
+ , 
+ e
+ 2
+  and
+  e
+ 3
+  we could force them to be evaluated in the correct order by using
+  
+ let
+  ..
+  in
+  ..
+  end 
+ as shown below. We are not interested in the results of the expressions, we 
+ simply throw them away by using the wild card as the pattern in the value binding.
+  
+ let val
+  _ =
+  e
+ 1 
+  
+  
+ val
+  _ =
+  e
+ 2 
+  
+ in e
+ 3 
+  
+ end
+  
+ This seems rather cumbersome. Fortunately Standard ML provides a neater way to control 
+ the order of evaluation of expressions. 
+  
+ The composition operator in Standard ML is a 
+ semicolon and parentheses may be used to build a single expression from a sequence of 
+ expressions. There is no requirement for all of the subexpressions to return the unit value 
+ as their result or to have the same type. The expression (n := 5; true) evaluates to true. The 
+ expression (true; n := 5) evaluates to ().",NA
+8.4 Iteration,"A natural companion for assignment and sequential composition is an iteration mechanism. 
+ It is not essential since any expression which uses an iterative expression could be 
+ reformu-lated as a recursive function. The general form of a loop in Standard ML is the 
+ reserved word
+  while
+  followed by a boolean expression involving a pointer (or other 
+ counter) followed by the word
+  do
+  followed by an expression which performs some 
+ computation, changing the state and advancing the pointer.",NA
+8.5 Types and imperative programming,"Thus far everything seems to have gone very well but there are problems just ahead when 
+ we consider the interaction of references and polymorphism. corresponding to “degree of 
+ polymorphism” such that the following relation holds between There is an ordering “
+ ⌊
+ ”
+  
+ the types of polymorphic functions.
+  
+ ∀α.∀β.(α → β)
+  ⌊
+  ∀α.(α → α)
+  ⌊
+  ∀().(int → int) 
+  
+ Given a reference to a polymorphic function, an assignment could make the type of the 
+ function which is referenced less polymorphic as allowed by the “
+ ⌊
+ ” ordering. However, 
+ such behaviour could lead to expressions which can be statically type-checked but which 
+ would produce a run-time type error when executed. A short example is given below.
+  
+ let val
+  r = ref (
+ fn
+  x => x)
+  in
+  (r := (
+ fn
+  x => x + 1); !r true)
+  end
+  
+ If the function r was assigned the polymorphic type ∀α.((α → α) ref) then the assignment 
+ and the dereferenced function application would both be correctly typed but the program 
+ would “go wrong” at run-time by attempting to add a boolean value to an integer. The type 
+ system of Standard ML does not allow programs to go wrong in this way and thus the 
+ example must be rejected by a compiler.",NA
+8.5.1 ,NA,NA
+Type safety conditions,"We desire a type system which permits secure, type-safe, implementation of imperative 
+ routines without simply imposing the unnecessarily harsh restriction that the programmer 
+ may only make references to monomorphic values. Such a restriction would mean that the 
+ previous ordered set and lazy expression examples would not be allowable. The problem of 
+ designing a permissive type system for imperative programming has proved to be one of 
+ the most difficult in the history of programming language design. The essential tension 
+ comes from several conflicting desires:",NA
+8.5.2 ,NA,NA
+Implementing type safety,"A number of methods of combining polymorphic definition and imperative features were 
+ proposed by Mads Tofte [Tof90] and Standard ML adopts the simplest of them. A 
+ persuasive argument is provided by Andrew Wright [Wri95] that relatively little 
+ expressiveness is lost in making this choice. Tofte’s approach divides expressions into the 
+ categories of
+  expansive 
+ and
+  non-expansive
+ . The essence of the idea is that only non-
+ expansive expressions may be polymorphic.
+  
+ What is a non-expansive expression? We may characterise it as a value and thus Stan-
+ dard ML is said to have ‘value polymorphism’. More precisely, a non-expansive expression 
+ is
+  
+ •
+  a constant;
+  
+ •
+  an identifier;
+  
+ •
+  a record where the labels are associated with non-expansive expressions;
+ •
+  an 
+ application of any constructor except ref to a non-expansive expression; and
+ •
+  any
+  
+ fn
+  expression
+  
+ and anything of this form supplemented with parentheses, type constraints and derived 
+ forms. Any other expression is deemed expansive, even if it does not use references.",NA
+8.6 Arrays,"Lists are the central datatype in applicative programming. In imperative programming the 
+ array is the central datatype. Arrays are provided in a type-safe way in Standard ML 
+ through the use of the following operations of the Array structure in the Standard ML 
+ library.",NA
+8.7 Memoisation,"Given the imperative features of Standard ML and the array datatype we may now 
+ construct an extremely useful function which allows the Standard ML programmer to 
+ achieve greater efficiency from programs without damaging the clarity of the functional 
+ style of program-ming.
+  
+ The simple technique of
+  memoisation
+  involves storing a value once it has been 
+ computed to avoid re-evaluating the expression. We present a very simple version of the 
+ memoisation function which assumes:
+  
+ 1. the function to be memoised returns integers greater than zero;
+  
+ 2. the only arguments of the function are between zero and fifty.
+  
+ A more general version which does not have these restrictions was implemented by Kevin 
+ Mitchell. It can be found in the Edinburgh ML library [Ber91].
+  
+ fun
+  memo f = 
+  
+ let 
+  
+  
+ val
+  ans = Array.array (50,0) 
+  
+  
+ fun
+  compute ans i = 
+  
+  
+ case
+  Array.sub (ans, i)
+  of 
+  
+  
+  
+  
+ 0 => (Array.update (ans, i, f (compute ans) i); 
+  
+  
+  
+  
+  
+ Array.sub (ans, i)) 
+  
+  
+  
+  
+ | v => v 
+  
+ in 
+  
+  
+ compute ans 
+  
+ end",NA
+8.8 Input/output,"The final imperative features of Standard ML which we will present are the facilities for 
+ imperative input and output which are available in the language.
+  
+ Pre-defined streams are TextIO.stdIn of type TextIO.instream and TextIO.stdOut of type 
+ TextIO.outstream. 
+  
+ A new input stream can be created by using the function 
+ TextIO.openIn of type string → TextIO.instream. A new output stream can be created by 
+ using the TextIO.openOut function of type string → TextIO.outstream. 
+  
+ There are 
+ TextIO.closeIn and TextIO.closeOut functions as well.
+  
+ The result of attempting to open a file which is not present is an exceptional case and 
+ raises the exception Io, which carries a record describing the nature of the
+  I/O
+  failure. This 
+ exception may be handled and alternative action taken.
+  
+ The functions for text
+  I/O
+  are the following.
+  
+  
+  
+  
+ TextIO.input : TextIO.instream → string 
+  
+  
+ TextIO.inputN : TextIO.instream * int → string 
+  
+ TextIO.lookahead : TextIO.instream → char option 
+ TextIO.endOfStream : TextIO.instream → bool 
+  
+  
+  
+  
+ TextIO.output : TextIO.outstream * string → unit
+  
+ A familiar C programming metaphor for processing files may be easily implemented in 
+ Stan-dard ML. The function below simulates the behaviour of the UNIX cat command.
+  
+ fun
+  cat s = 
+  
+  
+ let val
+  f = TextIO.openIn s
+  and
+  c = ref """" 
+  
+  
+ in 
+  
+  
+  
+ while
+  (c := TextIO.inputN (f, 1) ; !c <> """")
+  do 
+  
+  
+  
+ TextIO.output (TextIO.stdOut, !c); 
+  
+  
+  
+ TextIO.closeIn f 
+  
+  
+ end
+  
+ This function simulates the behaviour of the UNIX strings command, that is, it reads in a 
+ binary file and prints out those strings of printable characters which have length four or 
+ more.",NA
+ ^,"s) """" 
+  
+ val
+  
+ tokenise = String.tokens (Bool.not o Char.isPrint) 
+  
+ val
+  select = 
+ List.filter (
+ fn
+  s => String.size s >= 4) 
+  
+  
+ in 
+  
+  
+ (select o tokenise o fold) binfile 
+  
+  
+ end
+  
+ We can present another C programming metaphor: a pre-processor which includes files as 
+ specified by a #include directive. It searches for the include files in one of a list of 
+ directories, handling possible exceptions and trying the next directory in its turn. The 
+ implementation of the function is in Figure 8.1.
+  
+ Finally we show that we can combine text input and binary output by implementing a 
+ text-to-binary file translator which decodes a Base 64 encoded file. The Base 64 standard is 
+ the one which is used by for Internet mail in order to safeguard data from unintentional 
+ corruption. It operates by encoding three eight-bits characters using four six-bits ones. 
+ These six bits can be mapped onto the uppercase letters, the lowercase letters, the digits 
+ and the symbols plus and divide in that order, from 0 to 63. The Base 64 translator is 
+ presented in Figure 8.2 and uses auxiliary functions charToWord and wordListToVector 
+ together with infixed versions of the functions Word.<<, Word.>>, Word.orb and 
+ Word.andb.
+  
+ Exercise 8.8.1
+  The
+  base64decode
+  functions uses masks to select out the middle and low 
+ bytes in a word. Why could these not be obtained by shifting up sixteen bits and down eight 
+ and shifting down sixteen bits respectively?",NA
+^,"f) 
+  
+  
+  
+  
+  
+  
+  
+  
+ handle
+  _ => findAndOpen t f 
+  
+  
+  
+ fun
+  inc f = 
+  
+  
+  
+  
+  
+ let val
+  is = findAndOpen dir f 
+  
+  
+  
+  
+  
+ in 
+  
+  
+  
+  
+  
+  
+ while
+  not (TextIO.endOfStream is)
+  do 
+  
+  
+  
+  
+  
+  
+  
+ let val
+  line = TextIO.inputLine is 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ val
+  len = String.size line 
+  
+  
+  
+  
+  
+  
+  
+ in 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ if
+  len > 8
+  andalso 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ String.substring (line, 0, 8) = ""#include"" 
+  
+  
+  
+  
+  
+  
+  
+  
+ then
+  inc (String.substring (line, 10, len – 12)) 
+  
+  
+  
+  
+  
+  
+  
+  
+ else
+  TextIO.output (os, line) 
+  
+  
+  
+  
+  
+  
+  
+ end
+ ; 
+  
+  
+  
+  
+  
+  
+ TextIO.closeIn is 
+  
+  
+  
+  
+  
+ end 
+  
+ in 
+  
+  
+ inc is; 
+  
+  
+ TextIO.closeOut os 
+  
+ end
+ ;
+  
+ Figure 8.1: The mlpp pre-processor",NA
+Chapter 9,NA,NA
+Introducing Standard ML Modules,NA,NA
+9.1 Signatures,"One use of a signature is as a specification of a structure. That is, it may be used to describe 
+ a structure which is later to be provided. 
+  
+ The signature states the types which will be 
+ declared in the structure and gives the type information for the values and functions in the 
+ structure.
+  
+ Another use of a signature is as an interface which will hide some parts of the structure 
+ while allowing other parts to remain visible. This is achieved because it is possible for a 
+ structure to
+  match
+  a signature even though it declares more types and values than are 
+ required by the signature. These additional types and values are not visible.
+  
+ Here is a simple signature which describes sets.
+  
+ signature
+  Set = 
+  
+ sig 
+  
+  
+ type''
+ a set 
+  
+  
+ val
+  emptyset :
+ ''
+ a set 
+  
+  
+ val
+  addset :
+ ''
+ a *
+ ''
+ a set →
+ ''
+ a set 
+  
+  
+ val
+  memberset :
+ ''
+ a *
+ ''
+ a set → bool 
+  
+ end
+  
+ Now we provide an implementation of this in the form of a structure. The signature acts as 
+ a 
+ constraint
+  on the structure in the sense that it might hide identifiers or make a 
+ polymorphic function less polymorphic and perhaps even monomorphic. It might be said 
+ that a signature constraint is used for a structure in a similar way to the way that a type 
+ constraint is used for a value.",NA
+9.2 Structures,"We will implement sets as boolean-valued functions which return true if applied to an 
+ element in the set and false otherwise.
+  
+ 71",NA
+9.3 Representation independence and equality,"We will now consider replacing the implementation of the Set structure which uses 
+ functions by one which uses lists as the underlying concrete representation for the set. For 
+ conve-nience we will assume that we already have a structure containing utilities for lists 
+ such as a membership predicate.
+  
+ structure
+  Set :> Set = 
+  
+ struct 
+  
+  
+ type''
+ a set =
+ ''
+ a list 
+  
+  
+ val
+  emptyset = [ ] 
+  
+  
+ val
+  addset =
+  op
+  :: 
+  
+  
+ val
+  memberset = ListUtils.member 
+  
+ end
+  
+ We might feel fearful of making this change because—unlike functions over equality 
+ types—lists of values from equality types can themselves be tested for equality. Equality on 
+ lists is not the same as equality on sets and so we might fear that this implementation of Set 
+ would have the disadvantage that it allows sets to be tested for equality, giving 
+ inappropriate answers. Such fears are misplaced. The equality on the type
+ ''
+ a set is hidden 
+ by the use of the Set signature. Tight lipped, the signature refers to
+ ''
+ a set as a
+  type
+ , with no 
+ indication that it admits equality. Thus we see that signatures are to be interpreted literally 
+ and not supplemented by other information which is obtained from peeking inside the 
+ structure to see how types have been defined. The terminology for this in Standard ML is 
+ that signatures which are attached using a coercion ‘:>’ are
+  opaque
+ , not
+  transparent
+ .
+  
+ The question of whether or not signatures should be opaque is typical of many questions 
+ which arise in programming language design. The exchange being made is between the 
+ purity of a strict interpretation of an abstraction and the convenience of software re-use. 
+ Transparent signatures may save a significant amount of work since the software 
+ developer is able to exploit some knowledge about how a structure has been implemented. 
+ This saving may have to be paid for later when a change of data representation causes 
+ modifications to be made to other structures.
+  
+ Exercise 9.3.1
+  Reimplement the
+  α susp
+  datatype from page 62 as a structure
+  Susp
+ . You will 
+ notice that in the body of the structure neither the local
+  ..
+  in
+  ..
+  end nor the abstype 
+ ..
+  with
+  ..
+  end 
+ are necessary. The effects of hiding the
+  α hitchcock
+  datatype and hiding the equality on
+  α 
+ susp
+  values can both be achieved through the use of a signature.",NA
+9.4 Signature matching,"There is a final point to be made about the interaction between the type information 
+ supplied in a signature and the type information inferred from the body of a structure. The 
+ body of a structure must be well-typed in isolation from the signature constraint. Casually 
+ speaking, we could phrase this as “the signature goes on last”. Consider the following 
+ example of an integer cell which must initially be assigned a value before that value can be 
+ inspected.",NA
+Chapter 10,NA,NA
+"Functors, generativity and sharing","Previously we saw that signatures and structures were the parts of the Standard ML 
+ modules language which corresponded to the types and values of the core language. The 
+ modules language analogue of functions are
+  functors
+  and the modules language analogue of 
+ equality is
+  sharing
+ .",NA
+10.1 ,NA,NA
+Functors,"Functors map one structure to another: that is, they are parameterised modules. Their role 
+ in the Standard ML language is to support the top-down development of large-scale 
+ systems.
+  
+ In many ways it is excessive to say that functors correspond to Standard ML functions. 
+ Unlike functions, functors cannot be curried and the ‘types’ of their arguments must be 
+ given explicitly. Functors cannot be recursive nor polymorphic (by taking signatures as 
+ arguments) nor higher-order (by taking functors as arguments). Like structures, they are 
+ compile-time entities and are not first-class values.
+  
+ The following signature describes structures which contain a Standard ML equality type T. 
+ The keyword
+  eqtype
+  is used to describe such types.
+  
+ signature
+  SIG =
+  sig eqtype
+  T
+  end
+  
+ We will now define a functor which produces a dynamic array of elements of type T. A type 
+ element is defined and there are three operations on dynamic arrays.
+  
+ update : (int * element) → unit 
+  
+ lookup : int → element 
+  
+  
+ index : element → int
+  
+ It is the implementation of the index function which places the requirement on the element 
+ type of the array to be an equality type. The function must search through the array to find 
+ the element.
+  
+ 75",NA
+10.2 ,NA,NA
+Generativity and sharing,"A structure expression delimited by
+  struct
+  . . .
+  end
+  is
+  generative
+ : that is, it will generate a 
+ new structure, different from all the others. An example will help to illustrate this. Three 
+ structures are declared below with integer variables, x.
+  
+ structure
+  S
+ 1
+  =
+  struct val
+  x = ref 10
+  end
+ ; 
+ structure
+  
+ S
+ 2
+  =
+  struct val
+  x = ref 10
+  end
+ ; 
+ structure
+  S
+ 3
+  = S
+ 1
+ ;
+  
+ Only structures S
+ 1
+  and S
+ 3
+  are the same. An assignment to S
+ 1
+ .x will alter the value referenced 
+ by S
+ 3
+ .x, but not the value referenced by S
+ 2
+ .x. 
+  
+ In the same way, an application of the 
+ Dynarray functor also always generates a new structure. This is as we would have 
+ expected, structures and functors would be difficult to use otherwise.
+  
+ Here are two very similar looking functors.
+  
+ functor
+  ID (S : SIG) = S; 
+  
+ functor
+  REFRESH (S : SIG) =
+  struct open
+  S
+  end
+ ;",NA
+10.3 ,NA,NA
+Parametricity and polymorphism,"We can use all of our new knowledge about Standard ML modules to some benefit as we re-
+ visit the example of a cell with an access discipline that values must be assigned before they 
+ are inspected. In implementing this example previously (on page 74) we ran across the 
+ difficulty that making a reference to an empty list would fall foul of the language’s weak 
+ types. It might have seemed that in order to circumvent this we would have to fix on a 
+ particular type and would not be able to implement the access discipline once for all types. 
+ This would perhaps be worrying, we might think that this feature of the type system 
+ reduces the potential for software re-use to lessen the labour of software development. In 
+ fact this is not true because the Cell structure can be re-programmed as a functor instead.
+  
+ functor
+  CellFunc (S :
+  sig type
+  T
+  end
+ ) : 
+  
+ sig 
+  
+  
+ type
+  T 
+  
+  
+ val
+  assign : T → unit 
+  
+  
+ exception
+  Inspect 
+  
+  
+ val
+  inspect : unit → T 
+  
+  
+ sharing type
+  T = S.T 
+  
+ end
+  = 
+  
+ struct 
+  
+  
+ open
+  S
+  
+ val
+  c = ref ([ ]: T list)
+  
+ fun
+  assign x = c := [ x ]
+  
+  
+ exception
+  Inspect 
+  
+  
+ fun
+  inspect () = 
+  
+  
+  
+ let val
+  [ x ] = !c
+  in
+  x
+  end 
+  
+  
+  
+ handle
+  Bind =>
+  raise
+  Inspect 
+  
+ end
+ ;
+  
+ Now we may define an integer cell comparable to the one which we had before (but with 
+ the additional type definition, of course) and we may also have cells of other types.
+  
+ structure
+  Int =
+  struct type
+  T = int
+  end
+ ; 
+ structure
+  
+ IntCell = CellFunc (Int); 
+  
+ structure
+  Bool =
+  struct type
+  T = bool
+  end
+ ; 
+ structure
+  BoolCell = CellFunc (Bool);
+  
+ The problem of using references to poke a hole in a naive polymorphic type system does 
+ not arise here because the functions cannot be used from the functor body. We must supply 
+ a structure as the functor argument (so T is now
+  known
+ ) and then use the functions which 
+ are returned in the resulting structure (which apply to a
+  particular
+  T). This example serves 
+ to illustrate that there is a subtle difference between polymorphism—as in the core 
+ language—and parametricity—as in the modules language.",NA
+10.4 ,NA,NA
+Signature admissibility,"Now that we have seen that signatures can contain sharing equations we might be 
+ somewhat nervous about the role of functors in top-down program development.
+  
+ We write functors on a promise: that a structure can be delivered which matches the 
+ signature. What if we had written an unsatisfiable set of sharing equations in a signature? 
+ Then we might expend a considerable amount of effort on developing a functor which 
+ could never be used since we could never build a structure which matched the signature of 
+ the argument to the functor.
+  
+ To address this difficulty, Standard ML defines the notion of
+  admissibility
+  for signatures. 
+ This makes precise the idea that signatures should not set up sharing equations which can 
+ never be satisfied. The following signature attempts to assert that a one-element type and 
+ the empty type are equal.
+  
+ signature
+  INADMISSIBLE = 
+  
+ sig 
+  
+ datatype
+  unit = unit 
+  
+  
+ datatype
+  empty = empty
+  of
+  empty 
+  
+  
+ sharing type
+  unit = empty 
+  
+ end
+ ;
+  
+ It fails to be admissible simply because the constructors of the two datatypes do not have 
+ the same identifier. If the identifiers were changed to be equal then the signature 
+ declaration would be rejected because the constructor would be required to have two 
+ types in the same scope and this is not possible in the Standard ML type system.
+  
+ The next signature attempts to assert that a structure S and its sub-structure S.S
+ '
+ are equal. 
+ This is also inadmissible.
+  
+ signature
+  INADMISSIBLE = 
+  
+ sig 
+  
+  
+ structure
+  S:
+  sig structure
+  S’:
+  sig end end 
+  
+ sharing
+  
+ S = S.S’
+  
+ end
+ ;
+  
+ The admissibility criteria can only reject most of the illogical signatures which we could 
+ write. Let us end with a signature which is admissible but which cannot be matched by a 
+ Standard ML structure.
+  
+ signature
+  ADMISSIBLE =
+  sig val
+  x : α
+  end
+ ;
+  
+ In Standard ML, as in other call-by-value languages, if a declaration has been type-checked 
+ then it will be evaluated. However, only a diverging computation could have principal type 
+ αso the structure body which contains it will never evaluate to a structure value which 
+ could be added into the environment.",NA
+Bibliography,"[Ada93] Stephen Adams. Functional Pearls: Efficient sets—a balancing act.
+  Journal of
+  
+ Functional Programming
+ , 3(4):553–561, October 1993.
+  
+ [AG96] K. Arnold and J. Gosling.
+  The Java Programming Language
+ . Addison-Wesley,
+  
+ 1996.
+  
+ [Bar96] J. Barnes.
+  Programming in Ada 95
+ . Addison-Wesley, 1996.
+  
+ [Ber91] Dave Berry. The Edinburgh SML Library. Technical Report ECS-LFCS-91-
+  
+ 148, Laboratory for Foundations of Computer Science, University of Edinburgh,
+  
+ April 1991.
+  
+ [Car96] Luca Cardelli. Type systems, 1996.
+  CRC Handbook of Computer Science and
+  
+ Engineering
+ .
+  
+ [GGM91] Carl A. Gunter, Elsa L. Gunter, and David B. MacQueen. An abstract inter-
+  
+ pretation for ML equality kinds. In T. Ito and A. R. Meyer, editors,
+  Theoret-
+  
+ ical Aspects of Computer Software
+ , volume 526 of
+  Lecture Notes in Computer
+  
+ Science
+ , pages 112–130. Springer-Verlag, September 1991.
+  
+ [Hen93] Fritz Henglein. Type inference with polymorphic recursion.
+  ACM Transactions
+  
+ on Programming Languages and Systems
+ , 15(2):253–289, 1993.
+  
+ [Hin69]
+  
+ J.R. Hindley.
+  
+ The principal type-scheme of an object in combinatory logic.
+  
+ Trans. Amer. Math. Soc
+ , 146:29–60, 1969.
+  
+ [Hug89] John Hughes. Why functional programming matters.
+  The Computer Journal
+ ,
+  
+ 32(2):98–107, April 1989.
+  
+ [Jon92]
+  
+ Richard Jones.
+  
+ Tail recursion without space leaks.
+  
+ Journal of Functional
+  
+ Programming
+ , 2(1):73–79, January 1992.
+  
+ [Kah96]
+  
+ Stefan Kahrs.
+  
+ Limits of ML-definability.
+  
+ In
+  Proceedings of Eighth Interna-
+  
+ tional Symposium on Programming Languages, Implementations, Logics, and
+  
+ Programs
+ , September 1996.
+  
+ [Knu89]
+  
+ Donald Knuth. The errors of TEX.
+  Software—Practice and Experience
+ , 19:607–
+ 685, 1989.
+  
+ 81",NA
+Index,":=, 61–63, 65, 67, 74, 76, 79 Cell, 74, 79 
+  
+ :>, 72–74 Char.chr, 13
+  
+ ”a, 38, 41, 56, 71–73 Char.contains, 13’a, 25, 72 Char.isAlphaNum, 13’b, 
+ 25, 72 Char.isAlpha, 13’c, 25 Char.isAscii, 13 0w255, 7 Char.isDigit, 13 
+ 0wxff, 7 Char.isGraph, 13 0xff, 7 Char.isHexDigit, 13 255, 7 Char.isLower, 
+ 13 ::=, 61 Char.isPrint, 13 @,
+  see
+  List.@ Char.isSpace, 13
+  
+ ADMISSIBLE, 80 
+ Array, 65
+  
+ Char.isUpper, 13 
+  
+ Char.notContains, 13
+  
+ Array.array, 66 Char.ord, 13
+  
+ Array.fromList, 66 Char.pred, 13
+  
+ Array.sub, 66 Char.succ, 13
+  
+ Array.update, 66 Char.toLower, 13
+  
+ BigInt.int, 31 Char.toUpper, 13
+  
+ BinIO Char, 13, 14
+  
+ BinIO.closeIn, 68 Char.chr, 68
+  
+ BinIO.closeOut, 70 
+ BinIO.inputAll, 68 
+ BinIO.openIn, 68 
+  
+ BinIO.openOut, 70 
+ BinIO.output, 70
+  
+  
+ Char.isDigit, 70 
+  
+  
+ Char.isLower, 70 
+  
+  
+ Char.isPrint, 68 
+  
+  
+ Char.isUpper, 70 
+  
+ DYNARRAY, 78
+  
+ Bind, 79 Dynarray, 76–78
+  
+ Bool.fromString, 12 Empty, 34, 74
+  
+ Bool.not, 12, 16 FIX’, 49
+  
+ Bool.toString, 12 FIX, 48, 49
+  
+ BoolCell, 79 ID, 77, 78
+  
+ Bool, 12, 79 INADMISSIBLE, 80
+  
+ Bool.not, 68 Index, 76
+  
+ Byte.byteToChar, 12 Inspect, 74, 79
+  
+ Byte.charToByte, 12 Int.abs, 13
+  
+ Byte, 12 Int.fmt, 13
+  
+ CellFunc, 79
+  
+ 83",NA

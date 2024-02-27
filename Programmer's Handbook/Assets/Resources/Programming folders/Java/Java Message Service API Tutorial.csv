@@ -1,0 +1,2734 @@
+Larger Text,Smaller Text,Symbol
+Java,™,NA
+ Message Service ,NA,NA
+API Tutorial,NA,NA
+by Kim Haase,"Sun Microsystems, Inc.",NA
+Contents,"1 
+  
+ Overview
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+ 9
+  
+ 2
+  
+ 3
+  
+ 1.1
+  
+ What Is Messaging? . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+  
+ 1.2
+  
+ What Is the JMS API?  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+  
+ 1.3
+  
+ When Can You Use the JMS API?. . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+  
+ 1.4
+  
+ How Does the JMS API Work with the J2EE
+ ™
+  Platform?. . . . . . . . . 12
+  
+ Basic JMS API Concepts
+   . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+ 15
+  
+ 2.1
+  
+ JMS API Architecture  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+  
+ 2.2
+  
+ Messaging Domains . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+  
+  2.2.1
+  
+  2.2.2
+  
+ Point-to-Point Messaging Domain. . . . . . . . . . . . . . . . . . . . 17 
+ Publish/Subscribe Messaging Domain  . . . . . . . . . . . . . . . . 17
+  
+ 2.3
+  
+ Message Consumption . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+  
+ The JMS API Programming Model
+ . . . . . . . . . . . . . . . . . . . . . . . . . .
+ 21
+  
+ 3.1
+  
+ Administered Objects . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+  
+  3.1.1
+  
+  3.1.2
+  
+ Connection Factories . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23 
+ Destinations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+  
+ 3.2
+  
+ Connections  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+  
+ 3.3
+  
+ Sessions  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+  
+ 3.4
+  
+ Message Producers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 26
+  
+ 3.5
+  
+ Message Consumers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 27
+  
+  3.5.1
+  
+  3.5.2
+  
+ Message Listeners . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 28 
+ Message Selectors . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+  
+ 3.6
+  
+ Messages. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+  
+  
+ 3.6.1
+  
+  
+ 3.6.2
+  
+  
+ 3.6.3
+  
+ Message Headers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 29 Message Properties  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . 30 Message Bodies . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . . 31
+  
+ 3.7
+  
+ Exception Handling . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 32
+  
+ iii",NA
+ 1,NA,NA
+Overview,NA,NA
+T,"HIS
+  overview of the Java
+ ™
+ Message Service Application Programming 
+ Interface (the JMS API) answers the following questions.
+  
+ • What is messaging?
+  
+ • What is the JMS API?
+  
+ • How can you use the JMS API?
+  
+ • How does the JMS API work with the Java 2 Platform, Enterprise Edition 
+  
+ (J2EE
+ ™
+  platform)?",NA
+1.1 ,NA,NA
+What Is Messaging?,"Messaging is a method of communication between software components or 
+ applica-tions. A messaging system is a peer-to-peer facility: A messaging client 
+ can send messages to, and receive messages from, any other client. Each client 
+ connects to a messaging agent that provides facilities for creating, sending, 
+ receiving, and reading messages.
+  
+ Messaging enables distributed communication that is
+  loosely coupled
+ . A 
+ com-ponent sends a message to a destination, and the recipient can retrieve the 
+ message from the destination. However, the sender and the receiver do not have 
+ to be available at the same time in order to communicate. In fact, the sender does 
+ not need to know anything about the receiver; nor does the receiver need to know 
+ any-thing about the sender. The sender and the receiver need to know only what 
+ message format and what destination to use. In this respect, messaging differs
+  
+ 9",NA
+1.2 ,NA,NA
+What Is the JMS API?,"The Java Message Service is a Java API that allows applications to create, send, 
+ receive, and read messages. Designed by Sun and several partner companies, the 
+ JMS API defines a common set of interfaces and associated semantics that allow 
+ programs written in the Java programming language to communicate with other 
+ messaging implementations.
+  
+ The JMS API minimizes the set of concepts a programmer must learn to use 
+ messaging products but provides enough features to support sophisticated mes-
+ saging applications. It also strives to maximize the portability of JMS 
+ applications across JMS providers in the same messaging domain.
+  
+ The JMS API enables communication that is not only loosely coupled but also
+  
+ •
+  Asynchronous.
+  A JMS provider can deliver messages to a client as they ar-
+  
+ rive; a client does not have to request messages in order to receive them.
+  
+ •
+  Reliable.
+  The JMS API can ensure that a message is delivered once and only 
+ once. Lower levels of reliability are available for applications that can afford 
+ to miss messages or to receive duplicate messages.
+  
+ The JMS Specification was first published in August 1998. The latest version 
+ of the JMS Specification is Version 1.0.2b, which was released in August 2001. 
+ You can download a copy of the Specification from the JMS Web site,
+  http:// 
+ java.sun.com/products/jms/
+ .",NA
+1.3,NA,NA
+When Can You Use the JMS API?,"WHEN CAN YOU USE THE JMS API?
+  
+ 11
+  
+ An enterprise application provider is likely to choose a messaging API over a 
+ tightly coupled API, such as Remote Procedure Call (RPC), under the following 
+ circumstances.
+  
+ • The provider wants the components not to depend on information about other 
+  
+ components’ interfaces, so that components can be easily replaced.
+  
+ • The provider wants the application to run whether or not all components are 
+  
+ up and running simultaneously.
+  
+ • The application business model allows a component to send information to 
+  
+ another and to continue to operate without receiving an immediate response.
+  
+  
+ For example, components of an enterprise application for an automobile man-
+ ufacturer can use the JMS API in situations like these.
+  
+ • The inventory component can send a message to the factory component when 
+ the inventory level for a product goes below a certain level, so the factory 
+ can make more cars.
+  
+ • The factory component can send a message to the parts components so that 
+  
+ the factory can assemble the parts it needs.
+  
+ • The parts components in turn can send messages to their own inventory and 
+ order components to update their inventories and to order new parts from 
+ suppliers.
+  
+ • Both the factory and the parts components can send messages to the account-
+  
+ ing component to update their budget numbers.
+  
+ • The business can publish updated catalog items to its sales force.
+  
+ Using messaging for these tasks allows the various components to interact 
+ with one another efficiently, without tying up network or other resources. Figure 
+ 1.1 illustrates how this simple example might work.",NA
+1.4 ,NA,NA
+How Does the JMS API Work with the J2EE,™,NA
+ Platform?,"When the JMS API was introduced in 1998, its most important purpose was to 
+ allow Java applications to access existing messaging-oriented middleware 
+ (MOM) systems, such as MQSeries from IBM. Since that time, many vendors 
+ have adopted and implemented the JMS API, so that a JMS product can now 
+ provide a complete messaging capability for an enterprise.
+  
+ At the 1.2 release of the J2EE platform, a service provider based on J2EE 
+ technology (“J2EE provider”) was required to provide the JMS API interfaces 
+ but was not required to implement them. Now, with the 1.3 release of the J2EE 
+ plat-form (“the J2EE 1.3 platform”), the JMS API is an integral part of the 
+ platform, and application developers can use messaging with components using 
+ J2EE APIs (“J2EE components”).
+  
+ The JMS API in the J2EE 1.3 platform has the following features.
+  
+ • Application clients, Enterprise JavaBeans (EJB
+ ™
+ ) components, and Web 
+  
+ components can send or synchronously receive a JMS message. Application",NA
+ 2,NA,NA
+Basic JMS API Concepts,NA,NA
+T,"HIS
+  chapter introduces the most basic JMS API concepts, the ones you must 
+ know to get started writing simple JMS client applications:
+  
+ • JMS API architecture
+  
+ • Messaging domains
+  
+ • Message consumption
+  
+ The next chapter introduces the JMS API programming model. Later 
+ chapters cover more advanced concepts, including the ones you need to write 
+ J2EE appli-cations that use message-driven beans.",NA
+2.1 ,NA,NA
+JMS API Architecture,"A JMS application is composed of the following parts.
+  
+ • A
+  JMS provider
+  is a messaging system that implements the JMS interfaces 
+ and provides administrative and control features. An implementation of the 
+ J2EE platform at release 1.3 includes a JMS provider.
+  
+ •
+  JMS clients
+  are the programs or components, written in the Java 
+ programming 
+  
+ language, that produce and consume messages.
+  
+ •
+  Messages
+  are the objects that communicate information between JMS clients.
+  
+ •
+  Administered objects
+  are preconfigured JMS objects created by an administra-
+ tor for the use of clients. The two kinds of administered objects are destina-
+ tions and connection factories, which are described in Section 3.1 on page 22.
+  
+ 15",NA
+2.2,NA,NA
+Messaging Domains,"Before the JMS API existed, most messaging products supported either the
+  point-
+ to-point
+  or the
+  publish/subscribe
+  approach to messaging. The JMS Specification 
+ pro-vides a separate domain for each approach and defines compliance for each 
+ domain. A standalone JMS provider may implement one or both domains. A 
+ J2EE provider must implement both domains.
+  
+ In fact, most current implementations of the JMS API provide support for 
+ both the point-to-point and the publish/subscribe domains, and some JMS clients 
+ combine the use of both domains in a single application. In this way, the JMS 
+ API has extended the power and flexibility of messaging products.",NA
+2.3,NA,NA
+Message Consumption,"MESSAGE CONSUMPTION
+  
+ 19
+  
+ Messaging products are inherently asynchronous in that no fundamental timing 
+ dependency exists between the production and the consumption of a message. 
+ How-ever, the JMS Specification uses this term in a more precise sense. 
+ Messages can be consumed in either of two ways:
+  
+ •
+  Synchronously.
+  A subscriber or a receiver explicitly fetches the message from 
+ the destination by calling the
+  receive
+  method. The
+  receive
+  method can block until 
+ a message arrives or can time out if a message does not arrive within a 
+ specified time limit.
+  
+ •
+  Asynchronously.
+  A client can register a
+  message listener
+  with a consumer. A 
+ message listener is similar to an event listener. Whenever a message arrives at 
+ the destination, the JMS provider delivers the message by calling the lis-
+ tener’s
+  onMessage
+  method, which acts on the contents of the message.",NA
+ 3,NA,NA
+The JMS API Programming ,NA,NA
+Model,NA,NA
+T,"HE
+  basic building blocks of a JMS application consist of
+  
+ • Administered objects: connection factories and destinations• 
+ Connections
+  
+ • Sessions
+  
+ • Message producers
+  
+ • Message consumers
+  
+ • Messages
+  
+ Figure 3.1 shows how all these objects fit together in a JMS client application.
+  
+ 21",NA
+3.1 ,NA,NA
+Administered Objects,"Two parts of a JMS application—destinations and connection factories—are best 
+ maintained administratively rather than programmatically. The technology 
+ underly-ing these objects is likely to be very different from one implementation 
+ of the JMS API to another. Therefore, the management of these objects belongs 
+ with other administrative tasks that vary from provider to provider.
+  
+ JMS clients access these objects through interfaces that are portable, so a 
+ client application can run with little or no change on more than one implementa-
+ tion of the JMS API. Ordinarily, an administrator configures administered objects 
+ in a Java Naming and Directory Interface (JNDI) API namespace, and JMS 
+ clients",NA
+3.2 ,NA,NA
+Connections,"A
+  connection
+  encapsulates a virtual connection with a JMS provider. A 
+ connection could represent an open TCP/IP socket between a client and a 
+ provider service daemon. You use a connection to create one or more sessions.
+  
+ Like connection factories, connections come in two forms, implementing 
+ either the
+  QueueConnection
+  or the
+  TopicConnection
+  interface. For example, once you 
+ have a
+  QueueConnectionFactory
+  or a
+  TopicConnectionFactory
+  object, you can use it to 
+ create a connection:
+  
+ QueueConnection queueConnection =
+  
+  queueConnectionFactory.createQueueConnection();",NA
+3.3 ,NA,NA
+Sessions,"A
+  session
+  is a single-threaded context for producing and consuming messages. 
+ You use sessions to create message producers, message consumers, and 
+ messages. Ses-sions serialize the execution of message listeners; for details, see 
+ Section 3.5.1 on page 28.
+  
+ A session provides a transactional context with which to group a set of sends 
+ and receives into an atomic unit of work. For details, see Section 5.2.2 on page 70.
+  
+ Sessions, like connections, come in two forms, implementing either the 
+ QueueSession
+  or the
+  TopicSession
+  interface. For example, if you created a
+  Topic-
+ Connection
+  object, you use it to create a
+  TopicSession
+ :
+  
+ TopicSession topicSession =
+  
+  topicConnection.createTopicSession(false,
+  
+  Session.AUTO_ACKNOWLEDGE);
+  
+ The first argument means that the session is not transacted; the second means 
+ that the session automatically acknowledges messages when they have been 
+ received successfully. (For more information, see Section 5.1.1 on page 62.)",NA
+3.4 ,NA,NA
+Message Producers,"A
+  message producer
+  is an object created by a session and is used for sending 
+ mes-sages to a destination. The PTP form of a message producer implements the
+  
+ Queue-Sender
+  interface. The pub/sub form implements the
+  TopicPublisher
+  interface.
+  
+  
+ For example, you use a
+  QueueSession
+  to create a sender for the queue 
+ myQueue
+ , 
+ and you use a
+  TopicSession
+  to create a publisher for the topic
+  myTopic
+ :
+  
+ QueueSender queueSender = queueSession.createSender(myQueue);
+  
+ TopicPublisher topicPublisher =
+  
+  topicSession.createPublisher(myTopic);
+  
+ You can create an unidentified producer by specifying
+  null
+  as the argument to 
+ createSender
+  or
+  createPublisher
+ . With an unidentified producer, you can wait to 
+ specify which destination to send the message to until you send or publish a 
+ message.
+  
+ Once you have created a message producer, you can use it to send messages. 
+ (You have to create the messages first; see Section 3.6 on page 29.) With a
+  Queue-
+ Sender
+ , you use the
+  send
+  method:
+  
+ queueSender.send(message);
+  
+ With a
+  TopicPublisher
+ , you use the
+  publish
+  method:
+  
+ topicPublisher.publish(message);
+  
+ If you created an unidentified producer, use the overloaded
+  send
+  or
+  publish
+  method 
+ that specifies the destination as the first parameter.",NA
+3.5,NA,NA
+Message Consumers,"MESSAGE CONSUMERS
+  
+ 27
+  
+ A
+  message consumer
+  is an object created by a session and is used for receiving 
+ mes-sages sent to a destination. A message consumer allows a JMS client to 
+ register interest in a destination with a JMS provider. The JMS provider manages 
+ the deliv-ery of messages from a destination to the registered consumers of the 
+ destination.
+  
+  
+ The PTP form of message consumer implements the
+  QueueReceiver
+  interface. 
+ The pub/sub form implements the
+  TopicSubscriber
+  interface.
+  
+ For example, you use a
+  QueueSession
+  to create a receiver for the queue 
+ myQueue
+ , 
+ and you use a
+  TopicSession
+  to create a subscriber for the topic
+  myTopic
+ :
+  
+ QueueReceiver queueReceiver = queueSession.createReceiver(myQueue);
+  
+ TopicSubscriber topicSubscriber =
+  
+  topicSession.createSubscriber(myTopic);
+  
+  
+ You use the
+  TopicSession.createDurableSubscriber
+  method to create a durable topic 
+ subscriber. For details, see Section 5.2.1 on page 67.
+  
+ Once you have created a message consumer, it becomes active, and you can 
+ use it to receive messages. You can use the
+  close
+  method for a
+  QueueReceiver
+  or a
+  
+ TopicSubscriber
+  to make the message consumer inactive. Message delivery does not 
+ begin until you start the connection you created by calling the
+  start 
+ method (see 
+ Section 3.2 on page 24).
+  
+ With either a
+  QueueReceiver
+  or a
+  TopicSubscriber
+ , you use the
+  receive 
+ method to 
+ consume a message synchronously. You can use this method at any time after 
+ you call the
+  start
+  method:
+  
+ queueConnection.start();
+  
+ Message m = queueReceiver.receive();
+  
+ topicConnection.start();
+  
+ Message m = topicSubscriber.receive(1000); // time out after a second
+  
+ To consume a message asynchronously, you use a message listener, described in 
+ Section 3.5.1 on page 28.",NA
+3.6,NA,NA
+Messages,"The ultimate purpose of a JMS application is to produce and to consume 
+ messages that can then be used by other software applications. JMS messages 
+ have a basic format that is simple but highly flexible, allowing you to create 
+ messages that match formats used by non-JMS applications on heterogeneous 
+ platforms.
+  
+ A JMS message has three parts:
+  
+ • A header
+  
+ • Properties (optional)
+  
+ • A body (optional)
+  
+ For complete documentation of message headers, properties, and bodies, see the 
+ documentation of the
+  Message
+  interface in Chapter 25.
+  
+ 3.6.1 
+  
+ Message Headers
+  
+ A JMS message header contains a number of predefined fields that contain 
+ values that both clients and providers use to identify and to route messages. 
+ (Table 3.1 lists the JMS message header fields and indicates how their values are 
+ set.) For example,",NA
+3.7 ,NA,NA
+Exception Handling,"The root class for exceptions thrown by JMS API methods is
+  JMSException
+ . Catch-
+ ing
+  JMSException
+  provides a generic way of handling all exceptions related to the 
+ JMS API. The
+  JMSException
+  class includes the following subclasses:
+  
+ •
+  IllegalStateException
+  
+ •
+  InvalidClientIDException
+  
+ •
+  InvalidDestinationException
+  
+ •
+  InvalidSelectorException
+  
+ •
+  JMSSecurityException
+  
+ •
+  MessageEOFException
+  
+ •
+  MessageFormatException
+  
+ •
+  MessageNotReadableException
+  
+ •
+  MessageNotWriteableException
+  
+ •
+  ResourceAllocationException
+  
+ •
+  TransactionInProgressException
+  
+ •
+  TransactionRolledBackException
+  
+ All the examples in this book catch and handle
+  JMSException
+  when it is appropriate 
+ to do so.",NA
+ 4,NA,NA
+Writing Simple JMS Client ,NA,NA
+Applications,NA,NA
+T,"HIS
+  chapter shows how to create and to run simple JMS client programs. A 
+ J2EE application client commonly accesses J2EE components installed in a 
+ server based on J2EE technology (“J2EE server”). The clients in this chapter, 
+ however, are simple standalone programs that run outside the server as class 
+ files. The clients demonstrate the basic tasks that a JMS application must 
+ perform:
+  
+ • Creating a connection and a session
+  
+ • Creating message producers and consumers
+  
+ • Sending and receiving messages
+  
+ In a J2EE application, some of these tasks are performed, in whole or in part, 
+ by the EJB container. If you learn about these tasks, you will have a good basis 
+ for understanding how a JMS application works on the J2EE platform.
+  
+ The chapter covers the following topics:
+  
+ • Setting your environment to run J2EE clients and applications
+  
+ • A point-to-point example that uses synchronous receives
+  
+ • A publish/subscribe example that uses a message listener
+  
+ • Running JMS client programs on multiple systems
+  
+  
+ Each example consists of two programs: one that sends messages and one that 
+ receives them. You can run the programs in two terminal windows.
+  
+ 33",NA
+4.1 ,NA,NA
+Setting Your Environment for Running Applications,"Before you can run the examples, you need to make sure that your environment 
+ is set appropriately. Table 4.1 shows how to set the environment variables needed 
+ to run J2EE applications on Microsoft Windows and UNIX platforms.
+  
+ Table 4.1: Environment Settings for Compiling and Running 
+ J2EE Applications
+  
+ Platform
+  
+ Variable Name
+  
+ Values
+  
+ Microsoft Windows
+  
+ %JAVA_HOME%
+  
+ Directory in which the Java 2 SDK, 
+ Stan-dard Edition, version 1.3.1, is 
+ installed
+  
+ %J2EE_HOME%
+  
+ Directory in which the J2EE SDK 1.3.1 
+ is installed, usually
+  C:\j2sdkee1.3.1
+  
+ %CLASSPATH%
+  
+ Include the following: 
+  
+ .;%J2EE_HOME%\lib\j2ee.jar; 
+ %J2EE_HOME%\lib\locale
+  
+ %PATH%
+  
+ Include
+  %J2EE_HOME%\bin
+  
+ UNIX
+  
+ $JAVA_HOME
+  
+ Directory in which the Java 2 SDK, 
+ Stan-dard Edition, version 1.3.1, is 
+ installed
+  
+ $J2EE_HOME
+  
+ Directory in which the J2EE SDK 1.3.1 is 
+ installed, usually
+  $HOME/j2sdkee1.3.1
+  
+ $CLASSPATH
+  
+ Include the following: 
+  
+ .:$J2EE_HOME/lib/j2ee.jar:
+  
+ $J2EE_HOME/lib/locale
+  
+ $PATH
+  
+ Include
+  $J2EE_HOME/bin",NA
+4.2,NA,NA
+A Simple Point-to-Point Example,"This section describes the sending and receiving programs in a PTP example that 
+ uses the
+  receive
+  method to consume messages synchronously. This section then 
+ explains how to compile and run the programs, using the J2EE SDK 1.3.1.
+  
+ 4.2.1 
+  
+ Writing the PTP Client Programs
+  
+ The sending program,
+  SimpleQueueSender.java
+ , performs the following steps:
+  
+ 1. Performs a Java Naming and Directory Interface (JNDI) API lookup of the 
+  
+ QueueConnectionFactory
+  and queue 
+  
+ 2. Creates a connection and a session 
+  
+ 3. Creates a
+  QueueSender 
+  
+ 4. Creates a
+  TextMessage 
+  
+ 5. Sends one or more messages to the queue 
+  
+ 6. Sends a control message to indicate the end of the message stream 
+  
+ 7. Closes the connection in a
+  finally
+  block, automatically closing the session 
+  
+ and
+  QueueSender
+  
+  
+ The receiving program,
+  SimpleQueueReceiver.java
+ , performs the following steps:
+  
+ 1. Performs a JNDI API lookup of the
+  QueueConnectionFactory
+  and queue 2. 
+ Creates a connection and a session 
+  
+ 3. Creates a
+  QueueReceiver",NA
+4.3 ,NA,NA
+A Simple Publish/Subscribe Example,"This section describes the publishing and subscribing programs in a pub/sub 
+ example that uses a message listener to consume messages asynchronously. This 
+ section then explains how to compile and run the programs, using the J2EE SDK 
+ 1.3.1.
+  
+ 4.3.1 
+  
+ Writing the Pub/Sub Client Programs
+  
+ The publishing program,
+  SimpleTopicPublisher.java
+ , performs the following steps:
+  
+ 1. Performs a JNDI API lookup of the
+  TopicConnectionFactory
+  and topic
+  
+ 2. Creates a connection and a session
+  
+ 3. Creates a
+  TopicPublisher",NA
+4.4,"RUNNING JMS CLIENT PROGRAMS ON MULTIPLE SYSTEMS
+  
+ 57",NA
+Running JMS Client Programs on Multiple Systems,"JMS client programs can communicate with each other when they are running on 
+ different systems in a network. The systems must be visible to each other by 
+ name—the UNIX host name or the Microsoft Windows computer name—and 
+ must both be running the J2EE server.
+  
+  
+ This section explains how to produce and to consume messages in two differ-
+ ent situations:
+  
+ • When a J2EE server is running on both systems
+  
+ • When a J2EE server is running on only one system
+  
+ 4.4.1 
+  
+ Communicating Between Two J2EE Servers
+  
+ Suppose that you want to run the
+  SimpleQueueSender
+  program on one system,
+  mars
+ , 
+ and the
+  SimpleQueueReceiver
+  program on another system,
+  earth
+ . To do so, follow 
+ these steps.
+  
+ 1. Start the J2EE server on both systems. Enter the following command in a ter-
+  
+ minal window on each system:
+  
+ j2ee -verbose
+  
+ 2. On
+  earth
+ , create a
+  QueueConnectionFactory
+  object, using a command like the 
+  
+ following:
+  
+ j2eeadmin -addJmsFactory jms/EarthQCF queue
+  
+ 3. On
+  mars
+ , create a connection factory with the same name that points to the 
+  
+ server on
+  earth
+ . Enter, on one line, a command like the following:
+  
+ j2eeadmin -addJmsFactory jms/EarthQCF queue -props
+  
+ url=corbaname:iiop:earth:1050#earth
+  
+ 4. In each source program, change the line that looks up the connection factory 
+  
+ so that it refers to the new connection factory:
+  
+ queueConnectionFactory =
+  
+  (QueueConnectionFactory) jndiContext.lookup(""jms/EarthQCF"");",NA
+ 5,NA,NA
+Creating Robust JMS ,NA,NA
+Applications,NA,NA
+T,"HIS
+  chapter explains how to use features of the JMS API to achieve the level 
+ of reliability and performance your application requires. Many JMS applications 
+ cannot tolerate dropped or duplicate messages and require that every message be 
+ received once and only once.
+  
+ The most reliable way to produce a message is to send a
+  PERSISTENT
+  message 
+ within a transaction. JMS messages are
+  PERSISTENT
+  by default. A
+  transaction
+  is a 
+ unit of work into which you can group a series of operations, such as message 
+ sends and receives, so that the operations either all succeed or all fail. For details, 
+ see Section 5.1.2 on page 64 and Section 5.2.2 on page 70.
+  
+ The most reliable way to consume a message is to do so within a transaction, 
+ either from a nontemporary queue—in the PTP messaging domain—or from a 
+ durable subscription—in the pub/sub messaging domain. For details, see Section 
+ 5.1.5 on page 66, Section 5.2.1 on page 67, and Section 5.2.2 on page 70.
+  
+ For other applications, a lower level of reliability can reduce overhead and 
+ improve performance. You can send messages with varying priority levels—see 
+ Section 5.1.3 on page 65—and you can set them to expire after a certain length of 
+ time (see Section 5.1.4 on page 65).
+  
+  
+ The JMS API provides several ways to achieve various kinds and degrees of 
+ reliability. This chapter divides them into two categories:
+  
+ • Basic reliability mechanisms
+  
+ • Advanced reliability mechanisms
+  
+ 61",NA
+5.1 ,NA,NA
+Using Basic Reliability Mechanisms,"The basic mechanisms for achieving or affecting reliable message delivery are as 
+ follows:
+  
+ •
+  Controlling message acknowledgment.
+  You can specify various levels of 
+  
+ control over message acknowledgment.
+  
+ •
+  Specifying message persistence.
+  You can specify that messages are persis-
+ tent, meaning that they must not be lost in the event of a provider failure.
+  
+ •
+  Setting message priority levels.
+  You can set various priority levels for mes-
+  
+ sages, which can affect the order in which the messages are delivered.
+  
+ •
+  Allowing messages to expire.
+  You can specify an expiration time for mes-
+  
+ sages, so that they will not be delivered if they are obsolete.
+  
+ •
+  Creating temporary destinations.
+  You can create temporary destinations 
+  
+ that last only for the duration of the connection in which they are created.
+  
+ 5.1.1 
+  
+ Controlling Message Acknowledgment
+  
+ Until a JMS message has been acknowledged, it is not considered to be 
+ successfully consumed. The successful consumption of a message ordinarily 
+ takes place in three stages.
+  
+ 1. The client receives the message.
+  
+ 2. The client processes the message.
+  
+ 3. The message is acknowledged. Acknowledgment is initiated either by the 
+ JMS provider or by the client, depending on the session acknowledgment 
+ mode.
+  
+ In transacted sessions (see Section 5.2.2 on page 70), acknowledgment 
+ happens automatically when a transaction is committed. If a transaction is rolled 
+ back, all consumed messages are redelivered.",NA
+5.2 ,NA,NA
+Using Advanced Reliability Mechanisms,"The more advanced mechanisms for achieving reliable message delivery are the 
+ following:
+  
+ •
+  Creating durable subscriptions.
+  You can create durable topic subscriptions, 
+ which receive messages published while the subscriber is not active. Durable",NA
+ 6,NA,NA
+Using the JMS API in a J2EE ,NA,NA
+Application,NA,NA
+T,"HIS
+  chapter describes the ways in which using the JMS API in a J2EE applica-
+ tion differs from using it in a standalone client application:
+  
+ • Using enterprise beans to produce and to synchronously receive messages
+  
+ • Using message-driven beans to receive messages asynchronously
+  
+ • Managing distributed transactions
+  
+ • Using application clients and Web components
+  
+ This chapter assumes that you have some knowledge of the J2EE platform 
+ and J2EE components. If you have not already done so, you may wish to read the 
+ J2EE Tutorial (
+ http://java.sun.com/j2ee/tutorial/
+ ) or the Java 2 Platform, Enterprise 
+ Edition Specification, v1.3 (available from
+  http://java.sun.com/ j2ee/download.html
+ ).",NA
+6.1,NA,NA
+Using Enterprise Beans to Produce and to Synchronously ,NA,NA
+Receive Messages,"A J2EE application that produces messages or synchronously receives them may 
+ use any kind of enterprise bean to perform these operations. The example in 
+ Chapter 8 uses a stateless session bean to publish messages to a topic.
+  
+ Because a blocking synchronous receive ties up server resources, it is not a 
+ good programming practice to use such a
+  receive
+  call in an enterprise bean.
+  
+ 73",NA
+6.2 ,NA,NA
+Using Message-Driven Beans,"As we noted in Section 1.4 on page 12, the J2EE platform supports a new kind of 
+ enterprise bean, the message-driven bean, which allows J2EE applications to 
+ process JMS messages asynchronously. Session beans and entity beans allow you 
+ to send messages and to receive them synchronously but not asynchronously.
+  
+ A message-driven bean is a message listener that can reliably consume mes-
+ sages from a queue or a durable subscription. The messages may be sent by any 
+ J2EE component—from an application client, another enterprise bean, or a Web 
+ component—or from an application or a system that does not use J2EE 
+ technology.
+  
+ Like a message listener in a standalone JMS client, a message-driven bean 
+ contains an
+  onMessage
+  method that is called automatically when a message arrives. 
+ Like a message listener, a message-driven bean class may implement helper 
+ methods invoked by the
+  onMessage
+  method to aid in message processing.
+  
+  
+ A message-driven bean differs from a standalone client’s message listener in 
+ five ways, however.
+  
+ • The EJB container automatically performs several setup tasks that a stand-
+  
+ alone client has to do:
+  
+ I
+  Creating a message consumer (a
+  QueueReceiver
+  or a
+  TopicSubscriber
+ ) to receive 
+ the messages. You associate the message-driven bean with a desti-nation 
+ and a connection factory at deployment time. If you want to specify a 
+ durable subscription or use a message selector, you do this at deployment 
+ time also.
+  
+ I
+  Registering the message listener. (You must not call
+  setMessageListener
+ .)",NA
+6.3,NA,NA
+Managing Distributed Transactions,"JMS client applications use JMS API local transactions, described in Section 
+ 5.2.2 on page 70, which allow the grouping of sends and receives within a 
+ specific JMS session. J2EE applications commonly use distributed transactions in 
+ order to ensure the integrity of accesses to external resources. For example, 
+ distributed transactions allow multiple applications to perform atomic updates on 
+ the same database, and they allow a single application to perform atomic updates 
+ on multiple databases.
+  
+ In a J2EE application that uses the JMS API, you can use transactions to 
+ combine message sends or receives with database updates and other resource 
+ manager operations. You can access resources from multiple application",NA
+6.4,NA,NA
+Using the JMS API with Application Clients and Web ,NA,NA
+Components,"An application client can use the JMS API in much the same way a standalone 
+ client program does. It can produce messages, and it can consume messages by 
+ using either synchronous receives or message listeners. See Chapter 7 for an 
+ example of an application client that produces messages; see Chapters 9 and 10 
+ for examples of using application clients to produce and to consume messages.
+  
+ The J2EE Platform Specification does not define how Web components 
+ implement a JMS provider. In the J2EE SDK 1.3.1, a Web component—one that 
+ uses either the Java Servlet API or JavaServerPages
+ ™
+ (JSP
+ ™
+ ) technology—may 
+ send messages and consume them synchronously but may not consume them 
+ asynchronously.
+  
+ Because a blocking synchronous receive ties up server resources, it is not a 
+ good programming practice to use such a
+  receive
+  call in a Web component. 
+ Instead, use a timed synchronous receive. For details about blocking and timed 
+ synchronous receives, see Section 4.2.1 on page 35.",NA
+ 7,NA,NA
+A Simple J2EE Application ,NA,NA
+that Uses the JMS API,NA,NA
+T,"HIS
+  chapter explains how to write, compile, package, deploy, and run a 
+ simple J2EE application that uses the JMS API. The application in this chapter 
+ uses the fol-lowing components:
+  
+ • An application client that sends several messages to a queue
+  
+ • A message-driven bean that asynchronously receives and processes the 
+  
+ messages
+  
+ The chapter covers the following topics:
+  
+ • Writing and compiling the application components
+  
+ • Creating and packaging the application
+  
+ • Deploying and running the application
+  
+  
+ If you downloaded the tutorial examples as described in the preface, you will 
+ find the source code files for this chapter in
+  jms_tutorial/examples/client_mdb 
+ (on UNIX 
+ systems) or 
+  
+ jms_tutorial\examples\client_mdb
+  (on Microsoft Windows 
+ systems). The directory
+  ear_files
+  in the
+  examples
+  directory contains a built application 
+ called
+  SampleMDBApp.ear
+ . If you run into difficulty at any time, you can open this file 
+ in the deploytool and compare that file to your own version.
+  
+ 81",NA
+7.1,NA,NA
+Writing and Compiling the Application Components,"The first and simplest application contains the following components:
+  
+ • An application client that sends several messages to a queue
+  
+ • A message-driven bean that asynchronously receives and processes the 
+  
+ messages
+  
+ Figure 7.1 illustrates the structure of this application.
+  
+  
+ Figure 7.1 
+  
+ A Simple J2EE Application: Client to Message-Driven Bean
+  
+ The application client sends messages to the queue, which is created 
+ adminis-tratively, using the
+  j2eeadmin
+  command. The JMS provider—in this case, 
+ the J2EE server—delivers the messages to the message-driven bean instances, 
+ which then process the messages.
+  
+ Writing and compiling the components of this application involve
+  
+ • Coding the application client
+  
+ • Coding the message-driven bean
+  
+ • Compiling the source files",NA
+7.2 ,NA,NA
+Creating and Packaging the Application,"Creating and packaging this application involve several steps:
+  
+ 1. Starting the J2EE server and the Application Deployment Tool
+  
+ 2. Creating a queue 
+  
+ 3. Creating the J2EE application 
+  
+ 4. Packaging the application client 
+  
+ 5. Packaging the message-driven bean 
+  
+ 6. Checking the JNDI API names (“JNDI names”)",NA
+7.3,NA,NA
+Deploying and Running the Application,"Deploying and running this application involve several 
+ steps: 
+  
+ 1. Looking at the deployment descriptor 
+  
+ 2. Adding the server, if necessary 
+  
+ 3. Deploying the application 
+  
+ 4. Running the client",NA
+ 8,NA,NA
+A J2EE Application that Uses,NA,NA
+the JMS API with a Session,NA,NA
+Bean,NA,NA
+T,"HIS
+  chapter explains how to write, compile, package, deploy, and run a J2EE
+  
+ application that uses the JMS API in conjunction with a session bean. The applica-
+  
+ tion contains the following components:
+  
+ • An application client that calls an enterprise bean
+  
+ • A session bean that publishes several messages to a topic
+  
+ • A message-driven bean that receives and processes the messages, using a du-
+  
+ rable topic subscriber and a message selector
+  
+ The chapter covers the following topics:
+  
+ • Writing and compiling the application components
+  
+ • Creating and packaging the application
+  
+ • Deploying and running the application
+  
+ If you downloaded the tutorial examples as described in the preface, you will
+  
+ find 
+  
+ the source code 
+  
+ files 
+  
+ for 
+  
+ this chapter 
+  
+ in 
+ jms_tutorial/examples/
+  
+ client_ses_mdb
+  (on UNIX systems) or
+  jms_tutorial\examples\client_ses_mdb
+  
+ (on Microsoft Windows systems). The directory
+  ear_files
+  in the
+  examples
+  direc-
+  
+ tory contains a built application called
+  SamplePubSubApp.ear
+ . If you run into",NA
+8.1 ,NA,NA
+Writing and Compiling the Application Components,"This application demonstrates how to send messages from an enterprise bean—in 
+ this case, a session bean—rather than from an application client, as in the 
+ example in Chapter 7. Figure 8.1 illustrates the structure of this application.
+  
+  
+ Figure 8.1 
+  
+ A J2EE Application: Client to Session Bean to Message-Driven Bean
+  
+ The Publisher enterprise bean in this example is the enterprise-application 
+ equivalent of a wire-service news feed that categorizes news events into six news 
+ categories. The message-driven bean could represent a newsroom, where the 
+ Sports desk, for example, would set up a subscription for all news events pertain-
+ ing to sports news.
+  
+ The application client in the example obtains a handle to the Publisher enter-
+ prise bean’s home interface and calls the enterprise bean’s business method. The 
+ enterprise bean creates 18 text messages. For each message, it sets a
+  String
+  prop-
+ erty randomly to one of six values representing the news categories and then pub-
+ lishes the message to a topic. The message-driven bean uses a message selector 
+ for the property to limit which of the published messages it receives.",NA
+8.2,"CREATING AND PACKAGING THE APPLICATION
+  
+ 115",NA
+Creating and Packaging the Application,"Creating and packaging this application involve several steps:
+  
+ 1. Starting the J2EE server and the deploytool* 
+  
+ 2. Creating a topic 
+  
+ 3. Creating a connection factory 
+  
+ 4. Creating the J2EE application 
+  
+ 5. Packaging the application client 
+  
+ 6. Packaging the session bean 
+  
+ 7. Packaging the message-driven bean 
+  
+ 8. Specifying the JNDI names
+  
+ Step 1, marked with an asterisk (*), is not needed if the server and deploytool are 
+ still running.
+  
+ 8.2.1 
+  
+ Starting the J2EE Server and the Deploytool
+  
+ Before you can create and package the application, you must start the J2EE server 
+ and the deploytool. Follow these steps.
+  
+ 1. At the command line prompt, start the J2EE server:
+  
+ j2ee -verbose
+  
+ Wait until the server displays the message “J2EE server startup 
+ complete.”(To stop the server, type
+  j2ee -stop
+ .)
+  
+ 2. At another command line prompt, start the deploytool:
+  
+ deploytool
+  
+ (To access the tool’s context-sensitive help, press F1.)",NA
+8.3,NA,NA
+Deploying and Running the Application,"Deploying and running this application involve several steps:
+  
+ 1. Adding the server, if necessary 
+  
+ 2. Deploying the application 
+  
+ 3. Running the client 
+  
+ 4. Undeploying the application 
+  
+ 5. Removing the application and stopping the server
+  
+ 8.3.1 
+  
+ Adding the Server
+  
+ Before you can deploy the application, you must make available to the 
+ deploytool the J2EE server you started in Section 8.2.1 on page 115. Because you 
+ started the J2EE server before you started the deploytool, the server, named
+  
+ localhost
+ , proba-bly appears in the tree under
+  Servers
+ . If it does not, do the 
+ following.
+  
+ 1. From the File menu, choose Add Server.
+  
+ 2. In the Add Server dialog box, enter
+  localhost
+  in the Server Name field.
+  
+ 3. Click OK. A
+  localhost
+  node appears under
+  Servers
+  in the tree view.",NA
+ 9,NA,NA
+A J2EE Application that Uses,NA,NA
+the JMS API with an Entity,NA,NA
+Bean,NA,NA
+T,"HIS
+  chapter explains how to write, compile, package, deploy, and run a J2EE
+  
+ application that uses the JMS API with an entity bean. The application uses the fol-
+  
+ lowing components:
+  
+ • An application client that both sends and receives messages
+  
+ • Three message-driven beans
+  
+ • An entity bean that uses container-managed persistence
+  
+ The chapter covers the following topics:
+  
+ • An overview of the application
+  
+ • Writing and compiling the application components
+  
+ • Creating and packaging the application
+  
+ • Deploying and running the application
+  
+ If you downloaded the tutorial examples as described in the preface, you will
+  
+ find 
+  
+ the source code 
+  
+ files 
+  
+ for 
+  
+ this chapter 
+  
+ in 
+ jms_tutorial/examples/
+  
+ client_mdb_ent
+  (on UNIX systems) or
+  jms_tutorial\examples\client_mdb_ent
+  
+ (on Microsoft Windows systems). The directory
+  ear_files
+  in the
+  examples",NA
+9.1 ,NA,NA
+Overview of the Human Resources Application,"This application simulates, in a simplified way, the work flow of a company’s 
+ human resources (HR) department when it processes a new hire. This application 
+ also demonstrates how to use the J2EE platform to accomplish a task that many 
+ JMS client applications perform.
+  
+ A JMS client must often wait for several messages from various sources. It 
+ then uses the information in all these messages to assemble a message that it then 
+ sends to another destination. (The common term for this process is
+  joining mes-
+ sages
+ .) Such a task must be transactional, with all the receives and the send as a 
+ single transaction. If all the messages are not received successfully, the 
+ transaction can be rolled back. For a client example that illustrates this task, see 
+ Section A.2 on page 225.
+  
+ A message-driven bean can process only one message at a time in a transac-
+ tion. To provide the ability to join messages, a J2EE application can have the 
+ message-driven bean store the interim information in an entity bean. The entity 
+ bean can then determine whether all the information has been received; when it 
+ has, the entity bean can create and send the message to the other destination. 
+ Once it has completed its task, the entity bean can be removed.
+  
+ The basic steps of the application are as follows.
+  
+ 1. The HR department’s application client generates an employee ID for each 
+ new hire and then publishes a message containing the new hire’s name and 
+ employee ID. The client then creates a temporary queue with a message lis-
+ tener that waits for a reply to the message.
+  
+ 2. Two message-driven beans process each message: One bean assigns the new 
+ hire’s office number, and one bean assigns the new hire’s equipment. The 
+ first bean to process the message creates an entity bean to store the 
+ information it has generated. The second bean locates the existing entity bean 
+ and adds its information.
+  
+ 3. When both the office and the equipment have been assigned, the entity bean 
+ sends to the reply queue a message describing the assignments. The applica-
+ tion client’s message listener retrieves the information. The entity bean also",NA
+9.2,NA,NA
+Writing and Compiling the Application Components,"Writing and compiling the components of the application involve
+  
+ • Coding the application client
+  
+ • Coding the message-driven beans
+  
+ • Coding the entity bean
+  
+ • Compiling the source files",NA
+9.3 ,NA,NA
+Creating and Packaging the Application,"Creating and packaging this application involve several steps:
+  
+  
+ 1. Starting the J2EE server and the deploytool* 
+  
+  
+ 2. Creating a queue 
+  
+  
+ 3. Starting the Cloudscape database server 
+  
+  
+ 4. Creating the J2EE application 
+  
+  
+ 5. Packaging the application client 
+  
+  
+ 6. Packaging the Equipment message-driven bean 
+  
+  
+ 7. Packaging the Office message-driven bean 
+  
+  
+ 8. Packaging the Schedule message-driven bean 
+  
+  
+ 9. Packaging the entity bean 
+  
+ 10. Specifying the entity bean deployment settings 
+  
+ 11. Specifying the JNDI names
+  
+ Step 1, marked with an asterisk (*), is not needed if the server and the deploytool 
+ are running.",NA
+9.4,NA,NA
+Deploying and Running the Application,"Deploying and running the application involve several steps:
+  
+ 1. Adding the server, if necessary 
+  
+ 2. Deploying the application 
+  
+ 3. Running the client 
+  
+ 4. Undeploying the application 
+  
+ 5. Removing the application and stopping the server
+  
+ 9.4.1 
+  
+ Adding the Server
+  
+ Before you can deploy the application, you must make available to the 
+ deploytool the J2EE server you started in Section 9.3.1 on page 162. Because you 
+ started the J2EE server before you started the deploytool, the server, named
+  
+ localhost
+ , proba-bly appears in the tree under
+  Servers
+ . If it does not, do the 
+ following.
+  
+ 1. From the File menu, choose Add Server.
+  
+ 2. In the Add Server dialog box, enter
+  localhost
+  in the Server Name field.
+  
+ 3. Click OK. A
+  localhost
+  node appears under
+  Servers
+  in the tree view.",NA
+ 10,NA,NA
+An Application Example that ,NA,NA
+Uses Two J2EE Servers,NA,NA
+T,"HIS
+  chapter explains how to write, compile, package, deploy, and run a pair 
+ of J2EE applications that use the JMS API and run on two J2EE servers. A 
+ common practice is to deploy different components of an enterprise application 
+ on different systems within a company, and this example illustrates on a small 
+ scale how to do this for an application that uses the JMS API.
+  
+ The applications use the following components:
+  
+ • An application client that uses two connection factories—one ordinary one 
+ and one that is configured to communicate with the remote server—to create 
+ two publishers and two subscribers and to publish and to consume messages
+  
+ • A message-driven bean that is deployed twice—once on the local server and 
+  
+ once on the remote one—to process the messages and to send replies
+  
+ In this chapter, the term
+  local server
+  means the server on which the applica-
+ tion client is deployed. The term
+  remote server
+  means the server on which only 
+ the message-driven bean is deployed.
+  
+ Another possible situation is that an application deployed on a J2EE server 
+ must be accessed from another system on which no J2EE server is running. The 
+ last section of this chapter discusses how to handle this situation.
+  
+ The chapter covers the following topics:
+  
+ • An overview of the applications
+  
+ • Writing and compiling the application components
+  
+ 181",NA
+10.1 Overview of the Applications,"This pair of applications is somewhat similar to the application in Chapter 7 in 
+ that the only components are a client and a message-driven bean. However, the 
+ applica-tions here use these components in more complex ways. One application 
+ consists of the application client. The other application contains only the 
+ message-driven bean and is deployed twice, once on each server.
+  
+ The basic steps of the applications are as follows.
+  
+ 1. The administrator starts two J2EE servers.
+  
+ 2. On the local server, the administrator creates a connection factory to commu-
+  
+ nicate with the remote server.
+  
+ 3. The application client uses two connection factories—a preconfigured one 
+ and the one just created—to create two connections, sessions, publishers, and 
+ subscribers. Each publisher publishes five messages.
+  
+ 4. The local and the remote message-driven beans each receive five messages 
+  
+ and send replies.
+  
+ 5. The client’s message listener consumes the replies.
+  
+ Figure 10.1 illustrates the structure of this application.",NA
+10.2 Writing and Compiling the Application Components,"Writing and compiling the components of the applications involve
+  
+ • Coding the application client
+  
+ • Coding the message-driven bean
+  
+ • Compiling the source files
+  
+ 10.2.1 Coding the Application Client:
+  MultiAppServerRequester.java 
+ The 
+ application client class,
+  MultiAppServerRequester.java
+ , does the following.
+  
+ 1. It uses the Java Naming and Directory Interface (JNDI) API naming context 
+  
+ java:comp/env
+  to look up two connection factories and a topic.
+  
+ 2. For each connection factory, it creates a connection, a publisher session, a 
+  
+ publisher, a subscriber session, a subscriber, and a temporary topic for replies.
+  
+ 3. Each subscriber sets its message listener,
+  ReplyListener
+ , and starts the 
+  
+ connection.",NA
+10.3 Creating and Packaging the Application,"Creating and packaging this application involve several steps:
+  
+ 1. Starting the J2EE servers and the deploytool
+  
+ 2. Creating a connection factory 
+  
+ 3. Creating the first J2EE application 
+  
+ 4. Packaging the application client 
+  
+ 5. Creating the second J2EE application",NA
+10.4 Deploying and Running the Applications,"Deploying and running this application involve several steps:
+  
+ 1. Adding the server 
+  
+ 2. Deploying the applications 
+  
+ 3. Running the client 
+  
+ 4. Undeploying the applications 
+  
+ 5. Removing the applications and stopping the server
+  
+ 10.4.1 Adding the Server
+  
+ Before you can deploy the application, you must make available to the 
+ deploytool both the J2EE servers you started in Section 10.3.1 on page 195. To 
+ add the remote server, follow these steps.
+  
+ 1. From the File menu, choose Add Server.
+  
+ 2. In the Add Server dialog box, enter the name of the remote system in the 
+ Server Name field. Use the same name you specified when you ran the
+  setup 
+ script in Section 10.3.2 on page 195.
+  
+ 3. Click OK.
+  
+ A node with the name of the remote system appears under
+  Servers
+  in the tree view.
+  
+ Because you started the local J2EE server before you started the deploytool, 
+ the server, named
+  localhost
+ , probably appears in the tree under
+  Servers
+ . If it does 
+ not, do the following.
+  
+ 1. From the File menu, choose Add Server.
+  
+ 2. In the Add Server dialog box, enter
+  localhost
+  in the Server Name field. 3. 
+ Click OK.
+  
+ The
+  localhost
+  node appears under
+  Servers
+  in the tree view.",NA
+10.5 Accessing a J2EE Application from a Remote System that ,NA,NA
+Is Not Running a J2EE Server,"To run an application installed on a J2EE server from a system that is not running 
+ a J2EE server, you perform tasks similar to those described in Section 4.4.2 on 
+ page 58. Again, the J2EE SDK must be installed on both systems. You may also 
+ want to use the
+  runclient
+  command to run an application client installed on a 
+ remote system.
+  
+ This section describes both of these situations:
+  
+ • Accessing a J2EE application from a standalone client
+  
+ • Using
+  runclient
+  to access a remote application client
+  
+ 10.5.1 Accessing a J2EE Application from a Standalone Client
+  
+ You can run a standalone client that uses messages to communicate with a J2EE 
+ application. For example, you can use the deploytool to deploy the
+  ReplyBeanApp 
+ application on a system running the J2EE server, then use a standalone client to",NA
+ A,NA,NA
+JMS Client Examples,NA,NA
+T,"HIS
+  appendix contains a number of sample programs that illustrate JMS API 
+ concepts and features. The samples are as follows:
+  
+ •
+  DurableSubscriberExample.java
+ , a program that illustrates the use of dura-ble 
+ subscriptions
+  
+ •
+  TransactedExample.java
+ , a program that shows how to use transactions in 
+  
+ standalone applications
+  
+ •
+  AckEquivExample.java
+ , a program that illustrates acknowledgment modes
+  
+ •
+  SampleUtilities.java
+ , a utility class containing methods called by the other 
+  
+ sample programs
+  
+ The programs are all self-contained threaded applications. The programs 
+ include producer and consumer classes that send and receive messages. If you 
+ downloaded the tutorial examples as described in the preface, you will find the 
+ examples for this chapter in the directory
+  jms_tutorial/examples/appendix
+  (on UNIX 
+ systems) or
+  jms_tutorial\examples\appendix
+  (on Microsoft Windows systems). You 
+ can compile and run the examples using the instructions in Chapter 4.",NA
+A.1 ,NA,NA
+Durable Subscriptions,"The
+  DurableSubscriberExample.java
+  program shows how durable subscriptions work. It 
+ demonstrates that a durable subscription is active even when the subscriber is 
+  
+ not active. 
+  
+ The 
+  
+ program 
+  
+ contains a 
+ DurableSubscriber 
+  
+ class, 
+  
+ a
+  
+ 215",NA
+A.2,NA,NA
+Transactions,"TRANSACTIONS
+  
+ 225
+  
+ The
+  TransactedExample.java
+  program demonstrates the use of transactions in a JMS 
+ client application. The program represents a highly simplified e-Commerce 
+ application, in which the following things happen.
+  
+ 1. A retailer sends a message to the vendor order queue, ordering a quantity of 
+  
+ computers, and  waits for the vendor’s reply.
+  
+ 2. The vendor receives the retailer’s order message and places an order message 
+ into each of its suppliers’ order queues, all in one transaction. This JMS trans-
+ action combines one synchronous receive with multiple sends.
+  
+ 3. One supplier receives the order from its order queue, checks its inventory, and 
+ sends the items ordered to the destination named in the order message’s 
+ JMSReplyTo
+  field. If it does not have enough in stock, the supplier sends what it 
+ has. The synchronous receive and the send take place in one JMS 
+  
+ transaction.
+  
+ 4. The other supplier receives the order from its order queue, checks its inven-
+ tory, and sends the items ordered to the destination named in the order mes-
+ sage’s
+  JMSReplyTo
+  field. If it does not have enough in stock, the supplier sends 
+ what it has. The synchronous receive and the send take place in one JMS 
+ transaction.
+  
+ 5. The vendor receives the replies from the suppliers from its confirmation 
+ queue and updates the state of the order. Messages are processed by an asyn-
+ chronous message listener; this step illustrates using JMS transactions with a 
+ message listener.
+  
+ 6. When all outstanding replies are processed for a given order, the vendor sends 
+  
+ a message notifying the retailer whether it can fulfill the order.
+  
+ 7. The retailer receives the message from the vendor.
+  
+ Figure A.1 illustrates these steps.",NA
+A.3 ,NA,NA
+Acknowledgment Modes,"The
+  AckEquivExample.java
+  program shows how the following two scenarios both 
+ ensure that a message will not be acknowledged until processing of it is complete:
+  
+ • Using an asynchronous receiver—a message listener—in an 
+  
+ AUTO_ACKNOWLEDGE
+  session
+  
+ • Using a synchronous receiver in a
+  CLIENT_ACKNOWLEDGE
+  session
+  
+ With a message listener, the automatic acknowledgment happens when the 
+ onMessage
+  method returns—that is, after message processing has finished. With a",NA
+A.4,NA,NA
+Utility Class,"The
+  SampleUtilities
+  class, in
+  SampleUtilities.java
+ , is a utility class for the other sample 
+ programs. It contains the following methods:
+  
+ •
+  getQueueConnectionFactory
+  
+ •
+  getTopicConnectionFactory
+  
+ •
+  getQueue
+  
+ •
+  getTopic
+  
+ •
+  jndiLookup
+  
+ •
+  receiveSynchronizeMessages
+  
+ •
+  sendSynchronizeMessages
+  
+ It also contains the class
+  DoneLatch
+ , which has the following methods:
+  
+ •
+  waitTillDone
+  
+ •
+  allDone
+  
+  
+ import javax.naming.*; 
+  
+ import javax.jms.*;
+  
+ public class SampleUtilities {
+  
+  
+  public static final String  QUEUECONFAC =
+  
+  
+  
+  ""QueueConnectionFactory"";
+  
+  
+ public static final String  TOPICCONFAC =
+  
+  
+  
+  ""TopicConnectionFactory"";
+  
+  private 
+ static Context      jndiContext = null;
+  
+  /**
+  
+  * Returns a QueueConnectionFactory object.
+  
+  *
+  
+  * @return    a QueueConnectionFactory object",NA
+Index,NA,NA
+A,"acknowledge
+  method (
+ Message
+  interface)
+  63 
+ acknowledging messages.
+  See
+  message 
+  
+  
+ acknowledgment 
+  
+ administered objects
+  22 
+  
+  
+ J2EE applications and 74 
+  
+  
+ See also
+  connection factories, destinations 
+ application clients 
+  
+  
+ coding 83, 105, 132, 183 
+  
+  
+ packaging 90, 117, 163, 197 
+  
+  
+ running 100, 125, 178, 206, 214 
+  
+ Application Deployment Tool.
+  See 
+  
+  
+ deploytool
+  command 
+  
+ applications 
+  
+  
+ client 33, 207, 215 
+  
+  
+ J2EE 73, 81, 103, 129, 181 
+  
+ asynchronous message consumption
+  19 
+  
+  
+ See also
+  message-driven beans 
+  
+ AUTO_ACKNOWLEDGE
+  mode 
+  
+  
+ example 250 
+  
+  
+ Session
+  interface field 63",NA
+B,"bean-managed transactions
+  78 
+ BytesMessage
+  interface
+  31",NA
+C,"CLASSPATH
+  environment variable
+  34 
+  
+ client applications
+  33, 215 
+  
+  
+ compiling 43, 54 
+  
+  
+ running 44, 55 
+  
+  
+ running on multiple systems 57 
+  
+  
+ running remotely 58 
+  
+ client ID, for durable subscriptions
+  67, 116 
+ CLIENT_ACKNOWLEDGE
+  mode 
+  
+  
+ example 250
+  
+  
+ Session
+  interface field 63 
+  
+ Cloudscape database server 
+  
+  
+ starting 163 
+  
+  
+ stopping 179 
+  
+ commands 
+  
+  
+ cloudscape
+  163, 179 
+  
+  
+ deploytool
+  89, 115, 162, 195 
+  
+  
+ j2ee
+  43, 56, 89, 101, 115, 127, 162, 179, 
+  
+  
+ 195, 207 
+  
+  
+ j2eeadmin
+  23, 24, 101, 116, 127, 179, 
+  
+  
+ 195, 207 
+  
+  
+ runclient
+  100, 125, 178, 206, 214 
+  
+ commit
+  method (
+ Session
+  interface)
+  70 
+  
+ connection factories 
+  
+  
+ creating 57, 116, 195 
+  
+  
+ deleting 127, 207 
+  
+  
+ introduction 23 
+  
+  
+ specifying for deployment 92, 94, 120, 
+  
+  
+ 122, 165, 168, 170, 172, 174, 198, 
+  
+  
+ 202 
+  
+  
+ specifying for remote servers 57, 195 
+ connections 
+  
+  
+ introduction 24 
+  
+  
+ managing in J2EE applications 74 
+  
+ container, EJB
+  13 
+  
+  
+ message-driven beans 75 
+  
+ container-managed transactions
+  78, 94 
+  
+ creating 
+  
+  
+ connection factories 23, 57, 116, 195 
+  
+ J2EE applications 90, 117, 163 
+  
+  
+ queues 24, 43, 89, 162 
+  
+  
+ topics 24, 55, 116",NA
+D,"deleting 
+  
+ connection factories 127, 207 
+ queues 45 
+  
+ topics 56, 127",NA
+E,"EJB container.
+  See
+  container, EJB 
+  
+ ejbCreate
+  method
+  74 
+  
+  
+ message-driven beans 76 
+  
+  
+ session beans 108 
+  
+ ejbRemove
+  method 
+  
+  
+ (
+ javax.ejb.MessageDrivenBean 
+  
+  
+ interface)
+  76 
+  
+ EJBs.
+  See
+  enterprise beans 
+  
+ enterprise beans 
+  
+  
+ specifying references for 118, 168, 170, 
+  
+  
+ 172
+  
+ entity beans 
+  
+  
+ coding 151 
+  
+  
+ packaging 173 
+  
+  
+ sample application 129 
+  
+ environment variables, setting for J2EE 
+  
+ applications
+  34 
+  
+ exception handling
+  32 
+  
+ expiration of messages 
+  
+  
+ introduction 65 
+  
+  
+ JMSExpiration
+  message header field 30",NA
+G,"getRollbackOnly
+  method 
+  
+ (
+ javax.ejb.MessageDrivenContext 
+ interface)
+  79",NA
+H,"headers, message 
+  
+  
+ introduction 29",NA
+J,"j2ee
+  command 
+  
+  
+ starting the server 43, 89, 115, 162, 195 
+  
+ stopping the server 56, 101, 127, 179, 207 
+ J2EE.
+  See
+  Java 2, Enterprise Edition (J2EE) 
+ J2EE_HOME
+  environment variable
+  34 
+  
+ j2eeadmin
+  command 
+  
+  
+ creating connection factories 23, 116, 195 
+  
+ creating destinations 24 
+  
+  
+ removing connection factories 127, 207 
+  
+ removing destinations 101, 127, 179 
+  
+ Java 2, Enterprise Edition (J2EE) 
+  
+  
+ applications 
+  
+  
+ adding server 99, 124, 177, 204 
+  
+  
+ coding components 82, 104, 131, 183 
+  
+  
+ compiling 88, 114, 161, 194 
+  
+  
+ creating 90, 117, 163, 196, 200 
+  
+  
+ deploying 99, 125, 178, 205 
+  
+  
+ examples 81, 103, 129, 181 
+  
+  
+ introduction 73 
+  
+  
+ packaging 88, 115, 161, 194 
+  
+  
+ running 100, 125, 178, 206",NA
+L,"local transactions
+  70 
+  
+ example 225",NA
+M,"MapMessage
+  interface
+  31 
+  
+ message acknowledgment 
+  
+  
+ bean-managed transactions 80 
+  
+  
+ example 250 
+  
+  
+ introduction 62 
+  
+  
+ message-driven beans 76 
+  
+ message bodies 
+  
+  
+ introduction 31 
+  
+ message consumers 
+  
+  
+ introduction 27 
+  
+ message consumption 
+  
+  
+ asynchronous 19 
+  
+  
+ introduction 19 
+  
+  
+ synchronous 19 
+  
+ message-driven beans 
+  
+  
+ coding 85, 112, 138, 190 
+  
+  
+ introduction 75 
+  
+  
+ packaging 93, 121, 166, 169, 171, 200 
+ message-driven
+  deployment descriptor 
+  
+ element
+  97 
+  
+ message-driven-destination
+  deployment 
+  
+ descriptor element
+  97 
+  
+ message headers 
+  
+  
+ introduction 29 
+  
+ message IDs 
+  
+  
+ JMSMessageID
+  message header field 30 
+ Message
+  interface
+  31 
+  
+ message listeners 
+  
+  
+ examples 53, 132, 183, 209 
+  
+  
+ introduction 28 
+  
+ message producers 
+  
+  
+ introduction 26 
+  
+ message properties 
+  
+  
+ introduction 30 
+  
+ message-selector
+  deployment descriptor 
+  
+ element
+  97 
+  
+ message selectors 
+  
+  
+ introduction 29 
+  
+  
+ specifying for deployment 122",NA
+N,"New Application Client Wizard
+  90, 117, 163, 
+  
+ 197 
+  
+ New Enterprise Bean Wizard
+  93, 166, 169, 
+  
+ 171, 200 
+  
+ NON_PERSISTENT
+  delivery mode
+  64",NA
+O,"ObjectMessage
+  interface
+  31 
+  
+ objects, administered
+  22 
+  
+ onMessage
+  method (
+ MessageListener 
+  
+ interface) 
+  
+  
+ example 53 
+  
+  
+ introduction 28 
+  
+  
+ message-driven beans 75 
+  
+  
+ specifying transaction demarcation 94",NA
+P,"packaging 
+  
+  
+ application clients 90, 117, 163, 197 
+  
+ entity beans 173 
+  
+  
+ message-driven beans 93, 121, 166, 169, 
+  
+  
+ 171, 200 
+  
+  
+ session beans 119
+  
+ PATH
+  environment variable
+  34 
+  
+ persistence, for messages
+  64 
+  
+ PERSISTENT
+  delivery mode
+  64 
+  
+ point-to-point messaging domain 
+  
+  
+ client example 35 
+  
+  
+ introduction 17 
+  
+  
+ See also
+  queues 
+  
+ priority levels, for messages 
+  
+  
+ introduction 65 
+  
+  
+ JMSPriority
+  message header field 30 
+ programming model
+  21 
+  
+ properties.
+  See
+  message properties 
+  
+ publish/subscribe messaging domain 
+  
+  
+ client example 45 
+  
+  
+ durable subscriptions 67 
+  
+  
+ introduction 17 
+  
+  
+ See also
+  topics",NA
+Q,"Queue
+  interface
+  24 
+  
+ QueueConnection
+  interface
+  24 
+  
+ QueueConnectionFactory
+  interface
+  23 
+ QueueReceiver
+  interface
+  27 
+  
+ queues 
+  
+  
+ creating 24, 43, 89, 162 
+  
+  
+ deleting 45 
+  
+  
+ example 35 
+  
+  
+ introduction 24 
+  
+  
+ temporary 66 
+  
+ QueueSender
+  interface
+  26 
+  
+ QueueSession
+  interface
+  25",NA
+R,"recover
+  method (
+ Session
+  interface)
+  63 
+  
+ redelivery of messages 
+  
+  
+ JMSRedelivered
+  message header field 30 
+ reliability 
+  
+  
+ advanced mechanisms 66 
+  
+  
+ basic mechanisms 62 
+  
+  
+ durable subscriptions 67 
+  
+  
+ local transactions 70 
+  
+  
+ message acknowledgment 62 
+  
+  
+ message expiration 65 
+  
+  
+ message persistence 64",NA
+S,"sample programs 
+  
+ AckEquivExample.java
+  250 
+  
+ DurableSubscriberExample.java
+  215 
+ HumanResourceClient.java
+  132 
+  
+ J2EE applications 81, 103, 129, 181 
+  
+ MessageBean.java
+  85, 112 
+  
+ MultiAppServerRequester.java
+  183 
+ MyAppClient.java
+  105 
+  
+ point-to-point 35 
+  
+ publish/subscribe 45 
+  
+ Publisher.java
+  107 
+  
+ PublisherBean.java
+  108 
+  
+ PublisherHome.java
+  107 
+  
+ PubSub.java
+  209 
+  
+ ReplyMsgBean.java
+  190 
+  
+ ReserveEquipmentMsgBean.java
+  138 
+ ReserveOfficeMsgBean.java
+  138
+  
+  
+ SampleUtilities.java
+  264 
+  
+  
+ ScheduleMsgBean.java
+  147 
+  
+  
+ SetupOffice.java
+  152 
+  
+  
+ SetupOfficeBean.java
+  152 
+  
+  
+ SetupOfficeLocalHome.java
+  151 
+  
+  
+ SimpleClient.java
+  83 
+  
+  
+ SimpleQueueReceiver.java
+  40 
+  
+  
+ SimpleQueueSender.java
+  37 
+  
+  
+ SimpleTopicPublisher.java
+  47 
+  
+  
+ SimpleTopicSubscriber.java
+  50 
+  
+  
+ TextListener.java
+  53 
+  
+  
+ TransactedExample.java
+  225 
+  
+ servers 
+  
+  
+ adding 99, 124, 177, 204 
+  
+  
+ deploying on more than one 181 
+  
+  
+ running applications on remote 207 
+  
+  
+ running clients on more than one 57 
+  
+  
+ running clients on remote 58 
+  
+ session beans 
+  
+  
+ coding 106 
+  
+  
+ packaging 119 
+  
+  
+ sample application 103 
+  
+ sessions 
+  
+  
+ introduction 25 
+  
+  
+ managing in J2EE applications 74 
+  
+ setMessageDrivenContext
+  method 
+  
+  
+ (
+ javax.ejb.MessageDrivenBean 
+  
+  
+ interface)
+  76 
+  
+ setRollbackOnly
+  method 
+  
+  
+ (
+ javax.ejb.MessageDrivenContext 
+  
+ interface)
+  79 
+  
+ standalone applications
+  33, 215 
+  
+ StreamMessage
+  interface
+  31 
+  
+ subscription-durability
+  deployment 
+  
+  
+ descriptor element
+  98 
+  
+ subscription names, for durable subscribers 
+  
+ 67 
+  
+ synchronous message consumption
+  19",NA
+T,"temporary destinations 
+  
+  
+ examples 132, 183, 209 
+  
+ TextMessage
+  interface
+  31 
+  
+ timestamps, for messages 
+  
+  
+ JMSTimestamp
+  message header field 30 
+ Topic
+  interface
+  24",NA
+U ,"UserTransaction
+  interface 
+  
+  
+ (
+ javax.transaction
+  package)
+  78",NA
+W ,"wizards 
+  
+  
+ New Application Client 90, 117, 163, 197 
+  
+ New Enterprise Bean 93, 166, 169, 171, 
+  
+  
+ 200",NA
+X ,"XML (Extensible Markup Language) 
+  
+ deployment descriptor 97",NA

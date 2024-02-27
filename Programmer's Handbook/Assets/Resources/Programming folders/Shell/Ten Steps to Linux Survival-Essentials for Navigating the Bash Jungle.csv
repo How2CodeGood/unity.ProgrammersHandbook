@@ -1,0 +1,1132 @@
+Larger Text,Smaller Text,Symbol
+Ten Steps ,NA,NA
+to Linux ,NA,NA
+Survival,NA,NA
+Essentials for Navigating the Bash ,NA,NA
+Jungle,NA,NA
+James  Lehmer,NA,NA
+Ten Steps to Linux ,NA,NA
+Survival ,NA,NA
+Essentials for ,NA,NA
+Navigating,NA,NA
+the Bash Jungle,NA,NA
+James Lehmer,"Beijing
+  
+ Boston
+  
+ Farnha
+ m
+  
+ Sebastop
+ ol
+  
+ Tokyo",NA
+Table of Contents,"Introduction. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . . . . . . . . . .  vii
+  
+ 0.
+  Step 0: Don’t Panic. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . . . . . . . . . . .  1
+  
+ 1.
+  Step 1: Getting In. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . . . . . . . . . . .  3
+ “sudo make me a sandwich”                                                               
+ 5
+  
+ 2.
+  Step 2: Getting Around. . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . . . . . . . . 
+ . . .  7 
+ Where 
+ Am 
+ I?                                
+ 7 
+ Listing 
+ Files                                
+ 7 
+ Changing 
+ Directories                                
+ 9 
+ Be 
+ Lazy                                
+ 10
+  
+ 3.
+  Step 3: Peeking at Files. . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+  
+ 13 
+ Cool 
+ cat                                
+ 13 
+ less 
+ Is 
+ More                                
+ 14 
+ tail 
+ Wind                                
+ 15
+  
+ 4.
+  Step 4: Finding Files. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+  
+ 17 
+ find 
+ Files 
+ Fast                                
+ 17 
+ Location, 
+ Location, 
+ Location                                
+ 20",NA
+Introduction,"And you may ask yourself, “Well, how did I get here?”
+  
+ —Talking Heads, “Once in a Lifetime”",NA
+Why Are We Here?,"This report grew out of a series of “lunch-and-learns” on Linux 
+ that I compiled for work. During that process, I ended up 
+ writing an ebook
+ , and then condensing it into a one-hour 
+ presentation that focuses on the essentials needed for quick 
+ problem-solving on a Linux system. I turned that presentation 
+ into 
+ an O’Reilly webcast
+ , and this report provides more details 
+ on those original 10 essentials.
+  
+ Even in formerly “pure Windows” shops, Linux use is growing. 
+ Linux systems are everywhere! They may appear as 
+ appliances 
+ (machines) or, more likely, virtual machine (VM) images 
+ dropped in by a vendor.
+  
+ Common examples of Linux systems that may appear in your 
+ shop as VMs or in the cloud include the following:
+  
+ Web servers 
+  
+  
+ Apache, Nginx, Node.js
+  
+ Database servers 
+  
+  
+ MongoDB, PostgreSQL
+  
+ Mobile device management 
+  
+  
+ Various MDM solutions, such as 
+ MobileIron",NA
+Who Is This For?,"The intended audience of this book is 
+ not
+  seasoned Linux 
+ adminis‐trators, or anyone with a passing knowledge of the 
+ Bash shell. Instead, it is for people who are working in small 
+ Windows shops, where everyone has to wear various hats. It is 
+ for Windows adminis‐trators, network admins, developers, and 
+ the like who have no knowledge of Linux but may still have to 
+ jump in during a problem.
+  
+ Imagine your boss rushing into your office and saying this:
+  
+ The main www site is down, and all the people who know about it 
+ are out. It’s running on some sort of Linux, I think, and the 
+ credentials and IP address are scrawled on this sticky note. Can 
+ you get in, poke around, and see if you can figure it out?
+  
+ In this report, you’ll learn the basic steps to finding vital 
+ informa‐tion that can help you quickly get the site back up. By 
+ reading this guide before disaster strikes, you will be better able 
+ to survive the preceding scenario.",NA
+How to Prepare,"In small shops, sometimes things just 
+ fall on you
+  because no one 
+ else is available. There is often no room for “It’s not my job” 
+ when pro‐duction is down and the one person who knows 
+ about it is back‐packing in Colorado. So you need to be prepared 
+ as the use of Linux becomes more prevalent, turning “pure 
+ Microsoft” shops more and more into hybrids. Linux is coming, 
+ whether you like it or not. Be prepared.
+  
+ First, pay 
+ close attention
+  whenever you hear the word 
+ appliance
+  
+ used in terms of a system. Perhaps it will be mentioned in 
+ passing in a vendor presentation. Dig in and find out what the 
+ appliance image is running.
+  
+ Second, note that 
+ even Microsoft
+  is supporting Linux, and 
+ increasing that support daily. First, it started with making Linux 
+ systems first-class citizens on Azure. Now Microsoft is 
+ partnering with Docker and Ubuntu and others, and that 
+ coordination looks like it is only going to grow.
+  
+ So now is the time to 
+ start studying
+ . This report is a quick-help 
+ guide to prepare you for limited diagnostic and recovery tasks, 
+ and to get you used to how Linux commands work. But you 
+ should dig further.
+  
+ One place to turn next is 
+ my ebook
+ . It helps you take the next 
+ steps of understanding how to change Linux systems in basic 
+ ways. I’ve also included some useful references at the end of this 
+ report. Past that, obviously, 
+ O’Reilly has many good resources 
+ for learning Linux
+ . And the Internet is just sitting there, waiting 
+ for you.",NA
+Play with It!,"The best way to learn Linux is to stand up an environment 
+ where you can explore without fear of the consequences if you 
+ mess some‐thing up. One way is to create a Linux VM; even a 
+ moderately provi‐sioned modern laptop will comfortably run a 
+ Linux VM. You can also create one in the cloud, and many 
+ vendors make that easy, including DigitalOcean, Linode, 
+ Amazon Elastic Compute Cloud (EC2), Microsoft Azure, and 
+ Google Compute Engine. Many of these even offer a free level, 
+ perfect for playing!",NA
+Documentation and ,NA,NA
+Instrumentation,"To protect yourself in case you are thrown into the scenario 
+ outlined at the beginning of this report, you should make sure 
+ the following are in place at your shop:
+  
+ The Linux systems are documented.
+  
+ This should include their purpose, as-built documentation 
+ out‐lining the distro, virtual or physical hardware specs, 
+ packages installed, and so on.
+  
+ These systems are being actively monitored.
+  
+ Are they tied in to Paessler Router Traffic Grapher (PRTG), 
+ SIEM, and other monitoring and alerting systems? Make 
+ sure you have access to those alerts and monitoring 
+ dashboards, 
+ as 
+ they 
+ can 
+ be 
+ a 
+ great 
+ source 
+ of 
+ troubleshooting information.
+  
+ You have access to the system credentials.
+  
+ Ideally, your department uses secure vault software to store 
+ and share system credentials. Do you have access to the 
+ appropriate credentials if needed? You should make sure 
+ before the need arises.",NA
+Conventions,"If a command, filename, or other computer code is shown inline 
+ in a sentence, it appears in a fixed-width font:
+  
+ ls --recursive *.txt
+  
+ If a command and its output is shown on a terminal session, it 
+ appears as shown in 
+ Figure P-1
+ .",NA
+CHAPTER 0,NA,NA
+Step 0: Don’t Panic,"The first, essential step is to stay calm. If you are dragged into 
+ trying to diagnose a Linux system and it isn’t your area of 
+ expertise, you can only do so much. We’re going to be careful to 
+ keep from chang‐ing system configurations, and we’re going to 
+ restart services or the system only as a last resort.
+  
+ So just try to relax, like Merv the dog (
+ Figure 0-1
+ ). No one 
+ should expect miracles from you. And if you 
+ do
+  figure out the 
+ problem, you’ll be a hero!
+  
+  
+ Figure 0-1. Merv the dog sez, Don’t panic
+  
+ 1",NA
+CHAPTER 1,NA,NA
+Step 1: Getting In,"Before I get too far, let’s talk about how to connect to a Linux 
+ system in the first place. If you have an actual physical machine, 
+ you can use the console. In today’s day and age, this isn’t likely. 
+ If you are running VMs, you can use the VM software’s console 
+ mechanism.
+  
+ But most Linux systems run 
+ OpenSSH
+ , a Secure Shell service, 
+ which creates an encrypted terminal connection via TCP/IP, 
+ typically to port 22. So, obviously, if you are connecting to an 
+ off-premise sys‐tem, the appropriate firewall holes have to be in 
+ place on both sides. This allows you to connect from anywhere 
+ you want to work.
+  
+ On Windows, you generally use 
+ PuTTY
+  to establish SSH sessions 
+ with Linux systems. You typically need credentials as well, 
+ either from that sticky note your boss found, or preferably via 
+ your com‐pany’s secure credentials management system.
+  
+  
+ You also could connect using public/private key 
+ pairs, but that is beyond the scope of this 
+ report.
+  
+ When you start PuTTY, it looks like 
+ Figure 1-1
+ .",NA
+“sudo make me a sandwich”,"I’m going to take a brief intermission to discuss the 
+ sudo
+  
+ command. It stands for 
+ super-user do
+ . If a user is in the 
+ sudo
+  
+ user group, that user is allowed to execute privileged 
+ commands. It is similar to doing a 
+ RUNAS
+  command in the 
+ Windows Command Prompt to run a command under an 
+ elevated account.
+  
+ Logging in remotely as 
+ root
+  (system administrator) is frowned 
+ upon, and in fact often forbidden for security purposes. Hence, 
+ you’ll need to use 
+ sudo
+  to run admin commands that you will 
+ see later.",NA
+CHAPTER 2,NA,NA
+Step 2: Getting Around,"Now that you’re logged in, the first thing you’ll want to do is 
+ inspect what is going on and how the system is configured. To 
+ do that, you need to list files and directories, and move around 
+ within the filesys‐tem. This chapter covers these basics.",NA
+Where Am I?,"Some command prompts are set to show the current directory 
+ path. Others are not, and it can be tough to remember where 
+ you are in the filesystem. The 
+ pwd
+  (print working directory) 
+ command shows you:
+  
+ bash-4.2$ pwd
+  
+ /etc/init.d
+  
+  
+ Unlike in Windows, which is case-insensitive 
+ (but case-aware), in Bash and in Linux in gen‐
+ eral, 
+ case matters
+ . By convention, most Linux 
+ commands are lowercase. If you try to type in 
+ an uppercase 
+ PWD
+ , you will get a Command 
+ Not Found error.",NA
+Listing Files,"In Bash, the 
+ ls
+  (list) command is used to show directories and 
+ files. It is similar to the 
+ DIR
+  command in Windows Command 
+ Prompt.
+  
+ Figure 2-1
+  shows a simple sample of an 
+ ls
+  command.
+  
+ 7",NA
+Changing Directories,"To change to a different directory, use the 
+ cd
+  (change directory) 
+ command.
+  
+  
+ Linux uses the 
+ /
+  character as the path 
+ delimiter, unlike Windows, which uses 
+ \
+ . This 
+ will
+  trip you up the first few times, especially 
+ because 
+ \
+  has a different meaning in Bash (it 
+ is an escape char‐acter).
+  
+ Linux doesn’t use drive letters. Instead, all devices are mounted 
+ in a single hierarchical namespace starting at the root (
+ /
+ ) 
+ directory. You will see examples of this later in this report.
+  
+ Changing Directories 
+  
+ | 
+  
+ 9",NA
+Be Lazy,"Most modern interactive shells like Bash and Windows 
+ Command Prompt allow for tab expansion and command 
+ history, at least for the current session of the shell. This is a 
+ good thing in a crisis situa‐tion, because it saves you typing, and 
+ thus, time.",NA
+CHAPTER 3,NA,NA
+Step 3: Peeking at Files,"Now that you know how to move around in the filesystem, it is 
+ time to learn about how to inspect the content of files. In this 
+ chapter, I show a few commands that allow you to look inside 
+ files safely, without changing them.",NA
+Cool cat,"The 
+ cat
+  (concatenate) command dumps a file to the console, as 
+ shown in 
+ Figure 3-1
+ .
+  
+  
+ Figure 3-1. cat command
+  
+ 13",NA
+less Is More,"The 
+ less
+  command paginates files or output, with each 
+ “page”based on the size of the console window.
+  
+ In Bash, as in Windows Command Prompt, the output from one 
+ command can be redirected, or piped, to another command by 
+ using the 
+ |
+  character. In Linux, where each command “does one 
+ thing, well,” it is common practice to combine multiple 
+ commands, piping the output from one command to the next to 
+ accomplish a series of tasks in sequence. For example, later in 
+ this report you will see how to use the 
+ ps
+  command to produce 
+ a list of running pro‐cesses and then pipe that output to the 
+ grep
+  
+ command to search for a specific process by name. To 
+ demonstrate, although 
+ less
+  can be passed a filename directly, 
+ here’s how to pipe command output from 
+ cat
+  to 
+ less
+ :
+  
+ ~ $ cat /etc/passwd | less
+  
+ The output from 
+ less
+  clears the screen, and then shows the first 
+ page, as you can see in 
+ Figure 3-2
+ .
+  
+  
+ Figure 3-2. less output
+  
+ 14 
+  
+ | 
+  
+ Chapter 3: Step 3: Peeking at Files",NA
+tail Wind,"The 
+ tail
+  command shows the last lines in a file. It is useful when 
+ you’re looking at large log files and want to see just the last 
+ lines—for example, right after an error has occurred. By default, 
+ tail
+  will show the last 10 lines, but you can adjust the number of 
+ lines dis‐played with the 
+ -n
+  parameter. For example, 
+ Figure 3-3
+  
+ shows how to display just the last five lines.
+  
+  
+ Figure 3-3. tail command
+  
+ tail Wind 
+  
+ | 
+  
+ 15",NA
+CHAPTER 4,NA,NA
+Step 4: Finding Files,"In the preceding chapter, you learned how to look inside files 
+ without changing them. But how do you know which files to 
+ look at? In this chapter, I cover searching for files, which can 
+ help narrow the scope for your troubleshooting.",NA
+find Files Fast,"The 
+ find
+  command is one of the most useful commands in Linux. 
+ The command works like this:
+  
+ • Starting at location 
+ x
+  
+ • Recursively find entries that 
+ match
+  condition(s)
+  
+ •
+  Do something
+  to each match
+  
+ As a simple example, let’s say you’re in the 
+ /var/log
+  directory, 
+ and you want to find all files that end in 
+ .log
+ . Because there may 
+ be a lot of them, you will pipe the output to 
+ less
+  so you can page 
+ through it.
+  
+ Here is the command:
+  
+ /var/log# find . -name \*.log -print | less
+  
+ 17",NA
+"Location, Location, Location","The 
+ locate
+  command searches a list of all the filenames on the 
+ sys‐tem. The filenames are gathered periodically by a service, so 
+ it does not update in real time, but usually close enough. If you 
+ know the name of a file you are looking for, perhaps the Apache 
+ access.log
+  file (which can change location depending on the 
+ Linux distro), you can use the 
+ locate
+  command to quickly find it. 
+ Because 
+ locate
+  searches
+  
+ 20 
+  
+ | 
+  
+ Chapter 4: Step 4: Finding Files",NA
+CHAPTER 5,NA,NA
+Step 5: Search Me,"In the preceding chapter, you learned to search for files by their 
+ attributes, such as name, last modified time, and the like. In this 
+ chapter, I show how to search 
+ inside
+  a file, perhaps to find a 
+ specific error message.",NA
+Getting a grep,"The 
+ grep
+  command (whose name comes from 
+ g
+ lobally search a 
+ r
+ egular 
+ e
+ xpression and 
+ p
+ rint) searches within files. It uses 
+ regular expressions (regex) to match patterns inside the files. It 
+ can be used to search within binary files, but is most useful for 
+ finding things inside text files. There are lots of uses for this 
+ command in our crisis scenario, such as searching for certain 
+ error messages within log files, or finding every mention of a 
+ certain resource inside the source files for an entire website.
+  
+ There is an old joke by Jamie Zawinski:
+  
+ Some people, when confronted with a problem, think, “I know, I’ll 
+ use regular expressions.” Now they have two problems.
+  
+ Some regular expressions are simple—for example, 
+ *
+ , which you 
+ should recognize as a valid wildcard in Windows Command 
+ Prompt. Others can be mind-blowingly complex. For example:
+  
+ ^\(*\d{3}\)*( |-)*\d{3}( |-)*\d{4}$
+  
+ This regular expression is an (incomplete) approach to 
+ matching US phone numbers.
+  
+ 23",NA
+CHAPTER 6,NA,NA
+Step 6: What’s Going On?,"You have now learned how to navigate around, look inside files, 
+ and find files and search their contents. In this chapter and the 
+ next, I show you how to determine real-time system state, with 
+ an eye toward clues that may point to underlying problems.",NA
+It’s All Part of the Process,"The 
+ ps
+  (process) command shows running processes, akin to the 
+ Windows Task Manager, as you can see in 
+ Figure 6-1
+ .
+  
+  
+ Figure 6-1. ps command
+  
+ By default, 
+ ps
+  shows only the processes for the current user. In 
+ the preceding example, the active processes are the Bash shell 
+ and the 
+ ps 
+ command itself.
+  
+ If you want to see all running processes, you add the 
+ -A
+  
+ parameter. To make it pretty and show the hierarchical 
+ relationship between parent and child processes, you add 
+ -H
+ :
+  
+ ps -AH | less
+  
+ Figure 6-2
+  shows the output.
+  
+ 29",NA
+Who’s on top?,"The 
+ top
+  command (
+ Figure 6-3
+ ) shows processes sorted by 
+ resource consumption. It updates every few seconds, similar to 
+ Windows Task Manager.
+  
+ 30 
+  
+ | 
+  
+ Chapter 6: Step 6: What’s Going On?",NA
+The /proc Directory,"Linux doesn’t mount devices under drive letters as in Windows, 
+ but instead uses a single hierarchical filesystem, with different 
+ resources mounted under the root (
+ /
+ ) directory. In fact, because 
+ Linux uses an“everything is a file” paradigm, 
+ virtual
+  filesystems 
+ that aren’t backed by an actual device can be mounted in the 
+ hierarchy as well.
+  
+ One of the best examples of this is the 
+ /proc
+  directory, a virtual 
+ file‐system that presents real-time system statistics as files and 
+ directo‐ries. This makes the information 
+ way easier
+  to access 
+ than the rather opaque Windows WMI APIs. For example, you 
+ can see information on the CPUs being used on the system, as 
+ shown in 
+ Figure 6-5
+ .",NA
+Networking,"The 
+ ifconfig
+  command shows information on the system’s 
+ network interfaces (similar to the 
+ IPCONFIG
+  command in 
+ Windows), as you can see in 
+ Figure 6-9
+ .
+  
+ 34 
+  
+ | 
+  
+ Chapter 6: Step 6: What’s Going On?",NA
+CHAPTER 7,NA,NA
+Step 7: Filesystems,"You have just seen how to look at real-time system state in 
+ terms of processes, memory, and networking. Now I show how 
+ to check out the filesystems, with an eye toward disk utilization.",NA
+Displaying Filesystems,"On any computer system, running out of disk space can cause 
+ many problems. On Linux, two commands are helpful in 
+ determining disk utilization.
+  
+ The 
+ df
+  (display filesystems) command shows the mounted files 
+ sys‐tems along with statistics on space usage, as you can see in 
+ Figure 7-1
+ .
+  
+  
+ Figure 7-1. df command
+  
+ The main device you’re interested in is the first one, which 
+ shows 
+ /dev/vda1
+  mounted on 
+ /
+ . Note the columns showing disk 
+ size, 
+ Used
+ , 
+ Available
+ , and 
+ Use%
+ .
+  
+ 37",NA
+Where Did All the Disk Space Go?,"Once you’ve seen that there may be a problem with disk space, 
+ how do you find out 
+ where
+  it is being used? You can use the 
+ du
+  
+ (disk uti‐lization) command for that. By default, it descends 
+ through every directory and shows you disk usage for every 
+ subdirectory under which it is invoked (think 
+ DIR /S
+  on 
+ CMD.EXE
+ ). That can generate a lot of output and can take a long 
+ time to run.
+  
+ What we really want to do is start at the top and narrow our 
+ search to a specific problem directory. Let’s just look at the top-
+ level direc‐tories under 
+ /
+ . For that, I pass in the 
+ -d 1
+  (depth of 1) 
+ parameter. To make the output easier to read, I also pass 
+ -BM
+  to 
+ show blocks in megabytes. Finally, as you can see in 
+ Figure 7-3
+ , 
+ I’m using 
+ sudo
+ , because otherwise I wouldn’t have permission to 
+ descend into some system directories to calculate their disk 
+ space.",NA
+CHAPTER 8,NA,NA
+Step 8: Transferring ,NA,NA
+Files,"Perhaps you think you’ve found evidence of a system 
+ compromise, or you fear log files will be altered if you end up 
+ restarting services or the system itself. If you want to preserve 
+ files on another system so that someone more knowledgeable 
+ can look at them later, the commands in this chapter will come 
+ in handy.
+  
+  
+ Most commands in this report will not alter 
+ sys‐tem state. However, the commands in 
+ this chap‐ter and the next have the potential 
+ to do so. In this chapter, the commands to 
+ transfer files from the Linux system to 
+ another system for later analysis can also 
+ work in reverse—that is, trans‐fer files 
+ to
+  the 
+ Linux box. So be careful!",NA
+Secure Copying,"The 
+ scp
+  (secure copy) command can be used to copy files over 
+ the SSH protocol (the same protocol that you’re running your 
+ ssh
+  ter‐minal session over). This command allows us to copy 
+ files using an encrypted, compressed mechanism.
+  
+ If you are going to copy files from Linux “down” to your 
+ Windows system, you need a program that will run on 
+ Windows. The creator of PuTTY made 
+ PSCP.EXE
+  for precisely 
+ that purpose: to implement 
+ scp
+  for Windows. You can download 
+ it from the same place as 
+ PuTTY
+ .",NA
+Copying to a Windows Share,"The 
+ PSCP.EXE
+  command can be used to 
+ pull
+  information from 
+ Linux to your local Windows machine. If the Linux system is on 
+ the same network as a Windows file share, you can use 
+ smbclient
+  to 
+ push
+  files to a CIFS/SMB file share. Both machines 
+ must be on the same network for this to work; it will 
+ not
+  work 
+ across the Internet.
+  
+ The 
+ smbclient
+  command uses similar subcommands as 
+ ftp
+ , so if 
+ you have ever done FTP transfers from the Windows command 
+ line, it should be familiar. One difference is that, instead of 
+ specifying the subcommands one at a time after connecting, you 
+ can pass a string",NA
+CHAPTER 9,NA,NA
+Step 9: Starting and ,NA,NA
+Stopping,"If you are investigating a system that seems hung (perhaps the 
+ pub‐lic website isn’t responding and your management wants 
+ you to “do something”), the old tried-and-true method of 
+ restarting services or the entire system itself is often your last 
+ resort. Rebooting Windows always fixes problems, so you 
+ already know one method for approaching Linux issues too! In 
+ this chapter, I show you how to restart services and reboot the 
+ system.
+  
+  
+ Most commands in this report will not alter 
+ sys‐tem state. However, this chapter covers 
+ com‐mands that start, stop, and restart Linux 
+ services and the entire system. Therefore, 
+ you could pos‐sibly stop something, and 
+ because 
+ of 
+ the 
+ situa‐tion 
+ you 
+ are 
+ investigating, not be able to restart it. So be 
+ careful!",NA
+Managing Services,"Linux services (a.k.a. 
+ daemons
+ , which is why so many Linux 
+ services end in 
+ d
+ , such as 
+ sshd
+  and 
+ httpd
+ ) are similar to 
+ Windows services. They are processes that run in the 
+ background, typically initiated at system startup. Examples of 
+ services include web services (Apache), database services 
+ (MySQL), and so on.",NA
+Killing a Process,"The 
+ kill
+  command sends 
+ signals
+  to processes. The default 
+ behavior for a process is to stop when it receives a signal, 
+ although signals can also be used to tell a service to reload its 
+ configuration file, and so forth.
+  
+ Sometimes a service may hang to the point where it won’t 
+ respond to the 
+ service
+  command. The next step is to try to kill it. 
+ First, you need to find its process ID. In 
+ Figure 9-9
+ , we’re finding 
+ the process ID for the 
+ mysvc
+  process.
+  
+  
+ Figure 9-9. find mysvc process
+  
+ After you have the process ID (
+ 20330
+  in this case), you can try to 
+ kill it, as shown in 
+ Figure 9-10
+ .
+  
+  
+ Figure 9-10. kill command
+  
+ Let’s look at 
+ Figure 9-11
+  to see if that worked.
+  
+  
+ Figure 9-11. no more mysvc
+  
+ Yup—
+ ps
+  piped through 
+ grep
+  shows no active processes named 
+ mysvc
+  running.
+  
+ But sometimes even 
+ kill
+  doesn’t work. For one, programs can be 
+ written to intercept most signals, enabling communication with 
+ the background process from the command line. Or the process 
+ may
+  
+ 48 
+  
+ | 
+  
+ Chapter 9: Step 9: Starting and Stopping",NA
+When All Else Fails,"Just as on Windows, sometimes a system restart is the ultimate 
+ cure. The 
+ reboot
+  command does just what you’d expect. A 
+ shutdown 
+ command provides more options, such as waiting for 
+ a number of seconds first, but you probably won’t need it. In any 
+ case, both require 
+ sudo
+  to run, and you will lose your 
+ ssh
+  
+ connection and will need to log back in again after the system 
+ comes back up to ensure everything is back in order.
+  
+ When All Else Fails 
+  
+ | 
+  
+ 49",NA
+CHAPTER 10,NA,NA
+Step 10: Where to Go ,NA,NA
+for Help,"This report is just a quick flyover of Linux commands and how 
+ to use them to do quick troubleshooting. Even with the 
+ commands covered in the report, I excluded many, many 
+ options to keep it sim‐ple. But sometimes, even in the heat of 
+ troubleshooting a system problem, you need a bit more help. 
+ This chapter covers where you can go to get it.",NA
+"Hey, man","The 
+ man
+  (manual page) command provides documentation on 
+ com‐mands, system configuration files, and much more. This 
+ command is good for when you can’t access the Internet, or 
+ doing so isn’t con‐venient because you are on a machine console 
+ or similar setup. 
+ Figure 10-1
+  shows the first page of output from 
+ man reboot
+ .",NA
+Is That apropos?,"How do you know what you don’t know? Sometimes you might 
+ not know (or remember) the name of a command. For example, 
+ you may recall that this guide mentioned disk space, but can’t 
+ remember the actual commands. Luckily, you can use the 
+ apropos
+  command to jog your memory, as shown in 
+ Figure 10-2
+ .
+  
+  
+ Figure 10-2. apropos command
+  
+ 52 
+  
+ | 
+  
+ Chapter 10: Step 10: Where to Go for Help",NA
+Additional Resources,"There are plenty of places to go for more help with Linux:
+  
+ DuckDuckGo and Google 
+  
+ Search engines, with 
+ DDG
+  often providing direct help for a 
+ command as the first result
+  
+ Stack Exchange 
+  
+  
+ A UNIX-specific Stack Exchange site for 
+ questions
+  
+ Debian docs 
+  
+ Provides good documentation, much of it applicable across 
+ dis‐tros
+  
+ Arch docs 
+  
+ Ditto
+  
+ die.net 
+  
+  
+ Online man 
+ pages",NA
+CHAPTER 11,NA,NA
+The End,"Now you know what I know. Or at least what I keep loaded in 
+ my head versus what I simply search for when I need to know it, 
+ and you know how to do that searching, too. Hopefully, this 
+ report will help you sometime when you most need it.
+  
+ Good luck, citizen!
+  
+ 55",NA
+APPENDIX A,NA,NA
+Cheat Sheet,"That rug really tied the room together, did it not?
+  
+ —Walter Sobchak, 
+ The Big Lebowski
+  
+ This chapter lists many of the commands covered in this report. 
+ Use 
+ man
+  or other methods outlined in the report to find more 
+ informa‐tion on them.",NA
+Redirection Command,"See 
+ I/O Redirection
+  
+ | 
+  
+  
+ Pipe 
+ stdout
+  from one process into 
+ stdin
+  in another 
+ process.",NA
+System Directory Commands,"See 
+ Important System Directories
+  
+ /etc 
+  
+  
+ Configuration files 
+ location
+  
+ /home 
+  
+  
+ Home or user profile 
+ directories
+  
+ /proc 
+  
+  
+ System runtime 
+ information",NA
+Standard User Commands,"These are 
+ “Section 1” commands
+ , normal user commands that 
+ typi‐cally don’t 
+ require 
+ any 
+ special 
+ privileges 
+ beyond 
+ permissions to access files and the like.
+  
+ apropos 
+  
+  
+ Search for help on commands by 
+ title
+  
+ bash 
+  
+  
+ The Bourne-again shell
+  
+ cat 
+  
+  
+ Concatenate the input files to 
+ stdout
+  
+ cd 
+  
+  
+ Change the current 
+ directory
+  
+ cp 
+  
+  
+ Copy files or 
+ directories
+  
+ df 
+  
+  
+ Show space utilization by 
+ filesystem
+  
+ dig 
+  
+  
+ Look up DNS info on an 
+ address
+  
+ du 
+  
+  
+ Estimate disk 
+ usage
+  
+ find 
+  
+ Find files based on various conditions and execute actions 
+ against the results",NA
+System Commands,"Most of these are 
+ “Section 8” commands
+ , and 
+ may
+  require 
+ special privileges such as 
+ sudo
+  to run, depending on the system. 
+ Yes, some systems restrict the use of 
+ ping
+ !",NA
+About the Author,"Jim Lehmer has been “in computers” for over three decades. He 
+ has held various software development roles, including 
+ programmer, systems programmer, software engineer, team 
+ lead, and architect.
+  
+ Besides bragging about his wife, Leslie, his five children, and 
+ four grandchildren, his hobbies include reading, writing, 
+ running, hik‐ing, and climbing.",NA
+Acknowledgments,"Thanks to my coworkers, who inspired and attended the lunch-
+ and-learn sessions from which my ebook, webcast, and this 
+ report grew—especially Aaron Vandegriff and Rob Harvey. I 
+ received excellent advice and promotion from Professor Allen 
+ Downey, for which I am grateful. I am thankful to my editor at 
+ O’Reilly, Dawn Schanafelt, with her eye for detail and helpful 
+ suggestions. Finally, I owe more than I can repay (as usual) to 
+ my wife, Leslie, who deserves shared credit for putting up with 
+ me during the nights and weekends I obsessed over this project.",NA

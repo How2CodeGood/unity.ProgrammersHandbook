@@ -1,0 +1,5947 @@
+Larger Text,Smaller Text,Symbol
+Naked Objects ,"Thesis
+  · October 2003
+  
+ CITATION 
+  
+ 1
+  
+ READS 
+  
+ 2,567
+  
+ 1 author:
+  
+  
+ Richard Pawson 
+  
+ Naked Objects Group Ltd
+  
+ 10
+ PUBLICATIONS
+ 161
+ CITATIONS
+  
+ SEE PROFILE
+  
+ All content following this page was uploaded by 
+ Richard Pawson
+  on 27 November 2015.
+  
+ The user has requested enhancement of the downloaded file.",NA
+Naked objects,"A thesis submitted to the 
+  
+ University of Dublin, Trinity College 
+  
+ for the degree of 
+  
+ Doctor of Philosophy
+  
+ Richard Pawson, 
+  
+ Department of Computer Science, 
+  
+ Trinity College, 
+  
+ Dublin
+  
+ October 2003
+  
+ 1",NA
+Declaration,"I, the undersigned, declare that this work has not been previously submitted as an
+  
+ exercise for a degree at this or any other University, and that, unless otherwise stated, it
+  
+ is entirely my own work.
+  
+ ___________________
+  
+ Richard Pawson
+  
+ October 2003
+  
+ 2",NA
+Permission to lend or copy,"I, the undersigned, agree that Trinity College Library may lend or copy this thesis upon
+  
+ request.
+  
+ ___________________
+  
+ Richard Pawson
+  
+ October 2003
+  
+ 3",NA
+Abstract,"The original concept of object-oriented software development was that the objects would 
+ be  ‘behaviouslly-complete’  representations  of  the  domain  entities  that  they  model. 
+ Although  object-oriented  technologies  now  pervade  the  realm  of  business  systems 
+ development, business applications typically fall far short of this ideal of behaviourally-
+ complete  objects.   Instead,  business  system designs  continue  to  separate  data  and 
+ procedure,  even if both  constructs  are  implemented using object  technology.  This 
+ separation  increases  the  effort  involved  in  modifying  the  system  to  accommodate 
+ subsequent changes in requirements.
+  
+ This thesis argues that the continued separation of procedure and data is encouraged by 
+ established architectural approaches.  In the generic four-layer architecture, for example, 
+ there is almost always an explicit ‘task’ or ‘application’ layer that is procedural in nature. 
+ In  the  Model-View-Controller  (MVC)  pattern,  the  Controller  objects  are  often 
+ implemented as ‘use-case controllers’  even though that was not their original intent.  A 
+ new  approach  is  needed  that  offers  the  flexibility  brought  by  those  established 
+ architectural patterns, but without encouraging the separation of procedure and data.
+  
+ The proposed new approach is called ‘naked objects’: behaviourally-complete entity 
+ objects that are exposed directly and automatically to the user  -  such that all user tasks are 
+ fulfilled explicitly by invoking methods of those entity objects.  Using a suitable software  
+ framework  (two  of  which  are  described  in  the  thesis)  the  naked  objects approach  
+ delivers  four  principal  benefits.   Two  relate  to  the  developed  product: improved  
+ agility  (meaning  the  ease  with  which  unforeseen  changes  to  business requirements 
+ can be accommodated) and a more empowering style of user interface.  The other two 
+ principal benefits relate to the development process:  a faster development cycle  and  a  
+ common  language  between  developers  and  users  during  requirements analysis.
+  
+ 4",NA
+Acknowledgements,"The author would like to thank the following for their help in connection with this thesis:
+  
+  The management team at the Department of Social and Family Affairs, for their
+  
+ willingness to be the first organisation to attempt to build a real business system using
+  
+ the naked objects approach, and for providing unlimited access to evaluate the results.
+  
+ The Java Services team at Safeway, again for their willingness to experiment with a new
+  
+ approach, and for providing invaluable feedback that resulted in refinements to the
+  
+ approach
+  
+ Robert Matthews, who as the developer of the 
+ Naked Objects 
+ framework, provided an
+  
+ opportunity to explore many detailed implications of the naked objects concept using a
+  
+ purpose-designed tool.
+  
+ Dan Haywood for undertaking all the programming associated with the 
+ CarServ 
+ case
+  
+ study.
+  
+ My thesis supervisor, Vincent Wade, and Simon Dobson for his additional input.
+  
+ My family for their encouragement and support throughout this project.
+  
+ 5",NA
+CHAPTER 1 INTRODUCTION,NA,NA
+1.1 Motivation,"In February 2002 the Association of Computing Machinery (ACM) presented its annual 
+ A.M. Turing award to Ole-Johan Dahl and Kristen Nygaard of Norway
+  
+ ‘for their role in the invention of object-oriented programming, the most widely 
+ used programming model today. Their work has led to a fundamental change in 
+ how software systems are designed and programmed, resulting in reusable, 
+ reliable, scalable applications that have streamlined the process of writing 
+ software code and facilitated software programming.’ 
+ [4]
+  
+ The inventors of object-oriented programming conceived ‘objects’ as representations of 
+ the entities that model a chosen domain, with each object encapsulating the state of that 
+ entity (i.e. its attributes, including any relationships to other objects) together with the 
+ behaviours  associated with  that entity [29].  In other  words, objects  were originally 
+ conceived as being ‘behaviourally-complete’. That term is not meant to imply that an 
+ object provides every conceivable behaviour that could be required of it in any context. 
+ Rather, the term simply implies that within the context of a given application, all the 
+ functionality associated with a given entity is encapsulated in that entity, rather than being 
+ provided in the form of external functional procedures that act upon the entities.
+  
+ Today, however, most object-oriented designs, and especially object-oriented designs for 
+ business systems, do not match this ideal of behavioural-completeness.  Whether by 
+ deliberate design or not, the objects representing the business entities (such as Customer, 
+ Product, and Order) are often behaviourally-weak [96].  They typically have methods for 
+ updating the object’s attributes and relationships to other objects; possibly they have 
+ methods for implementing constraints on those attributes or relationships; and perhaps 
+ they have methods for implementing a few simple processing functions on the object. 
+ However, much of the business functionality required for the application is typically 
+ implemented  in  procedures  or  ‘controllers’  that  sit  on  top  of  these  entity  objects.
+  
+ Firesmith describes this pattern as:
+  
+  ‘dumb entity objects controlled by a number of controller objects’ 
+ [39]
+ . 
+  
+ It can be seen in most custom-built object-oriented business applications, as well as in 
+ publicly-available business object frameworks such as IBM’s San Francisco framework 
+ [13]
+ .
+  
+ 9",NA
+1.2 Objectives,"The objectives for this research were set as follows:
+  
+ 1. 
+  
+ To identify factors that cause, or reinforce, the tendency to separate procedure 
+  
+ and data in the design of systems, even where those systems are intended to use 
+  
+ object-oriented approaches.
+  
+ 2. 
+  
+ To identify and specify an approach to the design of  object-oriented business 
+  
+ systems that would help overcome those factors
+ .
+  
+ 10",NA
+1.3 Contribution,"The contribution of this research is the development of the ‘naked objects’ approach to 
+ designing business systems, and the demonstration that the adoption of this approach 
+ yields significant benefits both to the developed system and to the development process.
+  
+ Using the naked objects approach to designing a business system, the domain objects 
+ (such as Customer, Product and Order) are exposed explicitly, and automatically, to the 
+ user, such that all user actions consist of viewing objects, and invoking behaviours that 
+ are encapsulated in those objects.  It has been demonstrated that this approach yields four 
+ benefits:
+  
+ •
+  
+ The resulting systems are more agile, meaning that they can more easily be 
+  
+ modified to accommodate unforeseen future business requirements.  This is 
+  
+ primarily because the naked objects are forced to be behaviourally-complete.
+  
+ •
+  
+ The  resulting  systems  provide  the  user  with  a  more  empowering  style  of 
+  
+ interaction.
+  
+ •
+  
+ The development cycle is significantly shortened, because the presentation layer 
+  
+ is generated automatically from the domain object definitions, and because the 
+  
+ overall design is simplified.
+  
+ •
+  
+ The naked objects provide a common language between application developers 
+  
+ and  users,  which  facilitates  the  early  stages  of  requirements  gathering  and 
+  
+ domain modelling.
+  
+ This work has led directly to the creation of two independent frameworks to support the 
+ naked objects approach:  the proprietary 
+ Naked Object Architecture 
+  (commissioned by a 
+ department of the Irish government) and the open-source  
+ Naked Objects
+  framework.
+  
+ 11",NA
+1.4 Technical approach,"The research comprised six main phases: 
+  
+ •
+  
+ Researching the factors that tend to encourage the separation of procedure and 
+  
+ data even in object-oriented designs.
+  
+ •
+  
+ Designing a new approach to overcome this tendency.
+  
+ •
+  
+ Testing the approach through controlled experiments and real business case 
+  
+ studies, evaluating the results of each.
+  
+ •
+  
+ Identifying the potential benefits and/or limitations of this approach.
+  
+ •
+  
+ Performing  a  comparative  analysis  with  other  approaches  that  may  have 
+  
+ overlapping objectives or characteristics. 
+  
+ •
+  
+ Drawing conclusions.
+  
+ 1.4.1 
+  
+ Researching the factors that tend to encourage the separation of 
+  
+ procedure and data even in object-oriented designs
+  
+ This was primarily achieved by searching and analysing the existing literature on object-
+ oriented techniques, their advantages and problems.  Particular attention was paid to the 
+ origins of the object-oriented concept, how the thinking evolved over time, and how the 
+ idea was combined with other areas of work.
+  
+ This research, which is presented in 2, suggests that one of the major factors tending to 
+ encourage the separation of data and procedure is the ‘use-case controller’ [41], which is 
+ effectively a functional procedure.  The use-case controller is inherent in the ‘4-layer 
+ architecture’ which has become the dominant design for contemporary business systems 
+ development, and is directly encouraged by many object methodologies including the 
+ Unified Process [57].  There is also evidence (e.g. [98]) to suggest that the use-case 
+ controller pattern is often an accidental by-product of the widely adopted Model-View-
+  
+ 12",NA
+CHAPTER 2 THE EVOLUTION OF OBJECT-ORIENTED,NA,NA
+DESIGN,"The first research objective was to identify the principal reasons why the design of 
+ modern business systems continues to separate data and procedure even where there is an 
+ intent  to  use  object-oriented  principles  and  techniques.   The  approach  taken  was 
+ essentially historical:  examining the evolution of object-oriented design concepts and 
+ their application to business systems design.  That evolution, presented in this chapter, 
+ reveals a number of key developments, which, it is argued, have tended to reinforce the 
+ continued practice of separating data and procedure. 
+  
+ Simula and the birth of object-orientation
+  
+ The idea of object-oriented software originated in Norway in the mid 1960s with Simula, 
+ an extension to the Algol programming language. Simula was designed to make it easier 
+ to write programs that simulated real-world phenomena such as industrial processes, 
+ engineering problems, and disease epidemics 
+ [29]
+ .
+  
+ Prior  programming  languages  and  techniques  explicitly  separated  software  into 
+ procedure and data. The assumption underlying this separation was that a computer 
+ system repeatedly applies the same procedure to different data.  Simulation software 
+ challenges that assumption. Sometimes the data is fixed and the programmer manipulates 
+ the functional characteristics of the system until the output meets the required criteria. For  
+ example,  the  data  might  represent  the  roughness  of  a  typical  road  and  the 
+ programmer might alter the design of a simulated truck suspension system until the 
+ desired quality of ride is achieved. Sometimes it is difficult to tell data and functionality 
+ apart.  When another axle is added to a simulated truck, for example, does that constitute 
+ changing the data (the number of wheels) or the functionality (the way in which the truck 
+ translates road bumps into ride quality)?
+  
+ The inventors of Simula had the idea of building systems out of  ‘objects’. Each software 
+ object  not  only  knows  the  properties  or  attributes  of  the  real-world  entity  that  it 
+ represents, but also knows how to model the behaviour of that entity. Thus each Wheel 
+ object not only knows the dimensions and mass of a wheel, but also knows how to turn, to 
+ bounce, to model friction, and to pass forces on to the Axle object. These behaviours may 
+ operate continuously, or they may be specifically invoked when needed by sending a 
+ message to the object. 
+  
+ 16",NA
+CHAPTER 3 INTRODUCING NAKED OBJECTS,"The solution to the dilemma posed at the end of the previous chapter is to make the View 
+ and Controller roles (as originally defined in MVC) completely generic.  In such an 
+ approach a business application is written solely in terms of the domain entity (i.e. Model) 
+ objects.  The presentation layer, which permits the user to view those objects and to 
+ invoke behaviours on them, would be provided automatically.  The author has dubbed this 
+ concept ‘naked objects’, because as far as the user is concerned he or she is viewing and 
+ manipulating the ‘naked’ business domain objects. 
+  
+ These business objects actually reside in a domain object layer of the architecture, which is 
+ often implemented on a shared server platform.  Thus the user does not strictly view and 
+ interact with the business objects, but rather with Views and/or Controllers that correspond 
+ to those objects and reside in a presentation layer.  However, the concept of naked objects 
+ implies an enforced correspondence between the two layers, so the illusion of 
+ manipulating the business objects is total.  See Figure 3-3.1.
+  
+  
+ Figure 3-3.1 With naked objects the domain objects are rendered visible to the 
+ user by means of a completely generic presentation layer or ‘viewing mechanism’.   
+ All required business  functionality must therefore be encapsulated on the domain 
+ objects.
+  
+ 26",NA
+3.1 Frameworks to support naked objects,"Building  systems  using  naked  objects  implies  some  sort  of  software  framework. 
+ (‘Framework’ is used here in the sense defined by Deutsch i.e. a set of classes that forms 
+ a skeleton around which an application is constructed [33]).  In this case the framework 
+ must provide, at minimum, two capabilities.  The first capability is an implementation of 
+ the generic presentation layer (i.e. a set of classes that fulfil the roles of View and 
+ Controller in an MVC architecture).  The second is some mechanism whereby that
+  
+ 27",NA
+3.2 Some immediate issues,"Even before  attempting  to  apply  and evaluate  the  concept  of  naked  objects,  some 
+ immediate issues arise:
+  
+ •
+  
+ How can the user create a new object instance, or perform other operations that 
+  
+ cannot naturally be associated with a single object instance?
+  
+ •
+  
+ How does the concept of a generic presentation layer permit alternative visual 
+  
+ representations of an object?
+  
+ •
+  
+ How  is  the  concept  of  a  generic  presentation  layer  compatible  with  the 
+  
+ requirement to support multiple forms of user platform?
+  
+ •
+  
+ With no use-case controllers permitted, how can naked objects support the idea 
+  
+ of business process?
+  
+ •
+  
+ If core objects are exposed directly to the user, how is it possible to restrict the 
+  
+ attributes and behaviours that are available to a particular user, or in a particular 
+  
+ context?
+  
+ •
+  
+ How is it possible to invoke multiple parameter methods from the user interface?
+  
+ 4
+  This book can also be read online 
+ www.nakedobjects.org/contents.html
+  
+ 5
+  This paper is reproduced in 
+  
+ 29",NA
+3.3 Proposed benefits for naked objects,"Four possible benefits from designing with naked objects  can be inferred from the 
+ preceding discussion:
+  
+ •
+  
+ Behaviourally-complete objects, leading to more agile systems
+  
+ •
+  
+ A faster development cycle
+  
+ •
+  
+ A common language between developers and users
+  
+ •
+  
+ A more empowering user interface
+  
+ These are briefly defined below.
+  
+ Behaviourally-complete objects, leading to more agile systems. 
+ The initial motivation 
+ behind the idea of naked objects is to encourage the design of behaviourally-complete 
+ objects, and thereby to deliver systems that are more agile  -  meaning that they can be
+  
+ 37",NA
+CHAPTER 4 DEVELOPMENT OF A NEW BENEFITS,NA,NA
+PROCESSING SYSTEM FOR THE IRISH,NA,NA
+GOVERNMENT,"In order to test the viability of the naked objects approach, and to validate the benefits 
+ predicted in the previous chapter, the author sought appropriate opportunities to design 
+ and implement business systems from naked objects.  The first such opportunity arose at 
+ the Irish Department of Social and Family Affairs early in 1999.",NA
+4.1 Background to case study,"The Department of Social and Family Affairs (DSFA) is the department of the Irish 
+ government responsible for administration of social benefit schemes.  Prior to 1998 it was 
+ known as the Department of Social Welfare.  The Department depends heavily upon 
+ information technology to fulfil its tasks. It has some 2000 PCs, but its core transaction 
+ processing programs (both on-line and batch) are mainframe-based, and accessed via some 
+ 4000 green-screen dumb terminals. These systems are technologically out-of-date and  
+ increasingly  expensive  to  maintain.   For  example,  they  require  manual  re-
+ programming every time the government changes the benefit rates or rules.  Currently, 
+ there is a separate system for each major type of benefit - Child Benefit, Disability, 
+ Unemployment and so on. Although there is a Central Records System (a customer 
+ database, effectively), there is much less sharing of both information and functionality than 
+ there could be.  For example, many systems have their own separate mechanisms for 
+ generating  payments.  Word  processing,  email  and  calendar  facilities  are  provided 
+ through the mainframe-based All-in-One suite, and there is no integration between this and 
+ the transactional systems. 
+  
+ Demand for greater organizational agility within the Department has been growing for 
+ some years, and this translates into demand for greater agility within the information 
+ systems.   Technological  developments  such  as  the  Internet  and  smart  cards  offer 
+ significant potential benefits both to the DSFA and its customers, including ease of 
+ access,  richness  of  information,  and  cost  savings.   The  government  has also  been 
+ pressing for more agility, both in the ability to introduce new forms of benefits, and in 
+ improving service to the customer.  There are various e-government initiatives in Ireland, 
+ of which the most significant is the REACH programme, which will provide a common‘e-
+ broker’ for accessing information about the services offered by multiple government
+  
+ 39",NA
+4.2 Early experimentation ,"Early in 1999 the IS management became aware of the author’s research on building 
+ business systems from behaviourally-complete objects, and the emerging concept of naked 
+ objects.  Although the management did not necessarily accept all the theoretical arguments 
+ for naked objects at that stage, the hypothesized benefits meshed well with the 
+ Department’s own goals for its proposed new architecture.  The IS management was also 
+ attracted to the visual concreteness of naked objects (i.e. the fact that core business objects 
+ were also user constructs), and felt that this would make it easier to get non-IT managers 
+ more involved with crucial design decisions. 
+  
+ Early  in  1999,  the  IS department  initiated  some educational  workshops  on  object-
+ oriented thinking for some of its senior managers, both IT and business, with the help of 
+ the author.  Given that there was no framework to support naked objects at that point, and 
+ there were no known examples of transactional business systems having been built this 
+ way, a piece of consumer software called The Incredible Machine was used as a metaphor 
+ throughout the workshop.  (This is a good example of using a single metaphor to guide the 
+ high-level design of a business system, as advocated in the discipline of Extreme 
+ Programming 
+ [9]
+ ).  In The Incredible Machine (see Figure 4-4.1), the user is presented 
+ with a series of physical challenges, and must construct a simulation of a complex, 
+ improbable-looking, machine (in the style of the artists Heath Robinson or Rube Goldberg) 
+ to solve them.  As well as demonstrating the notion of a problem-solving system, The 
+ Incredible Machine is also very clearly object-oriented from the perspective of the user: 
+ the elements that the user drags from a parts catalogue into the workspace are not just 
+ visual representations, but bring with them the complete simulated physical behaviours of 
+ that part. 
+  
+ 40",NA
+4.3 Applying the concept to Child Benefit Administration ,"At the beginning of 2000 the business case for action became more urgent.  The existing 
+ Child Benefit Administration (CBA) system needed to be replaced with some urgency. 
+ The Government had indicated possible future changes to Child Benefit that the existing 
+ system simply could not be modified to address (specifically, the possibility of the rate of 
+ benefit being dependent upon the age of the child).  Child Benefit is one of the simpler 
+ schemes that the DSFA administers and is relatively small in scale: the existing system 
+ had around 80 users.  Yet the activities involved in processing a claim had much in 
+ common with other schemes.  It seemed an ideal opportunity to test the deployment of a 
+ new approach. 
+  
+ In a series of workshops involving both senior managers and user representatives, the 
+ responsibilities outlined in the original object model (from the one-day workshop) were 
+ now fleshed out from the particular perspective of Child Benefit Administration.  Object 
+ responsibilities were refined and new responsibilities identified.  New sub-classes and 
+ secondary (or ‘aggregated’) objects were also added.  And the whole model was crudely 
+ tested against a number of operational business scenarios.  Additionally, the model was 
+ tested (on paper) against a variety of scenarios of how the DSFA’s business might change 
+ in future.  The business object model was captured in the form of textual descriptions, 
+ which are reproduced in 10.3. 
+  
+ During these workshops, the DSFA made use of a very early prototype of the Java-based 
+ framework being  developed  by Robert  Matthews,  which was eventually  to  become 
+ Naked Objects.
+   Although this was not the technology that the DSFA eventually used for 
+ implementation, using the framework helped to build the participants’ understanding of 
+ the concept of naked objects. The ability to capture the object model in the form of a 
+ usable system (rather than just as diagrams) was a significant factor in persuading 
+ managers to participate in the modelling process.",NA
+4.4 Technology demonstrators ,"Meanwhile, another group of IT managers within the DSFA worked on defining the 
+ principles of the  
+ Naked Object Architecture
+  that would fully support the concept of
+  
+ 44",NA
+4.5,"•
+  
+ Sun’s Enterprise Java Beans (EJB)
+  
+ •
+  
+ Microsoft’s COM+
+  
+ •
+  
+ A proprietary object-oriented package.",NA
+Phase I implementation ,"Having evaluated the demonstrators, the DSFA put out a new RFT for the development 
+ and implementation of a full-scale  
+ Naked Object Architecture
+  plus a specified set of 
+ domain object classes needed to provide a complete new application that would replace the 
+ existing Child Benefit Administration system.  The RFT did not provide a full functional  
+ specification,  but  it  did  provide  the  description  of  the  high-level responsibilities 
+ required of the core business objects (Appendix II).  The contract was awarded in February 
+ 2001 to DMR Consulting (since renamed ‘Fujitsu Consulting’) -with the original intent 
+ that the new system would go live in March 2002.  (The author continued  to  act  as  an  
+ advisor  to  the  DSFA  on  an  ad  hoc  basis  throughout  the implementation  -  but had no 
+ direct connection to the contractor). The project was subject to delays  -  some from over-
+ runs of effort, some from technical difficulties, and some from industrial action.  However, 
+ the system eventually went live in November 2002, completely replacing the old system by 
+ the end of that month.
+  
+ Figure 4-4.3 shows the physical architecture of the system.  The client machines (shown 
+ on the left) run a generic viewing mechanism written as a Java applet running within a 
+ browser.  The business objects run on the ‘COM+’ servers shown to the right of the client 
+ machines.  Microsoft SQL Server is the primary persistence mechanism.  However, 
+ several of the object classes obtain some or all of their data from existing databases 
+ running on Oracle  or OpenVMS storage platform (because that data is shared with other 
+ applications). 
+  
+ 46",NA
+4.6 Phase II,"At the time of writing, the DSFA has indicated its intention to proceed with rolling out the 
+ Naked Object Architecture
+  into other benefit areas, starting with the state pension 
+ administrations systems.  The outline object model has already been extended to cover this 
+ area.  An RFT was issued for this in the Autumn of 2002, but was subsequently withdrawn 
+ due to government-level budget constraints.  Phase II has been rescheduled to commence 
+ late 2003.
+  
+ 49",NA
+4.7 Evaluation,"In February 2003 the author conducted an evaluation of the implemented system, by 
+ interviewing 25 individuals connected in some way with the project:
+  
+ •
+  
+ 7   IT  managers  who  had  some  responsibility  for  the  specification  and/or 
+  
+ implementation of the 
+ Naked Object Architecture
+  
+ •
+  
+ 3 business managers who were involved in the business object modelling for the 
+  
+ first  business  application  (Child  Benefit  Administration)  using  the  new 
+  
+ architecture.
+  
+ •
+  
+ 15 users of the implemented Child Benefit Administration system all located in 
+  
+ the DSFA office in Letterkenny, Donegal. 
+  
+ Details of the interview method, the questionnaires used, summaries of responses, and 
+ additional commentary on these three sets of interviews are provided in 10.9, 10.13.16, 
+ and 10.17.10 respectively.
+  
+ The following is a list of general messages derived from the analysis of those interviews 
+ and the author’s evaluation of the system itself. 
+  
+ 4.7.1 
+  
+ User reaction to the system has been very positive
+  
+ Figure 4-4.6 shows that almost all of the users recognize and value the flexibility that the 
+ new system provides them in terms of their way of working.
+  
+ 12
+  
+ 10
+  
+ 8
+  
+ 6
+  
+ 4
+  
+ 2
+  
+  
+ 0
+  
+ Agree
+  
+ Agree
+  
+ Neither agree
+  
+ Disagree
+  
+ Disagree
+  
+ strongly
+  
+ somewhat
+  
+ nor disagree
+  
+ somewhat
+  
+ strongly
+  
+  
+ Figure 4-4.6 Response of 15 users to the proposition: 
+  
+ ‘I value the flexibility that the system provides in choosing how to 
+ undertake a task’
+  
+ 50",NA
+4.8 Conclusions from this case study,"The DSFA’s new CB application running on the  
+ Naked Object Architecture
+  clearly 
+ demonstrates the primary characteristics of naked objects:",NA
+CHAPTER 5 GUIDELINES FOR DESIGNING NAKED,NA,NA
+OBJECT SYSTEMS,"The early work on the DSFA’s business object model and its application to Child Benefit 
+ Administration was conducted without any formal methodology or written guidelines.  It 
+ relied heavily  upon the  author’s commitment to  the  concept  of naked objects,  and 
+ experience gained from other exploratory applications conducted over the same period 
+ using the  
+ Naked Objects
+  framework.  (Some of these other exploratory exercises are 
+ described in [86]). 
+  
+ It has long been acknowledged that good object modellers do not need formal guidance 
+ for identifying objects and defining their responsibilities 
+ [97]
+ .  And it can be argued that 
+ any attempt to use step-by-step guidance to reduce the need for object modelling skills is 
+ in the long run likely to be detrimental. It is also worth pointing out that there is a general 
+ move away from formal heavyweight methodology towards more agile techniques  
+ [2] 
+ and even a growing argument that heavyweight methodologies are largely a fiction [78] 
+ and  even  that  software  development  does  not  necessarily  require  any  formal 
+ methodology at all  -  so-called ‘amethodological development’ 
+ [116]
+ .
+  
+ Nevertheless, there are also good arguments for providing some formal guidance for the 
+ design of business systems using naked objects.  It is clear, for example, that later on in 
+ the  DSFA  project,  when  the  development  was  being  conducted  by  a  third  party 
+ contractor,  the  project  suffered  from  not  having  any  such  formal  guidance.   The 
+ contractor used its own ‘waterfall’ style methodology throughout the project.  Several 
+ managers at the DSFA have since expressed the view that the contractor’s methodology 
+ did not fully exploit the positive advantages of naked objects, nor fully address its 
+ particular needs. 
+  
+ The negative impact of this on the delivered product was probably small, if only because 
+ the 
+ Naked Object Architecture
+  enforced a commitment to naked objects.  However, the 
+ negative impact on the development process was substantial.  Several of the DSFA 
+ managers felt that a more appropriate methodology would have saved not only time and 
+ effort, but also a considerable amount of frustration.  Figure 5-5.1 and  Figure 5-5.2, 
+ extracted from the survey of DSFA IT Managers (10.9) show strong support for the view 
+ that the process could have benefited from greater use of prototyping, and preference for a 
+ more iterative approach to delivery than was used.
+  
+ 62",NA
+5.1 Look for projects with characteristics that will benefit most from,NA,NA
+using naked objects,"One of the benefits proposed in  3 is that a user interface consisting of naked objects treats 
+ the user more like a problem-solver and less like a process-follower.  Any business 
+ problem where this would be seen as a benefit is therefore a good candidate. Systems at 
+ the customer interface are a good example.  Pricing and promotions, resource planning, 
+ trading,  network  operations,  and  risk  management  are  also  examples  of  intense 
+ operational activities that demand a problem-solving approach. Any business activity that 
+ fits the value shop 
+ [111]
+  model of business (as distinct from the value chain [89])  -such as 
+ project management, emergency response, campaign management  -  is also a candidate.
+  
+ 64",NA
+5.2 The pre-requisites for starting a naked objects project are:  good,NA,NA
+"OO modelling skills, a suitable software framework, and a",NA,NA
+common understanding of the intent,"There are three pre-requisites for starting a naked objects project.  The first is that there 
+ exists within the team someone with strong object modelling skills.  There is evidence to 
+ suggest that using naked objects can help to improve participants’ understanding of object-
+ oriented  techniques  (see,  for  example,  the  last  chart  in  10.21.22),  and  can encourage 
+ better object modelling, but it is still necessary to have at least one individual with good 
+ experience in object modelling to help the team to identify objects and their 
+ responsibilities. 
+  
+ The second pre-requisite is that the team has access to a software framework designed to 
+ support the concept of naked objects (such as the DSFA’s 
+ Naked Object Architecture
+  or 
+ the 
+ Naked Objects
+  framework).  The team must have developers who are experienced in 
+ using the framework.  Attempting to learn the framework at the same time as learning 
+ object modelling, or to develop a new framework as part of the project, is possible (as 
+ demonstrated by the DSFA) but is likely to hinder the realization of the benefits of using 
+ the naked objects approach 
+ on that project
+ . 
+  
+ 67",NA
+5.3 Structure the project in two distinct phases: exploration and,NA,NA
+delivery,"The advantages offered by naked objects will be best realised if the project is structured in  
+ two  distinct  phases:  exploration  and  delivery.   (The  relationship  between  these 
+ concepts and other methodologies will be addressed in 8.)
+  
+ The exploration phase, which is conducted by a small team of developers and users 
+ (and/or other business representatives) comprises both object modelling and prototyping. 
+ A unique feature of naked objects is that these two activities become strongly synergistic. 
+ Conventionally, development teams must choose between a screen-based prototyping 
+ approach to capturing requirements, and a more abstract object-modelling approach. 
+ Naked objects fuse these two activities together, and deliver the benefits of both.  The 
+ object modelling encourages the team to explore alternative representations and to build 
+ in  sufficient  abstraction  to  facilitate  future  changes,  while  the  concreteness  of  the 
+ working prototype provides real-time feedback on practicality  -  as well as stimulating 
+ new suggestions in its own right.   It is quite possible that such a period of exploration 
+ will result in a change to the intended scope of the system.
+  
+ 7
+  Several such examples are provided on 
+ www.nakedobjects.org
+ .
+  
+ 68",NA
+"5.4 During exploration, identify objects and their responsibilities",NA,NA
+"directly, not from use-cases","The use-case driven approach, formalized by Jacobson 
+ [56]
+ , is now so well established 
+ that it is rarely questioned.  From a business perspective, specifying systems as scripted 
+ procedures fits well with the ideas of task optimization and efficiency maximisation, 
+ concepts first espoused by Frederick Taylor in the late nineteenth and early twentieth 
+ century  
+ [61, 114]
+ . The  limitations  and negative social  consequences  of translating 
+ Taylor’s approach into the modern world of information processing have been clearly 
+ described by Garson 
+ [43]
+ , Brown 
+ [16]
+  and others, but there is no doubting that it is still 
+ very popular. 
+  
+ 69",NA
+"5.5 During exploration, capture the object definitions directly into",NA,NA
+working code,"During the exploration phase it is recommended that object definitions be captured directly 
+ into working code i.e. actual classes in the programming language being used. With an 
+ object-oriented programming language (such as Java, C#, or Smalltalk) a new domain 
+ class can be added in seconds, as can new attributes.  If the programming is done within a 
+ state-of-the-art development environment that supports macros, coding patterns and 
+ idioms, then it is possible to define associations between object classes, including many-to-
+ many and bi-directionally navigable associations, almost as quickly. 
+  
+ Most business system development projects do not attempt to capture the business object 
+ model directly into code because such a definition would be almost unreadable by any
+  
+ 71",NA
+5.6 Develop the production system one scenario at a time,"If the decision is taken to proceed from exploration to delivery, the system should be 
+ recoded from scratch.  The exploratory prototype can certainly be used to guide and 
+ inform  the  main  development,  but  only  the  object  definitions  (including,  where 
+ appropriate, the interfaces and method signatures) should be carried forward.
+  
+ Furthermore, it is recommended that in the delivery phase the system be developed 
+ incrementally  -  where each increment delivers something of value to a user, such as a 
+ use-case.  How is this recommendation consistent with the earlier injunction against use-
+ case driven approaches during the exploration phase (page 69)?  To reiterate the point, 
+ where use-cases are defined before the objects and their natural responsibilities have been 
+ identified, the risk is that it will encourage the specification of behaviourally-thin business 
+ objects, supported by use-case controllers.  But once exploration has been completed the 
+ principal business objects and their responsibilities will have been broadly defined and 
+ both programmers and user representatives should have grown comfortable with the idea 
+ that a system can consist solely of behaviourally-complete domain objects exposed directly 
+ to the user  -  because they will have developed and used a prototype. Introducing use-
+ cases after this point avoids the risks discussed earlier, and indeed potentially provides an 
+ appropriate discipline.
+  
+ Nor are use-cases the only possible unit of incremental user value. Extreme Programming 
+ [12], for example, advocates developing the system one ‘story’ at a time, and Feature-
+ Driven Development 
+ [81]
+  advocates developing the system one user-valued ‘feature’ at a 
+ time.  (Both of these methodologies are discussed further in 8, including their potential 
+ compatibility with naked objects.)  For the remainder of this chapter, the word 
+ ‘scenario’will be used to mean an increment of value to a user and can be interpreted as a 
+ ‘use-case’ or a ‘story’ or a ‘feature’ if desired.
+  
+ In the delivery phase, an incremental approach to delivery, one scenario at a time not only 
+ encourages the early delivery of value to the users, but also provides an appropriate 
+ degree of discipline to ensure that the system provides all the functionality needed to 
+ complete the most common tasks.
+  
+ Some of the scenarios will already have been prototyped during exploration, and if they 
+ have been formally documented they can be used to guide development of the same 
+ scenarios  in  the  delivery  phase.  However,  this  small  set  will  almost  certainly  not 
+ constitute a full specification.  Many more scenarios will need to be specified during the 
+ delivery phase.  Writing these scenarios will be considerably easier having already
+  
+ 78",NA
+5.7 During the delivery phase capture each scenario as executable,NA,NA
+user acceptance tests,"This concept of articulating requirements in the form of scenarios that are expressed 
+ directly in terms of operations on specific objects opens up another intriguing possibility: 
+ that of capturing those scenarios in the form of executable acceptance tests. 
+  
+ The idea of writing executable user-acceptance tests in advance of developing the actual 
+ system is advocated by Extreme Programming (XP). In XP, planning is done at the level 
+ of user-generated ‘stories’, two or three sentence statements of requirement, which are 
+ prioritized  into  releases.   When  a particular  story  is  to  be implemented,  the  short 
+ description is fleshed-out through  direct discussion  between  developer and user. In 
+ theory, this discussion culminates in one or more acceptance tests for that story, written 
+ by the user, or jointly by the user and a developer.   By writing them in executable form, 
+ the developers can run these tests frequently during the development of the story, to get 
+ an  indication  of  progress,  and  can  run  them  as  regression  tests  after  subsequent 
+ refactoring [40].
+  
+ However, it is notoriously difficult to write executable acceptance tests for systems with 
+ graphical user interfaces (GUIs) [60].   There are many tools that can capture and replay 
+ the keyboard and mouse events of an actual usage, but this approach to testing has many 
+ problems [44].  Any change to the layout or style of the user interface will require these 
+ tests to be re-recorded, as, in many cases, will porting the application onto a machine other 
+ than the one where the test was recorded.  Moreover, this record-and-playback approach to 
+ testing can only be applied after the system has been developed.
+  
+ Some of these recording tools provide high-level GUI scripting languages that, in theory, 
+ would allow the test scripts to be written in advance of writing the system.  However, this 
+ still leaves the problem that it is very difficult for the user to imagine a yet-to-be-
+ implemented user interface in sufficient detail to be able to write a detailed test script.
+  
+ A more promising approach lies in framework-based tools, in which the tests are written not 
+ in terms of specific user gestures but in terms of higher-level actions such as opening
+  
+ 79",NA
+CHAPTER 6 TESTING THE APPLICATION OF THE,NA,NA
+GUIDELINES AT SAFEWAY,"Having developed the guiding principles defined in the previous chapter, an opportunity 
+ was sought to apply them on a new project starting from scratch.  Such an opportunity 
+ arose  at  Safeway  Stores  in  the  UK,  where  two  small  naked  objects  project  were 
+ undertaken during the course of 2001.  Specifically:
+  
+ -
+  
+ Both the projects were assessed against the characteristics defined on page 64 before 
+  
+ commencement.
+  
+ -
+  
+ In both cases the three pre-requisites specified on page 67 were met.
+  
+ -
+  
+ Both projects started with a time-boxed exploratory phase involving a small team of 
+  
+ developers and business representatives, and resulting in a working prototype that 
+  
+ implemented an outline business model as naked objects.
+  
+ -
+  
+ In both exploration phases the objects were identified directly instead of through use-
+  
+ cases, and were captured directly into working code.
+  
+ -
+  
+ One of the projects went forward into a delivery phase, and was recoded from 
+  
+ scratch 
+ on a incremental one-scenario-at-a-time basis.
+  
+ -
+  
+ The concept of capturing scenarios as executable acceptance tests was introduced 
+  
+ towards the end of the project, when the test classes became available as part of the 
+  
+ Naked Objects
+  framework, but these were then successfully deployed.",NA
+6.1 Background,"Safeway Stores is the fourth largest supermarket chain in the UK, with over 480 stores 
+ ranging from hypermarkets to local convenience outlets. 
+  
+ IT management at Safeway became aware of the author’s work on naked objects early in 
+ 2001.   It  was  initially  attracted  to  the  concept  not  as  an  approach  to  software 
+ development, but as a way to train developers to think in a more object-oriented fashion. 
+ Although Safeway has to maintain a significant range of systems developed in Cobol,  by 
+ 2001 Java had become its language of choice for new systems development, and the 
+ company had previously invested in training a number of its developers to use that 
+ language.  However, the management recognized that while it had been reasonably 
+ successful in teaching its developers to use the syntax of Java, many had not adopted the
+  
+ 83",NA
+6.2 Opportunity,"The first opportunity arose in the area of pricing and promotions.  Safeway had recently 
+ changed  its  marketing  strategy.   The  new  strategy  is  to  compete  through  special 
+ promotions that offer up to 50% discounts on particular food and drink lines, designed to 
+ bring more customers into the store.  Each week it prints and distributes some 11 million 
+ 4-page colour ‘flyers’ to households in the catchment areas for its stores.  To prevent the 
+ competition from matching these offers, the set of promotions is constantly changed. 
+ Stores are grouped  into clusters, and each cluster offers a different package of around 40 
+ special promotions each week. 
+  
+ Implementing these promotions involves managing the supply chain to cope with big 
+ increases in demand for the discounted items, communicating the price changes to the 
+ point-of-sale systems in the stores, and printing and distributing the promotional flyers, 
+ in-store banners and shelf labels.  Systems exist to manage each  of these activities 
+ individually, but the overall planning and coordination of these activities is intensely 
+ manual, as is the  planning process.  Promotions managers are constantly exploring 
+ combinations of special offers with the intent of attracting the maximum number of 
+ shoppers who will then go on to buy regular items from the store, without merely 
+ encouraging ‘cherry pickers’ who take the best offers and nothing else.  Each special offer 
+ must be coordinated with the supplier for logistics planning and, in some cases, to share 
+ the cost.
+  
+ These 
+ managers 
+ would 
+ benefit 
+ from 
+ having 
+ a 
+ purpose-designed 
+ ‘Deal 
+ Nominations’system to nominate new deals, forecast sales and availability, simulate their 
+ roll-out through the store clusters, and then coordinate their execution through the supply 
+ chain",NA
+6.3 Exploration phase,"A team was put together consisting of business domain experts, potential users, Java 
+ developers, database managers (because the prototype would need to access copies of 
+ existing databases) and an overall project manager.  The project  manager and two 
+ developers were full-time roles; others were very part-time. In addition to the core team, 
+ there  were  a  number  of  managers  closely  monitoring  the  project  to  evaluate  the 
+ effectiveness of the naked objects approach.  The author acted as a consultant, providing 
+ the strong object modelling skills cited as one of the pre-requisites on page  67.  The
+  
+ 85",NA
+6.4 The second project,"Meanwhile, another group at Safeway had seen the Deal Nominations prototype and 
+ thought that the approach could help them with another difficult business problem.  This 
+ project is known as ‘cluster-based pricing’ (CBP), but the details of this application are 
+ commercially sensitive.  Naked objects were initially seen as a way to facilitate the 
+ modelling of the CBP requirements rather than to implement the finished system.  As the 
+ exploration progressed, however, it became clear that the users liked the concept very 
+ much. IT management also recognized that this system made an ideal candidate for a full-
+ blown trial of the 
+ Naked Objects
+  framework: the system offered high business value but 
+ had a small user base. 
+  
+ At that time, the  
+ Naked Objects
+  framework lacked the enterprise services needed to 
+ implement real systems.  Safeway therefore made available its best Java developer to 
+ explore possibilities.  It soon became clear that the object/relational mapping required 
+ between Naked Objects and Safeway’s existing mainframe databases could be achieved 
+ using Enterprise Java Beans (EJB) and XML.  (Source code for this ‘mid-tier’ has since 
+ been developed, tested and contributed to the open source community.)
+  
+ The exploration phase lasted four weeks, followed by three weeks of planning for the 
+ delivery phase, which included some architectural considerations.  When the delivery 
+ phase commenced, only the object definitions were carried forward.  All the Java code 
+ needed for the release was written from scratch, adopting a more rigorous approach to 
+ both coding and testing. Development was done on a scenario-by-scenario basis.  The 
+ framework to support the writing of executable acceptance tests became available only
+  
+ 87",NA
+6.5 Evaluation,"The intent behind the guidelines set out in 5 was to make it easier to realize the full set of 
+ benefits claimed for naked objects in 3.  In evaluating the Safeway projects, emphasis was 
+ placed on evaluating those of the claimed benefits that had not already been clearly 
+ demonstrated by the DSFA case study.
+  
+ To conduct this evaluation the author (who had acted as a part-time consultant and coach 
+ on both projects) interviewed 10 individuals who had been involved in one or both of 
+ these projects.  The interview group was split approximately equally between developers 
+ and business user representatives.  (A couple of the individuals combined both roles). 
+ This population of 10 represented almost all those who had had a significant involvement 
+ in these projects.
+  
+ Despite the fact that the interviews were conducted 12 months after the last naked objects 
+ project had been completed, the responses convey a passion for the approach, from 
+ developers and business representatives alike.  Several expressed the view that this was 
+ the way that the organization ought to be developing all its new business systems, and felt 
+ disappointed (even ‘cheated’) that the exploration  projects  had not gone on to 
+ implementation using the same approach.
+  
+ 88",NA
+CHAPTER 7 CARSERV -  A COMPARATIVE,NA,NA
+IMPLEMENTATION,"Taken  together,  the  testimony  of  business  sponsors  and  users  of  real  business 
+ applications at the DFSA (Chapter 4) and Safeway (Chapter 6) affirm all the benefits 
+ predicted for naked objects at a qualitative level.
+  
+ Two of the benefits (a faster development cycle, and improved agility of the resulting 
+ system) are potentially quantifiable. The other two benefits (improved communication 
+ between developers and users during requirements analysis, and a more empowering style 
+ of user interface) would be difficult to quantify. 
+  
+ This chapter describes a controlled experiment to compare a system designed using naked  
+ objects  with  a  system  of  equivalent  functionality  designed  using  a  more 
+ conventional approache, in order to quantifiably test the hypotheses that the use of naked 
+ objects would speed up the development cycle and improve the agility (meaning the 
+ maintainability) of the resulting system.
+  
+ The application chosen for the experiment is called  
+ CarServ
+ , which is designed to support 
+ the operations of a typical automotive dealership including sales, servicing and 
+ administration.  The conventional implementation of 
+ CarServ
+  already existed before this 
+ experiment.  It was written in 2001 by Dan Haywood as a teaching example, and was 
+ described in 
+ [20]
+ .  This conventional version is referred to in the rest of this chapter as 
+ CarServ1.
+ 13",NA
+7.1 Description of ,NA,NA
+CarServ1,"CarServ1 
+ adopts a typical multi-layered architecture based on four layers: 
+  
+ •
+  
+ The presentation layer creates the graphical views of the objects, and captures 
+  
+ user inputs.  The presentation layer was written using Java 
+ Swing
+  components. A 
+  
+ typical screen from the system is shown in Figure 7-7.1
+  
+ 13
+  The full source code for 
+ CarServ1
+  is available at 
+ www.bettersoftwarefaster.org
+  
+ 94",NA
+7.2 Defining a comparative implementation,"In January 2003, Haywood collaborated with the author to re-implement the application 
+ using naked objects (by means of the 
+ Naked Objects
+  framework).  This naked objects 
+ version is referred to as 
+ CarServ2
+ . 
+  
+ Comparative implementations of object-oriented designs can be very instructive  - see for 
+ example  
+ [103]
+  and 
+ [32]
+ .  But they are also somewhat problematic, being susceptible to 
+ several possible biases.  It is not claimed that this experiment is proof against all possible 
+ biases, but it was designed to eliminate the most obvious ones:
+  
+ •
+  
+ All  the  code  for  both  implementations  was  written  by  the  same  person 
+  
+ (Haywood), an experienced business systems developer, in the same language 
+  
+ (Java), and using the same integrated development environment, the Togethersoft 
+  
+ Control Center.  They were also written just a few months apart.  These factors 
+  
+ help to allay suspicions that the results might reflect significantly different levels 
+  
+ of programming experience, competence, or tool support.
+  
+ 96",NA
+7.3 Description of ,NA,NA
+CarServ2,"The development of  
+ CarServ2
+  consisted of taking the domain layer object definitions (i.e.  
+ attributes  and  relationships)  from  
+ CarServ1
+ , and  re-coding them from scratch, 
+ observing the conventions required by the  
+ Naked Objects
+  framework, and then adding 
+ behaviours (methods) to those domain objects sufficient to allow the use-cases that had 
+ been implemented in 
+ CarServ1
+  to be fulfilled by a user.  A screenshot from 
+ CarServ2
+  is 
+ shown in Figure 7-7.3.
+  
+ 97",NA
+7.4 Evaluating the development effort for the two implementations,"When 
+ CarServ2
+  was completed, the number of classes, the number of methods, and the 
+ lines  of  code  written  by  the  application  developer  for  both  implementations  were 
+ counted.  The results are shown in Figure 7-7.4.
+  
+  
+ Number of 
+ Classes
+  
+ Number of 
+ Methods
+  
+ Average 
+ Methods 
+ per Class
+  
+ Lines of 
+ Java code 
+ (LOC)
+  
+ Average 
+ LOC per 
+ Method
+  
+ CarServ1
+  
+ 190
+  
+ 788
+  
+ 4.1
+  
+ 7304
+  
+ 9.3
+  
+ 98",NA
+7.5 Some caveats,"Some caveats need to be added to these results.
+  
+ First, because naked objects auto-generates the user presentation, it was not possible to 
+ make the user interfaces the same.  In 
+ CarServ1
+  the programmer had full control over the 
+ presentation layer and therefore was able to optimize the screen layout and/or graphical 
+ design to the task in hand.  In certain visual respects 
+ CarServ2
+  is a poorer presentation  -in 
+ particular in the presentation of the diary
+ 14
+ .  On the other hand, 
+ CarServ2
+  makes more use 
+ of drag-and-drop and arguably has a better ‘feel’ than  
+ CarServ1
+ .  However, this 
+ experiment was not concerned with the relative usability of the two systems, but the 
+ development effort.  The point is that because the user interfaces are quite different, the 
+ two systems cannot be said to be functionally identical. 
+  
+ Second, 
+ CarServ2
+  does not implement 100% of the explicit functionality of 
+ CarServ1
+ . For 
+ example the former includes an Undo capability such that each business action can be 
+ undone (although the code to perform the undo must still be written for each method). In 
+ CarServ2
+ , many of the simpler actions can easily be undone with a single operation, but 
+ some of them would require more than one user operation to reverse the effect.
+  
+ However, 
+ CarServ1
+  did not itself implement all the use-cases that had originally been 
+ specified for it in 
+ [20]
+ .  The application addressed only the needs of the service side of the 
+ business, not the sales and administrative aspects.  Nor did it implement all of the use-
+ cases that had been identified and documented for the service side. 
+  
+ In 
+ CarServ2
+  functionality was written explicitly to support the same sub-set of use-cases as  
+ CarServ1
+ 15
+ .   However,  the  nature  of  the  
+ Naked  Objects
+  framework  meant  that 
+ CarServ2
+  fulfils some of the use-cases not addressed in 
+ CarServ1
+ , simply as a by-product of 
+ the development style.  For example, for any business object class  
+ Naked Objects 
+ automatically provides the capability for the user to create a new instance of that class and 
+ to retrieve instances of the class matching a given character string.  In its published state 
+ CarServ1
+  could deal only with customers (and other objects) that already existed in
+  
+ 14
+  A purpose-designed calendar viewer has since been incorporated in the 
+ Naked Objects
+  framework.
+  
+ 15
+  Note that the use-cases are being used here only in the delivery phase i.e. the domain object model has 
+ already been specified.  This is consistent with the guideline in 5. 
+  
+ 100",NA
+7.6 Testing for agility,"The next aim was to test the agility of the two implementations, meaning the ease with 
+ which they could be modified to accommodate unforeseen business requirements.
+  
+ A set of business change scenarios was proposed including:
+  
+ •
+  
+ Adding an email address attribute to the Customer object.
+  
+ •
+  
+ Adding a capability to view the total value of previous transactions with the 
+  
+ customer.
+  
+ •
+  
+ Introducing a new kind of fixed-price service offering such as a Winter Tune-up.
+  
+ •
+  
+ Introducing a pool of cars that customers can borrow during a service (subject to 
+  
+ availability).
+  
+ The two implementations were then modified to accommodate each of these scenarios, 
+ and the effort required (measured in minutes) to make the changes to both systems was 
+ recorded.  On each system the business change scenario was implemented in the form 
+ best suited to the design of that system.  All the coding was again done by Haywood, who 
+ was author of both systems and therefore equally familiar with both. 
+  
+ More detailed descriptions of the change scenarios and the number of existing objects that 
+ they impacted can be found in Appendix IV.
+  
+ The summary of these results  is that the changes took less  time to  implement for 
+ CarServ2 
+ than for 
+ CarServ1. 
+  Averaged across all the changes, the difference between the 
+ two was approximately 25%.
+  
+ More  striking,  though,  was  that  the  modifications  to  
+ CarServ1
+  were  much  more 
+ scattered:  each modification to a business object typically involved modifications to
+  
+ 101",NA
+7.7 Conclusions from this case study,"In 3, it was proposed that use of naked objects would yield four benefits (page 37).  The 
+ controlled experiment on parallel implementations of the 
+ CarServ
+  application provides 
+ quantified evidence to support two of those proposed benefits:
+  
+ •
+  
+ Proposed benefit 1:  Behaviourally-complete objects, leading to greater business 
+  
+ agility.  
+ In  
+ CarServ2  
+ the domain objects are undoubtedly behaviourally-complete, 
+  
+ because business functionality is not written anywhere else.  The evidence for agility 
+  
+ is that all of the business change scenarios were implemented in less time and 
+  
+ involved modifying fewer objects than for the conventional 4-layer implementation.
+  
+ •
+  
+ Proposed benefit 2:  Faster development cycle through not having to code a user 
+  
+ interface.  
+ All the metrics described in this chapter point to far more efficient 
+  
+ coding, 
+ and it has been shown that this is not achieved at the expense of having to 
+  
+ learn a more 
+ complex external framework.
+  
+ The other two benefits were not appropriate to this experiment, because it was not 
+ concerned with capturing the requirements of the system (which were pre-defined in this 
+ case) nor was there a real user to evaluate the resulting user interfaces.  Evidence for 
+ those benefits was provided in earlier chapters. 
+  
+ 102",NA
+CHAPTER 8 RELATED WORK,"In this chapter, the naked objects approach is compared to four other fields of research that 
+ have some conceptual overlap:",NA
+8.1,"•
+  
+ Object-oriented user interfaces
+  
+ •
+  
+ Existing techniques for exposing domain objects to the user
+  
+ •
+  
+ Empowering user interfaces
+  
+ •
+  
+ Agile methodologies.",NA
+Object-oriented user interfaces,"Any  system  built  from naked  objects  clearly  has  an  object-oriented  user  interface 
+ (OOUI).  In what sense, then, does the naked objects approach differ from, or extend prior 
+ work on OOUIs?
+  
+ Answering this question is rendered more difficult by the widespread confusion over what 
+ constitutes an OOUI.  Constantine [26] notes that many things labelled as an OOUI are 
+ simply examples direct manipulation interfaces 
+ [105]
+ , of visual metaphors, or even just 
+ graphical user interfaces.  In part this confusion may be explained by the fact that many of 
+ these ideas were developed at around the same time, as part of the Smalltalk project at 
+ Xerox Parc in the early 1970s 
+ [62]
+   -  although that in turn drew heavily upon earlier work 
+ by Sutherland  
+ [113]
+  and Englebart  
+ [37]
+ . Separating out these various concepts is 
+ therefore awkward.
+  
+ Neilsen seeks to define OOUIs in contrast to function-oriented interfaces:
+  
+ ‘Object-oriented interfaces are sometimes described as turning the application 
+ inside-out as compared to function-oriented interfaces. The main focus of the 
+ interaction changes to become the users’ data and other information objects that  
+ are  typically  represented  graphically  on  the  screen  as  icons  or  in 
+ windows.’
+ [79]
+  
+ Collins defines an OOUI as demonstrating three characteristics:
+  
+ ‘-  Users perceive and act on objects
+  
+  -  Users can classify objects based on how they behave
+  
+ 103",NA
+8.2 Existing techniques for exposing domain objects to the user,"There is some precedent for surfacing domain objects directly to the user.  A recent 
+ posting on one of the newsgroups for Squeak  
+ [54]
+ (a form of Smalltalk) posed the 
+ question:
+  
+ ‘Is squeak really an object oriented system or it only claims it is? The point of 
+ the question is that instead of working with objects, I work mostly with text. the 
+ objects are in fact only in my head, as a consequence of reading sources of 
+ objects which are in the browser. but the objects are not tangible, I cannot see 
+ them. For example, let’s take an instance of an OrderedCollection: this object is 
+ in fact not an object but a textual representation of it, I cannot see the collection 
+ on my workspace and must simulate all its behavior on my own and imagine it in 
+ my head.’[64]
+  
+ One of the responses to this question is from Alan Kay (part of which was quoted in 2):
+  
+ ‘One of the original motivations for the models, views and controller idea (that 
+ in my opinion never got well done) was to be able to automatically produce a 
+ default graphical interface for any object (and Steve Putz at PARC actually did 
+ a version of this but it didn’t stick).  These ideas live on in the ""Naked Objects"" 
+ book by Richard Pawson (worth reading by the way).
+  
+ Randy Smith and the SELF folks did the next round of this at Sun (using the first 
+ version of Morphic by John Maloney and RS). There were many great ideas in 
+ this way of looking at UI.
+  
+ Dan Ingalls’ and Scott Wallace’s FABRIK (in the 80s at Apple) was a direct 
+ manipulation of objects system in Smalltalk. Ned Konz’ Connectors stuff today is 
+ very motivating along these lines, and could be make into such a system. 
+ Morphic wrappers by our friends in  South America is another way to think 
+ about completely tangible objects in Squeak.
+  
+ Your list of numbers and any other objects that you want to insert directly into 
+ source code was a feature of my thesis language of the 60s (FLEX), but it never
+  
+ 106",NA
+8.3 Empowering user interfaces,"One of the claimed benefits of using naked objects is that the resulting systems will be 
+ more empowering from the perspective of the user  -  because they treat the user more like 
+ a problem-solver and less like a process-follower. 
+  
+ Constantine strongly critiqued naked objects in December 2002
+ 18
+  [25].  He objected both to 
+ the idea of auto-generated user interfaces and to the advocacy of pure object-oriented
+  
+ 18
+  It  should  be  noted  that  some  of  Constantine’s  arguments  were  based  on  early  publications  and 
+ presentations of naked objects, and that he had not at the time seen any of the empirical data provided in this 
+ thesis.
+  
+ 108",NA
+8.4 Agile methodologies,"The naked objects approach is not a systems development methodology: it is a small set 
+ of architectural principles, plus some guidelines for applying them.  However, some of the 
+ benefits claimed for naked objects approach (page 37) do overlap with some of the 
+ benefits claimed for the various so-called agile systems development methodologies.  It is 
+ therefore worth examining the nature of the relationship between them.
+  
+ Although the concept of agile systems development is not new  -  the Dynamic Systems 
+ Development Methodology (DSDM), for example, was developed during the mid 1990s 
+ [112]
+  - it came into sharp focus with the creation of the Agile Manifesto [10] in 2001 by a 
+ group of recognized but independent experts of software development.  The agile 
+ manifesto has four principles:
+  
+ -
+  
+ Individuals and interactions
+  over processes and tools 
+  
+ -
+  
+ Working software
+  over comprehensive documentation 
+  
+ -
+  
+ Customer collaboration
+  over contract negotiation 
+  
+ -
+  
+ Responding to change
+  over following a plan.
+  
+ The manifesto does not suggest that the four attributes on the right hand side of these 
+ principles are unimportant:  they are all considered important and valuable.  But the 
+ signatories to the manifesto considered the four attributes on the left hand side to be of 
+ greater importance.
+  
+ Naked  objects,  assuming  that  they  are  supported  by  an  appropriate  framework, 
+ potentially offer a good match with these four principles:
+  
+ -
+  
+ Individuals and interactions
+  over processes and tools.  The user interface based 
+  
+ on naked objects is one that emphasizes the capabilities of the individual user 
+  
+ rather than a standard process  -  although this is a concept that applies to the 
+  
+ resulting system rather than the development process, which is the domain of the 
+  
+ Agile Manifesto.  It could also be argued that the directness of the style of 
+  
+ programming when using naked objects is one that emphasizes and leverages the 
+  
+ concept of the ‘craft’ of programming  -  something that is very much aligned 
+  
+ with this principle of the Agile Manifesto. 
+  
+ -
+  
+ Working software
+  over comprehensive documentation.  Using naked objects, 
+  
+ where the relationship between the code and the object model is homomorphic, 
+  
+ the code itself is arguably the best way to document the object capabilities  -
+  
+ 112",NA
+CHAPTER 9  CONCLUSIONS,"In this concluding chapter, the findings from the research are reviewed against the 
+ original objectives set out in 1. This is followed by a summary of the contribution that this 
+ research makes to the field of knowledge. The chapter ends with some suggestions for 
+ further research.",NA
+9.1 Review against the original objectives ,"Five objectives were stated in 1 (page 10): 
+  
+ -
+  
+ To identify factors that cause, or reinforce, the tendency to separate procedure 
+  
+ and data in the design of systems, even where those systems are intended to use 
+  
+ object-oriented approaches.
+  
+ -
+  
+ To identify and specify an approach to the design of business systems that would 
+  
+ help overcome those factors
+ .
+  
+ -
+  
+ To evaluate the use of this approach for the design of real business systems, and 
+  
+ thereby to test its effectiveness in achieving the goal of behaviourally-complete 
+  
+ objects.
+  
+ -
+  
+ To test whether the use of this approach does ultimately lead to more agile 
+  
+ systems, and whether there are any other advantages to be gained from it, as well 
+  
+ as any disadvantages or limitations.
+  
+ -
+  
+ To identify types of business system, or types of project, that would potentially 
+  
+ benefit most from applying this approach.
+  
+ The research is now reviewed against each of those five in turn.
+  
+ Objective 1. To identify factors that cause, or reinforce, the tendency to separate 
+ procedure and data in the design of systems, even where those systems are intended 
+ to use object-oriented approaches.
+  
+ The review of the evolution of object-oriented thinking presented in 2 suggests that the 
+ tendency to separate procedure and data in object-oriented designs can be attributed, at 
+ least  in part, to the idea of separating the concerns of the user interface from the 
+ underlying object model. 
+  
+ 121",NA
+9.2 Contribution,"The contribution of this research is the development of the ‘naked objects’ approach to 
+ designing business systems, and the demonstration that the adoption of this approach 
+ yields significant benefits both to the developed system and to the development process.
+  
+ Using the naked objects approach to designing a business system, the domain objects 
+ (such as Customer, Product and Order) are exposed explicitly, and automatically, to the 
+ user, such that all user actions consist of viewing objects, and invoking behaviours that 
+ are encapsulated in those objects. 
+  
+ Four principal benefits have been demonstrated. The first two apply to the resulting 
+ product of the approach:
+  
+ •
+  
+ The naked objects approach encourages the design of business systems from 
+  
+ behaviourally-complete domain objects, in contrast to established approaches 
+  
+ that encourage, either consciously or unconsciously, the separation of procedure 
+  
+ and  data.   Thinking  in  terms  of  naked  objects  encourages  behavioural-
+  
+ completeness in a negative sense  -  because there is nowhere to place business 
+  
+ functionality except on the domain objects  -  but also positively in the sense that 
+  
+ the concreteness of the naked objects makes it easier to identify their natural 
+  
+ responsibilities.   Others  have  argued  that  designing  behaviourally-complete 
+  
+ objects would lead to greater agility:  that is the resulting systems should be more 
+  
+ easily  modifiable  to  accommodate  unforeseen  future  changes  to  business 
+  
+ requirements.  As well as demonstrating that the naked objects approach leads to 
+  
+ behaviourally-complete  objects,  this  thesis  has  also  demonstrated  that  the 
+  
+ resulting systems are more agile.
+  
+ •
+  
+ The resulting systems provide the user with a more empowering style of user 
+  
+ interface.  Strictly speaking this is a property not of naked objects 
+ per se
+  but of 
+  
+ object-oriented  user  interfaces  (OOUIs).   However,  OOUIs are  traditionally 
+  
+ considered to be difficult to implement.  Creating a framework designed to 
+  
+ support 
+ naked objects implies providing a generic solution to the problem of
+  
+ 126",NA
+9.3 Further research,"During the course of the research several potentially interesting and valuable avenues for 
+ further  research  have been identified,  but have not yet been pursued either due to 
+ constraints  of  time  and  resource,  or  because  they  require  specialist  expertise  not 
+ possessed by the author. 
+  
+ Scalability
+  
+ Probably the most pressing need is for further research in the area of scalability.  The 
+ DSFA has implemented an 80-user naked object system, operating over a wide area 
+ network, but this is still not a large-scale system by some organizations’ standards.  As 
+ larger scales are attempted additional issues may surface, and it would be desirable to 
+ anticipate these, perhaps through some kind of simulation.
+  
+ It is also clear that naked objects bring some of the known issues in object-oriented 
+ implementation into sharper focus.  Chief amongst these is persistence.  Most large users of  
+ information  technology have  significant  investments  in  relational  databases,  and
+  
+ 128",NA
+CHAPTER 10 BIBLIOGRAPHY,"1. 
+  
+ What is a Controller, anyway?
+ , Portland Pattern Repository,
+  
+ http://www.c2.com/cgi/wiki?WhatsaControllerAnyway.
+  
+ 2. 
+  
+ Abrahamsson, P., et al., 
+ Agile Software Development Methods:  Review and
+  
+ Analysis
+ . 2002, VTT Publications: Finland.
+  
+ 3. 
+  
+ Achermann, F., 
+ An HTML Viewer for Naked Objects
+ ,
+  
+ http://www.nakedobjects.org/discuss/thread_frameset.php?group=nakedobjects.
+  
+ 4. 
+  
+ ACM, 
+ A.M. Turing Award
+ , Association of Computing Machinery. 2002.
+  
+ www.acm.org/announcements/turing_2001.html.
+  
+ 5. 
+  
+ Adler, P. and T. Winograd, 
+ Usability
+ . 1992: Oxford University Press.
+  
+ 6. 
+  
+ Ambler, S., 
+ Agile Modelling: Effective Practices for Extreme Programming and
+  
+ the Unified Process
+ . 2002: John Wiley & Sons.
+  
+ 7. 
+  
+ Andersen, D., 
+ Are Use Cases the death of good UI Design?
+ , UIdesign.net,
+  
+ http://www.uidesign.net/1999/imho/feb_imho.html.
+  
+ 8. 
+  
+ Andersen, E., 
+ American Airlines Object-Oriented Flight Despatch Systems
+  
+ (Case study)
+ . 1994, Harvard Business School.
+  
+ 9. 
+  
+ Beck, K., 
+ EXtreme Programming EXplained
+ . 1999: Addison-Wesley.
+  
+ 10. 
+  
+ Beck, K., et al., 
+ The Agile Manifesto
+ , The Agile Alliance,
+  
+ www.agilemanifesto.org.
+  
+ 11. 
+  
+ Beck, K. and W. Cunningham. 
+ A Laboratory for Teaching Object-Oriented
+  
+ Thinking
+ . in 
+ OOPLSA '89
+ . 1989: Association of Computing Machinery.
+  
+ 12. 
+  
+ Beck, K. and M. Fowler, 
+ Planning Extreme Programming
+ . 2001: Addison-
+  
+ Wesley.
+  
+ 13. 
+  
+ Ben-Nathan, R. and O. Sasson, 
+ IBM San Francisco Developer's Guide
+ . 2000:
+  
+ McGraw Hill.
+  
+ 14. 
+  
+ Berard, E.V., 
+ Be Careful With ""Use Cases""
+ , The Object Agency,
+  
+ http://www.toa.com/pub/use_cases.htm.
+  
+ 15. 
+  
+ Beyer, H. and K. Holtzblatt, 
+ Contextual Design
+ . 1998, San Francisco: Morgan
+  
+ Kaufmann.
+  
+ 131",NA
+APPENDIX I. ,NA,NA
+DEFINING PRINCIPLES FOR THE,NA,NA
+DSFA’S NAKED OBJECT,NA,NA
+ARCHITECTURE,"This appendix specifies the defining principles of the  
+ Naked Object Architecture
+  as 
+ commissioned and deployed by the Department of Social and Family Affairs (DSFA) in 
+ Ireland.  The text has been extracted from documents that have been publicly issued by the 
+ DSFA on several occasions, most recently within its June 2003 ‘Request For Tender to 
+ migrate existing Visual Basic COM+ code base to Microsoft .NET’.
+  
+ 140",NA
+10.1 A componentised software infrastructure that supports,NA,NA
+"distributed software components, with object-style interfaces ",NA,NA
+based on published standards. ,"The  Department  has  implemented  this  on  the  Microsoft  COM+  standard.  This 
+ infrastructure provides a set of services to support the creation and management of 
+ the objects including all of the following: 
+  
+ ❖
+  Persistence
+ .  Object states are made persistent usually by means of a SQL 
+ Server database. Each object has its own set of archive rules. Some of the core 
+ data underlying the Customer object is held in the CRS database which is used 
+ extensively by the Department’s OpenVMS based systems for managing short-
+ term benefit Schemes. The CRS database is built using Oracle RDB. In the 
+ Naked  Object  Architecture,  data  access  from  Windows  2000  to  CRS  is 
+ achieved using Attunity Connect.
+  
+ ❖
+  Identification and location.
+   Each object instance in the system has a unique 
+ identifier and the Naked Object Architecture provides directory services to locate 
+ them.
+  
+ ❖
+  Message brokering
+  (including asynchronous message processing) is achieved using a 
+ set of proprietary components which implement queuing services to implement a 
+ publish and subscribe architecture. XML message formats are used. 
+  
+ ❖
+  Distributed  transactions
+  are  achieved  across  the  Windows  2000  and  OpenVMS 
+  
+ platforms using COM+.
+  
+ ❖
+  Access control.
+   The system can determine which objects a user (or system) can have access to, 
+ and which individual methods of those objects they can invoke.
+  
+ ❖
+  Audit trail.
+   All objects are capable of recording an audit trail of changes made to the object. This 
+ audit trail can be read on-line. All future objects will be required to have this capability and to 
+ integrate with the online audit access mechanism.",NA
+10.2,NA,NA
+ A strong commitment to the concept of object orientation.,"In this regard, it
+  delivers the following capabilities to the Business Objects:
+  
+ 142",NA
+10.3 Defining principles for the Naked Object Architecture ,"Building on these pre-requisite capabilities the Department has created a set of Naked 
+ Business Objects that model core business constructs such as Customer, Scheme or 
+ Payment. The Naked Business Objects have six defining characteristics: 
+  
+ ❖
+  Exposure
+ .  Naked objects are exposed directly to the user -in a form that makes 
+ it obvious to the user that they are dealing with an object.  This includes the 
+ use of an icon to represent the object.  Most importantly, though, it includes 
+ the exposure of the object’s potential behaviours to the user who typically  
+ selects  an  object  and  then  invokes  a  behaviour  upon  it.  This implements  
+ a ‘noun-verb’  style of  user  interaction,  rather  than  the  more common verb-
+ noun style. In this way, the Naked Object Architecture presents
+  
+ 143",NA
+APPENDIX II. ,NA,NA
+RESPONSIBILITY DEFINITIONS FOR THE,NA,NA
+DSFA’S BUSINESS OBJECT MODEL,"he following description of the business object model used by the Department of Social and Family Affairs 
+ (DSFA) in Ireland is extracted from a Request For Tender issued by the Department 
+ in July 2003.  The business objects are defined primarily on the things that a business 
+ object is responsible for knowing (the ‘know-what’ responsibilities) and the things 
+ that a business object is responsible for doing (the ‘know-how-to’ responsibilities).
+  
+ or clarity and space, only the definitions for the six core (or ‘primary’) business classes have been included: 
+ Customer, Scheme, Communication, Payment, Officer, and Case.  The descriptions 
+ include  updates  that  have  been  added  since  the  Phase  I  (Child  Benefit 
+ Administration) application.
+  
+ 145",NA
+10.4 Customer Object,"A customer is anyone who has dealings with the State and has been assigned a Personal Public 
+ Service Number (PPSN).  The intent of the Customer object is to provide a single point of 
+ access to any and all customer-related information that might be of value in more than one 
+ context (e.g.  for more than one scheme). Where  information is clearly specific to one 
+ scheme, such as the recording of a mouth-map for Dental Benefit then this information may 
+ be held in the scheme itself - but the guiding principle is to favour the Customer as the 
+ repository. The Customer is also the point through which any action that pertains directly to 
+ the customer is initiated e.g. authenticate and communicate.
+  
+ The Customer Object has been implemented in Phase 1 to the extent required for Child Benefit 
+ claim  processing.  The  extensions  to  the  Customer  object  now  required  relate  to  the 
+ knowledge  of  social  insurance  contribution  and  earnings  histories.  These will  both  be 
+ implemented as secondary objects in their own right.
+  
+ The bulk of the data underlying the Customer object, and of some of the new secondary objects 
+ such  as  Contribution  History,  is  held  on  the  Department’s  existing  Central  Records 
+ database (CRS) which is persisted using Oracle RDB on an OpenVMS platform.  However, 
+ the initial definition of the Customer object in the implementation of the Child Benefit system 
+ required the storage of additional data items and used a separate database to store these. 
+ This data is held on an MS SQL Server database  on  a Windows 2000  platform and 
+ connectivity between the two platforms is achieved using Attunity Connect from Attunity Ltd.. 
+ The specification below may require the addition of more attributes to the existing Customer 
+ Object, which may need to be implemented on either platform.
+  
+ However, with the advent of the REACH initiative (the framework for E-government in Ireland) the 
+ Customer object should also be seen as the interface to ‘public service broker’ that forms a 
+ major facet of REACH.  Several of the responsibilities listed below are being explicitly 
+ planned for the public service broker.
+  
+ Know-what responsibilities 
+  
+ Cases
+  in which the customer is cited.
+  
+ Relationships
+  to other Customers, including ‘mother of’, ‘spouse of’, ‘nominee for’, ‘legal guardian of’
+  
+ Communications
+  to and from the customer (that are not held within a specific Case e.g. advice of 
+ change of address)
+  
+ Payment Methods
+  - methods through which payments can be made to the customer e.g. bank 
+ account, Post Office details.
+  
+ Addresses
+  for communication.
+  
+ Schemes
+  in which the Customer is cited
+  
+ Overpayment
+  recovery objects pertaining to the Customer
+  
+ Whether the Customer is an employee of the DSFA or other civil servant - in which case the object 
+ may only be accessed by a special unit of officers.
+  
+ Know-how-to responsibilities
+  
+ Find and Retrieve.
+   This method allows the user to find an existing customer instance using any 
+ variety of search criteria available. It is implemented by wrapping an OpenVMS based specialised 
+ search facility and making it available through the Customer Object.
+  
+ Communicate
+ . The Customer object provides the ability to Communicate with the customer, using 
+ any of the specified media and addresses, currently surface mail, e-mail and telephone. This 
+ method creates a new Communication object which looks after the transmission and filing of that
+  
+ 146",NA
+10.5 Scheme Object,"A Scheme object is responsible for the administration of a particular benefit or set of Benefits. 
+ Scheme  is  an  interface.   Each  benefit  scheme  that  the  DSFA  administers  will  be 
+ represented by a Scheme object that implements this interface. 
+  
+ There are, broadly, two different forms of Scheme: composite Schemes and component Schemes. 
+ Component Schemes model individual benefits.  Composite Schemes are containers that 
+ hold one or more component schemes.  Thus, an instance of a Component Scheme can 
+ only exist in the context of a Composite Scheme.  For the forthcoming system, we require 
+ the  implementation  of  one  new  composite  Scheme  class  (Pension)  and  several  new 
+ component Scheme classes (Retirement Pension, Contributory Pension, Qualified Adult 
+ Allowance, Free Travel Allowance etc). Individual Schemes will vary in the kind of support 
+ that they provide to the Officer handling the claim.  At the simplest level, the Scheme 
+ instance merely provides a convenient place for recording the facts and decisions taken.  At 
+ a more sophisticated level, the Scheme could implement some form of rules engine and/or a 
+ spreadsheet-like calculator.  However, the underlying philosophy of the design is that the 
+ system provides a workbench to leverage the skills, and increase the productivity of the 
+ Officer - not to attempt to automate a process that necessarily involves judgement.
+  
+ A composite Scheme will always exist inside a Case, creating a new one if necessary, in order to be 
+ processed by an Officer.  However, once the Scheme is ‘In Payment’, then the Case will 
+ usually not play an active role.  The batch system will interact directly with the Schemes. 
+ Certain Schemes will need the ability to bring themselves up for review after a certain period, 
+ or upon certain events - via the Case mechanism.
+  
+ Any Scheme (composite or component) must implement the following generic responsibilities, plus 
+ any additional responsibilities individual to their own need.  Responsibilities listed below are 
+ the generic responsibilities that any Scheme must implement to conform to the interface.
+  
+ Know-what responsibilities 
+  
+ The 
+ Customer
+  who is claiming the benefit and any other 
+ Customers
+  cited in the claim. (Component 
+ Schemes do not need the former since they can get it from the composite Scheme they can belong 
+ to, but they may need the latter e.g. the Customer object representing the Child or the Qualified 
+ Adult)
+  
+ The  
+ Payment Method
+  that the Customer wishes to be paid by (includes nominee payments). 
+ (Component Schemes will default to the Payment Method specified in their parent Composite 
+ Scheme, but this can be over-ridden if, for example, the customer wishes different components to 
+ be paid to different parties or different accounts.  Note that for the Free Schemes, the Payment 
+ Method specifies the Service Provider and knows how to deal with that Service Provider).
+  
+ Component 
+ Schemes
+  held within this Scheme (if it is composite)
+  
+ Start and End dates
+  
+ Status
+  
+ Any other information specific to this Scheme (or shared by its component Schemes) that cannot be 
+ obtained from the relevant Customer object.
+  
+ The 
+ Case
+  within which the Scheme is currently held
+  
+ All
+ Payments
+  made against this Scheme.
+  
+ Certificates
+   for various decisions made by the officer, including eligibility. Review date
+  
+ Know-how-to responsibilities
+  
+ Request  needed  information
+ .  In line with the Service Delivery Model, this  capability could 
+ generate a personalised form (paper or electronic) whereby the customer could confirm relevant
+  
+ 148",NA
+10.6 Communication Object,"The Communication object models a single communication, for example between an 
+ Officer
+  and a 
+ Customer
+ , ingoing or outgoing, or internal.  The role of the Communication object is not just 
+ to allow such communications to be created, but also to allow them to be filed.
+  
+ Communications may be incoming or outgoing. Transmission options implemented in Phase 1 are 
+ surface post and e-mail. In addition, the Communication Object is used to record remarks. A 
+ Remark
+  is a Communication that has no recipient. It is typically made within a 
+ Scheme
+ , 
+ Case
+  
+ or 
+ Customer
+  object.
+  
+ The transmission mechanism for a Communication is achieved through the Address object. The 
+ same user interface is used regardless of the transmission channel chosen. 
+  
+ Know-what responsibilities
+  
+ Recipient’s
+ Address
+ (obtained from the list of Addresses contained by the recipient object i.e. a 
+ Customer, Officer or any other object that is communicable).  The user may choose the particular 
+ address, but it will default to the first entry in the customer’s list.
+  
+ Sender’s
+ Address
+  (obtained from the sending object). This will default to the first entry in the 
+ sender’s  address  list  that  is  the  same  type  as  recipient’s  address.   (Although  all  written 
+ communications will list various ways of replying).
+  
+ Subject.  If the Communication was generated inside a Case, then that object will be recorded as 
+ the subject.  This will not only allow the Communication to be filed in the right place, but will also 
+ potentially allow any reply to be matched up.  Potentially, this field could hold other context objects.
+  
+ Date
+  
+ Status:  draft, sent, received, returned, standard letter (read-only) etc.
+  
+ Content.  Text will be held in some generalised mark-up language (e.g. HTML). 
+  
+ Know-how-to responsibilities
+  
+ Transmit
+ .  Execution of this responsibility is fulfilled through Address object
+  
+ Edit
+ .  Allows text contents to be created and edited. 
+  
+ Reply
+ .
+  
+ Forward
+ . This is done by creating a new communication that has current one as the Subject.
+  
+ Retrieve
+  (class responsibility).  Previous communications will be retrieved from lists held in the 
+ Customer,  Officer  or  Case  objects.    However,  in  the  future,  there  will need  to  be  a  class 
+ responsibility to retrieve Communications by content (i.e. text search) but this is not in scope for this 
+ Phase.
+  
+ Attach 
+ a file such as a scanned image to a Communication
+  
+ Confirm
+  successful delivery (also fulfilled in collaboration with Address).
+  
+ Sign
+ .  Create a  
+ Certificate
+  digital signature of the sender.  Additionally, this responsibility may 
+ append a digitised image of a physical signature, if desired.
+  
+ Copy
+ .  This copies a whole Communication
+  
+ Lock
+ .  This turns a Communication into a standard read- communication that can be copied.
+  
+ Append
+ .  Used to create a letter from standard paragraphs.
+  
+ 150",NA
+10.7 Officer Object,"The Officer object is the single point of contact for information and functionality associated with an 
+ individual (employee of the Department or an associate) that may use the information 
+ system.  There is one instance for each such individual. 
+  
+ Users of the system have their own Officer object readily accessible, as this is the means for 
+ logging on and off, and for storing the officer’s personal desktop view.  In addition the Officer 
+ object provides access to current workload. 
+  
+ Officer object may be ‘virtual’, that is instances that represent roles and/or departmental sections e.g. 
+ ‘Claims Registration Section’. 
+  
+ Know-what responsibilities
+  
+ Relationships
+ to other
+ Officers
+ .  This includes supervisors, supervised, and peers.
+  
+ Cases
+ .
+    This means cases that are currently assigned to the officer. 
+  
+ Communications
+ to or from the Officer
+  
+ Addresses
+ for communication
+  
+ Roles fulfilled.
+  
+ Know-how-to responsibilities
+  
+ Find and Retrieve.
+   These responsibilities are broadly similar to those specified for 
+ Customer
+ . 
+  
+ Log-on and off.
+  
+ Capture and recall the user’s desktop
+ .
+  
+ Present caseload
+ .  This responsibility can show all cases currently assigned to the Officer broken 
+ down by various categories including current status.
+  
+ Manage in and out boxes
+  
+ Manage authorisation levels
+ .  Authorisation (to perform a specific method on a specific object) will 
+ be done by a system-wide authentication and authorisation server.  However, the Officer object will 
+ be a principal user interface onto this server i.e. the means through which the authorisation levels 
+ for specific roles and/or individuals are specified.
+  
+ Communicate
+ .  This works in the same way as the communicate responsibility of the 
+ Customer 
+ object. 
+  
+ Create a Certificate
+  to record the basis of the Officer’s decision.
+  
+ 151",NA
+10.8 Payment Object,"A Payment object represents a single payment from a payer (by default, the Department) to the 
+ payee (usually a 
+ Customer
+ ).  A Payment is in many ways analogous to a 
+ Communication 
+ and 
+ shares some of its structure.  Thus, the role of the 
+ Address
+  in a 
+ Communication
+ , is replaced 
+ by a  
+ Payment Method
+ , where that may represent a cheque, electronic funds transfer, 
+ electronic information transfer or a voucher (the latter usually forming part of a payment 
+ book). 
+  
+ The amount of the payment will have been determined by whatever created the Payment object (e.g. 
+ a  
+ Scheme
+ , or, in rare cases, directly by an authorised  
+ Officer
+ ), along with the date due.  
+ Payment  can  represent  negative  amounts  for  the  purposes  of  recovering  an 
+ overpayment
+  
+ Payments  are  generally  created  at  the  lowest  level  possible  to  enable  them  to  be  posted 
+ accurately into the financial accounting system. Thus, a claim may give rise to the creation of 
+ several Payment objects representing the different  
+ component Schemes
+  such as RP, CP, 
+ Qualified Adult Allowance or Child Dependent Allowance. Payments that have been created 
+ but not yet executed and which have the same Payee, may be combined or merged with 
+ other Payments within the same payment period to form a single net transfer. 
+  
+ Know-what responsibilities
+  
+ Scheme
+  that caused the Payment to be created
+  
+ Payee’s
+ Payment Method
+ .  The descriptive label of the Payment Method includes the name of the 
+ Payee, and can provide direct access to the object  representing the payee (e.g. a Customer or 
+ Agency).
+  
+ Payment identification.For example, cheque number or PPO voucher number.
+  
+ ComponentPayments.   This means that any composite payment knows what other payments it has 
+ been made up from. 
+  
+ Amount(expressed in a currency).
+  
+ Status (issued, paid, stopped, reconciled)
+  
+ Stop Reason,if status indicates that the payment has been stopped
+  
+ Payment Type.This indicates if the payment is a regular payment, a replacement payment, grant 
+ payment etc.  This is a free-form field the contents of which are typically determined by the Scheme 
+ that creates the Payment.
+  
+ Payment period that it relates to.
+  
+ Date due.  (It may be that this is a function of the payment period e.g. first Tuesday in the period).
+  
+ Know-how-to responsibilities
+  
+ Merge
+  with another payment (subject to rules). Typically Payment instances are created at the level 
+ of scheme elements (e.g. child dependent, fuel allowance) and then merged to form a single 
+ payment which is transferred to the Customer.
+  
+ Post
+  into the financial accounting systems.
+  
+ Authorise
+ .  Most payments will be generated within Schemes, which will look after their own levels 
+ of authorisation.  However, it may be appropriate to put in some additional generic concepts of 
+ authorisation into the Payment object itself e.g. for payments over €5,000. 
+  
+ Stop
+  the individual payment or the entire book if the payment method is PPO.
+  
+ 152",NA
+10.9 Case Object ,"The Case Object is currently the mechanism whereby a  
+ Scheme
+  instance can be linked to an 
+ Officer
+ . Case can act as a holder for any supporting communications (including 
+ Remarks
+ ) and 
+ could in future hold scanned images of other documents associated with Schemes being 
+ processed, but which may not be explicitly held within the Scheme.  However, the work 
+ contained in a Case does not have to be related to a Scheme. Instead it can be any type of 
+ Departmental work from correspondence to investigations.  Case  provides certain workflow-
+ like characteristics, including the ability to forward the case on to another officer.  .
+  
+ Know-what responsibilities
+  
+ The
+ Officer
+  currently responsible for the case.
+  
+ The
+ Officer
+ to whom the Case was previously assigned (if any)
+  
+ Schemes
+  that form part of the case (which in turn know the 
+ Customers
+ )
+  
+ Communications
+  relating to the case
+  
+ Other relevant documents (including, potentially, scanned images) and notes.
+  
+ Current status.  This might include:  Pending  -  customer, Pending  -  other, In payment, Closed etc.
+  
+ Review Date, the date when the case is to be brought to attention for review. This date will usually 
+ be determined by the Officer.
+  
+ Know-how-to responsibilities
+  
+ Refer to another Officer
+ .  This referral may be temporary (e.g. for authorisation to proceed) or a 
+ permanent handoff.  The nature of the referral will make that clear.  The referral may be initiated 
+ merely by dragging the Case object onto the appropriate 
+ Officer
+  object.  As well as changing the 
+ Officer assigned, the referral will generate a standardised Communication to appear in the in-tray of 
+ the recipient.
+  
+ 154",NA
+APPENDIX III.,NA,NA
+ SURVEY OF IT MANAGERS AT,NA,NA
+THE DSFA,NA,NA
+10.10Description,"In January and February 2003, the author formally interviewed seven managers within the 
+ IT function of the DSFA, including the head of the IT, all of whom had had a 
+ significant involvement in the conception and commissioning of the 
+ Naked Object 
+ Architecture. 
+ All interviews were conducted face to face in Dublin.
+  
+ The questionnaire is shown overleaf.  After the background questions, all questions take 
+ the form of a proposition, to which the interviewee was asked to give one of five 
+ responses: 
+  
+ 1. Agree strongly  2. Agree somewhat  3. Neither agree nor disagree  4. Disagree 
+ somewhat  5. Disagree strongly
+  
+ 155",NA
+10.11Questionnaire ,"Background 
+  
+ Name: 
+  
+ Normal operating role: 
+  
+ Responsibility in relation to the Naked Object Architecture project:
+  
+ Overall satisfaction with the system as delivered 
+  
+ Q1. Overall, the EOA (not the CB system) as delivered has met our expectations for an 
+ EOA that we envisaged when we issued the RFT 
+  
+ Q2. Overall, the CB system as delivered has met our expectations as an application Q3. 
+ The system has already demonstrated the ability to support strategic business agility Q4. 
+ The system has already demonstrated the ability to support operational business agility 
+  
+ Q5. To the extent that either of these forms of agility have not yet been demonstrated, our 
+ expectation that they will yet be demonstrated remains as strong as at the start of the 
+ project
+  
+ The development process 
+  
+ Q6. The  EOA approach  to  designing  the system directly facilitated  communication 
+ between the developers and the users 
+  
+ Q7. Our IT staff were able to adapt easily to the fully object-oriented way of thinking Q8. 
+ Specifying the system entirely as business objects and their responsibilities was an 
+ effective approach 
+  
+ Q9. The constraints of the EOA approach resulted in a better object model than we would 
+ probably have achieved using other approaches to object modelling 
+  
+ Q10. The process could have benefited from greater use of prototyping 
+  
+ Q11. The process could have benefited from a more iterative approach to delivery
+  
+ 156",NA
+10.12Summary of responses,"Question No. 1
+  
+ 1
+  
+ 2
+  
+ 3
+  
+ 4
+  
+ 5
+  
+ 6
+  
+ 7
+  
+ 8
+  
+ 9 
+  
+ 10
+  
+  11
+  
+  12
+  
+  13
+  
+  14
+  
+  15
+  
+  16
+  
+ Individual responses
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ IT Manager 1
+  
+ 2
+  
+ 2
+  
+ 3
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ 4
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ 1
+  
+ 4
+  
+ IT Manager 2
+  
+ 2
+  
+ 2
+  
+ 3
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ 4
+  
+ 1
+  
+ 3
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 2
+  
+ 4
+  
+ 1
+  
+ 1
+  
+ IT Manager 3
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ 2
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 3
+  
+ 1
+  
+ 3
+  
+ 3
+  
+ 2
+  
+ 2
+  
+ 1
+  
+ 3
+  
+ IT Manager 4
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 1
+  
+ 3
+  
+ 2
+  
+ 1
+  
+ 3
+  
+ 1
+  
+ 5
+  
+ IT Manager 5
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ 3
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 5
+  
+ 3
+  
+ 1
+  
+ 3
+  
+ IT Manager 6
+  
+ 2
+  
+ 2
+  
+ 4
+  
+ 4
+  
+ 3
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 2
+  
+ 2
+  
+ 3
+  
+ 1
+  
+ 4
+  
+ IT Manager 7
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 2
+  
+ 3
+  
+ 3
+  
+ 3
+  
+ Number of responses
+  
+ 7
+  
+ 7
+  
+ 7
+  
+ 7
+  
+ 7
+  
+ 7
+  
+ 7
+  
+ 7
+  
+ 7
+  
+ 7
+  
+ 7
+  
+ 7
+  
+ 7
+  
+ 7
+  
+ 7
+  
+ 7
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ Frequency 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ 1. Agree strongly
+  
+ 3
+  
+ 4
+  
+ 2
+  
+ 5
+  
+ 2
+  
+ 4
+  
+ 1
+  
+ 6
+  
+ 2
+  
+ 7
+  
+ 4
+  
+ 2
+  
+ 1
+  
+ 0
+  
+ 6
+  
+ 1
+  
+ 2. Agree somewhat
+  
+ 4
+  
+ 3
+  
+ 2
+  
+ 1
+  
+ 4
+  
+ 3
+  
+ 4
+  
+ 1
+  
+ 1
+  
+ 0
+  
+ 0
+  
+ 2
+  
+ 5
+  
+ 2
+  
+ 0
+  
+ 0
+  
+ 3. Neither agree/disagree
+  
+ 0
+  
+ 0
+  
+ 2
+  
+ 0
+  
+ 1
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 4
+  
+ 0
+  
+ 3
+  
+ 3
+  
+ 0
+  
+ 4
+  
+ 1
+  
+ 3
+  
+ 4. Disagree somewhat
+  
+ 0
+  
+ 0
+  
+ 1
+  
+ 1
+  
+ 0
+  
+ 0
+  
+ 2
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 1
+  
+ 0
+  
+ 2
+  
+ 5. Disagree strongly
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 1
+  
+ 0
+  
+ 0
+  
+ 1
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ Median response 
+  
+ 2
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 3
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ 3
+  
+ 1
+  
+ 3
+  
+ 158",NA
+10.13Charts and commentary,"10.13.1Q1. Overall, the NOA (not the Child Benefit Administration system) 
+ as delivered has met our expectations for a NOA that we envisaged 
+ when we issued the RFT
+  
+ 7
+  
+ 6
+  
+ 5
+  
+ 4
+  
+ 3
+  
+ 2
+  
+ 1
+  
+ 0
+  
+ Agree strongly
+  
+ Agree somew hat Neither agree nor
+  
+ Disagree
+  
+ Disagree strongly
+  
+ disagree
+  
+ somew hat
+  
+ Commentary:
+   The architecture clearly implements both the broad concept and the 
+ specific principles of an NOA as defined in the RFT.  However there is some 
+ concern about how purely the object-oriented design of the CB system has been 
+ carried into the coding level.
+  
+ 10.13.2Q2. Overall, the CB system as delivered has met our expectations as 
+  
+ an application
+  
+ 7
+  
+ 6
+  
+ 5
+  
+ 4
+  
+ 3
+  
+ 2
+  
+ 1
+  
+ 0
+  
+ Agree strongly
+  
+ Agree somew hat Neither agree nor
+  
+ Disagree
+  
+ Disagree strongly
+  
+ disagree
+  
+ somew hat
+  
+ 159",NA
+APPENDIX IV. ,NA,NA
+SURVEY OF BUSINESS MANAGERS,NA,NA
+AT THE DSFA,NA,NA
+10.14Description,"In February 2003, the author formally interviewed three managers within the DSFA who 
+ had  been  directly  involved  in  the  commissioning  of  the  Child  Benefit 
+ Administration  system   -  the  first  application  built  using  the  naked  object 
+ approach
+ . 
+ All of them had been involved in the business object modelling process. 
+ All interviews were conducted face to face in Letterkenny.
+  
+ The questionnaire is shown overleaf.  After the background questions, all questions take 
+ the form of a proposition, to which the interviewee was asked to give one of five 
+ responses: 
+  
+ 1. Agree strongly  2. Agree somewhat  3. Neither agree nor disagree  4. Disagree 
+ somewhat  5. Disagree strongly
+  
+ 169",NA
+10.15Questionnaire,"Name: 
+  
+ Your normal operating role?
+  
+ Your role/involvement in the business object modelling?
+  
+ Prior experience, if any, of object modelling?
+  
+ Prior experience, if any, of specifying new business systems?
+  
+ Q1. I found it reasonably easy to get involved in the business object modelling process 
+ despite having little or no prior experience of this activity 
+  
+ Q2. The actual objects and the responsibilities of those objects, as listed in the BOM, are 
+ reasonably easy to understand 
+  
+ Q3. The idea that all business functionality must be ‘encapsulated’ on business objects was 
+ not problematic 
+  
+ Q4. I found it difficult to see how certain requirements could be specified in terms of 
+ objects and responsibilities 
+  
+ Q5. During modelling I found it reasonably easy to envisage how the business objects 
+ could be used to achieve actual business tasks 
+  
+ Q6. I would like to have seen more use made of prototyping to test out the business 
+ scenarios 
+  
+ Q7. The relationship between the CB system as delivered and the business object model is 
+ clear 
+  
+ Q8. The business object model has proven to be an effective way to represent the business 
+ needs of a new system 
+  
+ Q9. I can envisage how a range of possible future business changes might be realised 
+ through the object model 
+  
+ Q10. If I was involved in a specifying an unrelated business system in future (e.g. for 
+ another organisation) I would recommend adopting the business object modelling 
+ approach 
+  
+ 170",NA
+10.16Summary of responses,"Question number >>>
+  
+ 1
+  
+ 2
+  
+ 3
+  
+ 4
+  
+ 5
+  
+ 6
+  
+ 7
+  
+ 8
+  
+ 9
+  
+  10
+  
+ Manager 1
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ 3
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ Manager 2
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ 4
+  
+ 3
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ Manager 3
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 5
+  
+ 4
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 1
+  
+ Number of responses
+  
+ 3
+  
+ 3
+  
+ 3
+  
+ 3
+  
+ 3
+  
+ 3
+  
+ 3
+  
+ 3
+  
+ 3
+  
+ 3
+  
+ Frequency analysis of responses
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ Agree strongly
+  
+ 3
+  
+ 1
+  
+ 1
+  
+ 0
+  
+ 0
+  
+ 3
+  
+ 3
+  
+ 3
+  
+ 1
+  
+ 2
+  
+ Agree somewhat
+  
+ 0
+  
+ 2
+  
+ 2
+  
+ 0
+  
+ 1
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 1
+  
+ 1
+  
+ Neither agree nor disagree
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 1
+  
+ 1
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 1
+  
+ 0
+  
+ Disagree somewhat
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 1
+  
+ 1
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ Disagree strongly
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 1
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ Median response
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ 4
+  
+ 3
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1",NA
+10.17Charts,"10.17.1Q1.  I found it reasonably easy to get involved in the business object 
+ modelling process despite having little or no prior experience of this 
+ activity
+  
+ 3
+  
+ 2
+  
+ 1
+  
+ 0
+  
+ Agree strongly
+  
+ Agree
+  
+ Neither agree
+  
+ Disagree
+  
+ Disagree
+  
+ somewhat
+  
+ nor disagree
+  
+ somewhat
+  
+ strongly
+  
+  
+ 171",NA
+APPENDIX V.,NA,NA
+10.18Description,NA,NA
+SURVEY OF USERS AT THE DSFA,"In February 2003, the author conducted interviews with 15 users of the new Child 
+  
+    
+  
+  
+  
+  
+  
+ Benefit Administration system running on the 
+ Naked Object Architecture, 
+ which 
+    
+  
+  
+  
+  
+  
+  
+ had been live since November 2002.  The interviewees comprised 13 Clerical 
+    
+  
+  
+  
+  
+  
+  
+ Officers  and  2  Supervising  Officers,  spanning  all  of  the  following  business 
+    
+  
+  
+  
+  
+  
+  
+ responsibilities:
+  
+    
+  
+  
+  
+  
+ -
+  
+ New Claims 
+  
+    
+  
+  
+  
+  
+ Additional Child
+  
+ -
+   
+  
+  
+  
+ -
+  
+ 16+ extensions
+  
+    
+  
+ -
+  
+ Client Maintenance
+  
+    
+ -
+  
+ General Payments 
+  
+    
+ Data Clean-up
+  
+ -
+   
+ Reporting 
+  
+ ome of the interviewees their normal role was in training or user acceptance testing.  However, even these 
+ dividuals had used the system for actual claims processing for several weeks in order to help clear the backlog.
+  
+ hose individuals were asked to respond to the questions as claims processors rather than as trainers or testers. 
+ nterviews were conducted face to face in the Child Benefit office in Letterkenny.  In each case they were 
+ terviewed at their desk, such that they could point to features of the system to clarify any responses. 
+  
+ uestionnaire is shown overleaf.  After the background questions, all questions take the form of a proposition, to 
+ hich the interviewee was asked to give one of five responses: 
+  
+ ree strongly  2. Agree somewhat  3. Neither agree nor disagree  4. Disagree somewhat  5. Disagree strongly
+  
+ 177",NA
+10.19Questionnaire,"Background questions 
+  
+ Name: 
+  
+ i. For how long did you use the previous CB system?
+  
+ ii. What was yourrole within the CB organisation prior to the changeover? 
+ iii. What was yourrole within the CB office now?
+  
+ iv. What is your civil service grade?
+  
+ v. Prior to learning the new how much experience did you have of using a PC?
+  
+ Learning the new system 
+  
+ Q1. Overall, I found learning the new system to be straightforward 
+  
+ Q2. The style and amount of formal training provided on the new system was appropriate 
+ to my personal needs 
+  
+ Q3. Since completing the formal training I have learned useful new things about the 
+ system just by experimenting 
+  
+ Q4. Since completing the formal training I have learned useful new things about the 
+ system from colleagues sharing their tips
+  
+ Efficiency 
+  
+ Q5. The new system allows me to process most claims and enquiries faster than before
+  
+ Effectiveness 
+  
+ Q6. I am already handling a broader range of claims/enquiries than before 
+  
+ Q7. I hope to be able to handle a broader range of claims/enquiries in future 
+  
+ Q8. The system enables me to manage my personal workload in a more effective manner 
+ Q9. The system enables our team to manage our workload more effectively
+  
+ 178",NA
+10.20Summary of responses,"Question No. 
+ 1
+  
+ 1
+  
+ 2
+  
+ 3
+  
+ 4
+  
+ 5
+  
+ 6
+  
+ 7
+  
+ 8
+  
+ 9 
+  
+ 10
+  
+  11
+  
+  12
+  
+  13
+  
+  14
+  
+  15
+  
+  16
+  
+  17
+  
+  18
+  
+  19
+  
+  20
+  
+  21
+  
+  22
+  
+ User 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 3
+  
+ 2
+  
+ 3
+  
+ 2
+  
+ 1
+  
+ 5
+  
+ 5
+  
+ 3
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ User 2
+  
+ 1
+  
+ 2
+  
+ 3
+  
+ 3
+  
+ 1
+  
+ 3
+  
+ 3
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 5
+  
+ 2
+  
+ 2
+  
+ 1
+  
+ 2
+  
+ 5
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ User 3
+  
+ 4
+  
+ 3
+  
+ 4
+  
+ 4
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 3
+  
+ 2
+  
+ 2
+  
+ 1
+  
+ 3
+  
+ 2
+  
+ 4
+  
+ 5
+  
+ 5
+  
+ 1
+  
+ 2
+  
+ 5
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ User 4
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 4
+  
+ 3
+  
+ 3
+  
+ 2
+  
+ 3
+  
+ 1
+  
+ 5
+  
+ 4
+  
+ 3
+  
+ 1
+  
+ 1
+  
+ 5
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ User 5
+  
+ 2
+  
+ 3
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 3
+  
+ 1
+  
+ 3
+  
+ 3
+  
+ 2
+  
+ 4
+  
+ 5
+  
+ 5
+  
+ 3
+  
+ 1
+  
+ 2
+  
+ User 6
+  
+ 2
+  
+ 2
+  
+ 2
+  
+ 2
+  
+ 3
+  
+ 5
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 2
+  
+ 4
+  
+ 2
+  
+ 3
+  
+ 4
+  
+ 2
+  
+ 3
+  
+ 2
+  
+ 1
+  
+ 5
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ User 7
+  
+ 1
+  
+ 3
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 1
+  
+ 1
+  
+ 4
+  
+ 2
+  
+ 2
+  
+ 2
+  
+ 1
+  
+ 5
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ User 8
+  
+ 2
+  
+ 4
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 3
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 1
+  
+ 3
+  
+ 3
+  
+ 5
+  
+ 1
+  
+ 1
+  
+ 4
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ User 9
+  
+ 2
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 5
+  
+ 5
+  
+ 5
+  
+ 1
+  
+ 5
+  
+ 5
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ User 10
+  
+ 3
+  
+ 3
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 3
+  
+ 2
+  
+ 1
+  
+ 4
+  
+ 4
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ User 11
+  
+ 1
+  
+ 3
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 3
+  
+ 1
+  
+ 3
+  
+ 2
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 4
+  
+ 4
+  
+ 4
+  
+ 1
+  
+ 5
+  
+ 5
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ User 12
+  
+ 2
+  
+ 2
+  
+ 5
+  
+ 1
+  
+ 3
+  
+ 4
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 1
+  
+ 4
+  
+ 4
+  
+ 2
+  
+ 2
+  
+ 2
+  
+ 5
+  
+ 5
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ User 13
+  
+ 1
+  
+ 2
+  
+ 4
+  
+ 2
+  
+ 1
+  
+ 5
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 3
+  
+ 4
+  
+ 3
+  
+ 2
+  
+ 4
+  
+ 5
+  
+ 5
+  
+ 1
+  
+ 1
+  
+ 5
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ User 14
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 5
+  
+ 5
+  
+ 5
+  
+ 1
+  
+ 4
+  
+ 5
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ User 15
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 5
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 2
+  
+ 4
+  
+ 3
+  
+ 3
+  
+ 5
+  
+ 5
+  
+ 5
+  
+ 2
+  
+ 5
+  
+ 5
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ Total responses
+  
+ 15
+  
+  15
+  
+  15 
+  
+ 15
+  
+  15
+  
+  15
+  
+  15
+  
+  15
+  
+  15
+  
+  15
+  
+  15
+  
+  15
+  
+  15
+  
+  15
+  
+  15
+  
+  15
+  
+  15
+  
+  15
+  
+  15
+  
+  15
+  
+  15
+  
+  15
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ Frequency 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ 1. Agr.  strongly
+  
+ 7
+  
+ 2 
+  
+ 10
+  
+  9 
+  
+ 10
+  
+  9 
+  
+ 10
+  
+  10
+  
+  5
+  
+ 8
+  
+ 5
+  
+ 5 
+  
+ 10
+  
+  0
+  
+ 0
+  
+ 0
+  
+ 9
+  
+ 6
+  
+ 1 
+  
+ 13
+  
+  13
+  
+  10
+  
+ 2. Agr. somewhat
+  
+ 6
+  
+ 7
+  
+ 1
+  
+ 4
+  
+ 2
+  
+ 0
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ 5
+  
+ 3
+  
+ 4
+  
+ 2
+  
+ 0
+  
+ 4
+  
+ 5
+  
+ 5
+  
+ 2
+  
+ 0
+  
+ 1
+  
+ 2
+  
+ 5
+  
+ 3. Neither agr/dis
+  
+ 1
+  
+ 5
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 2
+  
+ 4
+  
+ 2
+  
+ 8
+  
+ 2
+  
+ 4
+  
+ 6
+  
+ 2
+  
+ 3
+  
+ 3
+  
+ 3
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 1
+  
+ 0
+  
+ 0
+  
+ 4. Dis. somewhat
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 0
+  
+ 1
+  
+ 0
+  
+ 1
+  
+ 0
+  
+ 0
+  
+ 3
+  
+ 0
+  
+ 1
+  
+ 6
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 5. Dis. strongly
+  
+ 0
+  
+ 0
+  
+ 1
+  
+ 0
+  
+ 0
+  
+ 3
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 6
+  
+ 6
+  
+ 6
+  
+ 0
+  
+ 5 
+  
+ 12
+  
+  0
+  
+ 0
+  
+ 0
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ Median response
+  
+ 2
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ 1
+  
+ 4
+  
+ 4
+  
+ 3
+  
+ 1
+  
+ 2
+  
+ 5
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 180",NA
+10.21Charts and commentary,"10.21.1Q1. Overall, I found learning the new system to be straightforward
+  
+ 8 
+  
+ 7 
+  
+ 6 
+  
+ 5 
+  
+ 4 
+  
+ 3 
+  
+ 2 
+  
+ 1 
+  
+ 0
+  
+ Agree strongly
+  
+ Agree somew hat Neither agree nor
+  
+ Disagree
+  
+ Disagree strongly
+  
+ disagree
+  
+ somew hat
+  
+ 10.21.1.0.1 Qualifications or comments made by individual respondents: 
+  
+ Neither agree nor disagree.  Being on the SDM team, we were brought into the project 
+  
+ quite early
+  
+ Disagree somewhat.  For the first week (advance training in Dublin) I was completely 
+  
+ lost.
+  
+ Commentary:   
+ Most  people  report  that  they  found  leaning  the  system  to  be 
+ straightforward.  There was no discernable correlation between the answers 
+ to this question and the amount of experience of using a PC prior to the 
+ training on this system.  This may be surprising to the trainers who reported 
+ that  those  with no prior PC experience found the initial  training quite 
+ difficult.  Probably what this says is that any initial difficulty was quite short 
+ lived,
+  
+ 181",NA
+APPENDIX VI. ,NA,NA
+A BRIEF DESCRIPTION OF THE,NA,NA
+NAKED OBJECTS,NA,NA
+ FRAMEWORK,"The framework itself (specifically Version 1.0 of the framework) is described in detail in 
+  
+ [86]
+ . What follows is a brief description only.
+  
+ To develop an application using Naked Objects, all that the developer writes are the 
+ business  objects  that  model  the  domain.  Each  class  of 
+ business object (for example, Customer, Product, and Order) 
+ must be written as a Java class, and must implement an 
+ interface called NakedObject. The simplest way to do this is 
+ to  declare  each  business  class  to  be  a  sub-class  of  the 
+ AbstractNakedObject  class  provided  with  the  framework. 
+ The programmer must write the necessary code to specify 
+ each  business  object’s  attributes,  associations  with  other 
+ business objects, and business behaviours. The code must 
+ follow  a  few  simple  conventions,  several  of  which  are 
+ similar to JavaBean conventions. In general the business 
+ objects  are  coded  in  the  same  way  that  behaviourally-
+ complete business objects would be written for the business 
+ domain model layer of any multi-layered system. 
+  
+ When the set of business classes is compiled and run, the framework’s generic ‘viewing 
+ mechanism’ provides the user with a view of the business 
+ objects in a form like that shown in figure 5.1. Individual a 
+ business object instance will show up as an icon (indicating 
+ which class it belongs to), and a unique title (specified by the 
+ programmer and usually derived from one or more of the 
+ object’s  primitive  attributes,  such  as the  name, date  and 
+ reference number). Any of these icons can be double-clicked 
+ to open a more detailed view of the object’s attributes and its 
+ associations with other objects, which show up as icons in 
+ their own right.
+  
+ 206",NA
+APPENDIX VII. SURVEY OF PROJECT,NA,NA
+PARTICIPANTS AT SAFEWAY,NA,NA
+10.22Description,"Safeway Stores conducted the Exploration phase of two projects using the Naked Objects 
+ approach during 2001:
+  
+ 1. The Deal Nominations (DN) project.  This was conducted as a learning exercise only. 
+ There was no commitment at the time that the system would be implemented, and it  
+ has  not  been   -   though  to  the  evident  disappointment  of  the  business 
+ representatives.
+  
+ 2. The Cluster-Based Pricing (CPB) project.  After the Exploration phase the team started  
+ to  develop  a  full-scale  implementation  using  Naked  Objects. Unfortunately, it 
+ was not possible to deploy a Java-based system on the available production 
+ platform and the system was therefore redeveloped in the CICS-Cobol 
+ environment,  but  using  as  much  as  possible  of  the  design  work  from  the 
+ Exploration period.
+  
+ These projects are described more fully in 6.
+  
+ In February 2003, the author (who had acted as a part-time consultant and coach on both 
+ projects) returned to Safeway to interview 10 individuals who had been involved in  
+ either  or  both  of  these  Explorations.   The  interview  group  was  split 
+ approximately 50:50 between developers and business user representatives.  (A 
+ couple of the individuals blended both roles).  This population of 10 represented 
+ almost all those who had had a significant involvement in these projects. 
+  
+ The questionnaire is shown overleaf.  After the background questions, all questions take 
+ the form of a proposition, to which the interviewee was asked to give one of five 
+ responses: 
+  
+ 1. Agree strongly  2. Agree somewhat  3. Neither agree nor disagree  4. Disagree 
+ somewhat  5. Disagree strongly
+  
+ Note that not all of the questions were relevant to all participants.  In particular some of 
+ the later questions are oriented more towards those in a developer role rather than a 
+ business role.  All participants were given the option to answer all questions if
+  
+ 209",NA
+10.23Questionnaire,"Name: 
+  
+ Normal business role: 
+  
+ Naked Objects project(s):  (Cluster-based pricing, Deal Nominations, or both) 
+  
+ Role on project(s): 
+  
+ Degree of involvement: 
+  
+ Previous experience of business systems analysis/design 
+  
+ Previous experience of object-oriented approaches to systems design (if any): 
+  
+ Q1. Using Naked Objects greatly facilitated communication between developers and 
+ business representatives, during the discussion of requirements 
+  
+ Q2. Using Naked Objects we were able to prototype the underlying object model at least as 
+ rapidly as we could normally have prototyped screenshots alone.
+  
+ Q3. I found it easy to get into thinking about the business system purely in terms of 
+ behaviourally-complete business objects 
+  
+ Q4. The Naked objects approach encouraged us to explore alternative ways to represent or 
+ model the business domain 
+  
+ Q5. The period of Exploration revealed specific user requirements that would probably not  
+ have  been  identified  using  a  paper-based  approach  to  requirements specification (or 
+ even conventional screen-based prototyping).
+  
+ Q6. Exploring the business domain using the ‘naked’ objects, lead to specific business 
+ insights or possible business approaches that had not previously been seen Q7. I did not 
+ find it difficult to adopt the object-oriented concepts (such as class, instance, method) used 
+ during the exploration.  (Question asked of those with no prior knowledge of these 
+ concepts  -  principally the business roles).
+  
+ Q8. The resulting prototype provided the user with a strong sense of being a problem-
+ solver
+  
+ 210",NA
+10.24Summary of responses,"Question
+  
+ 1
+  
+ 2
+  
+ 3
+  
+ 4
+  
+ 5
+  
+ 6
+  
+ 7
+  
+ 8
+  
+ 9
+  
+ 10
+  
+  11
+  
+  12
+  
+  13
+  
+  14
+  
+  15
+  
+  16
+  
+  17
+  
+  18
+  
+  19
+  
+  20
+  
+ Individual 
+ number:
+  
+ responses
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ Respondent 1
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ --
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 2
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ Respondent 2
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 2
+  
+ --
+  
+ 3
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ 1
+  
+ Respondent 3
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 4
+  
+ 4
+  
+ 1
+  
+ 5
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ --
+  
+ --
+  
+ --
+  
+ --
+  
+ --
+  
+ --
+  
+ Respondent 4
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ --
+  
+ --
+  
+ --
+  
+ --
+  
+ --
+  
+ --
+  
+ Respondent 5
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ 1
+  
+ 5
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ --
+  
+ --
+  
+ --
+  
+ --
+  
+ --
+  
+ --
+  
+ Respondent 6
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 3
+  
+ 2
+  
+ --
+  
+ 3
+  
+ 5
+  
+ 1
+  
+ 3
+  
+ 2
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 3
+  
+ 1
+  
+ Respondent 7
+  
+ 2
+  
+ 1
+  
+ 2
+  
+ 4
+  
+ 2
+  
+ 4
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 4
+  
+ 2
+  
+ 2
+  
+ 1
+  
+ --
+  
+ 2
+  
+ 1
+  
+ 3
+  
+ 2
+  
+ 2
+  
+ Respondent 8
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ 2
+  
+ 2
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ --
+  
+ 1
+  
+ 1
+  
+ --
+  
+ 3
+  
+ 1
+  
+ Respondent 9
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ 2
+  
+ 2
+  
+ --
+  
+ 2
+  
+ 1
+  
+ 2
+  
+ 4
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ --
+  
+ 2
+  
+ 2
+  
+ 1
+  
+ Respondent 10
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 3
+  
+ 3
+  
+ 3
+  
+ 2
+  
+ 1
+  
+ 1
+  
+ 1
+  
+ --
+  
+ 2
+  
+ 1
+  
+ --
+  
+ --
+  
+ --
+  
+ Total
+  
+ 10
+  
+  10
+  
+  10
+  
+  10
+  
+  10
+  
+  10
+  
+ 6
+  
+ 10
+  
+  10
+  
+  10
+  
+  10
+  
+  10
+  
+  10
+  
+  10
+  
+ 4
+  
+ 7
+  
+ 6
+  
+ 5
+  
+ 6
+  
+ 6
+  
+ Frequency 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ 1. Agr. strongly
+  
+ 8
+  
+ 10
+  
+ 3
+  
+ 5
+  
+ 3
+  
+ 4
+  
+ 4
+  
+ 3
+  
+ 5
+  
+ 6
+  
+ 2
+  
+ 7
+  
+ 5
+  
+ 8
+  
+ 3
+  
+ 2
+  
+ 6
+  
+ 1
+  
+ 1
+  
+ 5
+  
+ 2. Agr. somewhat
+  
+ 2
+  
+ 0
+  
+ 7
+  
+ 4
+  
+ 6
+  
+ 5
+  
+ 2
+  
+ 3
+  
+ 2
+  
+ 2
+  
+ 2
+  
+ 3
+  
+ 5
+  
+ 2
+  
+ 1
+  
+ 5
+  
+ 0
+  
+ 3
+  
+ 3
+  
+ 1
+  
+ 3. Neither agr/dis
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 1
+  
+ 0
+  
+ 0
+  
+ 3
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 1
+  
+ 2
+  
+ 0
+  
+ 4. Dis. somewhat
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 1
+  
+ 0
+  
+ 1
+  
+ 0
+  
+ 1
+  
+ 1
+  
+ 0
+  
+ 2
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 5. Dis. strongly
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 1
+  
+ 0
+  
+ 2
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+ 0
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ Median 
+  
+ response
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1.5
+  
+ 2
+  
+ 2
+  
+ 1
+  
+ 2
+  
+ 1.5
+  
+ 1
+  
+ 3
+  
+ 1
+  
+ 1.5
+  
+ 1
+  
+ 1
+  
+ 2
+  
+ 1
+  
+ 2
+  
+ 2
+  
+ 1
+  
+ 212",NA
+10.25Charts and commentary,"Q1. Using Naked Objects greatly facilitated communication between developers and 
+ business representatives, during the discussion of requirements
+  
+ 1
+ 0 
+  
+ 9 
+  
+ 8 
+  
+ 7 
+  
+ 6 
+  
+ 5 
+  
+ 4 
+  
+ 3 
+  
+ 2 
+  
+ 1 
+  
+ 0
+  
+ Agree strongly
+  
+ Agree somew hat Neither agree nor
+  
+ Disagree
+  
+ Disagree
+  
+ disagree
+  
+ somew hat
+  
+ strongly
+  
+ Qualifications or comments made by individual respondents:
+  
+ Agree somewhat.  It was the way it was deployed (e.g. live prototyping) rather than the 
+ tool or technique itself.  However, Naked Objects did make that approach possible.
+  
+ Commentary:  
+ A pretty strong consensus on this one, from both the developers and 
+ business representatives.
+  
+ Q2. Using Naked Objects we were able to prototype the underlying object model at 
+ least as rapidly as we could normally have prototyped screenshots alone.
+  
+ 1
+ 0 
+  
+ 9 
+  
+ 8 
+  
+ 7 
+  
+ 6 
+  
+ 5 
+  
+ 4 
+  
+ 3 
+  
+ 2 
+  
+ 1 
+  
+ 0
+  
+ Agree strongly
+  
+ Agree somew hat Neither agree nor
+  
+ Disagree
+  
+ Disagree
+  
+ disagree
+  
+ somew hat
+  
+ strongly
+  
+ Qualifications or comments made by individual respondents:",NA
+APPENDIX VIII. CARSERV -  NOTES ON,NA,NA
+IMPLEMENTING THE CHANGE,NA,NA
+SCENARIOS,"These notes were written entirely by Dan Haywood, and form an Appendix to 7 of the 
+ thesis.  They describe the experience of implementing three 
+ different  business  change  scenarios  to  both  the 
+ implementations of 
+ CarServ
+ .  
+ CarServ1 
+ refers to the original 
+ implementation,  which  adopts  the  conventional  4-layer 
+ model.  
+ CarServ2
+  refers to the re-implementation using the 
+ Naked Objects
+  framework.
+  
+ Given the hypothesis that it would be easier to implement the changes on 
+ CarServ2 
+ than 
+ on 
+ CarServ1
+ , it was decided each business change scenarios 
+ would  be  implemented  on  
+ CarServ2
+  before  they  were 
+ implemented  on  
+ CarServ1
+ .   Given  that  there  could 
+ potentially  be  some  learning  carried  over  from  one 
+ implementation  to  the  other,  the  order  was  deliberately 
+ chosen so that any bias would be against the hypothesis.
+  
+ The ‘Observations’ are extracted from a lab-book, written by Haywood as the change 
+  
+ scenarios were being implemented.
+  
+ 230",NA
+10.26The Scenarios,"The three change scenarios were conceived and described thus:
+  
+ Scenario 1
+  
+ Add some simple attribute to an object.  Two examples were chosen:
+  
+ (a) 
+  
+ Add  a  field  to  hold  an  email  address,  potentially  for  both  Customers  and 
+ Employees.
+  
+ (b) 
+  
+ Add a derived attribute that calculates the net worth of a Customer  (i.e. the sum of 
+ the value of all previous services)
+  
+ Scenario 2
+  
+ Support new subtype of service, such as a ""winter tune-up service"".  Instead of having the 
+ capability to add specific parts and labour charges, the winter tune-up service would 
+ simply have a fixed price.
+  
+ Scenario 3
+  
+ Support for ‘loaner’ cars.  The garage would hold a pool of potential loan cars (which 
+ would be owned by the garage rather than any customer).  If a pool car was available 
+ when the customer checks his car in, then that pool car would be temporarily associated 
+ with the service object.
+  
+ 231",NA
+10.27Changes Required,"10.27.1Scenario 1 (a) & (b)
+  
+ CarServ2
+  
+ Person is super class of Customer and Employee, and holds the emailAddress.  Customer 
+ holds the ‘update rating’ responsibility, and delegates to Service for it to calculate its own 
+ total (makes up part of the rating).
+  
+ Class
+  
+ Notes
+  
+ Customer
+  
+ fieldOrder for ""email address"" 
+ rating field 
+  
+ actionUpdateRating
+  
+ Employee
+  
+ fieldOrder for ""email address""
+  
+ Person
+  
+ emailAddress field
+  
+ Service
+  
+ updateTotal() helper method
+  
+ DATABASE SCHEMA
+  
+ (auto generated for SQLObjectStore)
+  
+ CarServ1
+  
+ Employee  and  Person  are  not  mentioned,  since  they  are  not fully  implemented  in 
+ CARSERV1
+ .  The emailAddress appears therefore only in Customer, but note how it 
+ appears in three tiers (datamgmt, domain, ui).
+  
+ The  ‘netWorth’  property  is  same  as  ‘rating’.  However,  there  is  no  responsibility 
+ assignment to an object, rather it has been ""hidden"" in the SQL that lists customers.
+  
+ Class
+  
+ Notes
+  
+ datamgmt.CustDM
+  
+ SQL for emailAddress x 2
+  
+ datamgmt.CustomerData
+  
+ emailAddress property 
+  
+ netWorth property
+  
+ domain.Customer
+  
+ emailAddress property 
+  
+ netWorth property
+  
+ ui.CustomerCarPanel
+  
+ emailAddress field 
+  
+ netWorth field
+  
+ ui.LookupCustomerDialog
+  
+ email address in table
+  
+ 232",NA
+10.28Metrics,"The following metrics were captured: 
+  
+ LOC: Lines of Code 
+  
+ NOC: Number of Classes 
+  
+ NOO: Number of Operations 
+  
+ NOA: Number of Attributes 
+  
+ PS: Program Size 
+  
+ VS1: Vocabulary Size 1 (# distinct classes used) 
+  
+ classes in 
+ java.util
+  and 
+ java.lang
+  ignored 
+  
+ VS2: Vocabulary Size 2 (# distinct method calls) 
+  
+ classes in 
+ java.util
+  and 
+ java.lang
+  ignored 
+  
+ The metrics can crudely be categorized as either measuring a ""benefit"" – a larger number 
+ implies some level of value - or as a ""cost"" – a larger number implies some level of cost 
+ incurred within the implementation:
+  
+ 236",NA
+10.29Timings,"Scenario
+  
+ CarServ2
+  
+ CarServ1
+  
+ % Time
+  
+ 1 (a)
+  
+ 18 mins
+  
+ 56 mins
+  
+ 32%
+  
+ 1 (b)
+  
+ 41 mins
+  
+ 58 mins
+  
+ 71%
+  
+ 2
+  
+ 131 mins
+  
+ 116 mins 
+  
+ + 60 mins* 
+  
+ (estimate for GUI) 
+ = 176 mins
+  
+ 75%
+  
+ 237",NA
+10.30Observations,"10.30.1Scenario 1 (a): Person.emailAddress
+  
+ CarServ2
+  
+ 18 minutes
+  
+ CarServ1
+  
+ 56 minutes
+  
+ Finished the implementation after 45 minutes, but then thought further:
+  
+ "" the problem here is that there is nowhere to show the customer’s data.  Have decided to 
+ show it in the rhs panel on the diary tab...""
+  
+ I also added …
+  
+ ""the fact that there is a five minute gap is that I’m having to figure out what the correct 
+ representation  on  the  UI  should  be.  No such  issues  arise  for  a  CarServ2objects 
+ implementation, of course (other than figuring out the field order...)""
+  
+ There was another 11 minutes making these additional changes, bringing the whole up to 
+ 56 minutes.
+  
+ 10.30.2Scenario 1 (b): Person.netWorth
+  
+ CarServ2
+  
+ 41 minutes
+  
+ Had problems with an infinite loop, to do with lifecycle issues.  (Still not convinced that I 
+ have fixed correctly).
+  
+ 238",NA
+APPENDIX IX. ,NA,NA
+PUBLISHED PAPERS,"Two published papers are reproduced here in their original formats.
+  
+ The  first,  entitled  ‘Naked  Objects:   A  Technique  for  Designing  More  Expressive 
+ Systems’ was selected by the program committee as one of 
+ four  ‘Intriguing  Technologies’  to  be  presented  at  the 
+ OOPSLA  2001 Conference in Tampa, Florida.  The paper 
+ was subsequently  published,  along with the  other papers 
+ from  that  track,  in  SIGPLAN  Notices  December  2001 
+ (Volume 36, Issue 12, pages 61-67).
+  
+ The second, entitled ‘Agile Development with Naked Objects’ was presented at the 4th 
+ International  Conference  on  Extreme  Programming  and 
+ Agile Methodologies in Software Engineering (XP2003) in 
+ Genoa, Italy.
+  
+ 242
+  
+ View publication stats",NA

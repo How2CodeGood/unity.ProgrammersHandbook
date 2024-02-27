@@ -1,0 +1,1938 @@
+Larger Text,Smaller Text,Symbol
+PC Assembly Language,"Paul A. Carter
+  
+ March 20, 2005",NA
+Contents,"Preface 
+  
+ v
+  
+ 1 Introduction 
+  
+ 1
+  
+ 1.1  Number Systems . . . . . . . . . . . . . . . . . . . . . . . . .  
+ 1 
+ 1.1.1  Decimal . . . . . . . . . . . . . . . . . . . . . . . . . .  
+ 1 
+ 1.1.2  Binary . . . . . . . . . . . . . . . . . . . . . . . . . . .  
+ 1 
+ 1.1.3  Hexadecimal  . . . . . . . . . . . . . . . . . . . . . . .  
+ 3 
+ 1.2  Computer Organization  . . . . . . . . . . . . . . . . . . . . .  
+ 4 
+ 1.2.1  Memory . . . . . . . . . . . . . . . . . . . . . . . . . .  
+ 4 
+ 1.2.2  The CPU . . . . . . . . . . . . . . . . . . . . . . . . .  
+ 5 
+ 1.2.3  The 80x86 family of CPUs . . . . . . . . . . . . . . . .  
+ 6 
+ 1.2.4  8086 16-bit Registers . . . . . . . . . . . . . . . . . . .  
+ 7 
+ 1.2.5  80386 32-bit registers  . . . . . . . . . . . . . . . . . .  
+ 7 
+ 1.2.6  Real Mode  . . . . . . . . . . . . . . . . . . . . . . . .  
+ 8 
+ 1.2.7  16-bit Protected Mode  
+ . . . . . . . . . . . . . . . . .  
+ 9 
+ 1.2.8  32-bit Protected Mode . . . . . . . . . . . . . . . . . .  
+ 10 
+ 1.2.9  Interrupts . . . . . . . . . . . . . . . . . . . . . . . . .  
+ 10 
+ 1.3  Assembly Language  . . . . . . . . . . . . . . . . . . . . . . .  
+ 11 
+ 1.3.1  Machine language  . . . . . . . . . . . . . . . . . . . .  
+ 11 
+ 1.3.2  Assembly language . . . . . . . . . . . . . . . . . . . .  
+ 11 
+ 1.3.3  Instruction operands . . . . . . . . . . . . . . . . . . .  
+ 12 
+ 1.3.4  Basic instructions  . . . . . . . . . . . . . . . . . . . .  
+ 12 
+ 1.3.5  Directives . . . . . . . . . . . . . . . . . . . . . . . . .  
+ 13 
+ 1.3.6  Input and Output  
+ . . . . . . . . . . . . . . . . . . . .  
+ 16 
+ 1.3.7  Debugging . . . . . . . . . . . . . . . . . . . . . . . . .  
+ 16 
+ 1.4  Creating a Program  
+ . . . . . . . . . . . . . . . . . . . . . . .  
+ 18 
+ 1.4.1  First program . . . . . . . . . . . . . . . . . . . . . . .  
+ 18 
+ 1.4.2  Compiler dependencies . . . . . . . . . . . . . . . . . .  
+ 22 
+ 1.4.3  Assembling the code . . . . . . . . . . . . . . . . . . .  
+ 22 
+ 1.4.4  Compiling the C code . . . . . . . . . . . . . . . . . .  
+ 23 
+ 1.4.5  Linking the object files  
+ . . . . . . . . . . . . . . . . .  
+ 23 
+ 1.4.6  Understanding an assembly listing file . . . . . . . . .  
+ 23 
+ i",NA
+Preface,NA,NA
+Purpose,"The purpose of this book is to give the reader a better understanding of how 
+ computers really work at a lower level than in programming languages like 
+ Pascal. By gaining a deeper understanding of how computers work, the 
+ reader can often be much more productive developing software in higher 
+ level languages such as C and C++. Learning to program in assembly 
+ language is an excellent way to achieve this goal. Other PC assembly 
+ language books still teach how to program the 8086 processor that the 
+ original PC used in 1981! The 8086 processor only supported
+  real
+  mode. In 
+ this mode, any program may address any memory or device in the 
+ computer. This mode is not suitable for a secure, multitasking operating 
+ system. This book instead discusses how to program the 80386 and later 
+ processors in
+  protected
+  mode (the mode that Windows and Linux runs in). 
+  
+ This mode supports the features that modern operating systems expect, 
+ such as virtual memory and memory protection. There are several reasons 
+ to use protected mode: 
+ 1. It is easier to program in protected mode than in the 8086 real mode 
+ that other books use. 
+ 2. All modern PC operating systems run in protected mode. 
+ 3. There is free software available that runs in this mode. 
+ The lack of textbooks for protected mode PC assembly programming is the 
+ main reason that the author wrote this book. 
+ As alluded to above, this text makes use of Free/Open Source software: 
+ namely, the NASM assembler and the DJGPP C/C++ compiler.  
+ Both 
+ of these are available to download from the Internet.  
+ The text also dis-
+ cusses how to use NASM assembly code under the Linux operating sys-tem 
+ and with Borland’s and Microsoft’s C/C++ compilers under Win-dows. 
+ Examples for all of these platforms can be found on my web site: 
+ http://www.drpaulcarter.com/pcasm. You
+  must
+  download the example 
+ code if you wish to assemble and run many of the examples in this tutorial. 
+ v",NA
+Acknowledgements,"The author would like to thank the many programmers around the 
+ world that have contributed to the Free/Open Source movement. All the 
+ programs and even this book itself were produced using free software. 
+ Specifically, the author would like to thank John S. Fine, Simon Tatham, 
+ Julian Hall and others for developing the NASM assembler that all the 
+ examples in this book are based on; DJ Delorie for developing the DJGPP 
+ C/C++ compiler used; the numerous people who have contributed to the 
+ GNU gcc compiler on which DJGPP is based on; Donald Knuth and others for 
+ developing the TEX and L
+ A
+ TEX 2
+ ε
+  typesetting languages that were used to 
+ produce the book; Richard Stallman (founder of the Free Software 
+ Foundation), Linus Torvalds (creator of the Linux kernel) and others who 
+ produced the underlying soft-ware the author used to produce this work. 
+ Thanks to the following people for corrections: 
+ •
+  John S. Fine 
+ •
+  Marcelo Henrique Pinto de Almeida 
+ •
+  Sam Hopkins 
+ •
+  Nick D’Imperio 
+ •
+  Jeremiah Lawrence 
+ •
+  Ed Beroset 
+ •
+  Jerry Gembarowski 
+ •
+  Ziqiang Peng 
+ •
+  Eno Compton 
+ •
+  Josh I Cates 
+ •
+  Mik Mifflin 
+ •
+  Luke Wallis 
+ •
+  Gaku Ueda 
+ •
+  Brian Heward",NA
+Resources on the Internet,"Author’s page  
+ http://www.drpaulcarter.com/  
+ NASM SourceForge page  
+ http://sourceforge.net/projects/nasm/  
+ DJGPP  
+ http://www.delorie.com/djgpp  
+ Linux Assembly  
+ http://www.linuxassembly.org/  
+ The Art of Assembly  
+ http://webster.cs.ucr.edu/  
+ USENET  
+ comp.lang.asm.x86  
+ Intel documentation  
+ http://developer.intel.com/design/Pentium4/documentation.htm",NA
+Feedback,"The author welcomes any feedback on this work. 
+ E-mail: 
+  
+ pacman128@gmail.com  
+ WWW: 
+  
+ http://www.drpaulcarter.com/pcasm",NA
+Chapter 1,NA,NA
+Introduction,NA,NA
+1.1 Number Systems,"Memory in a computer consists of numbers. Computer memory does not 
+ store these numbers in decimal (base 10). Because it greatly simplifies the 
+ hardware, computers store all information in a binary (base 2) format. First 
+ let’s review the decimal system. 
+ 1.1.1 Decimal
+  
+ Base 10 numbers are composed of 10 possible digits (0-9). Each digit of 
+ a number has a power of 10 associated with it based on its position in the 
+ number. For example: 
+ 234 = 2
+  ×
+  10
+ 2
+ + 3
+  ×
+  10
+ 1
+ + 4
+  ×
+  10
+ 0
+  
+ 1.1.2 Binary
+  
+ Base 2 numbers are composed of 2 possible digits (0 and 1). Each digit of 
+ a number has a power of 2 associated with it based on its position in the 
+ number. (A single binary digit is called a bit.) For example: 
+ 11001
+ 2
+  = 
+ 1
+  ×
+  2
+ 4
+ + 1
+  ×
+  2
+ 3
+ + 0
+  ×
+  2
+ 2
+ + 0
+  ×
+  2
+ 1
+ + 1
+  ×
+  2
+ 0 
+ 16 + 
+ 8 + 1 
+ = 
+ = 
+ 25 
+ This shows how binary may be converted to decimal. Table 1.1 shows how 
+ the first few numbers are represented in binary. 
+ Figure 1.1 shows how individual binary digits (
+ i.e.
+ , bits) are added. 
+ Here’s an example: 
+ 1",NA
+1.2,NA,NA
+Computer Organization,"1.2.1
+  
+ Memory
+  
+ The basic unit of memory is a byte. A computer with 32 megabytes of 
+ memory can hold roughly 32 million bytes of information. Each byte in 
+ memory is labeled by a unique number known as its address as Figure 1.4 
+ shows. 
+ units of kilobytes (
+  2
+ 10
+ =
+  
+ 1
+ ,
+  
+ 024
+  
+ bytes),
+  
+ megabytes
+  
+ (
+  2
+ 20
+ = 1
+ ,
+  048
+ ,
+  576
+  bytes)
+  
+ and
+  
+ gigabyte
+ s
+  
+ (
+  
+ 2
+ 30
+  
+ =
+  
+ 1
+ ,
+  073
+ ,
+  741
+ ,
+  824
+  bytes).
+  
+ Address 
+ 0 
+ 1 
+ 2 
+ 3 
+ 4 
+ 5 
+ 6 
+ 7 
+ Memory 
+  
+ 2A 
+ 45 
+ B8 
+ 20 
+ 8F 
+ CD 
+ 12 
+ 2E 
+  
+ Figure 1.4: Memory Addresses 
+ Often memory is used in larger chunks than single bytes. On the PC 
+ architecture, names have been given to these larger sections of memory as 
+ Table 1.2 shows. 
+  
+ All data in memory is numeric. Characters are stored by using a
+  char-
+ acter code
+  that maps numbers to characters.  
+ One of the most common 
+ character codes is known as
+  ASCII
+  (American Standard Code for Informa-
+ tion Interchange). A new, more complete code that is supplanting ASCII is 
+ Unicode. One key difference between the two codes is that ASCII uses 
+ 2
+ If it is not clear why the starting point makes a difference, try converting the example
+  
+ starting at the left.",NA
+1.3 Assembly Language,"1.3.1 Machine language
+  
+ Every type of CPU understands its own machine language. Instructions 
+ in machine language are numbers stored as bytes in memory. Each instruc-
+ tion has its own unique numeric code called its
+  operation code
+  or
+  opcode 
+ for 
+ short. The 80x86 processor’s instructions vary in size. The opcode is always 
+ at the beginning of the instruction. Many instructions also include data (
+ e.g.
+ , 
+ constants or addresses) used by the instruction. 
+ Machine language is very difficult to program in directly. Deciphering 
+ the meanings of the numerical-coded instructions is tedious for humans. For 
+ example, the instruction that says to add the EAX and EBX registers together 
+ and store the result back into EAX is encoded by the following hex codes: 
+ 03 C3 
+ This is hardly obvious. Fortunately, a program called an
+  assembler
+  can do 
+ this tedious work for the programmer. 
+ 1.3.2 Assembly language
+  
+ An assembly language program is stored as text (just as a higher level 
+ language program). Each assembly instruction represents exactly one ma-
+ chine instruction. For example, the addition instruction described above 
+ would be represented in assembly language as: 
+ add eax, ebx 
+ Here the meaning of the instruction is
+  much
+  clearer than in machine code. 
+ The word add is a
+  mnemonic
+  for the addition instruction. The general form 
+ of an assembly instruction is: 
+ mnemonic operand(s)
+  
+ An
+  assembler
+  is a program that reads a text file with assembly instruc- 
+ tions and converts the assembly into machine code.
+  Compilers
+  are programs  
+ that do similar conversions for high-level programming languages. An assem- 
+ bler is much simpler than a compiler. Every assembly language statement
+  It took several years for 
+ directly represents a single machine instruction. High-level language state- 
+ computer scientists to fig-
+  
+ ments are
+  much
+  more complex and may require many machine instructions.  
+ ure out how to even write
+  
+ Another important difference between assembly and high-level languages  
+ a compiler!
+  
+ is that since every different type of CPU has its own machine language, it 
+ also has its own assembly language. Porting assembly programs between",NA
+1.4 ,NA,NA
+Creating a Program,"Today, it is unusual to create a stand alone program written completely 
+ in assembly language. Assembly is usually used to key certain critical rou-
+ tines. Why? It is
+  much
+  easier to program in a higher level language than in 
+ assembly. Also, using assembly makes a program very hard to port to other 
+ platforms. In fact, it is rare to use assembly at all. 
+ So, why should anyone learn assembly at all? 
+ 1. Sometimes code written in assembly can be faster and smaller than 
+  
+ compiler generated code. 
+ 2. Assembly allows access to direct hardware features of the system that 
+  
+ might be difficult or impossible to use from a higher level language. 
+ 3. Learning to program in assembly helps one gain a deeper understand-
+  
+ ing of how computers work. 
+ 4. Learning to program in assembly helps one understand better how 
+  
+ compilers and high level languages like C work. 
+ These last two points demonstrate that learning assembly can be useful 
+ even if one never programs in it later. In fact, the author rarely programs in 
+ assembly, but he uses the ideas he learned from it everyday. 
+ 1.4.1 
+  
+ First program
+  
+ The early programs in this text will all start from the simple C driver 
+ program in Figure 1.6. It simply calls another function named asm main. 
+ This is really a routine that will be written in assembly. There are several 
+ advantages in using the C driver routine. First, this lets the C system set up 
+ the program to run correctly in protected mode. All the segments and their 
+ corresponding segment registers will be initialized by C. The assembly code 
+ need not worry about any of this. Secondly, the C library will also be 
+ available to be used by the assembly code. The author’s I/O routines take",NA
+1.5 Skeleton File,"Figure 1.7 shows a skeleton file that can be used as a starting point for 
+ writing assembly programs.",NA
+Chapter 2,NA,NA
+Basic Assembly Language,NA,NA
+2.1 Working with Integers,"2.1.1 Integer representation
+  
+ Integers come in two flavors: unsigned and signed. Unsigned integers 
+ (which are non-negative) are represented in a very straightforward binary 
+ manner. The number 200 as an one byte unsigned integer would be repre-
+ sented as by 11001000 (or C8 in hex). 
+ Signed integers (which may be positive or negative) are represented in a 
+ more complicated ways. For example, consider
+  −
+ 56. +56 as a byte would be 
+ represented by 00111000. On paper, one could represent
+  −
+ 56 as
+  −
+ 111000, 
+ but how would this be represented in a byte in the computer’s memory. 
+ How would the minus sign be stored? 
+ There are three general techniques that have been used to represent 
+ signed integers in computer memory. All of these methods use the most 
+ significant bit of the integer as a
+  sign bit
+ . This bit is 0 if the number is 
+ positive and 1 if negative. 
+ Signed magnitude
+  
+ The first method is the simplest and is called
+  signed magnitude
+ . It rep-
+ resents the integer as two parts. The first part is the sign bit and the second 
+ is the magnitude of the integer. So 56 would be represented as the byte 
+ 00111000 (the sign bit is underlined) and
+  −
+ 56 would be 10111000. largest 
+ byte value would be 01111111 or +127 and the smallest byte value The 
+ would be 11111111 or
+  −
+ 127. To negate a value, the sign bit is reversed. This 
+ method is straightforward, but it does have its drawbacks. First, there are 
+ two possible values of zero, +0 (00000000) and
+  −
+ 0 (10000000). Since zero",NA
+2.2 Control Structures,"High level languages provide high level control structures (
+ e.g.
+ , the
+  if 
+ and
+  
+ while
+  statements) that control the thread of execution. Assembly lan-guage 
+ does not provide such complex control structures. It instead uses the 
+ infamous
+  goto
+  and used inappropriately can result in spaghetti code! How-
+ ever, it
+  is
+  possible to write structured assembly language programs. The 
+ basic procedure is to design the program logic using the familiar high level 
+ control structures and translate the design into the appropriate assembly 
+ language (much like a compiler would do). 
+ 2.2.1 Comparisons
+  
+ Control structures decide what to do based on comparisons of data. In 
+ assembly, the result of a comparison is stored in the FLAGS register to be",NA
+2.3,NA,NA
+Translating Standard Control Structures,"This section looks at how the standard control structures of high level 
+ languages can be implemented in assembly language. 
+ 2.3.1 
+  
+ If statements
+  
+ The following pseudo-code: 
+ if
+  ( condition )  
+   then block;  
+ else 
+  
+    else block ; 
+ could be implemented as: 
+ 1 
+  ; code to set FLAGS  
+ 2 
+  jxx  
+ else_block  
+ ; select xx so that branches if condition false 
+ 3 
+  
+ ; code for 
+ then block  
+ 4 
+  jmp  
+ endif  
+ 5 
+  else_block:  
+ 6 
+  ; code for else block  
+ 7 
+  endif: 
+  
+ If there is no else, then the else block branch can be replaced by a branch 
+ to endif. 
+ 1
+  
+ ; code to set FLAGS 
+ ; select xx so that branches if condition false 
+ 2
+  
+ jxx 
+ endif 
+ 3
+  
+ ; code for then block 
+ 4
+  
+ endif:",NA
+2.4,NA,NA
+Example: Finding Prime Numbers,"This section looks at a program that finds prime numbers. Recall that 
+ prime numbers are evenly divisible by only 1 and themselves. There is no 
+ formula for doing this. The basic method this program uses is to find the 
+ factors of all odd numbers
+ 3
+ below a given limit. If no factor can be found for 
+ an odd number, it is prime. Figure 2.3 shows the basic algorithm written in 
+ C. 
+ Here’s the assembly version: 
+ 3
+ 2 is the only even prime number.",NA
+Chapter 3,NA,NA
+Bit Operations,NA,NA
+3.1 Shift Operations,"Assembly language allows the programmer to manipulate the individual 
+ bits of data. One common bit operation is called a
+  shift
+ . A shift operation 
+ moves the position of the bits of some data. Shifts can be either toward the 
+ left (
+ i.e.
+  toward the most significant bits) or toward the right (the least 
+ significant bits). 
+ 3.1.1 Logical shifts
+  
+ A logical shift is the simplest type of shift. It shifts in a very straightfor-
+ ward manner. Figure 3.1 shows an example of a shifted single byte number. 
+ Original  
+ Left shifted  
+ Right shifted 
+  
+ 1 1 
+ 1 
+ 0 
+ 1 
+ 0 1 
+ 0 
+ 1 1 
+ 0 
+ 1 
+ 0 
+ 1 0 
+ 0 
+ 0 1 
+ 1 
+ 1 
+ 0 
+ 1 0 
+ 1 
+  
+ Figure 3.1: Logical shifts 
+ Note that new, incoming bits are always zero. The SHL and SHR instruc-
+ tions are used to perform logical left and right shifts respectively. These 
+ instructions allow one to shift by any number of positions. The number of 
+ positions to shift can either be a constant or can be stored in the CL register. 
+ The last bit shifted out of the data is stored in the carry flag. Here are some 
+ code examples: 
+ 1
+  
+ mov 
+ ax, 0C123H 
+ ; shift 1 bit to left, 
+ ax = 8246H, CF = 1 
+ 2
+  
+ shl 
+ ax, 1 
+ 3
+  
+ shr 
+ ax, 1 
+ ; shift 1 bit to right, 
+ ax = 4123H, CF = 0 
+ 4
+  
+ shr 
+ ax, 1 
+ ; shift 1 bit to right, 
+ ax = 2091H, CF = 1 
+ 5
+  
+ mov 
+ ax, 0C123H 
+ 47",NA
+3.2 ,NA,NA
+Boolean Bitwise Operations,"There are four common boolean operators:
+  AND
+ ,
+  OR
+ ,
+  XOR
+  and
+  NOT
+ . A
+  
+ truth table
+  shows the result of each operation for each possible value of its 
+ operands. 
+ 3.2.1 
+  
+ The
+  AND
+  operation
+  
+  
+ The result of the
+  AND
+  of two bits is only 1 if both bits are 1, else the 
+ result is 0 as the truth table in Table 3.1 shows. 
+ Processors support these operations as instructions that act indepen-
+ dently on all the bits of data in parallel. For example, if the contents of AL 
+ and BL are
+  AND
+ ed together, the basic
+  AND
+  operation is applied to each of 
+ the 8 pairs of corresponding bits in the two registers as Figure 3.2 shows. 
+ Below is a code example: 
+ 1
+  
+ mov 
+ ax, 0C123H 
+ ; ax = 8022H 
+ 2
+  
+ and 
+ ax, 82F6H 
+ 3.2.2
+  
+ The
+  OR
+  operation
+  
+  
+ The inclusive
+  OR
+  of 2 bits is 0 only if both bits are 0, else the result is 1 as 
+ the truth table in Table 3.2 shows. Below is a code example: 
+ 1
+  
+ mov 
+ ax, 0C123H 
+ ; ax = E933H 
+ 2
+  
+ or 
+ ax, 0E831H",NA
+3.3 Avoiding Conditional Branches,"Modern processors use very sophisticated techniques to execute code as 
+ quickly as possible. One common technique is known as
+  speculative execu-
+ tion
+ . This technique uses the parallel processing capabilities of the CPU to 
+ execute multiple instructions at once. Conditional branches present a prob-
+ lem with this idea. The processor, in general, does not know whether the 
+ branch will be taken or not. If it is taken, a different set of instructions will 
+ be executed than if it is not taken. Processors try to predict whether the 
+ branch will be taken. If the prediciton is wrong, the processor has wasted its 
+ time executing the wrong code.",NA
+3.4 ,NA,NA
+Manipulating bits in C,"3.4.1 
+  
+ The bitwise operators of C
+  
+ Unlike some high-level languages, C does provide operators for bitwise 
+ operations. The
+  AND
+  operation is represented by the binary & operator
+ 1
+ . 
+ The
+  OR
+  operation is represented by the binary | operator. The
+  XOR
+  oper-
+ ation is represetned by the binary ^ operator. And the
+  NOT
+  operation is 
+ represented by the unary ~ operator. 
+ The shift operations are performed by C’s << and >> binary operators. 
+ The << operator performs left shifts and the >> operator performs right 
+ shifts. These operators take two operands. The left operand is the value to 
+ shift and the right operand is the number of bits to shift by. If the value to 
+ shift is an unsigned type, a logical shift is made. If the value is a signed type 
+ (like int), then an arithmetic shift is used. Below is some example C code 
+ using these operators: 
+ 1 
+  
+ 2 
+  
+ 3 
+  
+ 4 
+  
+ 5 
+  
+ 6 
+  
+ 7 
+  
+ 8 
+  
+ 9
+  
+ short int
+  s ;  
+ short unsigned
+  u; 
+ /∗ assume that short int is 16−bit ∗/
+  
+ s =
+  −
+ 1;  
+ u = 100; 
+ u = u
+  |
+  0x0100; s = 
+ s & 0xFFF0; 
+ s = s ˆ u; 
+ u = u
+  <<
+  3; 
+ s = s
+  >>
+  2; 
+ /∗ s = 0xFFFF (2’s complement) ∗/ 
+ /∗ u = 0x0064 ∗/ 
+  
+ /∗ u = 0x0164 ∗/ 
+  
+ /∗ s = 0xFFF0 ∗/ 
+  
+ /∗ s = 0xFE94 ∗/ 
+  
+ /∗ u = 0x0B20 (logical shift ) ∗/ /∗ s 
+ = 0xFFA5 (arithmetic shift ) ∗/
+  
+ 3.4.2
+  
+ Using bitwise operators in C
+  
+ The bitwise operators are used in C for the same purposes as they are 
+ used in assembly language. They allow one to manipulate individual bits of 
+ data and can be used for fast multiplication and division. In fact, a smart C 
+ compiler will use a shift for a multiplication like, x *= 2, automatically. 
+ Many operating system API
+ 2
+ ’s (such as
+  POSIX
+ 3
+ and Win32) contain functions 
+ which use operands that have data encoded as bits. For example, POSIX 
+ systems maintain file permissions for three different types of users: Each 
+ type of 
+ user
+  (a better name would be
+  owner
+ ),
+  group
+  and
+  others
+ . 
+ user can be granted permission to read, write and/or execute a file.  
+ To 
+ change the permissions of a file requires the C programmer to manipulate 
+ individual bits. POSIX defines several macros to help (see Table 3.6). The 
+ 1
+ This operator is different from the binary && and unary & operators!
+  
+ 2
+ Application Programming Interface 
+  
+ 3
+ stands for Portable Operating System Interface for Computer Environments. A stan-
+  
+ dard developed by the IEEE based on UNIX.",NA
+3.5,NA,NA
+Big and Little Endian Representations,"Chapter 1 introduced the concept of big and little endian representations 
+ of multibyte data. However, the author has found that this subject confuses 
+ many people. This section covers the topic in more detail. 
+ The reader will recall that endianness refers to the order that the in-
+ dividual bytes (
+ not
+  bits) of a multibyte data element is stored in memory. 
+ Big endian is the most straightforward method. It stores the most signif-
+ icant byte first, then the next significant byte and so on. In other words the
+  
+ big
+  bits are stored first. Little endian stores the bytes in the opposite 
+ 4
+ Actually a parameter of type mode t which is a typedef to an integral type.",NA
+3.6 ,NA,NA
+Counting Bits,"Earlier a straightforward technique was given for counting the number 
+ of bits that are “on” in a double word. This section looks at other less direct 
+ methods of doing this as an exercise using the bit operations discussed in 
+ this chapter. 
+ 3.6.1 
+  
+ Method one
+  
+  
+ The first method is very simple, but not obvious. Figure 3.6 shows the 
+ code. 
+ How does this method work? In every iteration of the loop, one bit is 
+ turned off in data. When all the bits are off (
+ i.e.
+  when data is zero), the loop 
+ stops. The number of iterations required to make data zero is equal to the 
+ number of bits in the original value of data. 
+ Line 6 is where a bit of data is turned off. How does this work? Consider 
+ the general form of the binary representation of data and the rightmost 1 in 
+ this representation. By definition, every bit after this 1 must be zero. Now, 
+ what will be the binary representation of data - 1? The bits to the left of the 
+ rightmost 1 will be the same as for data, but at the point of the rightmost 1 
+ the bits will be the complement of the original bits of data. For 
+ example: 
+ = 
+ xxxxx10000 
+ data 
+ data - 1 
+ = 
+ xxxxx01111",NA
+Chapter 4,NA,NA
+Subprograms,"This chapter looks at using subprograms to make modular programs and 
+ to interface with high level languages (like C). Functions and procedures are 
+ high level language examples of subprograms. 
+ The code that calls a subprogram and the subprogram itself must agree 
+ on how data will be passed between them. These rules on how data will be 
+ passed are called
+  calling conventions
+ . A large part of this chapter will deal 
+ with the standard C calling conventions that can be used to interface 
+ assembly subprograms with C programs. This (and other conventions) often 
+ pass the addresses of data (
+ i.e.
+  pointers) to allow the subprogram to access 
+ the data in memory.",NA
+4.1 Indirect Addressing,"Indirect addressing allows registers to act like pointer variables. To in-
+ dicate that a register is to be used indirectly as a pointer, it is enclosed in 
+ square brackets ([]). For example: 
+ 1
+  
+ mov 
+ ax, [Data] 
+ ; normal direct memory addressing of a word 
+ 2
+  
+ mov 
+ ebx, Data 
+ ; ebx = & Data 
+ 3
+  
+ mov 
+ ax, [ebx] 
+ ; ax = *ebx 
+ Because AX holds a word, line 3 reads a word starting at the address stored 
+ in EBX. If AX was replaced with AL, only a single byte would be read. It is 
+ important to realize that registers do not have types like variables do in C. 
+ What EBX is assumed to point to is completely determined by what 
+ instructions are used. Furthermore, even the fact that EBX is a pointer is 
+ completely determined by the what instructions are used. If EBX is used 
+ incorrectly, often there will be no assembler error; however, the program 
+ This is one of the many reasons that assembly will not work correctly. 
+ programming is more error prone than high level programming. 
+ 65",NA
+4.2 ,NA,NA
+Simple Subprogram Example,"A subprogram is an independent unit of code that can be used from 
+ different parts of a program. In other words, a subprogram is like a function 
+ in C. A jump can be used to invoke the subprogram, but returning presents a 
+ problem. If the subprogram is to be used by different parts of the program, it 
+ must return back to the section of code that invoked it. Thus, the jump back 
+ from the subprogram can not be hard coded to a label. The code below 
+ shows how this could be done using the indirect form of the JMP instruction. 
+ This form of the instruction uses the value of a register to determine where 
+ to jump to (thus, the register acts much like a
+  function pointer
+  in C.) Here is 
+ the first program from chapter 1 rewritten to use a subprogram. 
+ 1
+  
+ ; file: sub1.asm 
+ sub1.asm 
+ 2
+  
+ ; Subprogram example program 
+ 3
+  
+ %include ""asm_io.inc"" 
+ 4
+  
+ 5
+  
+ segment .data 
+ ""Enter a number: "", 0 
+ ; don’t forget null terminator 
+ 6
+  
+ prompt1 db 
+ 7
+  
+ prompt2 db 
+ ""Enter another number: "", 0 
+ 8
+  
+ outmsg1 db 
+ ""You entered "", 0 
+ 9
+  
+ outmsg2 db 
+ "" and "", 0 
+ 10
+  
+ outmsg3 db 
+ "", the sum of these is "", 0 
+ 11
+  
+ 12 
+  
+ segment .bss 
+ 13 
+  
+ input1  
+ resd 1 
+ 14 
+  
+ input2  
+ resd 1 
+ 15
+  
+ 16
+  
+ segment .text 
+ _asm_main 
+ ; setup routine 
+ 17
+  
+ global 
+ 18
+  
+ _asm_main: 
+ 0,0 
+ enter 
+ 19
+  
+ 20
+  
+ pusha 
+ 21
+  
+ 22
+  
+ mov 
+ eax, prompt1 
+ ; print out prompt 
+ 23
+  
+ call 
+ print_string 
+ 24
+  
+ 25
+  
+ mov 
+ ebx, input1 
+ ; store address of input1 into ebx",NA
+4.3 ,NA,NA
+The Stack,"Many CPU’s have built-in support for a stack.  
+ A stack is a Last-In 
+ First-Out (
+ LIFO
+ ) list. The stack is an area of memory that is organized in this 
+ fashion. The PUSH instruction adds data to the stack and the POP instruction 
+ removes data. The data removed is always the last data added (that is why it 
+ is called a last-in first-out list). 
+ The SS segment register specifies the segment that contains the stack 
+ (usually this is the same segment data is stored into). The ESP register 
+ contains the address of the data that would be removed from the stack. This 
+ data is said to be at the
+  top
+  of the stack. Data can only be added in double 
+ word units. That is, one can not push a single byte on the stack. 
+ The PUSH instruction inserts a double word
+ 1
+ on the stack by subtracting 
+ 4 from ESP and then stores the double word at [ESP]. The POP instruction 
+ reads the double word at [ESP] and then adds 4 to ESP. The code below 
+ demostrates how these instructions work and assumes that ESP is initially 
+ 1000H. 
+ 1
+  
+ push 
+ dword 1 
+ ; 1 stored at 0FFCh, ESP = 0FFCh 
+ 2
+  
+ push 
+ dword 2 
+ ; 2 stored at 0FF8h, ESP = 0FF8h 
+ 3
+  
+ push 
+ dword 3 
+ ; 3 stored at 0FF4h, ESP = 0FF4h 
+ 4
+  
+ pop 
+ eax 
+ ; EAX = 3, ESP = 0FF8h 
+ 5
+  
+ pop 
+ ebx 
+ ; EBX = 2, ESP = 0FFCh 
+ 6
+  
+ pop 
+ ecx 
+ ; ECX = 1, ESP = 1000h 
+  
+ 1
+ Actually words can be pushed too, but in 32-bit protected mode, it is better to work
+  
+ with only double words on the stack.",NA
+4.4 The CALL and RET Instructions,"The 80x86 provides two instructions that use the stack to make calling 
+ subprograms quick and easy.  
+ The CALL instruction makes an uncondi-
+ tional jump to a subprogram and
+  pushes
+  the address of the next instruction 
+ on the stack. The RET instruction
+  pops off
+  an address and jumps to that 
+ address. When using these instructions, it is very important that one man-
+ age the stack correctly so that the right number is popped off by the RET 
+ instruction! 
+ The previous program can be rewritten to use these new instructions by 
+ changing lines 25 to 34 to be: 
+ mov  
+ call 
+ mov  
+ call 
+ ebx, input1  
+ get_int 
+ ebx, input2  
+ get_int 
+ and change the subprogram get int to: 
+ get_int: 
+ call read_int 
+ mov [ebx], eax 
+ ret 
+ There are several advantages to CALL and RET: 
+ •
+  It is simpler! 
+ •
+  It allows subprograms calls to be nested easily. Notice that get int calls 
+ read int. This call pushes another address on the stack. At the end of 
+ read int’s code is a RET that pops off the return address and jumps 
+ back to get int’s code. Then when get int’s RET is executed, it pops off 
+ the return address that jumps back to asm main. This works correctly 
+ because of the LIFO property of the stack.",NA
+4.5 ,NA,NA
+Calling Conventions,"When a subprogram is invoked, the calling code and the subprogram 
+ (the 
+ callee
+ ) must agree on how to pass data between them. High-level 
+ languages have standard ways to pass data known as
+  calling conventions
+ . 
+ For high-level code to interface with assembly language, the assembly 
+ language code must use the same conventions as the high-level language. 
+ The calling conventions can differ from compiler to compiler or may vary 
+ depending on how the code is compiled (
+ e.g.
+  if optimizations are on or not). 
+ One universal convention is that the code will be invoked with a CALL 
+ instruction and return via a RET. 
+ All PC C compilers support one calling convention that will be described 
+ in the rest of this chapter in stages. These conventions allow one to create 
+ subprograms that are
+  reentrant
+ . A reentrant subprogram may be called at 
+ any point of a program safely (even inside the subprogram itself). 
+ 4.5.1 
+  
+ Passing parameters on the stack
+  
+  
+ Parameters to a subprogram may be passed on the stack.  
+ They are 
+ pushed onto the stack before the CALL instruction.  
+ Just as in C, if the 
+ parameter is to be changed by the subprogram, the
+  address
+  of the data must 
+ be passed, not the
+  value
+ . If the parameter’s size is less than a double word, it 
+ must be converted to a double word before being pushed. 
+  
+ The parameters on the stack are not popped off by the subprogram, 
+ instead they are accessed from the stack itself. Why? 
+ •
+  Since they have to be pushed on the stack before the CALL instruction, 
+ the return address would have to be popped off first (and then pushed 
+  back on again). 
+ •
+  Often the parameters will have to be used in several places in the 
+ subprogram. Usually, they can not be kept in a register for the entire 
+ subprogram and would have to be stored in memory. Leaving them",NA
+4.6 Multi-Module Programs,"A
+  multi-module program
+  is one composed of more than one object file. All 
+ the programs presented here have been multi-module programs. They 
+ consisted of the C driver object file and the assembly object file (plus the C 
+ library object files). Recall that the linker combines the object files into a 
+ single executable program. The linker must match up references made to 
+ each label in one module (
+ i.e.
+  object file) to its definition in another module. 
+ In order for module A to use a label defined in module B, the extern directive 
+ must be used. After the extern directive comes a comma delimited list of 
+ labels.  
+ The directive tells the assembler to treat these labels as
+  external
+  to 
+ the module. That is, these are labels that can be used in this module, but are 
+ defined in another. The asm io.inc file defines the read int,
+  etc.
+  routines as 
+ external. 
+ In assembly, labels can not be accessed externally by default. If a label",NA
+4.7 ,NA,NA
+Interfacing Assembly with C,"Today, very few programs are written completely in assembly. 
+ Compilers are very good at converting high level code into efficient machine 
+ code. Since it is much easier to write code in a high level language, it is more 
+ popular. In addition, high level code is
+  much
+  more portable than assembly! 
+ When assembly is used, it is often only used for small parts of the code. 
+ This can be done in two ways: calling assembly subroutines from C or inline 
+ assembly. Inline assembly allows the programmer to place assembly 
+ statements directly into C code. This can be very convenient; however, there 
+ are disadvantages to inline assembly. The assembly code must be written in 
+ the format the compiler uses. No compiler at the moment supports NASM’s 
+ format. Different compilers require different formats. Borland and Microsoft 
+ require MASM format. DJGPP and Linux’s gcc require GAS
+ 3
+ format. The 
+ 3
+ GAS is the assembler that all GNU compiler’s use. It uses the AT&T syntax which",NA
+4.8 Reentrant and Recursive Subprograms,"A reentrant subprogram must satisfy the following properties: 
+ •
+  It must not modify any code instructions. In a high level language this 
+ would be difficult, but in assembly it is not hard for a program to try to 
+ modify its own code. For example: 
+ mov 
+ word [cs:$+7], 5 
+ ; copy 5 into the word 7 bytes ahead 
+ add 
+ ax, 2 
+ ; previous statement changes 2 to 5! 
+ This code would work in real mode, but in protected mode operating 
+ systems the code segment is marked as read only. When the first line 
+ above executes, the program will be aborted on these systems. This 
+ type of programming is bad for many reasons. It is confusing, hard to 
+ maintain and does not allow code sharing (see below). 
+ •
+  It must not modify global data (such as data in the data and the bss segments). All 
+ variables are stored on the stack. 
+ There are several advantages to writing reentrant code. 
+ •
+  A reentrant subprogram can be called recursively. 
+ •
+  A reentrant program can be shared by multiple processes. On many 
+ multi-tasking operating systems, if there are multiple instances of a 
+ program running, only
+  one
+  copy of the code is in memory. Shared 
+ libraries and DLL’s (
+ Dynamic Link Libraries
+ ) use this idea as well. 
+ •
+  Reentrant subprograms work much better in
+  multi-threaded 
+ grams. Windows 9x/NT 
+ and most UNIX-like operating systems (So-
+ 5
+  pro- 
+ laris, Linux,
+  etc.
+ ) support multi-threaded programs. 
+ 4.8.1 Recursive subprograms
+  
+ These types of subprograms call themselves. The recursion can be either 
+ direct
+  or
+  indirect
+ . Direct recursion occurs when a subprogram, say foo, calls 
+ itself inside foo’s body. Indirect recursion occurs when a subprogram is not 
+ called by itself directly, but by another subprogram it calls. For example, 
+ subprogram foo could call bar and bar could call foo.",NA
+n=3 frame,NA,NA
+n=2 frame,NA,NA
+n=1 frame,NA,NA
+n(3),Return address,NA
+Saved EBP,NA,NA
+n(2),Return address,NA
+Saved EBP,NA,NA
+n(1),Return address,NA
+Saved EBP,"Figure 4.16: Stack frames for factorial function 
+ 1 
+  
+ 2 
+  
+ 3 
+  
+ 4 
+  
+ 5 
+  
+ 6 
+  
+ 7 
+  
+ 8
+  
+  
+ void
+  f (
+  int
+  x ) 
+ {
+  
+ int
+  i ; 
+ for
+ ( i=0; i
+  <
+  x; i++ )
+  { 
+  
+  printf (”%d
+ \
+ n”, i);  
+ f(i ); 
+ }
+  
+ }
+  
+  
+  
+ Figure 4.17: Another example (C version) 
+ 4.8.2 Review of C variable storage types
+  
+ C provides several types of variable storage. 
+ global
+  These variables are defined outside of any function and are stored at 
+ fixed memory locations (in the data or bss segments) and exist from 
+ the beginning of the program until the end. By default, they can be 
+ accessed from any function in the program; however, if they are 
+ declared as static, only the functions in the same module can access 
+ them (
+ i.e.
+  in assembly terms, the label is internal, not external). 
+ static
+  These are
+  local
+  variables of a function that are declared static. 
+ (Unfortunately, C uses the keyword static for two different purposes!) 
+ These variables are also stored at fixed memory locations (in data or 
+ bss), but can only be directly accessed in the functions they are 
+ defined in.",NA
+Chapter 5,NA,NA
+Arrays,NA,NA
+5.1 Introduction,"An
+  array
+  is a contiguous block of list of data in memory. Each element of 
+ the list must be the same type and use exactly the same number of bytes of 
+ memory for storage. Because of these properties, arrays allow efficient 
+ access of the data by its position (or index) in the array. The address of any 
+ element can be computed by knowing three facts: 
+ •
+  The address of the first element of the array. 
+ •
+  The number of bytes in each element 
+ •
+  The index of the element 
+ It is convenient to consider the index of the first element of the array to 
+ be zero (just as in C). It is possible to use other values for the first index, but 
+ it complicates the computations. 
+ 5.1.1 Defining arrays
+  
+ Defining arrays in the
+  data
+  and
+  bss
+  segments
+  
+ To define an initialized array in the data segment, use the normal db, dw,
+  
+ etc.
+  directives. NASM also provides a useful directive named TIMES that can 
+ be used to repeat a statement many times without having to duplicate the 
+ statements by hand. Figure 5.1 shows several examples of these. 
+ To define an uninitialized array in the bss segment, use the resb, resw, 
+ etc.
+  directives. Remember that these directives have an operand that spec-
+ ifies how many units of memory to reserve. Figure 5.1 also shows examples 
+ of these types of definitions. 
+ 95",NA
+5.2 ,NA,NA
+Array/String Instructions,"The 80x86 family of processors provide several instructions that are de-
+ signed to work with arrays. These instructions are called
+  string instructions
+ . 
+ They use the index registers (ESI and EDI) to perform an operation and then 
+ to automatically increment or decrement one or both of the index reg-isters. 
+ The
+  direction flag
+  (DF) in the FLAGS register determines where the index 
+ registers are incremented or decremented. There are two instructions that 
+ modify the direction flag: 
+ CLD
+  clears the direction flag. In this state, the index registers are incre-
+  
+ mented. 
+ STD
+  sets the direction flag. In this state, the index registers are decre-
+  
+ mented. 
+ A
+  very
+  common mistake in 80x86 programming is to forget to explicitly put 
+ the direction flag in the correct state. This often leads to code that works 
+ most of the time (when the direction flag happens to be in the desired state), 
+ but does not work
+  all
+  the time. 
+ 5.2.1 
+  
+ Reading and writing memory
+  
+ The simplest string instructions either read or write memory or both. 
+ They may read or write a byte, word or double word at a time. Figure 5.7 
+ 2
+ A size can be specified here, but it is ignored by the compiler.",NA
+Chapter 6,NA,NA
+Floating Point,NA,NA
+6.1 Floating Point Representation,"6.1.1 Non-integral binary numbers
+  
+ When number systems were discussed in the first chapter, only integer 
+ values were discussed. Obviously, it must be possible to represent non-
+ integral numbers in other bases as well as decimal. In decimal, digits to the 
+ right of the decimal point have associated negative powers of ten: 
+ 0
+ .
+ 123 = 1
+  ×
+  10
+ −
+ 1
+ + 2
+  ×
+  10
+ −
+ 2
+ + 3
+  ×
+  10
+ −
+ 3
+  
+ Not surprisingly, binary numbers work similarly: 
+ 0
+ .
+ 101
+ 2
+  = 1
+  ×
+  2
+ −
+ 1
+ + 0
+  ×
+  2
+ −
+ 2
+ + 1
+  ×
+  2
+ −
+ 3
+ = 0
+ .
+ 625 
+ This idea can be combined with the integer methods of Chapter 1 to convert 
+ a general number: 
+ 110
+ .
+ 011
+ 2
+  = 4 + 2 + 0
+ .
+ 25 + 0
+ .
+ 125 = 6
+ .
+ 375 
+ Converting from decimal to binary is not very difficult either. In general, 
+ divide the decimal number into two parts: integer and fraction. Convert the 
+ integer part to binary using the methods from Chapter 1. The fractional part 
+ is converted using the method described below. 
+ Consider a binary fraction with the bits labeled
+  a, b, c, . . .
+  The number in 
+ binary then looks like:  
+  
+  
+ 0
+ .abcdef . . .
+  
+ Multiply the number by two. The binary representation of the new number 
+ will be: 
+ a.bcdef . . .
+  
+ 117",NA
+6.2 ,NA,NA
+Floating Point Arithmetic,"Floating point arithmetic on a computer is different than in continuous 
+ mathematics. In mathematics, all numbers can be considered exact. As 
+ shown in the previous section, on a computer many numbers can not be 
+ represented exactly with a finite number of bits. All calculations are per-
+ formed with limited precision. In the examples of this section, numbers with 
+ an 8-bit significand will be used for simplicity. 
+ 6.2.1 
+  
+ Addition
+  
+ To add two floating point numbers, the exponents must be equal. If they 
+ are not already equal, then they must be made equal by shifting the 
+ significand of the number with the smaller exponent. For example, consider 
+ 10
+ .
+ 375 + 6
+ .
+ 34375 = 16
+ .
+ 71875 or in binary: 
+ + 
+ 1
+ .
+ 0100110
+  ×
+  
+ 2
+ 3 
+  
+ 1
+ .
+ 1001011
+  ×
+  
+ 2
+ 2
+  
+ 3
+ The only difference is that for the infinity and undefined values, the biased exponent
+  
+ is 7FF not FF.",NA
+6.3 ,NA,NA
+The Numeric Coprocessor,"6.3.1 
+  
+ Hardware
+  
+  
+ The earliest Intel processors had no hardware support for floating point 
+ operations. This does not mean that they could not perform float operations. 
+ It just means that they had to be performed by procedures composed of 
+ many non-floating point instructions.  
+ For these early systems, Intel did 
+ provide an additional chip called a
+  math coprocessor
+ . A math coprocessor 
+ has machine instructions that perform many floating point operations much 
+ faster than using a software procedure (on early processors, at least 10 
+ times",NA
+Chapter 7,NA,NA
+Structures and C++,NA,NA
+7.1 Structures,"7.1.1 Introduction
+  
+ Structures are used in C to group together related data into a composite 
+ variable. This technique has several advantages: 
+ 1. It clarifies the code by showing that the data defined in the structure 
+ are intimately related. 
+ 2. It simplifies passing the data to functions. Instead of passing multiple 
+ variables separately, they can be passed as a single unit. 
+ 3. It increases the
+  locality
+ 1
+ of the code. 
+ From the assembly standpoint, a structure can be considered as an array 
+ with elements of
+  varying
+  size. The elements of real arrays are always the 
+ same size and type. This property is what allows one to calculate the 
+ address of any element by knowing the starting address of the array, the 
+ size of the elements and the desired element’s index. 
+ A structure’s elements do not have to be the same size (and usually are 
+ not). Because of this each element of a structure must be explicitly specified 
+ and is given a
+  tag
+  (or name) instead of a numerical index. 
+ In assembly, the element of a structure will be accessed in a similar way 
+ as an element of an array. To access an element, one must know the starting 
+ address of the structure and the
+  relative offset
+  of that element from the 
+ beginning of the structure. However, unlike an array where this offset can 
+ be calculated by the index of the element, the element of a structure is 
+ assigned an offset by the compiler. 
+ 1
+ See the virtual memory management section of any Operating System text book for
+  
+ discussion of this term.
+  
+ 143",NA
+7.2 ,NA,NA
+Assembly and C++,"The C++ programming language is an extension of the C language. Many 
+ of the basic rules of interfacing C and assembly language also apply 
+ to C++. 
+ However, some rules need to be modified. 
+ Also, some of the 
+ extensions of C++ are easier to understand with a knowledge of assembly 
+ language. This section assumes a basic knowledge of C++.",NA
+Appendix A,NA,NA
+80x86 Instructions,NA,NA
+A.1 ,NA,NA
+Non-floating Point Instructions,"This section lists and describes the actions and formats of the non-floating 
+ point instructions of the Intel 80x86 CPU family. 
+ The formats use the following abbreviations: 
+ R  
+ R8  
+ R16 
+ R32 
+ SR  
+ M  
+ M8  
+ M16 
+ M32 
+ I 
+ general register 
+ 8-bit register  
+ 16-bit register  
+ 32-bit register  
+ segment register 
+ memory  
+ byte  
+ word  
+ double word  
+ immediate value 
+ These can be combined for the multiple operand instructions. For example, 
+ the format
+  R, R
+  means that the instruction takes two register operands. 
+ Many of the two operand instructions allow the same operands. The abbre-
+ viation
+  O2
+  is used to represent these operands:
+  R,R R,M R,I M,R M,I
+ . If a 8-bit 
+ register or memory can be used for an operand, the abbreviation, 
+ R/M8
+  is 
+ used. 
+ The table also shows how various bits of the FLAGS register are affected 
+ by each instruction. If the column is blank, the corresponding bit is not 
+ affected at all. If the bit is always changed to a particular value, a 1 or 0 is 
+ shown in the column. If the bit is changed to a value that depends on the 
+ operands of the instruction, a
+  C
+  is placed in the column. Finally, if the bit is 
+ modified in some undefined way a
+  ?
+  appears in the column. Because the 
+ 173",NA
+A.2 ,NA,NA
+Floating Point Instructions,"In this section, many of the 80x86 math coprocessor instructions are 
+ described.  The description section briefly describes the operation of the 
+ instruction. To save space, information about whether the instruction pops 
+ the stack is not given in the description. 
+ The format column shows what type of operands can be used with each 
+ instruction. The following abbreviations are used: 
+ ST
+ n 
+ F  
+ D  
+ E  
+ I16  
+ I32  
+ I64 
+ A coprocessor register  
+ Single precision number in memory 
+ Double precision number in memory 
+ Extended precision number in memory 
+ Integer word in memory  
+ Integer double word in memory  
+ Integer quad word in memory 
+ Instructions requiring a Pentium Pro or better are marked with an as-
+ terisk(
+ ∗
+ ). 
+ Instruction
+  
+ Description
+  
+ Format
+  
+  
+ FABS  
+ FADD
+  src 
+  
+ FADD
+  dest
+ , ST0  
+ FADDP
+  dest
+  [,ST0] 
+ FCHS  
+ FCOM
+  src 
+  
+ FCOMP
+  src 
+  
+ FCOMPP
+  src 
+  
+ FCOMI
+ ∗
+ src 
+  
+ FCOMIP
+ ∗
+ src 
+  
+ FDIV
+  src 
+  
+ FDIV
+  dest
+ , ST0  
+ FDIVP
+  dest
+  [,ST0] 
+ FDIVR
+  src 
+  
+ FDIVR
+  dest
+ , ST0  
+ FDIVRP
+  dest
+  [,ST0] 
+ FFREE
+  dest 
+  
+ FIADD
+  src 
+  
+ FICOM
+  src 
+  
+ FICOMP
+  src 
+  
+ FIDIV
+  src 
+  
+ FIDIVR
+  src
+  
+ ST0 =
+  |
+ ST0
+ | 
+  
+ ST0 +=
+  src 
+  
+ dest
+  += STO  
+ dest
+  += ST0  
+ ST0 =
+  −
+ ST0 Compare 
+ ST0 and
+  src 
+ Compare 
+ ST0 and
+  src 
+ Compares 
+ ST0 and ST1 Compares 
+ into FLAGS Compares 
+ into FLAGS ST0 /=
+  src 
+  
+ dest
+  /= STO  
+ dest
+  /= ST0  
+ ST0 =
+  src
+  /ST0  
+ dest
+  = ST0/
+ dest 
+  
+ dest
+  = ST0/
+ dest 
+  
+ Marks as empty  
+ ST0 +=
+  src 
+  
+ Compare ST0 and
+  src 
+ Compare ST0 and
+  src 
+ STO /=
+  src 
+  
+ STO =
+  src
+  /ST0 
+ ST
+ n
+  F D 
+ ST
+ n 
+  
+ ST
+ n
+  
+ ST
+ n
+  F D 
+ ST
+ n
+  F D 
+ ST
+ n 
+  
+ ST
+ n 
+  
+ ST
+ n
+  F D 
+ ST
+ n 
+  
+ ST
+ n 
+  
+ ST
+ n
+  F D 
+ ST
+ n 
+  
+ ST
+ n 
+  
+ ST
+ n 
+  
+ I16 I32  
+ I16 I32  
+ I16 I32  
+ I16 I32  
+ I16 I32",NA
+Index ,"ADC, 37, 54 C++, 150–171 
+ ADD, 13, 36  
+ AND, 50  
+ array1.asm, 99–102  
+ arrays, 95–115  
+ accessing, 96–102  
+ defining, 95–96  
+  
+  local variable, 96  
+  
+  static, 95  
+ multidimensional, 103–106  
+  
+ parameters, 105–106  
+  
+  two dimensional, 103–
+ 104 assembler, 11  
+ assembly language, 11–12 
+ binary, 1–2  
+ addition, 2  
+ bit operations  
+ AND, 50  
+ assembly, 52–53  
+ C, 56–57  
+ NOT, 51  
+ OR, 50  
+ shifts, 47–50  
+  
+  arithmetic shifts, 48 
+  
+  logical shifts, 47–48 
+  
+  rotates, 49  
+ XOR, 51  
+ branch prediction, 53  
+ bss segment, 21  
+ BSWAP, 59  
+ BYTE, 16  
+ byte, 4 
+  
+ Big int example, 158–163  
+  
+ classes, 156–171  
+  
+ copy constructor, 161  
+  
+ early binding, 168  
+  
+ extern ”C”, 153  
+  
+ inheritance, 166–171  
+  
+ inline functions, 154–156  
+  
+ late binding, 168  
+  
+ member functions,
+  see
+  meth- 
+  
+   ods  
+  
+ name mangling, 151–153  
+  
+ polymorphism, 166–171  
+  
+ references, 153–154  
+  
+ typesafe linking, 152  
+  
+ virtual, 166  
+  
+ vtable, 167–171  
+ CALL, 69–70  
+ calling convention, 65, 70–76, 83–
+  
+    84  
+  
+ cdecl, 84  
+  
+ stdcall, 84  
+  
+ C, 21, 71, 80–84  
+  
+   labels, 82  
+  
+   parameters, 82  
+  
+   registers, 81  
+  
+   return values, 83  
+  
+ Pascal, 71  
+  
+ register, 84  
+  
+ standard call, 84  
+  
+ stdcall, 72, 84, 171  
+ CBW, 31  
+ CDQ, 31 
+ C driver, 19 CLC, 37 
+ 181",NA

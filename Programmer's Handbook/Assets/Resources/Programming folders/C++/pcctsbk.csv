@@ -1,0 +1,3242 @@
+Larger Text,Smaller Text,Symbol
+Language Translation ,NA,NA
+Using ,NA,NA
+PCCTS and C++,NA,NA
+A Reference Guide,"Terence John Parr 
+  
+ MageLang Institute",NA
+"Automata Publishing Company, San Jose, CA 95129",NA,NA
+This is Tom’s fault.,NA,NA
+"A Completely Serious, No-Nonsense, ",NA,NA
+Startlingly-Accurate Autobiography,"Terence John Parr was born in Los Angeles, California, USA in the year of the dragon 
+ on August 17, 1964 during the week of the Tonkin Gulf Crisis, which eventually led us 
+ into the Vietnam Conflict; coincidence? Terence’s main hobbies in California were 
+ drooling, covering his body in mud, and screaming at the top of his lungs. 
+  
+ In 1970, Terence moved to Colorado Springs, Colorado with his family in search of 
+ better mud and less smog. His formal education began in a Catholic grade school where 
+ he became intimately familiar with penguins and other birds of prey. Terence eventually 
+ escaped private school to attend public junior high only to return to the private sector—
+ attending Fountain Valley School for the ""education"" only a prep school can provide. 
+ After being turned down by every college he applied to, Terence begged his way into 
+ Purdue University's School of Humanities. Much to the surprise of his high school's 
+ faculty and the general populace, Terence graduated in 1987 from Purdue with a 
+ bachelor's degree in computer science. 
+  
+ After contemplating an existence where he had to get up and go to work, Terence 
+ quickly applied to graduate school at Purdue University's School of Electrical 
+ Engineering. By sheer tenacity, he was accepted and then promptly ran off to Paris, 
+ France after only one semester of graduate work. Terence returned to Purdue in the Fall 
+ of 1988, eventually finishing up his master's degree in May 1990 despite his best efforts. 
+ Hank Dietz served as major professor and supervised Terence's master's thesis. 
+  
+ A short stint with the folks in blue suits during the summer of 1990, convinced Terence 
+ to begin his Ph.D.; again, Hank Dietz was his advisor. He passed the Ph.D. qualifier 
+ exam in January of 1991, stunning the local academic community. After three years of 
+ course work, research, and general fooling around, Terence finished writing his doctoral 
+ dissertation and defended it against a small horde of professors and students on July 1, 
+ 1993.
+  
+ After completing a year of penance with Paul Woodward and Matt O’Keefe at the Army 
+ High Performance Computing Research Center at the University of MN as a 
+ postdoctoral slave, Terence formed Parr Research Corporation and leapt into the 
+ unknown on August 1, 1994.
+  
+ The Java programming language started its inexorable climb to stardom in early 1995. 
+ Terence entered the mad rush of Java startups in late 1995, forming MageLang Institute 
+ (
+ www.MageLang.com
+ ) with Tom Burns and Mel Berman, in order to provide 
+ exceptional language training and further the cause of Java. Terence still maintains 
+ PCCTS while working 26 hours a day at MageLang and is allegedly having a pretty 
+ good time.
+  
+ v",NA
+Table of Contents,"Foreword . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  xvii
+  
+ Preface  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  xix
+  
+ Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    
+ 23
+  
+  About this book  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+  
+  Exactly 1800 Words On Languages and Parsing  . . . . . . . . . . . . . . . . . . . . . . 25
+  
+  Bottom-up Parsers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 29 
+ ANTLR . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 30
+  
+  SORCERER. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31
+  
+  Intermediate Representations and Translation. . . . . . . . . . . . . . . . . . . . . 33 
+ SORCERER Versus Hand-Coded Tree Walking . . . . . . . . . . . . . . . . . . . 35 
+ What Is SORCERER Good At and Bad At? . . . . . . . . . . . . . . . . . . . . . . . 39 
+ How Is SORCERER Different Than a Code-Generator Generator?  . . . . 39
+  
+  A Tutorial. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    
+ 41
+  
+  Evaluating and Differentiating Polynomials . . . . . . . . . . . . . . . . . . . . . . . . . . . 41
+  
+  Language Recognition and Syntax-Directed Interpretation . . . . . . . . . . . . . . . 42
+  
+  Syntax. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 42 
+ Vocabulary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 44 
+ Semantic Actions  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47 
+ Constructing and Walking ASTs  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 52
+  
+ Language Translation Using PCCTS and C++ 
+  
+ 7",NA
+Tables,"TABLE 1.
+  
+ Vocabulary Symbols for Polynomial Language
+  
+ 44
+  
+  
+ TABLE 2.
+  
+ Differentiation of Polynomial Trees
+  
+ 74
+  
+ 15
+  
+ TABLE 3.
+  
+ Simplification of Polynomial Trees
+  
+ 75
+  
+ TABLE 4.
+  
+ Lexical Items in an ANTLR Description
+  
+ 83
+  
+ TABLE 5.
+  
+ ANTLR Subrule Format
+  
+ 87
+  
+ TABLE 6.
+  
+ C++ Interface Symbols Available to Lexical Actions
+  
+ 92
+  
+ TABLE 7.
+  
+ Regular Expression Syntax
+  
+ 94
+  
+ TABLE 8.
+  
+ C++ Interface Interpretation of Terms in Actions
+  
+ 106
+  
+ TABLE 9.
+  
+ Synopsis of C/C++ Interface Interpretation of AST Terms 
+ in Actions 
+ 107
+  
+ TABLE 10.
+  
+ C/C++ Interface Interpretation of AST Terms in Actions
+  
+ 126
+  
+ TABLE 11.
+  
+ Sample Predicates and Their Lookahead Contexts
+  
+ 131
+  
+ TABLE 12.
+  
+ Predefined Parser Exception Signals
+  
+ 139
+  
+ TABLE 13.
+  
+ Sample Order of Search for Exception Handlers
+  
+ 141
+  
+ TABLE 14.
+  
+ Resynchronization Functions
+  
+ 144
+  
+ TABLE 15.
+  
+ C Interface Parser Invocation 
+ Macros
+  
+ 149
+  
+ TABLE 16.
+  
+ C Interface Symbols Available to Lexical 
+ Actions
+  
+ 151
+  
+ TABLE 17.
+  
+ Visibility and Scoping of Attributes
+  
+ 155
+  
+ TABLE 18.
+  
+ C Interface Interpretation of Attribute Terms in Actions
+  
+ 157
+  
+ TABLE 19.
+  
+ C Interface AST Support Functions
+  
+ 158
+  
+ TABLE 20.
+  
+ Files Written by SORCERER For C++ Interface
+  
+ 165
+  
+ Language Translation Using PCCTS and C++",NA
+Foreword,"A few years ago, I implemented a programming language called NewtonScript(tm)
+ 1
+ , 
+ the application development language for the Newton(R) operating system. You may 
+ not have heard of NewtonScript, but you’ve probably heard of the tool I used to 
+ implement it: a crusty old thing called YACC.
+  
+ YACC--like the C language, Huffman coding, and the QWERTY keyboard--is an 
+ example of a standard engineering tool that is standard because it was the first ""80% 
+ solution"". YACC opened up parsing to the average programmer. Writing a parser for 
+ a ""little language"" using YACC was vastly simpler than writing one by hand, which 
+ made YACC quite successful. In fact, it was so successful, progress on alternative 
+ parsing tools just about stopped.
+  
+ Not everybody adopted YACC, of course. There were those who needed something 
+ better. A lot of serious compiler hackers stuck with hand-coded LL parsers, to get 
+ maximum power and flexibility. In many cases, they had to, because languages got 
+ more and more complicated--LALR just wasn’t good enough without lots of weird 
+ hacks. Of course, these people had to forego the advantages of using a parser 
+ generator.
+  
+ So if your language is simple, you use YACC. If your language is too complex, or if 
+ you want good error recovery, or if performance is critical, you write a parser from 
+ scratch. This has been the status quo for about 20 years.
+  
+ Terence Parr and PCCTS have the potential to jolt us out of this situation. First, 
+ Terence pursued and formalized a new parsing strategy, called predicated LL(k), that 
+ combines the robustness and intelligibility of LL with the generality of LALR. 
+ Second, he implemented a parser generator, called ANTLR, that makes this power 
+ easy to use. Even the dedicated hand-coders may change their minds after a close 
+ look at this stuff. Finally, for those situations where you need to traverse a parse tree 
+ (and who doesn't?), SORCERER applies the ANTLR philosophy to that problem.
+  
+ 1.  NewtonScript is a trademark and Newton is a registered trademark of Apple 
+ Computer, Inc.
+  
+ xvii",NA
+Preface,"I like tools—always have. This is primarily because I’m fundamentally lazy and would 
+ much rather work on something that makes others productive rather than actually 
+ having to do anything useful myself. For example, as a child, my parents forced me to 
+ cut the lawns on our property. I spent hours trying to get the lawn mower to cut the lawn 
+ automatically rather than simply firing up the mower and walking around the lawn. This 
+ philosophy has followed me into adult life and eventually led to my guiding principle:
+  
+ “Why program by hand in five days what you can spend 
+  
+ five years of your life automating?”
+  
+ This is pretty much what has happened to me with regard to language recognition and 
+ translation. Towards the end of my undergraduate studies at Purdue, I was working for a 
+ robotics company for which I was developing an interpreter/compiler for a language 
+ called KAREL. This project was fun the first time (I inadvertently erased the whole 
+ thing); the second time, however, I kept thinking “I don’t understand YACC. Isn’t there 
+ a way to automate what I build by hand?” This thought kept rolling around in the back 
+ of my head even after I had started EE graduate school to pursue neural net research 
+ (my topic was going to be “Can I replace my lazy brain with a neural net possessing the 
+ intelligence of a sea slug without anybody noticing?”). As an aside, I decided to take a 
+ course on language tool building taught by Hank Dietz.
+  
+ The parser generator ANTLR eventually arose from the ashes of my course project with 
+ Hank and I dropped neural nets in favor of ANTLR as my thesis project. This initial 
+ version of ANTLR was pretty slick because it was a shorthand for what I’d build by 
+ hand, but at that time ANTLR could only generate LL(1) parsers. Unfortunately, there 
+ were many such tools and unless a tool was developed with parsing strength equal to or 
+ superior to YACC’s, nothing would displace YACC as the 
+ de facto
+  standard for parser 
+ generation; although, I was mainly concerned with making myself more efficient at the 
+ time and had no World-domination aspirations.
+  
+ ANTLR currently has three things that make it generate strong parsers: 
+ (i)
+  k>1 
+ lookahead, 
+ (ii)
+  semantic predicates (the ability to have semantic information direct the 
+ parse), and 
+ (iii)
+  syntactic predicates (selective backtracking). Using more than a single 
+ symbol of lookahead has always been desirable, but is exponentially complex in time 
+ and space; therefore, I decided to change the definition of k>1 lookahead and 
+ voila
+ : 
+ LL(k) became possible. (That’s how I escaped Purdue with my Ph.D. before anyone got
+  
+ Language Translation Using PCCTS and C++
+  xix",NA
+ 1 ,NA,NA
+Introduction,"Computer language translation has become a common task. While compilers and tools for 
+ traditional computer languages (such as C, C++, FORTRAN, SMALLTALK or Java) are 
+ still being built, their number is dwarfed by the thousands of mini-languages for which 
+ recognizers and translators are being developed. Programmers construct translators for 
+ database formats, graphical data files (
+ e.g
+ ., SGI Inventor, AutoCAD), text processing files 
+ (
+ e.g
+ ., HTML, SGML), and application command-interpreters (
+ e.g
+ ., SQL, EMACS); even 
+ physicists must write code to read in the initial conditions for their finite-element 
+ computations.
+  
+ Many programmers build recognizers (
+ i.e
+ ., parsers) and translators by hand. They write a 
+ recursive-descent parser that recognizes the input and either generates output directly, if the 
+ translation is simple enough to allow this, or builds an intermediate representation of the 
+ input for later translation, if the translation is complicated. Generally, some form of tree data-
+ structure is used as an intermediate representation in this case (e.g., the input ""
+ 3+4
+ "" can be 
+ conveniently represented by a tree with ""
+ +
+ "" at the root and ""
+ 3
+ "" and ""
+ 4
+ "" as leaves). In order to 
+ manipulate or generate output from a tree, the programmer is again confronted with a 
+ recognition problem—that of matching tree templates against an input tree. As an input tree 
+ is traversed, each subtree must be recognized in order to determine which translation action 
+ to execute.
+  
+ Many language tools aid in translator construction and can be broadly divided into either 
+ parser generator or the translator generator. 
+  
+ •
+  
+ A parser generator is a program that accepts a grammatical language 
+  
+ description and generates a parser that recognizes sentences in that language. 
+  
+ Language Translation Using PCCTS and C++
+  
+ 23",NA
+About this book,"This book is intended as a reference manual not a textbook or how-to book on language 
+ translation. Nonetheless, this book is valuable to any scientist, engineer, or programmer 
+ who has to translate, evaluate, interpret, manipulate or otherwise examine data or language 
+ statements of any kind. ANTLR and SORCERER (the two main components of PCCTS) 
+ were designed to be usable by people who are not language experts. Indeed, we are aware 
+ of two biologists doing biochemical pattern recognition with PCCTS.
+  
+ For those already familiar with PCCTS, Chapters “ANTLR Reference” on page 81, 
+ “SORCERER Reference” on page 161, and “Templates and Quick Reference Guide” on 
+ page 217 will be the most useful. Those familiar with other language tools should skim 
+ “Chapter 2 - A Tutorial” and then read the ANTLR and SORCERER reference chapters; 
+ Chapter “Templates and Quick Reference Guide” on page 217, the Section on ANTLR on 
+ page 30, and the Section on SORCERER on page 31 will also be of interest as they 
+ summarize the behavior and flavor of the tools. Persons unfamiliar with languages, parsers, 
+ and language tools should carefully read “Exactly 1800 Words On Languages and Parsing” 
+ on page 25 and “A Tutorial” on page 41; they should finish up by reading the reference 
+ chapters on ANTLR and SORCERER.
+  
+ 24 
+  
+ Language Translation Using PCCTS and C++",NA
+Exactly 1800 Words On Languages and Parsing,"We give only a taste of language theory here and in a very loose fashion. However, it 
+ should give you enough information and define enough terms to get you through the rest of 
+ the book.
+  
+ In the Spring of 1983, as first year computer science students at Purdue University, we were 
+ assigned the problem of recognizing arithmetic expressions, which could include nested 
+ parentheses. We were given a specification that described what the expressions looked like 
+ and were asked to produce a Pascal program that recognized such expressions. The 
+ specification looked something like
+  
+ expr-> factor
+  
+ factor-> term ( ""+"" term )*
+  
+ term-> atom ( ""*"" atom )*
+  
+ atom-> ""("" expr "")""
+  
+ atom-> INTEGER
+  
+ atom-> IDENTIFIER
+  
+ where 
+ INTEGER
+  and 
+ IDENTIFIER
+  were shorthands for strings of digits and strings of 
+ letters, respectively; “
+ ( 
+ ""
+ +
+ ""
+  term )*
+ ” indicated that zero or more 
+ ""
+ +
+ ""
+  term
+  sequences 
+ could be seen. [
+ Or did we get term and factor mixed up?
+ ]. The rules described the structure 
+ of small pieces of the expression language. For example, 
+  
+ term-> atom ( ""*"" atom )*
+  
+ was read by saying, ""a 
+ term
+  is an 
+ atom
+  followed by zero or more ‘
+ ""
+ *
+ ""
+  atom
+ ’ 
+ sequences."" We remember thinking what a marvelously precise means of describing an 
+ infinitely large set of input strings.
+  
+ We decided that our program would have one function to recognize each rule in the 
+ grammar to keep things nice and neat. In this manner, references to rules would become, 
+ possibly recursive, procedure calls in our program. References to actual input strings such 
+ as ""
+ (
+ "" and 
+ INTEGER
+  were all hard coded to eat white space and look for the particular 
+ string. This got to be repetitive and so we decided to factor out the common operations 
+ among all input string matching code. Further, it seemed easier to treat input strings as 
+ single ""words"" when trying to match the grammatical structure of the expressions. We 
+ eventually came up with a function called 
+ getword
+  that returned an integer describing 
+ what input vocabulary word was found. It also made sense to assume that some variable 
+ would always hold the 
+  
+ Language Translation Using PCCTS and C++ 
+ 25",NA
+ANTLR,"ANTLR constructs human-readable recursive-descent parsers in C or C++ from pred-LL(k) 
+ grammars, namely LL(k) grammars, for k>1 that support predicates.
+  
+ Predicates allow arbitrary semantic and syntactic context to direct the parse in a systematic 
+ way. As a result, ANTLR can generate parsers for many context-sensitive languages and 
+ many non-LL(k)/LR(k) context-free languages. Semantic predicates indicate the semantic 
+ validity of applying a production; syntactic predicates are grammar fragments that describe 
+ a syntactic context that must be satisfied before recognizing an associated production. In 
+ practice, many ANTLR users report that developing a pred-LL(k) grammar is easier than 
+ developing the corresponding LR(1) grammar.
+  
+ In addition to a strong parsing strategy, ANTLR has many features that make it more 
+ programmer-friendly than the majority of LR/LALR and LL parser generators.
+  
+ 30
+  
+ •
+  
+ ANTLR integrates the specification of lexical and syntactic analysis. A 
+ separate lexical specification is unnecessary because lexical regular 
+  
+ expressions (token descriptions) can be placed in double-quotes and used 
+ as normal token references in an ANTLR grammar.
+  
+ •
+  
+ ANTLR accepts grammar constructs in Extended Backus-Naur Form 
+ (EBNF) notation.
+  
+ •
+  
+ ANTLR provides facilities for automatic abstract syntax tree construction.
+  
+ •
+  
+ ANTLR generates recursive-descent parsers in C/C++ so that there is a 
+ clear correspondence between the grammar specification and the ANTLR 
+  
+ output. Consequently, it is relatively easy for non-parsing experts to design 
+ and debug an ANTLR grammar.
+  
+ •
+  
+ ANTLR has both automatic and manual facilities for error recovery and 
+ reporting. The automatic mechanism is simple and effective for many 
+  
+ parsing situations; the manual mechanism called “parser exception 
+ handling” simplifies development of high-quality error handling.
+  
+ •
+  
+ ANTLR allows each grammar rule to have parameters and return values, 
+ facilitating attribute passing during the parse. Because ANTLR converts 
+  
+ each rule to a C/C++ function in a recursive descent parser, a rule 
+  
+ parameter is simply a function parameter. Additionally, ANTLR rules can 
+ have multiple return values.
+  
+ •
+  
+ ANTLR has numerous other features that make it a product rather than a 
+ research project. ANTLR itself is written in highly portable C; its output 
+  
+ can be debugged with existing source-level debuggers and is easily inte-
+ grated into programmers’ applications.
+  
+ Language Translation Using PCCTS and C++",NA
+SORCERER,"Despite the sophistication of code-generator generators and source-to-source translator 
+ generators (such as attribute grammar based tools), programmers often choose to build tree 
+ parsers by hand to solve source translation problems.  In many cases, a programmer has a 
+ front-end that constructs intermediate form trees and simply wants to traverse the trees and 
+ execute a few actions.  In such cases, the optimal tree walks of code-generator generators 
+ and the powerful attribute evaluation schemes of source-to-source translator systems are 
+ overkill. Programmers would rather avoid the overhead and complexity.
+  
+ A SORCERER description is essentially an unambiguous grammar (collection of rules) in 
+ Extended BNF notation that describes the structure and content of a user's trees.  The 
+ programmer annotates the tree grammar with actions to effect a translation, manipulate a 
+ user-defined data structure, or manipulate the tree itself.  SORCERER generates a collection 
+ of simple C or C++ functions, one for each tree-grammar rule that recognizes tree patterns 
+ and performs the programmer's actions in the specified sequence.
+  
+ Language Translation Using PCCTS and C++ 
+ 31",NA
+ 2 ,NA,NA
+ A Tutorial,"In this chapter we walk you through a series of progressively complex recognizers, 
+ interpreters, and translators for polynomials using ANTLR and SORCERER. We assume a 
+ passing familiarity with the syntax of ANTLR/SORCERER and a basic understanding of 
+ scanners (regular expressions) and parsers (grammars).",NA
+Evaluating and Differentiating Polynomials,"The first application developed in this chapter accepts a sequence of polynomial equations of 
+ the form:
+  
+ r
+  = 
+ ax
+ ^
+ n
+  + 
+ by
+ ^
+ m
+  + ... ;
+  
+ for some real numbers 
+ a
+ , 
+ b
+ , 
+ m
+ , and 
+ n
+  where the polynomial variables (here, 
+ x
+ , 
+ y
+  and 
+ r
+ ) may be 
+ any single lowercase letter (which we call a 
+ register
+  or 
+ identifier
+ ) ""
+ a..z
+ "". Each polynomial 
+ is evaluated, and the result is stored into the variable on the left-hand-side of the equation. 
+ (Here, the result is stored into 
+ r
+ .) As output, we print the result after each polynomial 
+ evaluation. For example,
+  
+ lonewolf:/projects/Book/tutorial/simple$ 
+ poly 
+  
+ a = 5; 
+  
+ storing 5.000000 in a 
+  
+ b = 3a^2 + 2a + 7; 
+  
+ storing 92.000000 in b
+  
+ where the 
+ bold
+  characters are the polynomials to be entered.
+  
+ Language Translation Using PCCTS and C++ 
+  
+ 41",NA
+Language Recognition and Syntax-Directed ,NA,NA
+Interpretation,"We break up building our polynomial evaluator into three main tasks:
+  
+ 1. 
+  
+ Describing the syntax
+  
+ 2. 
+  
+ Describing the vocabulary (set of input symbols or tokens)
+  
+ 3. 
+  
+ Inserting semantic actions to evaluate the polynomial
+  
+ Tasks 
+ 1
+  and 
+ 2
+  result in a working polynomial recognizer and task 
+ 3
+  results in a working 
+ evaluator. Testing a project at each such stage is recommended.
+  
+ Syntax
+  
+ Begin the task of building a recognizer for a language by examining a representative set of 
+ input strings and trying to identify the underlying grammatical structure. In our case, 
+ equations are strings like:
+  
+ a = 3;
+  
+ b = a+5a + 2a^2 + a^8 + 4;
+  
+ 42 
+  
+ Language Translation Using PCCTS and C++",NA
+Constructing and Walking ASTs,"Another way to evaluate the polynomial equations in the previous section is to have the 
+ parser construct trees and then walk those trees to compute the results. In this section, we 
+ remove the actions from the previous example’s grammar, annotate the grammar with a few 
+ symbols and actions to construct trees, then build a SORCERER grammar to walk our trees 
+ and compute the results.
+  
+ AST Design
+  
+ The structure of intermediate trees is important. The fundamental design goal is that an 
+ intermediate form should contain not only the contents of the input stream, but should 
+ represent the structure of the underlying language as well. For example, a linked list of the 
+ input token objects has complete contents, but has no structure to indicate how the input was 
+ parsed.
+  
+ The top-level tree structure for our ASTs will represent the assignment operation as:
+  
+ =
+  
+  
+ rhs
+  
+  
+ lhs
+  
+ where 
+ lhs
+  and 
+ rhs
+  are left-hand side and right-hand side, respectively. For example, ""
+ a=3;
+ "" 
+ will be represented by:
+  
+ 52 
+  
+ Language Translation Using PCCTS and C++",NA
+Tree Transformations and Multiple SORCERER Phases,"The previous example used SORCERER to evaluate polynomial assignments. We now 
+ consider how to use SORCERER to perform tree rewrites. We shall differentiate 
+ polynomials of the form:
+  
+ ax
+ ^
+ n
+  + 
+ bx
+ ^
+ m
+  + ...
+  
+ for integers 
+ a
+ , 
+ b
+ , 
+ n
+  and 
+ m
+ ; we assume a single free variable 
+ x
+ . As before, we will construct 
+ trees for the polynomials using an ANTLR grammar, but then manipulate the trees using 
+ three SORCERER phases. For example, given input
+  
+ x^2 + 2x + 1
+  
+ 68 
+  
+ Language Translation Using PCCTS and C++",NA
+ 3 ,NA,NA
+ANTLR Reference,"This chapter tells you what you need to know so you can construct parsers via ANTLR 
+ grammars, how to interface a parser to your application, and how to insert actions to 
+ generate output. Unless otherwise specified, actions and other source code is C++.
+  
+ [
+ Professors Russell Quong, Hank Dietz, and Will Cohen all have contributed greatly to the 
+ overall development of PCCTS in general. In particular, much of the intellectual property of 
+ ANTLR was conceived with Russell Quong.
+ ]",NA
+ANTLR Descriptions,"Generally speaking, an ANTLR description consists of a collection of lexical and syntactic 
+ rules describing the language to be recognized and a collection of user-defined semantic 
+ actions describing what to do with the input sentences as they are recognized. A single 
+ grammar may be broken up into multiple files and multiple grammars may be specified 
+ within a single file, but the basic sequence follows something like:
+  
+ header action 
+  
+ actions 
+  
+ token definitions 
+  
+ rules 
+  
+ actions
+  
+ token definitions
+  
+ Language Translation Using PCCTS and C++ 
+  
+ 81",NA
+Lexical Directives,"Token Definitions
+  
+ Tokens are defined either explicitly with 
+ #token
+  or implicitly by using them as rule 
+ elements.  Implicitly defined tokens can be either regular expressions (non-identified tokens) 
+ or token names (identified).  Token names begin with an upper case letter (rules begin with a 
+ lower case letter).  More than one occurrence of the same regular expression in a grammar 
+ description produces a single regular expression in lexical description passed to DLG 
+ (
+ parser.dlg
+ ) and is assigned one token type number. Regular expressions and token 
+ identifiers that refer to the same lexical object (input pattern) may be used interchangeably. 
+  
+ Token identifiers that are referenced, but not attached to a regular expression are simply 
+ assigned a token type and result in a 
+ #define
+  definition only. It is not necessary to label 
+ regular expressions with an identifier in ANTLR.  However, all token types that you wish to 
+ explicitly refer to in an action must be declared with a 
+ #token
+  instruction.
+  
+ Language Translation Using PCCTS and C++ 
+ 91",NA
+Actions,"Actions are embedded within your grammar to effect a translation. Without actions, ANTLR 
+ grammars result in a simple recognizer, which answers yes or no as to whether an input 
+ sentence was valid. This section describes where actions may occur within an ANTLR 
+ grammar, when they are executed, and what special terms they may reference (e.g., for 
+ attributes). Actions are of the form ""
+ <<...>>
+ "" (normal action) or ""
+ [...]
+ "" (argument or 
+ return value block).
+  
+ Placement
+  
+ There are three main positions where actions may occur:
+  
+ •
+  
+ Outside of any rule
+ . These actions may not contain executable code unless it 
+ occurs within a completely-specified function. Typically, these actions contain 
+ variable and function declarations as would normally be found in a C or C++ 
+ program. These actions are placed in the global scope in the resulting parser. 
+ Consequently, all other actions have access to the declarations given in these 
+ global actions. For example,
+  
+ << 
+  
+ extern int 
+ from_elsewhere; 
+  
+ enum T { X, Y, Z }; 
+  
+ main() 
+  
+ { 
+  
+  
+ ...
+  
+ } 
+  
+ >> 
+  
+ a: <<T b=X; printf(""starting 
+ a"");>> 
+  
+  
+  
+ blah 
+  
+  
+ ;
+  
+ •
+  
+ Within a rule or immediately following the rule
+ . These actions are executed 
+ during the recognition of the input and must be executable code unless they are init-
+ actions, in which case, they may contain variable declarations as well. Actions 
+ immediately following the ‘;’ of a rule definition are fail-actions and are used to 
+ clean up after a syntax error. (
+ T
+ hese are less useful now due to parser exception 
+ handlers.) For example,
+  
+ rule
+  
+ :
+  
+ <<
+ init-action
+ >> 
+  
+  
+ ... <<
+ normal action
+ >> ...
+  
+ ; 
+  
+ <<
+ fail-
+ action
+ >>
+  
+ 104
+  Language Translation Using PCCTS and C++",NA
+C++ Interface,"When generating recursive-descent parsers in C++, ANTLR uses the flexibility of C++ 
+ classes in two ways to create modular, reusable code. First, ANTLR will generate parser 
+ classes in which the class member functions, rather than global functions, contain the code 
+  
+ •
+ to recognize rules and
+  
+ •
+ to perform semantic actions
+  
+ Second, ANTLR uses snap-together classes for the input, the lexer, and the token buffer. 
+ Figure 1 on page 109 shows the files generated by ANTLR and DLG for grammar class 
+ Parser
+  and grammar file 
+ file.g
+ .
+  
+ FIGURE  1 
+  
+ Files Generated By ANTLR, DLG
+  
+ ANTLR
+  
+  
+ Parser.cpp 
+  
+ Parser.h 
+  
+ file.cpp parser.dlg tokens.h
+  
+ DLG
+  
+  
+ DLGLexer.cpp 
+  
+ DLGLexer.h
+  
+ An ANTLR parser consists of one or more C++ classes, called parser classes. Each parser 
+ class recognizes and translates part (or all) of a language. The recursive-descent recognition 
+ routines and the semantic actions are member functions of this class. A parser object is an 
+ instantiation (or variable) of the parser class.
+  
+ To specify the name of the parser class in an ANTLR grammar description, enclose the 
+ appropriate rules and actions in a C++ class definition, as follows:
+  
+ class Expr {
+  
+  
+ <<int i;>> 
+  
+ <<
+  
+ public:
+  
+ void print(); 
+  
+ >>
+  
+ e 
+  
+ : INT (""\*"" INT)* ;
+  
+ ... // other grammar rules 
+  
+ }
+  
+ ANTLR then generates a parser class 
+ Expr
+  that looks like the following:
+  
+ Language Translation Using PCCTS and C++  
+ 109",NA
+Intermediate-Form Tree Construction,"You may embed actions within an ANTLR grammar to construct abstract syntax trees 
+ (ASTs) but ANTLR provides an automatic mechanism for implicitly or explicitly specifying 
+ tree structures. Using the automatic mechanism, you must define what an AST node looks 
+ like and how to construct an AST node given an attribute (C) or token pointer (C++). The 
+ ANTLR 
+ -gt
+  command line option must be turned on so that ANTLR knows to generate the 
+ extra code in the resulting parser to construct and manipulate trees. In this section, we 
+ describe the required C or C++ definitions, the available support functions, the AST 
+ operators, and the special symbols used in actions to construct nodes and trees.
+  
+ Language Translation Using PCCTS and C++  
+ 121",NA
+Predicates,"Predicates are used to recognize difficult language constructs such as those that are context-
+ sensitive or those that require unbounded lookahead to recognize. This section provides a 
+ brief description of how predicates are defined and used to alter the normal LL(k) parsing 
+ strategy.
+  
+ Semantic Predicates
+  
+ Semantic predicates alter the parse based upon run-time information. Generally, this 
+ information is obtained from a symbol table and is used to recognize context-sensitive 
+ constructs such as those that are syntactically identical but semantically very different; e.g., 
+ variables and type names are simple identifiers, but are used in completely different 
+ contexts.
+  
+ The basic semantic predicate takes the form of an action suffixed with the ""
+ ?
+ "" operator: 
+ ""
+ <<...>>?
+ ."" No white space is allowed between the ""
+ >>
+ "" and the ""
+ ?
+ ."" Predicates must be 
+ boolean expressions and may not have side effects (i.e., they should not modify variables.) 
+ Alternatives without predicates are assumed to have a predicate of ""
+ <<1>>?
+ ."" Also, because 
+ predicates can be ""hoisted,"" out of rules as we will see shortly, predicates that refer to rule 
+ parameters or local variables are often undesirable.
+  
+ Validating Semantic Predicates
+  
+ All semantic predicates behave at least as 
+ validating predicates
+ . That is, all predicates must 
+ evaluate to true as the parser encounters them during the parse or a semantic error occurs. 
+  
+ For example in,
+  
+ Language Translation Using PCCTS and C++  
+ 127",NA
+Parser Exception Handlers,"Parser exception handlers provide a more sophisticated alternative to the automatic error 
+ reporting and recovery facility provided by ANTLR. The notion of throwing and catching 
+ parser error signals is similar to C++ exception handling: however, our implementation 
+ allows both the C and C++ interface to use parser exception handling. This section provides a 
+ short description of the syntax and semantics of ANTLR exceptions.
+  
+ Language Translation Using PCCTS and C++  
+ 137",NA
+ANTLR Command Line Arguments,"ANTLR understands the following command line arguments:
+  
+ -CC
+  
+ -ck 
+ n
+  
+ -cr
+  
+ -e1
+  
+ -e2
+  
+ -e3
+  
+ -fe
+ f
+  
+ -fh
+ f
+  
+ -fl
+ f
+  
+ -fm
+ f
+  
+ -fr
+ f
+  
+ -ft
+ f
+  
+ -gc
+  
+ Generate C++ output from ANTLR.
+  
+ Use up to 
+ n
+  symbols of lookahead when using compressed (linear approxima-
+ tion) lookahead. This type of lookahead is very cheap to compute and is 
+ attempted before full LL(k) lookahead, which is of exponential complexity in 
+ the worst case. In general, the compressed lookahead can be much deeper 
+ (e.g, 
+ -ck 10
+ ) than the full lookahead (which usually must be less than 4).
+  
+ Generate a cross-reference for all rules. For each rule, print a list of all other 
+ rules that reference it.
+  
+ Ambiguities/errors shown in low detail (default).
+  
+ Ambiguities/errors shown in more detail.
+  
+ Ambiguities/errors shown in excruciating detail.
+  
+ File Rename 
+ err.c
+  to 
+ f
+ .
+  
+ File Rename 
+ stdpccts.h
+  header (turns on -gh) to 
+ f
+ .
+  
+ File Rename lexical output, 
+ parser.dlg
+ , to 
+ f
+ .
+  
+ File Rename file with lexical mode definitions, 
+ mode.h
+ , to 
+ f
+ .
+  
+ File Rename file which remaps globally visible symbols, 
+ remap.h
+ , to 
+ f
+ . 
+ File Rename tokens.h to 
+ f
+ .
+  
+ Indicates that antlr should generate no C code, i.e., only perform analysis on 
+ the grammar.
+  
+ Language Translation Using PCCTS and C++  
+ 145",NA
+DLG Command Line Arguments,"These are the command line arguments understood by DLG (normally, you can ignore these 
+ and concentrate on ANTLR):
+  
+ -CC
+  
+ -C
+ level
+  
+ -m 
+ f
+  
+ -i
+  
+ Generate C++ output. The output file is not specified in this case.
+  
+ Where level is the compression level used. 0 indicates no compression, 1 
+ removes all unused characters from the transition from table, and 2 maps 
+ equivalent characters into the same character classes. Using level -C2 signifi-
+ cantly reduces the size of the DFA produced for lexical analyzer.
+  
+ Produces the header file for the lexical mode with a name other than the default 
+ name of 
+ mode.h
+ .
+  
+ An interactive, or as interactive as possible, scanner is produced. A character is 
+ obtained only when required to decide which state to go to. Some care must be 
+ taken to obtain accept states that do not require look ahead at the next character 
+ to determine if that is the stop state. Any regular expression with a ""
+ e*
+ "" at the 
+ end is guaranteed to require another character of lookahead.
+  
+ -cl
+ class
+  Specify a class name for DLG to generate. The default is 
+ DLGLexer
+ .
+  
+ -ci
+  
+ -cs
+  
+ -o 
+ dir
+  
+ The DFA will treat upper and lower case characters identically. This is accom-
+ plished in the automaton; the characters in the lexical buffer are unmodified.
+  
+ Upper and lower case characters are treated as distinct. This is the default.
+  
+ Directory where output files should go (default=”.”). This is very nice for 
+ keeping the source directory clear of ANTLR and DLG spawn.
+  
+ -Wambiguity
+  
+ Warns if more than one regular expression could match the same character sequence. The 
+ warnings give the numbers of the expressions in the DLG lexical specification file. The 
+ numbering of the expressions starts at one. Multiple warnings may be print for the same 
+ expressions.
+  
+ -
+  
+ Used in place of file names to get input from 
+ stdin
+  or send output to 
+ stdout
+ . 
+  
+ 148
+  Language Translation Using PCCTS and C++",NA
+C Interface,"(
+ The C interface gradually evolved from a simplistic attributed-parser built in 1988. 
+  
+ Unfortunately for backward compatibility reasons, the interface has been augmented but not 
+ changed in any significant way.
+ )
+  
+ The C interface parsing model assumes that a scanner (normally built by DLG) returns the 
+ token type of tokens found in the input stream when it is asked to do so by the parser. The 
+ parser provides attributes that are computed from the token type and text of the token, to 
+ grammar actions to facilitate translations. The line and column information are directly 
+ accessed from the scanner. The interface requires only that you define what an attribute 
+ looks like and how to construct one from the information provided by the scanner. Given 
+ this information, ANTLR can generate a parser that will correctly compile and recognize 
+ sentences in the prescribed language.
+  
+ The type of an attribute must be called 
+ Attrib
+ ; the function or macro to convert the text and 
+ token type of a token to an attribute is called 
+ zzcr_attr()
+ .
+  
+ This chapter describes the invocation of C interface parsers, the definition of special 
+ symbols and functions available to grammatical actions, the definition of attributes, and the 
+ definition of AST nodes.
+  
+ Invocation of C Interface Parsers
+  
+ C interface parsers are invoked via the one of the macros defined in Table 15 on page 149.
+  
+ TABLE 15.
+  C Interface Parser Invocation Macros
+  
+ Macro
+  
+ Description
+  
+  
+  
+ ANTLR(r,f)
+  
+ Begin parsing at rule 
+ r
+ , reading characters from stream 
+ f
+ .
+  
+ ANTLRm(r,f,m)
+  
+ Begin parsing at rule 
+ r
+ , reading characters from stream 
+ f
+ ; 
+ begin in lexical class 
+ m
+ .
+  
+ ANTLRf(r,f)
+  
+ Begin parsing at rule 
+ r
+ , reading characters by calling func-
+ tion 
+ f
+  for each character.
+  
+ ANTLRs(r,s)
+  
+ Begin parsing at rule 
+ r
+ , reading characters from string 
+ s
+ .
+  
+ Language Translation Using PCCTS and C++  
+ 149",NA
+Interpretation of Symbols in C Actions ,"TABLE 18.
+  C Interface Interpretation of Attribute Terms in Actions
+  
+ Symbol
+  
+ Meaning
+  
+  
+  
+ $j
+  
+ The attribute for the 
+ j
+ th
+  element of the current 
+ alternative. The attribute counting includes 
+ actions. Subrules embedded within the alterna-
+ tive are counted as one element.
+  
+ $i.j
+  
+ The attribute for the 
+ j
+ th element of 
+ i
+ th level start-
+ ing from the outermost (rule) level at 1.
+  
+ $0
+  
+ The result attribute of the immediately enclosing 
+ subrule or rule. (l-value)
+  
+ $$
+  
+ The result attribute of the enclosing rule. 
+ (l-value)
+  
+ $arg
+  
+ The rule argument labeled 
+ arg
+ .
+  
+ $rule
+  
+ The result attribute of the enclosing rule; this is 
+ the same as 
+ $$
+ .  (l-value)
+  
+ $rv
+  
+ The rule return result labeled 
+ rv
+ .  (l-value)
+  
+ $[token_type,text]
+  
+ Attribute constructor; this is translated to a call to 
+ zzconstr_attr(
+ token
+ ,
+ text
+ )
+ .
+  
+ $[]
+  
+ An empty, initialized attribute; this is translated 
+ to a call to 
+ zzempty_attr()
+ .
+  
+ AST Definitions 
+  
+ AST nodes using the C interface always have the following structure:
+  
+ struct _ast {
+  
+ struct _ast *right, *down;
+  
+ user_defined_fields
+  
+ };
+  
+ where you must fill in 
+ user_defined_fields
+  using the 
+ AST_FIELDS#define
+  and 
+  
+ must be provided in the 
+ #header
+  action or in an include file included by the 
+ #header
+  
+ action. Only the user-defined fields should be modified by the user as 
+ right
+  and 
+ down
+  are 
+  
+ Language Translation Using PCCTS and C++  
+ 157",NA
+ 4 ,NA,NA
+SORCERER Reference,"SORCERER is a simple tree-parser and translator generator that has the notation and the 
+ ""flavor"" of ANTLR. It accepts a collection of rules that specifies the contents and structure 
+ of your trees and generates a top-down, recursive-descent program that will walk trees of 
+ the indicated form. Semantic actions may be interspersed among the rule elements to effect 
+ a translation—either by constructing an output tree (from the input tree) or by generating 
+ output directly. SORCERER has some pretty decent tree rewriting and miscellaneous 
+ support libraries.
+  
+ This chapter describes how to construct tree parsers via SORCERER grammars, how to 
+ interface a tree parser to a programmer’s application, how to insert actions to generate 
+ output, and how to perform tree transformations. Unless otherwise specified, actions and 
+ other source code is C++.
+  
+ (
+ Aaron Sawdey, Ph.D. candidate at University of MN, and Gary Funck of Intrepid 
+ Technology are coauthors of SORCERER.
+ )",NA
+Introductory Examples,"It is often best to introduce a language tool with a simple example that illustrates its primary 
+ function.  We consider the task of printing out a simple expression tree in both postfix and 
+ infix notation. Assuming that expression trees have operators at subtree parent nodes and 
+ operands are children, the expression ""
+ 3+4
+ "" could be represented with the tree structure:
+  
+ Language Translation Using PCCTS and C++ 
+  
+ 161",NA
+C++ Programming Interface,"SORCERER generates parsers that can walk any tree that implements a simple interface. 
+ You must specify:
+  
+ 1. 
+  
+ 2. 
+  
+ 3.
+  
+ The type of a tree node, called 
+ SORAST
+  (derived from class 
+ SORASTBase
+  and given 
+ in the 
+ #header
+  action)
+  
+ How
+  to navigate a tree with member functions 
+ down()
+  and 
+ right()
+  
+ And how to distinguish between different nodes via member function 
+ type() 
+ which returns the token type associated with a tree node
+  
+ If you wish to perform tree rewrites, you must also specify how to construct new trees via 
+ setDown()
+ , 
+ setRight()
+ , and 
+ shallowCopy()
+  where 
+ t->shallowCopy()
+  returns a 
+ duplicate of node 
+ t
+ . If you refer to 
+ #[...]
+  in an action, you must also define a constructor 
+ with the appropriate arguments.
+  
+ Language Translation Using PCCTS and C++  
+ 163",NA
+Token Type Definitions,"SORCERER generates a parser that recognizes both the structure and a portion of the 
+ contents of a tree node. Member 
+ type()
+  is the only information used to determine the 
+ contents of a node; however, semantic predicates can be used to alter the parse depending on 
+ other node information. SORCERER-generated parsers test the content of a node with an 
+ expression of the form ""
+ _t->type()==
+ T
+ "". For the SORCERER output to compile, token 
+ type 
+ T
+  must have been defined.
+  
+ SORCERER-generated translators can use either user-defined token types or can have 
+ SORCERER assign token types to each terminal referenced in the grammar description. The 
+ ""
+ -def-tokens 
+ file
+ "" option is used to generate a file with 
+ #define
+ s for each referenced 
+ token. When folding a SORCERER parser into an existing application, the token types will 
+ already be defined. These definitions can be explicitly included via a C or C++ action, or the 
+  
+ Language Translation Using PCCTS and C++  
+ 167",NA
+Using ANTLR and SORCERER Together,"To have ANTLR construct trees and have SORCERER walk them, do the following:
+  
+ 1. Define a 
+ type()
+  field in the 
+ AST
+  definition for ANTLR. E.g.,
+  
+ #include ""ATokPtr.h"" 
+  
+ class AST : public ASTBase 
+ { protected: 
+  
+ int _type; 
+  
+ public: 
+  
+ AST(ANTLRTokenPtr t) 
+  
+ AST() 
+  
+ int type() 
+  
+ };
+  
+ { _type = t->getType(); } 
+ { _type = 0; } 
+  
+ { return _type; }
+  
+ 2.
+  
+ Construct trees via ANTLR as you normally would. Ensure that any token type 
+ that you will refer to in the SORCERER grammar has a label in the ANTLR 
+ grammar. For example,
+  
+ #token ASSIGN ""=""
+  
+ 3.
+  
+ In your SORCERER description, include the 
+ AST
+  definition you gave to ANTLR 
+ and define 
+ SORAST
+  to be 
+ AST
+ . For example,
+  
+  
+ #header << 
+  
+ #include ""AST.h"" 
+  
+ typedef AST 
+ SORAST; >>
+  
+ /* include your ANTLR tree def */
+  
+ 168
+  Language Translation Using PCCTS and C++",NA
+SORCERER Grammar Syntax,"Just as ANTLR grammars specify a sequence of actions to perform for a given input 
+ sentence, SORCERER descriptions specify a sequence of actions to perform for a given 
+ input tree. The only difference between a conventional text language parser and a tree 
+ parser is that tree parsers have to recognize tree structure as well as grammatical structure. 
+ For this reason, the only significant difference between ANTLR input and SORCERER 
+ input is that SORCERER grammar productions can use an additional grouping construct—a 
+ construct to identify the elements and structure of a tree. This section summarizes 
+ SORCERER input syntax.
+  
+ A SORCERER description is a collection of rules in Extended BNF (EBNF) form and user-
+ defined actions preceded by a header action where the programmer defines the type of a 
+ SORCERER tree:
+  
+ #header <<header action>> 
+  
+ actions 
+  
+ rules 
+  
+ actions
+  
+ where
+  actions
+  are enclosed in European quotes 
+ <<...>>
+  and rules are defined as 
+ follows:
+  
+ Language Translation Using PCCTS and C++  
+ 169",NA
+@-Variables,"Local stack-based variables are convenient because a new instance is created upon each 
+ invocation of a function. However, unlike global variables, the symbol is only visible within 
+ that function (or SORCERER rule). Another function cannot access the variable. A stack-
+ based variable that had global scope would be extremely useful; it would also be nice if that 
+ variable did not require the use of any “real” global variables. We have created just such 
+ creatures and called them 
+ @-variables
+  for lack of a better name (the concept was derived 
+ from NewYacc). (
+ @-variables are mainly useful with the C interface because the C++ 
+ interface allows you to define tree-parser class member variables
+ .)
+  
+ An @-variable is defined like a normal local variable, but to inform SORCERER of its 
+ existence, you must use a special syntax:
+  
+ @(
+ simple-type-specifier id
+  = 
+ init-value
+ )
+  
+ To reference the variable, you must also inform SORCERER with 
+ @
+ id
+ . For example,
+  
+ a   :   <<@(int blah)>> /* define reference var: ""int blah;"" 
+ */
+    
+  <<@blah = 3;>>  /* set blah to 3 */
+  
+  
+   
+  b
+  
+  
+   
+  <<printf(""blah = %d\n"", @blah);>>  /* prints ""blah = 5 
+ */
+  
+  ; 
+  
+ b   :   c ; 
+  
+ c   :   d ; 
+  
+ d   :   A
+  
+  
+   
+  <<
+  
+  
+   
+  printf(""blah = %d\n"", @blah);      /* prints ""blah = 3 
+ */
+    
+  @blah = 5;
+  
+  
+   
+  >>
+  
+  
+  ;
+  
+ where the output should be
+  
+ blah = 3 
+  
+ blah = 5
+  
+ The notation 
+ @
+ id
+  is used just like plain
+  id
+ ; i.e., as the object of an assignment or as part 
+ of a normal C/C++ expression.
+  
+ As another example, consider a grammar that provides definitions for implicitly defined 
+ scalars.
+  
+ routine
+  
+  :   #( DefSub ID slist )
+  
+  ; 
+  
+ slist
+  
+  :   <<@(AST * defs)>>
+  
+ 178
+  Language Translation Using PCCTS and C++",NA
+Embedding Actions For Translation,"In many cases, translation problems are simple enough that a single pass over an 
+  
+ intermediate form tree is sufficient to generate the desired output. This type of translation is 
+ very straightforward and is the default mode of operation.
+  
+ Translations of this type are done with a series of print statements sprinkled around the 
+ SORCERER grammar. For example, consider how one might convert function prototypes 
+ from K&R C to ANSI C (assuming the arguments and the declarations are in the same 
+ order):
+  
+ void f(i,j)
+  
+ int i;
+  
+ float j;
+  
+ would be converted to
+  
+ void f(int i, float j);
+  
+ in source form. Graphically, a prototype could be structured as follows:
+  
+ Proto
+  
+ ID
+  
+  
+ ARGS
+  
+ Type
+  
+ Type
+  
+  
+ Type
+  
+  
+ ID
+  
+  
+ ID
+  
+  
+ ID
+  
+  
+ ID
+  
+ where 
+ Proto
+  and 
+ ARGS
+  are imaginary tokens (tokens with no corresponding input symbol) 
+ used to structure the intermediate form tree. The 
+ ID
+  directly under the 
+ Proto
+  node is the 
+ function name.
+  
+ The following tree grammar fragment could be used to reconize these simplified C 
+ prototypes:
+  
+ proto 
+ : 
+  
+ ;
+  
+ decl 
+  
+ : 
+ ;
+  
+ #( Proto Type ID #( ARGS ( ID )* ) ( decl )* )
+  
+ #( Type ID )
+  
+ To perform the transformation, the grammar could be augmented with actions in the 
+ following manner:
+  
+ Language Translation Using PCCTS and C++  
+ 181",NA
+Embedding Actions for Tree Transformations,"While the syntax-directed scheme presented in the previous section is sometimes enough to 
+ handle an entire translation, it will not handle translations requiring multiple passes. In fact, 
+ if the translation can be handled with a simple syntax-directed translation from the 
+ intermediate form, it could probably be handled as a syntax-directed translation directly 
+ from the original, text input. Why even discuss syntax-directed translation for intermediate 
+ forms? Because a programmer can rewrite a tree innumerable times but must eventually 
+ convert the intermediate form to an output form.
+  
+ This section describes the support available to the programmer in rewriting portions of an 
+ intermediate form. We provide information about how SORCERER rewrites trees, about the 
+ tree library, and about the other support libraries.
+  
+ When tree transformations are to be made, the command-line option 
+ -transform
+  must be 
+ used. In transform mode, SORCERER makes the following assumptions:
+  
+ 1. 
+  
+ 2.
+  
+ 3.
+  
+ An input tree exists from which an output tree is derived.
+  
+ If given no instructions to the contrary, SORCERER automatically copies the input 
+ tree to the output tree.
+  
+ Each rule has a result tree, and the result tree of the first rule called is considered 
+ the final, transformed tree. This added functionality does not affect the normal 
+ rule argument and return value mechanism.
+  
+ 182
+  Language Translation Using PCCTS and C++",NA
+C++ Support Classes and Functions,"SORCERER ASTs are defined by a class called 
+ SORAST
+  that must be derived from 
+ SORASTBase
+ , which inherits the following member functions (defined in 
+ lib/ 
+ PCCTAST.C
+ ):
+  
+ addChild 
+  
+ void addChild(t)
+ . Add 
+ t
+  to the list of children for 
+ this
+ .
+  
+ append 
+  
+ void 
+ append
+ (b)
+ . Add 
+ b
+  to the end of the sibling list. Appending a 
+ NULL 
+ pointer is illegal.
+  
+ bottom 
+  
+ SORASTBase 
+ *bottom
+ ()
+ . Find the bottom of the child list (going straight 
+ ""down"").
+  
+ cut_between 
+  
+ SORASTBase 
+ *cut_between
+ (a,b)
+ .
+  
+ Unlink all siblings between 
+ a
+  and 
+ b
+  and return a pointer to the first element of 
+ the sibling list that was unlinked. Basically, all this routine does is to make 
+ b
+  a 
+ sibling of 
+ a
+  and make sure that the tail of the sibling list, which was unlinked, 
+ does not point to 
+ b
+ . The routine ensures that 
+ a
+  and 
+ b
+  are (perhaps indirectly) 
+ connected to start with. This routine returns 
+ NULL
+  if either of 
+ a
+  or 
+ b
+  are 
+ NULL
+  or 
+ if 
+ a
+  and 
+ b
+  are not connected.
+  
+ insert_after 
+  
+ void 
+ insert_after
+ (b)
+ . 
+  
+ Add subtree 
+ b
+  immediately after 
+ this
+  as its sibling. If 
+ b
+  is a sibling list at its 
+ top level, then the last sibling of 
+ b
+  points to the previous right-sibling of 
+ this
+ . 
+ If 
+ b 
+ is 
+ NULL
+ , nothing is done. Inserting a 
+ NULL
+  pointer has no effect.
+  
+ ast_find_all 
+  
+ SORASTBase 
+ *ast_find_all
+ (u, cursor)
+ . 
+  
+ Find all occurrences of 
+ u
+  in the tree pointed to by 
+ this
+ .
+ cursor
+  (a pointer to a 
+ SORAST
+  pointer) must be initialized to 
+ this
+ . It eventually returns 
+ NULL
+  when 
+ no more occurrences of 
+ u
+  are found. This function is useful for iterating over 
+ every occurrence of a particular subtree. For example,
+  
+ /* find all scalar assignments withing a statement list */
+  
+ SORAST *scalar_assign = #( #[Assign], #[Var] 
+ ); PCCTS_AST *cursor = slist;
+  
+ SORAST *p;
+  
+ while ((p=(SORAST *)slist-
+ >ast_find_all(scalar_assign,&cursor))) {
+  
+  /* perform an operation on ’p’ */
+  
+ }
+  
+ Language Translation Using PCCTS and C++  
+ 187",NA
+Error Detection and Reporting,"The following 
+ STreeParser
+  member functions are called for the various possible parsing 
+ errors:
+  
+ mismatched_token 
+  
+ mismatched_token(int looking_for, AST *found)
+ .
+  The parser was 
+ looking for a particular token that was not matched.
+  
+ mismatched_range 
+  
+ mismatched_range(int lower, int upper, AST *found)
+ . The parser 
+ was looking for a token in a range and did not find one.
+  
+ missing_wildcard() 
+  
+ missing_wildcard()
+ .
+  The parser was looking for any tree element or 
+ subtree and found a 
+ NULL
+  pointer.
+  
+ no_viable_alt 
+  
+ no_viable_alt(char *which_rule, AST *current_root)
+ . The parser 
+ entered a rule for which no alternative’s lookahead predicted that the input 
+ subtree would be matched.
+  
+ sorcerer_panic 
+  
+ sorcerer_panic(char *err)
+ . This is called explicitly by you or by the 
+ support code when something terrible has happened.
+  
+ Language Translation Using PCCTS and C++  
+ 189",NA
+Command Line Arguments,"The basic form of a SORCERER command line is
+  
+ sor [
+ options
+ ] file
+ 1
+ .sor ... file
+ n
+ .sor
+  
+ where 
+ file
+ 1
+  is the only one that may begin with a 
+ #header
+  directive and 
+ options
+  may be 
+ taken from:
+  
+ -CPP
+  
+ Turn on C++ output mode. You must define a class around your grammar rules. 
+ An ""
+ .h
+ "" and ""
+ .C
+ "" file are created for the class definition as well as the normal 
+ ""
+ .C
+ "" file for the parser your grammar rules.
+  
+ -def-tokens 
+  
+ [
+ C++
+  mode only
+ ] For each token referenced in the grammar, generate an 
+ enum 
+ STokenType
+  definition in the class definition file. This should not be used with 
+ the 
+ #tokdefs
+  directive, which specifies token types you’ve already defined.
+  
+ -def-tokens-file 
+ file 
+  
+ [
+ C
+  mode only
+ ] For each token referenced in the grammar, generate a 
+ #define 
+ in the specified file. This should not be used with the 
+ #tokdefs
+  directive, which 
+ specifies token types you’ve already defined.
+  
+ -funcs 
+ style 
+  
+ Specify the style of the function headers and prototypes to be generated by 
+ SORCERER.
+  style
+  must be one of 
+ ANSI 
+ (the default), 
+ KR
+ , or 
+ both..
+  
+ -inline 
+  
+ Only generate actions and functions for the given rules. Do not generate header 
+ information in the output. The usefulness of this option for anything but 
+ documentation has not been established.
+  
+ -out-dir style 
+  
+ Directory where all output files go; the default is “
+ .
+ ”.
+  
+ -prefix 
+ s 
+  
+ Prefix all globally visible symbols with 
+ s
+  , including the error routines. Actions that 
+ call rules must prefix the function with 
+ s
+  as well. This option can be used to link 
+ multiple SORCERER-generated parsers together by generating them with different 
+ prefixes. This is not useful in C++ mode.
+  
+ 190
+  Language Translation Using PCCTS and C++",NA
+C Programming Interface,"Invocation of C Interface SORCERER Parsers
+  
+ As with the C++ interface, the C interface requires that you specify the type of a tree node, 
+ how to navigate the tree, and the type of a node:
+  
+ 1
+ . 
+  
+ 2
+ . 
+  
+ 3
+ .
+  
+ You must define tree node type 
+ SORAST
+  in the 
+ #header
+  action. SORAST must 
+ contain the fields in point 
+ 2
+  and 
+ 3
+ .
+  
+ Your trees must be in child-sibling form; i.e., the trees must have fields 
+ down 
+ (points to the first child) and 
+ right
+  (points to the next sibling).
+  
+ Your tree must have a 
+ token
+  field, which is used to distinguish between tree 
+ nodes. (
+ To be consistent with ANTLR and the SORCERER C++ interface, this 
+  
+ field should be called 
+ type
+ , but we have left it as 
+ token
+  for backward 
+  
+ compatibility reasons. The C interface of SORCERER is well enough 
+ established that changing it would invalidate too many grammars
+ ).
+  
+ A conforming tree using the C interface is the following:
+  
+ typedef struct _node {
+  
+  
+  struct _node *right, *down;
+  
+  
+  int token;
+  
+  
+  /* add fields you need here */
+  
+  } SORAST;
+  
+ Table 28 on page 192 describes the files generated by SORCERER from a tree description 
+ in file(s) 
+ f1
+ .sor
+  ... fn
+ .sor
+ .
+  
+ Language Translation Using PCCTS and C++  
+ 191",NA
+ 5 ,NA,NA
+ANTLR Warning and ,NA,NA
+Error Messages,"This chapter describes error and warning messages that can be generated by ANTLR. They 
+ are organised by categories of ANTLR functionality.The actual messages displayed by 
+ ANTLR are shown in bold and are followed by a brief description.",NA
+Token and Lexical Class Definition Messages,"Warnings
+  
+ redefinition of token 
+ t
+ ; ignored 
+  
+  
+ Token 
+ t
+  was previously seen in either a 
+ #token
+  directive or rule.
+  
+ token label has no associated rexpr: 
+ t 
+  
+ A token type is associated with token t, but no regular expression has been 
+ provided; i.e., no input character sequence will result in this token type.
+  
+ token name 
+ t
+  and rexpr 
+ re
+  already defined; ignored 
+  
+ t
+  and 
+ re
+  were previously attached to other regular expressions or tokens, 
+ respectively. For example:
+  
+ #token T “foo”
+  
+ #token U
+  
+ #token U “foo”
+  
+ Language Translation Using PCCTS and C++ 
+  
+ 201",NA
+Grammatical Messages,"Warnings
+  
+ rule 
+ r
+  not defined 
+  
+  
+ Rule 
+ r
+  was referenced in your grammar, but you have not defined it.
+  
+ alts 
+ i
+  and 
+ j
+  of 
+ decision-type
+  ambiguous upon 
+ k-seqs 
+  
+ The specified alternatives (counting from 1) of the decision cannot be 
+ distinguished. At least one input sequence of length 
+ k
+  could be matched by 
+ both alternatives. For example, the following rule is ambiguous at 
+ k
+ =1 upon 
+ tokens 
+ {A,B}
+ :
+  
+ a : A B | A C ;
+  
+ It is not ambiguous at 
+ k
+ =2. The following rule is ambiguous upon 2-sequence 
+ AB
+  (or, as ANTLR would print it out: 
+ {A},{B}
+ ):
+  
+ a : A B C | A B ;
+  
+ This is only a warning, but some decisions are inherently ambiguous like the 
+ proverbial dangling else clause:
+  
+ stat : IF expr THEN stat { ELSE stat } | ...;
+  
+ The optional clause is ambiguous upon 
+ ELSE
+ .
+  
+ optional/exit path and alt(s) of 
+ decision-type
+  ambiguous upon 
+ k-seqs 
+  
+ The same interpretation applies to this message as for the previous message. 
+ The difference lies in that no alternative number can be associated with the 
+ exit path of a loop. For example,
+  
+ a : ( A B )* A C ;
+  
+ is ambiguous upon 
+ A
+  for 
+ k
+ =1, but unambiguous at 
+ k
+ =2.
+  
+ Language Translation Using PCCTS and C++  
+ 203",NA
+Implementation Messages,"action buffer overflow; size
+ n 
+  
+ One of your actions was too long for an internal buffer. Increase 
+  
+ ZZLEXBUFSIZE
+  in 
+ pccts/antlr/generic.h
+  and recompile ANTLR. Or, 
+ break up your action into two actions.
+  
+ predicate buffer overflow; size
+ n 
+  
+ One of your semantic predicates was too long for an internal buffer. Increase 
+ ZZLEXBUFSIZE
+  in 
+ pccts/antlr/generic.h
+  and recompile ANTLR. Or, 
+ break up your predicate into two actions.
+  
+ parameter buffer overflow; size 
+ n 
+  
+ One of your actions was too long for an internal buffer. Increase 
+  
+ ZZLEXBUFSIZE
+  in 
+ pccts/antlr/generic.h
+  and recompile ANTLR. Or, 
+ break up your action into two actions.
+  
+ #$%%*&@# internal error: 
+ error 
+  
+ [
+ complain to nearest government official or send hate-mail to 
+  
+ parrt@parr-research.com; please pray to the ‘‘bug
+ ’’
+  gods that there is a 
+  
+ 204
+  Language Translation Using PCCTS and C++",NA
+"Action, Attribute, and Rule Argument Messages","Warnings
+  
+ $
+ t
+  not parameter, return value, or element label 
+  
+ You referenced 
+ $
+ t
+  within an action, but it is not a parameter or return value of 
+ the enclosing rule nor is it a label on a rule or token.
+  
+ invalid parameter/return value: ‘
+ param-or-ret-val-definition
+ ’
+  
+ Your parameter or return value definition was poorly formed C or C++; e.g., 
+ missing argument name.
+  
+ rule 
+ r
+  accepts no parameter(s) 
+  
+ You specified parameters to 
+ r
+  in some rule of your grammar, but r does not 
+ accept parameters.
+  
+ rule 
+ r
+  requires parameter(s) 
+  
+ You specified no parameters to 
+ r
+  in some rule of your grammar, but 
+ r
+  accepts 
+ at least one parameter.
+  
+ rule 
+ r
+  yields no return value(s) 
+  
+ You specified a return value assignment from 
+ r
+  in some rule of your grammar, 
+ but 
+ r
+  does not return any values.
+  
+ Language Translation Using PCCTS and C++  
+ 205",NA
+Command-Line Option Messages,"Warnings
+  
+ #parser meta-op incompatible with -CC; ignored 
+  
+ #parser
+  directive can only be used in C mode. Use a class definition in C++ 
+ mode.
+  
+ #parser meta-op incompatible with ‘-gp prefix’; ‘-gp’ ignored 
+  
+ #parser
+  directive should be used instead of 
+ -gp
+ , but we left it in for 
+ backward compatibility reasons. Use a class definition in C++ mode.
+  
+ -gk option could cause trouble for <<...>>? predicates 
+  
+ The 
+ -gk
+  option delays the fetching of lookahead, hence, predicates that refer to 
+ future lookahead values may be referring to unfetched values.
+  
+ -gk incompatible with semantic predicate usage; -gk turned off 
+  
+ See previous.
+  
+ -gk conflicts with -pr; -gk turned off 
+  
+  
+ See previous.
+  
+ analysis resource limit (# of tree nodes) must be greater than 0 
+  
+ You have not specified a value or specified a negative number for the 
+ -rl 
+ option.
+  
+ must have at least one token of look-ahead (setting to 1) 
+  
+ You have not specified a value or specified a negative number for the 
+ -k 
+ option.
+  
+ must have compressed lookahead >= full LL(k) lookahead (setting -ck to -k) 
+ You 
+ have not specified a value or specified a negative number for the 
+ -ck 
+ option.
+  
+ Errors
+  
+ class meta-op used without C++ option 
+  
+  
+ You cannot give grammar class definitions without the 
+ -CC
+  option.
+  
+ Language Translation Using PCCTS and C++  
+ 207",NA
+Token and Error Class Messages,"default errclass for ‘
+ t
+ ’ would conflict with token/errclass/tokclass 
+  
+ ANTLR cannot create an error class for rule 
+ t
+  because the error class would 
+ conflict with a known symbol. Default error class names are created from rule 
+ names by capitalizing the first letter of the rule name.
+  
+ errclass name conflicts with regular expression ‘
+ t
+ ’
+  
+ The specified error class conflicts with a previously-defined regular 
+ expression.
+  
+ redefinition of errclass or conflict w/token or tokclass ‘
+ t
+ ’; ignored 
+  
+ You have defined an error class with the same name as a previously-defined 
+ symbol.
+  
+ undefined rule ‘
+ t
+ ’ referenced in errclass ‘
+ t
+ ’; ignored 
+  
+  
+ You referenced a rule in your error class that does not have a definition.
+  
+ self-referential error class ‘
+ t
+ ’; ignored 
+  
+ Your error class refers to itself directly or indirectly (through another error 
+ class).
+  
+ undefined token ‘
+ t
+ ’ referenced in errclass ‘
+ t
+ ’; ignored 
+  
+  
+ Your error class refers to a token that has not been defined.
+  
+ redefinition of tokclass or conflict w/token ‘
+ t
+ ’; ignored 
+  
+  
+ Your token class name conflicts with a previously-defined token label.
+  
+ redefinition of #tokclass ‘
+ t
+ ’ to #token not allowed; 
+ ignored 
+  
+ You have redefined token class 
+ t
+ .",NA
+Predicate Messages,"Warnings
+  
+ alt 
+ i
+  of 
+ decision-type
+  has no predicate to resolve ambiguity 
+  
+ With options 
+ -w2
+  and 
+ -prc on
+  ANTLR warns you that one of the lookahead 
+ sequences predicts more than one alternative and that you have specified a 
+  
+ 208
+  Language Translation Using PCCTS and C++",NA
+Exception Handling Messages,"duplicate exception handler for label ‘
+ t
+ ’
+  
+  
+ You specified more than one handler for a single label 
+ t
+ .
+  
+ unknown label in exception handler: ‘
+ t
+ ’
+  
+  
+ You specified a handler for an unknown label 
+ t.
+  
+ Language Translation Using PCCTS and C++  
+ 209",NA
+ 6 ,NA,NA
+SORCERER Warning and ,NA,NA
+Error Messages,"This chapter describes error and warning messages that can be generated by SORCERER. 
+ We have broken the descriptions into categories rather than grouping them into error and 
+ warning sections. The actual messages displayed by SORCERER are shown in bold and are 
+ followed by a brief description.",NA
+Syntax Messages,"Warnings
+  
+ unknown meta-op: 
+ m 
+  
+  
+ Meta-operation 
+ #
+ m
+  is not valid.
+  
+ missing #header statement 
+  
+  
+ You forgot a 
+ #header
+  statement in C mode.
+  
+ extra #header statement 
+  
+  
+ You have more than one 
+ #header
+  statement.
+  
+ extra #tokdef statement 
+  
+  
+ You have more than one 
+ #tokdef
+  statement.
+  
+ Language Translation Using PCCTS and C++ 
+  
+ 211",NA
+Action Messages,"Warnings
+  
+ eoln found in string 
+  
+ You did not terminate your string on the same line as your started it.
+  
+ eoln found in string (in user action) 
+  
+ You did not terminate your string on the same line as your started it.
+  
+ eoln found in char literal (in user action) 
+  
+ You did not terminate your character literal on the same line as your started it.
+  
+ Errors
+  
+ Reference variable clashes with 
+ t
+ : ‘
+ v
+ ’
+  
+ You have defined an @-variable that clashes with a previously-defined 
+ symbol such as a rule name.
+  
+ #id used in action outside of rule; ignored 
+  
+ #id
+  is only valid as the result or input tree of a rule. Placing a reference to 
+ #id
+  outside of a rule makes no sense.",NA
+Grammatical Messages,"infinite recursion from rule 
+ a
+  to rule 
+ b 
+  
+ Rule 
+ a
+  can reach rule
+  b
+  without having moved anywhere in the tree. 
+ Naturally, infinite-recursion can result.
+  
+ rule not defined: 
+ ‘
+ r
+ ’
+  
+ You have referenced rule
+  r
+ , but not defined it in your grammar.
+  
+ alts 
+ i
+  and 
+ j
+  of (...) nondeterministic upon
+ tree-node 
+  
+ Alternatives 
+ i
+  and 
+ j
+  both begin with the same root node or sibling node.
+  
+ Language Translation Using PCCTS and C++  
+ 213",NA
+Implementation Messages,"action buffer overflow; size 
+ n 
+  
+ One of your actions was too long for an internal buffer. Increase 
+  
+ ZZLEXBUFSIZE
+  in 
+ sorcerer/sor.g
+  and recompile SORCERER. Or 
+ break up your action into two actions.
+  
+ parameter buffer overflow; size 
+ n 
+  
+ One of your actions was too long for an internal buffer. Increase 
+  
+ ZZLEXBUFSIZE
+  in 
+ sorcerer/sor.g
+  and recompile ANTLR. Or break 
+ up your action into two actions.",NA
+Command-Line Option Messages,"Warnings
+  
+ -def-tokens valid with C++ interface only; ignored
+  
+ -def-tokens-file not valid with C++ interface; ignored 
+  
+ C++ mode SORCERER generates a list of token definitions (unless 
+ #tokdef
+ ) is 
+ used in the output class definition file.
+  
+ -def-tokens-file conflicts with -inline; ignored 
+  
+ Cannot generate a token definition file if the output of SORCERER will be 
+ inline.
+  
+ don’t you want filename with that -def-tokens-file?; ignored 
+ You forgot to specify a file name.
+  
+ 214
+  Language Translation Using PCCTS and C++",NA
+Token Definition File Messages,"cannot write token definition file 
+ f 
+  
+ For some reason, file 
+ f
+  could not be open for writing.
+  
+ cannot open token defs file ‘
+ f
+ ’
+  
+ File 
+ f
+  could not be found.
+  
+ range operator is illegal without #tokdefs directive 
+  
+ In order to use the range operator, you must tell SORCERER what the token 
+ type values are for all your tokens. The only to do this is to use 
+ #tokdef
+ .
+  
+ implicit token definition of ‘
+ t
+ ’ not allowed with #tokdefs 
+  
+ Token 
+ t
+  was not defined in the token definition file. Its token type is therefore 
+ unknown.
+  
+ 216
+  Language Translation Using PCCTS and C++",NA
+ 7 ,NA,NA
+Templates and Quick ,NA,NA
+Reference Guide,"In this chapter, we provide a collection of examples and summaries that illustrate the major 
+ features of ANTLR and DLG; we include an example linking ANTLR and SORCERER. 
+  
+ Much of the code is taken from the 
+ testcpp
+  directory in the PCCTS distribution.",NA
+Templates,"This section provides templates for using ANTLR in C++ mode when not using trees, when 
+ using trees and when using ANTLR with SORCERER.
+  
+ Basic ANTLR Template
+  
+ #header << 
+  
+ //
+  put things here that need to be defined in all output files
+  
+ >>
+  
+ <<
+  
+ #include ""DLGLexer.h""
+  
+ typedef ANTLRCommonToken ANTLRToken;
+  
+ #include ""PBlackBox.h""
+  
+ class MyVersionOfParser : public Parser { 
+  
+ //
+  override triggers declared in actual parser class def below
+  
+ Language Translation Using PCCTS and C++ 
+  
+ 217",NA
+Defining Your Own Tokens,"In an action before the grammar, you may specify or include the definition of 
+ ANTLRToken 
+ rather than use the predefined 
+ ANTLRCommonToken
+ .
+  
+ class ANTLRToken : public ANTLRRefCountToken { 
+  
+ protected: 
+  
+ ANTLRTokenType _type; // what’s the token type of the token object 
+ int _line; // track line info for errors 
+  
+ ANTLRChar _text[30]; // hold the text of the input token
+  
+ public: 
+  
+ ANTLRToken(ANTLRTokenType t, ANTLRChar *s)
+  
+ 224
+  Language Translation Using PCCTS and C++",NA
+Defining Your Own Scanner,"To use your own scanner with an ANTLR grammar, you must define a subclass of 
+ ANTLRTokenStream
+  and then include that definition in the grammar file within an action 
+ (instead of the usual “
+ #include ""DLGLexer.h""
+ ”. Here is a sample lexer definition:
+  
+ #include ""config.h"" 
+  
+ #include ""tokens.h"" // let’s say it defines DIGIT, PUNCT 
+ typedef ANTLRCommonToken ANTLRToken; 
+  
+ #include ATOKENBUFFER_H 
+  
+ #include <ctype.h>
+  
+ class MyLexer : public ANTLRTokenStream 
+ { 
+  
+ private: 
+  
+ int c; 
+  
+ public:
+  
+ Language Translation Using PCCTS and C++  
+ 225",NA
+The ,NA,NA
+genmk,NA,NA
+ Program,"The genmk program is provided so that most makefiles for ANTLR can be automatically 
+ generated. To begin most projects, you only need provide a parser class name, decide 
+ whether you are going to build trees, decide on the name of the project (the executable), and 
+ decide on the grammar file name. For example, the most common 
+ genmk
+  line is:
+  
+ genmk -CC -class 
+ MyParser
+  -project 
+ myprojfile
+ .g > makefile
+  
+ This line creates a makefile that uses ANTLR with the C++ interface, with parser class 
+ MyParser
+ , and with a resulting executable called 
+ myproj
+ ; your grammar file is 
+ file
+ .g
+ . The 
+ following lines in the makefile need to be modified to suit your environment:
+  
+ PCCTS = . 
+ #CCC=g++
+  
+  
+ # normally something like 
+ /usr/local/src/pccts # uncomment and define to 
+ your C++ compiler
+  
+ If you will be using trees, use the 
+ -tree
+  option with 
+ genmk
+  also.",NA
+Rules,"Rule With Multiple Alternatives
+  
+ rule 
+  
+ : 
+  
+ | 
+  
+ ...
+  
+ | 
+  
+ ;
+  
+ alternative
+ 1 
+  
+ alternative
+ 2
+  
+ alternative
+ n
+  
+ 226
+  Language Translation Using PCCTS and C++",NA
+EBNF Constructs,"Subrule
+  
+ ( 
+ alternative
+ 1
+  | alternative
+ 2
+  ... | alternative
+ n
+  )
+  
+ Optional Subrule
+  
+ { 
+ alternative
+ 1
+  | alternative
+ 2
+  ... | alternative
+ n
+  }
+  
+ Zero Or More Subrule
+  
+ ( 
+ alternative
+ 1
+  | alternative
+ 2
+  ... | alternative
+ n
+  )*
+  
+ One Or More Subrule
+  
+ ( 
+ alternative
+ 1
+  | alternative
+ 2
+  ... | alternative
+ n
+  )+",NA
+Alternative Elements,"Token References
+  
+ 1. 
+  
+ Token identifiers. Identifiers begin with an uppercase letter; e.g., 
+ ID
+ , 
+ INT
+ .
+  
+ 2. 
+  
+ Regular expressions enclosed in double-quotes; e.g. 
+ ""[a-z]+""
+ , 
+ ""begin""
+ .
+  
+ 3. 
+  
+ Token class references; e.g.,
+  
+ #tokclass Operators { Plus Minus }
+  
+ e : e2 ( Operators e2 )* ;
+  
+ Language Translation Using PCCTS and C++  
+ 227",NA
+Lexical Directives,"#token 
+ LABEL
+  ""
+ regular-expression
+ "" <<
+ action
+ >> 
+  
+ where any of the items may be omitted. However, actions may only be tied 
+ to regular expressions and at least one item must be specified.
+  
+ #lexclass 
+ LCLASS 
+  
+ start a new automaton or lexical class in your grammar.
+  
+ #tokclass 
+ TCLASS
+  { T1 T2 ... Tn } 
+  
+ Define 
+ TCLASS
+  as a set of tokens.
+  
+ #tokdefs ""
+ file
+ "" 
+  
+ Specify a file containing 
+ #define
+ s or an 
+ enum
+  of all token labels for 
+ ANTLR to use.",NA
+Parser Exception Handling,"Rule With Exception Handlers
+  
+ rule 
+  
+ : alternative
+ 1 
+  
+  
+ exception 
+  
+  
+  
+ catch ... <<...>> 
+  
+  
+ exception[
+ label
+ ] 
+  
+  
+  
+ catch ... <<...>> 
+  
+  
+ alternative
+ 2 
+  
+ | ...
+  
+ | alternative
+ n 
+  
+ ; 
+  
+ exception 
+  
+ catch ... <<...>> 
+  
+ catch ... <<...>> 
+  
+ default : <<...>> 
+  
+ exception[
+ label1
+ ]
+  
+ 230
+  Language Translation Using PCCTS and C++",NA
+ 8 ,NA,NA
+History,"The PCCTS project began as a parser-generator project for a graduate course at Purdue 
+ University in the Fall of 1988 taught by Hank Dietz--“translator-writing systems”. Under the 
+ guidance of Professor Dietz, the parser generator, ANTLR (originally called YUCC), 
+ continued after the termination of the course and eventually became the subject of Terence 
+ Parr’s Master’s thesis. Originally, lexical analysis was performed via a simple scanner 
+ generator which was soon replaced by Will Cohen’s DLG in the Fall of 1989 (DFA-based 
+ lexical-analyzer generator, also an offshoot of the graduate translation course).
+  
+ The alpha version of ANTLR was totally rewritten resulting in 1.00B. Version 1.00B was 
+ released via an internet newsgroup (comp.compilers) posting in February of 1990 and 
+ quickly gathered a large following. 1.00B generated only LL(1) parsers, but allowed the 
+ merged description of lexical and syntactic analysis. It had rudimentary attribute handling 
+ similar to that of YACC and did not incorporate rule parameters or return values; 
+ downward inheritance was very awkward. 1.00B-generated parsers terminated upon the 
+ first syntax error. Lexical classes (modes) were not allowed and DLG did not have an 
+ interactive mode.
+  
+ Upon starting his Ph.D. at Purdue in the Fall of 1990, Terence Parr began the second total 
+ rewrite of ANTLR. The method by which grammars may be practically analyzed to generate 
+ LL(k) lookahead information was discovered in August of 1990 just before Terence’s return 
+ to Purdue. Version 1.00 incorporated this algorithm and included the AST mechanism, 
+ lexical classes, error classes, and automatic error recovery; code quality and portability were 
+ higher. In February of 1992 1.00 was released via an article in SIGPLAN Notices. Peter 
+ Dahl, then Ph.D. candidate, and Professor Matt O’Keefe (both at the University of 
+  
+ Minnesota) tested this version extensively. Dana Hoggatt (Micro Data Base Systems, Inc.) 
+ tested 1.00 heavily.
+  
+ Language Translation Using PCCTS and C++ 
+  
+ 233",NA
+Notes for New Users of ,NA,NA
+PCCTS,NA,NA
+Thomas H. Moog ,NA,NA
+"Polhode, Inc.",NA,NA
+tmoog@polhode.com,"These notes are based on my own experiences and a year of observing the 
+ PCCTS
+  mailing 
+ list and the omp.compilers.tools.pccts news group.  These notes have an emphasis on C++ 
+ mode.  Those who are using C mode may wish to consult the first version of these notes 
+ mentioned prior to Item #1.  The Notes consist of a table of contents and the Notes 
+ themselves.  If an entry in the table-of-contents contains a dash (""–"")  instead of a page 
+ number than the title is the entire item, so there’s no point in referring to another page for 
+ additional information. The code mentioned in the section of examples can be obtained via 
+ web browser or 
+ FTP
+  from the site mentioned prior to Item #1 and at most 
+ PCCTS
+  archive 
+ sites.
+  
+ Language Translation Using PCCTS and C++ 
+ 235",NA
+Index,"Symbols
+  
+ !
+  operator
+  55, 90, 125, 163, 183, 184 
+ #
+ ast-identifier
+  107, 126 
+  
+ #errclass
+  101 
+  
+ #header
+  83, 154, 163 
+  
+ #lexaction
+  100 
+  
+ #lexclass
+  99 
+  
+ #parser
+  83 
+  
+ #tokclass
+  88 
+  
+ #tokdefs
+  96, 98, 168 
+  
+ #token
+  91, 201 
+  
+ $
+ token-identifier
+  106 
+  
+ @ 
+ end of file
+  92 
+  
+ @
+  Operator
+  144 
+  
+ @ variable
+  178 
+  
+ ^
+  operator
+  55, 90, 124 
+  
+ ^
+  polynomial operator
+  41 
+  
+ ~
+  operator
+  88, 98 
+  
+ ~
+  operator, lexical
+  95
+  
+ A
+  
+ Abstract syntax trees, see AST 
+  
+ Action
+  104–108 
+  
+  
+ #
+ ast-identifier
+  126 
+  
+  
+ #lexaction
+  directive
+  100 
+  
+  
+ $
+ token-identifier
+  106 
+  
+  
+ @ variable
+  178 
+  
+  
+ accessing token objects from
+  108 
+  
+  
+ argument(s)
+  105 
+  
+  
+ buffer
+  204 
+  
+  
+ embedded
+  87, 170, 181, 182 
+  
+  
+ embedded within 
+ ANTLRParser
+  class
+  109 
+  
+ fail-action
+  87, 105, 108
+  
+  
+ init-action
+  86, 107, 172 
+  
+  
+ init-action, hoisting over
+  129 
+  
+  
+ interpretation of
+  105, 125 
+  
+  
+ lexical
+  100 
+  
+  
+ placement
+  104 
+  
+  
+ return value(s)
+  105 
+  
+  
+ sensitivity to placement
+  31 
+  
+  
+ syntactic predicate’s effect upon
+  137, 172 
+  
+ time of execution
+  105 
+  
+  
+ warnings and errors concerning
+  205 
+  
+ addChild
+  122, 187 
+  
+ advance
+  93 
+  
+ Alternative, see Rule 
+  
+ Ambiguous decision
+  128 
+  
+  
+ ANTLR warning message
+  203 
+  
+  
+ term definition
+  27 
+  
+ ANTLR
+  24, 30, 81 
+  
+ ANTLRAbstractToken
+  112, 113 
+  
+ ANTLRCommonToken
+  108 
+  
+ ANTLRParser
+  84, 112, 117 
+  
+ ANTLRRefCountToken
+  108 
+  
+ ANTLRToken
+  112 
+  
+ ANTLRTokenBuffer
+  112, 116 
+  
+ ANTLRTokenPtr
+  112, 113 
+  
+ ANTLRTokenStream
+  116 
+  
+ ANTLRTokenType
+  127 
+  
+ append
+  123, 187 
+  
+ Arbitrary lookahead, see Syntactic predicate 
+ Argument(s)
+  85, 105, 165 
+  
+ Argument(s), see also Rule 
+  
+ AST
+  52, 121–127, 150, 157 
+  
+  
+ !
+  operator
+  55, 90, 125, 163, 183, 184 
+  
+  
+ ^
+  operator
+  55, 90, 124 
+  
+  
+ C interface definitions
+  157 
+  
+  
+ child-sibling
+  34, 163, 191 
+  
+  
+ class (C++) hierarchy
+  119, 166
+  
+ Language Translation Using PCCTS and C++
+  303",NA

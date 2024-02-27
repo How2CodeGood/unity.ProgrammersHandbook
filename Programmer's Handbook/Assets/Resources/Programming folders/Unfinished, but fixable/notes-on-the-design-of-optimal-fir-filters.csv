@@ -1,0 +1,1454 @@
+Larger Text,Smaller Text,Symbol
+1. ,NA,NA
+"Introduction to ""Notes on the Design of Optimal FIR ",NA,NA
+"Filters"" ",NA,NA
+2. ,NA,NA
+Statement of the Optimal Linear Phase FIR Filter ,NA,NA
+Design ,NA,NA
+Problem ,NA,NA
+3. ,NA,NA
+Filter Sizing ,NA,NA
+4. ,NA,NA
+Performance Comparsion with other FIR Design ,NA,NA
+Methods ,NA,NA
+5. ,NA,NA
+Three Methods of Designing FIR Filters ,NA,NA
+6. ,NA,NA
+Why Does α Depend on the Cutoff Frequency?,NA,NA
+7. ,NA,NA
+Extension to Non-lowpass Filters ,NA,NA
+8. ,NA,NA
+"Bibliography for ""Notes on the Design of Optimal FIR ",NA,NA
+"Filters"" ",NA,NA
+9. ,NA,NA
+"""Notes on the Design of Optimal FIR Filters"" ",NA,NA
+Appendix A ,NA,NA
+10. ,NA,NA
+"""Notes on the Design of Optimal FIR Filters"" ",NA,NA
+Appendix B ,NA,NA
+11. ,NA,NA
+"""Notes on the Design of Optimal FIR Filters"" ",NA,NA
+Appendix C,NA,NA
+"Introduction to ""Notes on the Design of Optimal FIR Filters""",NA,NA
+Introduction ,NA,NA
+A recurring technical task in the development of digital signal ,NA,NA
+processing products and systems is the design of finite-impulse-,NA,NA
+response (FIR) digital filters. Fortunately some excellent software ,NA,NA
+packages exist for the automatic synthesis of impulse responses for such ,NA,NA
+"filters, many of them based on the now-famous Parks-McClellan ",NA,NA
+"algorithm [2]. Unfortunately, there is still some mystery about how to ",NA,NA
+"use the software and, equally important, how to estimate impulse ",NA,NA
+response lengths short of actually designing the filter itself. This ,NA,NA
+technical note primarily addresses the second problem and indirectly ,NA,NA
+discusses a bit the first. We examine here how to convert a typical filter ,NA,NA
+"specification in terms of cutoff frequency, passband ripple, etc., into a ",NA,NA
+reasonably accurate estimate of the length of the impulse response. Not ,NA,NA
+"only does this estimate suffice for most design tradeoff exercises, it ",NA,NA
+usually allows the Parks-McClellan routines to be employed only once or ,NA,NA
+"twice rather than the multiple times needed when the “cut-and-try"" ",NA,NA
+method is used.,NA,NA
+Statement of the Optimal Linear Phase FIR Filter Design Problem,NA,NA
+Equal-ripple Design,NA,NA
+"While other types of filters are often of interest, this note focuses on the ",NA,NA
+"lowpass linear phase filter. Even though it is not immediately obvious, ",NA,NA
+virtually all of the analytical results developed in this note apply to the ,NA,NA
+other types as well. This fact is amplified in the module ,NA,NA
+Extension to ,NA,NA
+Non-lowpass Filters,NA,NA
+.,NA,NA
+It is known that the Parks-McClellan filter synthesis software package ,NA,NA
+"produces “optimal"" filters in the sense that the best possible filter ",NA,NA
+"performance is attained for the number of “filter taps"" allowed by the ",NA,NA
+"designer. “Optimal"" can be defined various ways. The Parks-McClellan ",NA,NA
+package uses the Remez exchange algorithm to optimize the filter design ,NA,NA
+"by selecting the impulse response of given length, termed here ",NA,NA
+N,NA,NA
+", which ",NA,NA
+minimizes the peak ripple in the passband and stopband. It can be ,NA,NA
+"shown, though not here, that minimizing the peak, or maximum, ripple ",NA,NA
+is ,NA,NA
+equivalent to making all of the local peaks in the ripple equal to each ,NA,NA
+other.,NA,NA
+This fact leads to three different names for essentially the same filter ,NA,NA
+"design. They are commonly called “equal-ripple"" filters, because the ",NA,NA
+local peaks are equal in deviation from the desired filter response. ,NA,NA
+Because the maximum ripple deviation is minimized in this ,NA,NA
+"optimization procedure, they are also termed “minimax"" filters. ",NA,NA
+"Finally, since the Russian ",NA,NA
+Chebyshev is usually associated with minimax designs ,NA,NA
+[footnote],NA,NA
+", ",NA,NA
+these filters are often given his name.,NA,NA
+He developed the concept of minimax design and a set of polynomials ,NA,NA
+"which carry his name not from filter design, but from the optimal ",NA,NA
+design of piston drive rods for steam locomotives. They are discussed ,NA,NA
+more in ,NA,NA
+"""Filter Sizing""",NA,NA
+ and ,NA,NA
+Appendix B,NA,NA
+.,NA,NA
+The design template for an equal-ripple lowpass filter is shown in ,NA,NA
+[link],NA,NA
+.,NA,NA
+Frequency Response of an ,NA,NA
+Optimal Weighted Equal-,NA,NA
+ripple ,NA,NA
+Linear Phase FIR Filter,NA,NA
+The passband extends from 0 Hz to the cutoff frequency denoted ,NA,NA
+f,c,NA
+. ,NA,NA
+The gain in the passband is assumed to be unity. Any other gain is ,NA,NA
+attained by scaling the whole impulse response appropriately. The ,NA,NA
+stopband begins at,NA,NA
+the frequency denoted ,NA,NA
+f,st,NA
+" and ends at the so-called Nyquist or “folding"" ",NA,NA
+"frequency, denoted by ","f
+ s 
+ 2",NA
+", where ",NA,NA
+f,s,NA
+ is the sampling frequency of the ,NA,NA
+"data entering the digital filter. In some references, [1] for example, the ",NA,NA
+sampling,NA,NA
+rate ,NA,NA
+f,s,NA
+ is assumed to be normalized to unity just as the passband gain ,NA,NA
+has here. The dependence on the sampling frequency is kept explicit ,NA,NA
+"in this note, however, so that its impact on design parameters can be ",NA,NA
+kept visible.,NA,NA
+The optimal synthesis algorithm is assumed here to produce an ,NA,NA
+impulse response whose associated frequency response has ripples in ,NA,NA
+both the passband and the stopband. The peak deviation in the ,NA,NA
+passband is denoted ,NA,NA
+δ,1,NA
+ and the peak deviation in the stopband is ,NA,NA
+denoted ,NA,NA
+δ,2,NA
+". It is commonly thought that an “equal-ripple"" design forces ",NA,NA
+δ,1,NA
+ to equal ,NA,NA
+δ,2,NA
+. In fact this is not true. The local ripple peaks in the ,NA,NA
+passband will all equal ,NA,NA
+δ,1,NA
+ and those in the stopband will all equal ,NA,NA
+δ,2,NA
+. ,NA,NA
+For a given filter specification the two are linked,NA,NA
+together by a weight denoted ,NA,NA
+W,NA,NA
+", so that ",NA,NA
+δ,1,NA
+ = Wδ,2,NA
+. In fact the Parks-,NA,NA
+McClellan routines insure the design of ,NA,NA
+weighted equal-ripple,NA,NA
+ filters. ,NA,NA
+The choice of ,NA,NA
+W,NA,NA
+ is discussed shortly.,NA,NA
+An important design parameter is the ,NA,NA
+transition band,NA,NA
+", denoted ",NA,NA
+Δf,NA,NA
+", ",NA,NA
+and defined as the difference between the stopband edge ,NA,NA
+f,st,NA
+ and the ,NA,NA
+passband edge ,NA,NA
+f,c,NA
+". Thus, ",NA,NA
+Equation:,NA,NA
+Δf = f,st,NA
+ − f,c,NA
+.,NA,NA
+In theory the required filter order ,NA,NA
+N,NA,NA
+ is a function of all of the design ,NA,NA
+"parameters defined so far, that is, ",NA,NA
+f,s,NA
+", f",c,NA
+", f",st,NA
+", δ",1,NA
+", and ",NA,NA
+δ,2,NA
+. The central point ,NA,NA
+of this technical note is that under a large range of practical ,NA,NA
+circumstances the required value of ,NA,NA
+N,NA,NA
+ can be estimated using only ,NA,NA
+f,s,NA
+", ",NA,NA
+Δf,NA,NA
+", and the smaller of ",NA,NA
+δ,1,NA
+ and ,NA,NA
+δ,2,NA
+.,NA,NA
+Conversion of Specifications,NA,NA
+While the parameters defined in the previous section relate directly to ,NA,NA
+"the theory of FIR filter design optimization, some of them differ from ",NA,NA
+those usually employed to specify the performance of a filter. We ,NA,NA
+"discuss here the conversion of two of those, ",NA,NA
+δ,1,NA
+ and ,NA,NA
+δ,2,NA
+", into more ",NA,NA
+traditional measures.,NA,NA
+Passband Ripple,NA,NA
+: ,NA,NA
+[link],NA,NA
+ uses the parameter ,NA,NA
+δ,1,NA
+ to describe the peak ,NA,NA
+difference between the template lowpass filter and the magnitude of ,NA,NA
+the filter response actually attained. Traditionally this passband ripple ,NA,NA
+has been specified in terms of the maximum difference in the power ,NA,NA
+"level transmitted through the filter in the passband. By this definition, ",NA,NA
+"the peak-to-peak passband ripple, abbreviated here as PBR, is given by ",NA,NA
+Equation:,NA,NA
+PBR = 10 log,NA,NA
+(1 + δ,1,NA
+),"2
+  
+ 10",NA
+(1 − δ,1,NA
+),2,NA
+ .,NA,NA
+Assuming that the nominal power transmission through the filter is ,NA,NA
+"unity, the numerator is the power gain at a ripple peak and the ",NA,NA
+denominator is the gain at a trough. It is easily shown (see ,NA,NA
+Appendix ,NA,NA
+A,NA,NA
+) that when ,NA,NA
+δ,1,NA
+" is small compared to unity, or, equivalently, when the ",NA,NA
+"passband ripple is less than about 1.5 dB, then ",NA,NA
+[footnote] ,NA,NA
+"Strictly speaking, the peak ripple excursions are equal in magnitude, ",NA,NA
+not in decibels. This subtlety is completely negligible for small values ,NA,NA
+of ,NA,NA
+δ,1,NA
+.,NA,NA
+Equation:,NA,NA
+PBR ≈ 17. 36 δ,1,NA
+.,NA,NA
+Stopband Ripple,NA,NA
+": The traditional specification for stopband ripple, ",NA,NA
+"abbreviated here as SBR, is the power difference between the nominal ",NA,NA
+passband transmission level and the transmission level of the highest ,NA,NA
+ripple in the stopband. For the equal ripple design shown in ,NA,NA
+[link],NA,NA
+", all ",NA,NA
+stopband ripples have equal peak values and the nominal passband ,NA,NA
+"transmission is unity, that is, 0 dB. The stopband ripple, or more ",NA,NA
+"accurately, the minimum stopband power rejection, denoted SBR, is ",NA,NA
+given by ,NA,NA
+Equation:,NA,NA
+SBR = 20 log,10,NA
+δ,2,NA
+.,NA,NA
+Example: ,NA,NA
+Suppose a filter is specified to have a peak-to-peak passband ripple of ,NA,NA
+0.5 dB and a minimum stopband attenuation of 60 dB. Using the above ,NA,NA
+equations we find that ,NA,NA
+δ,1,NA
+ = 0. 0288,NA,NA
+", ",NA,NA
+δ,2,NA
+ =. 001,NA,NA
+", and the relative ",NA,NA
+"weighting, ",NA,NA
+W,NA,NA
+", therefore equals 28.8. ",NA,NA
+♠,NA,NA
+In discussing filter specifications it should be noted that the cutoff ,NA,NA
+frequency ,NA,NA
+f,c,NA
+ shown in ,NA,NA
+[link],NA,NA
+ differs from the definition typically used in ,NA,NA
+analog filter designs. The cutoff frequency is commonly defined as the ,NA,NA
+3 ,NA,NA
+dB point,NA,NA
+", that is, that frequency at which the power transfer function ",NA,NA
+falls to a,NA,NA
+value 3 dB below the nominal passband level. Instead the value of ,NA,NA
+f,c,NA
+ ,NA,NA
+shown in ,NA,NA
+[link],NA,NA
+ is the highest frequency at which the specified ,NA,NA
+passband ripple is,NA,NA
+still attained. In very few practical cases do the two definitions result in ,NA,NA
+the,NA,NA
+same value.,NA,NA
+The Formula for Estimation of the FIR Filter Length,"For many lowpass filter designs the peak passband excursion 
+ δ
+ 1
+  exceeds the peak stopband 
+ excursion
+ δ
+ 2
+  by a factor of ten or more. This ratio, earlier denoted as the weight 
+ W
+ , was just 
+ evaluted in the previous section to have the value 28.8 for a typical set of specifications. In this 
+ example the stopband attenuation specification drives the required filter order. In this case, and 
+ with a few additional assumptions which will be enumerated later, the number of coefficients in 
+ the impulse response of a high-order FIR linear phase filter, denoted 
+ N
+ , can be accurately 
+ estimated using the formula: 
+  
+ Equation:
+  
+ N ≈
+  
+ α f
+ s
+  
+ Δf ,
+  
+ where the design parameter 
+ α
+  is given by the 
+ equation: 
+ Equation:
+  
+ α = 0. 22 + 0. 0366 
+ ⋅
+  SBR.
+  
+ As before, SBR is the minimum stopband attenuation compared to the nominal passband 
+ power transmission level, measured in decibels.
+  
+ Example: 
+  
+ Continuing from Example I ""Statement of the Optimal Linear FIR Filter Design Problem"" 
+ Suppose as before that the lowpass filter of interest is to have a peak-to-peak passband ripple 
+ (PBR) of 0.5 dB and a minimum stopband attenuation of 60 dB. Since 
+ W
+  has been evaluated to 
+ be approximately 29 in this case, 
+ [link]
+  applies. Using 
+ [link]
+ , 
+ α
+  is evaluated to be 2.42. Thus 
+ N
+  
+ is closely approximated by 2.42 times the reciprocal of the normalized transition bandwidth 
+ Δf 
+ f
+ s
+ . To continue the example assume that the sampling rate is 8 kHz, that the cutoff frequency 
+ f
+ c
+  
+ is 1530 Hz, and that the stopband edge 
+ f
+ st
+  is 2330 Hz. Thus 
+ Δf = 800
+  Hz and 
+ Δf f
+ s 
+  
+ = 0. 1
+ , 
+ yielding an
+  
+ estimated filter order 
+ N
+  of approximately 24. Executing the Parks-McClellan design program 
+ with these parameters happens to produce an impulse response which almost perfectly 
+ matches the desired result (e.g., peak stopband ripple of 60.07 dB as opposed to the stated 
+ objective of 60 dB).
+  
+ ♠
+  
+ Note that the required filter order 
+ N
+  as estimated by 
+ [link]
+  and 
+ [link]
+  does not depend on the 
+ passband ripple PBR or on the exact values of the cutoff and stopband frequencies. Thus, 
+ when the conditions allowing the underlying assumptions to be met are true, estimating the 
+ required filter order 
+ N
+  becomes very easy.
+  
+ [link]
+  provides the values of the design parameter 
+ α
+  from 
+ [link]
+  for various degrees of 
+ stopband suppression. Given also is the range of the passband ripple for which the values 
+ of 
+ α
+  apply. The",NA
+Performance Comparsion with other FIR Design Methods,NA,NA
+Performance Comparsion with other FIR Design Methods,NA,NA
+A commonly asked question among filter designers is why should the ,NA,NA
+"optimal design methods be used at all, or, equivalently, how much does ",NA,NA
+the use of an optimal technique buy over some other conventional ,NA,NA
+methods. This question is conveniently answered using ,NA,NA
+[link],NA,NA
+", a figure ",NA,NA
+extracted from [1] and modified to use the definitions of variables ,NA,NA
+employed in this ,NA,NA
+technical note. The figure shows the value of the design parameter ,NA,NA
+α,NA,NA
+needed to attain a specific degree of stopband suppression in lowpass ,NA,NA
+filters. Since the filter order ,NA,NA
+N,NA,NA
+ and therefore the amount of ,NA,NA
+computation,NA,NA
+[footnote],NA,NA
+R = Nf,s,NA
+ are directly proportional to ,NA,NA
+α,NA,NA
+", it serves ",NA,NA
+as an excellent indicator for comparisons.,NA,NA
+The actual amount of computation depends on whether the data is ,NA,NA
+"real- or complex-valued, whether the impulse response symmetry is ",NA,NA
+"exploited, and whether interpolation or decimation is used. In all ",NA,NA
+"cases, however, ",NA,NA
+R,NA,NA
+ is proportional to ,NA,NA
+f,s,NA
+ and ,NA,NA
+α,NA,NA
+", and therefore ",NA,NA
+[link],NA,NA
+ ,NA,NA
+provides an accurate ,NA,NA
+indication of the relative computational complexity of the filters ,NA,NA
+resulting from the different design methods.,NA,NA
+"Comparisons among Windowed, Frequency ",NA,NA
+"Sampling, and Optimal Lowpass Filters ",NA,NA
+(drawn from [1]),NA,NA
+"Curves for three design methods are shown, windowing techniques, so-",NA,NA
+"called “frequency sampling"" techniques, and the optimal, equal-ripple ",NA,NA
+design produced by the Parks-McClellan program. In each case there are ,NA,NA
+some variations depending on the choice of design parameters other ,NA,NA
+"than stopband ripple. For example, the optimal technique shows a band ",NA,NA
+of results indexed by the amount of passband ripple (hence ,NA,NA
+δ,1,NA
+) specified. ,NA,NA
+"The figure shows that, for modest degrees of stopband suppression, all ",NA,NA
+of the methods work about equally well. For high degrees of ,NA,NA
+"suppression, however, the optimal technique allows values of ",NA,NA
+α,NA,NA
+ to be ,NA,NA
+attained which are on the order of half of those attainable with the ,NA,NA
+windowing methods and about 60-70% of the frequency sampling ,NA,NA
+method. Since computation is directly ,NA,NA
+proportional to ,NA,NA
+α,NA,NA
+", these saving are directly translatable into hardware ",NA,NA
+and/or runtime improvements.,NA,NA
+"Why, one might ask, is the optimal method significantly better than, ",NA,NA
+"say, the window method? A fuller answer is presently shortly, but a ",NA,NA
+simple one is that the optimal methods allow the designer to avoid ,NA,NA
+overdesigning portions of the frequency response about which he or ,NA,NA
+"she needn't exert as much control. For example, recall the design ",NA,NA
+example discussed in ,NA,NA
+"the section ""Conversion of Specifications"" from ",NA,NA
+"the module titled ""Statement of the Optimal Linear Phase FIR Filter ",NA,NA
+"Design Problem""",NA,NA
+. In that case a set of reasonable specifications was ,NA,NA
+developed which allowed the magnitude of the passband ripple to be ,NA,NA
+almost 29 times larger than the stopband ripple.,NA,NA
+Since the Parks-McClellan design package allows the design of ,NA,NA
+weighted ,NA,NA
+equal-ripple filters this disparity can be accommodated. ,NA,NA
+"Window-designed filters, however, are constrained to have exactly ",NA,NA
+the same passband ripple ,NA,NA
+δ,1,NA
+ as stopband ripple ,NA,NA
+δ,2,NA
+. Effectively the ,NA,NA
+optimal design methods allow the degrees of freedom in the impulse ,NA,NA
+response to be focused on the most stressing parts of the frequency ,NA,NA
+response design while the window method treats all parts equally. ,NA,NA
+The frequency-sampling method falls in between.,NA,NA
+The Meaning of the Design Parameter α,NA,NA
+More insight into the meaning of the design parameter ,NA,NA
+α,NA,NA
+ can be gained ,NA,NA
+by examining all three aforementioned design methods in terms of the ,NA,NA
+"inverse discrete Fourier transform. Suppose that our objective, as it is, ",NA,NA
+is to ,NA,NA
+synthesize an N-point FIR filter. Suppose further that we use the ,NA,NA
+approach of specifying the frequency response we desire with equally ,NA,NA
+spaced samples in the frequency domain and then use the inverse ,NA,NA
+discrete Fourier transform (DFT) to transform the frequency ,NA,NA
+specification into a time-domain impulse response. This approach is ,NA,NA
+shown in graphical form in ,NA,NA
+[link],NA,NA
+.,NA,NA
+Using the Discrete Fourier ,NA,NA
+Transform (DFT) as the Basis ,NA,NA
+of FIR Filter Design,NA,NA
+Analytically there is a one-to-one relationship between the N points of ,NA,NA
+an FIR impulse response and the frequency response of the filter ,NA,NA
+measured at N equally-spaced frequencies between 0 and ,NA,NA
+f,s,NA
+ Hertz. ,NA,NA
+Specifically it is straight-forward to show that the impulse response ,NA,NA
+h(k),NA,NA
+ and the complex gains ,NA,NA
+ˆh,n,NA
+", for ",NA,NA
+0 ≤ n ≤ N − 1,NA,NA
+", are invertibly ",NA,NA
+"related, where the filter's frequency response is given by ",NA,NA
+Equation:,NA,NA
+1,"N−1
+  
+ ˆh",NA
+sin π(NfT − n),NA,NA
+∑,NA,NA
+H (f) = ,NA,NA
+N,NA,NA
+∑,n,NA
+sin π(fT −,"n 
+  
+ N",NA
+),NA,NA
+.,n=0,NA
+Thus choosing the complex gains ,NA,NA
+ˆh,n,NA
+ is equivalent to choosing the ,NA,NA
+impulse response ,NA,NA
+"h(k), 0 ≤ k ≤ N − 1",NA,NA
+", and, through ",NA,NA
+[link],NA,NA
+", to the filter ",NA,NA
+frequency response at all values of ,NA,NA
+f,NA,NA
+ between 0 and ,NA,NA
+f,s,NA
+ Hertz. By ,NA,NA
+examining ,NA,NA
+[link],NA,NA
+ it can be seen that choosing a frequency response ,NA,NA
+(and hence an impulse response) can be intuitively viewed as adjusting ,NA,NA
+the gain levers on a graphic equalizer of the type now used on home ,NA,NA
+"stereos. Each lever sets the gain, denoted here as ",NA,NA
+ˆh,n,NA
+", of a filter given by ",NA,NA
+Equation:,NA,NA
+H,NA,NA
+1,NA,NA
+sin π(NfT − n),n,NA
+ (f) = N,NA,NA
+sin π(fT −,"n 
+  
+ N",NA
+),NA,NA
+.,NA,NA
+By setting these N gain values optimally the best possible ,NA,NA
+frequency response is attained.,NA,NA
+The analogy of the graphic equalizer can be followed somewhat ,NA,NA
+further. ,NA,NA
+[link],NA,NA
+ suggests that the FIR design problem can be thought in ,NA,NA
+the terms of the structure shown in ,NA,NA
+[link],NA,NA
+. The input signal is applied to ,NA,NA
+all ,NA,NA
+N,NA,NA
+ of what we'll the ,NA,NA
+basis,NA,NA
+" filters, where the frequency response of ",NA,NA
+the ,NA,NA
+n,NA,NA
+-th filter is given by ,NA,NA
+[link],NA,NA
+". As noted earlier these basis filters, so ",NA,NA
+called because they form the linearly independent set of filters used to ,NA,NA
+construct ,NA,NA
+H(f),NA,NA
+", are frequency-shifted versions of the same fairly sloppy ",NA,NA
+bandpass filter. These filter outputs are then scaled by the complex ,NA,NA
+coefficients ,NA,NA
+ˆh,n,NA
+ and then added together to produce the observable ,NA,NA
+filter output. Thus the basis filters are fixed and the ,NA,NA
+ˆh,n,NA
+ control the ,NA,NA
+frequency and hence impulse response of the digital filter. It should be ,NA,NA
+noted that the filter is not usually actually ,NA,NA
+constructed,NA,NA
+[footnote],NA,NA
+ as shown in ,NA,NA
+[link],NA,NA
+ but it is a very convenient ,NA,NA
+analogy when trying to understand the relationships between the ,NA,NA
+various filter synthesis methods.,NA,NA
+Frequency-domain filters are of course the counterexample.,NA,NA
+The FIR Filter Design Problem Models ,NA,NA
+as a Bank of Bandpass Filters,NA,NA
+Now we shall use the model. In our quest for the true meaning of ,NA,NA
+α,NA,NA
+", ",NA,NA
+consider first the design of a simple lowpass filter. We desire the ,NA,NA
+cutoff frequency ,NA,NA
+f,c,NA
+ and the stopband edge ,NA,NA
+f,st,NA
+ to be as low as possible ,NA,NA
+and allow the peak stopband ripple to be quite large. Using the ,NA,NA
+graphic equalizer model just discussed yields the design shown in ,NA,NA
+[link],NA,NA
+". Only one filter, the one centered at DC, is used. Its gain is set to ",NA,NA
+unity and that of all others is set to zero. The peak stopband ripple is ,NA,NA
+determined by the first sidelobe of the only active filter. It can be ,NA,NA
+computed to be about 13 dB below the maximum passband power ,NA,NA
+level (measured at DC).,NA,NA
+A Simple Lowpass ,NA,NA
+Filter Designed Using ,NA,NA
+the Graphic Equalizer ,NA,NA
+Analogy,NA,NA
+What is ,NA,NA
+Δf,NA,NA
+ in this case? Graphically it can be seen to be somewhat less,NA,NA
+than than the frequency interval between DC and the first transmission ,NA,NA
+zero of ,NA,NA
+H,n,NA
+ (f),NA,NA
+ which occurs at ,NA,NA
+f =,"f
+ s 
+ N",NA
+. Suppose that we now rewrite ,NA,NA
+"equation 2 from the module titled ""Filter Sizing""",NA,NA
+ as,NA,NA
+Equation:,NA,NA
+Δf ≈ α f,s,NA
+N .,NA,NA
+Thus we see that in the simple filter designed in ,NA,NA
+[link],NA,NA
+ that associated ,NA,NA
+value of ,NA,NA
+α,NA,NA
+ is slightly less than one.,NA,NA
+"Now suppose that we attempt to design a better filter, again using the ",NA,NA
+graphic equalizer method. Our first objective is to reduce the size of ,NA,NA
+the stopband ripple. To do this we leave ,NA,NA
+ˆh,0,NA
+ set to unity and increase ,NA,NA
+the values of ,NA,NA
+ˆh,1,NA
+ and ,NA,NA
+ˆh,2,NA
+ slightly so that their positive mainlobe values ,NA,NA
+cancel the negative-going first sidelobe of ,NA,NA
+ˆh,0,NA
+. All other filter gain ,NA,NA
+levels will remain set to zero. The effects of this strategy are seen in ,NA,NA
+[link],NA,NA
+.,NA,NA
+Lowpass Filter Obtained Using ,NA,NA
+the ,NA,NA
+Second and Third DFT Basis ,NA,NA
+Functions,NA,NA
+"The first objective, that of reducing the peak stopband ripple, is ",NA,NA
+achieved. By choosing ,NA,NA
+ˆh,1,NA
+ and ,NA,NA
+ˆh,2,NA
+" just right, the first sidelobe of ",NA,NA
+ˆh,0,NA
+ can ,NA,NA
+"be effectively cancelled, leaving the other sidelobes to compete for the ",NA,NA
+"peak value. The second effect is less desirable, however. From ",NA,NA
+graphical inspection it is,NA,NA
+clear that ,NA,NA
+Δf,NA,NA
+", the frequency interval between ",NA,NA
+f,c,NA
+ and ,NA,NA
+f,st,NA
+", has grown. It ",NA,NA
+now exceeds ,"f
+ s 
+ N",NA
+", thus making ",NA,NA
+α,NA,NA
+ greater than unity.,NA,NA
+These trends continue as more and more filter gains ,NA,NA
+ˆh,n,NA
+ are allowed to ,NA,NA
+become non-zero in the quest of further reducing the peak stopband ,NA,NA
+"ripple. The peak is reduced, the ripple structure begins to approach the ",NA,NA
+Chebyshev equal-ripple firm seen in ,NA,NA
+Figure 1 from the module titled ,NA,NA
+"""Statement of the Optimal Linear Phase FIR Filter Design Problem""",NA,NA
+", and ",NA,NA
+the transition band stretches out as more filters are used to try to ,NA,NA
+constrain the stopband ,NA,NA
+frequency response to the stopband ripple goals. The design parameter ,NA,NA
+α,NA,NA
+" is just a measure of the number of filters, or, equivalently, the number ",NA,NA
+"of equalizer levers, needed to transit from one gain level (e.g., the ",NA,NA
+passband) to,NA,NA
+"another (e.g., the stopband) while achieving the desired passband ",NA,NA
+and stopband ripple performance. Since ,"f
+ s 
+ N",NA
+ is the spacing between ,NA,NA
+"the bins of an N-point DFT, the term ",NA,NA
+α,NA,NA
+ can also be thought of as the ,NA,NA
+number of DFT,NA,NA
+bins needed to make a gain transition. This interpretation is explored ,NA,NA
+next.,NA,NA
+Three Methods of Designing FIR Filters,NA,NA
+The module ,NA,NA
+"""Performance Comparison with other FIR Design Methods"" ",NA,NA
+alluded to the fact that three basic methods have traditionally been used ,NA,NA
+for the design of FIR digital filters. ,NA,NA
+Figure 1 in the module titled ,NA,NA
+"""Performance Comparison with other FIR Design Methods""",NA,NA
+ in fact ,NA,NA
+compares their relative performance in terms of the value of ,NA,NA
+α,NA,NA
+ (which ,NA,NA
+was shown to be ,NA,NA
+proportional to the filter's required run-time computation rate). Given ,NA,NA
+the background of the previous subsection it is now possible to ,NA,NA
+understand each of the methods and to gain some insight into the ,NA,NA
+differences between their performance.,NA,NA
+Window-based Filters,NA,NA
+"As described earlier, one of the first class of FIR filters is that based on ",NA,NA
+"the use of a “smoothing window"". This window, constructed to have ",NA,NA
+"only N non-zero points, is multiplied point-by-point by an impulse ",NA,NA
+"response of infinite duration which has the “perfect"" frequency ",NA,NA
+response. This ,NA,NA
+multiplication or ,NA,NA
+windowing,NA,NA
+ has the effect of making the filter ,NA,NA
+"impulse response finite in duration (hence FIR), but also has the effect ",NA,NA
+of smearing the desired frequency response.,NA,NA
+The Effect of a Window ,NA,NA
+Function on the Basis ,NA,NA
+Filter,NA,NA
+The stopband ripple specification is obtained by using a window ,NA,NA
+capable of suppressing all sidelobes to the desired degree. This can be ,NA,NA
+seen in ,NA,NA
+[link],NA,NA
+. The windowed filter basis function has substantially ,NA,NA
+lower sidelobes than,NA,NA
+the original ,sin Nq sin q,NA
+" filter basis function, in trade for substantial ",NA,NA
+widening of,NA,NA
+the main lobe. This widening means growth in the equivalent ,NA,NA
+design parameter ,NA,NA
+α,NA,NA
+ and is monotonic with the degree of sidelobe ,NA,NA
+suppression attained.,NA,NA
+It should also be observed that the sidelobe reduction has the effect of ,NA,NA
+reducing the ripple in the passband as well as in the stopband. Thus ,NA,NA
+some of the filter's degrees of freedom are given up in perhaps ,NA,NA
+overdesigning the passband response rather than focusing them on the ,NA,NA
+stopband performance.,NA,NA
+Frequency Sampling Design,NA,NA
+"In the simplest DFT-based FIR filter design method, the desired ",NA,NA
+frequency response is sampled at frequency intervals of ,"f
+ s 
+ N",NA
+ Hertz and ,NA,NA
+the filter gains ,"ˆh
+ n",NA
+ are set to those values. This is in essence the method used for the ,NA,NA
+simple lowpass filter shown in ,NA,NA
+Figure 4 from the module ,NA,NA
+"titled""Performance Comparison with other FIR Design Methods""",NA,NA
+. The ,NA,NA
+big advantages of this method are its simplicity and the fact that any ,NA,NA
+"desired response, no matter how complicated, can be approximated. ",NA,NA
+The big disadvantage is its ,NA,NA
+uncontrolled ripple performance in both the stopband and passband. ,NA,NA
+The traditional cures for this are the use of a window function to ,NA,NA
+suppress the ripple and the expansion of the filter order N to ,NA,NA
+compensate for the ,NA,NA
+window's smearing of the desired response. Increasing ,NA,NA
+N,NA,NA
+", of course, ",NA,NA
+increases the filter's run-time computation rate.,NA,NA
+Relatively early in the development of FIR design techniques it was ,NA,NA
+discovered that much better adherence to the desired frequency ,NA,NA
+response could be attained by allowing some of the basis filter gains ,NA,NA
+ˆh,n,NA
+" to vary slightly from the exact sampled values (e.g., 1 and 0 for a ",NA,NA
+lowpass filter). This idea is shown in ,NA,NA
+[link],NA,NA
+. A simple lowpass filter is ,NA,NA
+the desired response. Solid dots show the frequency samples of this ,NA,NA
+desired response taken every ,"f
+ s 
+  
+ N",NA
+ Hertz. These samples have values of 1 and 0 for ,"ˆh
+ n",NA
+ in the passband ,NA,NA
+and,NA,NA
+stopband respectively. Now suppose that the values of ,NA,NA
+ˆh,n,NA
+ for ,NA,NA
+n,NA,NA
+ in the ,NA,NA
+vicinity of the cutoff frequency ,NA,NA
+f,c,NA
+ are allowed to be modified slightly ,NA,NA
+with the goal of minimizing the peak stopband ripple. These values of ,NA,NA
+n,NA,NA
+ ,NA,NA
+are denoted with small circles instead of solid dots in ,NA,NA
+[link],NA,NA
+. Rabiner ,NA,NA
+and his coworkers [4] showed in 1970 that it was possible to use the ,NA,NA
+linear ,NA,NA
+programming optimization technique to manipulate two or three of the ,NA,NA
+filter gains to obtain great improvement in stopband ripple ,NA,NA
+performance. The computational complexity of the linear programming ,NA,NA
+"method, however, limited the number of the ",NA,NA
+ˆh,n,NA
+ which could be so ,NA,NA
+chosen.,NA,NA
+Comparison of “Frequency ,NA,NA
+"Sampling"" and Equal-",NA,NA
+ripple ,NA,NA
+Design,NA,NA
+Equiripple Design,NA,NA
+It was generally known in 1971 that equal-ripple passband and ,NA,NA
+"stopband behavior would lead to the best filter performance, where ",NA,NA
+"“best"" means the smallest transition band (and hence ",NA,NA
+α,NA,NA
+) for a given set ,NA,NA
+of peak passband and stopband ripple specifications. In fact a great ,NA,NA
+deal was known about the properties of such filters. What was lacking ,NA,NA
+was a computationally ,NA,NA
+"satisfactory method of designing such optimal filters. As just noted, the ",NA,NA
+linear programming technique provided a big step but still fell short. ,NA,NA
+"The breakthrough came in two parts. Several workers, but principally ",NA,NA
+"Parks, McClellan (Parks' graduate student), and Rabiner showed that ",NA,NA
+four different,NA,NA
+variants of FIR linear phase filters could all be represented by the same ,NA,NA
+set of equations,NA,NA
+[footnote],NA,NA
+ and could therefore be solved the same way. ,NA,NA
+The second part was Parks' suggestion of using the the Remez exchange ,NA,NA
+algorithm for doing the actual optimization. The Remez exchange ,NA,NA
+algorithm effectively allows all degrees of freedom in the filter impulse ,NA,NA
+response to be adjusted simultaneously while the linear programming ,NA,NA
+technique allows the adjustment of only one at a time. For high order ,NA,NA
+filters this distinction makes a tremendous difference in the number of ,NA,NA
+computations needed to iteratively optimize a design. Refering again to ,NA,NA
+[link],NA,NA
+", the Remez algorithm allows all of the frequency samples to be ",NA,NA
+"modified, even for filter orders as high as ",NA,NA
+N = 1000,NA,NA
+" or more, thus ",NA,NA
+permitting the best possible filter ,NA,NA
+performance to be achieved. McClellan also proved that the linear phase ,NA,NA
+FIR filter design problem satisfied the conditions needed to guarantee ,NA,NA
+convergence of the Remez algorithm.,NA,NA
+The variants are odd and even filter order and symmetric and ,NA,NA
+antisymmetric impulse responses.,NA,NA
+Why Does α Depend on the Cutoff Frequency?,NA,NA
+The formulas presented in ,NA,NA
+Equation 1,NA,NA
+ and ,NA,NA
+Equation 2 from the module ,NA,NA
+"titled ""Filter Sizing""",NA,NA
+ imply that ,NA,NA
+α,NA,NA
+ and hence the required filter order ,NA,NA
+N,NA,NA
+ ,NA,NA
+are independent of the cutoff frequency ,NA,NA
+f,c,NA
+. The supporting analysis ,NA,NA
+"showed that this is only true in the limit of high order filters, i.e. when ",NA,NA
+N,NA,NA
+ ,NA,NA
+is large. The dependence for shorter filters is shown in ,NA,NA
+Figure 2 from the ,NA,NA
+"module titled ""Filter Sizing""",NA,NA
+. Why should this occur? Consider the filter ,NA,NA
+design problem,NA,NA
+shown in ,NA,NA
+[link],NA,NA
+. Again the goal is a simple lowpass filter with cutoff ,NA,NA
+frequency ,NA,NA
+f,c,NA
+. The frequency sampling points at frequency multiples of ,"f
+ s 
+ N",NA
+are also shown as solid dots. Instead of fixing the gains we presume ,NA,NA
+that the filter gains ,NA,NA
+ˆh,n,NA
+", or, equivalently, the graphic equalizer levers, ",NA,NA
+"are optimized, by whatever means, to yield the best stopband ripple ",NA,NA
+performance.,NA,NA
+[link],NA,NA
+(a) shows the combination of gains ,NA,NA
+ˆh,n,NA
+ needed to constrain the ,NA,NA
+"peak stopband ripple to a given level, say ",NA,NA
+δ,2,NA
+. The frequency at which ,NA,NA
+this equal ripple band starts is of course ,NA,NA
+f,st,NA
+ and the difference between ,NA,NA
+f,st,NA
+ and ,NA,NA
+f,c,NA
+ is ,NA,NA
+Δf,NA,NA
+. Now suppose that ,NA,NA
+f,c,NA
+" is increased slightly, as shown in ",NA,NA
+[link],NA,NA
+(b). Now a different set of the ,NA,NA
+ˆh,n,NA
+ are needed to make the peak ,NA,NA
+ripple equal ,NA,NA
+δ,2,NA
+ and these result in different values of ,NA,NA
+f,st,NA
+ and ,NA,NA
+Δf,NA,NA
+. ,NA,NA
+Pursuing this graphical analysis we find that:,NA,NA
+Cutoff frequencies near multiples of ,"f
+ s 
+ N",NA
+ result in smaller transition,NA,NA
+"bands, and hence smaller values of ",NA,NA
+α,NA,NA
+", than those near the center of ",NA,NA
+two,NA,NA
+"bins. This occurs, to first order, since two or more stopband basis ",NA,NA
+filters are needed to cancel the first sidelobe of the last basis ,NA,NA
+"passband filter when the passband stops between two bins, while ",NA,NA
+one is needed if the passband stops near a bin.,NA,NA
+"Because these “hard"" and “easy"" frequency ranges occur for every ",NA,NA
+"bin, ",NA,NA
+"the number of the ranges, counting both positive and ",NA,NA
+negative ,NA,NA
+"frequencies, is about the same as the filter order",NA,NA
+[footnote],NA,NA
+N,NA,NA
+.,NA,NA
+Various boundary conditions can make the actual number one ,NA,NA
+less or one more than the filter order.,NA,NA
+The variation in the transition band ,NA,NA
+Δf,NA,NA
+ is more pronounced as ,NA,NA
+N ,NA,NA
+decreases since there are fewer basis filters to use in ,NA,NA
+optimizing the ,NA,NA
+response.,NA,NA
+Visualizing the Effects of Cutoff Frequency ,NA,NA
+on Design Difficulty,NA,NA
+As an aside one might observe from ,NA,NA
+Figure 1 from the module ,NA,NA
+titled Performance Comparison with other FIR Design Methods,NA,NA
+ ,NA,NA
+that all three methods perform about equally for high levels of ,NA,NA
+stopband ripple.,NA,NA
+Intuitively the reason for this should now be clear. Window-based ,NA,NA
+methods need not use much shaping if high levels of ripple are ,NA,NA
+"tolerable. Similarly, frequency sampling need not use many adjustable ",NA,NA
+coefficients. Since this is true the equal-ripple techniques will not ,NA,NA
+perform much better since their only advantage is that of adjusting all ,NA,NA
+"of the filter gains. The underlying point is that, for high-ripple designs, ",NA,NA
+all of the methods produce designs,NA,NA
+"closely resembling the sum of simple, shifted ",sin Nq sin q,NA
+ functions and ,NA,NA
+produce,NA,NA
+a transition band ,NA,NA
+Δf,NA,NA
+ of about the order of ,"f
+ s 
+ N",NA
+", hence an ",NA,NA
+α,NA,NA
+ of about unity.,NA,NA
+Only as the stopband ripple specification grows tighter does the method ,NA,NA
+and,NA,NA
+accuracy of adjusting the coefficients and the number of them available ,NA,NA
+for adjustment begin to affect the transition band performance.,NA,NA
+Extension to Non-lowpass Filters,NA,NA
+All of the discussion to this point has focused on lowpass filters. ,NA,NA
+"Practical applications require other types, of course, including ",NA,NA
+"highpass, bandpass, and bandstop designs. In fact the analysis ",NA,NA
+presented in the previous sections applies to all of these design criteria ,NA,NA
+and the rules for filter length ,NA,NA
+estimation can be used almost directly. In general ,NA,NA
+Equation 1,NA,NA
+ and ,NA,NA
+"Equation 2 from the module titled ""Filter Sizing""",NA,NA
+ apply when one of the ,NA,NA
+equal ripple specifications dominates all others and when one of the ,NA,NA
+transition band specifications dominates all others. As a practical ,NA,NA
+matter this means that ,NA,NA
+δ,i,NA
+dominates if it is less than one-tenth of all ,NA,NA
+other rippple specifications and that ,NA,NA
+Δf,i,NA
+ dominates if it is simply less ,NA,NA
+than all others. Suppose we define ,NA,NA
+δ,NA,NA
+and ,NA,NA
+Δf,NA,NA
+ by the equations:,NA,NA
+δ,NA,NA
+=,NA,NA
+min{δ,i,NA
+"}, for all pass and stopbands i, and",NA,NA
+Δf,NA,NA
+=,NA,NA
+min{Δf,k,NA
+}for all transition bands k,NA,NA
+Equation:,NA,NA
+δ = min{δ,i,NA
+"}, for all pass and stopbands i, and",NA,NA
+Equation:,NA,NA
+Δf = min{Δf,k,NA
+}for all transition bands k,NA,NA
+If so then equation ,NA,NA
+"Equation 1 from the module titled ""Filter Sizing""",NA,NA
+ ,NA,NA
+can be used directly and the equation for ,NA,NA
+α,NA,NA
+ becomes ,NA,NA
+Equation:,NA,NA
+α = 0. 22 − ,NA,NA
+log,e,NA
+δ,NA,NA
+π,NA,NA
+.,NA,NA
+A final hint - Watch out for the implicit boundary conditions present in ,NA,NA
+"the design of linear phase FIR digital filters in two cases: even order, ",NA,NA
+"symmetric response and odd order, antisymmetrical response. In both ",NA,NA
+of these cases the,NA,NA
+underlying equations for the filter's frequency response constrain it to ,NA,NA
+equal exactly zero at ,"f
+ s 
+ 2",NA
+. This is obviously not a problem for lowpass ,NA,NA
+"filters, since",NA,NA
+the desired gain at ,"f
+ s 
+ 2",NA
+" is zero already. However, in the design of ",NA,NA
+multiband,NA,NA
+and highpass filters an inordinate amount of engineering time has ,NA,NA
+been,NA,NA
+spent trying to design even-order filters when in fact it is impossible ,NA,NA
+"to do so. The Parks-McClellan algorithm will gamely try, but will fail. ",NA,NA
+"As a rule,",NA,NA
+use odd values of ,NA,NA
+N,NA,NA
+ for highpass and multiband filters requiring ,NA,NA
+nonzero response at ,"f
+ s 
+ 2",NA
+ and use even-order filters for differentiators.,NA,NA
+"Bibliography for ""Notes on the Design of Optimal FIR ",NA,NA
+"Filters"" ",NA,NA
+References,NA,NA
+"""Notes on the Design of Optimal FIR Filters"" Appendix A",NA,NA
+The Formula for Converting between and Passband Ripple,NA,NA
+From ,NA,NA
+equation 2 in the module titled Statement of Optimal Linear ,NA,NA
+Phase FIR Filter Design Problem,NA,NA
+", the peak-to-peak passband ripple, ",NA,NA
+"measured in decibels, is given by ",NA,NA
+Equation:,NA,NA
+(1 + δ,1,NA
+),2,NA
+PBR = 10 log,10,NA
+(1 − δ,1,NA
+),2,NA
+" ,",NA,NA
+where ,NA,NA
+δ,1,NA
+ is the peak amplitude deviation in the passband. Suppose now ,NA,NA
+that ,NA,NA
+Equation:,NA,NA
+0 < δ,1,NA
+ ,NA,NA
+≪,NA,NA
+ 1.,NA,NA
+"If so, then the passband ripple PBR is closely approximated ",NA,NA
+by ,NA,NA
+Equation:,NA,NA
+PBR ≈ 10 log,10,NA
+ (1 + 4δ,1,NA
+).,NA,NA
+Now recall that ,NA,NA
+log,e,NA
+ (1 + x) ≈ x,NA,NA
+", when ",NA,NA
+x,NA,NA
+" is small compared to unity, ",NA,NA
+and that ,NA,NA
+log,10,NA
+x ≈ 0. 434 ,NA,NA
+⋅,NA,NA
+ log,e,NA
+x,NA,NA
+". Combining these facts, leads to the ",NA,NA
+equation ,NA,NA
+Equation:,NA,NA
+PBR ≈ 10 log,10,NA
+ (1 + 4δ,1,NA
+) ≈ 4. 34 ,NA,NA
+⋅,NA,NA
+ log,e,NA
+ (1 + 4δ,1,NA
+) ≈ 17. 36 ,NA,NA
+⋅,NA,NA
+ δ,1,NA
+.,NA,NA
+This formula holds as long as ,NA,NA
+δ,1,NA
+ is small compared to unity. Using ,NA,NA
+δ,1,NA
+ = 0. ,NA,NA
+1 ,NA,NA
+"as a benchmark, the formula holds for values of passband ripple less ",NA,NA
+"than 1.5 to 2 dB, the range in which most filter design falls.",NA,NA
+"""Notes on the Design of Optimal FIR Filters"" Appendix B",NA,NA
+Some Notes on Chebyshev Polynomials,NA,NA
+"The section ""The Derivation of the Formula"" from the module titled ",NA,NA
+"""Filter Sizing""",NA,NA
+ used some of the properties of the Chebyshev ,NA,NA
+polynomials to develop the key formulas used for FIR filter sizing. This ,NA,NA
+appendix provides a very brief review of these polynomials and the ,NA,NA
+equations used to generate them.,NA,NA
+[link],NA,NA
+" shows a set of polynomials which have the property that, for ",NA,NA
+values of ,NA,NA
+x,NA,NA
+" between -1 and 1, the polynomial has peak magnitude of ",NA,NA
+unity. A footnote in ,NA,NA
+"The section ""The Derivation of the Formula"" from ",NA,NA
+"the module titled ""Filter Sizing""",NA,NA
+ pointed out that the Russian engineer ,NA,NA
+Chebyshev developed these polynomials as part of design effort which ,NA,NA
+required ,NA,NA
+minimizing the maximum lateral excursion of a locomotive drive rod. ,NA,NA
+"For each polynomial order, say ",NA,NA
+M,NA,NA
+", the objective is to choose the ",NA,NA
+"polynomial's coefficients so that that it “ripples"" between ",NA,NA
+x = −1,NA,NA
+ and ,NA,NA
+x = ,NA,NA
+1,NA,NA
+ and then proceeds off proportional to ,NA,NA
+|x|,M,NA
+ for values of ,NA,NA
+|x| > 1.,NA,NA
+ Not ,NA,NA
+"only did Chebyshev find such polynomials, he found that one exists for ",NA,NA
+each positive value of ,NA,NA
+M,NA,NA
+", and that they are related thorugh a recursion ",NA,NA
+"equation, that is, the polynomial for ",NA,NA
+M,NA,NA
+ can directly obtained for the ,NA,NA
+polynomial for ,NA,NA
+M,NA,NA
+-1.,NA,NA
+Graphs of Chebyshev Polynomials ,NA,NA
+of ,NA,NA
+Orders 0 through 4,NA,NA
+Consider the following recursion ,NA,NA
+expression: ,NA,NA
+Equation:,NA,NA
+P,M,NA
+ (x) = 2x ,NA,NA
+⋅,NA,NA
+ P,M−1,NA
+ (x) − P,M−2,NA
+" (x),",NA,NA
+with initial conditions ,NA,NA
+of ,NA,NA
+Equation:,NA,NA
+P,0,NA
+ = 1,NA,NA
+and ,NA,NA
+Equation:,NA,NA
+P,1,NA
+ = x,NA,NA
+Note that both of these initial conditions meet (if trivially) the stated ,NA,NA
+criteria for being Chebyshev polynomials.,NA,NA
+"Using this recursion expression we find, for ",NA,NA
+M,NA,NA
+" from 0 to 5, ",NA,NA
+that: ,NA,NA
+Equation:,NA,NA
+P,0,NA
+ (x),NA,NA
+=,NA,NA
+1,NA,NA
+P,1,NA
+ (x),NA,NA
+=,NA,NA
+x,NA,NA
+=,NA,NA
+2x,2,NA
+− 1,NA,NA
+P,2,NA
+ (x),NA,NA
+=,NA,NA
+4x,3,NA
+− 3x,NA,NA
+P,3,NA
+ (x),NA,NA
+=,NA,NA
+8x,4,NA
+− 8x,2,NA
++ 1,NA,NA
+P,4,NA
+ (x),NA,NA
+=,NA,NA
+16x,5,NA
+− 20x,3,NA
++ 5x,NA,NA
+P,5,NA
+ (x),NA,NA
+These polynomials are plotted in ,NA,NA
+[link],NA,NA
+ and it may be ,NA,NA
+confirmed by inspection that they meet the stated criteria.,NA,NA
+A surprising result is that there is yet another way to present ,NA,NA
+these polynomials. This method is given by the following ,NA,NA
+equations: ,NA,NA
+Equation:,NA,NA
+P,M,NA
+ (x),NA,NA
+=,NA,NA
+cos[M ,NA,NA
+⋅,NA,NA
+ cos,−1,NA
+"(x)], for x ≤ 1, and",NA,NA
+Equation:,NA,NA
+P,M,NA
+ (x),NA,NA
+=,NA,NA
+cosh[M ,NA,NA
+⋅,NA,NA
+ cosh,−1,NA
+"(x)], for x > 1.",NA,NA
+Analytically it can be confirmed that these equations satisfy the ,NA,NA
+recursion seen in equation ,NA,NA
+[link],NA,NA
+. To see that they describe the same ,NA,NA
+polynomials as seen in ,NA,NA
+[link],NA,NA
+", consider ",NA,NA
+[link],NA,NA
+ for values of ,NA,NA
+|x|,NA,NA
+ between ,NA,NA
+-1 and 1. For such values ,NA,NA
+cos,−1,NA
+x,NA,NA
+ ranges between ,NA,NA
+π,NA,NA
+ and 0. Thus ,NA,NA
+M ,NA,NA
+⋅,NA,NA
+ ,NA,NA
+cos,−1,NA
+x,NA,NA
+ ranges between ,NA,NA
+Mπ,NA,NA
+" and 0, and ",NA,NA
+cos[M ,NA,NA
+⋅,NA,NA
+ cos,−1,NA
+x],NA,NA
+ cycles ,NA,NA
+"between -1 or 1 and 1, hiting ",NA,NA
+M + 1,NA,NA
+" extrema on the way, counting the endpoints. Similar analysis ",NA,NA
+shows that equation ,NA,NA
+[link],NA,NA
+ grows monotonically in magnitude as ,NA,NA
+|x|,NA,NA
+ ,NA,NA
+does. In fact it,NA,NA
+is easy to show that ,NA,NA
+cosh[M ,NA,NA
+⋅,NA,NA
+ cosh,−1,NA
+x],NA,NA
+  assymptotically approaches ,NA,NA
+|x|,M,NA
+ as ,NA,NA
+|x|,NA,NA
+ gets much greater than one.,NA,NA
+This second form of the definition for Chebyshev polynomials is very ,NA,NA
+"useful since it is a closed form and because it involves cosines, a ",NA,NA
+functional form appearing frequently in frequency-domain ,NA,NA
+representations of filters. In light of this a final twist might be noted. ,NA,NA
+[link],NA,NA
+ is in fact superfluous given ,NA,NA
+[link],NA,NA
+". To see this, consider evaluating ",NA,NA
+[link],NA,NA
+ for ,NA,NA
+|x| = 2,NA,NA
+". It initially appears that this won't work, since ",NA,NA
+arccosine cannot be evaluated for arguments greater than unity. In fact ,NA,NA
+"it can, it's just that the result is purely imaginary. It is easy, using ",NA,NA
+"Euler's definition of the cosine, to see that the cosine of ",NA,NA
+jx ,NA,NA
+is the same ,NA,NA
+as the hyberbolic cosine of ,NA,NA
+x,NA,NA
+. Thus the arccosine of 2 is ,NA,NA
+j,NA,NA
+ times the ,NA,NA
+"inverse hyperbolic cosine of 2, that is, ",NA,NA
+j ,NA,NA
+⋅,NA,NA
+ 1. 31,NA,NA
+. Multiplying by M and ,NA,NA
+taking the cosine of the product yields the cosine of ,NA,NA
+jMx,NA,NA
+", which is the ",NA,NA
+hyperbolic cosine of ,NA,NA
+Mx,NA,NA
+". Thus, if imaginary arguments are permitted, ",NA,NA
+then ,NA,NA
+[link],NA,NA
+ suffices to describe all of the Chebyshev polynomials.,NA,NA
+∣,NA,NA
+ ,NA,NA
+∣,NA,NA
+Using a Chebyshev Polynomial to Estimate,"We desire that the oscillatory portion of the polynomial shown in 
+ Figure 1 in the module titled 
+ ""Filter Sizing""
+  correspond to the stopband region of the filter response and the 
+ x
+ M
+  portion to 
+ correspond to the transition from the stopband to the passband. This is achieved by employing a 
+ change of variables from frequency 
+ f
+  to the polynomial argument 
+ x
+ : 
+  
+ Equation:
+  
+  
+ x
+  
+  
+ πf
+  
+ x
+  
+  
+  
+ cos
+  
+ f
+ s
+   
+ While many different types of variable changes could be employed, this one matches the 
+ boundary conditions (an obvious requirement) but happens to employ the cosine function, a 
+ member of the same family used to define the Chebyshev polynomials.
+  
+ With this change of variables we see that the transition band 
+ Δf
+  is defined by the difference 
+ between
+  
+ x
+  
+  and 
+ x
+  
+ x
+ p
+ . Using the closed, but nonintuitive form of the K-th order Chebyshev 
+ polynomial, , we have that
+  
+ valid for 
+ x
+  
+ Equation:
+  
+ P
+ K
+  x
+  
+ cosh K cosh
+  
+ x
+  
+ To synthesize the desired impulse response using this windowing technique we multiply the 
+ resulting window function by the sampled sinc function. In this case, however, we desire that the 
+ cutoff frequency be as low as possible, limiting at zero Hz. The associated sinc function equals 
+ unity for all non-zero coefficients of the impulse response. Since the final impulse response is the 
+ point-by-point product of the window and the sampled sinc function, in this case the window 
+ itself is the resulting impulse response. It suffices then to examine the properties of the N-th 
+ order Chebyshev polynomial to see how the N-point optimal filter will behave.
+  
+ To find the relationship between the required filter order 
+ N
+  and the attainable transition band 
+ Δf
+ , we first determine the proper value of 
+ K
+  and then evaluate 
+ [link]
+  at the known combinations 
+ of 
+ x
+  and 
+ P
+ K
+  x
+  . To select 
+ K
+  we note that all but one of the ripples in the polynomial's response are 
+ used in the stopband and these are split evenly between the positive and negative frequencies. 
+ Thus a filter and window of order 
+ N
+  implies a Chebyshev polynomial of order 
+  
+ Equation:
+  
+ K
+  
+ N
+  
+ With this resolved we observe from 
+ Figure 1 in the module titled ""Filter Sizing""
+  
+ that 
+ Equation:
+  
+ P
+  N",NA

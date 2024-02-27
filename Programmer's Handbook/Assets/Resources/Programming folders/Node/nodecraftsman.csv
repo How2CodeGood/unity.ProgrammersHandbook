@@ -1,0 +1,3099 @@
+Larger Text,Smaller Text,Symbol
+The Node Craftsman Book ,NA,NA
+An advanced Node.js tutorial ,NA,NA
+Manuel Kiessling ,"This book is for sale at
+  
+ http://leanpub.com/nodecraftsman 
+ This version was 
+ published on 2015-10-10
+  
+  
+ This is a
+  Leanpub
+  book. Leanpub empowers authors and publishers with the Lean 
+ Publishing process.
+  Lean Publishing
+  is the act of publishing an in-progress ebook using 
+ lightweight tools and many iterations to get reader feedback, pivot until you have the right 
+ book and build traction once you do.
+  
+ ©2013 - 2015 Manuel Kiessling",NA
+Tweet This Book!,"Please help Manuel Kiessling by spreading the word about this book on
+  Twitter
+ !
+  
+ The suggested hashtag for this book is
+  #nodecraftsman
+ .
+  
+ Find out what other people are saying about the book by clicking on this link to search 
+ for this hashtag on Twitter: 
+  
+ https://twitter.com/search?q=#nodecraftsman",NA
+Also By,NA,NA
+ Manuel Kiessling ,"The Node Beginner Book 
+  
+ Node
+ 入
+ 门
+  
+ El Libro Principiante de Node 
+  
+ Livro do Iniciante em Node 
+  
+ Beginning Mobile App Development with React 
+ Native",NA
+Contents,"Preface
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ i 
+  
+ About . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+   
+ i 
+  
+ Status . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+   
+ i 
+  
+ Notes on code formatting . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+  
+ i 
+  
+ Intended audience . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+  
+ i",NA
+Part 1: Node.js basics in detail ,". . 
+ . . . . . . . . . . . . . . . . . . .",NA
+1,"Introduction to Part 1
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 2
+  
+ Working with NPM and Packages
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 3
+  
+ Test-Driven Node.js Development
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 5
+  
+ Object-oriented JavaScript
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 11 
+  
+ Blueprints versus finger-pointing . . . . . . . 
+ . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+  
+  
+ 11 
+  
+ A classless society . . . . . . . . . . . . . . . . . . . . . . 
+ . . . . . . . . . . . . . . . . . 
+  
+  
+  
+ 12 
+  
+ Creating objects . . . . . . . . . . . . . . . . . . . . . . . . 
+ . . . . . . . . . . . . . . . . 
+  
+  
+  
+ 12 
+  
+ Object-orientation, prototyping, and 
+ inheritance 
+  
+ . . . . . . . . . . . . . . . . . . . . . . 
+  
+  
+ 20 
+  
+ A classless society, revisited . . . . . . . . . . . . 
+ . . . . . . . . . . . . . . . . . . . . . . 
+  
+  
+  
+ 21 
+  
+ Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . . . . . . . . . . . . . 
+  
+  
+  
+ 23",NA
+Part 2: Building a complete web application with,NA,NA
+Node.js and AngularJS,. . . . . . . . . . . . . . . . . . . . . . . . . . . . .,NA
+ 100,NA,NA
+Preface,NA,NA
+About,"The aim of this book is to help beginning JavaScript programmers who already know how 
+ to write basic Node.js applications in mastering JavaScript and Node.js thoroughly.",NA
+Status,"This book is finished and will only receive updates regarding errors. It was last updated on 
+ October 10, 2015.
+  
+ All code examples have been tested to work with Node.js v4.1.2.",NA
+Notes on code formatting,"Please note that long lines in code examples may receive a line-break, denoted by the 
+ backslash sign \. Take care to put those lines into your editor as one line.
+  
+ Take, for example, this code block:
+  
+ 1 
+  
+ dbSession.fetchAll(
+ 'SELECT id, value, categoryID FROM keyword ORDER BY i\
+  
+ 2 
+  
+ d'
+ ,
+  function
+ (err, rows) {
+  
+ The PDF version of this book shows a line break right after the
+  i
+  of the
+  ORDER BY id
+  part, 
+ denoted by a \ after the
+  i
+ .
+  
+ However, in your editor, you need to make sure that the whole code resides on one line.
+  
+ Also, note that from what I can see, code blocks can not be copy-pasted from the PDF 
+ version of this book. While this might seem like a major annoyance, experience shows that 
+ learning to program works way better if one is forced to transcribe code from a book into 
+ the editor.",NA
+Intended audience,"This book will fit best for readers that are familiar with the basic concepts of JavaScript and 
+ have already written some basic Node.js applications.
+  
+ As this book is a sequel to
+  The Node Beginner Book
+ , I recommend reading it before starting 
+ with this book.",NA
+Part 1: Node.js basics in detail,NA,NA
+Introduction to Part 1,"The goal of this book is to enable you to write Node.js programs of any level of complexity, 
+ from simple utilities to complex applications that use several external modules and consist 
+ of several layers of code, talking to external systems and serving thousands of users.
+  
+ In order to do so, you need to learn about all the different aspects of Node.js - the tools, the 
+ methodologies, the libraries, the APIs, the best practices - and you need to learn how to put 
+ all of that together to create a working whole.
+  
+ Therefore, I have split this book into two parts: A collection of different basics in Part 1, and 
+ a thorough tutorial on how to put these basics together to build a complex application in 
+ Part 2.
+  
+ In Part 1, every chapter stands on its own and isn’t directly related to the other chapters. 
+ Part 2 is more like a continuous story that starts from scratch and gives you a finished and 
+ working application at the end.
+  
+ Thus, let’s start with Part 1 and look at all the different facets of Node.js software 
+ development.",NA
+Working with NPM and Packages,"We already used NPM, the
+  Node Package Manager
+ , in order to install a single package and 
+ its dependencies for the example project in
+  The Node Beginner Book
+ .
+  
+ However, there is much more to NPM, and a more thorough introduction is in order.
+  
+ The most useful thing that NPM does isn’t installing packages. This could be done manually 
+ with slightly more hassle. What’s really useful about NPM is that it handles package 
+ dependencies. A lot of packages that we need for our own project need other packages 
+ themselves. Have a look at 
+ https://npmjs.org/package/request
+ , for example. It’s the 
+ overview page for the NPM package
+  request
+ . According to its description, it provides a 
+ “simplified HTTP request client”. But in order to do so, 
+ request
+  not only uses its own code. It 
+ also needs other packages for doing its job. These are listed under “Dependencies”:
+  qs
+ ,
+  json-
+ stringify-safe
+ , and others.
+  
+ Whenever we use the NPM command line tool,
+  npm
+ , in order to install a package, NPM not 
+ only pulls the package itself, but also its dependencies, and installs those as well.
+  
+ Using
+  npm install request
+  is simply a manual way to implicitly say “my project depends on
+  
+ request
+ , please install it for me”. However, there is an explicit way of defining dependencies 
+ for our own projects, which also allows to have all dependencies resolved and installed 
+ automatically.
+  
+ In order to use this mechanism, we need to create a control file within our project that 
+ defines our dependencies. This control file is then used by NPM to resolve and install those 
+ dependencies.
+  
+ This control file must be located at the top level folder of our project, and must be named 
+ package.json
+ .
+  
+ This is what a
+  package.json
+  file looks like for a project that depends on
+  request
+ :
+  
+ {
+  
+ ""dependencies""
+ :
+  {
+  
+ ""request""
+ :
+  """"
+  
+ }
+  
+ }
+  
+ Having this file as part of our code base makes NPM aware of the dependencies of our 
+ project without the need to explicitly tell NPM what to install by hand.
+  
+ We can now use NPM to automatically pull in all dependencies of our project, simply by 
+ executing 
+ npm install
+  within the top level folder of our code base.",NA
+Test-Driven Node.js Development,"The code examples in
+  The Node Beginner Book
+  only described a toy project, and we came 
+ away with not writing any tests for it. If writing tests is new for you, and you have not yet 
+ worked on software in a test-driven manner, then I invite you to follow along and give it a 
+ try.
+  
+ We need to decide on a test framework that we will use to implement our tests. A lack of 
+ choice is not an issue in the JavaScript and Node.js world, as there are dozens of 
+ frameworks available. Personally, I prefer
+  Jasmine
+ , and will therefore use it for my 
+ examples.
+  
+ Jasmine
+  is a framework that follows the philosophy of
+  behaviour-driven development
+ , which 
+ is kind of a “subculture” within the community of test-driven developers. This topic alone 
+ could easily fill its own book, thus I’ll give only a brief introduction.
+  
+ The idea is to begin development of a new software unit with its specification, followed by 
+ its implementation (which, by definition, must satisfy the specification).
+  
+ Let’s make up a real world example: we order a table from a carpenter. We do so by
+  
+ specifying
+  the end result:
+  
+ “I need a table with a top that is 6 x 3 ft. The height of the top must be adjustable between 
+ 2.5 and 4.0 ft. I want to be able to adjust the top’s height without standing up from my 
+ chair. I want the table to be black, and cleaning it with a wet cloth should be possible 
+ without damaging the material. My budget is $500.”
+  
+ Such a specification allows to share a goal between us and the carpenter. We don’t have to 
+ care for how exactly the carpenter will achieve this goal. As long as the delivered product 
+ fits our specification, both of us can agree that the goal has been reached.
+  
+ With a test-driven or behaviour-driven approach, this idea is applied to building software. 
+ You wouldn’t build a piece of software and then define what it’s supposed to do. You need 
+ to know in advance what you expect a unit of software to do. Instead of doing this vaguely 
+ and implicitly, a test-driven approach asks you to do the specification exactly and explicitly. 
+ Because we work on software, our specification can be software, too: we only need to write 
+ functions that check if our unit does what it is expected to do. These check functions are 
+ unit tests.
+  
+ Let’s create a software unit which is covered by tests that describe its expected behaviour. 
+ In order to actually drive the creation of the code with the tests, let’s write the tests first. 
+ We then have a clearly defined goal: making the tests pass by implementing code that 
+ fulfills the expected behaviour, and nothing else.
+  
+ In order to do so, we create a new Node.js project with two folders in it:",NA
+Object-oriented JavaScript,"Let’s talk about object-orientation and inheritance in JavaScript.
+  
+ The good news is that it’s actually quite simple, but the bad news is that it works 
+ completely different than object-orientation in languages like C++, Java, Ruby, Python or 
+ PHP, making it not-quite-so simple to understand.
+  
+ But fear not, we are going to take it step by step.",NA
+Blueprints versus finger-pointing,"Let’s start by looking at how “typical” object-oriented languages actually create objects.
+  
+ We are going to talk about an object called
+  myCar
+ .
+  myCar
+  is our bits-and-bytes 
+ representation of an incredibly simplified real world car. It could have attributes like
+  color
+  
+ and
+  weight
+ , and methods like
+  drive
+  and
+  honk
+ .
+  
+ In a real application,
+  myCar
+  could be used to represent the car in a racing game - but we are 
+ going to completely ignore the context of this object, because we will talk about the nature 
+ and usage of this object in a more abstract way.
+  
+ If you would want to use this myCar object in, say, Java, you need to define the blueprint of 
+ this specific object first - this is what Java and most other object-oriented languages call a
+  
+ class
+ .
+  
+ If you want to create the object
+  myCar
+ , you tell Java to “build a new object after the 
+ specification that is laid out in the class Car”.
+  
+ The newly built object shares certain aspects with its blueprint. If you call the method honk 
+ on your object, like so:
+  
+ myCar
+ .
+ honk
+ ();
+  
+ then the Java VM will go to the class of
+  myCar
+  and look up which code it actually needs to 
+ execute, which is defined in the
+  honk
+  method of class
+  Car
+ .
+  
+ Ok, nothing shockingly new here. Enter JavaScript.",NA
+A classless society,"JavaScript does not have classes. But as in other languages, we would like to tell the 
+ interpreter that it should build our
+  myCar
+  object following a certain pattern or schema or 
+ blueprint - it would be quite tedious to create every
+  car
+  object from scratch, “manually” 
+ giving it the attributes and methods it needs every time we build it.
+  
+ If we were to create 30
+  car
+  objects based on the
+  Car
+  class in Java, this object-class 
+ relationship provides us with 30 cars that are able to drive and honk without us having to 
+ write 30
+  drive
+  and 
+ honk
+  methods.
+  
+ How is this achieved in JavaScript? Instead of an object-class relationship, there is an 
+ object-object relationship.
+  
+ Where in Java our
+  myCar
+ , asked to
+  honk
+ , says “go look at this class over there, which is my
+  
+ blueprint
+ , to find the code you need”, JavaScript says “go look at that other object over 
+ there, which is my 
+ prototype
+ , it has the code you are looking for”.
+  
+ Building objects via an object-object relationship is called Prototype-based programming, 
+ versus Class-based programming used in more traditional languages like Java.
+  
+ Both are perfectly valid implementations of the object-oriented programming paradigm - 
+ it’s just two different approaches.",NA
+Creating objects,"Let’s dive into code a bit, shall we? How could we set up our code in order to allow us to 
+ create our 
+ myCar
+  object, ending up with an object that is a Car and can therefore
+  honk
+  and
+  
+ drive
+ ?
+  
+ Well, in the most simple sense, we can create our object completely from scratch, or ex 
+ nihilo if you prefer the boaster expression.
+  
+ It works like this:
+  
+ 1 
+  
+ var
+  myCar
+  =
+  {};
+  
+ 2
+  
+ 3 
+  
+ myCar.honk
+  =
+  function
+ () {
+  
+ 4 
+ console.log(
+ 'honk honk'
+ );
+  
+ 5 
+  
+ };
+  
+ 6
+  
+ 7 
+  
+ myCar.drive
+  =
+  function
+ () {
+  
+ 8 
+ console.log(
+ 'vrooom...'
+ );
+  
+ 9 
+  
+ };",NA
+Using a simple function to create plain objects,"In our first example, we created a plain
+  myCar
+  object out of thin air - we can simply wrap 
+ the creation code into a function, which gives us a very basic object creator:
+  
+ 1 
+  
+ var
+  makeCar
+  =
+  function
+ () {
+  
+ 2 
+ var
+  newCar
+  =
+  {};
+  
+ 3 
+ newCar.honk
+  =
+  function
+ () {
+  
+ 4 
+  
+ console.log(
+ 'honk honk'
+ );
+  
+ 5 
+ };
+  
+ 6 
+  
+ };",NA
+Using a constructor function to create objects,"In JavaScript, the entities that create objects with shared behaviour are functions which are 
+ called in a special way. These special functions are called
+  constructors
+ .
+  
+ Let’s create a constructor for cars. We are going to call this function
+  Car
+ , with a capital
+  C
+ , 
+ which is common practice to indicate that this function is a constructor.
+  
+  
+ In a way, this makes the constructor function a class, because it does some of the 
+ things a class (with a constructor method) does in a traditional OOP language. 
+ However, the approach is not identical, which is why constructor functions are 
+ often called
+  pseudo-
+  
+ classes
+  in JavaScript. I will simply call them classes or constructor functions. 
+ Because we are going to encounter two new concepts that are both necessary for shared 
+ object behaviour to work, we are going to approach the final solution in two steps.",NA
+Using prototyping to efficiently share behaviour between objects,"As stated there, while in class-based programming the class is the place to put functions 
+ that all objects will share, in prototype-based programming, the place to put these 
+ functions is the object which acts as the prototype for our objects at hand.
+  
+ But where is the object that is the prototype of our
+  myCar
+  objects - we didn’t create one!
+  
+ It has been implicitly created for us, and is assigned to the
+  Car.prototype
+  property (in case 
+ you wondered, JavaScript functions are objects too, and they therefore have properties).
+  
+ Here is the key to sharing functions between objects: Whenever we call a function on an 
+ object, the JavaScript interpreter tries to find that function within the queried object. But if 
+ it doesn’t find the function within the object itself, it asks the object for the pointer to its 
+ prototype, then goes to the prototype, and asks for the function there. If it is found, it is 
+ then executed.
+  
+ This means that we can create
+  myCar
+  objects without any functions, create the
+  honk
+  
+ function in their prototype, and end up having
+  myCar
+  objects that know how to honk - 
+ because everytime the interpreter tries to execute the
+  honk
+  function on one of the myCar 
+ objects, it will be redirected to the prototype, and execute the
+  honk
+  function which is 
+ defined there.
+  
+ Here is how this setup can be achieved:",NA
+"Object-orientation, prototyping, and inheritance","So far, we haven’t talked about inheritance in JavaScript, so let’s do this now.
+  
+ It’s useful to share behaviour within a certain class of objects, but there are cases where we 
+ would like to share behaviour between different, but similar classes of objects.
+  
+ Imagine our virtual world not only had cars, but also bikes. Both drive, but where a car has 
+ a horn, a bike has a bell.
+  
+ Being able to drive makes both objects vehicles, but not sharing the
+  honk
+  and
+  ring
+  
+ behaviour distinguishes them.
+  
+ We could illustrate their shared and local behaviour as well as their relationship to each 
+ other as follows:
+  
+   
+ Vehicle 
+  
+   
+ > drive 
+  
+   
+  
+ | 
+  
+  
+ /---------/ \--------\ 
+  
+  
+ | 
+  
+  
+  
+  
+ | 
+  
+ Car 
+  
+  
+  
+ Bike 
+  
+ > honk 
+  
+  
+  
+ > ring
+  
+ Designing this relationship in a class-based language like Java is straightforward: We would 
+ define a class
+  Vehicle
+  with a method
+  drive
+ , and two classes
+  Car
+  and
+  Bike
+  which both extend 
+ the
+  Vehicle 
+ class, and implement a
+  honk
+  and a
+  ring
+  method, respectively.
+  
+ This would make the
+  car
+  as well as
+  bike
+  objects inherit the
+  drive
+  behaviour through the 
+ inheritance of their classes.
+  
+ How does this work in JavaScript, where we don’t have classes, but prototypes?
+  
+ Let’s look at an example first, and then dissect it. To keep the code short for now, let’s only 
+ start with a car that inherits from a vehicle:
+  
+  
+ 1 
+  
+ var
+  Vehicle
+  =
+  function
+ () {}; 
+  
+  
+ 2 
+  
+  
+ 3 
+  
+ Vehicle.prototype.drive
+  =
+  function
+ () { 
+  
+  
+ 4 
+  
+ console.log(
+ 'vrooom...'
+ ); 
+  
+  
+ 5 
+  
+  
+ }; 
+  
+ 6 
+  
+  
+ 7 
+  
+  
+ 8 
+  
+ var
+  Car
+  =
+  function
+ () {};",NA
+"A classless society, revisited","We just learned how to emulate the traditional OOP inheritance mechanism. But it’s 
+ important to note that in JavaScript, that is only one valid approach to create objects that 
+ are related to each other.
+  
+ It was Douglas Crockford who came up with another clever solution, which allows objects 
+ to inherit from each other directly. It’s a native part of JavaScript by now - it’s the
+  
+ Object.create()
+  function, and it works like this:",NA
+Summary,NA,NA
+Synchronous and Asynchronous,NA,NA
+operations explained,NA,NA
+Visualizing the Node.js execution model,"For the chapters that follow it’s important to fully understand what it means, conceptually, 
+ that a
+  
+ Node.js application has synchronous and asynchronous operations, and how both 
+ operations interact
+  
+ with each other.
+  
+ Let’s try to build this understanding step by step.
+  
+ The first concept that we need to understand is that of the Node.js event loop. The event 
+ loop is the
+  
+ execution model of a running Node.js application.
+  
+ We can visualize this model as a row of loops:
+  
+ +----> -----+ +----> -----+ 
+  
+ +----> -----+ 
+  
+ +----> -----+
+  
+ | 
+  
+ | | 
+  
+ | 
+  
+ | 
+  
+ | 
+  
+ | 
+  
+ |
+  
+ | 
+  
+ | | 
+  
+ | 
+  
+ | 
+  
+ | 
+  
+ | 
+  
+ |
+  
+ | 
+  
+ | | 
+  
+ | 
+  
+ | 
+  
+ | 
+  
+ | 
+  
+ |
+  
+ | 
+  
+ | | 
+  
+ | 
+  
+ | 
+  
+ | 
+  
+ | 
+  
+ |
+  
+ | 
+  
+ | | 
+  
+ | 
+  
+ | 
+  
+ | 
+  
+ | 
+  
+ |
+  
+ +-----------+ +-----------+ 
+  
+ +-----------+ 
+  
+ +-----------+
+  
+  
+ rectangles, but please imagine them as circles - circles with an arrow, which means 
+ that  
+ I’ve drawn boxes because circles look really clumsy in ascii art. So, these here look 
+ like 
+ one circle represents one iteration through the event loop. 
+ Another visualization could be the following pseudo-code:
+  
+ while
+  (I still have stuff to
+  do
+ ) {
+  
+ do
+  stuff;
+  
+ }",NA
+Blocking and non-blocking operations,"From the understanding of this conceptual model, we can get to understanding the 
+ difference between blocking and non-blocking operations.",NA
+Using and creating Event Emitters,NA,NA
+Introduction,"By now, you are probably more than familiar with this:
+  
+ someFunction(
+ function
+ (err) {
+  
+ if
+  (
+ !
+ err) {
+  
+ console.log(
+ 'Hey, looks like someFunction has finished and called me.'
+ );
+  
+ }
+  else
+  {
+  
+ console.log(
+ 'Oh no, something terrible happened!'
+ );
+  
+ }
+  
+ });
+  
+ We call a function,
+  someFunction
+  in this case, which does something asynchronously in the 
+ background, and calls the anonymous function we passed in (the
+  callback
+ ) once it has 
+ finished, passing an
+  Error
+  object if something went wrong, or
+  null
+  if all went fine. That’s the 
+ standard callback pattern, and you will encounter it regularly when writing Node.js code.
+  
+ For simple use cases, where we call a function that finishes its task some time in the future, 
+ either successfully or with an error, this pattern is just fine.
+  
+ For more complex use cases, this pattern does not scale well. There are cases where we call 
+ a function which results in multiple events happening over time, and also, different types of 
+ events might happen.
+  
+ One example is reading the contents of a file through a
+  ReadStream
+ . The details of handling 
+ files are discussed in a later chapter, but we will use this example to illustrate event 
+ emitters.
+  
+ This snippet demonstrates how to read data from a large file using a
+  ReadStream
+ :
+  
+ 'use strict'
+ ;
+  
+ var
+  fs
+  =
+  require(
+ 'fs'
+ );
+  
+ fs.createReadStream(
+ '/path/to/large/file'
+ );
+  
+ When reading data from a file, two different things can happen: We either receive content, 
+ or we reach the end of the file. Both cases
+  could
+  be handled using the callback pattern - for",NA
+Creating your own Event Emitter object,"We can create event emitters ourselves. This is even supported by Node.js by inheriting 
+ from the built-in
+  events.EventEmitter
+  class. But let’s first implement a simple event emitter 
+ from scratch, because this explains the pattern in all its details.
+  
+ For this, we are going to create a module whose purpose is to regularly watch for changes 
+ in the size of a file. Once implemented, it can be used like this:
+  
+ 'use strict'
+ ;
+  
+ watcher
+  =
+  new
+  FilesizeWatcher(
+ '/path/to/file'
+ );
+  
+ watcher.on(
+ 'error'
+ ,
+  function
+ (err) { 
+  
+ console.log(
+ 'Error watching file:'
+ , err); });
+  
+ watcher.on(
+ 'grew'
+ ,
+  function
+ (gain) { 
+  
+ console.log(
+ 'File grew by'
+ , gain,
+  'bytes'
+ ); });
+  
+ watcher.on(
+ 'shrank'
+ ,
+  function
+ (loss) { 
+  
+ console.log(
+ 'File shrank by'
+ , loss,
+  'bytes'
+ ); });
+  
+ watcher.stop();
+  
+ As you can see, the module consists of a class
+  FilesizeWatcher
+  which can be instantiated 
+ with a file path and returns an event emitter. We can listen to three different events from 
+ this emitter:
+  error
+ , 
+ grew
+ , and
+  shrank
+ .
+  
+ Let’s start by writing a spec that describes how we expect to use our event emitter. To do 
+ so, create a new project directory, and add the following
+  package.json
+ :
+  
+ { 
+  
+ ""devDependencies""
+ :
+  { 
+  
+   
+ ""jasmine-node""
+ :
+  """" 
+  
+ } 
+  
+ }
+  
+ Afterwards, run
+  npm install
+ .
+  
+ Now create a file
+  FilesizeWatcherSpec.js
+ , with the following content:",NA
+Summary,"The asynchronous development style using callbacks that is a recurring pattern in 
+ JavaScript and Node.js applications can at times result in a code structure that is hard to 
+ understand. Applying the event emitter pattern comes in handy in situations where more 
+ than one callback event must be handled, resulting in a cleaner code structure that is easier 
+ to follow and reason about. The pattern is so useful that we should use it for our own 
+ objects and functions where it makes sense, something that’s made easy by utilizing the 
+ existing
+  util.inherits
+  class.",NA
+Optimizing code performance and ,NA,NA
+control flow management using the ,NA,NA
+async,NA,NA
+ library,"Writing or using functions or methods in your code that are executed one after the other 
+ gets you a long way in your applications.
+  
+ Sometimes, those functions are simple synchronous steps:
+  
+ console.log(
+ 'Starting calculation...'
+ ); 
+  
+ var
+  result
+  = 5 + 4
+ ; 
+  
+ console.log(
+ 'The result is'
+ , result);
+  
+ Often, callbacks are used when operations are executed in the background and jump back 
+ into our code’s control flow asynchronously at a later point in time:
+  
+ console.log(
+ 'Starting calculation...'
+ ); 
+  
+ startExpensiveCalculation(
+ 5
+ ,
+  4
+ ,
+  function
+ (err, result) { 
+ if
+  (
+ !
+ err) { 
+  
+   
+ console.log(
+ 'The result is'
+ , result); 
+  
+ } 
+  
+ });
+  
+ If those asynchronous background operations bring forth a more complex callback 
+ behaviour, they might be implemented as an event emitter:
+  
+ console.log(
+ 'Starting calculation...'
+ );
+  
+ calculation
+  =
+  Calculator.start(
+ 5
+ ,
+  4
+ );
+  
+ calculation.on(
+ 'error'
+ ,
+  function
+ (err) { 
+  
+ console.log(
+ 'An error occured:'
+ , err); 
+  
+ });
+  
+ calculation.on(
+ 'interim result'
+ ,
+  function
+ (result) { 
+ console.log(
+ 'Received interim result:'
+ , result);",NA
+Executing expensive asynchronous background tasks ,NA,NA
+in parallel,"Let’s consider an example where our application queries several different remote web 
+ services, presenting the retrieved data on the console.
+  
+ We are not going to query real remote web services, instead we will write a very simple 
+ Node.js HTTP server that will serve as a dummy web service. Our web server doesn’t really 
+ do anything significant, and therefore we will make it react to requests a bit slower than 
+ neccessary, in order to simulate a real web service that has a certain workload - as you will 
+ see, this makes it easier for us to show the performance gain in our own code 
+ optimizations.
+  
+ Please create a new project folder and create a file
+  server.js
+  with the following content:
+  
+  
+ 1 
+  
+ 'use strict'
+ ; 
+  
+  
+ 2 
+  
+  
+ 3 
+  
+ var
+  http
+  =
+  require(
+ 'http'
+ ); 
+  
+  
+ 4 
+  
+ var
+  url
+  =
+  require(
+ 'url'
+ ); 
+  
+  
+ 5 
+  
+  
+ var
+  querystring
+  =
+  require(
+ 'querystring'
+ ); 
+  
+ 6 
+  
+  
+ 7 
+  
+ http.createServer(
+ function
+ (request, response) { 
+  
+ 8 
+  
+  
+ 9 
+  
+ var
+  pathname
+  =
+  url.parse(request.url).pathname; 
+ 10 
+  
+  
+ var
+  query
+  =
+  url.parse(request.url).query; 
+ 11 
+  
+ var
+  id
+  =
+  
+ querystring.parse(query)[
+ 'id'
+ ]; 
+  
+ 12",NA
+Optimizing code structure with,NA,NA
+ async,"async
+  offers several other mechanisms for managing the control flow of our code. These are 
+ interesting even if our concern isn’t performance optimization. Let’s investigate them.
+  
+ For these cases, let’s remove the artificial slowness from the API server by removing the
+  
+ setTimeout 
+ operation on line 19 and 22, making the server respond immediately:",NA
+Node.js and MySQL,NA,NA
+Using the node-mysql library,"Node.js is able to connect to MySQL database servers, but support for this is not built in. We 
+ need to make use of a Node.js package that handles the low level details of establishing a 
+ connection and talking to the database. Additionally, such a package should enable us to 
+ issue statements to the database written in SQL.
+  
+ The most widely accepted package for this is
+  node-mysql
+  by Node.js core contributor Felix 
+ Geisendörfer.
+  
+ In order to use it, let’s start by declaring
+  mysql
+  as a dependency for our project in our
+  
+ package.json 
+ file:
+  
+ {
+  
+ ""dependencies""
+ :
+  {
+  
+ ""mysql""
+ :
+  ""~2.0.0""
+  
+ }
+  
+ }
+  
+ As always,
+  npm install
+  pulls in everything we need to start working with a MySQL database.
+  
+ For what follows, I assume that you have a working MySQL database up and running on 
+ your local machine. You should be able to connect to it locally. You can verify that this is the 
+ case by running
+  
+ mysql -h127.0.0.1 -uroot -p
+  
+ on your command line. Provide the database root password if needed - you will also need 
+ this password in your Node.js code in order to establish a connection.",NA
+A first database application,"Once you are up and running, let’s start with a first, simple database application. Create a 
+ file
+  index.js 
+ in the directory where you installed the
+  node-mysql
+  module, and fill it with the 
+ following code:",NA
+Using node-mysql’s Streaming API,"Next, we will query some real data from existing tables. For this, we first need to create a 
+ database, add a table to it, and insert some rows. Let’s do this through a Node.js application. 
+ Please create a file
+  create.js
+  with the following content:",NA
+Making SQL queries secure against attacks,"Let’s now go full circle and create a simple web application that allows to insert data into 
+ our table and also reads and displays the data that was entered.
+  
+ We need to start a web server with two routes (one for displaying data, one for taking user 
+ input), and we need to pass user input to the database and database results to the webpage. 
+ Here is the application in one go:
+  
+  
+ 1 
+  
+ 'use strict'
+ ; 
+  
+  
+ 2 
+  
+  
+ 3 
+  
+ var
+  mysql 
+  
+ =
+  require(
+ 'mysql'
+ ), 
+  
+  
+ 4 
+    
+ http 
+  
+  
+ =
+  require(
+ 'http'
+ ), 
+  
+ 5 
+  
+   
+ url 
+  
+ =
+  require(
+ 'url'
+ ), 
+  
+  
+ 6 
+    
+ querystring
+  =
+  require(
+ 'querystring'
+ ); 
+  
+  
+ 7 
+  
+  
+ 8 
+  
+  
+ 9 
+  
+ // Start a web server on port 8888. Requests go to function handleRequest 
+ 10 
+  
+ 11 
+  
+ http.createServer(handleRequest).listen(
+ 8888
+ ); 
+  
+ 12 
+  
+ 13 
+  
+ 14 
+  
+  
+ // Function that handles http requests 
+ 15 
+  
+ 16 
+  
+ function
+  handleRequest(request, response) { 
+  
+ 17 
+  
+ 18 
+  
+ // Page HTML as one big string, with placeholder ""DBCONTENT"" for data from 
+ 19 
+  
+  
+ // the database 
+ 20 
+  
+ var
+  pageContent
+  =
+  '<html>'
+  + 
+  
+ 21 
+     
+  
+ '<head>'
+  + 
+  
+ 22 
+     
+  
+ '<meta http-equiv=""Content-Type"" '
+  + 
+  
+ 23 
+  
+   
+    
+ 'content=""text/html; charset=UTF-8"" />'
+  + 
+ 24 
+  
+  
+  
+  
+  
+ '</head>'
+  +",NA
+Summary,"In this chapter we learned about the
+  node-mysql
+  module, how it enables us to connect to 
+ relational databases, how using asynchronous callbacks and the Streaming API enable us to 
+ write efficient applications even when large resultsets need to be handled, and analyzed",NA
+Node.js and MongoDB,NA,NA
+Some MongoDB basics,"MongoDB is a document-oriented NoSQL database that stores objects in the following 
+ hierarchy:
+  
+ Server 
+  
+  
+ \_Database 
+  
+  
+  
+ \_Collection 
+  
+  
+  
+  
+ \_Document 
+  
+  
+  
+  
+ \_Document 
+  
+  
+  
+  
+ \_Document 
+  
+  
+  
+  
+ \_ ...
+  
+ \_Collection 
+  
+ \_Document 
+  
+ \_Document 
+  
+ \_Document 
+  
+ \_ ...
+  
+ If you are coming from a relational SQL database background (I do), then it might help to 
+ think of collections as tables, and of documents as rows in that table. It’s not a perfect 
+ analogy, however; the key idea of a document-oriented database like MongoDB is that 
+ documents within the same collection do not need to have the same structure, while each 
+ row in a table of a relational database does have the same structure.
+  
+ Here is how actual data in this hierarchy might actually look like:
+  
+ localhost 
+  
+  
+ \_accounting 
+  
+  
+  
+ \_customers 
+  
+  
+  
+ \_ { _id: 53c6c2, name: 'Jane Doe' } 
+  
+  
+  
+ \_ { _id: 9dc42e, name: 'John Doe', age: 24 } 
+  
+  
+  
+ \_ { _id: 63a76d, name: 'Jim Doe', options: { billtime: 3 } } 
+  
+  
+ \_invoices 
+  
+  
+  
+ \_ { _id: 98ef5a, value: 192.87 } 
+  
+  
+  
+ \_ { _id: f4eb21, value: 192.87, recurring: true }",NA
+Applying CRUD operations with the low-level mongodb ,NA,NA
+driver,"Again, I won’t cover installation of the server software. Please refer to
+  the official 
+ installation instructions²
+  in order to get a MongoDB server up and running on your 
+ machine.
+  
+ Once this is done, create a new project folder called
+  mongodb-test
+ , and in there create an 
+ initial 
+ package.json
+  as follows:
+  
+ { 
+  
+ ""name""
+ :
+  ""mongodb-test""
+ , 
+  
+ ""version""
+ :
+  ""0.0.1""
+ , 
+  
+ ""description""
+ :
+  """"
+ , 
+  
+ ""dependencies""
+ :
+  { 
+  
+   
+ ""mongodb""
+ :
+  ""^1.4.7"" 
+  
+ }, 
+  
+ ""devDependencies""
+ :
+  {} 
+  
+ }
+  
+ As always, we pull in the dependencies with
+  
+ npm install
+  
+ Now we can create a first program in file
+  index.js
+ :",NA
+Retrieving specific documents using filters,"We have not yet performed any truly interesting queries against our collection. Up until 
+ now, all we did was to retrieve all documents contained in our collection by performing
+  
+ collection.find()
+  without any filter. More complex filters are available of course.
+  
+ Let’s rewrite the existing code in order to retrieve only specific documents in our
+  doFind
+  
+ function. First, a very simple example - we are going to retrieve all documents where the
+  v
+  
+ attribute has a value of
+  5
+ . To do so, we need to change line 11 from
+  
+ collection.find().toArray(
+ function
+  (err, documents) {
+  
+ to
+  
+ collection.find({
+ 'v'
+ : 5
+ }).toArray(
+ function
+  (err, documents) {
+  
+ which results in only the matching documents being printed:",NA
+More complex update operations,"We already learned how to add attributes or change the value of attributes in existing 
+ documents:
+  
+ collection.update( 
+  
+ {
+ 'n'
+ :
+  /^#1/
+ }, 
+  
+ {
+ '$set'
+ :
+  {
+ 'v'
+ : 5
+ } }, 
+  
+ {
+ 'multi'
+ :
+  true
+ }, 
+  
+ function
+  (err, count) { 
+  
+   
+ // ...
+  
+ }
+  
+ This would set the value of the
+  v
+  attribute to
+  5
+  for all documents whose
+  n
+  value starts with
+  
+ #1
+ .
+  
+ This is probably the most regularly used update operation. Some other ways to update 
+ documents are available, however. Numeric attributes can be increased, for example:
+  
+ collection.update( 
+  
+ {
+ 'n'
+ :
+  /^#1/
+ }, 
+  
+ {
+ '$inc'
+ :
+  {
+ 'v'
+ : +1
+ } }, 
+  
+ {
+ 'multi'
+ :
+  true
+ }, 
+  
+ function
+  (err, count) { 
+  
+   
+ // ...",NA
+Working with indexes,"Like other databases, MongoDB needs to index data sets if we want queries on large sets to 
+ perform well.
+  
+ In order to experience this firsthand, let’s write a script which inserts 200,000 documents 
+ instead of just 20:",NA
+Querying collections efficiently,"When retrieving large result sets from a MongoDB collection, the same rule that applies to 
+ MySQL database result sets also applies here: reading the complete result set into our 
+ Node.js process at once",NA
+Summary,"In this chapter we learned about the workings of MongoDB and the
+  mongodb
+  driver, which 
+ enables us to insert, update, retrieve and remove documents from this NoSQL database. We 
+ learned about query filters and complex update operations, demonstrated how indexes can 
+ significantly accelerate query operations, and showed how to handle large result sets 
+ efficiently.
+  
+ ⁴
+ http://nodejs.org/api/stream.html#stream_class_stream_readable",NA
+Part 2: Building a complete web ,NA,NA
+application with Node.js and ,NA,NA
+AngularJS,NA,NA
+Introduction,"I want to admit it right away: Looking at the amount of code, this part is probably more 
+ about AngularJS than Node.js - but I think it’s important to see how Node.js can be used as 
+ one part in a complete application. Also, I’m a huge fan of AngularJS and am firmly 
+ convinced that knowing Node.js and AngularJS in combination is extremely valuable.
+  
+ Nevertheless, besides teaching you a bit about building AngularJS frontends, the chapter 
+ does teach you a lot about Node.js, too. We will learn how to create a full-fledged RESTful 
+ Webservice API, and probably even more important, we will learn how to do so in a fully 
+ test-driven manner using end-to-end test specifications.
+  
+ Additionally, we will talk about using a database abstraction layer, and we will learn how to 
+ integrate database migrations into our development and testing workflow. All in all, we will 
+ learn a lot about creating Node.js applications for the real world.
+  
+  
+ The 
+ code 
+ of 
+ the 
+ final 
+ application 
+ is 
+ also 
+ available 
+ at 
+ https://github.com/manuelkiessling/nodecraftsman/tree/master/keyword-
+ wrangler",NA
+The requirements from a user’s perspective,"What we are going to build is an application which allows its users to comfortably manage a 
+ set of structured data from the world of food and cooking.
+  
+ The data basically is a collection of keywords like
+  Aubergine
+ ,
+  Knife
+ , or
+  Paul Bocuse
+ , and 
+ these keywords are mapped into categories, like
+  Vegetable
+ ,
+  Utility
+ , or
+  Famous chef
+ .
+  
+ What’s needed now is an application where users can browse and edit this data: create new 
+ keywords, delete keywords, change the value of existing keywords, and change the 
+ category of keywords. Thus, at the heart of it we need a CRUD application, with a little bit of 
+ extra functionality.
+  
+ It has already been decided that the users want a web-based solution. The data will be 
+ stored in a relational database.
+  
+ This is how the user interface will look like:",NA
+High level architecture overview,"The following is an overview about the most important architectonical parts of our 
+ application:",NA
+Setting up the development environment,"This is going to be our largest application to date, so let’s make sure we can work 
+ comfortably.
+  
+ Let’s start by creating a project folder - let’s call our project
+  Keyword Wrangler
+ :
+  
+ $ mkdir keyword-wrangler
+  
+ Next, we initialize a Node.js project in this folder by running
+  npm init
+  and answering the 
+ upcoming questions as follows:
+  
+ $ npm init 
+  
+ This utility will walk you through creating a package.json file. It only covers the most 
+ common items, and tries to guess sane defaults.
+  
+ See `npm help json` for definitive documentation on these fields and exactly what 
+ they do.
+  
+ Use `npm install <pkg> --save` afterwards to install a package and save it as a 
+ dependency in the package.json file.
+  
+ Press ^C at any time to quit.
+  
+ name: (keyword-wrangler) 
+  
+ version: (1.0.0) 0.0.1 
+  
+ description: A tool to manage keywords 
+  
+ entry point: (index.js) src/backend/index.js test 
+ command:",NA
+Milestone 1: A first passing test ,NA,NA
+against the server,"We will approach the requirements through a set of milestones. The first milestone we will 
+ try to reach is a very first passing end-to-end Jasmine test case against our webservice API.
+  
+ Let’s see what we need to reach that milestone:
+  
+ • We need to be able to execute Jasmine test cases
+  
+ • We need a Jasmine spec that requests our http 
+ backend• We need an http backend that responds to 
+ the request
+  
+ In order to verify that we are good to go in regards to executing Jasmine test cases, let’t 
+ create a subfolder
+  spec/e2e
+  in our project directory:
+  
+ mkdir -p spec/e2e
+  
+ Next, we create the file that will hold the end-to-end tests for our yet-to-be-written API 
+ server. We name it
+  apiSpec.js
+  and store it within the
+  spec/e2e
+  folder we just created:
+  
+ 1 
+  
+ 'use strict'
+ ; 
+  
+ 2 
+  
+ 3 
+  
+ describe(
+ 'The API'
+ ,
+  function
+  () { 
+  
+ 4 
+  
+ 5 
+  
+ it(
+ 'should just work'
+ ,
+  function
+  () { 
+  
+ 6 
+    
+ expect(
+ true
+ ).toBe(
+ true
+ ); 
+  
+ 7 
+  
+ }); 
+  
+ 8 
+  
+ 9 
+  
+ });
+  
+ As long as the test infrastructure itself works correctly, this will of course pass. Let’s verify 
+ that:",NA
+Milestone 2: The API responds ,NA,NA
+with actual database content,"Let’s now look at how to integrate database access into our server application. We defined 
+ that within our local development and test environment, we would like to use
+  sqlite
+ . Let’s 
+ start with this.",NA
+Abstracting database access,"In order to connect to the database, we are going to use an abstraction layer by utilizing
+  
+ node-dbi
+ . This allows us to transparently use
+  MySQL
+  at a later point in time, without the 
+ need to change the code that does database operations.
+  
+ First, we should change our spec in order to have it expect actual database content. A 
+ request to 
+ /api/keywords/
+  should return a JSON structure that carries an array of objects, 
+ where each object represents a keyword with its ID, value, and the ID of its category:
+  
+ [ 
+  
+ {
+ ""id""
+ : 1
+ ,
+  ""value""
+ :
+  ""Aubergine""
+ ,
+  ""categoryID""
+ : 1
+ }, {
+ ""id""
+ : 2
+ ,
+  ""value""
+ :
+  
+ ""Onion""
+ ,
+  ""categoryID""
+ : 1
+ }, {
+ ""id""
+ : 3
+ ,
+  ""value""
+ :
+  ""Knife""
+ ,
+  ""categoryID""
+ : 2
+ } 
+ ]
+  
+ A data structure like this would be stored in a relational database like this:
+  
+ Table: keyword 
+  
+ +----------------------------------------------------------+ | id | value 
+  
+ | categoryID | 
+ +==========================================================+
+  
+ |
+  
+ 1 | Aubergine
+  
+ | 1
+  
+ |
+  
+ +----------------------------------------------------------+
+  
+ |
+  
+ 2 | Onion
+  
+ | 1
+  
+ |
+  
+ +----------------------------------------------------------+
+  
+ |
+  
+ 3 | Knife
+  
+ | 2
+  
+ |
+  
+ +----------------------------------------------------------+",NA
+Ensuring a clean slate for test runs,"We are going to make our lives a lot easier if we write some helper code for our tests which 
+ ensures that at the start of each test run, the database is empty. Let’s put this into
+  
+ spec/resetDatabase.js
+ :
+  
+  
+ 1 
+  
+ 'use strict'
+ ; 
+  
+  
+ 2 
+  
+  
+ 3 
+  
+ var
+  async
+  =
+  require(
+ 'async'
+ ); 
+  
+  
+ 4 
+  
+  
+ 5 
+  
+ var
+  resetDatabase
+  =
+  function
+  (dbSession, callback) { 
+  
+ 6 
+  
+  
+ 7 
+  
+ async.series( 
+  
+  
+ 8 
+    
+ [ 
+  
+  
+ 9 
+  
+ 10 
+     
+ function
+  (callback) { 
+  
+ 11 
+      
+ dbSession.remove(
+ 'keyword'
+ ,
+  '1'
+ ,
+  function
+  (err) { 
+ 12 
+  
+   
+    
+ callback(err) 
+  
+ 13 
+      
+ }); 
+  
+ 14 
+     
+ }, 
+  
+ 15 
+  
+ 16 
+     
+ function
+  (callback) { 
+  
+ 17 
+      
+ dbSession.remove(
+ 'category'
+ ,
+  '1'
+ ,
+  function
+  (err) { 
+ 18 
+  
+   
+    
+ callback(err) 
+  
+ 19 
+  
+   
+    
+ }); 
+ 20 
+  
+  
+  
+  
+ } 
+  
+ 21 
+  
+ 22 
+    
+ ], 
+  
+ 23 
+  
+ 24 
+  
+   
+  
+ function
+  (err, results) { 
+ 25 
+  
+  
+  
+  
+ callback(err);",NA
+Completing the first spec,"We now have the boilerplate code and database structures needed to further complete our 
+ spec:",NA
+Milestone 3: Setting the stage for a ,NA,NA
+continuous delivery workflow,"We are already growing our application driven by tests, however, there are still some 
+ inconveniences that hinder us from going fully continuous. If the goal is to put every change 
+ we make into production automatically (safeguarded by our tests, of course), then we need 
+ to automate the things we still do manually: starting the server and changing the database 
+ structure.
+  
+ Let’s tackle the server startup first. It would be great if each test case would start and stop 
+ the server process as needed. This is possible by refactoring the server code a bit.
+  
+ We need to split into two files what is currently handled in
+  src/backend/index.js
+ . The goal 
+ here is to have the server
+  logic
+  in one file, and the server
+  startup
+  in another one. This way, 
+ our tests can start the server logic up by themselves, and for production, we still have a file 
+ we can execute.
+  
+ To achieve this, let’s create a file
+  src/backend/server.js
+  with the following content:
+  
+  
+ 1 
+  
+ 'use strict'
+ ; 
+  
+  
+ 2 
+  
+  
+ 3 
+  
+ var
+  Percolator
+  =
+  require(
+ 'percolator'
+ ).Percolator; 
+  
+  
+ 4 
+  
+ var
+  dbSession
+  =
+  require(
+ '../../src/backend/dbSession.js'
+ ); 
+  
+  
+ 5 
+  
+  
+ 6 
+  
+ var
+  Server
+  =
+  function
+ (port) { 
+  
+  
+ 7 
+  
+ var
+  server
+  =
+  Percolator({
+ 'port'
+ :
+  port,
+  'autoLink'
+ :
+  false
+ }); 
+  
+  
+ 8 
+  
+  
+ 9 
+  
+ server.route(
+ '/api/keywords'
+ , 
+  
+ 10 
+  
+   
+  
+ { 
+ 11 
+     
+ GET
+ :
+  function
+  (req, res) { 
+  
+ 12 
+      
+ dbSession.fetchAll(
+ 'SELECT id, value, categoryID FROM keyword ORDER BY i\ 
+ 13 
+  
+ d'
+ ,
+  
+ function
+ (err, rows) { 
+  
+ 14 
+  
+   
+     
+ if
+  (err) { 
+ 15 
+  
+  
+  
+  
+  
+  
+  
+ console.log(err); 
+  
+ 16 
+        
+ res.status.internalServerError(err); 
+  
+ 17 
+       
+ }
+  else
+  { 
+  
+ 18 
+  
+   
+      
+ res.collection(rows).send(); 
+ 19 
+   
+  
+  
+  
+  
+ } 
+  
+ 20 
+      
+ });",NA
+Introducing automatic database migrations,"Let’s take the final step in automation by setting up database migrations. A migration is a 
+ change to the database structure of our application. E.g., if we change our code and it now 
+ expects a new field in one of our tables, the migration would be the code that alters the 
+ table structure and adds the missing field. Making these migrations part of our code base 
+ allows us to automate this - when the tests or the application is started, all migrations that",NA
+Milestone 4: Giving users a frontend,"We have now reached a point where our backend service deserves a frontend. As said, we 
+ want this to be based on AngularJS. Furthermore, we will use the
+  Restangular
+  library 
+ (which will ease the communication with our backend webservice), and
+  ngGrid
+ , which 
+ makes building dynamic tables straightforward.",NA
+Setting up frontend dependencies through bower,"The very first step is to utilize
+  Bower
+ , the package manager for frontend JavaScript projects, 
+ to pull in the dependencies of our project.
+  
+ We need to create a directory
+  src/frontent
+ , and place a
+  bower.json
+  file into it with the 
+ following contents:
+  
+ 1
+  
+ {
+  
+ ""name""
+ :
+  ""keyword-wrangler-client""
+ ,
+  
+ 2
+  
+ 3
+  
+ }
+  
+ ""dependencies""
+ :
+  {
+  
+ 4
+  
+ ""angular""
+ :
+  ""1.3.15""
+ ,
+  
+ 5
+  
+ ""angular-route""
+ :
+  ""1.3.15""
+ ,
+  
+ 6
+  
+ ""angular-grid""
+ :
+  ""2.0.14""
+ ,
+  
+ 7
+  
+ ""restangular""
+ :
+  ""1.4.0""
+ ,
+  
+ 8
+  
+ ""bootstrap""
+ :
+  ""3.3.4""
+ ,
+  
+ 9
+  
+ ""async""
+ :
+  ""0.9.2""
+  
+ 10
+  
+ },
+  
+ 11
+  
+ ""analytics""
+ :
+  false
+  
+ 12
+  
+ Then, while in folder
+  keyword-wrangler/src/frontend
+ , run:
+  
+ $ ../../node_modules/.bin/bower install
+  
+ This will install all dependecies into
+  src/frontend/bower_components
+ .",NA
+Serving the frontend through the backend server,"Before we start building our frontend app, let’s make sure we can browse to it.
+  
+ To do so, change line 7 in
+  src/backend/server.js
+  from",NA
+Adding the frontend code,"Time to start building the app. Create
+  src/frontend/index.html
+  as follows:
+  
+  
+ 1 
+  
+ <!DOCTYPE html> 
+  
+  
+ 2 
+  
+ <html
+  ng-app=
+ ""app""
+ > 
+  
+  
+ 3 
+  
+  
+ 4 
+   
+ <head> 
+  
+  
+ 5 
+  
+   
+  
+ <meta
+  charset=
+ ""UTF-8""
+ /> 
+  
+ 6 
+  
+  
+  
+ <title>
+ Keyword Wrangler
+ </title> 
+  
+  
+ 7 
+  
+  
+ 8 
+   
+  
+ <link
+  rel=
+ ""stylesheet""
+  href=
+ ""bower_components/bootstrap/dist/css/bootstr\ 
+  
+ 9 
+  
+ ap.css""
+ > 
+  
+ 10 
+   
+  
+ <link
+  rel=
+ ""stylesheet""
+  href=
+ ""bower_components/angular-grid/ng-grid.min.c\ 
+ 11 
+  
+ ss""
+ > 
+  
+ 12 
+   
+  
+ <style> 
+  
+ 13 
+   
+  
+  
+ .gridStyle
+  { 
+  
+ 14 
+   
+  
+  
+  
+ margin-top
+ : 20px
+ ; 
+  
+ 15 
+   
+  
+  
+  
+ height
+ : 800px
+ ; 
+  
+ 16 
+   
+  
+  
+ } 
+  
+ 17 
+   
+  
+ </style> 
+  
+ 18 
+   
+ </head> 
+  
+ 19 
+  
+ 20 
+   
+ <body> 
+  
+ 21 
+   
+  
+ <div
+  id=
+ ""main""
+  class=
+ ""container""
+ > 
+  
+ 22 
+  
+   
+  
+  
+ <div
+  class=
+ ""span12""
+  ng-view
+ ></div> 
+ 23 
+   
+  
+ </div> 
+  
+ 24 
+  
+ 25 
+   
+  
+ <script
+  src=
+ ""bower_components/async/lib/async.js""
+ ></script>",NA
+Adding AngularJS view templates,"With this, the JavaScript code for our AngularJS app is in place, but we aren’t done yet. We 
+ also need four HTML views for the app: The main view with the editor, plus three custom 
+ grid cell templates, one for the operations column that holds the
+  Save
+  and
+  Delete
+  controls, 
+ one for the
+  Category
+  column cells (because there we need to translate from category IDs to 
+ category names), and one for the 
+ Category
+  cells in edit mode, because when we edit the",NA
+Milestone 5: More work on the ,NA,NA
+backend,NA,NA
+Adding a route for retrieving categories,"We currently only provide keywords data through our backend API. The app requests 
+ keywords data as well as categories data, and the latter would fail for now. Let’s implement 
+ the required route and logic now.
+  
+ We first need to extend the spec in
+  spec/e2e/apiSpec.js
+ :
+  
+  
+ 1 
+  
+ 'use strict'
+ ; 
+  
+  
+ 2 
+  
+  
+ 3 
+  
+ var
+  request
+  =
+  require(
+ 'request'
+ ); 
+  
+  
+ 4 
+  
+ var
+  dbSession
+  =
+  require(
+ '../../src/backend/dbSession.js'
+ ); 
+  
+ 5 
+  
+  
+ var
+  Server
+  =
+  require(
+ '../../src/backend/server.js'
+ ).Server; 
+  
+ 6 
+  
+ var
+  
+ resetDatabase
+  =
+  require(
+ '../resetDatabase.js'
+ ); 
+  
+  
+ 7 
+  
+ var
+  async
+  =
+  require(
+ 'async'
+ ); 
+  
+  
+ 8 
+  
+  
+ 9 
+  
+ describe(
+ 'The API'
+ ,
+  function
+  () { 
+  
+ 10 
+  
+ 11 
+  
+ var
+  server; 
+  
+ 12 
+  
+ 13 
+  
+ beforeEach(
+ function
+  (done) { 
+  
+ 14 
+    
+ server
+  =
+  Server(
+ '8081'
+ ); 
+  
+ 15 
+    
+ server.listen(
+ function
+  (err) { 
+  
+ 16 
+     
+ resetDatabase(dbSession,
+  function
+ () { 
+  
+ 17 
+      
+ done(err); 
+  
+ 18 
+     
+ }); 
+  
+ 19 
+    
+ }); 
+  
+ 20 
+  
+ }); 
+  
+ 21 
+  
+ 22 
+  
+ afterEach(
+ function
+  (done) { 
+  
+ 23 
+  
+   
+  
+ server.close(
+ function
+  () { 
+ 24 
+  
+  
+  
+  
+ resetDatabase(dbSession,
+  function
+ () {",NA
+Making the backend recognize different environments,"But we are not yet done and need to refrain from opening our app just yet.
+  
+ What’s the problem?
+  
+ Until now, we only used the database when running the specs. Now we have another client 
+ for the webservice (and the underlying database), and this is the frontend application. We 
+ probably don’t want our specs to wipe out the data we add through the application. We can 
+ circumvent this problem by using the different environments we created for
+  db-migrate
+ . 
+ Each environment has its own database setup, and this way we can keep things neatly 
+ separated - our specs work with one database setup, and the application with another one.
+  
+ We need to add a helper script that detects the current environment when executing our 
+ code. Place this into
+  src/backend/env.js
+ :
+  
+  
+ 1 
+  
+ 'use strict'
+ ; 
+  
+  
+ 2 
+  
+  
+ 3 
+  
+ (
+ function
+ () { 
+  
+  
+ 4 
+  
+ var
+  env; 
+  
+  
+ 5 
+  
+  
+ 6 
+  
+ if
+  (process.env.KW_ENV) { 
+  
+  
+ 7 
+    
+ env
+  =
+  process.env.KW_ENV; 
+  
+  
+ 8 
+  
+ }
+  else
+  { 
+  
+  
+ 9 
+    
+ env
+  =
+  'test'
+ ; 
+  
+ 10 
+  
+ } 
+  
+ 11 
+  
+ 12 
+  
+ if
+  (
+ !
+ ( env
+  ===
+  'test' 
+  
+ 13 
+     
+ ||
+  env
+  ===
+  'dev' 
+  
+ 14 
+  
+   
+   
+ ||
+  env
+  ===
+  'production'
+ )) { 
+ 15 
+   
+  
+ throw new
+  Error
+ (
+ '""'
+  +
+  env
+  +
+  '"" is 
+ not an allowed environment'
+ ); 
+ 16 
+  
+ } 
+  
+ 17",NA
+Milestone 6: Completing the ,NA,NA
+backend and finalizing the ,NA,NA
+application,"After starting the server in dev mode, have a look at http://localhost:8080/. You should 
+ now see the frontend with the sample data.
+  
+ Playing around with this frontend quickly reveals that we are still lacking the API backend 
+ operations needed to create, update and delete keyword entries. Let’s fix that.",NA
+Creating the route for adding new keywords,"Creating a new keyword results in a POST request to
+  /api/keywords
+ . Let’s extend our spec 
+ accordingly:
+  
+ 1
+  
+  
+ 2
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+  
+ 7
+  
+  
+ 8
+  
+  
+ For the sake of brevity, I’m only showing the additional
+  it
+  block instead of the 
+ whole spec file. 
+ it(
+ 'should create a new keyword when receiving a POST request at /api/keywords/'
+ \ 
+ ,
+  function
+  (done) { 
+  
+ var
+  expected
+  =
+  { 
+  
+   
+ ""_items""
+ :
+  [ 
+  
+    
+ {
+ 'id'
+ : 1
+ ,
+  'value'
+ :
+  'Aubergine'
+ ,
+  'categoryID'
+ : 1
+ }, 
+  
+    
+ {
+ 'id'
+ : 2
+ ,
+  'value'
+ :
+  'Onion'
+ ,
+  'categoryID'
+ : 1
+ } 
+  
+   
+ ] 
+  
+ };
+  
+  
+ 9 
+  
+ 10 
+ var
+  body
+  =
+  { 
+  
+ 11 
+  
+  
+ 'value'
+ :
+  'Onion'
+ , 
+  
+ 12 
+  
+  
+ 'categoryID'
+ : 1 
+  
+ 13 
+  
+ }; 
+ 14 
+  
+ 15 
+ async.series( 
+  
+ 16 
+  
+  
+ [ 
+  
+ 17",NA
+Creating the route for updating keywords,NA,NA
+Creating the route for deleting keywords,"Now it’s time for the final step. We need to add route handling for DELETE requests, and 
+ our application is complete.
+  
+ Once again, we start with the spec:
+  
+  
+ 1 
+  
+ it(
+ 'should remove a keyword when receiving a DELETE request at /api/keywords/:\ 
+  
+ 2 
+  
+ id/'
+ ,
+  
+ function
+  (done) { 
+  
+  
+ 3 
+    
+ var
+  expected
+  =
+  { 
+  
+  
+ 4 
+     
+ ""_items""
+ :
+  [ 
+  
+  
+ 5 
+      
+ {
+ 'id'
+ : 1
+ ,
+  'value'
+ :
+  'Aubergine'
+ ,
+  'categoryID'
+ : 1
+ } 
+  
+  
+ 6 
+     
+ ] 
+  
+  
+ 7 
+    
+ }; 
+  
+  
+ 8 
+  
+  
+ 9 
+  
+   
+  
+ async.series( 
+ 10 
+   
+  
+  
+ [ 
+  
+ 11 
+  
+ 12 
+      
+ function
+ (callback) { 
+  
+ 13 
+       
+ dbSession.insert( 
+  
+ 14 
+        
+ 'category'
+ , 
+  
+ 15 
+        
+ {
+ 'name'
+ :
+  'Vegetable'
+ }, 
+  
+ 16 
+        
+ function
+ (err) { callback(err) }); 
+  
+ 17 
+      
+ }, 
+  
+ 18 
+  
+ 19 
+      
+ function
+ (callback) { 
+  
+ 20 
+       
+ dbSession.insert( 
+  
+ 21 
+        
+ 'keyword'
+ , 
+  
+ 22 
+  
+   
+      
+ {
+ 'value'
+ :
+  'Aubergine'
+ ,
+  'categoryID'
+ : 1
+ }, 
+ 23 
+  
+  
+  
+  
+  
+  
+  
+ function
+ (err) { callback(err) }); 
+  
+ 24 
+      
+ }, 
+  
+ 25 
+  
+ 26 
+      
+ function
+ (callback) { 
+  
+ 27 
+       
+ dbSession.insert( 
+  
+ 28 
+        
+ 'keyword'
+ , 
+  
+ 29 
+        
+ {
+ 'value'
+ :
+  'Onion'
+ ,
+  'categoryID'
+ : 1
+ }, 
+  
+ 30 
+        
+ function
+ (err) { callback(err) }); 
+  
+ 31 
+      
+ }",NA
+Summary,"In this chapter, we created a complete web-based CRUD application. It consists of a Node.js 
+ backend and an AngularJS frontend, connected through a RESTful webservice API. We 
+ learned how to create a continuous delivery environment where end-to-end specs provide 
+ a tests suite that verifies the correctness of the webservice API and a migrations setup 
+ ensures that database schema and code are in sync. The application can be run in the 
+ context of different configuration environments, allowing to keep test, dev and production 
+ data separated.",NA
+Epilogue,"You have reached the end of
+  The Node Craftsman Book
+ . I sincerely hope you enjoyed the 
+ journey and feel confident to use Node.js in your own projects small and large.
+  
+ If you have any feedback or questions, please feel free to use the community forum 
+ at
+ https://leanpub. com/nodecraftsman/feedback
+ , or simply drop me a line at
+  
+ manuel@kiessling.net
+ .",NA

@@ -1,0 +1,1339 @@
+Larger Text,Smaller Text,Symbol
+Contents,"1 Getting Started 
+  
+ 1
+  
+ 1.1 Files and Folders 
+  
+ 2
+  
+ 1.2 The Terminal 
+  
+ 5
+  
+ 1.3 Text Editors 
+  
+ 9
+  
+ 1.4 Go Tools 13
+  
+ 2 Your First Program 
+  
+ 15
+  
+ 2.1 How to Read a Go Program 17
+  
+ 3 Types 
+  
+ 23
+  
+ 3.1 Numbers 24
+  
+ 3.2 Strings 29
+  
+ 3.3 Booleans 31
+  
+ 4 Variables 
+  
+ 35
+  
+ 4.1 How to Name a Variable 39
+  
+ 4.2 Scope 40
+  
+ 4.3 Constants 43
+  
+ 4.4 Defining Multiple Variables 44
+  
+ 4.5 An Example Program 45
+  
+ 5 Control Structures 
+  
+ 47
+  
+ 5.1 For 48
+  
+ 5.2 If 51
+  
+ 5.3 Switch 55
+  
+ 6 Arrays, Slices and Maps 
+  
+ 58
+  
+ 6.1 Arrays 58
+  
+ 6.2 Slices 64
+  
+ 6.3 Maps 67
+  
+ 7 Functions 
+  
+ 76
+  
+ 7.1 Your Second Function 77
+  
+ 7.2 Returning Multiple Values 82
+  
+ 7.3 Variadic Functions 82",NA
+1 Getting Started,"Computer programming is the art, craft and science of 
+ writing programs which define how computers operate. 
+ This book will teach you how to write computer pro-
+ grams  using  a  programming  language  designed  by 
+ Google named Go.
+  
+ Go is a general purpose programming language with 
+ advanced features and a clean syntax. Because of its 
+ wide availability on a variety of platforms, its robust 
+ well-documented  common  library,  and  its  focus  on 
+ good software engineering principles, Go is an ideal 
+ language to learn as your first programming language.
+  
+ The process we use to write software using Go (and 
+ most  programming  languages)  is  fairly  straightfor-
+ ward: 
+  
+ 1. Gather requirements
+  
+ 2. Find a solution
+  
+ 3. Write source code to implement the solution
+  
+ 1",NA
+1.1 ,NA,NA
+Files and Folders,"A file is a collection of data stored as a unit with a 
+ name.  Modern  operating  systems  (like  Windows  or 
+ Mac OSX) contain millions of files which store a large 
+ variety of different types of information – everything 
+ from text documents to executable programs to multi-
+ media files. 
+  
+ All files are stored in the same way on a computer: they 
+ all have a name, a definite size (measured in bytes) and 
+ an associated type. Typically the file's type is signified 
+ by the file's extension – the part of the file name that 
+ comes after the last  
+ .
+ . For example a file with the 
+ name 
+ hello.txt
+  has the extension 
+ txt
+  which is used to 
+ represent textual data. 
+  
+ Folders (also called directories) are used to group files 
+ together. They can also contain other folders. On Win-",NA
+1.2 The Terminal,"Most of the interactions we have with computers today 
+ are  through  sophisticated  graphical  user  interfaces 
+ (GUIs). We use keyboards, mice and touchscreens to 
+ interact with visual buttons or other types of controls 
+ that are displayed on a screen.
+  
+ It wasn't always this way. Before the GUI we had the 
+ terminal – a simpler textual interface to the computer",NA
+1.3 Text Editors,"The primary tool programmers use to write software is 
+ a text editor. Text editors are similar to word process-
+ ing programs (Microsoft Word, Open Office, …) but un-
+ like such programs they don't do any formatting, (No 
+ bold, italic, …) instead they operate only on plain text. 
+ Both OSX and Windows come with text editors but they 
+ are highly limited and I recommend installing a better 
+ one.
+  
+ To make the installation of this software easier an in-",NA
+1.4 Go Tools,"Go is a compiled programming language, which means 
+ source code (the code you write) is translated into a 
+ language that your computer can understand. There-
+ fore before we can write a Go program, we need the Go 
+ compiler.
+  
+ The installer will setup Go for you automatically. We 
+ will be using version 1 of the language. (More informa-
+ tion can be found at 
+ http://www.golang.org
+ )
+  
+ Let's make sure everything is working. Open up a ter-
+ minal and type the following:
+  
+ go version",NA
+2 Your First Program,"Traditionally the first program you write in any pro-
+ gramming language is called a “Hello World” program – 
+ a program that simply outputs 
+ Hello World
+  to your 
+ terminal. Let's write one using Go.
+  
+ First create a new folder where we can store our pro-
+ gram. The installer you used in chapter 1 created a 
+ folder  in  your  home  directory  named  
+ Go
+ .  Create  a 
+ folder named  
+ ~/Go/src/golang-book/chapter2
+ . (Where 
+ ~
+  means your home directory) From the terminal you 
+ can do this by entering the following commands:
+  
+ mkdir Go/src/golang-book
+  
+  
+ mkdir Go/src/golang-book/chapter2
+  
+ Using your text editor type in the following:
+  
+ 15",NA
+2.1 How to Read a Go Program,"Let's look at this program in more detail. Go programs 
+ are read top to bottom, left to right. (like a book) The 
+ first line says this:
+  
+ package main
+  
+ This is know as a “package declaration”. Every Go pro-
+ gram must start with a package declaration. Packages 
+ are Go's way of organizing and reusing code. There are 
+ two types of Go programs: executables and libraries. 
+ Executable applications are the kinds of programs that 
+ we can run directly from the terminal. (in Windows 
+ they end with  
+ .exe
+ ) Libraries are collections of code 
+ that we package together so that we can use them in 
+ other programs. We will explore libraries in more de-
+ tail later, for now just make sure to include this line in 
+ any program you write.
+  
+ The next line is a blank line. Computers represent 
+ newlines with a special character (or several charac-
+ ters). Newlines, spaces and tabs are known as white-
+ space (because you can't see them). Go mostly doesn't 
+ care about whitespace, we use it to make programs 
+ easier to read. (You could remove this line and the pro-
+ gram would behave in exactly the same way)",NA
+3 Types,"In the last chapter we used the data type string to store  
+ Hello World
+ . Data types categorize a set of re-lated 
+ values, describe the operations that can be done on 
+ them and define the way they are stored. Since types 
+ can be a difficult concept to grasp we will look at them 
+ from a couple different perspectives before we see how 
+ they are implemented in Go.
+  
+ Philosophers sometimes make a distinction between 
+ types and tokens. For example suppose you have a dog 
+ named Max. Max is the token (a particular instance or 
+ member) and dog is the type (the general concept). 
+ “Dog” or “dogness” describes a set of properties that all 
+ dogs  have  in  common.  Although  oversimplistic  we 
+ might reason like this: All dogs have 4 legs, Max is a 
+ dog, therefore Max has 4 legs. Types in programming 
+ languages work in a similar way: All strings have a 
+ length, x is a string, therefore x has a length.
+  
+ In mathematics we often talk about sets. For example: 
+ ℝ
+  (the set of all real numbers) or 
+ ℕ
+  (the set of all natu-
+ ral numbers). Each member of these sets shares prop-
+  
+ 23",NA
+3.1 ,NA,NA
+Numbers,"Go has several different types to represent numbers. 
+ Generally we split numbers into two different kinds: 
+ integers and floating-point numbers.
+  
+ Integers
+  
+ Integers – like their mathematical counterpart – are",NA
+3.2 Strings,"As we saw in chapter 2 a string is a sequence of char-
+ acters with a definite length used to represent text. Go 
+ strings are made up of individual bytes, usually one for 
+ each character. (Characters from other languages like 
+ Chinese are represented by more than one byte)
+  
+ String  literals  can  be  created  using  double  quotes 
+ ""Hello World""
+  or back ticks 
+ `Hello World`
+ . The differ-
+ ence between these is that double quoted strings can-
+ not contain newlines and they allow special escape se-
+ quences. For example 
+ \n
+  gets replaced with a newline 
+ and 
+ \t
+  gets replaced with a tab character.",NA
+3.3 Booleans,"A boolean value (named after George Boole) is a spe-
+ cial 1 bit integer type used to represent true and false 
+ (or on and off). Three logical operators are used with 
+ boolean values:
+  
+ &&
+  and
+  
+ ||
+  or
+  
+ ! 
+  
+ not
+  
+ Here is an example program showing how they can be",NA
+4 Variables,"Up until now we have only seen programs that use lit-
+ eral values (numbers, strings, etc.) but such programs 
+ aren't particularly useful. To make truly useful pro-
+ grams we need to learn two new concepts: variables 
+ and control flow statements. This chapter will explore 
+ variables in more detail.
+  
+ A variable is a storage location, with a specific type and 
+ an associated name. Let's change the program we 
+ wrote in chapter 2 so that it uses a variable:
+  
+ package main
+  
+  
+ import ""fmt""
+  
+  
+ func main() {
+  
+  
+  var x string = ""Hello World""
+  
+  
+  fmt.Println(x)
+  
+  
+ }
+  
+ Notice that the string literal from the original program 
+ still appears in this program, but rather than send it 
+ directly to the 
+ Println
+  function we assign it to a vari-
+  
+ 35",NA
+4.1 How to Name a Variable,"Naming a variable properly is an important part of 
+ software development. Names must start with a letter 
+ and may contain letters, numbers or the 
+ _
+  (underscore) 
+ symbol. The Go compiler doesn't care what you name a 
+ variable so the name is meant for your (and others)",NA
+4.2 ,NA,NA
+Scope,Going back to the program we saw at the beginning of,NA
+4.3 Constants,"Go also has support for constants. Constants are basi-
+ cally variables whose values cannot be changed later. 
+ They are created in the same way you create variables 
+ but instead of using the 
+ var
+  keyword we use the 
+ const 
+ keyword:
+  
+ package main
+  
+  
+ import ""fmt""
+  
+  
+ func main() {
+  
+  
+  const x string = ""Hello World""
+  
+  
+  fmt.Println(x)
+  
+  
+ }
+  
+ This:",NA
+4.4 ,NA,NA
+Defining Multiple Variables,"Go also has another shorthand when you need to de-
+  
+ fine multiple variables:
+  
+ var (
+  
+  
+  a = 5
+  
+  
+  b = 10
+  
+  
+  c = 15
+  
+  
+ )
+  
+ Use the keyword 
+ var
+  (or 
+ const
+ ) followed by parenthe-
+  
+ ses with each variable on its own line.",NA
+An Example Program,Variables,NA
+4.5 ,"Here's an example program which takes in a number 
+ entered by the user and doubles it:
+  
+ package main
+  
+  
+ import ""fmt""
+  
+  
+ func main() {
+  
+ fmt.Print(""Enter a number: "") 
+ var input float64
+  
+ fmt.Scanf(""%f"", &input)
+  
+  
+ output := input * 2
+  
+  
+ fmt.Println(output)
+  
+  
+ }
+  
+ We use another function from the 
+ fmt
+  package to read 
+ the user input (
+ Scanf
+ ).  
+ &input
+  will be explained in a 
+ later chapter, for now all we need to know is that 
+ Scanf 
+ fills input with the number we enter.",NA
+5 Control Structures,"Now that we know how to use variables it's time to 
+ start writing some useful programs. First let's write a 
+ program that counts to 10, starting from 1, with each 
+ number on its own line. Using what we've learned so 
+ far we could write this:
+  
+ package main
+  
+  
+ import ""fmt""
+  
+  
+ func main() {
+  
+  fmt.Println(1)
+  
+  fmt.Println(2)
+  
+  fmt.Println(3)
+  
+  fmt.Println(4)
+  
+  fmt.Println(5)
+  
+  fmt.Println(6)
+  
+  fmt.Println(7)
+  
+  fmt.Println(8)
+  
+  fmt.Println(9)
+  
+  fmt.Println(10) 
+  
+ }
+  
+ Or this:
+  
+ 47",NA
+5.1 ,NA,NA
+For,"The 
+ for
+  statement allows us to repeat a list of state-
+ ments (a block) multiple times. Rewriting our previous 
+  
+ program using a 
+ for
+  statement looks like this:",NA
+5.2 If,"Let's modify the program we just wrote so that instead 
+ of just printing the numbers 1-10 on each line it also 
+ specifies whether or not the number is even or odd. 
+  
+ Like this:",NA
+Switch,Control Structures,NA
+5.3 ,"Suppose we wanted to write a program that printed the  
+ English  names  for  numbers.  Using  what  we've 
+ learned so far we might start by doing this:
+  
+ if i == 0 { 
+  
+  fmt.Println(""Zero"") 
+  
+ } else if i == 1 {
+  
+  fmt.Println(""One"") 
+  
+ } else if i == 2 {
+  
+  fmt.Println(""Two"") 
+  
+ } else if i == 3 {
+  
+  fmt.Println(""Three"") 
+  
+ } else if i == 4 { 
+  
+  fmt.Println(""Four"") 
+  
+ } else if i == 5 {
+  
+  fmt.Println(""Five"")
+  
+ }
+  
+ Since writing a program in this way would be pretty 
+ tedious Go provides another statement to make this 
+  
+ easier: the 
+ switch
+  statement. We can rewrite our pro-
+ gram to look like this:",NA
+6 ,NA,NA
+"Arrays, Slices and Maps","In chapter 3 we learned about Go's basic types. In this 
+ chapter we will look at three more built-in types: ar-
+ rays, slices and maps.",NA
+6.1 ,NA,NA
+Arrays,"An array is a numbered sequence of elements of a sin-
+ gle type with a fixed length. In Go they look like this:
+  
+ var x [5]int
+  
+ x
+  is an example of an array which is composed of 5 
+ int
+ s. 
+ Try running the following program:
+  
+ 58",NA
+6.2 ,NA,NA
+Slices,"A slice is a segment of an array. Like arrays slices are 
+ indexable and have a length. Unlike arrays this length 
+ is allowed to change. Here's an example of a slice:
+  
+  var x []float64
+  
+ The only difference between this and an array is the 
+ missing length between the brackets. In this case  
+ x 
+ has 
+ been created with a length of 
+ 0
+ .",NA
+6.3 Maps,"A map is an unordered collection of key-value pairs. 
+ Also known as an associative array, a hash table or a 
+ dictionary, maps are used to look up a value by its as-
+ sociated key. Here's an example of a map in Go:
+  
+ var x map[string]int
+  
+ The map type is represented by the keyword 
+ map
+ , fol-
+ lowed by the key type in brackets and finally the value 
+ type. If you were to read this out loud you would say “
+ x 
+ is a map of 
+ string
+ s to 
+ int
+ s.” 
+  
+ Like arrays  and slices maps  can be accessed using 
+ brackets. Try running the following program:",NA
+7 ,NA,NA
+Functions,"A function is an independent section of code that maps 
+ zero or more input parameters to zero or more output 
+ parameters. Functions (also known as procedures or 
+ subroutines) are often represented as a black box: (the 
+ black box represents the function)
+  
+  
+ Until now the programs we have written in Go have 
+ used only one function:
+  
+ func main() {}
+  
+ We will now begin writing programs that use more 
+ than one function.
+  
+ 76",NA
+Your Second Function,Functions,NA
+7.1 ,"Remember this program from chapter 6:
+  
+ func main() {
+  
+  
+ xs := []float64{98,93,77,82,83}
+  
+  
+ total := 0.0
+  
+  
+ for _, v := range xs {
+  
+  
+ total += v
+  
+  
+ }
+  
+  
+ fmt.Println(total / float64(len(xs)))
+  
+  
+ }
+  
+ This program computes the average of a series of num-
+  
+ bers. Finding the average like this is a very general 
+  
+ problem, so its an ideal candidate for definition as a 
+  
+ function.
+  
+ The  
+ average
+  function will need to take in a slice of 
+  
+ float64
+ s and return one 
+ float64
+ . Insert this before the 
+  
+ main
+  function:
+  
+ func average(xs []float64) float64 {
+  
+  
+ panic(""Not Implemented"")
+  
+  
+ }
+  
+ Functions start with the keyword 
+ func
+ , followed by the 
+  
+ function's name. The parameters (inputs) of the func-",NA
+7.2 ,NA,NA
+Returning Multiple Values,"Go is also capable of returning multiple values from a 
+ function:
+  
+ func f() (int, int) {
+  
+  
+ return 5, 6
+  
+  
+ }
+  
+  
+ func main() {
+  
+  
+ x, y := f()
+  
+  
+ }
+  
+ Three changes are necessary: change the return type to 
+ contain multiple types separated by  
+ ,
+ , change the 
+ expression after the return so that it contains multiple 
+ expressions separated by 
+ ,
+  and finally change the as-
+ signment statement so that multiple values are on the 
+ left side of the 
+ :=
+  or 
+ =
+ .
+  
+ Multiple values are often used to return an error value 
+ along with the result (
+ x, err := f()
+ ), or a boolean to 
+ indicate success (
+ x, ok := f()
+ ).",NA
+7.3 ,NA,NA
+Variadic Functions,"There is a special form available for the last parameter 
+ in a Go function:",NA
+7.4 ,NA,NA
+Closure,"It is possible to create functions inside of functions:
+  
+ func main() {
+  
+  
+ add := func(x, y int) int {
+  
+  
+ return x + y
+  
+  
+ }
+  
+  
+ fmt.Println(add(1,1))
+  
+  
+ }
+  
+ add
+  is a local variable that has the type 
+ func(int, int) 
+  
+ int
+  (a function that takes two  
+ int
+ s and returns an 
+  
+ int
+ ).  When you create a local function like this it also 
+  
+ has access to other local variables (remember scope 
+  
+ from chapter 4):",NA
+7.5 ,NA,NA
+Recursion,"Finally a function is able to call itself. Here is one way 
+ to compute the factorial of a number:",NA
+7.6 ,NA,NA
+"Defer, Panic & Recover","Go has a special statement called 
+ defer
+  which sched-
+ ules a function call to be run after the function com-
+ pletes. Consider the following example:
+  
+ package main
+  
+  
+ import ""fmt""
+  
+  
+ func first() {
+  
+ fmt.Println(""1st"") 
+  
+ } 
+  
+ func second() { 
+  
+ fmt.Println(""2nd"") 
+  
+ } 
+  
+ func main() { 
+  
+ defer second() 
+  
+ first()
+  
+ }
+  
+ This program prints 
+ 1st
+  followed by 
+ 2nd
+ . Basically de-
+  
+ fer moves the call to 
+ second
+  to the end of the function:
+  
+ func main() {
+  
+  
+  first()
+  
+  
+  second()
+  
+  
+ }
+  
+ defer
+  is often used when resources need to be freed in 
+ some way. For example when we open a file we need to",NA
+8 ,NA,NA
+Pointers,"When we call a function that takes an argument, that 
+  
+ argument is copied to the function:
+  
+ func zero(x int) {
+  
+  
+ x = 0
+  
+  
+ }
+  
+  
+ func main() {
+  
+  
+ x := 5
+  
+  
+ zero(x)
+  
+  
+ fmt.Println(x) // x is still 5
+  
+  
+ }
+  
+ In this program the 
+ zero
+  function will not modify the 
+  
+ original 
+ x
+  variable in the 
+ main
+  function. But what if we 
+  
+ wanted to? One way to do this is to use a special data 
+  
+ type known as a pointer:
+  
+ 92",NA
+8.1 The * and & operators,"In Go a pointer is represented using the  
+ *
+  (asterisk) 
+ character followed by the type of the stored value. In 
+ the 
+ zero
+  function 
+ xPtr
+  is a pointer to an 
+ int
+ . 
+  
+ *
+  is also used to “dereference” pointer variables. Deref-
+ erencing a pointer gives us access to the value the 
+ pointer points to. When we write 
+ *xPtr = 0
+  we are say-
+ ing “store the 
+ int
+  0 in the memory location 
+ xPtr
+  refers 
+ to”. If we try 
+ xPtr = 0
+  instead we will get a compiler 
+ error because 
+ xPtr
+  is not an 
+ int
+  it's a 
+ *int
+ , which can 
+ only be given another 
+ *int
+ .
+  
+ Finally we use the 
+ &
+  operator to find the address of a",NA
+8.2 ,NA,NA
+new,"Another way to get a pointer is to use the built-in 
+ new 
+ function:
+  
+ func one(xPtr *int) {
+  
+  
+ *xPtr = 1
+  
+  
+ }
+  
+  
+ func main() {
+  
+  
+ xPtr := new(int)
+  
+  
+ one(xPtr)
+  
+  
+ fmt.Println(*xPtr) // x is 1
+  
+  
+ }
+  
+ new
+  takes a type as an argument, allocates enough 
+ memory  to  fit  a  value  of  that  type  and  returns  a 
+ pointer to it.
+  
+ In some programming languages there is a significant 
+ difference between using 
+ new
+  and 
+ &
+ , with great care be-
+ ing needed to eventually delete anything created with 
+ new
+ . Go is not like this, it's a garbage collected pro-
+ gramming language which means memory is cleaned up 
+ automatically when nothing refers to it anymore.",NA
+9 Structs and Interfaces,"Although it would be possible for us to write programs 
+ only using Go's built-in data types, at some point it 
+ would become quite tedious. Consider a program that 
+ interacts with shapes:
+  
+ package main
+  
+  
+ import (""fmt""; ""math"")
+  
+  
+ func distance(x1, y1, x2, y2 float64) float64 {
+  
+ a 
+ := 
+ x2 
+ – 
+ x1 
+  
+ b 
+ := 
+ y2 
+ – 
+ y1 
+  
+ return 
+ math.Sqrt(a*a 
+ + 
+ b*b)
+  
+ }
+  
+  
+ func rectangleArea(x1, y1, x2, y2 float64) 
+  
+ float64 { 
+  
+ l := distance(x1, y1, x1, y2) 
+ w := distance(x1, y1, x2, y1) 
+ return l * w
+  
+ }
+  
+  
+ func circleArea(x, y, r float64) float64 {
+  
+ return math.Pi * r*r 
+  
+ }
+  
+ 97",NA
+9.1 ,NA,NA
+Structs,"An easy way to make this program better is to use a 
+  
+ struct. A struct is a type which contains named fields. 
+  
+ For example we could represent a Circle like this:
+  
+ type Circle struct {
+  
+  
+ x float64
+  
+  
+ y float64
+  
+  
+ r float64
+  
+  
+ }
+  
+ The 
+ type
+  keyword introduces a new type. It's followed 
+  
+ by the name of the type (
+ Circle
+ ), the keyword 
+ struct 
+  
+ to indicate that we are defining a  
+ struct
+  type and a 
+  
+ list of fields inside of curly braces. Each field has a",NA
+9.2 ,NA,NA
+Methods,"Although this is better than the first version of this 
+ code, we can improve it significantly by using a special 
+ type of function known as a method:
+  
+ func (c *Circle) area() float64 {
+  
+  
+ return math.Pi * c.r*c.r
+  
+  
+ }
+  
+ In between the keyword  
+ func
+  and the name of the 
+ function we've added a “receiver”. The receiver is like a",NA
+9.3 ,NA,NA
+Interfaces,"You may have noticed that we were able to name the 
+  
+ Rectangle
+ 's 
+ area
+  method the same thing as the 
+ Circle
+ 's 
+  
+ area
+  method. This was no accident. In both real life",NA
+10 Concurrency,"Large programs are often made up of many smaller 
+ sub-programs. For example a web server handles re-
+ quests made from web browsers and serves up HTML 
+ web pages in response. Each request is handled like a 
+ small program.
+  
+ It would be ideal for programs like these to be able to 
+ run their smaller components at the same time (in the 
+ case of the web server to handle multiple requests). 
+ Making progress on more than one task simultane-
+ ously is known as concurrency. Go has rich support for 
+ concurrency using goroutines and channels.",NA
+10.1 Goroutines,"A goroutine is a function that is capable of running 
+ concurrently with other functions. To create a gorou-
+ tine we use the keyword 
+ go
+  followed by a function invo-
+ cation:
+  
+ 108",NA
+10.2 Channels,"Channels provide a way for two goroutines to commu-
+  
+ nicate with one another and synchronize their execu-
+  
+ tion. Here is an example program using channels:",NA
+11 Packages,"Go was designed to be a language that encourages good  
+ software  engineering  practices.  An  important part of 
+ high quality software is code reuse – embodied in the 
+ principle “Don't Repeat Yourself.”
+  
+ As we saw in chapter 7 functions are the first layer we 
+ turn to allow code reuse.  Go also provides  another 
+ mechanism for code reuse: packages. Nearly every pro-
+ gram we've seen so far included this line:
+  
+ import ""fmt""
+  
+ fmt
+  is the name of a package that includes a variety of 
+ functions  related  to  formatting  and  output  to  the 
+ screen. Bundling code in this way serves 3 purposes: 
+  
+ 1. It  reduces  the  chance  of  having  overlapping 
+ names. This keeps our function names short and 
+ succinct
+  
+ 2. It organizes code so that its easier to find code 
+  
+ 120",NA
+11.1 Creating Packages,"Packages only really make sense in the context of a 
+ separate program which uses them. Without this sepa-
+ rate program we have no way of using the package we 
+ create. Let's create an application that will use a pack-
+ age we will write. Create a folder in 
+ ~/Go/src/golang-
+ book
+  called  
+ chapter11
+ . Inside that folder create a file 
+ called 
+ main.go
+  which contains this:
+  
+ package main
+  
+  
+ import ""fmt""
+  
+  
+ import ""golang-book/chapter11/math""
+  
+  
+ func main() {
+  
+  
+ xs := []float64{1,2,3,4}
+  
+  
+ avg := math.Average(xs)
+  
+  
+ fmt.Println(avg)
+  
+  
+ }
+  
+ Now  create  another  folder  inside  of  the  
+ chapter11",NA
+11.2 Documentation,"Go has the ability to automatically generate documen-
+ tation for packages we write in a similar way to the 
+ standard package documentation. In a terminal run 
+ this command:
+  
+ godoc golang-book/chapter11/math Average
+  
+ You should see information displayed for the function 
+ we just wrote. We can improve this documentation by 
+ adding a comment before the function:
+  
+ // Finds the average of a series of numbers
+  
+  
+ func Average(xs []float64) float64 {
+  
+ If you run 
+ go install
+  in the 
+ math
+  folder, then re-run",NA
+12 Testing,"Programming is not easy; even the best programmers 
+ are incapable of writing programs that work exactly as 
+ intended every time. Therefore an important part of 
+ the software development process is testing. Writing 
+ tests for our code is a good way to ensure quality and 
+ improve reliability.
+  
+ Go  includes  a  special  program  that  makes  writing 
+ tests easier, so let's create some tests for the package 
+ we made in the last chapter. In the  
+ math
+  folder from 
+ chapter11
+  create a new file called  
+ math_test.go
+  that 
+ contains this:
+  
+ 127",NA
+13 The Core Packages,"Instead of writing everything from scratch, most real 
+ world programming depends on our ability to interface 
+ with existing libraries. This chapter will take a look at 
+ some of the most commonly used packages included 
+ with Go.
+  
+ First a word of warning: although some of these li-
+ braries are fairly obvious (or have been explained in 
+ previous chapters), many of the libraries included with 
+ Go require specialized domain specific knowledge (for 
+ example: cryptography). It is beyond the scope of this 
+ book to explain these underlying technologies.",NA
+13.1 Strings,"Go includes a large number of functions to work with 
+ strings in the 
+ strings
+  package:
+  
+ 132",NA
+13.2 Input / Output,"Before we look at files we need to understand Go's 
+ io 
+ package. The  
+ io
+  package consists of a few functions, 
+ but mostly interfaces used in other packages. The two 
+ main interfaces are 
+ Reader
+  and 
+ Writer
+ . 
+ Reader
+ s support 
+ reading via the 
+ Read
+  method. 
+ Writer
+ s support writing 
+ via  the  
+ Write
+  method.  Many  functions  in  Go  take 
+ Reader
+ s or 
+ Writer
+ s as arguments. For example the 
+ io 
+ package has a 
+ Copy
+  function which copies data from a 
+ Reader
+  to a 
+ Writer
+ :",NA
+13.3 Files & Folders,"To open a file in Go use the 
+ Open
+  function from the 
+ os 
+ package.  Here is an example of how to read the con-
+ tents of a file and display them on the terminal:",NA
+13.4 Errors,"Go has a built-in type for errors that we have already 
+  
+ seen (the 
+ error
+  type). We can create our own errors by 
+ using the 
+ New
+  function in the 
+ errors
+  package:",NA
+13.5 Containers & Sort,"In addition to lists and maps Go has several more col-
+ lections available underneath the container package. 
+ We'll take a look at the 
+ container/list
+  package as an 
+ example.
+  
+ List
+  
+ The  
+ container/list
+  package  implements  a  dou-bly-
+ linked list. A linked list is a type of data structure that 
+ looks like this:
+  
+  
+ Each node of the list contains a value (1, 2, or 3 in this 
+ case) and a pointer to the next node. Since this is a 
+ doubly-linked list each node will also have pointers to 
+ the previous node. This list could be created by this",NA
+13.6 Hashes & Cryptography,"A hash function takes a set of data and reduces it to a 
+  
+ smaller fixed size. Hashes are frequently used in pro-
+  
+ gramming for everything from looking up data to eas-
+  
+ ily detecting changes. Hash functions in Go are broken 
+  
+ into  two  categories:  cryptographic  and  non-crypto-
+  
+ graphic.
+  
+ The non-cryptographic hash  functions  can be found 
+  
+ underneath  the  hash  package  and  include  
+ adler32
+ , 
+  
+ crc32
+ , 
+ crc64
+  and 
+ fnv
+ . Here's an example using 
+ crc32
+ :",NA
+13.7 Servers,Writing network servers in Go is very easy. We will,NA
+13.8 Parsing Command Line Arguments,"When we invoke a command on the terminal it's possi-
+ ble to pass that command arguments. We've seen this 
+ with the 
+ go
+  command:
+  
+ go run myfile.go
+  
+ run and myfile.go are arguments. We can also pass 
+ flags to a command:
+  
+ go run -v myfile.go
+  
+ The flag package allows us to parse arguments and 
+ flags sent to our program. Here's an example program 
+ that generates a number between 0 and 6. We can 
+ change the max value by sending a flag (
+ -max=100
+ ) to 
+ the program:",NA
+13.9 Synchronization Primitives,"The preferred way to handle concurrency and synchro-
+ nization in Go is through goroutines and channels as 
+ discussed  in  chapter  10.  However  Go  does  provide 
+ more traditional multithreading routines in the  
+ sync 
+ and 
+ sync/atomic
+  packages.
+  
+ Mutexes
+  
+ A mutex (mutal exclusive lock) locks a section of code to 
+ a single thread at a time and is used to protect shared 
+ resources from non-atomic operations. Here is an 
+ example of a mutex:",NA
+14 Next Steps,"We now have all the information we need to write most 
+ Go programs. But it would be dangerous to con-clude 
+ that therefore we are competent programmers. 
+ Programming is as much a craft as it is just having 
+ knowledge. This chapter will provide you with some 
+ suggestions about how best to master the craft of pro-
+ gramming.",NA
+14.1 Study the Masters,"Part of becoming a good artist or writer is studying the 
+ works of the masters. It's no different with program-
+ ming. One of the best ways to become a skilled pro-
+ grammer is to study the source code produced by oth-
+ ers. Go is well suited to this task since the source code 
+ for the entire project is freely available.
+  
+ For example we might take a look at the source code to 
+ the 
+ io/ioutil
+  library available at:
+  
+ http://golang.org/src/pkg/io/ioutil/ioutil.go
+  
+ 159",NA
+14.2 Make Something,"One of the best ways to hone your skills is to practice 
+ coding. There are a lot of ways to do this: You could 
+ work on challenging programming problems from sites 
+ like Project Euler (http://projecteuler.net/) or try your 
+ hand at a larger project. Perhaps try to implement a 
+ web server or write a simple game.",NA
+14.3 Team Up,"Most real-world software projects are done in teams, 
+ therefore learning how to work in a team is crucial. If 
+ you can, find a friend – maybe a classmate – and team 
+ up on a project. Learn how to divide a project into 
+ pieces you can both work on simultaneously.
+  
+ Another option is to work on an open source project. 
+ Find a 3
+ rd
+  party library, write some code (perhaps fix a 
+ bug), and submit it to the maintainer. Go has a grow-
+ ing community which can be reached via the mailing 
+ list (http://groups.google.com/group/golang-nuts).",NA

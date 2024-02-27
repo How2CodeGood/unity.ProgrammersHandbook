@@ -1,0 +1,1836 @@
+Larger Text,Smaller Text,Symbol
+Contents,"Introduction
+  
+ 1
+  
+ 4
+  
+ 5 
+  
+ 5  
+ 6  
+ 7  
+ 7  
+ 8  
+ 1
+ 0  
+ 1
+ 0 
+ 1
+ 2 
+  
+ 1
+ 2  
+ 1
+ 3  
+ 1
+ 4  
+ 1
+ 5  
+ 1
+ 5  
+ 1
+ 6  
+ 1
+ 6  
+ 1
+ 7  
+ 1
+ 8  
+ 1
+ 8 
+ 2
+ 0 
+  
+ 2
+ I
+  
+ Writing Applications
+  
+ 1
+  
+ How to Dive into a Code Base
+  
+ 1.1 
+ Raw Erlang . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 1.2 
+ OTP Applications 
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 1.2.1 
+ Library Applications . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 1.2.2 
+ Regular Applications . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 1.2.3 
+ Dependencies . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 1.3 
+ OTP Releases . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 1.4 
+ Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 2
+  
+ Building Open Source Erlang Software
+  
+ 2.1 
+ Project Structure . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 2.1.1 
+ OTP Applications 
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 2.1.2 
+ OTP Releases . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 2.2 
+ Supervisors and start_link Semantics . . . . . . . . . . . . . . . . . . . . . . 
+ 2.2.1 
+ It’s About the Guarantees . . . . . . . . . . . . . . . . . . . . . . . . 
+ 2.2.2 
+ Side Effects . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 2.2.3 
+ Example: Initializing without guaranteeing connections 
+ . . . . . . . 
+ 2.2.4 
+ In a nutshell 
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 2.2.5 
+ Application Strategies . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 2.3 
+ Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 3
+  
+ Planning for Overload
+  
+ 3.1 Common Overload Sources 
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 3.1.1 
+ error_logger Explodes . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ 3.1.2 
+ Locks and Blocking Operations . . . . . . . . . . . . . . . . . . . . . 
+ 3.1.3 
+ Unexpected Messages 
+ . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ i",NA
+List of Figures,"1.1 
+ Dependency graph of riak_cs, Basho’s open source cloud library. The graph 
+ 9 
+ ignores dependencies on common applications like kernel and stdlib. Ovals 
+ are applications, rectangles are library applications. . . . . . . . . . . . . . . 
+ 7.1 
+ Erlang’s Memory allocators and their hierarchy. Not shown is the special
+  su-
+  
+ 69 
+ per carrier
+ , optionally allowing to pre-allocate (and limit) all memory avail- 
+ able to the Erlang VM since R16B03. . . . . . . . . . . . . . . . . . . . . . . 
+ 7.2 
+ Example memory allocated in a specific sub-allocator . . . . . . . . . . . . . 
+ 70 
+ 7.3 
+ Example memory allocated in a specific sub-allocator . . . . . . . . . . . . . 
+ 71 
+ 7.4 
+ Example memory allocated in a specific sub-allocator . . . . . . . . . . . . . 
+ 72 
+ 9.1 
+ What gets traced is the result of the intersection between the matching pids 
+ 82 
+ and the matching trace patterns . . . . . . . . . . . . . . . . . . . . . . . . . 
+ iv",NA
+Introduction,NA,NA
+On Running Software,"There’s something rather unique in Erlang in how it approaches failure compared to most 
+ other programming languages. There’s this common way of thinking where the language, 
+ programming environment, and methodology do everything possible to prevent errors. 
+ Something going wrong at run-time is something that needs to be prevented, and if it 
+ cannot be prevented, then it’s out of scope for whatever solution people have been thinking 
+ about. 
+  
+ The program is written once, and after that, it’s off to production, whatever may happen 
+ there. If there are errors, new versions will need to be shipped. 
+ Erlang, on the other hand, takes the approach that failures will happen no matter what, 
+ whether they’re developer-, operator-, or hardware-related. It is rarely practical or even 
+ possible to get rid of all errors in a program or a system.
+ 1
+ If you can deal with some errors 
+ rather than preventing them at all cost, then most undefined behaviours of a program can 
+ go in that ""deal with it"" approach. 
+ This is where the ""Let it Crash""
+ 2
+ idea comes from: Because you can now deal with 
+ failure, and because the cost of weeding out all of the complex bugs from a system before it 
+ hits production is often prohibitive, programmers should only deal with the errors they 
+ know how to handle, and leave the rest for another process (a supervisor) or the virtual 
+ machine to deal with. 
+  
+ Given that most bugs are transient
+ 3
+ , simply restarting processes back to a state known to 
+ be stable when encountering an error can be a surprisingly good strategy. 
+ Erlang is a programming environment where the approach taken is equivalent to the 
+ human body’s immune system, whereas most other languages only care about hygiene to 
+ make sure no germ enters the body. Both forms appear extremely important to me. Almost 
+ every environment offers varying degrees of hygiene. Nearly no other environment offers 
+ 1
+ life-critical systems are usually excluded from this category 
+  
+ 2
+ Erlang people now seem to favour ""let it fail"", given it makes people far less nervous.
+  
+ 3
+ 131 out of 132 bugs are transient bugs (they’re non-deterministic and go away when you look at them, and 
+ trying again may solve the problem entirely), according to Jim Gray in
+  Why Do Computers Stop and What Can 
+ Be Done About It?
+  
+ 1",NA
+Who is this for?,"This book is not for beginners. There is a gap left between most tutorials, books, training 
+ sessions, and actually being able to operate, diagnose, and debug running systems once 
+ they’ve made it to production. There’s a fumbling phase implicit to a programmer’s 
+ learning of a new language and environment where they just have to figure how to get out 
+ of the guidelines and step into the real world, with the community that goes with it. 
+ This book assumes that the reader is proficient in basic Erlang and the OTP framework. 
+ Erlang/OTP features are explained as I see fit — usually when I consider them tricky —and 
+ it is expected that a reader who feels confused by usual Erlang/OTP material will have an 
+ idea of where to look for explanations if necessary
+ 4
+ . 
+ What is not necessarily assumed is that the reader knows how to debug Erlang 
+ software, dive into an existing code base, diagnose issues, or has an idea of the best 
+ practices about deploying Erlang in a production environment
+ 5
+ .",NA
+How To Read This Book,"This book is divided in two parts. 
+ Part
+  I
+  focuses on how to write applications. It includes how to dive into a code base 
+ (Chapter
+  1
+ ), general tips on writing open source Erlang software (Chapter
+  2
+ ), and how to 
+ plan for overload in your system design (Chapter
+  3
+ ). 
+ Part
+  II
+  focuses on being an Erlang medic and concerns existing, living systems. 
+ It 
+ contains instructions on how to connect to a running node (Chapter
+  4
+ ), and the basic 
+ runtime metrics available (Chapter
+  5
+ ). It also explains how to perform a system autopsy 
+ using a crash dump (Chapter
+  6
+ ), how to identify and fix memory leaks (Chapter
+  7
+ ), and 
+  
+ 4
+ I do recommend visiting
+  Learn You Some Erlang
+  or the regular
+  Erlang Documentation
+  if a free resource is 
+ required 
+  
+  
+ 5
+ Running Erlang in a screen or tmux session is
+  not
+  a deployment strategy.",NA
+Part I ,NA,NA
+Writing Applications,4,NA
+Chapter 1 ,NA,NA
+How to Dive into a Code Base,"""Read the source"" is one of the most annoying things to be told, but dealing with Erlang 
+ programmers, you’ll have to do it often. Either the documentation for a library will be 
+ incomplete, outdated, or just not there. 
+ In other cases, Erlang programmers are a bit 
+ similar to Lispers in that they will tend to write libraries that will solve their problems and 
+ not really test or try them in other circumstances, leaving it to you to extend or fix issues 
+ that arise in new contexts. 
+ It’s thus pretty much guaranteed you’ll have to go dive in some code base you know 
+ nothing about, either because you inherited it at work, or because you need to fix it or 
+ understand it to be able to move forward with your own system. This is in fact true of most 
+ languages whenever the project you work on is not one you designed yourself. 
+ There are three main types of Erlang code bases you’ll encounter in the wild: raw 
+ Erlang code bases, OTP applications, and OTP releases. In this chapter, we’ll look at each of 
+ these and try to provide helpful tips on navigating them.",NA
+1.1,NA,NA
+Raw Erlang,"If you encounter a raw Erlang code base, you’re pretty much on your own. These rarely 
+ follow any specific standard, and you have to dive in the old way to figure out whatever 
+ happens in there. 
+ This means hoping for a README.md file or something similar that can point to an 
+ entry point in the application, and going from there, or hoping for some contact 
+ information that can be used to ask questions to the author(s) of the library. 
+  
+ Fortunately, you should rarely encounter raw Erlang in the wild, and they are often 
+ beginner projects, or awesome projects that were once built by Erlang beginners and now 
+ need a serious rewrite. In general, the advent of tools such as rebar3 and its earlier 
+ incarnations
+ 1
+ made it so most people use OTP Applications. 
+ 1
+ https://www.rebar3.org
+  — a build tool briefly introduced in Chapter
+  2
+  
+ 5",NA
+1.2 ,NA,NA
+OTP Applications,"Figuring out OTP applications is usually rather simple. They usually all share a directory 
+ structure that looks like: 
+ doc/  
+ ebin/  
+ src/  
+ test/  
+ LICENSE.txt  
+ README.md  
+ rebar.config 
+ There might be slight differences, but the general structure will be the same. 
+  
+ Each OTP application should contain an
+  app file
+ , either ebin/<AppName>.app or more 
+ often, src/<AppName>.app.src
+ 2
+ . There are two main varieties of app files: 
+ {application, useragent, [ 
+  
+  
+ {description, ""Identify browsers & OSes from useragent strings""}, 
+  
+ {vsn, 
+ ""0.1.2""}, 
+  
+  
+ {registered, []}, 
+  
+  
+ {applications, [kernel, stdlib]}, 
+  
+  
+ {modules, [useragent]} 
+  
+ ]}.
+  
+ And: 
+ {application, dispcount, [ 
+  
+  
+ {description, ""A dispatching library for resources and task "" 
+   
+  
+ ""limiting based on shared counters""}, 
+  
+  
+ {vsn, ""1.0.0""}, 
+  
+  
+ {applications, [kernel, stdlib]}, 
+  
+  
+ {registered, []}, 
+  
+  
+ {mod, {dispcount, []}}, 
+  
+  
+ {modules, [dispcount, dispcount_serv, dispcount_sup, 
+  
+   
+ dispcount_supersup, dispcount_watcher, watchers_sup]} ]}.
+  
+ This first case is called a
+  library application
+ , while the second case is a regular
+  application
+ . 
+ 2
+ A build system generates the final file that goes in
+  ebin
+ . 
+  
+ Note that in these cases, many
+  
+ src/<AppName>.app.src
+  files do not specify modules and let the build system take care of it.",NA
+1.3 ,NA,NA
+OTP Releases,"OTP releases are not a lot harder to understand than most OTP applications you’ll en-
+ counter in the wild. A release is a set of OTP applications packaged in a production-ready 
+ manner so it boots and shuts down without needing to manually call application:start/2 for 
+ any app. Compiled releases may contain their own copy of the Erlang virtual machine with 
+ more or less libraries than the default distribution, and can be ready to run standalone. Of 
+ course there’s a bit more to releases than that, but generally, the same discovery process 
+ used for individual OTP applications will be applicable here. 
+ You’ll usually have a file named relx.config or a relx tuple in a rebar.config file, which 
+ will state which top-level applications are part of the release and some options re-garding 
+ their packaging. Relx-based releases can be understood by reading the project’s wiki
+ 8
+ , or 
+ their documentation on the documentation sites of rebar3
+ 9
+ or erlang.mk
+ 10
+ . 
+ Other systems may depend on the configuration files used by systools or reltool, which 
+ will state all applications part of the release and a few
+ 11
+ options regarding their packaging. 
+ To understand them, I recommend
+  reading existing documentation on them
+ .",NA
+1.4 ,NA,NA
+Exercises,"Review Questions
+  
+ 1. How do you know if a code base is an application? A release? 
+ 2. What differentiates an application from a library application? 
+ 3. What can be said of processes under a one_for_all scheme for supervision? 
+ 4. Why would someone use a gen_fsm behaviour over a gen_server? 
+ Hands-On
+  
+ Download the code at
+  https://github.com/ferd/recon_demo
+ . This will be used as a test bed 
+ for exercises throughout the book. Given you are not familiar with the code base yet, let’s 
+ see if you can use the tips and tricks mentioned in this chapter to get an understanding of 
+ it. 
+ 7
+ http://www.erlang.org/doc/apps/observer/observer_ug.html 
+ 8
+ https://github.com/erlware/relx/wiki 
+  
+ 9
+ https://www.rebar3.org/docs/releases 
+  
+ 10
+ http://erlang.mk/guide/relx.html 
+  
+ 11
+ A lot",NA
+Chapter 2,NA,NA
+Building Open Source Erlang ,NA,NA
+Software,"Most Erlang books tend to explain how to build Erlang/OTP applications, but few of them 
+ go very much in depth about how to integrate with the Erlang community doing Open 
+ Source work. Some of them even avoid the topic on purpose. This chapter dedicates itself 
+ to doing a quick tour of the state of affairs in Erlang. 
+ OTP applications are the vast majority of the open source code people will encounter. 
+ In fact, many people who would need to build an OTP release would do so as one umbrella 
+ OTP application. 
+  
+ If what you’re writing is a stand-alone piece of code that could be used by someone 
+ building a product, it’s likely an OTP application. If what you’re building is a product that 
+ stands on its own and should be deployed by users as-is (or with a little configuration), what 
+ you should be building is an OTP release.
+ 1 
+  
+  
+ The main build tools supported are rebar3 and erlang.mk. The former is a build tool and 
+ package manager trying to make it easy to develop and release Erlang libraries and systems 
+ in a repeatable manner, while the latter is a very fancy makefile that offers a bit less for 
+ production and releases but allows more flexibility. In this chapter, I’ll mostly focus on using 
+ rebar3 to build things, given it’s the de-facto standard, is a tool I know well, and that 
+ erlang.mk applications tend to also be supported by rebar3 as dependencies (the opposite is 
+ also true).",NA
+2.1 ,NA,NA
+Project Structure,"The structures of OTP applications and of OTP releases are different. An OTP appli-cation can 
+ be expected to have one top-level supervisor (if any) and possibly a bunch of 
+  
+ 1
+ The details of how to build an OTP application or release is left up to the Erlang introduction book you have 
+ at hand.
+  
+ 12",NA
+2.2 ,NA,NA
+Supervisors and start_link Semantics,"In complex production systems, most faults and errors are transient, and retrying an 
+ opera-tion is a good way to do things — Jim Gray’s paper
+ 6
+ quotes
+  Mean Times Between 
+ Failures 
+ (MTBF) of systems handling transient bugs being better by a factor of 4 when 
+ doing this. Still, supervisors aren’t just about restarting. 
+ One very important part of Erlang supervisors and their supervision trees is that
+  their 
+ start phases are synchronous
+ . Each OTP process has the potential to prevent its siblings and 
+ cousins from booting. If the process dies, it’s retried again, and again, until it works, or fails 
+ too often. 
+ That’s where people make a very common mistake. There isn’t a backoff or cooldown 
+ period before a supervisor restarts a crashed child. When a network-based application 
+ tries to set up a connection during its initialization phase and the remote service is down, 
+ the application fails to boot after too many fruitless restarts. Then the system may shut 
+ down. 
+ Many Erlang developers end up arguing in favor of a supervisor that has a cooldown 
+ period. I strongly oppose the sentiment for one simple reason:
+  it’s all about the guarantees
+ . 
+ 2.2.1 
+  
+ It’s About the Guarantees
+  
+ Restarting a process is about bringing it back to a stable, known state. From there, things 
+ can be retried. When the initialization isn’t stable, supervision is worth very little. An 
+ initialized process should be stable no matter what happens. That way, when its siblings 
+ and cousins get started later on, they can be booted fully knowing that the rest of the 
+ system that came up before them is healthy. 
+ If you don’t provide that stable state, or if you were to start the entire system asyn-
+ chronously, you would get very little benefit from this structure that a try ... catch in a loop 
+ wouldn’t provide. 
+ 6
+ http://mononcqc.tumblr.com/post/35165909365/why-do-computers-stop",NA
+2.3 ,NA,NA
+Exercises,"Review Questions
+  
+ 1. Are Erlang supervision trees started depth-first? breadth-first? Synchronously or 
+ asynchronously? 
+ 2. What are the three application strategies? What do they do? 
+ 3. What are the main differences between the directory structure of an app and a release? 
+ 4. When should you use a release?",NA
+Chapter 3,NA,NA
+Planning for Overload,"By far, the most common cause of failure I’ve encountered in real-world scenarios is due to 
+ the node running out of memory. Furthermore, it is usually related to message queues 
+ going out of bounds.
+ 1
+ There are plenty of ways to deal with this, but knowing which one to 
+ use will require a decent understanding of the system you’re working on. 
+ To oversimplify things, most of the projects I end up working on can be visualized as a 
+ very large bathroom sink. User and data input are flowing from the faucet. The Erlang 
+ system itself is the sink and the pipes, and wherever the output goes (whether it’s a 
+ database, an external API or service, and so on) is the sewer system. 
+  
+ When an Erlang node dies because of a queue overflowing, figuring out who to blame is 
+ crucial. Did someone put too much water in the sink? Are the sewer systems backing up? 
+ 1
+ Figuring out that a message queue is the problem is explained in Chapter
+  6
+ , specifically in Section
+  6.2
+  
+ 20",NA
+3.1 ,NA,NA
+Common Overload Sources,"There are a few common causes of queues blowing up and overload in Erlang systems that 
+ most people will encounter sooner or later, no matter how they approach their system. 
+ They’re usually symptomatic of having your system grow up and require some help scaling 
+ up, or of an unexpected type of failure that ends up cascading much harder than it should 
+ have.",NA
+3.2 ,NA,NA
+Restricting Input,"Restricting input is the simplest way to manage message queue growth in Erlang systems. 
+ It’s the simplest approach because it basically means you’re slowing the user down 
+ (applying 
+ back-pressure
+ ), which instantly fixes the problem without any further 
+ optimization required. On the other hand, it can lead to a really crappy experience for the 
+ user. 
+ The most common way to restrict data input is to make calls to a process whose queue 
+ would grow in uncontrollable ways synchronously. By requiring a response before moving 
+ on to the next request, you will generally ensure that the direct source of the problem will 
+ be slowed down. 
+ The difficult part for this approach is that the bottleneck causing the queue to grow is 
+ usually not at the edge of the system, but deep inside it, which you find after optimizing 
+ nearly everything that came before. Such bottlenecks will often be database operations, 
+ disk operations, or some service over the network. 
+ This means that when you introduce synchronous behaviour deep in the system, you’ll 
+ possibly need to handle back-pressure, level by level, until you end up at the system’s 
+ edges and can tell the user, ""please slow down."" Developers that see this pattern will often 
+ try to put API limits per user
+ 8
+ on the system entry points. This is a valid approach, 
+ especially since it can guarantee a basic quality of service (QoS) to the system and allows 
+ one to allocate resources as fairly (or unfairly) as desired. 
+ 3.2.1 
+  
+ How Long Should a Time Out Be
+  
+ What’s particularly tricky about applying back-pressure to handle overload via 
+ synchronous calls is having to determine what the typical operation should be taking in 
+ terms of time, or rather, at what point the system should time out. 
+ The best way to express the problem is that the first timer to be started will be at the 
+ edge of the system, but the critical operations will be happening deep within it. This means 
+ that the timer at the edge of the system will need to have a longer wait time that those 
+ within, unless you plan on having operations reported as timing out at the edge even 
+ though they succeeded internally. 
+  
+ An easy way out of this is to go for infinite timeouts. Pat Helland
+ 9
+ has an interesting 
+ answer to this: 
+ Some application developers may push for no timeout and argue it is OK to wait 
+ indefinitely. I typically propose they set the timeout to 30 years. That, in turn, 
+ generates a response that I need to be reasonable and not silly.
+  Why is 30
+  
+ 8
+ There’s a tradeoff between slowing down all requests equally or using rate-limiting, both of which are valid. 
+ Rate-limiting per user would mean you’d still need to increase capacity or lower the limits of all users when 
+ more new users hammer your system, whereas a synchronous system that indiscriminately blocks should 
+ adapt to any load with more ease, but possibly unfairly.
+  
+ 9
+ Idempotence is Not a Medical Condition
+ , April 14, 2012",NA
+3.3 ,NA,NA
+Discarding Data,"When nothing can slow down outside of your Erlang system and things can’t be scaled up, 
+ you must either drop data or crash (which drops data that was in flight, for most cases, but 
+ with more violence). 
+ It’s a sad reality that nobody really wants to deal with. Programmers, software engi-
+ neers, and computer scientists are trained to purge the useless data, and keep everything 
+ that’s useful. Success comes through optimization, not giving up. 
+ However, there’s a point that can be reached where the data that comes in does so at a 
+ rate faster than it goes out, even if the Erlang system on its own is able to do everything 
+ fast enough. In some cases, It’s the component
+  after
+  it that blocks. 
+  
+ If you don’t have the option of limiting how much data you receive, you then have to 
+ drop messages to avoid crashing. 
+ 3.3.1 
+  
+ Random Drop
+  
+ Randomly dropping messages is the easiest way to do such a thing, and might also be the 
+ most robust implementation, due to its simplicity. 
+  
+ The trick is to define some threshold value between 0.0 and 1.0 and to fetch a random 
+ number in that range:",NA
+3.4 ,NA,NA
+Exercises,"Review Questions
+  
+ 1. Name the common sources of overload in Erlang systems 
+ 2. What are the two main classes of strategies to handle overload? 
+ 3. How can long-running operations be made safer? 
+ 4. When going synchronous, how should timeouts be chosen? 
+ 5. What is an alternative to having timeouts? 
+ 6. When would you pick a queue buffer before a stack buffer? 
+ Open-ended Questions
+  
+ 1. What is a
+  true bottleneck
+ ? How can you find it? 
+ 2. In an application that calls a third party API, response times vary by a lot depending 
+ on how healthy the other servers are. How could one design the system to prevent 
+ occasionally slow requests from blocking other concurrent calls to the same service? 
+ 3. What’s likely to happen to new requests to an overloaded latency-sensitive service 
+ where data has backed up in a stack buffer? What about old requests? 
+ 4. Explain how you could turn a load-shedding overload mechanism into one that can also 
+ provide back-pressure. 
+ 5. Explain how you could turn a back-pressure mechanism into a load-shedding mecha-
+ nism.",NA
+Part II ,NA,NA
+Diagnosing Applications,33,NA
+Chapter 4,NA,NA
+Connecting to Remote Nodes,"Interacting with a running server program is traditionally done in one of two ways. One is 
+ to do it through an interactive shell kept available by using a screen or tmux session that 
+ runs in the background and letting someone connect to it. The other is to program 
+ management functions or comprehensive configuration files that can be dynamically 
+ reloaded. 
+ The interactive session approach is usually okay for software that runs in a strict Read-
+ Eval-Print-Loop (REPL). The programmed management and configuration approach re-
+ quires careful planning in whatever tasks you think you’ll need to do, and hopefully getting 
+ it right. Pretty much all systems can try that approach, so I’ll skip it given I’m somewhat 
+ more interested in the cases where stuff is already bad and no function exists for it. 
+ Erlang uses something closer to an ""interactor"" than a REPL. Basically, a regular Erlang 
+ virtual machine does not need a REPL, and will happily run byte code and stick with that, 
+ no shell needed. However, because of how it works with concurrency and multiprocessing, 
+ and good support for distribution, it is possible to have in-software REPLs that run as 
+ arbitrary Erlang processes. 
+ This means that, unlike a single screen session with a single shell, it’s possible to have 
+ as many Erlang shells connected and interacting with one virtual machine as you want at a 
+ time
+ 1
+ . 
+ Most common usages will depend on a cookie being present on the two nodes you want 
+ to connect together
+ 2
+ , but there are ways to do it that do not include it. Most usages will also 
+ require the use of named nodes, and all of them will require
+  a priori
+  measures to make sure 
+ you can contact the node. 
+ 1
+ More details on the mechanisms at
+  http://ferd.ca/repl-a-bit-more-and-less-than-that.html
+  
+ 2
+ More details at 
+  
+ http://learnyousomeerlang.com/distribunomicon#cookies
+  
+ http://www.erlang.org/doc/reference_manual/distributed.html#id83619
+  
+ or
+  
+ 34",NA
+4.1 ,NA,NA
+Job Control Mode,"The Job Control Mode (JCL mode) is the menu you get when you press ˆG in the Erlang shell. 
+ From that menu, there is an option allowing you to connect to a remote shell: 
+ (somenode@ferdmbp.local)1>
+  
+ User switch command
+  
+  
+ --> h
+  
+ c [nn]
+  
+ - connect to job
+  
+ i [nn]
+  
+ - interrupt job
+  
+ k [nn]
+  
+ - kill job
+  
+ j
+  
+ - list all jobs
+  
+ s [shell]
+  
+ - start local shell
+  
+ r [node [shell]]
+  
+ - start remote shell
+  
+ q
+  
+ - quit erlang
+  
+ ? | h
+  
+ - this message
+  
+ --> r ’server@ferdmbp.local’
+  
+ --> c
+  
+ Eshell Vx.x.x
+  
+ (abort with ^G)
+  
+ (server@ferdmbp.local)1>
+  
+ When that happens, the local shell runs all the line editing and job management locally, 
+ but the evaluation is actually done remotely. All output coming from said remote 
+ evaluation will be forwarded to the local shell. 
+  
+ To quit the shell, go back in the JCL mode with ˆG. This job management is, as I said, done 
+ locally, and it is thus safe to quit with ˆG q: 
+ (server@ferdmbp.local)1> 
+  
+ User switch command
+  
+  
+ --> q
+  
+  
+ You may choose to start the initial shell in hidden mode (with the argument -hidden) to 
+ avoid connecting to an entire cluster automatically.",NA
+4.2 ,NA,NA
+Remsh,"There’s a mechanism entirely similar to the one available through the JCL mode, although 
+ invoked in a different manner. The entire JCL mode sequence can by bypassed by starting 
+ the shell as follows for long names:",NA
+4.3 ,NA,NA
+SSH Daemon,"Erlang/OTP comes shipped with an SSH implementation that can both act as a server and a 
+ client. Part of it is a demo application providing a remote shell working in Erlang. 
+ To get this to work, you usually need to have your keys to have access to SSH stuff 
+ remotely in place already, but for quick test purposes, you can get things working by doing: 
+ $ mkdir /tmp/ssh 
+  
+ $ ssh-keygen -t rsa -f /tmp/ssh/ssh_host_rsa_key
+  
+ $ ssh-keygen -t rsa1 -f /tmp/ssh/ssh_host_key $ ssh-keygen 
+ -t dsa -f /tmp/ssh/ssh_host_dsa_key $ erl 
+  
+ 1> application:ensure_all_started(ssh).
+  
+ {ok,[crypto,asn1,public_key,ssh]} 
+  
+ 2> ssh:daemon(8989, [{system_dir, ""/tmp/ssh""},
+  
+ 2>
+  
+ {user_dir, ""/home/ferd/.ssh""}]).
+  
+ {ok,<0.52.0>}
+  
+ I’ve only set a few options here, namely system_dir, which is where the host files are, 
+ and user_dir, which contains SSH configuration files. There are plenty of other options 
+ available to allow for specific passwords, customize handling of public keys, and so on
+ 3
+ . 
+ To connect to the daemon, any SSH client will do: 
+ $ ssh -p 8989 ferd@127.0.0.1
+  
+ Eshell Vx.x.x
+  
+ (abort with ^G)
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ 1>
+  
+ 3
+ Complete
+  
+ instructions
+  
+ with
+  
+ all
+  
+ options
+  
+ to
+  
+ get
+  
+ this
+  
+ set
+  
+ up
+  
+ are
+  
+ available
+  
+ at
+  
+ http://www.erlang.org/doc/man/ssh.html#daemon-3
+ .",NA
+4.4 ,NA,NA
+Named Pipes,"A little known way to connect with an Erlang node that requires no explicit distribution is 
+ through named pipes. This can be done by starting Erlang with run_erl, which wraps Erlang 
+ in a named pipe
+ 5
+ : 
+ $ run_erl /tmp/erl_pipe /tmp/log_dir ""erl""
+  
+  
+ The first argument is the name of the file that will act as the named pipe. The second one 
+ is where logs will be saved
+ 6
+ . 
+ To connect to the node, you use the to_erl program: 
+ $ to_erl /tmp/erl_pipe 
+  
+ Attaching to /tmp/erl_pipe (^D to exit)
+  
+ 1>
+  
+  
+ And the shell is connected. Closing stdio (with ˆD) will disconnect from the shell while 
+ leaving it running.",NA
+4.5 ,NA,NA
+Exercises,"Review Questions
+  
+ 1. What are the 4 ways to connect to a remote node? 
+ 2. Can you connect to a node that wasn’t given a name? 
+ 3. What’s the command to go into the Job Control Mode (JCL)? 
+ 4
+ This is true for all methods of interacting with a remote Erlang node.
+  
+  
+ 5
+ ""erl""
+  is the command being run. 
+  
+ Additional arguments can be added after it. 
+  
+ For example 
+ ""erl +K true""
+  will turn kernel polling on.
+  
+  
+ 6
+ Using this method ends up calling fsync for each piece of output, which may give quite a performance hit if a 
+ lot of IO is taking place over standard output",NA
+Chapter 5,NA,NA
+Runtime Metrics,"One of the best selling points of the Erlang VM for production use is how transparent it can 
+ be for all kinds of introspection, debugging, profiling, and analysis at run time. 
+ The advantage of having these runtime metrics accessible programmatically is that 
+ building tools relying on them is easy, and building automation for some tasks or 
+ watchdogs is equally simple
+ 1
+ . Then, in times of need, it’s also possible to bypass the tools 
+ and go direct to the VM for information. 
+ A practical approach to growing a system and keeping it healthy in production is to 
+ make sure all angles are observable: in the large, and in the small. There’s no generic recipe 
+ to tell in advance what is going to be normal or not. You want to keep a lot of data and to 
+ look at it from time to time to form an idea about what your system looks like under 
+ normal circumstances. The day something goes awry, you will have all these angles you’ve 
+ grown to know, and it will be simpler to find what is off and needs fixing. 
+ For this chapter (and most of those that follow), most of the concepts or features to be 
+ shown are accessible through code in the standard library, part of the regular OTP 
+ distribution. 
+ However, these features aren’t all in one place, and can make it too easy to shoot 
+ yourself in the foot within a production system. They also tend to be closer to building 
+ blocks than usable tools. 
+  
+ Therefore, to make the text lighter and to be more usable, common operations have been 
+ regrouped in the recon
+ 2
+ library, and are generally production-safe. 
+  
+ 1
+ Making sure your automated processes don’t run away and go overboard with whatever corrective actions 
+ they take is more complex 
+  
+  
+ 2
+ http://ferd.github.io/recon/
+  
+ 39",NA
+5.1 ,NA,NA
+Global View,"For a view of the VM in the large, it’s useful to track statistics and metrics general to the 
+ VM, regardless of the code running on it. Moreover, you should aim for a solution that 
+ allows long-term views of each metric — some problems show up as a very long 
+ accumulation over weeks that couldn’t be detected over small time windows. 
+ Good examples for issues exposed by a long-term view include memory or process 
+ leaks, but also could be regular or irregular spikes in activities relative to the time of the 
+ day or week, which can often require having months of data to be sure about it. 
+  
+ For these cases, using existing Erlang metrics applications is useful. Common options 
+ are: 
+ •
+  folsom
+ 3
+ to store metrics in memory within the VM, whether global or app-specific..
+ •
+  
+ vmstats
+ 4
+ and statsderl
+ 5
+ , sending node metrics over to graphite through statsd
+ 6
+ .
+ •
+  
+ exometer
+ 7
+ , a fancy-pants metrics system that can integrate with folsom (among other 
+ things), and a variety of back-ends (graphite, collectd, statsd, Riak, SNMP, etc.). 
+ It’s the newest player in town 
+ •
+  ehmon
+ 8
+ for output done directly to standard output, to be grabbed later through 
+ specific agents, splunk, and so on. 
+ dumping the data.
+ 9
+ •
+  custom hand-rolled solutions, generally using ETS tables and 
+ processes periodically
+ •
+  or if you have nothing and are in trouble, a function printing stuff 
+ in a loop in a shell
+ 10
+ . 
+  
+ It is generally a good idea to explore them a bit, pick one, and get a persistence layer that 
+ will let you look through your metrics over time. 
+ 5.1.1 
+  
+ Memory
+  
+ The memory reported by the Erlang VM in most tools will be a variant of what is reported by 
+ erlang:memory(): 
+ 1> erlang:memory(). 
+  
+ [{total,13772400},
+  
+   
+ 3
+ https://github.com/boundary/folsom 
+  
+   
+ 4
+ https://github.com/ferd/vmstats 
+  
+   
+ 5
+ https://github.com/lpgauth/statsderl 
+  
+   
+ 6
+ https://github.com/etsy/statsd/ 
+  
+   
+ 7
+ https://github.com/Feuerlabs/exometer 
+  
+   
+ 8
+ https://github.com/heroku/ehmon 
+  
+   
+ 9
+ Common patterns may fit the
+  ectr
+  application, at
+  https://github.com/heroku/ectr 
+  
+ 10
+ The
+  recon
+  application has the function
+  recon:node_stats_print/2
+  to do this if you’re in a pinch",NA
+5.2 ,NA,NA
+Digging In,"Whenever some ’in the large’ view (or logging, maybe) has pointed you towards a potential 
+ cause for an issue you’re having, it starts being interesting to dig around with a purpose. Is 
+ a process in a weird state? Maybe it needs tracing
+ 16
+ ! Tracing is great whenever you have a 
+ specific function call or input or output to watch for, but often, before getting there, a lot 
+ more digging is required. 
+ Outside of memory leaks, which often need their own specific techniques and are dis-
+ cussed in Chapter
+  7
+ , the most common tasks are related to processes, and ports (file de-
+ scriptors and sockets). 
+ 5.2.1 
+  
+ Processes
+  
+ By all means, processes are an important part of a running Erlang system. And because 
+ they’re so central to everything that goes on, there’s a lot to want to know about them. 
+ Fortunately, the VM makes a lot of information available, some of which is safe to use, and 
+ some of which is unsafe to use in production (because they can return data sets large 
+ enough that the amount of memory copied to the shell process and used to print it can kill 
+ the node). 
+ 14
+ http://www.erlang.org/doc/tutorial/c_port.html 
+  
+ 15
+ http://www.erlang.org/doc/tutorial/c_portdriver.html 
+  
+ 16
+ See Chapter
+  9",NA
+5.3 ,NA,NA
+Exercises,"Review Questions 
+  
+  
+ 1. What kind of values are reported for Erlang’s memory? 
+ 2. What’s a valuable process-related metric for a global view? 
+ 3. What’s a port, and how should it be monitored globally? 
+ 4. Why can’t you trust top or htop for CPU usage with Erlang systems? What’s the 
+ alternative? 
+ 5. Name two types of signal-related information available for processes 
+ 6. How can you find what code a specific process is running? 
+ 7. What are the different kinds of memory information available for a specific process? 
+ 8. How can you know if a process is doing a lot of work? 
+ 9. Name a few of the values that are dangerous to fetch when inspecting processes in a 
+ production system. 
+ 10. What are some features provided to OTP processes through the sys module? 
+ 11. What kind of values are available when inspecting inet ports? 
+ 12. How can you find the type of a port (Files, TCP, UDP)? 
+ 27
+ See the explanations for the
+  recon:proc_window/3
+  in the preceding subsection",NA
+Chapter 6,NA,NA
+Reading Crash Dumps,"Whenever an Erlang node crashes, it will generate a crash dump
+ 1
+ . 
+ The format is mostly documented in Erlang’s official documentation
+ 2
+ , and anyone will- 
+ ing to dig deeper inside of it will likely be able to figure out what data means by looking 
+ at that documentation. There will be specific data that is hard to understand without also 
+ understanding the part of the VM they refer to, but that might be too complex for this 
+ document. 
+ The crash dump is going to be named erl_crash.dump and be located wherever the 
+ Erlang process was running by default. This behaviour (and the file name) can be 
+ overridden by specifying the ERL_CRASH_DUMP environment variable
+ 3
+ .",NA
+6.1 ,NA,NA
+General View,"Reading the crash dump will be useful to figure out possible reasons for a node to die
+  a 
+ poste-riori
+ . 
+ One 
+ way 
+ to 
+ get 
+ a 
+ quick 
+ look 
+ at 
+ things 
+ is 
+ to 
+ use 
+ recon’s 
+ erl_crashdump_analyzer.sh
+ 4 
+ and run it on a crash dump: 
+ $ ./recon/script/erl_crashdump_analyzer.sh erl_crash.dump 
+ analyzing erl_crash.dump, generated on:  
+ Thu Apr 17 18:34:53 2014 
+ Slogan: eheap_alloc: Cannot allocate 2733560184 bytes of memory 
+ (of type ""old_heap""). 
+ 1
+ If it isn’t killed by the OS for violating ulimits while dumping or didn’t segfault.
+  
+  
+ 2
+ http://www.erlang.org/doc/apps/erts/crash_dump.html 
+  
+  
+ 3
+ Heroku’s Routing and Telemetry teams use the
+  heroku_crashdumps
+  app to set the path and name of the 
+ crash dumps. It can be added to a project to name the dumps by boot time and put them in a pre-set location 
+  
+  
+ 4
+ https://github.com/ferd/recon/blob/master/script/erl_crashdump_analyzer.sh
+  
+ 54",NA
+6.2 ,NA,NA
+Full Mailboxes,"For loaded mailboxes, looking at large counters is the best way to do it. If there is one large 
+ mailbox, go investigate the process in the crash dump. Figure out if it’s happening because 
+ it’s not matching on some message, or overload. If you have a similar node running, you can 
+ log on it and go inspect it. If you find out many mailboxes are loaded, you may want to use 
+ recon’s queue_fun.awk to figure out what function they’re running at the time of the crash: 
+ 1
+  $ awk -v threshold=10000 -f queue_fun.awk /path/to/erl_crash.dump 
+ 2
+  
+ MESSAGE QUEUE LENGTH: CURRENT FUNCTION  
+ 3
+  ======================================  
+ 4
+  10641: io:wait_io_mon_reply/2  
+ 5
+  12646: io:wait_io_mon_reply/2  
+ 6
+  32991: io:wait_io_mon_reply/2  
+ 7
+  2183837: io:wait_io_mon_reply/2  
+ 8
+  730790: io:wait_io_mon_reply/2  
+ 9
+  80194: io:wait_io_mon_reply/2  
+ 10
+  ... 
+ This one will run over the crash dump and output all of the functions scheduled to run 
+ for processes with at least 10000 messages in their mailbox. In the case of this run, the 
+ script showed that the entire node was locking up waiting on IO for io:format/2 calls, for 
+ example.",NA
+6.3 ,NA,NA
+Too Many (or too few) Processes,"The process count is mostly useful when you know your node’s usual average count
+ 6
+ , in 
+ order to figure if it’s abnormal or not. 
+  
+ A count that is higher than normal may reveal a specific leak or overload, depending on 
+ applications. 
+  
+ If the process count is extremely low compared to usual, see if the node terminated with 
+ a slogan like: 
+ Kernel pid terminated (application_controller) 
+ ({application_terminated, <AppName>, shutdown}) 
+ In such a case, the issue is that a specific application (<AppName>) has reached its 
+ maximal restart frequency within its supervisors, and that prompted the node to shut 
+ 6
+ See subsection
+  5.1.3
+  for details",NA
+6.4 ,NA,NA
+Too Many Ports,"Similarly to the process count, the port count is simple and mostly useful when you know 
+ your usual values
+ 7
+ . 
+ A high count may be the result of overload, Denial of Service attacks, or plain old 
+ resource leaks. Looking at the type of port leaked (TCP, UDP, or files) can also help reveal if 
+ there was contention on specific resources, or if the code using them is just wrong.",NA
+6.5 ,NA,NA
+Can’t Allocate Memory,"These are by far the most common types of crashes you are likely to see. There’s so much 
+ to cover, that Chapter
+  7
+  is dedicated to understanding them and doing the required 
+ debugging on live systems. 
+ In any case, the crash dump will help figure out what the problem was after the fact. 
+ The process mailboxes and individual heaps are usually good indicators of issues. If you’re 
+ running out of memory without any mailbox being outrageously large, look at the 
+ processes heap and stack sizes as returned by the recon script. 
+ In case of large outliers at the top, you know some restricted set of processes may be 
+ eating up most of your node’s memory. In case they’re all more or less equal, see if the 
+ amount of memory reported sounds like a lot. 
+ If it looks more or less reasonable, head towards the ""Memory"" section of the dump and 
+ check if a type (ETS or Binary, for example) seems to be fairly large. They may point 
+ towards resource leaks you hadn’t expected.",NA
+6.6 ,NA,NA
+Exercises,"Review Questions
+  
+ 1. How can you choose where a crash dump will be generated? 
+ 2. What are common avenues to explore if the crash dump shows that the node ran out of 
+ memory? 
+ 3. What should you look for if the process count is suspiciously low? 
+ 4. If you find the node died with a process having a lot of memory, what could you do to 
+ find out which one it was? 
+ 7
+ See subsection
+  5.1.4
+  for details",NA
+Chapter 7,NA,NA
+Memory Leaks,"There are truckloads of ways for an Erlang node to bleed memory. They go from extremely 
+ simple to astonishingly hard to figure out (fortunately, the latter type is also rarer), and it’s 
+ possible you’ll never encounter any problem with them. 
+ You will find out about memory leaks in two ways: 
+ 1. A crash dump (see Chapter
+  6
+ );  
+ 2. By finding a worrisome trend in the data you are monitoring. 
+ This chapter will mostly focus on the latter kind of leak, because they’re easier to 
+ investigate and see grow in real time. We will focus on finding what is growing on the node 
+ and common remediation options, handling binary leaks (they’re a special case), and 
+ detecting memory fragmentation.",NA
+7.1 ,NA,NA
+Common Sources of Leaks,"Whenever someone calls for help saying ""oh no, my nodes are crashing"", the first step is 
+ always to ask for data. Interesting questions to ask and pieces of data to consider are: 
+ •
+  Do you have a crash dump and is it complaining about memory specifically? If not, the 
+ issue may be unrelated. If so, go dig into it, it’s full of data. 
+ •
+  Are the crashes cyclical? How predictable are they? What else tends to happen at around 
+ the same time and could it be related? 
+ •
+  Do crashes coincide with peaks in load on your systems, or do they seem to happen at 
+ more or less any time? Crashes that happen especially
+  during
+  peak times are often 
+ due to bad overload management (see Chapter
+  3
+ ). Crashes that happen at any time, 
+ even when load goes down following a peak are more likely to be actual memory 
+ issues. 
+ 60",NA
+7.2 ,NA,NA
+Binaries,"Erlang’s binaries are of two main types: ProcBins and Refc binaries
+ 8
+ . Binaries up to 64 
+ bytes are allocated directly on the process’s heap, and their entire life cycle is spent in 
+ there. Binaries bigger than that get allocated in a global heap for binaries only, and each 
+ process to use one holds a local reference to it in its local heap. These binaries are 
+ reference-counted, and the deallocation will occur only once all references are garbage-
+ collected from all processes that pointed to a specific binary. 
+  
+ In 99% of the cases, this mechanism works entirely fine. In some cases, however, the 
+ process will either: 
+ 1. do too little work to warrant allocations and garbage collection;  
+ 2. eventually grow a large stack or heap with various data structures, collect them, then 
+ get to work with a lot of refc binaries. Filling the heap again with binaries (even though a 
+ virtual heap is used to account for the refc binaries’ real size) may take a lot of time, 
+ giving long delays between garbage collections. 
+ 7.2.1 
+  
+ Detecting Leaks
+  
+ Detecting leaks for reference-counted binaries is easy enough: take a measure of all of each 
+ process’ list of binary references (using the binary attribute), force a global garbage 
+ collection, take another snapshot, and calculate the difference. 
+  
+ This can be done directly with recon:bin_leak(Max) and looking at the node’s total 
+ memory before and after the call: 
+ 1> recon:bin_leak(5).
+  
+ [{<0.4612.0>,-5580, 
+  
+   
+ [{current_function,{gen_fsm,loop,7}}, 
+  
+    
+ {initial_call,{proc_lib,init_p,5}}]}, 
+  
+  
+ {<0.17479.0>,-3724, 
+  
+   
+ [{current_function,{gen_fsm,loop,7}}, 
+  
+    
+ {initial_call,{proc_lib,init_p,5}}]}, 
+  
+  
+ {<0.31798.0>,-3648, 
+  
+   
+ [{current_function,{gen_fsm,loop,7}}, 
+  
+    
+ {initial_call,{proc_lib,init_p,5}}]}, 
+  
+  
+ {<0.31797.0>,-3266, 
+  
+   
+ [{current_function,{gen,do_call,4}}, 
+  
+    
+ {initial_call,{proc_lib,init_p,5}}]}, 
+  
+  
+ {<0.22711.1>,-2532, 
+  
+   
+ [{current_function,{gen_fsm,loop,7}}, 
+  
+    
+ {initial_call,{proc_lib,init_p,5}}]}]
+  
+ 8
+ http://www.erlang.org/doc/efficiency_guide/binaryhandling.html#id65798",NA
+7.3 ,NA,NA
+Memory Fragmentation,"Memory fragmentation issues are intimately related to Erlang’s memory model, as 
+ described in Section
+  7.3.2
+ . It is by far one of the trickiest issues of running long-lived Erlang 
+ nodes (often when individual node uptime reaches many months), and will show up 
+ relatively rarely. 
+  
+ The general symptoms of memory fragmentation are large amounts of memory be-ing 
+ allocated during peak load, and that memory not going away after the fact. The damning 
+ factor will be that the node will internally report much lower usage (through 
+ erlang:memory()) than what is reported by the operating system. 
+ 7.3.1 
+  
+ Finding Fragmentation
+  
+ The recon_alloc module was developed specifically to detect and help point towards the 
+ resolution of such issues.",NA
+instance 1,NA,NA
+mbcs,NA,NA
+mbcs,NA,NA
+mbcs,"1
+  
+  
+ 1
+  
+       
+       
+       
+       
+       
+  
+  
+ 2 
+  
+ 2 
+  
+ 2 
+  
+ 2
+  
+  
+ 2
+  
+  
+ 2
+  
+       
+       
+       
+       
+ 3
+  
+  
+ 3
+  
+  
+ 3
+  
+  
+ 3
+  
+   
+  
+  
+      
+ 4
+  
+ 4
+  
+  
+ 4
+  
+  
+ 4
+  
+  
+ 4
+  
+   
+       
+       
+       
+     
+ 5
+  
+  
+ 5
+  
+  
+  
+  
+  
+ = allocated
+  
+  
+ N
+  
+  
+ = free block
+  
+ Figure 7.3: Example memory allocated in a specific sub-allocator 
+ Whenever a multiblock carrier (or the first mmsbc
+ 17
+ single block carriers) can be re-
+ claimed, mseg_alloc will try to keep it in memory for a while so that the next allocation 
+ spike that hits your VM can use pre-allocated memory rather than needing to ask the 
+ system for more each time. 
+  
+ You then need to know the different memory allocation strategies of the Erlang virtual 
+ machine: 
+ 1. Best fit (bf)  
+ 2. Address order best fit (aobf)  
+ 3. Address order first fit (aoff)  
+ 4. Address order first fit carrier best fit (aoffcbf)  
+ 5. Address order first fit carrier address order best fit (aoffcaobf) 6. 
+ Good fit (gf)  
+ 7. A fit (af) 
+ Each of these strategies can be configured individually for each alloc_util allocator
+ 18 
+ For
+  best 
+ fit
+  (bf), the VM builds a balanced binary tree of all the free blocks’ sizes, and will try to find 
+ the smallest one that will accommodate the piece of data and allocate it there. In Figure
+  7.3
+ , 
+ having a piece of data that requires three blocks would likely end in area 3. 
+ 17
+ http://erlang.org/doc/man/erts_alloc.html#M_mmsbc 
+ 18
+ http://erlang.org/doc/man/erts_alloc.html#M_as",NA
+instance 1,NA,NA
+mbcs,NA,NA
+mbcs,NA,NA
+mbcs,"1
+  
+  
+ 1
+  
+ 1
+  
+ 1
+  
+  
+ 1
+  
+ 1
+   
+   
+     
+   
+     
+   
+     
+   
+    
+ 2 
+  
+ 2 
+  
+ 2
+  
+  
+  
+       
+ 3
+  
+  
+ 3
+  
+  
+ 3
+  
+  
+ 3
+  
+   
+       
+       
+       
+       
+  
+  
+       
+ 4
+  
+  
+ 4
+  
+  
+ 4
+  
+  
+ 4
+  
+   
+       
+       
+   
+ 5
+  
+  
+ 5
+  
+   
+       
+  
+  
+  
+  
+ = allocated
+  
+  
+ N
+  
+  
+ = free block
+  
+ Figure 7.4: Example memory allocated in a specific sub-allocator 
+  
+ Address order best fit
+  (aobf) will work similarly, but the tree instead is based on the 
+ addresses of the blocks.  So the VM will look for the smallest block available that can 
+ accommodate the data, but if many of the same size exist, it will favor picking one that has a 
+ lower address. If I have a piece of data that requires three blocks, I’ll still likely end up in 
+ area 3, but if I need two blocks, this strategy will favor the first mbcs in Figure
+  7.3 
+ with area 
+ 1 (instead of area 5). This could make the VM have a tendency to favor the same carriers for 
+ many allocations. 
+ Address order first fit
+  (aoff) will favor the address order for its search, and as soon as a 
+ block fits, aoff uses it. Where aobf and bf would both have picked area 3 to allocate four 
+ blocks in Figure
+  7.3
+ , this one will get area 2 as a first priority given its address is lowest. In 
+ Figure
+  7.4
+ , if we were to allocate four blocks, we’d favor block 1 to block 3 because its 
+ address is lower, whereas bf would have picked either 3 or 4, and aobf would have picked 
+ 3. 
+ Address order first fit carrier best fit
+  (aoffcbf) is a strategy that will first favor a carrier 
+ that can accommodate the size and then look for the best fit within that one. So if we were 
+ to allocate two blocks in Figure
+  7.4
+ , bf and aobf would both favor block 5, aoff would pick 
+ block 1. aoffcbf would pick area 2, because the first mbcs can accommodate it fine, and area 
+ 2 fits it better than area 1. 
+ Address order first fit carrier address order best fit
+  (aoffcaobf) will be similar to aoffcbf, 
+ but if multiple areas within a carrier have the same size, it will favor the one with the 
+ smallest address between the two rather than leaving it unspecified. 
+ Good fit
+  (gf) is a different kind of allocator; it will try to work like best fit (bf), but will 
+ only search for a limited amount of time. If it doesn’t find a perfect fit there and then,",NA
+7.4 ,NA,NA
+Exercises,"Review Questions
+  
+ 1. Name some of the common sources of leaks in Erlang programs. 
+ 2. What are the two main types of binaries in Erlang? 
+ 3. What could be to blame if no specific data type seems to be the source of a leak? 
+ 4. If you find the node died with a process having a lot of memory, what could you do to 
+ find out which one it was? 
+ 22
+ http://ferd.github.io/recon/recon_alloc.html",NA
+Chapter 8,NA,NA
+CPU and Scheduler Hogs,"While memory leaks tend to absolutely kill your system, CPU exhaustion tends to act like a 
+ bottleneck and limits the maximal work you can get out of a node. Erlang developers will 
+ have a tendency to scale horizontally when they face such issues. It is often an easy enough 
+ job to scale out the more basic pieces of code out there. Only centralized global state 
+ (process registries, ETS tables, and so on) usually need to be modified.
+ 1
+ Still, if you want to 
+ optimize locally before scaling out at first, you need to be able to find your CPU and 
+ scheduler hogs. 
+ It is generally difficult to properly analyze the CPU usage of an Erlang node to pin 
+ problems to a specific piece of code. With everything concurrent and in a virtual machine, 
+ there is no guarantee you will find out if a specific process, driver, your own Erlang code, 
+ NIFs you may have installed, or some third-party library is eating up all your processing 
+ power. 
+ The existing approaches are often limited to profiling and reduction-counting if it’s in 
+ your code, and to monitoring the scheduler’s work if it might be anywhere else (but also 
+ your code).",NA
+8.1 ,NA,NA
+Profiling and Reduction Counts,"To pin issues to specific pieces of Erlang code, as mentioned earlier, there are two main 
+ approaches. One will be to do the old standard profiling routine, likely using one of the 
+ following applications:
+ 2
+  
+ 1
+ Usually this takes the form of sharding or finding a state-replication scheme that’s suitable, and little more. 
+ It’s still a decent piece of work, but nothing compared to finding out most of your program’s semantics aren’t 
+ applicable to distributed systems given Erlang usually forces your hand there in the first place.
+  
+  
+ 2
+ All of these profilers work using Erlang tracing functionality with almost no restraint. They will have an 
+ impact on the run-time performance of the application, and shouldn’t be used in production.
+  
+ 76",NA
+8.2 ,NA,NA
+System Monitors,"If nothing seems to stand out through either profiling or checking reduction counts, it’s 
+ possible some of your work ends up being done by NIFs, garbage collections, and so on. 
+  
+ 3
+ http://www.erlang.org/doc/man/eprof.html 
+  
+  
+ 4
+ http://www.erlang.org/doc/man/fprof.html 
+  
+  
+ 5
+ https://github.com/proger/eflame 
+  
+  
+ 6
+ See Subsection
+  5.1.2 
+  
+  
+ 7
+ Call
+  recon:info(PidTerm, location)
+  or
+  process_info(Pid, current_stacktrace) 
+ to get this 
+ information.",NA
+8.3 ,NA,NA
+Exercises,"Review Questions
+  
+ 1. What are the two main approaches to pin issues about CPU usages? 
+ 2. Name some of the profiling tools available. What approaches are preferable for pro-
+ duction use? Why? 
+ 3. Why can long scheduling monitors be useful to find CPU or scheduler over-consumption? 
+ Open-ended Questions
+  
+ 1. If you find that a process doing very little work with reductions ends up being sched-
+ uled for long periods of time, what can you guess about it or the code it runs? 
+ 2. Can you set up a system monitor and then trigger it with regular Erlang code? Can you 
+ use it to find out for how long processes seem to be scheduled on average? You may 
+ need to manually start random processes from the shell that are more aggressive in 
+ their work than those provided by the existing system.",NA
+Chapter 9,NA,NA
+Tracing,"One of the lesser known and absolutely under-used features of Erlang and the BEAM virtual 
+ machine is just about how much tracing you can do on there. 
+ Forget your debuggers, their use is too limited.
+ 1
+ Tracing makes sense in Erlang at all 
+ steps of your system’s life cycle, whether it’s for development or for diagnosing a running 
+ production system. 
+ There are a few options available to trace Erlang programs: 
+ •
+  sys
+ 2
+ comes standard with OTP and allows the user to set custom tracing functions, log 
+ all kinds of events, and so on. It’s generally complete and fine to use for development. 
+ It suffers a bit in production because it doesn’t redirect IO to remote shells, and 
+ doesn’t have rate-limiting capabilities for trace messages. It is still recommended to 
+ read the documentation for the module. 
+ •
+  dbg
+ 3
+ also comes standard with Erlang/OTP. Its interface is a bit clunky in terms of 
+ usability, but it’s entirely good enough to do what you need. The problem with it is 
+ that you
+  have to know what you’re doing
+ , because dbg can log absolutely everything 
+ on the node and kill one in under two seconds. 
+ • tracing BIFs
+  are available as part of the erlang module. They’re mostly the raw blocks 
+ used by all the applications mentioned in this list, but their lower level of abstraction 
+ makes them rather difficult to use. 
+ 1
+ One common issue with debuggers that let you insert break points and step through a program is that they 
+ are incompatible with many Erlang programs: put a break point in one process and the ones around keep going. 
+ In practice, this turns debugging into a very limited activity because as soon as a process needs to interact with 
+ the one you’re debugging, its calls start timing out and crashing, possibly taking down the entire node with it. 
+ Tracing, on the other hand, doesn’t interfere with program execution, but still gives you all the data you need.
+  
+ 2
+ http://www.erlang.org/doc/man/sys.html 
+  
+ 3
+ http://www.erlang.org/doc/man/dbg.html
+  
+ 80",NA
+9.1 ,NA,NA
+Tracing Principles,"The Erlang Trace BIFs allow to trace any Erlang code at all
+ 8
+ . They work in two parts:
+  pid 
+ specifications
+ , and
+  trace patterns
+ . 
+ Pid specifications lets the user decide which processes to target. They can be specific 
+ pids, all pids, existing pids, or new pids (those not spawned at the time of the function call). 
+ The trace patterns represent functions. Functions can be specified in two parts: speci-
+ fying the modules, functions, and arity, and then with Erlang match specifications
+ 9
+ to add 
+ constraints to arguments. 
+  
+ What defines whether a specific function call gets traced or not is the intersection of 
+ both, as seen in Figure
+  9.1
+ . 
+  
+ If either the pid specification excludes a process or a trace pattern excludes a given call, 
+ no trace will be received. 
+ Tools like dbg (and trace BIFs) force you to work with this Venn diagram in mind. You 
+ specify sets of matching pids and sets of trace patterns independently, and whatever 
+ happens to be at the intersection of both sets gets to be displayed. 
+ Tools like redbug and recon_trace, on the other hand, abstract this away. 
+  
+ 4
+ https://github.com/massemanet/eper/blob/master/doc/redbug.txt 
+  
+  
+ 5
+ https://github.com/massemanet/eper 
+  
+  
+ 6
+ http://ferd.github.io/recon/recon_trace.html 
+  
+  
+ 7
+ Messages may be supported in future iterations of the library. In practice, the author hasn’t found the need 
+ when using OTP, given behaviours and matching on specific arguments allows the user to get something roughly 
+ equivalent.
+  
+  
+ 8
+ In cases where processes contain sensitive information, data can be forced to be kept private by calling 
+ process_flag(sensitive, true)  
+  
+ 9
+ http://www.erlang.org/doc/apps/erts/match_spec.html",NA
+Getting,NA,NA
+Matching,82,NA
+Matching,NA,NA
+Trace,NA,NA
+Pids,NA,NA
+Traced,NA,NA
+Patterns,"Figure 9.1: What gets traced is the result of the intersection between the matching pids 
+ and the matching trace patterns",NA
+9.2,NA,NA
+Tracing with Recon,"Recon, by default, will match all processes. 
+ This will often be good enough for a lot 
+ of debugging cases. 
+ The interesting part you’ll want to play with most of the time is 
+ specification of trace patterns. Recon support a few basic ways to declare them. 
+ The most basic form is {Mod, Fun, Arity}, where Mod is a literal module, Fun is a 
+ function name, and Arity is the number of arguments of the function to trace. Any of these 
+ may also be replaced by wildcards (’_’). Recon will forbid forms that match too widely on 
+ everything (such as {’_’,’_’,’_’}), as they could be plain dangerous to run in production. 
+ A fancier form will be to replace the arity by a function to match on lists of arguments. 
+ The function is limited to those usable by match specifications similar to what is available 
+ in ETS
+ 10
+ . Finally, multiple patterns can be put into a list to broaden the matching scope. 
+  
+ It will also be possible to rate limit based on two manners: a static count, or a number 
+ of matches per time interval. 
+ Rather than going more in details, here’s a list of examples and how to trace for them. 
+ %% All calls from the queue module, with 10 calls printed at most:
+  
+ recon_trace:calls({queue, ’_’, ’_’}, 10)
+  
+ 10
+ http://www.erlang.org/doc/man/ets.html#fun2ms-1",NA
+9.3 ,NA,NA
+Example Sessions,"First let’s trace the queue:new functions in any process: 
+ 1> recon_trace:calls({queue, new, ’_’}, 1).
+  
+ 1 
+  
+ 13:14:34.086078 <0.44.0> queue:new() 
+  
+ Recon tracer rate limit tripped.
+  
+  
+ The limit was set to 1 trace message at most, and recon let us know when that limit was 
+ reached. 
+ Let’s instead look for all the queue:in/2 calls, to see what it is we’re inserting in queues: 
+ 2> recon_trace:calls({queue, in, 2}, 1).
+  
+ 1 
+  
+ 13:14:55.365157 <0.44.0> queue:in(a, {[],[]}) Recon 
+ tracer rate limit tripped.",NA
+9.4 ,NA,NA
+Exercises,"Review Questions
+  
+ 1. Why is debugger use generally limited on Erlang? 
+ 2. What are the options you can use to trace OTP processes? 
+ 3. What determines whether a given set of functions or processes get traced? 
+ 4. How can you stop tracing with recon_trace? With other tools? 
+ 5. How can you trace non-exported function calls? 
+ Open-ended Questions
+  
+ 1. When would you want to move time stamping of traces to the VM’s trace mechanisms 
+ directly? What would be a possible downside of doing this? 
+ 2. Imagine that traffic sent out of a node does so over SSL, over a multi-tenant system. 
+ However, due to wanting to validate data sent (following a customer complain), you 
+ need to be able to inspect what was seen clear text. Can you think up a plan to be able 
+ to snoop in the data sent to their end through the ssl socket, without snooping on the 
+ data sent to any other customer? 
+ Hands-On
+  
+ Using the code at
+  https://github.com/ferd/recon_demo
+  (these may require a decent un-
+ derstanding of the code there): 
+ 1. Can chatty processes (council_member) message themselves? (
+ hint: can this work with 
+ registered names? Do you need to check the chattiest process and see if it messages 
+ itself?
+ ) 
+ 2. Can you estimate the overall frequency at which messages are sent globally? 
+ 3. Can you crash a node using any of the tracing tools? (
+ hint: dbg makes it easier due to its 
+ greater flexibility
+ )",NA
+Conclusion,"Maintaining and debugging software never ends. New bugs and confusing behaviours will 
+ keep popping up around the place all the time. There would probably be enough stuff out 
+ there to fill out dozens of manuals like this one, even when dealing with the cleanest of all 
+ systems. 
+ I hope that after reading this text, the next time stuff goes bad, it won’t go
+  too
+  bad. Still, 
+ there are probably going to be plenty of opportunities to debug production systems. Even 
+ the most solid bridges need to be repainted all the time in order avoid corrosion to the 
+ point of their collapse. 
+ Best of luck to you. 
+ 87",NA

@@ -1,0 +1,991 @@
+Larger Text,Smaller Text,Symbol
+Free Range VHDL ,"Bryan Mealy, Fabrizio Tappero",NA
+Table of Contents,"v
+  
+ Purpose of this book 
+  
+ 1
+  
+ 1 Introduction To VHDL 
+  
+ 5
+  
+ 1.1  
+ Golden Rules of VHDL 8 
+ 1.2  
+ Tools Needed for VHDL Development 8 
+ 2 VHDL Invariants 
+  
+ 11
+  
+ 2.1  
+ Case Sensitivity 
+  
+ 11 
+ 2.2  
+ White Space 
+  
+ 11 
+ 2.3  
+ Comments 12 
+ 2.4  
+ Parentheses 12 
+ 2.5  
+ VHDL Statements 13 
+ 2.6  
+ if, case and loop Statements 13 
+ 2.7  
+ Identifiers 
+  
+ 14 
+ 2.8  
+ Reserved Words 15 
+ 2.9  
+ VHDL Coding Style 
+  
+ 15 
+ 3 VHDL Design Units 
+  
+ 17",NA
+Acknowledgments,"The authors would like to thank Christina Jarron for her invaluable contri-
+ bution to proofreading this book and for her useful suggestions. Special 
+ thanks also to Rob Ash for helping us make the cover of the book distinct-ive 
+ with his original artwork. A massive thank you goes to Keith Knowles for his 
+ time and effort in reviewing and editing the final draft of this book. Finally, 
+ the authors would like to thank all the people who have provided 
+ feedback 
+ and suggestions.",NA
+Purpose of this book,"The purpose of this book is to provide students and young engineers with a 
+ guide to help them develop the skills necessary to be able to use VHDL for 
+ introductory and intermediate level digital design. These skills will also 
+ give 
+ you the ability and the confidence to continue on with VHDL-based digital 
+ design. In this way, you will also take steps toward developing the skills 
+ required to implement more advanced digital design systems. 
+ Although 
+ there are many books and on-line tutorials dealing with VHDL, 
+ these 
+ sources are often troublesome for several reasons. Firstly, much of the 
+ information regarding VHDL is either needlessly confusing or poorly 
+ written. Material with these characteristics seems to be written from the 
+ standpoint of someone who is either painfully intelligent or has forgotten 
+ that their audience may be seeing the material for the first time. Secondly, 
+ the common approach for most VHDL manuals is to introduce too many 
+ topics and a lot of extraneous information too early. Most of this material 
+ would best appear later in the presentation. Material presented in this 
+ manner has a tendency to be confusing, is easily forgotten if misunderstood 
+ or simply is never applied. The approach taken by this book is to provide 
+ only what you need to know to quickly get up and running in VHDL. As 
+ with all learning, once you have obtained and applied some useful 
+ information, it is much easier to build on what you know as opposed to 
+ continually adding information that is not directly applicable to the",NA
+1,NA,NA
+Introduction To VHDL,"VHDL has a rich and interesting history
+ 1
+ . But since knowing this history 
+ is 
+ probably not going to help you write better VHDL code, it will only be briefly 
+ mentioned here. Consulting other, lengthier texts or search engines 
+ will 
+ provide more information for those who are interested. Regarding the 
+ VHDL acronym, the V is short for yet another acronym: VHSIC or Very 
+ High-Speed Integrated Circuit. The HDL stands for Hardware 
+ Description 
+ Language. Clearly, the state of technical affairs these days has 
+ done away 
+ with the need for nested acronyms. VHDL is a true computer language with 
+ the accompanying set of syntax and usage rules. But, as opposed to higher-
+ level computer languages, VHDL is primarily used to 
+ describe hardware
+ . 
+ The tendency for most people familiar with a higher-
+ level computer 
+ language such as C or Java is to view VHDL as just another 
+ computer 
+ language. This is not altogether a bad approach if such a view 
+ facilitates the 
+ understanding and memorization of the language syntax and 
+ structure. The 
+ common mistake made by someone with this approach is to attempt to 
+ program in VHDL as they would program a higher-level computer 
+ language. Higher-level computer languages are sequential in nature; VHDL 
+ is not. 
+ VHDL was invented to describe hardware and in fact VHDL is a
+  con-
+ current
+  language. What this means is that, normally, VHDL instructions are 
+ all executed at the same time (concurrently), regardless of the size of 
+ 1
+ VHDL-Wikipedia:
+  http://en.wikipedia.org/wiki/VHDL",NA
+2,NA,NA
+VHDL Invariants,"There are several features of VHDL that you should know before moving 
+ forward. Although it is rarely a good idea for people to memorize anything, 
+ you should memorize the basic concepts presented in this section. This 
+ should help eliminate some of the drudgery involved in learning a new 
+ programming language and lay the foundation that will enable you to 
+ create visually pleasing and good VHDL source code. 
+ 2.1 Case Sensitivity
+  
+ VHDL is not case sensitive
+ . This means that the two statements shown 
+ in 
+ Listing 2.1 have the exact same meaning (don’t worry about what the 
+ statement actually means though). Keep in mind that Listing 2.1 shows an 
+ example of VHDL case sensitivity and not good VHDL coding practices. 
+ Listing 2.1: An example of VHDL case insensitivity.
+  
+  
+ Dout
+  <=
+  A and B;
+  
+ doUt
+  <=
+  a AnD b;
+  
+ 2.2 White Space
+  
+ VHDL is not sensitive to white space
+  (spaces and tabs) in the source 
+ document. The two statements in Listing 2.2 have the exact same meaning. 
+ Once again, Listing 2.2 is not an example of good VHDL coding style. 
+ Note 
+ that Listing 2.2 once again indicates that VHDL is not case sensitive.",NA
+3,NA,NA
+VHDL Design Units,"The “black-box” approach to any type of design implies a hierarchical 
+ structure in which varying amounts of detail are available at each of the 
+ different levels of the hierarchy. In the black-box approach, units of action 
+ which share a similar purpose are grouped together and abstracted to a 
+ higher level. Once this is done, the module is referred to by its inherently 
+ more simple black-box representation rather than by the details of the 
+ circuitry that actually performs that functionality. This approach has two 
+ main advantages. First, it simplifies the design from a systems standpoint. 
+ Examining a circuit diagram containing appropriately named black boxes is 
+ much more understandable than staring at a circuit containing a countless 
+ number of logic gates. Second, the black-box approach allows for the reuse 
+ of previously written code. 
+ Not surprisingly, VHDL descriptions of circuits are based on the black-
+ box approach. The two main parts of any hierarchical design are the black 
+ box and the stuff that goes in the black box (which can of course be other 
+ black boxes). In VHDL, the black box is referred to as
+  entity
+  and the 
+ stuff 
+ that goes inside it is referred to as the
+  architecture
+ . For this reason, the 
+ VHDL entity and architecture are closely related. As you can probably 
+ imagine, creating the entity is relatively simple while a good portion of 
+ the 
+ VHDL coding time is spent on properly writing the architecture. Our 
+ approach here is to present an introduction to writing VHDL code by 
+ describing the entity and then moving on to the details of writing the",NA
+4,NA,NA
+VHDL Programming Paradigm,"The previous chapter introduced the idea of the basic design units of VHDL: 
+ the entity and the architecture. Most of the time was spent describing the 
+ entity simply because there is so much less involved compared to the 
+ architecture. Remember, the entity declaration is used to describe the 
+ interface of a circuit to the outside world. The architecture is used to 
+ describe how the circuit is intended to function. 
+ Before we get into the details of architecture specification, we must step 
+ back for a moment and remember what it is we are trying to do with VHDL. 
+ We are, for one reason or another, describing a digital circuit. Realizing 
+ this 
+ is very important. The tendency for young VHDL programmers with 
+ computer programming backgrounds is to view VHDL as just another pro-
+ gramming language they want or have to learn. Although many university 
+ students have used this approach to pass the basic digital classes, this is 
+ not a good idea. 
+ When viewed correctly, VHDL represents a completely different approach 
+ to programming while still having many similarities to other programming 
+ languages. The main similarity is that they both use a syntactical and rule-
+ based language to describe something abstract. But, the difference is that 
+ they are describing two different things. Most programming languages are 
+ used to implement functionalities in a sequential manner, one instruction at 
+ a time. VHDL however describes hardware and so instructions are executed",NA
+5,NA,NA
+Standard Models in VHDL Architectures,"As you may remember, the VHDL architecture describes how your VHDL 
+ system will behave. The architecture body contains two parts: the declara-
+ tion section and the begin-end section where a collection of (concurrent) 
+ signal assignments appear. We have studied three types of signal assignment 
+ so far: concurrent signal assignment, conditional signal assignment and 
+ selected signal assignment. We were about to describe another concurrent 
+ statement, the process statement, before we got side-tracked. Now, let us 
+ quickly introduce a new topic before we jump into the process statement. 
+  There are three different approaches to writing VHDL architectures. 
+ These approaches are known as
+  data-flow
+  style,
+  structural
+  style and 
+ behavioral
+  style architectures. The standard approach to learning VHDL 
+ is 
+ to introduce each of these architectural styles individually and design a few 
+ circuits using that style. Although this approach is good from the 
+ standpoint of keeping things simple while immersed in the learning process, 
+ it is also somewhat misleading because more complicated VHDL circuits 
+ generally use a mixture of these three styles. Keep this fact in mind in 
+ the 
+ following discussion of these styles. We will, however, put most of our 
+ focus 
+ on data-flow and behavioral architectures. Structural modeling is 
+ essentially a method to combine an existing set of VHDL models. In other 
+ words, structural modeling supports the interconnection of black boxes 
+ but does not have the ability to describe the logic functions used to model 
+ the circuit operation. For this reason, it is less of a design method and",NA
+6,NA,NA
+VHDL Operators,"So far we have only implicitly mentioned the operators available in VHDL. 
+ This section presents a complete list of operators as well as a few examples 
+ of their use. A complete list of operators is shown in Table 6.1. This is 
+ followed by brief descriptions of some of the less obvious operators. 
+ Although you may not have an immediate need to use some of these 
+ operators, you should be aware that they exist. And although there are 
+ some special things you should know about some of these operators, not 
+ too much information is presented in this section. 
+ Operators in VHDL are grouped into seven different types: logical, rela-
+ tional, shift, adding, sign, multiplying, and miscellaneous. The ordering of 
+ this list is somewhat important because it presents the operators in order 
+ of increasing precedence. We said ”somewhat” because your VHDL 
+ code 
+ should never rely on operator precedence to describe circuit behavior.
+  
+ Operator type
+   
+ logical
+  
+ relational
+  
+ shift
+  
+ adding
+  
+ sign
+  
+ multiplying
+  
+ miscellaneous
+  
+  
+  
+ and
+  
+ or
+  
+ nand
+  
+ nor
+  
+ xor
+  
+ xnor
+  
+ =
+  
+ /=
+  
+ <
+  
+ <
+ =
+  
+ >
+  
+ >
+ =
+  
+ sll
+  
+ srl
+  
+ sla
+  
+ sra
+  
+ rol
+  
+ ror
+  
+ +
+  
+ −
+  
+ −
+  
+ /
+  
+ &
+  
+ rem
+  
+ +
+  
+ mod
+  
+ *
+  
+ **
+  
+ abs
+  
+ not
+  
+  
+ Table 6.1:
+  VHDL operators.",NA
+7,NA,NA
+Using VHDL for Sequential Circuits,"All the circuits we have examined up until now have been combinatorial 
+ logic circuits. In other words, none of the circuits we have examined so far 
+ are actually able to store information. This section shows some of the 
+ various methods used to describe sequential circuits. We limit our 
+ discussion to VHDL behavioral models for several different flavors of D flip-
+ flops. It is possible and in some cases desirable to use data-flow models to 
+ describe storage elements in VHDL, but it is much easier to use behavior 
+ models. 
+ The few approaches for designing flip-flops shown in the next section 
+ cover just about all the possible functionality you could imagine when you 
+ make use of a D flip-flop. Once you understand these basics, you will be on 
+ your way to understand how to use VHDL to design Finite State Machines 
+ (FSMs). This book will examine FSMs in a later chapter. 
+ 7.1 Simple Storage Elements Using VHDL
+  
+ The general approach for learning how to implement storage elements in 
+ digital design is to study the properties of a basic cross-coupled cell. The 
+ cross coupled cell forms what is referred to as
+  a latch
+ . The concept of a 
+ clocking signal is added to the device in order to enhance its controllability. 
+ Finally, some type of pulse narrowing circuitry is added to the clocking 
+ signal to get to the flip-flop. The flip-flop is nothing more than an edge-
+ sensitive bit-storage device.",NA
+8,NA,NA
+Finite State Machine Design Using VHDL,"Finite state machines (FSMs) are mathematical abstractions that are used 
+ to 
+ solve a large variety of problems, among which are electronic design 
+ automation, communication protocol design, parsing and other engineering 
+ applications. At this point in your digital design career, you have probably 
+ designed several state machines on paper. You are now at the point where 
+ you can implement and test them using actual hardware. The first step in 
+ this process is to learn how to model FSMs using VHDL. 
+ As you will see in the next section, simple FSM designs are just a step 
+ beyond the sequential circuit design described in the previous section. The 
+ techniques you learn in this section will allow you to quickly and easily 
+ design relatively complex FSMs which can be useful in a number of ways.
+  
+ A block diagram for a standard Moore-type FSM is shown in Fig. 8.1. This 
+ diagram is fairly typical but different names are used for some of the blocks 
+ in the design. The Next State Decoder is a block of combinatorial 
+  
+ Figure 8.1:
+  Block diagram for a Moore-type FSM.",NA
+9,NA,NA
+Structural Modeling In VHDL,"As was mentioned earlier, there are generally three approaches to writ-ing 
+ VHDL code: data-flow modeling, behavioral modeling and structural 
+ modeling. 
+  
+ Up to this point, this book has only dealt with data-flow and behavioral 
+ models. This section presents an introduction to structural modeling. 
+ As digital designs become more complex, it becomes less likely that any 
+ one design can be implemented with any one of the three types of 
+ VHDL 
+ models. We have already seen this property in dealings with FSMs 
+ where we 
+ mixed process statements (behavioral modeling) with selective 
+ signal 
+ assignment statements (data-flow modeling). The result was a hybrid VHDL 
+ model. By its very nature, structural modeling is likewise a hybrid VHDL 
+ model. Most complex designs could be considered structural models, 
+ i.e. if 
+ they are implemented using sound coding procedures. 
+ The design of complex digital circuits using VHDL should closely resemble 
+ the structure of complex computer programs. Many of the techniques and 
+ practices used to construct large and well structured computer programs 
+ written in higher-level languages should also be applied when using VHDL. 
+ This common structure we are referring to is the ever so popular modular 
+ approach to coding. The term structural modeling is the terminology that 
+ VHDL uses for modular design. The VHDL modular design approach 
+ directly supports hierarchical design which is essentially employed when 
+ attempting to understand complex digital designs.",NA
+10,NA,NA
+Registers and Register Transfer Level,"The concept of a register in VHDL and its subsequent use in digital circuit 
+ design is probably one of the more straightforward concepts in VHDL. A 
+ register in VHDL is simply a vector version of a D flip-flop in which all 
+ operations on the flip-flops occur simultaneously. The “register transfer 
+ level”, or RTL, is a flavor of design that is primarily concerned with how 
+ and when data is transferred between the various registers in a digital 
+ system. RTL-level design in often associated with ”data-path” designs 
+ which require the careful control and timing of the data that is being 
+ transferred between registers. The controls associated with even simple 
+ registers are sufficient to ensure that some outside entity has adequate 
+ control over the ”sequencing” of data through the circuit associated with 
+ the data-path. In these cases, the proper sequencing of data transfers is 
+ controlled by a FSM. 
+ The study of RTL-level design is best accomplished in the context of a 
+ data-path design. The design of data-paths is best accomplished in the 
+ context of a digital circuit that has some purpose such as an arithmetic logic 
+ unit design. Both of these topics are beyond what needs to be mentioned 
+ here. The good news is that the simplicity of the registers makes for a 
+ quick introduction to the matter. Major circuit implementations are saved 
+ for some other time.",NA
+11,NA,NA
+Data Objects,"Many of the concepts presented so far have been implicitly presented in 
+ the context of example problems. In this way, you have probably been able 
+ to generate quality VHDL code but were constrained to use the VHDL style 
+ presented in these examples. In this section, we will present some of the 
+ underlying details and theories that surround VHDL as a backdoor 
+ approach for presenting tools that will allow you to use VHDL for 
+ describing the behavior of more complex digital circuits. 
+ In order to move into more sophisticated VHDL, a good place to start is 
+ with the definition of VHDL objects (e.g. data types). An object is an 
+ item in 
+ VHDL that has both a name (associated identifier) and a specific 
+ type. There 
+ are four types of objects and many different data types in VHDL. Up to this 
+ point, we have only used signal data objects and std logic
+  data types. Two 
+ new data objects and several new data types 
+ are introduced and discussed 
+ in this section. 
+ 11.1 Types of Data Objects
+  
+ There are four types of data objects in VHDL:
+  signals
+ ,
+  variables
+ ,
+  con-
+ stants
+  and
+  files
+ . One of the purposes of this section is to present some 
+ background information regarding variables which will be used later in this 
+ tutorial. The idea of constants will also be briefly mentioned since they are 
+ generally straightforward to understand and use once the concepts of 
+ signals and variables are understood. File data objects, exclusively used in",NA
+12,NA,NA
+Looping Constructs,"As the circuits you are required to design become more and more complex, 
+ you will find yourself searching for more functionality and versatility from 
+ VHDL. You will probably find what you are looking for in various looping 
+ constructs which are yet another form of VHDL statement. This chapter 
+ provides descriptions of several types of looping constructs and some details 
+ regarding their use. 
+ There are two types of loops in VHDL: for loops and while loops. 
+ The 
+ names of these loops should seem familiar from your experience with 
+ higher-level computer programming languages. Generally speaking, you can 
+ leverage your previous experience with these loop types when describing 
+ the behavior of digital circuits. The comforting part is that since these two 
+ types of loops are both sequential statements, they can only appear 
+ inside 
+ processes. You will also be able to apply to the circuits you will be 
+ describing using VHDL the algorithmic thinking and designing skills you 
+ developed in coding with higher-level computer languages. The syntax is 
+ slightly different but the basic structured programming concepts are the 
+ same. 
+ 12.1 for and while Loops
+  
+ The purpose of a loop construct is to allow some coding instructions to 
+ happen iteratively (over and over again). These two types of loops of 
+ course share this functionality. As you probably remember from higher-",NA
+13,NA,NA
+Standard Digital Circuits in VHDL,"As you know or as you will be finding out soon, even the most complex 
+ digital circuit is composed of a relatively small set of standard digital 
+ circuits plus some associated control signals. This list of standard digital 
+ circuits is a mixed bag of combinatorial sequential devices such as MUXes, 
+ decoders, counters, comparators, registers, etc. The art of digital design 
+ using VHDL is centered around the proper selection and interfacing of these 
+ devices. The actual creation and testing of these devices is de-emphasized.
+  
+ The most efficient approach to utilizing standard digital circuits using 
+ VHDL is to use existing code for these devices and modify them according to 
+ the needs of your particular design. This approach allows you to utilize your 
+ current knowledge of VHDL to quickly and efficiently design complex digital 
+ circuits. The following listings show a set of standard digital devices 
+ and the 
+ VHDL code used to describe them. The following circuits are represented 
+ in various sizes and widths. Note that the following circuit descriptions 
+ represent possible VHDL descriptions but are by no means 
+ the only 
+ descriptions. They do however provide starting points for you to 
+ modify for 
+ your own design needs.",NA
+A,NA,NA
+VHDL Reserved Words,"Table A.1 provides a complete list of VHDL reserved words. 
+ abs
+  
+ downto
+  
+ library
+  
+ postponed
+  
+ srl
+  
+ access
+  
+ else
+  
+  
+ linkage
+  
+  
+ procedure
+  
+  
+ subtype
+  
+  
+ after
+  
+ elsif
+  
+ literal
+  
+ process
+  
+ then
+  
+ alias
+  
+ end
+  
+  
+ loop
+  
+  
+ pure
+  
+  
+ to
+  
+  
+ all
+  
+ entity
+  
+ map
+  
+ range
+  
+ transport
+  
+ and
+  
+ exit
+  
+  
+ mod
+  
+  
+ record
+  
+  
+ type
+  
+  
+ architecture
+  
+ file
+  
+ nand
+  
+ register
+  
+ unaffected
+  
+ array
+  
+ for
+  
+  
+ new
+  
+  
+ reject
+  
+  
+ units
+  
+  
+ assert
+  
+ function
+  
+ next
+  
+ rem
+  
+ until
+  
+ attribute
+  
+ generate
+  
+  
+ nor
+  
+  
+ report
+  
+  
+ use
+  
+  
+ begin
+  
+ generic
+  
+ not
+  
+ return
+  
+ variable
+  
+ block
+  
+ group
+  
+  
+ null
+  
+  
+ rol
+  
+  
+ wait
+  
+  
+ body
+  
+ guarded
+  
+ of
+  
+ ror
+  
+ when
+  
+ buffer
+  
+ if
+  
+  
+ on
+  
+  
+ select
+  
+  
+ while
+  
+  
+ bus
+  
+ impure
+  
+ open
+  
+ severity
+  
+ with
+  
+ case
+  
+ in
+  
+  
+ or
+  
+  
+ signal
+  
+  
+ xnor
+  
+  
+ component
+  
+ inertial
+  
+ others
+  
+ shared
+  
+ xor
+  
+ configuration
+  
+ inout
+  
+  
+ out
+  
+  
+ sla
+  
+  
+  
+ constant
+  
+ is
+  
+ package
+  
+ sll
+  
+  
+ disconnect
+  
+ label
+  
+  
+ port
+  
+  
+ sra
+  
+  
+  
+ Table A.1:
+  A complete list of VHDL reserved words.",NA
+B,NA,NA
+Standard VHDL Packages,"After years of development by the US Department of Defense, in February 
+ 1986 all VHDL rights were transferred to the Institute of Electrical and 
+ Electronics Engineers (IEEE) which since then has carried on the process 
+ of 
+ standardization of the language. 
+ After several language standardization steps that took place in 1987, 
+ 1993, 2000, 2002, and 2008, VHDL now includes a large set of packages 
+ that, once included in your code, give you the possibility of using several 
+ mathematical constants, numerical functions, overloaded operators, type 
+ conversion functions, enhanced signal types and much more. 
+ The main VHDL language library packages that you will probably need 
+ to 
+ use in your career as an engineer can be included in your code via the 
+ following statements: 
+ library
+  IEEE;
+  
+ -- essential IEEE libraries 
+  
+ use
+  IEEE.
+ std_logic_1164
+ .all; 
+  
+ use
+  IEEE.
+ numeric_std
+ .all;
+  
+  
+ -- more IEEE libraries 
+  
+ use
+  IEEE.
+ numeric_signed
+ .all; 
+ use
+  
+  
+ IEEE.
+ numeric_unsigned
+ .all;
+  
+ use
+  IEEE.
+ numeric_bit
+ .all; 
+  
+ use
+  IEEE.
+ math_real
+ .all; 
+  
+ use
+  IEEE.
+ math_complex
+ .all;
+  
+  
+ For instance, the inclusion of the package
+  std logic 1164
+  in your code, will 
+ give you the ability to use the several data types like the
+  std logic",NA
+C,NA,NA
+Exercise Solutions,"This section presents the solutions to all problems presented throughout 
+ this book. 
+ Exercise Solutions for Chapter 3
+  
+ 1. A bundle refers to a group of signals that are related to each other. A 
+ bundle is sometimes called a bus, but the use of the word bundle is 
+ preferred since it avoids possible confusions. 
+ 2.
+  In a black-box diagram a bundle is often shown as a wire with a slash 
+  
+ plus number indicating the number of signals the bundle is made of.
+  
+ 3. It is considered good practice to draw a black-box diagram before 
+ writing any VHDL code as this helps providing a visual representation 
+ of each component. In addition, a good and neat overall system dia-
+ gram helps eliminating coding confusion, especially for large designs, 
+ and further helps with code re-usability. 
+ 4.
+  The given black-box drawings can be implemented with the following 
+ VHDL code.",NA
+D,NA,NA
+VHDL Reference Cards,"Hereafter you can find two sets of very useful VHDL reference cards made
+  
+ by Qualis Design Corporation. 
+ http://www.vhdl.org/rassp/vhdl/guidelines/vhdlqrc.pdf 
+ http://www.vhdl.org/rassp/vhdl/guidelines/1164qrc.pdf",NA
+1164 PACKAGES QUICK ,NA,NA
+REFERENCE CARD,"Revision 2.2 
+  
+ Optional [ ] Grouping 
+  
+ Alternative | Repeated 
+  
+ User Identifier 
+  
+ CAPS As is commutative c VHDL-93 
+  
+ ::= BIT 
+  
+ ::= BIT_VECTOR 
+  
+ ::= STD_ULOGIC/STD_LOGIC 
+  
+ ::= STD_ULOGIC_VECTOR 
+  
+ ::= STD_LOGIC_VECTOR 
+  
+ ::= UNSIGNED 
+  
+ ::= SIGNED 
+  
+ ::= INTEGER 
+  
+ ::= NATURAL 
+  
+ ::= SMALL_INT
+  (subtype INTEGER range 0 to 1)
+  
+ 1.IEEE’
+ S
+  STD_LOGIC_1164
+  
+ 1.1 L
+ OGIC
+  V
+ ALUES 
+  
+ Uninitialized
+ ‘U’
+  
+ Strong/Weak 
+ unknown
+ ‘X’/’W’
+  
+ Strong/Weak 0
+ ‘0’/’L’
+  
+ Strong/Weak 1
+  
+ ‘1’/’H’
+ High Impedance
+ ‘Z’
+  
+ Don’t care
+ ‘-’
+  
+ 1.2 P
+ REDEFINED
+  T
+ YPES 
+  
+ Base type 
+ STD_ULOGIC 
+  
+ Subtypes: 
+  
+ Resolved STD_ULOGIC 
+ STD_LOGIC 
+  
+ Resolved X, 0 & 1 
+ X01 
+  
+ Resolved X, 0, 1 & Z 
+ X01Z 
+  
+ Resolved U, X, 0 & 1 
+ UX01 
+  
+ Resolved U, X, 0, 1 & Z 
+ UX01Z 
+  
+ STD_ULOGIC_VECTOR(
+ na
+  to | downto
+  na
+ ) 
+  
+ Array of STD_ULOGIC 
+  
+ STD_LOGIC_VECTOR(
+ na
+  to | downto
+  na
+ ) 
+  
+ Array of STD_LOGIC
+  
+ () 
+  
+ {} 
+  
+ bold 
+  
+ italic 
+  
+ b 
+  
+ bv 
+  
+ u/l 
+  
+ uv 
+  
+ lv 
+  
+ un 
+  
+ sg 
+  
+ in 
+  
+ na 
+  
+ sm",NA
+E,NA,NA
+Contributors to This Book,"Bryan Mealy
+  is an associate professor at the California Polytechnic State 
+ University, San Luis Obispo, USA. His technical interests include designing 
+ new courses, embedded systems and digital hardware. His real interests 
+ are developing his luthier skills and making noise on bass guitar and piano. 
+ Fabrizio Tappero
+  is an embedded system developer with experience in 
+ academic research on satellite-based navigation systems and GNSS receiver 
+ design. Among other things, he enjoys very much coding in VHDL and 
+ Python. 
+ Christina Jarron
+  is an Aussie technical writer and editor. When she is not 
+ busy running after her customers, she spends her time wandering around 
+ the beautiful city of Barcelona. 
+ Rob Ash
+  lives on the South Coast of the UK. Originally a sign painter he 
+ now spends his time completing art, design and illustration work. When 
+ not at his easel or digital tablet he enjoys photography, music and playing 
+ bass guitar.",NA
