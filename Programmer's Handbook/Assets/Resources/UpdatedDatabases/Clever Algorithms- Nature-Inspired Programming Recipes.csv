@@ -1,0 +1,4275 @@
+Larger Text,Smaller Text,Symbol
+Jason Brownlee,NA,NA
+Clever Algorithms,Nature-Inspired Programming Recipes,NA
+Contents,"Foreword 
+  
+ vii
+  
+ Preface 
+  
+ ix
+  
+ I 
+  
+ Background 
+  
+ 1
+  
+ 1 Introduction 
+  
+ 3
+  
+ 1.1 
+  
+ What is AI 
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 3
+  
+ 1.2 
+  
+ Problem Domains
+  . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 9
+  
+ 1.3 
+  
+ Unconventional Optimization
+  . . . . . . . . . . . . . . . . . 
+  
+ 13
+  
+ 1.4 
+  
+ Book Organization
+  . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 16
+  
+ 1.5 
+  
+ How to Read this Book 
+  
+ . . . . . . . . . . . . . . . . . . . . 
+  
+ 19
+  
+ 1.6 
+  
+ Further Reading 
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 20
+  
+ 1.7 
+  
+ Bibliography 
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 21
+  
+ II 
+  
+ Algorithms 
+  
+ 27
+  
+ 2 Stochastic Algorithms 
+  
+ 29
+  
+ 2.1 
+  
+ Overview 
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 29
+  
+ 2.2 
+  
+ Random Search
+  . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 30
+  
+ 2.3 
+  
+ Adaptive Random Search 
+  
+ . . . . . . . . . . . . . . . . . . . 34
+  
+ 2.4 
+  
+ Stochastic Hill Climbing
+  . . . . . . . . . . . . . . . . . . . . 
+  
+ 39
+  
+ 2.5 
+  
+ Iterated Local Search
+  . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 43
+  
+ 2.6 
+  
+ Guided Local Search
+  . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 49
+  
+ 2.7 
+  
+ Variable Neighborhood Search
+  . . . . . . . . . . . . . . . . . 
+  
+ 55
+  
+ 2.8 
+  
+ Greedy Randomized Adaptive Search
+  . . . . . . . . . . . . . 
+  
+ 60
+  
+ 2.9 
+  
+ Scatter Search 
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 66
+  
+ 2.10 Tabu Search
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 73
+  
+ 2.11 Reactive Tabu Search 
+  
+ . . . . . . . . . . . . . . . . . . . . . 
+  
+ 79
+  
+ iii",NA
+Foreword,"I am delighted to write this foreword. This book, a reference where one can 
+ look up the details of most any algorithm to find a clear unambiguous 
+ description, has long been needed and here it finally is. A concise reference 
+ that has taken many hours to write but which has the capacity to save vast 
+ amounts of time previously spent digging out original papers.
+  
+ I have known the author for several years and have had experience of his 
+ amazing capacity for work and the sheer quality of his output, so this book 
+ comes as no surprise to me. But I hope it will be a surprise and delight to 
+ you, the reader for whom it has been written.
+  
+ But useful as this book is, it is only a beginning. There are so many 
+ algorithms that no one author could hope to cover them all. So if you know 
+ of 
+ an algorithm that is not yet here, how about contributing it using the same 
+ clear and lucid style?
+  
+ Professor Tim Hendtlass 
+  
+ Complex Intelligent Systems Laboratory 
+  
+ Faculty of Information and Communication Technologies 
+ Swinburne University of Technology
+  
+ Melbourne, Australia 
+  
+ 2010
+  
+ vii",NA
+Preface,NA,NA
+About the book,"The need for this project was born of frustration while working towards my 
+ PhD. I was investigating optimization algorithms and was implementing a 
+ large number of them for a software platform called the Optimization 
+ Algorithm Toolkit (OAT)
+ 1
+ . Each algorithm required considerable effort to 
+ locate the relevant source material (from books, papers, articles, and 
+ existing implementations), decipher and interpret the technique, and finally 
+ attempt to piece together a working implementation.
+  
+ Taking a broader perspective, I realized that the communication of 
+ algorithmic techniques in the field of Artificial Intelligence was clearly a 
+ difficult and outstanding open problem. Generally, algorithm descriptions 
+ are:
+  
+ ˆ
+  Incomplete: many techniques are ambiguously described, partially 
+  
+ described, or not described at all.
+  
+ ˆ
+  Inconsistent: a given technique may be described using a variety of 
+ formal and semi-formal methods that vary across different techniques, 
+ limiting the transferability of background skills an audience requires 
+ to read a technique (such as mathematics, pseudocode, program code, 
+ and narratives). An inconsistent representation for techniques means 
+ that the skills used to understand and internalize one technique may 
+ not be transferable to realizing different techniques or even extensions 
+ of the same technique.
+  
+ ˆ
+  Distributed: the description of data structures, operations, and pa-
+ rameterization of a given technique may span a collection of papers, 
+ articles, books, and source code published over a number of years, the 
+ access to which may be restricted and difficult to obtain.
+  
+ For the practitioner, a badly described algorithm may be simply frus-
+ trating, 
+ where the gaps in available information are filled with intuition and
+  
+ 1
+ OAT located at
+  http://optalgtoolkit.sourceforge.net
+  
+ ix",NA
+Acknowledgments,"This book could not have been completed without the commitment, passion, 
+ and hard work from a large group of editors and supporters.
+  
+ A special thanks to Steve Dower for his incredible attention to detail in 
+ providing technical and copy edits for large portions of this book, and for 
+ his enthusiasm for the subject area. Also, a special thanks to Daniel Angus 
+ for the discussions around the genesis of the project, his continued 
+ support 
+ with the idea of an ‘algorithms atlas’ and for his attention to detail 
+ in 
+ providing technical and copy edits for key chapters.
+  
+ In no particular order, thanks to: Juan Ojeda, Martin Goddard, David 
+ Howden, Sean Luke, David Zappia, Jeremy Wazny, and Andrew Murray.
+  
+ Thanks to the hundreds of machine learning enthusiasts who voted on 
+ potential covers and helped shape what this book became. You know who 
+ you are!
+  
+ Finally, I would like to thank my beautiful wife Ying Liu for her unre-lenting 
+ support and patience throughout the project.
+  
+ xi",NA
+Part I ,NA,NA
+Background,1,NA
+Chapter 1,NA,NA
+Introduction,"Welcome to Clever Algorithms! 
+  
+ This is a handbook of recipes for com-
+ putational problem solving techniques from the fields of Computational 
+ Intelligence, Biologically Inspired Computation, and Metaheuristics. Clever 
+ Algorithms are interesting, practical, and fun to learn about and implement. 
+ Research scientists may be interested in browsing algorithm inspirations in 
+ search of an interesting system or process analogs to investigate. Developers 
+ and software engineers may compare various problem solving algorithms 
+ and technique-specific guidelines. Practitioners, students, and interested 
+ amateurs may implement state-of-the-art algorithms to address business or 
+ scientific needs, or simply play with the fascinating systems they represent.
+  
+ This introductory chapter provides relevant background information on 
+ Artificial Intelligence and Algorithms. The core of the book provides a large 
+ corpus of algorithms presented in a complete and consistent manner. The 
+ final chapter covers some advanced topics to consider once a number of 
+ algorithms have been mastered. This book has been designed as a reference 
+ text, where specific techniques are looked up, or where the algorithms across 
+ whole fields of study can be browsed, rather than being read cover-to-cover. 
+ This book is an algorithm handbook and a technique guidebook, and I hope 
+ you find something useful.",NA
+1.1 What is AI,"1.1.1 
+  
+ Artificial Intelligence
+  
+ The field of classical Artificial Intelligence (AI) coalesced in the 1950s 
+ drawing on an understanding of the brain from neuroscience, the new 
+ mathematics of information theory, control theory referred to as cybernetics, 
+ and the dawn of the digital computer. 
+  
+ AI is a cross-disciplinary field of 
+ research that is generally concerned with developing and investigating
+  
+ 3",NA
+1.2 Problem Domains,"Algorithms from the fields of Computational Intelligence, Biologically In-
+ spired Computing, and Metaheuristics are applied to difficult problems, to 
+ which more traditional approaches may not be suited. Michalewicz and 
+ Fogel propose five reasons why problems may be difficult [
+ 37
+ ] (page 11):
+  
+ ˆ
+  The number of possible solutions in the search space is so large as to 
+  
+ forbid an exhaustive search for the best answer.",NA
+1.3 Unconventional Optimization,"Not all algorithms described in this book are for optimization, although 
+ those that are may be referred to as ‘unconventional’ to differentiate them 
+ from the more traditional approaches. Examples of traditional approaches 
+ include (but are not not limited) mathematical optimization algorithms 
+ (such as Newton’s method and Gradient Descent that use derivatives to 
+ locate a local minimum) and direct search methods (such as the Simplex 
+ method and the Nelder-Mead method that use a search pattern to locate 
+  
+  
+ Unconventional optimization algorithms are designed for the optima).
+  
+ more difficult problem instances, the attributes of which were introduced in 
+ Section
+  1.2.1
+ . This section introduces some common attributes of this class 
+ of 
+ algorithm.
+  
+ 1.3.1 
+  
+ Black Box Algorithms
+  
+ Black Box optimization algorithms are those that exploit little, if any, 
+ information from a problem domain in order to devise a solution. They are 
+ generalized problem solving procedures that may be applied to a range of 
+ problems with very little modification [
+ 19
+ ]. Domain specific knowledge refers 
+ to known relationships between solution representations and the objective 
+ cost function. Generally speaking, the less domain specific information 
+ incorporated into a technique, the more flexible the technique, although the 
+ less efficient it will be for a given problem. For example, ‘random search’ is the 
+ most general black box approach and is also the most flexible requiring 
+ only 
+ the generation of random solutions for a given problem. Random 
+ search 
+ allows resampling of the domain which gives it a worst case behavior 
+ that is 
+ worse than enumerating the entire search domain. In practice, the 
+ more 
+ prior knowledge available about a problem, the more information that 
+ can be 
+ exploited by a technique in order to efficiently locate a solution for the 
+ problem, heuristically or otherwise. Therefore, black box methods are 
+ those 
+ methods suitable for those problems where little information from the",NA
+1.4 ,NA,NA
+Book Organization,"The remainder of this book is organized into two parts: Algorithms that 
+ describes a large number of techniques in a complete and a consistent 
+ manner presented in a rough algorithm groups, and Extensions that reviews 
+ more advanced topics suitable for when a number of algorithms have been 
+ mastered.
+  
+ 1.4.1 Algorithms
+  
+ Algorithms are presented in six groups or kingdoms distilled from the 
+ broader 
+ fields of study each in their own chapter, as follows:
+  
+ ˆ
+  Stochastic Algorithms that focuses on the introduction of randomness 
+  
+ into heuristic methods (Chapter
+  2
+ ).
+  
+ ˆ
+  Evolutionary Algorithms inspired by evolution by means of natural 
+  
+ selection (Chapter
+  3
+ ).
+  
+ ˆ
+  Physical Algorithms inspired by physical and social systems (Chap-
+  
+ ter
+  4
+ ).
+  
+ ˆ
+  Probabilistic Algorithms that focuses on methods that build models 
+  
+ and estimate distributions in search domains (Chapter
+  5
+ ).
+  
+ ˆ
+  Swarm Algorithms that focuses on methods that exploit the properties 
+  
+ of collective intelligence (Chapter
+  6
+ ).
+  
+ ˆ
+  Immune Algorithms inspired by the adaptive immune system of verte-
+  
+ brates (Chapter
+  7
+ ).",NA
+1.5 How to Read this Book,"This book is a reference text that provides a large compendium of algorithm 
+ descriptions. It is a trusted handbook of practical computational recipes to be 
+ consulted when one is confronted with difficult function optimization and 
+ approximation problems. It is also an encompassing guidebook of modern 
+ heuristic methods that may be browsed for inspiration, exploration, and 
+ general interest.
+  
+ The audience for this work may be interested in the fields of Computa-
+ tional Intelligence, Biologically Inspired Computation, and Metaheuristics 
+ and may count themselves as belonging to one of the following broader 
+ groups:
+  
+ ˆ
+  Scientists: Research scientists concerned with theoretically or empir-
+ ically investigating algorithms, addressing questions such as: What is 
+ the motivating system and strategy for a given technique? What 
+ are 
+ some algorithms that may be used in a comparison within a given 
+ subfield or across subfields?
+  
+ ˆ
+  Engineers: Programmers and developers concerned with implementing, 
+ applying, or maintaining algorithms, addressing questions such as: 
+ What is the procedure for a given technique? What are the best practice 
+ heuristics for employing a given technique?
+  
+ ˆ
+  Students: Undergraduate and graduate students interested in learn-
+ ing about techniques, addressing questions such as: What are some 
+ interesting algorithms to study? How to implement a given approach?",NA
+1.6 ,NA,NA
+Further Reading,"This book is not an introduction to Artificial Intelligence or related sub-fields, 
+ nor is it a field guide for a specific class of algorithms. This section provides 
+ some pointers to selected books and articles for those readers seeking a 
+ deeper understanding of the fields of study to which the Clever Algorithms 
+ described in this book belong.
+  
+ 1.6.1 Artificial Intelligence
+  
+ Artificial Intelligence is large field of study and many excellent texts have 
+ been written to introduce the subject. 
+  
+ Russell and Novig’s “Artificial 
+ Intelligence: A Modern Approach” is an excellent introductory text providing 
+ a 
+ broad and deep review of what the field has to offer and is useful for 
+ students and practitioners alike [
+ 43
+ ]. Luger and Stubblefield’s “Artificial 
+ Intelligence: Structures and Strategies for Complex Problem Solving” is also an 
+ excellent reference text, providing a more empirical approach to the field 
+ [
+ 34
+ ].
+  
+ 1.6.2 Computational Intelligence
+  
+ Introductory books for the field of Computational Intelligence generally 
+ focus 
+ on a handful of specific sub-fields and their techniques. 
+ Engelbrecht’s
+ “Computational Intelligence: An Introduction” provides a 
+ modern and de-
+ tailed introduction to the field covering classic subjects such 
+ as Evolutionary 
+ Computation and Artificial Neural Networks, as well as more 
+ recent tech-niques such as Swarm Intelligence and Artificial Immune 
+ Systems [
+ 20
+ ]. 
+ Pedrycz’s slightly more dated “Computational Intelligence: An 
+ Introduction”
+ also provides a solid coverage of the core of the field with some 
+ deeper insights into fuzzy logic and fuzzy systems [
+ 41
+ ].
+  
+ 1.6.3 Biologically Inspired Computation
+  
+ Computational methods inspired by natural and biologically systems repre-
+ sent a large portion of the algorithms described in this book. The collection 
+ of 
+ articles published in de Castro and Von Zuben’s “Recent Developments in 
+ Biologically Inspired Computing” provides an overview of the state of the 
+ field, and the introductory chapter on need for such methods does an 
+ excellent job to motivate the field of study [
+ 17
+ ]. Forbes’s “Imitation of Life:",NA
+1.7 Bibliography,"[1] S. Aaronson. 
+  
+ NP-complete problems and physical reality. 
+  
+ ACM 
+ SIGACT News (COLUMN: Complexity theory), 36(1):30–52, 2005.
+  
+ [2] M. M. Ali, C. Storey, and A T¨orn. Application of stochastic global 
+ optimization algorithms to practical problems. Journal of Optimization 
+ Theory and Applications, 95(3):545–563, 1997.
+  
+ [3]
+  C. Andrieu, N. de Freitas, A. Doucet, and M. I. Jordan. An introduction 
+ to 
+ MCMC for machine learning. Machine Learning, 50:5–43, 2003.",NA
+Part II ,NA,NA
+Algorithms,27,NA
+Chapter 2,NA,NA
+Stochastic Algorithms,NA,NA
+2.1 Overview,"This chapter describes Stochastic Algorithms.
+  
+ 2.1.1 
+  
+ Stochastic Optimization
+  
+ The majority of the algorithms to be described in this book are comprised 
+ of 
+ probabilistic and stochastic processes. What differentiates the ‘stochastic 
+ algorithms’ in this chapter from the remaining algorithms is the specific lack 
+ of 1) an inspiring system, and 2) a metaphorical explanation. Both ‘inspira-
+ tion’ and ‘metaphor’ refer to the descriptive elements in the standardized 
+ algorithm description.
+  
+ These described algorithms are predominately global optimization al-
+ gorithms and metaheuristics that manage the application of an embedded 
+ neighborhood exploring (local) search procedure. As such, with the excep-
+ tion of ‘Stochastic Hill Climbing’ and ‘Random Search’ the algorithms may 
+ be 
+ considered extensions of the multi-start search (also known as multi-
+ restart 
+ search). This set of algorithms provide various different strategies by 
+ which 
+ ‘better’ and varied starting points can be generated and issued to a 
+ neighborhood searching technique for refinement, a process that is repeated 
+ with potentially improving or unexplored areas to search.
+  
+ 29",NA
+Random Search,Chapter 2. Stochastic Algorithms,NA
+2.2,"Random Search, RS, Blind Random Search, Blind Search, Pure Random 
+ Search, PRS
+  
+ 2.2.1 Taxonomy
+  
+ Random search belongs to the fields of Stochastic Optimization and Global 
+ Optimization. Random search is a direct search method as it does not 
+ require derivatives to search a continuous domain. This base approach is 
+ related to techniques that provide small improvements such as Directed 
+ Random Search, and Adaptive Random Search (Section
+  2.3
+ ).
+  
+ 2.2.2 Strategy
+  
+ The strategy of Random Search is to sample solutions from across the entire 
+ search space using a uniform probability distribution. Each future sample is 
+ independent of the samples that come before it.
+  
+ 2.2.3 Procedure
+  
+ Algorithm
+  2.2.1
+  provides a pseudocode listing of the Random Search Algo-
+ rithm for minimizing a cost function.
+  
+ Algorithm 2.2.1: Pseudocode for Random Search.
+  
+  
+ Input: NumIterations, ProblemSize, SearchSpace 
+  
+ Output: Best 
+  
+ 1
+ Best ← ∅;
+  
+ 2 
+  
+ 3 
+  
+ 4 
+  
+ 5 
+  
+ 6
+  
+ foreach iter
+ i
+  ∈ NumIterations do 
+  
+ candidate
+ i
+  ← RandomSolution(ProblemSize, SearchSpace); if 
+ Cost(candidate
+ i
+ ) < Cost(Best) then 
+  
+  
+  
+ Best ← candidate
+ i
+ ; 
+  
+ end
+  
+ 7
+  end
+  
+ 8
+  
+ return Best;
+  
+ 2.2.4
+  
+ Heuristics
+  
+ ˆ
+  Random search is minimal in that it only requires a candidate solution 
+ construction routine and a candidate solution evaluation routine, both 
+ of which may be calibrated using the approach.",NA
+2.3 ,NA,NA
+Adaptive Random Search,"Adaptive Random Search, ARS, Adaptive Step Size Random Search, ASSRS, 
+ Variable Step-Size Random Search.
+  
+ 2.3.1 Taxonomy
+  
+ The Adaptive Random Search algorithm belongs to the general set of 
+ approaches known as Stochastic Optimization and Global Optimization. It 
+ is 
+ a direct search method in that it does not require derivatives to navigate 
+ the 
+ search space. Adaptive Random Search is an extension of the Random 
+ Search (Section
+  2.2
+ ) and Localized Random Search algorithms.
+  
+ 2.3.2 Strategy
+  
+ The Adaptive Random Search algorithm was designed to address the lim-
+ itations of the fixed step size in the Localized Random Search algorithm. The 
+ strategy for Adaptive Random Search is to continually approximate the 
+ optimal step size required to reach the global optimum in the search 
+ space. 
+ This is achieved by trialling and adopting smaller or larger step sizes 
+ only if 
+ they result in an improvement in the search performance.
+  
+ The Strategy of the Adaptive Step Size Random Search algorithm (the 
+ specific technique reviewed) is to trial a larger step in each iteration and 
+ adopt the larger step if it results in an improved result. Very large step 
+ sizes 
+ are trialled in the same manner although with a much lower frequency. This 
+ strategy of preferring large moves is intended to allow the technique to 
+ escape local optima. Smaller step sizes are adopted if no improvement is 
+ made for an extended period.
+  
+ 2.3.3 Procedure
+  
+ Algorithm
+  2.3.1
+  provides a pseudocode listing of the Adaptive Random 
+ Search Algorithm for minimizing a cost function based on the specification 
+ for ‘Adaptive Step-Size Random Search’ by Schummer and Steiglitz [
+ 6
+ ].
+  
+ 2.3.4 Heuristics
+  
+ ˆ
+  Adaptive Random Search was designed for continuous function opti-
+  
+ mization problem domains.
+  
+ ˆ
+  Candidates with equal cost should be considered improvements to 
+ allow the algorithm to make progress across plateaus in the response 
+ surface.
+  
+ ˆ
+  Adaptive Random Search may adapt the search direction in addition 
+  
+ to the step size.",NA
+2.4 Stochastic Hill Climbing,"Stochastic Hill Climbing, SHC, Random Hill Climbing, RHC, Random Mutation 
+ Hill Climbing, RMHC.
+  
+ 2.4.1 
+  
+ Taxonomy
+  
+ The Stochastic Hill Climbing algorithm is a Stochastic Optimization algo-
+ rithm and is a Local Optimization algorithm (contrasted to Global Opti-
+ mization). It is a direct search technique, as it does not require derivatives 
+ of 
+ the search space. Stochastic Hill Climbing is an extension of deterministic 
+ hill 
+ climbing algorithms such as Simple Hill Climbing (first-best neighbor), 
+ Steepest-Ascent Hill Climbing (best neighbor), and a parent of approaches 
+ such as Parallel Hill Climbing and Random-Restart Hill Climbing.
+  
+ 2.4.2 
+  
+ Strategy
+  
+ The strategy of the Stochastic Hill Climbing algorithm is iterate the process of 
+ randomly selecting a neighbor for a candidate solution and only accept it 
+ if it 
+ results in an improvement. The strategy was proposed to address the 
+ limitations of deterministic hill climbing techniques that were likely to get 
+ stuck in local optima due to their greedy acceptance of neighboring moves.
+  
+ 2.4.3 
+  
+ Procedure
+  
+ Algorithm
+  2.4.1
+  provides a pseudocode listing of the Stochastic Hill Climbing 
+ algorithm for minimizing a cost function, specifically the Random Mutation 
+ Hill Climbing algorithm described by Forrest and Mitchell applied to a 
+ maximization optimization problem [
+ 3
+ ].
+  
+ Algorithm 2.4.1: Pseudocode for Stochastic Hill Climbing.
+  
+  
+ Input: Iter
+ max
+ , ProblemSize 
+  
+  
+ Output: Current 
+  
+ 1
+ Current ← RandomSolution(ProblemSize);
+  
+ 2 
+  
+ 3 
+  
+ 4 
+  
+ 5 
+  
+ 6
+  
+ foreach iter
+ i
+  ∈ Iter
+ max
+  do 
+  
+ Candidate ← RandomNeighbor(Current); if 
+ Cost(Candidate) ≥ Cost(Current) then 
+  
+  
+ Current ← Candidate; 
+  
+ end
+  
+ 7
+  end 
+  
+ 8 
+ return Current;",NA
+2.5 Iterated Local Search,"Iterated Local Search, ILS.
+  
+ 2.5.1 
+  
+ Taxonomy
+  
+ Iterated Local Search is a Metaheuristic and a Global Optimization tech-
+ nique. It is an extension of Mutli Start Search and may be considered a 
+ parent of many two-phase search approaches such as the Greedy Random-
+ ized Adaptive Search Procedure (Section
+  2.8
+ ) and Variable Neighborhood 
+ Search (Section
+  2.7
+ ).
+  
+ 2.5.2 
+  
+ Strategy
+  
+ The objective of Iterated Local Search is to improve upon stochastic Mutli-
+ Restart Search by sampling in the broader neighborhood of candidate 
+ solutions and using a Local Search technique to refine solutions to their 
+ local 
+ optima. Iterated Local Search explores a sequence of solutions created 
+ as 
+ perturbations of the current best solution, the result of which is refined 
+ using an embedded heuristic.
+  
+ 2.5.3 
+  
+ Procedure
+  
+ Algorithm
+  2.5.1
+  provides a pseudocode listing of the Iterated Local Search 
+ algorithm for minimizing a cost function.
+  
+ Algorithm 2.5.1: Pseudocode for Iterated Local Search.
+  
+  
+ Input: 
+  
+  
+ Output: S
+ best 
+  
+ 1
+  S
+ best
+  ← ConstructInitialSolution(); 
+ 2
+ S
+ best
+  ← 
+ LocalSearch(); 
+  
+ 3
+ SearchHistory ← S
+ best
+ ;
+  
+ 4 
+  
+ 5 
+  
+ 6 
+  
+ 7 
+  
+ 8 
+  
+ 9 
+  
+ 10
+  
+ while ¬ StopCondition() do
+  
+ S
+ candidate
+  ← Perturbation(S
+ best
+ , SearchHistory); 
+  
+ S
+ candidate
+  ← LocalSearch(S
+ candidate
+ ); 
+  
+ SearchHistory ← S
+ candidate
+ ; 
+  
+ if AcceptanceCriterion(S
+ best
+ , S
+ candidate
+ , SearchHistory) then 
+  
+ S
+ best
+  ← S
+ candidate
+ ; 
+  
+ end
+  
+ 11
+  end 
+  
+ 12 
+ return S
+ best
+ ;",NA
+2.6 Guided Local Search,"Guided Local Search, GLS.
+  
+ 2.6.1 
+  
+ Taxonomy
+  
+ The Guided Local Search algorithm is a Metaheuristic and a Global Op-
+ timization algorithm that makes use of an embedded Local Search algo-
+ rithm. It is an extension to Local Search algorithms such as Hill Climbing 
+ (Section
+  2.4
+ ) and is similar in strategy to the Tabu Search algorithm (Sec-
+ tion
+  2.10
+ ) and the Iterated Local Search algorithm (Section
+  2.5
+ ).
+  
+ 2.6.2 
+  
+ Strategy
+  
+ The strategy for the Guided Local Search algorithm is to use penalties to 
+ encourage a Local Search technique to escape local optima and discover the 
+ global optima. A Local Search algorithm is run until it gets stuck in a local 
+ optima. The features from the local optima are evaluated and penalized, 
+ the 
+ results of which are used in an augmented cost function employed by the 
+ Local Search procedure. The Local Search is repeated a number of times 
+ using the last local optima discovered and the augmented cost function that 
+ guides exploration away from solutions with features present in discovered 
+ local optima.
+  
+ 2.6.3 
+  
+ Procedure
+  
+ Algorithm
+  2.6.1
+  provides a pseudocode listing of the Guided Local Search 
+ algorithm for minimization. 
+  
+ The Local Search algorithm used by the 
+ Guided Local Search algorithm uses an augmented cost function in the form 
+ h
+ (
+ s
+ ) =
+  g
+ (
+ s
+ ) +
+  λ ·
+ M i=1
+ f
+ i
+ , where
+  h
+ (
+ s
+ ) is the augmented cost function,
+  g
+ (
+ s
+ ) is 
+ the 
+ problem cost function,λ is the ‘regularization parameter’ (a coefficient for 
+ scaling the penalties), s is a locally optimal solution of M features, and f
+ i
+  is 
+ the i’th feature in locally optimal solution. The augmented cost 
+ function is 
+ only used by the local search procedure, the Guided Local Search 
+ algorithm 
+ uses the problem specific cost function without augmentation.
+  
+  
+ Penalties are only updated for those features in a locally optimal solution 
+ that 
+ maximize utility, updated by adding 1 to the penalty for the future 
+    
+  
+ C
+ feature 
+ (a counter). The utility for a feature is calculated as U
+ feature
+  = 
+ 1+P
+ feature
+ , 
+ where
+  U
+ feature
+  is the utility for penalizing a feature (maximizing),
+  C
+ feature 
+ is the 
+ cost of the feature, and
+  P
+ feature
+  is the current penalty for the feature.
+  
+ 2.6.4 
+  
+ Heuristics
+  
+ ˆ
+  The Guided Local Search procedure is independent of the Local Search 
+ procedure embedded within it. A suitable domain-specific",NA
+2.7 Variable Neighborhood Search,"Variable Neighborhood Search, VNS.
+  
+ 2.7.1 
+  
+ Taxonomy
+  
+ Variable Neighborhood Search is a Metaheuristic and a Global Optimization 
+ technique that manages a Local Search technique. It is related to the 
+ Iterative Local Search algorithm (Section
+  2.5
+ ).
+  
+ 2.7.2 
+  
+ Strategy
+  
+ The strategy for the Variable Neighborhood Search involves iterative ex-
+ ploration of larger and larger neighborhoods for a given local optima until 
+ an improvement is located after which time the search across expanding 
+ neighborhoods is repeated. The strategy is motivated by three principles: 1) 
+ a local minimum for one neighborhood structure may not be a local 
+ minimum for a different neighborhood structure, 2) a global minimum is a 
+ local minimum for all possible neighborhood structures, and 3) local minima 
+ are relatively close to global minima for many problem classes.
+  
+ 2.7.3 
+  
+ Procedure
+  
+ Algorithm
+  2.7.1
+  provides a pseudocode listing of the Variable Neighborhood 
+ Search algorithm for minimizing a cost function. The Pseudocode shows 
+ that the systematic search of expanding neighborhoods for a local optimum is 
+ abandoned when a global improvement is achieved (shown with the
+  Break 
+ jump).
+  
+ 2.7.4 
+  
+ Heuristics
+  
+ ˆ
+  Approximation methods (such as stochastic hill climbing) are 
+ suggested 
+ for use as the Local Search procedure for large problem 
+ instances in order to reduce the running time.
+  
+ ˆ
+  Variable Neighborhood Search has been applied to a very wide array 
+ of combinatorial optimization problems as well as clustering and 
+ continuous function optimization problems.
+  
+ ˆ
+  The embedded Local Search technique should be specialized to the 
+  
+ problem type and instance to which the technique is being applied.
+  
+ ˆ
+  The Variable Neighborhood Descent (VND) can be embedded in the 
+ Variable Neighborhood Search as a the Local Search procedure and 
+ has been shown to be most effective.",NA
+2.8 ,NA,NA
+Greedy Randomized Adaptive Search,"Greedy Randomized Adaptive Search Procedure, GRASP.
+  
+ 2.8.1 Taxonomy
+  
+ The Greedy Randomized Adaptive Search Procedure is a Metaheuristic 
+ and 
+ Global Optimization algorithm, originally proposed for the Operations 
+ Research practitioners. The iterative application of an embedded Local 
+ Search technique relate the approach to Iterative Local Search (Section
+  2.5
+ ) 
+ and Multi-Start techniques.
+  
+ 2.8.2 Strategy
+  
+ The objective of the Greedy Randomized Adaptive Search Procedure is to 
+ repeatedly sample stochastically greedy solutions, and then use a local search 
+ procedure to refine them to a local optima. The strategy of the procedure is 
+ centered on the stochastic and greedy step-wise construction mechanism 
+ that constrains the selection and order-of-inclusion of the components of a 
+ solution based on the value they are expected to provide.
+  
+ 2.8.3 Procedure
+  
+ Algorithm
+  2.8.1
+  provides a pseudocode listing of the Greedy Randomized 
+ Adaptive Search Procedure for minimizing a cost function.
+  
+ Algorithm 2.8.1: Pseudocode for the GRASP.
+  
+  
+ Input: α
+  
+  
+ Output: S
+ best 
+  
+ 1
+ S
+ best
+  ← ConstructRandomSolution();
+  
+ 2 
+  
+ 3 
+  
+ 4 
+  
+ 5 
+  
+ 6 
+  
+ 7
+  
+ while ¬ StopCondition() do
+  
+ S
+ candidate
+  ← GreedyRandomizedConstruction(α); 
+ S
+ candidate
+  ← LocalSearch(S
+ candidate
+ ); 
+  
+ if Cost(S
+ candidate
+ ) < Cost(S
+ best
+ ) then 
+  
+  
+ S
+ best
+  ← S
+ candidate
+ ; 
+  
+ end
+  
+ 8
+  end
+  
+ 9
+  
+ return S
+ best
+ ;
+  
+ Algorithm
+  2.8.2
+  provides the pseudocode the Greedy Randomized Con-
+ struction function. The function involves the step-wise construction of a 
+ candidate solution using a stochastically greedy construction process. The 
+ function works by building a Restricted Candidate List (RCL) that con-
+ straints the components of a solution (features) that may be selected from",NA
+Scatter Search,Chapter 2. Stochastic Algorithms,NA
+2.9,"Scatter Search, SS.
+  
+ 2.9.1 Taxonomy
+  
+ Scatter search is a Metaheuristic and a Global Optimization algorithm. It is 
+ also sometimes associated with the field of Evolutionary Computation given 
+ the use of a population and recombination in the structure of the technique. 
+ Scatter Search is a sibling of Tabu Search (Section
+  2.10
+ ), developed by the 
+ same author and based on similar origins.
+  
+ 2.9.2 Strategy
+  
+ The objective of Scatter Search is to maintain a set of diverse and high-
+ quality candidate solutions. The principle of the approach is that useful 
+ information about the global optima is stored in a diverse and elite set of 
+ solutions (the reference set) and that recombining samples from the set can 
+ exploit this information. The strategy involves an iterative process, where a 
+ population of diverse and high-quality candidate solutions that are 
+ partitioned into subsets and linearly recombined to create weighted 
+ centroids of sample-based neighborhoods. The results of recombination are 
+ refined using an embedded heuristic and assessed in the context of the 
+ reference set as to whether or not they are retained.
+  
+ 2.9.3 Procedure
+  
+ Algorithm
+  2.9.1
+  provides a pseudocode listing of the Scatter Search algorithm 
+ for minimizing a cost function. The procedure is based on the abstract form 
+ presented by Glover as a template for the general class of technique [
+ 3
+ ], with 
+ influences from an application of the technique to function optimization by 
+ Glover [
+ 3
+ ].
+  
+ 2.9.4 Heuristics
+  
+ ˆ
+  Scatter search is suitable for both discrete domains such as combina-
+ torial optimization as well as continuous domains such as non-linear 
+ programming (continuous function optimization).
+  
+ ˆ
+  Small set sizes are preferred for the ReferenceSet, such as 10 or 20 
+  
+ members.
+  
+ ˆ
+  Subset sizes can be 2, 3, 4 or more members that are all recombined 
+ to produce viable candidate solutions within the neighborhood of the 
+ members of the subset.",NA
+2.10 ,NA,NA
+Tabu Search,"Tabu Search, TS, Taboo Search.
+  
+ 2.10.1 
+  
+ Taxonomy
+  
+ Tabu Search is a Global Optimization algorithm and a Metaheuristic or 
+ Meta-
+ strategy for controlling an embedded heuristic technique. Tabu Search is a 
+ parent for a large family of derivative approaches that introduce memory 
+ structures in Metaheuristics, such as Reactive Tabu Search (Section
+  2.11
+ ) 
+ and Parallel Tabu Search.
+  
+ 2.10.2 
+  
+ Strategy
+  
+ The objective for the Tabu Search algorithm is to constrain an embedded 
+ heuristic from returning to recently visited areas of the search space, referred 
+ to as cycling. The strategy of the approach is to maintain a short term 
+ memory of the specific changes of recent moves within the search space and 
+ preventing future moves from undoing those changes. 
+  
+ Additional 
+ intermediate-term memory structures may be introduced to bias moves 
+ toward promising areas of the search space, as well as longer-term memory 
+ structures that promote a general diversity in the search across the search 
+ space.
+  
+ 2.10.3 
+  
+ Procedure
+  
+ Algorithm
+  2.10.1
+  provides a pseudocode listing of the Tabu Search algorithm 
+ for minimizing a cost function. The listing shows the simple Tabu Search 
+ algorithm with short term memory, without intermediate and long term 
+ memory management.
+  
+ 2.10.4 
+  
+ Heuristics
+  
+ ˆ
+  Tabu search was designed to manage an embedded hill climbing 
+ heuristic, although may be adapted to manage any neighborhood 
+ exploration heuristic.
+  
+ ˆ
+  Tabu search was designed for, and has predominately been applied to 
+  
+ discrete domains such as combinatorial optimization problems.
+  
+ ˆ
+  Candidates for neighboring moves can be generated deterministically 
+ for the entire neighborhood or the neighborhood can be stochastically 
+ sampled to a fixed size, trading off efficiency for accuracy.
+  
+ ˆ
+  Intermediate-term memory structures can be introduced (complement-
+ ing the short-term memory) to focus the search on promising areas of 
+ the search space (intensification), called aspiration criteria.",NA
+2.11 ,NA,NA
+Reactive Tabu Search,"Reactive Tabu Search, RTS, R-TABU, Reactive Taboo Search.
+  
+ 2.11.1 
+  
+ Taxonomy
+  
+ Reactive Tabu Search is a Metaheuristic and a Global Optimization algo-
+ rithm. It is an extension of Tabu Search (Section
+  2.10
+ ) and the basis for a 
+ field of reactive techniques called Reactive Local Search and more broadly 
+ the field of Reactive Search Optimization.
+  
+ 2.11.2 
+  
+ Strategy
+  
+ The objective of Tabu Search is to avoid cycles while applying a local search 
+ technique. The Reactive Tabu Search addresses this objective by explicitly 
+ monitoring the search and reacting to the occurrence of cycles and their 
+ repetition by adapting the tabu tenure (tabu list size). The strategy of the 
+ broader field of Reactive Search Optimization is to automate the process by 
+ which a practitioner configures a search procedure by monitoring its online 
+ behavior and to use machine learning techniques to adapt a techniques 
+ configuration.
+  
+ 2.11.3 
+  
+ Procedure
+  
+ Algorithm
+  2.11.1
+  provides a pseudocode listing of the Reactive Tabu Search 
+ algorithm for minimizing a cost function. The Pseudocode is based on the 
+ version of the Reactive Tabu Search described by Battiti and Tecchiolli in [
+ 9
+ ] 
+ with supplements like the
+  IsTabu
+  function from [
+ 7
+ ]. The procedure has been 
+ modified for brevity to exude the diversification procedure (escape move). 
+ Algorithm
+  2.11.2
+  describes the memory based reaction that manipulates the 
+ size of the ProhibitionPeriod in response to identified cycles in the ongoing 
+ search. Algorithm
+  2.11.3
+  describes the selection of the best move 
+ from a list 
+ of candidate moves in the neighborhood of a given solution. The 
+ function 
+ permits prohibited moves in the case where a prohibited move is 
+ better than 
+ the best know solution and the selected admissible move (called 
+ aspiration). 
+ Algorithm
+  2.11.4
+  determines whether a given neighborhood move is tabu 
+ based on the current ProhibitionPeriod, and is employed by sub-functions of 
+ the Algorithm
+  2.11.3
+  function.
+  
+ 2.11.4 
+  
+ Heuristics
+  
+ ˆ
+  Reactive Tabu Search is an extension of Tabu Search and as such 
+  
+ should exploit the best practices used for the parent algorithm.",NA
+Chapter 3,NA,NA
+Evolutionary Algorithms,NA,NA
+3.1 Overview,"This chapter describes Evolutionary Algorithms.
+  
+ 3.1.1 
+  
+ Evolution
+  
+ Evolutionary Algorithms belong to the Evolutionary Computation field of 
+ study concerned with computational methods inspired by the process and 
+ mechanisms of biological evolution. The process of evolution by means of 
+ natural selection (descent with modification) was proposed by Darwin to 
+ account for the variety of life and its suitability (adaptive fit) for its 
+ environment. The mechanisms of evolution describe how evolution actually 
+ takes place through the modification and propagation of genetic material 
+ (proteins). Evolutionary Algorithms are concerned with investigating com-
+ putational systems that resemble simplified versions of the processes and 
+ mechanisms of evolution toward achieving the effects of these processes and 
+ mechanisms, namely the development of adaptive systems. Additional 
+ subject areas that fall within the realm of Evolutionary Computation are 
+ algorithms that seek to exploit the properties from the related fields of 
+ Population Genetics, Population Ecology, Coevolutionary Biology, and 
+ Developmental Biology.
+  
+ 3.1.2 
+  
+ References
+  
+ Evolutionary Algorithms share properties of adaptation through an iterative 
+ process that accumulates and amplifies beneficial variation through trial 
+ and error. Candidate solutions represent members of a virtual population 
+ striving to survive in an environment defined by a problem specific objective 
+ function. In each case, the evolutionary process refines the adaptive fit of 
+ the population of candidate solutions in the environment, typically using
+  
+ 87",NA
+3.2 ,NA,NA
+Genetic Algorithm,"Genetic Algorithm, GA, Simple Genetic Algorithm, SGA, Canonical Genetic 
+ Algorithm, CGA.
+  
+ 3.2.1 Taxonomy
+  
+ The Genetic Algorithm is an Adaptive Strategy and a Global Optimization 
+ technique. It is an Evolutionary Algorithm and belongs to the broader study 
+ of Evolutionary Computation. The Genetic Algorithm is a sibling of 
+ other 
+ Evolutionary Algorithms such as Genetic Programming (Section
+  3.3
+ ), 
+ Evolution Strategies (Section
+  3.4
+ ), Evolutionary Programming (Section
+  3.6
+ ), 
+ and Learning Classifier Systems (Section
+  3.9
+ ). The Genetic Algorithm is a 
+ parent of a large number of variant techniques and sub-fields too numerous 
+ to list.
+  
+ 3.2.2 Inspiration
+  
+ The Genetic Algorithm is inspired by population genetics (including heredity 
+ and gene frequencies), and evolution at the population level, as well as the 
+ Mendelian understanding of the structure (such as chromosomes, genes, 
+ alleles) and mechanisms (such as recombination and mutation). This is the 
+ so-called new or modern synthesis of evolutionary biology.
+  
+ 3.2.3 Metaphor
+  
+ Individuals of a population contribute their genetic material (called the 
+ genotype) proportional to their suitability of their expressed genome (called 
+ their phenotype) to their environment, in the form of offspring. The next 
+ generation is created through a process of mating that involves 
+ recombination of two individuals genomes in the population with the 
+ introduction of random 
+ copying errors (called mutation). This iterative 
+ process may result in an 
+ improved adaptive-fit between the phenotypes of 
+ individuals in a population 
+ and the environment.
+  
+ 3.2.4 Strategy
+  
+ The objective of the Genetic Algorithm is to maximize the payoff of candidate 
+ solutions in the population against a cost function from the problem domain. 
+ The strategy for the Genetic Algorithm is to repeatedly employ surrogates 
+ for the recombination and mutation genetic mechanisms on the population 
+ of candidate solutions, where the cost function (also known as objective or 
+ fitness function) applied to a decoded representation of a candidate governs 
+ the probabilistic contributions a given candidate solution can make to the 
+ subsequent generation of candidate solutions.",NA
+3.3 Genetic Programming,"Genetic Programming, GP.
+  
+ 3.3.1 
+  
+ Taxonomy
+  
+ The Genetic Programming algorithm is an example of an Evolutionary 
+ Algorithm and belongs to the field of Evolutionary Computation and more 
+ broadly Computational Intelligence and Biologically Inspired Computation. 
+ The Genetic Programming algorithm is a sibling to other Evolutionary 
+ Algorithms such as the Genetic Algorithm (Section
+  3.2
+ ), Evolution Strate-gies 
+ (Section
+  3.4
+ ), Evolutionary Programming (Section
+  3.6
+ ), and Learning 
+ Classifier Systems (Section
+  3.9
+ ). Technically, the Genetic Programming 
+ algorithm is an extension of the Genetic Algorithm. The Genetic Algorithm 
+ is a 
+ parent to a host of variations and extensions.
+  
+ 3.3.2 
+  
+ Inspiration
+  
+ The Genetic Programming algorithm is inspired by population genetics 
+ (including heredity and gene frequencies), and evolution at the population 
+ level, as well as the Mendelian understanding of the structure (such as 
+ chromosomes, genes, alleles) and mechanisms (such as recombination and 
+ mutation). This is the so-called new or modern synthesis of evolutionary 
+ biology.
+  
+ 3.3.3 
+  
+ Metaphor
+  
+ Individuals of a population contribute their genetic material (called the 
+ genotype) proportional to their suitability of their expressed genome (called 
+ their phenotype) to their environment. The next generation is created 
+ through a process of mating that involves genetic operators such as recom-
+ bination of two individuals genomes in the population and the introduction 
+ of 
+ random copying errors (called mutation). This iterative process may 
+ result 
+ in an improved adaptive-fit between the phenotypes of individuals in 
+ a 
+ population and the environment.
+  
+ Programs may be evolved and used in a secondary adaptive process, 
+ where an assessment of candidates at the end of that secondary adaptive 
+ process is used for differential reproductive success in the first evolution-
+ ary process. This system may be understood as the inter-dependencies 
+ experienced in evolutionary development where evolution operates upon an 
+ embryo that in turn develops into an individual in an environment that 
+ eventually may reproduce.",NA
+3.4 ,NA,NA
+Evolution Strategies,"Evolution Strategies, Evolution Strategy, Evolutionary Strategies, ES.
+  
+ 3.4.1 Taxonomy
+  
+ Evolution Strategies is a global optimization algorithm and is an instance of 
+ an Evolutionary Algorithm from the field of Evolutionary Computa-tion. 
+  
+ Evolution Strategies is a sibling technique to other Evolutionary 
+ Algorithms 
+ such as Genetic Algorithms (Section
+  3.2
+ ), Genetic Programming 
+ (Section
+  3.3
+ ), 
+ Learning Classifier Systems (Section
+  3.9
+ ), and Evolutionary Programming 
+ (Section
+  3.6
+ ). A popular descendant of the Evolution Strate-gies algorithm is 
+ the Covariance Matrix Adaptation Evolution Strategies (CMA-ES).
+  
+ 3.4.2 Inspiration
+  
+ Evolution Strategies is inspired by the theory of evolution by means of 
+ natural selection. Specifically, the technique is inspired by macro-level or 
+ the species-level process of evolution (phenotype, hereditary, variation) and 
+ is not concerned with the genetic mechanisms of evolution (genome, 
+ chromosomes, genes, alleles).
+  
+ 3.4.3 Strategy
+  
+ The objective of the Evolution Strategies algorithm is to maximize the 
+ suitability of collection of candidate solutions in the context of an ob-jective 
+ function from a domain. The objective was classically achieved through the 
+ adoption of dynamic variation, a surrogate for descent with 
+ modification, 
+ where the amount of variation was adapted dynamically with 
+ performance-
+ based heuristics. Contemporary approaches co-adapt param-eters that 
+ control the amount and bias of variation with the candidate solutions.
+  
+ 3.4.4 Procedure
+  
+ Instances of Evolution Strategies algorithms may be concisely described with 
+ a custom terminology in the form (
+ µ, λ
+ )
+ −ES
+ , where
+  µ
+  is number of candidate 
+ solutions in the parent generation, and
+  λ
+  is the number of candidate solutions 
+ generated from the parent generation. In this configuration, the best µ are 
+ kept if λ > µ, where λ must be great or equal to µ. In addition to the so-called 
+ comma-selection Evolution Strategies algorithm, a plus-selection 
+ variation 
+ may be defined (
+ µ
+ +
+ λ
+ )
+ −ES
+ , where the best members of the union of the
+  µ
+  and
+  λ
+  
+ generations compete based on objective fitness for a position 
+ in the next 
+ generation. The simplest configuration is the (1 + 1) − ES,",NA
+3.5 ,NA,NA
+Differential Evolution,"Differential Evolution, DE.
+  
+ 3.5.1 Taxonomy
+  
+ Differential Evolution is a Stochastic Direct Search and Global Optimiza-tion 
+ algorithm, and is an instance of an Evolutionary Algorithm from the field of 
+ Evolutionary Computation. It is related to sibling Evolutionary Algorithms 
+ such as the Genetic Algorithm (Section
+  3.2
+ ), Evolutionary Pro-gramming 
+ (Section
+  3.6
+ ), and Evolution Strategies (Section
+  3.4
+ ), and has some 
+ similarities with Particle Swarm Optimization (Section
+  6.2
+ ).
+  
+ 3.5.2 Strategy
+  
+ The Differential Evolution algorithm involves maintaining a population of 
+ candidate solutions subjected to iterations of recombination, evaluation, and 
+ selection. The recombination approach involves the creation of new 
+ candidate solution components based on the weighted difference between 
+ two randomly selected population members added to a third population 
+ member. This perturbs population members relative to the spread of the 
+ broader population. In conjunction with selection, the perturbation effect 
+ self-organizes the sampling of the problem space, bounding it to known 
+ areas of interest.
+  
+ 3.5.3 Procedure
+  
+ Differential Evolution has a specialized nomenclature that describes the 
+ adopted configuration. This takes the form of DE/x/y/z, where x represents 
+ the solution to be perturbed (such a random or best). The y signifies the 
+ number of difference vectors used in the perturbation of x, where a 
+ difference 
+ vectors is the difference between two randomly selected 
+ although distinct members of the population. Finally, z signifies the 
+ recombination operator performed such as bin for binomial and exp for 
+ exponential.
+  
+ Algorithm
+  3.5.1
+  provides a pseudocode listing of the Differential Evo-
+ lution algorithm for minimizing a cost function, specifically a DE/rand/-
+ 1/bin configuration. Algorithm
+  3.5.2
+  provides a pseudocode listing of the 
+ NewSample function from the Differential Evolution algorithm.
+  
+ 3.5.4 Heuristics
+  
+ ˆ
+  Differential evolution was designed for nonlinear, non-differentiable 
+  
+ continuous function optimization.
+  
+ ˆ
+  The weighting factor
+  F ∈
+  [0
+ ,
+  2] controls the amplification of differential 
+  
+ variation, a value of 0.8 is suggested.",NA
+3.6 ,NA,NA
+Evolutionary Programming,"Evolutionary Programming, EP.
+  
+ 3.6.1 Taxonomy
+  
+ Evolutionary Programming is a Global Optimization algorithm and is an 
+ instance of an Evolutionary Algorithm from the field of Evolutionary 
+ Computation. The approach is a sibling of other Evolutionary Algorithms 
+ such as the Genetic Algorithm (Section
+  3.2
+ ), and Learning Classifier Systems 
+ (Section
+  3.9
+ ). It is sometimes confused with Genetic Programming given the 
+ similarity in name (Section
+  3.3
+ ), and more recently it shows a strong 
+ functional similarity to Evolution Strategies (Section
+  3.4
+ ).
+  
+ 3.6.2 Inspiration
+  
+ Evolutionary Programming is inspired by the theory of evolution by means 
+ of 
+ natural selection. Specifically, the technique is inspired by macro-level or 
+ the species-level process of evolution (phenotype, hereditary, variation) and 
+ is not concerned with the genetic mechanisms of evolution (genome, 
+ chromosomes, genes, alleles).
+  
+ 3.6.3 Metaphor
+  
+ A population of a species reproduce, creating progeny with small pheno-
+ typical variation. The progeny and the parents compete based on their 
+ suitability to the environment, where the generally more fit members con-
+ stitute the subsequent generation and are provided with the opportunity to 
+ reproduce themselves. This process repeats, improving the adaptive fit 
+ between the species and the environment.
+  
+ 3.6.4 Strategy
+  
+ The objective of the Evolutionary Programming algorithm is to maximize the 
+ suitability of a collection of candidate solutions in the context of an objective 
+ function from the domain. This objective is pursued by using an adaptive 
+ model with surrogates for the processes of evolution, specifically hereditary 
+ (reproduction with variation) under competition. The representation used 
+ for candidate solutions is directly assessable by a cost or objective function 
+ from the domain.
+  
+ 3.6.5 Procedure
+  
+ Algorithm
+  3.6.1
+  provides a pseudocode listing of the Evolutionary Program-
+ ming algorithm for minimizing a cost function.",NA
+3.7 ,NA,NA
+Grammatical Evolution,"Grammatical Evolution, GE.
+  
+ 3.7.1 Taxonomy
+  
+ Grammatical Evolution is a Global Optimization technique and an instance 
+ of 
+ an Evolutionary Algorithm from the field of Evolutionary Computation. 
+ It 
+ may also be considered an algorithm for Automatic Programming. Gram-
+ matical Evolution is related to other Evolutionary Algorithms for evolving 
+ programs such as Genetic Programming (Section
+  3.3
+ ) and Gene Expression 
+ Programming (Section
+  3.8
+ ), as well as the classical Genetic Algorithm that 
+ uses binary strings (Section
+  3.2
+ ).
+  
+ 3.7.2 Inspiration
+  
+ The Grammatical Evolution algorithm is inspired by the biological process 
+ used for generating a protein from genetic material as well as the broader 
+ genetic evolutionary process. The genome is comprised of DNA as a string 
+ of building blocks that are transcribed to RNA. RNA codons are in turn 
+ translated into sequences of amino acids and used in the protein. The 
+ resulting protein in its environment is the phenotype.
+  
+ 3.7.3 Metaphor
+  
+ The phenotype is a computer program that is created from a binary string-
+ based genome. The genome is decoded into a sequence of integers that are 
+ in turn mapped onto pre-defined rules that makeup the program. The 
+ mapping from genotype to the phenotype is a one-to-many process that 
+ uses 
+ a wrapping feature. This is like the biological process observed in many 
+ bacteria, viruses, and mitochondria, where the same genetic material is used 
+ in the expression of different genes. The mapping adds robustness to the 
+ process both in the ability to adopt structure-agnostic genetic operators used 
+ during the evolutionary process on the sub-symbolic representation and the 
+ transcription of well-formed executable programs from the representation.
+  
+ 3.7.4 Strategy
+  
+ The objective of Grammatical Evolution is to adapt an executable program to a 
+ problem specific objective function. This is achieved through an iterative 
+ process with surrogates of evolutionary mechanisms such as descent with 
+ variation, genetic mutation and recombination, and genetic transcription 
+ and gene expression. A population of programs are evolved in a sub-
+ symbolic form as variable length binary strings and mapped to a symbolic 
+ and well-structured form as a context free grammar for execution.",NA
+3.8 ,NA,NA
+Gene Expression Programming,"Gene Expression Programming, GEP.
+  
+ 3.8.1 Taxonomy
+  
+ Gene Expression Programming is a Global Optimization algorithm and an 
+ Automatic Programming technique, and it is an instance of an Evolution-ary 
+ Algorithm from the field of Evolutionary Computation. It is a sibling of other 
+ Evolutionary Algorithms such as a the Genetic Algorithm (Sec-
+ tion
+  3.2
+ ) as 
+ well as other Evolutionary Automatic Programming techniques 
+ such as 
+ Genetic Programming (Section
+  3.3
+ ) and Grammatical Evolution (Section
+  3.7
+ ).
+  
+ 3.8.2 Inspiration
+  
+ Gene Expression Programming is inspired by the replication and expression 
+ of the DNA molecule, specifically at the gene level. The expression of a gene 
+ involves the transcription of its DNA to RNA which in turn forms amino 
+ acids that make up proteins in the phenotype of an organism. The DNA 
+ building blocks are subjected to mechanisms of variation (mutations such as 
+ coping errors) as well as recombination during sexual reproduction.
+  
+ 3.8.3 Metaphor
+  
+ Gene Expression Programming uses a linear genome as the basis for genetic 
+ operators such as mutation, recombination, inversion, and transposition. 
+ The genome is comprised of chromosomes and each chromosome is 
+ comprised of genes that are translated into an expression tree to solve a given 
+ problem. 
+ The robust gene definition means that genetic operators can be 
+ applied to the sub-symbolic representation without concern for the 
+ structure of the resultant gene expression, providing separation of genotype 
+ and phenotype.
+  
+ 3.8.4 Strategy
+  
+ The objective of the Gene Expression Programming algorithm is to im-prove 
+ the adaptive fit of an expressed program in the context of a problem specific 
+ cost function. This is achieved through the use of an evolutionary process 
+ that operates on a sub-symbolic representation of candidate solu-tions using 
+ surrogates for the processes (descent with modification) and 
+ mechanisms 
+ (genetic recombination, mutation, inversion, transposition, and 
+ gene 
+ expression) of evolution.",NA
+3.9 Learning Classifier System,"Learning Classifier System, LCS.
+  
+ 3.9.1 
+  
+ Taxonomy
+  
+ The Learning Classifier System algorithm is both an instance of an Evo-
+ lutionary Algorithm from the field of Evolutionary Computation and an 
+ instance of a Reinforcement Learning algorithm from Machine Learning. 
+ Internally, Learning Classifier Systems make use of a Genetic Algorithm 
+ (Section
+  3.2
+ ). The Learning Classifier System is a theoretical system with a 
+ number of implementations. The two main approaches to implementing and 
+ investigating the system empirically are the Pittsburgh-style that seeks to 
+ optimize the whole classifier, and the Michigan-style that optimize respon-
+ sive rulesets. The Michigan-style Learning Classifier is the most common and 
+ is comprised of two versions: the ZCS (zeroth-level classifier system) and the 
+ XCS (accuracy-based classifier system).
+  
+ 3.9.2 
+  
+ Strategy
+  
+ The objective of the Learning Classifier System algorithm is to optimize 
+ payoff based on exposure to stimuli from a problem-specific environment. 
+ This is achieved by managing credit assignment for those rules that prove 
+ useful and searching for new rules and new variations on existing rules using 
+ an evolutionary process.
+  
+ 3.9.3 
+  
+ Procedure
+  
+ The actors of the system include detectors, messages, effectors, feedback, 
+ and classifiers. Detectors are used by the system to perceive the state of the 
+ environment. Messages are the discrete information packets passed from the 
+ detectors into the system. The system performs information processing on 
+ messages, and messages may directly result in actions in the environment. 
+ Effectors control the actions of the system on and within the environment. 
+ In addition to the system actively perceiving via its detections, it may also 
+ receive directed feedback from the environment (payoff). Classifiers are 
+ condition-action rules that provide a filter for messages. If a message 
+ satisfies the conditional part of the classifier, the action of the classifier 
+ triggers. Rules act as message processors. Message a fixed length bitstring. 
+ A 
+ classifier is defined as a ternary string with an alphabet
+  ∈ {
+ 1
+ ,
+  0
+ ,
+  #
+ }
+ , where 
+ the 
+ # represents do not care (matching either 1 or 0).
+  
+ The processing loop for the Learning Classifier system is as follows:
+  
+ 1. Messages from the environment are placed on the message list.",NA
+3.10 ,NA,NA
+Non-dominated Sorting Genetic Algorithm,"Non-dominated Sorting Genetic Algorithm, Nondominated Sorting Genetic 
+ Algorithm, Fast Elitist Non-dominated Sorting Genetic Algorithm, NSGA, 
+ NSGA-II, NSGAII.
+  
+ 3.10.1 
+  
+ Taxonomy
+  
+ The Non-dominated Sorting Genetic Algorithm is a Multiple Objective Opti-
+ mization (MOO) algorithm and is an instance of an Evolutionary Algorithm 
+ from the field of Evolutionary Computation. Refer to Section
+  9.5.3
+  for more 
+ information and references on Multiple Objective Optimization. NSGA is an 
+ extension of the Genetic Algorithm for multiple objective function 
+ optimization (Section
+  3.2
+ ). It is related to other Evolutionary Multiple 
+ Objective Optimization Algorithms (EMOO) (or Multiple Objective Evolu-
+ tionary Algorithms MOEA) such as the Vector-Evaluated Genetic Algorithm 
+ (VEGA), Strength Pareto Evolutionary Algorithm (SPEA) (Section
+  3.11
+ ), 
+ and 
+ Pareto Archived Evolution Strategy (PAES). There are two versions of the 
+ algorithm, the classical NSGA and the updated and currently canonical 
+ form 
+ NSGA-II.
+  
+ 3.10.2 
+  
+ Strategy
+  
+ The objective of the NSGA algorithm is to improve the adaptive fit of a 
+ population of candidate solutions to a Pareto front constrained by a set of 
+ objective functions. The algorithm uses an evolutionary process with 
+ surrogates for evolutionary operators including selection, genetic crossover, 
+ and genetic mutation. The population is sorted into a hierarchy of sub-
+ populations based on the ordering of Pareto dominance. Similarity between 
+ members of each sub-group is evaluated on the Pareto front, and the 
+ resulting groups and similarity measures are used to promote a diverse front 
+ of non-dominated solutions.
+  
+ 3.10.3 
+  
+ Procedure
+  
+ Algorithm
+  3.10.1
+  provides a pseudocode listing of the Non-dominated Sort-
+ ing Genetic Algorithm II (NSGA-II) for minimizing a cost function. The 
+ SortByRankAndDistance function orders the population into a hierarchy of 
+ non-dominated Pareto fronts. The CrowdingDistanceAssignment cal-culates 
+ the average distance between members of each front on the front itself. Refer 
+ to Deb et al. for a clear presentation of the Pseudocode and explanation of 
+ these functions [
+ 4
+ ]. The CrossoverAndMutation func-tion performs the 
+ classical crossover and mutation genetic operators of the Genetic Algorithm. 
+ Both the SelectParentsByRankAndDistance and",NA
+3.11 ,NA,NA
+Strength Pareto Evolutionary Algorithm,"Strength Pareto Evolutionary Algorithm, SPEA, SPEA2.
+  
+ 3.11.1 
+  
+ Taxonomy
+  
+ Strength Pareto Evolutionary Algorithm is a Multiple Objective Optimiza-tion 
+ (MOO) algorithm and an Evolutionary Algorithm from the field of 
+ Evolutionary Computation. It belongs to the field of Evolutionary Multiple 
+ Objective (EMO) algorithms. Refer to Section
+  9.5.3
+  for more information and 
+ references on Multiple Objective Optimization. Strength Pareto Evo-lutionary 
+ Algorithm is an extension of the Genetic Algorithm for multiple objective 
+ optimization problems (Section
+  3.2
+ ). It is related to sibling Evo-lutionary 
+ Algorithms such as Non-dominated Sorting Genetic Algorithm (NSGA) 
+ (Section
+  3.10
+ ), Vector-Evaluated Genetic Algorithm (VEGA), and Pareto 
+ Archived Evolution Strategy (PAES). There are two versions of SPEA, the 
+ original SPEA algorithm and the extension SPEA2. Additional extensions 
+ include SPEA+ and iSPEA.
+  
+ 3.11.2 
+  
+ Strategy
+  
+ The objective of the algorithm is to locate and and maintain a front of non-
+ dominated solutions, ideally a set of Pareto optimal solutions. This is 
+ achieved by using an evolutionary process (with surrogate procedures for 
+ genetic recombination and mutation) to explore the search space, and a 
+ selection process that uses a combination of the degree to which a candi-
+ date solution is dominated (strength) and an estimation of density of the 
+ Pareto front as an assigned fitness. An archive of the non-dominated set is 
+ maintained separate from the population of candidate solutions used in the 
+ evolutionary process, providing a form of elitism.
+  
+ 3.11.3 
+  
+ Procedure
+  
+ Algorithm
+  3.11.1
+  provides a pseudocode listing of the Strength Pareto 
+ Evolutionary Algorithm 2 (SPEA2) for minimizing a cost function. The 
+ CalculateRawFitness
+  function calculates the raw fitness as the sum of the 
+ strength values of the solutions that dominate a given candidate, where 
+ strength is the number of solutions that a give solution dominate. The 
+ CandidateDensity function estimates the density of an area of the Pareto 
+ front as
+ σ
+ k
+ +2
+ where σ
+ k
+  is the Euclidean distance of the objective values 
+ between a given solution the kth nearest neighbor of the solution, and k is 
+ the square root of the size of the population and archive combined. The 
+ PopulateWithRemainingBest
+  function iteratively fills the archive with the 
+ remaining candidate solutions in order of fitness. The RemoveMostSimilar 
+ function truncates the archive population removing those members with the",NA
+Chapter 4,NA,NA
+Physical Algorithms,NA,NA
+4.1 Overview,"This chapter describes Physical Algorithms.
+  
+ 4.1.1 
+  
+ Physical Properties
+  
+ Physical algorithms are those algorithms inspired by a physical process. The 
+ described physical algorithm generally belong to the fields of Metaheustics 
+ and Computational Intelligence, although do not fit neatly into the existing 
+ categories of the biological inspired techniques (such as Swarm, Immune, 
+ Neural, and Evolution). In this vein, they could just as easily be referred to 
+ as 
+ nature inspired algorithms.
+  
+ The inspiring physical systems range from metallurgy, music, the inter-
+ play between culture and evolution, and complex dynamic systems such as 
+ avalanches. They are generally stochastic optimization algorithms with a 
+ mixtures of local (neighborhood-based) and global search techniques.
+  
+ 4.1.2 
+  
+ Extensions
+  
+ There are many other algorithms and classes of algorithm that were not 
+ described inspired by natural systems, not limited to:
+  
+ ˆ
+  More Annealing: Extensions to the classical Simulated Annealing 
+ algorithm, such as Adaptive Simulated Annealing (formally Very Fast 
+ Simulated Re-annealing) [
+ 3
+ ,
+  4
+ ], and Quantum Annealing [
+ 1
+ ,
+  2
+ ].
+  
+ ˆ
+  Stochastic tunneling: based on the physical idea of a particle 
+  
+ tunneling through structures [
+ 5
+ ].
+  
+ 167",NA
+4.2 Simulated Annealing,"Simulated Annealing, SA.
+  
+ 4.2.1 
+  
+ Taxonomy
+  
+ Simulated Annealing is a global optimization algorithm that belongs to the 
+ field of Stochastic Optimization and Metaheuristics. Simulated Annealing is 
+ an adaptation of the Metropolis-Hastings Monte Carlo algorithm and is used 
+ in function optimization. Like the Genetic Algorithm (Section
+  3.2
+ ), it 
+ provides a basis for a large variety of extensions and specialization’s of the 
+ general method not limited to Parallel Simulated Annealing, Fast Simulated 
+ Annealing, and Adaptive Simulated Annealing.
+  
+ 4.2.2 
+  
+ Inspiration
+  
+ Simulated Annealing is inspired by the process of annealing in metallurgy. In 
+ this natural process a material is heated and slowly cooled under controlled 
+ conditions to increase the size of the crystals in the material and reduce their 
+ defects. This has the effect of improving the strength and durability of the 
+ material. The heat increases the energy of the atoms allowing them to move 
+ freely, and the slow cooling schedule allows a new low-energy 
+ configuration to be discovered and exploited.
+  
+ 4.2.3 
+  
+ Metaphor
+  
+ Each configuration of a solution in the search space represents a different 
+ internal energy of the system. Heating the system results in a relaxation of 
+ the acceptance criteria of the samples taken from the search space. As the 
+ system is cooled, the acceptance criteria of samples is narrowed to focus on 
+ improving movements. Once the system has cooled, the configuration will 
+ represent a sample at or close to a global optimum.
+  
+ 4.2.4 
+  
+ Strategy
+  
+ The information processing objective of the technique is to locate the 
+ minimum cost configuration in the search space. 
+  
+ The algorithms plan 
+ of action is to probabilistically re-sample the problem space where the 
+ acceptance of new samples into the currently held sample is managed by a 
+ probabilistic function that becomes more discerning of the cost of samples it 
+ accepts over the execution time of the algorithm. This probabilistic decision 
+ is 
+ based on the Metropolis-Hastings algorithm for simulating samples from a 
+ thermodynamic system.",NA
+4.3 Extremal Optimization,"Extremal Optimization, EO.
+  
+ 4.3.1 
+  
+ Taxonomy
+  
+ Extremal Optimization is a stochastic search technique that has the prop-
+ erties of being a local and global search method. It is generally related to 
+ hill-climbing algorithms and provides the basis for extensions such as 
+ Generalized Extremal Optimization.
+  
+ 4.3.2 
+  
+ Inspiration
+  
+ Extremal Optimization is inspired by the Bak-Sneppen self-organized crit-
+ icality model of co-evolution from the field of statistical physics. 
+  
+ The 
+ self-organized criticality model suggests that some dynamical systems have 
+ a critical point as an attractor, whereby the systems exhibit periods of slow 
+ movement or accumulation followed by short periods of avalanche or 
+ instability. Examples of such systems include land formation, earthquakes, 
+ and the dynamics of sand piles. The Bak-Sneppen model considers these 
+ dynamics in co-evolutionary systems and in the punctuated equilibrium 
+ model, which is described as long periods of status followed by short periods 
+ of extinction and large evolutionary change.
+  
+ 4.3.3 
+  
+ Metaphor
+  
+ The dynamics of the system result in the steady improvement of a candidate 
+ solution with sudden and large crashes in the quality of the candidate 
+ solution. These dynamics allow two main phases of activity in the system: 1) 
+ to exploit higher quality solutions in a local search like manner, and 2) 
+ escape possible local optima with a population crash and explore the search 
+ space for a new area of high quality solutions.
+  
+ 4.3.4 
+  
+ Strategy
+  
+ The objective of the information processing strategy is to iteratively identify 
+ the worst performing components of a given solution and replace or swap 
+ them with other components. This is achieved through the allocation of cost 
+ to the components of the solution based on their contribution to the overall 
+ cost of the solution in the problem domain. Once components are assessed 
+ they can be ranked and the weaker components replaced or switched with a 
+ randomly selected component.",NA
+Harmony Search,Chapter 4. Physical Algorithms,NA
+4.4,"Harmony Search, HS.
+  
+ 4.4.1 Taxonomy
+  
+ Harmony Search belongs to the fields of Computational Intelligence and 
+ Metaheuristics.
+  
+ 4.4.2 Inspiration
+  
+ Harmony Search was inspired by the improvisation of Jazz musicians. Specif-
+ ically, the process by which the musicians (who may have never played 
+ together before) rapidly refine their individual improvisation through varia-
+ tion resulting in an aesthetic harmony.
+  
+ 4.4.3 Metaphor
+  
+ Each musician corresponds to an attribute in a candidate solution from a 
+ problem domain, and each instrument’s pitch and range corresponds to the 
+ bounds and constraints on the decision variable. The harmony between the 
+ musicians is taken as a complete candidate solution at a given time, and the 
+ audiences aesthetic appreciation of the harmony represent the problem 
+ specific cost function. The musicians seek harmony over time through small 
+ variations and improvisations, which results in an improvement against the 
+ cost function.
+  
+ 4.4.4 Strategy
+  
+ The information processing objective of the technique is to use good candi-
+ date solutions already discovered to influence the creation of new candidate 
+ solutions toward locating the problems optima. This is achieved by stochas-
+ tically creating candidate solutions in a step-wise manner, where each 
+ component is either drawn randomly from a memory of high-quality so-
+ lutions, adjusted from the memory of high-quality solutions, or assigned 
+ randomly within the bounds of the problem. The memory of candidate 
+ solutions is initially random, and a greedy acceptance criteria is used to 
+ admit new candidate solutions only if they have an improved objective value, 
+ replacing an existing member.
+  
+ 4.4.5 Procedure
+  
+ Algorithm
+  4.4.1
+  provides a pseudocode listing of the Harmony Search algo-
+ rithm for minimizing a cost function. The adjustment of a pitch selected",NA
+4.5 Cultural Algorithm,"Cultural Algorithm, CA.
+  
+ 4.5.1 
+  
+ Taxonomy
+  
+ The Cultural Algorithm is an extension to the field of Evolutionary Computa-
+ tion and may be considered a Meta-Evolutionary Algorithm. It more broadly 
+ belongs to the field of Computational Intelligence and Metaheuristics. It is 
+ related to other high-order extensions of Evolutionary Computation such as 
+ the Memetic Algorithm (Section
+  4.6
+ ).
+  
+ 4.5.2 
+  
+ Inspiration
+  
+ The Cultural Algorithm is inspired by the principle of cultural evolution. 
+ Culture includes the habits, knowledge, beliefs, customs, and morals of a 
+ member of society. Culture does not exist independent of the environment, 
+ and can interact with the environment via positive or negative feedback 
+ cycles. The study of the interaction of culture in the environment is referred 
+ to as Cultural Ecology.
+  
+ 4.5.3 
+  
+ Metaphor
+  
+ The Cultural Algorithm may be explained in the context of the inspiring 
+ system. As the evolutionary process unfolds, individuals accumulate infor-
+ mation about the world which is communicated to other individuals in the 
+ population. Collectively this corpus of information is a knowledge base that 
+ members of the population may tap-into and exploit. Positive feedback 
+ mechanisms can occur where cultural knowledge indicates useful areas of 
+ the environment, information which is passed down between generations, 
+ exploited, refined, and adapted as situations change. Additionally, areas of 
+ potential hazard may also be communicated through the cultural knowledge 
+ base.
+  
+ 4.5.4 
+  
+ Strategy
+  
+ The information processing objective of the algorithm is to improve the 
+ learning or convergence of an embedded search technique (typically an 
+ evolutionary algorithm) using a higher-order cultural evolution. The algo-
+ rithm operates at two levels: a population level and a cultural level. The 
+ population level is like an evolutionary search, where individuals repre-sent 
+ candidate solutions, are mostly distinct and their characteristics are 
+ translated into an objective or cost function in the problem domain. The 
+ second level is the knowledge or believe space where information acquired 
+ by generations is stored, and which is accessible to the current generation.",NA
+4.6 Memetic Algorithm,"Memetic Algorithm, MA.
+  
+ 4.6.1 
+  
+ Taxonomy
+  
+ Memetic Algorithms have elements of Metaheuristics and Computational 
+ Intelligence. Although they have principles of Evolutionary Algorithms, they 
+ may not strictly be considered an Evolutionary Technique. Memetic Algo-
+ rithms have functional similarities to Baldwinian Evolutionary Algorithms, 
+ Lamarckian Evolutionary Algorithms, Hybrid Evolutionary Algorithms, and 
+ Cultural Algorithms (Section
+  4.5
+ ). Using ideas of memes and Memetic 
+ Algorithms in optimization may be referred to as Memetic Computing.
+  
+ 4.6.2 
+  
+ Inspiration
+  
+ Memetic Algorithms are inspired by the interplay of genetic evolution and 
+ memetic evolution. Universal Darwinism is the generalization of genes 
+ beyond biological-based systems to any system where discrete units of 
+ information can be inherited and be subjected to evolutionary forces of 
+ selection and variation. The term ‘meme’ is used to refer to a piece of 
+ discrete cultural information, suggesting at the interplay of genetic and 
+ cultural evolution.
+  
+ 4.6.3 
+  
+ Metaphor
+  
+ The genotype is evolved based on the interaction the phenotype has with 
+ the environment. This interaction is metered by cultural phenomena that 
+ influence the selection mechanisms, and even the pairing and recombination 
+ mechanisms. Cultural information is shared between individuals, spreading 
+ through the population as memes relative to their fitness or fitness the 
+ memes 
+ impart to the individuals. Collectively, the interplay of the 
+ geneotype and the memeotype strengthen the fitness of population in the 
+ environment.
+  
+ 4.6.4 
+  
+ Strategy
+  
+ The objective of the information processing strategy is to exploit a popu-
+ lation based global search technique to broadly locate good areas of the 
+ search space, combined with the repeated usage of a local search heuristic 
+ by individual solutions to locate local optimum. Ideally, memetic algo-rithms 
+ embrace the duality of genetic and cultural evolution, allowing the 
+ transmission, selection, inheritance, and variation of memes as well as genes.",NA
+Chapter 5,NA,NA
+Probabilistic Algorithms,NA,NA
+5.1 Overview,"This chapter describes Probabilistic Algorithms
+  
+ 5.1.1 
+  
+ Probabilistic Models
+  
+ Probabilistic Algorithms are those algorithms that model a problem or 
+ search a problem space using an probabilistic model of candidate solutions. 
+ Many Metaheuristics and Computational Intelligence algorithms may be 
+ considered probabilistic, although the difference with algorithms is the 
+ explicit (rather than implicit) use of the tools of probability in problem 
+ solving. The majority of the algorithms described in this Chapter are 
+ referred to as Estimation of Distribution Algorithms.
+  
+ 5.1.2 
+  
+ Estimation of Distribution Algorithms
+  
+ Estimation of Distribution Algorithms (EDA) also called Probabilistic 
+ Model-Building Genetic Algorithms (PMBGA) are an extension of the field of 
+ Evolutionary Computation that model a population of candidate solutions 
+ as a probabilistic model. They generally involve iterations that alternate 
+ between creating candidate solutions in the problem space from a 
+ probabilistic model, and reducing a collection of generated candidate 
+ solutions into a probabilistic model.
+  
+ The model at the heart of an EDA typically provides the probabilistic 
+ expectation of a component or component configuration comprising part of 
+ an optimal solution. This estimation is typically based on the observed 
+ frequency of use of the component in better than average candidate solutions. 
+ The probabilistic model is used to generate candidate solutions in the 
+ problem space, typically in a component-wise or step-wise manner using a 
+ domain specific construction method to ensure validity.
+  
+ 199",NA
+5.2 Population-Based Incremental Learning,"Population-Based Incremental Learning, PBIL.
+  
+ 5.2.1 
+  
+ Taxonomy
+  
+ Population-Based Incremental Learning is an Estimation of Distribution 
+ Algorithm (EDA), also referred to as Population Model-Building Genetic 
+ Algorithms (PMBGA) an extension to the field of Evolutionary Computation. 
+ PBIL is related to other EDAs such as the Compact Genetic Algorithm 
+ (Section
+  5.4
+ ), the Probabilistic Incremental Programing Evolution Algorithm, 
+ and the Bayesian Optimization Algorithm (Section
+  5.5
+ ). The fact the the 
+ algorithm maintains a single prototype vector that is updated competitively 
+ shows some relationship to the Learning Vector Quantization algorithm 
+ (Section
+  8.5
+ ).
+  
+ 5.2.2 
+  
+ Inspiration
+  
+ Population-Based Incremental Learning is a population-based technique 
+ without an inspiration. It is related to the Genetic Algorithm and other Evo-
+ lutionary Algorithms that are inspired by the biological theory of evolution 
+ by 
+ means of natural selection.
+  
+ 5.2.3 
+  
+ Strategy
+  
+ The information processing objective of the PBIL algorithm is to reduce the 
+ memory required by the genetic algorithm. This is done by reducing the 
+ population of a candidate solutions to a single prototype vector of attributes 
+ from which candidate solutions can be generated and assessed. Updates 
+ and mutation operators are also performed to the prototype vector, rather 
+ than the generated candidate solutions.
+  
+ 5.2.4 
+  
+ Procedure
+  
+ The Population-Based Incremental Learning algorithm maintains a real-
+ valued prototype vector that represents the probability of each component 
+ being expressed in a candidate solution. Algorithm
+  5.2.1
+  provides a pseu-
+ docode listing of the Population-Based Incremental Learning algorithm for 
+ maximizing a cost function.
+  
+ 5.2.5 
+  
+ Heuristics
+  
+ ˆ
+  PBIL was designed to optimize the probability of components from 
+  
+ low cardinality sets, such as bit’s in a binary string.",NA
+5.3 ,NA,NA
+Univariate Marginal Distribution Algorithm,"Univariate Marginal Distribution Algorithm, UMDA, Univariate Marginal 
+ Distribution, UMD.
+  
+ 5.3.1 Taxonomy
+  
+ The Univariate Marginal Distribution Algorithm belongs to the field of Es-
+ timation of Distribution Algorithms (EDA), also referred to as Population 
+ Model-Building Genetic Algorithms (PMBGA), an extension to the field of 
+ Evolutionary Computation. UMDA is closely related to the Factorized Dis-
+ tribution Algorithm (FDA) and an extension called the Bivariate Marginal 
+ Distribution Algorithm (BMDA). UMDA is related to other EDAs such as the 
+ Compact Genetic Algorithm (Section
+  5.4
+ ), the Population-Based Incre-mental 
+ Learning algorithm (Section
+  5.2
+ ), and the Bayesian Optimization Algorithm 
+ (Section
+  5.5
+ ).
+  
+ 5.3.2 Inspiration
+  
+ Univariate Marginal Distribution Algorithm is a population technique-based 
+ without an inspiration. It is related to the Genetic Algorithm and 
+ other 
+ Evolutionary Algorithms that are inspired by the biological theory of 
+ evolution 
+ by means of natural selection.
+  
+ 5.3.3 Strategy
+  
+ The information processing strategy of the algorithm is to use the frequency of 
+ the components in a population of candidate solutions in the construction of 
+ new candidate solutions. This is achieved by first measuring the frequency 
+ of 
+ each component in the population (the univariate marginal probabil-ity) and 
+ using the probabilities to influence the probabilistic selection of 
+ components 
+ in the component-wise construction of new candidate solutions.
+  
+ 5.3.4 Procedure
+  
+ Algorithm
+  5.3.1
+  provides a pseudocode listing of the Univariate Marginal 
+ Distribution Algorithm for minimizing a cost function.
+  
+ 5.3.5 Heuristics
+  
+ ˆ
+  UMDA was designed for problems where the components of a solution 
+  
+ are independent (linearly separable).
+  
+ ˆ
+  A selection method is needed to identify the subset of good solutions 
+ from which to calculate the univariate marginal probabilities. Many",NA
+5.4 ,NA,NA
+Compact Genetic Algorithm,"Compact Genetic Algorithm, CGA, cGA.
+  
+ 5.4.1 Taxonomy
+  
+ The Compact Genetic Algorithm is an Estimation of Distribution Algorithm 
+ (EDA), also referred to as Population Model-Building Genetic Algorithms 
+ (PMBGA), an extension to the field of Evolutionary Computation. The 
+ Compact Genetic Algorithm is the basis for extensions such as the Extended 
+ Compact Genetic Algorithm (ECGA). It is related to other EDAs such as the 
+ Univariate Marginal Probability Algorithm (Section
+  5.3
+ ), the Population-
+ Based Incremental Learning algorithm (Section
+  5.2
+ ), and the Bayesian 
+ Optimization Algorithm (Section
+  5.5
+ ).
+  
+ 5.4.2 Inspiration
+  
+ The Compact Genetic Algorithm is a probabilistic technique without an 
+ inspiration. It is related to the Genetic Algorithm and other Evolutionary 
+ Algorithms that are inspired by the biological theory of evolution by means 
+ of 
+ natural selection.
+  
+ 5.4.3 Strategy
+  
+ The information processing objective of the algorithm is to simulate the 
+ behavior of a Genetic Algorithm with a much smaller memory footprint 
+ (without requiring a population to be maintained). This is achieved by 
+ maintaining a vector that specifies the probability of including each com-
+ ponent in a solution in new candidate solutions. Candidate solutions are 
+ probabilistically generated from the vector and the components in the better 
+ solution are used to make small changes to the probabilities in the vector.
+  
+ 5.4.4 Procedure
+  
+ The Compact Genetic Algorithm maintains a real-valued prototype vector 
+ that represents the probability of each component being expressed in a 
+ candidate solution. Algorithm
+  5.4.1
+  provides a pseudocode listing of the 
+ Compact Genetic Algorithm for maximizing a cost function. The parameter 
+ n 
+ indicates the amount to update probabilities for conflicting bits in each 
+ algorithm iteration.
+  
+ 5.4.5 Heuristics
+  
+ ˆ
+  The vector update parameter (n) influences the amount that the 
+  
+ probabilities are updated each algorithm iteration.",NA
+5.5 ,NA,NA
+Bayesian Optimization Algorithm,"Bayesian Optimization Algorithm, BOA.
+  
+ 5.5.1 Taxonomy
+  
+ The Bayesian Optimization Algorithm belongs to the field of Estimation of 
+ Distribution Algorithms, also referred to as Population Model-Building 
+ Genetic Algorithms (PMBGA) an extension to the field of Evolutionary 
+ Computation. More broadly, BOA belongs to the field of Computational 
+ Intelligence. The Bayesian Optimization Algorithm is related to other 
+ Estimation of Distribution Algorithms such as the Population Incremental 
+ Learning Algorithm (Section
+  5.2
+ ), and the Univariate Marginal Distribution 
+ Algorithm (Section
+  5.3
+ ). It is also the basis for extensions such as the 
+ Hierarchal Bayesian Optimization Algorithm (hBOA) and the Incremental 
+ Bayesian Optimization Algorithm (iBOA).
+  
+ 5.5.2 Inspiration
+  
+ Bayesian Optimization Algorithm is a technique without an inspiration. It is 
+ related to the Genetic Algorithm and other Evolutionary Algorithms that are 
+ inspired by the biological theory of evolution by means of natural selection.
+  
+ 5.5.3 Strategy
+  
+ The information processing objective of the technique is to construct a 
+ probabilistic model that describes the relationships between the components 
+ of fit solutions in the problem space. This is achieved by repeating the 
+ process of creating and sampling from a Bayesian network that contains 
+ the 
+ conditional dependancies, independencies, and conditional probabilities 
+ between the components of a solution. The network is constructed from the 
+ relative frequencies of the components within a population of high 
+ fitness 
+ candidate solutions. Once the network is constructed, the candidate 
+ solutions 
+ are discarded and a new population of candidate solutions are 
+ generated 
+ from the model. The process is repeated until the model converges 
+ on a fit 
+ prototype solution.
+  
+ 5.5.4 Procedure
+  
+ Algorithm
+  5.5.1
+  provides a pseudocode listing of the Bayesian Optimization 
+ Algorithm for minimizing a cost function. The Bayesian network is con-
+ structed each iteration using a greedy algorithm. The network is assessed 
+ based on its fit of the information in the population of candidate solutions 
+ using either a Bayesian Dirichlet Metric (BD) [
+ 9
+ ], or a Bayesian Information",NA
+5.6 ,NA,NA
+Cross-Entropy Method,"Cross-Entropy Method, Cross Entropy Method, CEM.
+  
+ 5.6.1 Taxonomy
+  
+ The Cross-Entropy Method is a probabilistic optimization belonging to the 
+ field of Stochastic Optimization. 
+  
+ It is similar to other Stochastic 
+ Optimization and algorithms such as Simulated Annealing (Section
+  4.2
+ ), and 
+ to Estimation of Distribution Algorithms such as the Probabilistic 
+ Incremental Learning Algorithm (Section
+  5.2
+ ).
+  
+ 5.6.2 Inspiration
+  
+ The Cross-Entropy Method does not have an inspiration. It was developed 
+ as an efficient estimation technique for rare-event probabilities in discrete 
+ event simulation systems and was adapted for use in optimization. The name 
+ of the technique comes from the Kullback-Leibler cross-entropy method for 
+ measuring the amount of information (bits) needed to identify an event 
+ from a set of probabilities.
+  
+ 5.6.3 Strategy
+  
+ The information processing strategy of the algorithm is to sample the 
+ problem space and approximate the distribution of good solutions. This is 
+ achieved by assuming a distribution of the problem space (such as Gaussian), 
+ sampling the problem domain by generating candidate solutions using the 
+ distribution, and updating the distribution based on the better candidate 
+ solutions discovered. Samples are constructed step-wise (one component at 
+ a time) based on the summarized distribution of good solutions. As the 
+ algorithm progresses, the distribution becomes more refined until it focuses 
+ on the area or scope of optimal solutions in the domain.
+  
+ 5.6.4 Procedure
+  
+ Algorithm
+  5.6.1
+  provides a pseudocode listing of the Cross-Entropy Method 
+ algorithm for minimizing a cost function.
+  
+ 5.6.5 Heuristics
+  
+ ˆ
+  The Cross-Entropy Method was adapted for combinatorial optimiza-
+ tion problems, although has been applied to continuous function 
+ optimization as well as noisy simulation problems.
+  
+ ˆ
+  A alpha (α) parameter or learning rate ∈ [0.1] is typically set high, 
+  
+ such as 0.7.",NA
+Chapter 6,NA,NA
+Swarm Algorithms,NA,NA
+6.1 Overview,"This chapter describes Swarm Algorithms.
+  
+ 6.1.1 
+  
+ Swarm Intelligence
+  
+ Swarm intelligence is the study of computational systems inspired by 
+ the
+ ‘collective intelligence’. Collective Intelligence emerges through the 
+ coopera-tion of large numbers of homogeneous agents in the environment. 
+ Examples include schools of fish, flocks of birds, and colonies of ants. Such 
+ intelligence is decentralized, self-organizing and distributed through out an 
+ environment. 
+ In nature such systems are commonly used to solve problems 
+ such as effec-
+ tive foraging for food, prey evading, or colony re-location. The 
+ information 
+ is typically stored throughout the participating homogeneous 
+ agents, or is stored or communicated in the environment itself such as 
+ through the use of pheromones in ants, dancing in bees, and proximity in fish 
+ and birds.
+  
+ The paradigm consists of two dominant sub-fields 1) Ant Colony Opti-
+ mization that investigates probabilistic algorithms inspired by the stigmergy 
+ and foraging behavior of ants, and 2) Particle Swarm Optimization that 
+ investigates probabilistic algorithms inspired by the flocking, schooling and 
+ herding. Like evolutionary computation, swarm intelligence ‘algorithms’ 
+ or‘strategies’ are considered adaptive strategies and are typically applied to 
+ search and optimization domains.
+  
+ 6.1.2 
+  
+ References
+  
+ Seminal books on the field of Swarm Intelligence include “Swarm 
+ Intelligence”by Kennedy, Eberhart and Shi [
+ 10
+ ], and “Swarm Intelligence: 
+ From Natural 
+ to Artificial Systems” by Bonabeau, Dorigo, and Theraulaz [
+ 3
+ ]. 
+ Another excellent text book on the area is “Fundamentals of Computational 
+ Swarm",NA
+6.2 ,NA,NA
+Particle Swarm Optimization,"Particle Swarm Optimization, PSO.
+  
+ 6.2.1 Taxonomy
+  
+ Particle Swarm Optimization belongs to the field of Swarm Intelligence and 
+ Collective Intelligence and is a sub-field of Computational Intelligence. Par-
+ ticle Swarm Optimization is related to other Swarm Intelligence algorithms 
+ such as Ant Colony Optimization and it is a baseline algorithm for many 
+ variations, too numerous to list.
+  
+ 6.2.2 Inspiration
+  
+ Particle Swarm Optimization is inspired by the social foraging behavior of 
+ some animals such as flocking behavior of birds and the schooling behavior 
+ of fish.
+  
+ 6.2.3 Metaphor
+  
+ Particles in the swarm fly through an environment following the fitter mem-
+ bers of the swarm and generally biasing their movement toward historically 
+ good areas of their environment.
+  
+ 6.2.4 Strategy
+  
+ The goal of the algorithm is to have all the particles locate the optima in a 
+ multi-dimensional hyper-volume. This is achieved by assigning initially 
+ random positions to all particles in the space and small initial random 
+ velocities. 
+  
+ The algorithm is executed like a simulation, advancing the 
+ position of each particle in turn based on its velocity, the best known global 
+ position in the problem space and the best position known to a particle. The 
+ objective function is sampled after each position update. Over time, through a 
+ combination of exploration and exploitation of known good positions in the 
+ search space, the particles cluster or converge together around an optima, 
+ or several optima.
+  
+ 6.2.5 Procedure
+  
+ The Particle Swarm Optimization algorithm is comprised of a collection of 
+ particles that move around the search space influenced by their own 
+ best 
+ past location and the best past location of the whole swarm or a close 
+ neighbor. Each iteration a particle’s velocity is updated using:",NA
+Ant System,Chapter 6. Swarm Algorithms,NA
+6.3,"Ant System, AS, Ant Cycle.
+  
+ 6.3.1 Taxonomy
+  
+ The Ant System algorithm is an example of an Ant Colony Optimization 
+ method from the field of Swarm Intelligence, Metaheuristics and Computa-
+ tional Intelligence. Ant System was originally the term used to refer to a 
+ range of Ant based algorithms, where the specific algorithm implementation 
+ was referred to as Ant Cycle. The so-called Ant Cycle algorithm is now 
+ canonically referred to as Ant System. The Ant System algorithm is the 
+ baseline Ant Colony Optimization method for popular extensions such as 
+ Elite Ant System, Rank-based Ant System, Max-Min Ant System, and Ant 
+ Colony System.
+  
+ 6.3.2 Inspiration
+  
+ The Ant system algorithm is inspired by the foraging behavior of ants, specif-
+ ically the pheromone communication between ants regarding a good path 
+ between the colony and a food source in an environment. This mechanism is 
+ called stigmergy.
+  
+ 6.3.3 Metaphor
+  
+ Ants initially wander randomly around their environment. Once food is 
+ located an ant will begin laying down pheromone in the environment. 
+ Numerous trips between the food and the colony are performed and if the 
+ same route is followed that leads to food then additional pheromone is laid 
+ down. Pheromone decays in the environment, so that older paths are less 
+ likely to be followed. Other ants may discover the same path to the food 
+ and 
+ in turn may follow it and also lay down pheromone. A positive feedback 
+ process routes more and more ants to productive paths that are in turn 
+ further refined through use.
+  
+ 6.3.4 Strategy
+  
+ The objective of the strategy is to exploit historic and heuristic information 
+ to 
+ construct candidate solutions and fold the information learned from 
+ constructing solutions into the history. Solutions are constructed one discrete 
+ piece at a time in a probabilistic step-wise manner. The probability of 
+ selecting a component is determined by the heuristic contribution of the 
+ component to the overall cost of the solution and the quality of solutions 
+ from which the component has historically known to have been included. 
+ History is updated proportional to the quality of candidate solutions and",NA
+6.4 Ant Colony System,"Ant Colony System, ACS, Ant-Q.
+  
+ 6.4.1 
+  
+ Taxonomy
+  
+ The Ant Colony System algorithm is an example of an Ant Colony Opti-
+ mization method from the field of Swarm Intelligence, Metaheuristics and 
+ Computational Intelligence. Ant Colony System is an extension to the Ant 
+ System algorithm and is related to other Ant Colony Optimization methods 
+ such as Elite Ant System, and Rank-based Ant System.
+  
+ 6.4.2 
+  
+ Inspiration
+  
+ The Ant Colony System algorithm is inspired by the foraging behavior of 
+ ants, specifically the pheromone communication between ants regarding a 
+ good path between the colony and a food source in an environment. This 
+ mechanism is called stigmergy.
+  
+ 6.4.3 
+  
+ Metaphor
+  
+ Ants initially wander randomly around their environment. 
+  
+ Once food 
+ is located an ant will begin laying down pheromone in the environment. 
+ Numerous trips between the food and the colony are performed and if the 
+ same route is followed that leads to food then additional pheromone is laid 
+ down. Pheromone decays in the environment, so that older paths are less 
+ likely to be followed. Other ants may discover the same path to the food 
+ and 
+ in turn may follow it and also lay down pheromone. A positive feedback 
+ process routes more and more ants to productive paths that are in turn 
+ further refined through use.
+  
+ 6.4.4 
+  
+ Strategy
+  
+ The objective of the strategy is to exploit historic and heuristic information 
+ to 
+ construct candidate solutions and fold the information learned from 
+ constructing solutions into the history. Solutions are constructed one discrete 
+ piece at a time in a probabilistic step-wise manner. The probability of 
+ selecting a component is determined by the heuristic contribution of the 
+ component to the overall cost of the solution and the quality of solutions 
+ from which the component has historically known to have been included. 
+ History is updated proportional to the quality of the best known solution 
+ and is decreased proportional to the usage if discrete solution components.",NA
+Bees Algorithm,Chapter 6. Swarm Algorithms,NA
+6.5,"Bees Algorithm, BA.
+  
+ 6.5.1 Taxonomy
+  
+ The Bees Algorithm beings to Bee Inspired Algorithms and the field of 
+ Swarm Intelligence, and more broadly the fields of Computational Intel-
+ ligence and Metaheuristics. The Bees Algorithm is related to other Bee 
+ Inspired Algorithms, such as Bee Colony Optimization, and other Swarm 
+ Intelligence algorithms such as Ant Colony Optimization and Particle Swarm 
+ Optimization.
+  
+ 6.5.2 Inspiration
+  
+ The Bees Algorithm is inspired by the foraging behavior of honey bees. 
+ Honey bees collect nectar from vast areas around their hive (more than 10 
+ kilometers). Bee Colonies have been observed to send bees to collect nectar 
+ from flower patches relative to the amount of food available at each patch. 
+ Bees communicate with each other at the hive via a waggle dance 
+ that 
+ informs other bees in the hive as to the direction, distance, and quality 
+ rating 
+ of food sources.
+  
+ 6.5.3 Metaphor
+  
+ Honey bees collect nectar from flower patches as a food source for the hive. 
+ The hive sends out scout’s that locate patches of flowers, who then return to 
+ the hive and inform other bees about the fitness and location of a food 
+ source via a waggle dance. The scout returns to the flower patch with 
+ follower bees. A small number of scouts continue to search for new 
+ patches, 
+ while bees returning from flower patches continue to communicate 
+ the 
+ quality of the patch.
+  
+ 6.5.4 Strategy
+  
+ The information processing objective of the algorithm is to locate and 
+ explore good sites within a problem search space. Scouts are sent out to 
+ randomly sample the problem space and locate good sites. The good sites 
+ are exploited via the application of a local search, where a small number of 
+ good sites are explored more than the others. Good sites are continually 
+ exploited, although many scouts are sent out each iteration always in search 
+ of additional good sites.",NA
+6.6 Bacterial Foraging Optimization Algorithm,"Bacterial Foraging Optimization Algorithm, BFOA, Bacterial Foraging 
+ Optimization, BFO.
+  
+ 6.6.1 
+  
+ Taxonomy
+  
+ The Bacterial Foraging Optimization Algorithm belongs to the field of Bac-teria 
+ Optimization Algorithms and Swarm Optimization, and more broadly to the 
+ fields of Computational Intelligence and Metaheuristics. It is related to other 
+ Bacteria Optimization Algorithms such as the Bacteria Chemotaxis Algorithm 
+ [
+ 3
+ ], and other Swarm Intelligence algorithms such as Ant Colony 
+ Optimization 
+ and Particle Swarm Optimization. There have been many extensions of the 
+ approach that attempt to hybridize the algorithm with other Computational 
+ Intelligence algorithms and Metaheuristics such as Particle Swarm 
+ Optimization, Genetic Algorithm, and Tabu Search.
+  
+ 6.6.2 
+  
+ Inspiration
+  
+ The Bacterial Foraging Optimization Algorithm is inspired by the group 
+ foraging behavior of bacteria such as E.coli and M.xanthus. Specifically, the 
+ BFOA is inspired by the chemotaxis behavior of bacteria that will perceive 
+ chemical gradients in the environment (such as nutrients) and move toward 
+ or away from specific signals.
+  
+ 6.6.3 
+  
+ Metaphor
+  
+ Bacteria perceive the direction to food based on the gradients of chemicals in 
+ their environment. Similarly, bacteria secrete attracting and repelling 
+ chemicals into the environment and can perceive each other in a similar way. 
+ Using locomotion mechanisms (such as flagella) bacteria can move around in 
+ their environment, sometimes moving chaotically (tumbling and 
+ spinning), 
+ and other times moving in a directed manner that may be referred 
+ to as 
+ swimming. Bacterial cells are treated like agents in an environment, using 
+ their perception of food and other cells as motivation to move, and stochastic 
+ tumbling and swimming like movement to re-locate. Depending on the cell-
+ cell interactions, cells may swarm a food source, and/or may aggressively 
+ repel or ignore each other.
+  
+ 6.6.4 
+  
+ Strategy
+  
+ The information processing strategy of the algorithm is to allow cells to 
+ stochastically and collectively swarm toward optima. This is achieved 
+ through a series of three processes on a population of simulated cells: 
+ 1)‘Chemotaxis’ where the cost of cells is derated by the proximity to other",NA
+Chapter 7,NA,NA
+Immune Algorithms,NA,NA
+7.1 Overview,"This chapter describes Immune Algorithms.
+  
+ 7.1.1 
+  
+ Immune System
+  
+ Immune Algorithms belong to the Artificial Immune Systems field of study 
+ concerned with computational methods inspired by the process and mecha-
+ nisms of the biological immune system.
+  
+ A simplified description of the immune system is an organ system 
+ intended to protect the host organism from the threats posed to it from 
+ pathogens and toxic substances. Pathogens encompass a range of micro-
+ organisms such as bacteria, viruses, parasites and pollen. The traditional 
+ perspective regarding the role of the immune system is divided into two 
+ primary tasks: the detection and elimination of pathogen. This behavior is 
+ typically referred to as the differentiation of self (molecules and cells 
+ that 
+ belong to the host organisms) from potentially harmful non-self. More recent 
+ perspectives on the role of the system include a maintenance system 
+ [
+ 3
+ ], and 
+ a cognitive system [
+ 22
+ ].
+  
+ The architecture of the immune system is such that a series of defensive 
+ layers protect the host. Once a pathogen makes it inside the host, it must 
+ contend with the innate and acquired immune system. These interrelated im-
+ munological sub-systems are comprised of many types of cells and molecules 
+ produced by specialized organs and processes to address the self-nonself 
+ problem at the lowest level using chemical bonding, where the surfaces of 
+ cells and molecules interact with the surfaces of pathogen.
+  
+ The adaptive immune system, also referred to as the acquired immune 
+ system, is named such because it is responsible for specializing a defense 
+ for 
+ the host organism based on the specific pathogen to which it is exposed. 
+ Unlike the innate immune system, the acquired immune system is present
+  
+ 265",NA
+7.2 ,NA,NA
+Clonal Selection Algorithm,"Clonal Selection Algorithm, CSA, CLONALG.
+  
+ 7.2.1 Taxonomy
+  
+ The Clonal Selection Algorithm (CLONALG) belongs to the field of Artifi-
+ cial 
+ Immune Systems. It is related to other Clonal Selection Algorithms such as the 
+ Artificial Immune Recognition System (Section
+  7.4
+ ), the B-Cell Algo-
+ rithm 
+ (BCA), and the Multi-objective Immune System Algorithm (MISA). 
+ There are 
+ numerious extensions to CLONALG including tweaks such as the CLONALG1 
+ and CLONALG2 approaches, a version for classification called 
+ CLONCLAS, and 
+ an adaptive version called Adaptive Clonal Selection (ACS).
+  
+ 7.2.2 Inspiration
+  
+ The Clonal Selection algorithm is inspired by the Clonal Selection theory of 
+ acquired immunity. The clonal selection theory credited to Burnet was 
+ proposed to account for the behavior and capabilities of antibodies in the 
+ acquired immune system [
+ 2
+ ,
+  3
+ ]. Inspired itself by the principles of Darwinian 
+ natural selection theory of evolution, the theory proposes that antigens 
+ select-for lymphocytes (both B and T-cells). When a lymphocyte is selected 
+ and binds to an antigenic determinant, the cell proliferates making many 
+ thousands more copies of itself and differentiates into different cell types 
+ (plasma and memory cells). Plasma cells have a short lifespan and produce 
+ vast quantities of antibody molecules, whereas memory cells live for an 
+ extended period in the host anticipating future recognition of the same 
+ determinant. The important feature of the theory is that when a cell is 
+ selected and proliferates, it is subjected to small copying errors (changes to 
+ the genome called somatic hypermutation) that change the shape of the 
+ expressed receptors and subsequent determinant recognition capabilities of 
+ both the antibodies bound to the lymphocytes cells surface, and the 
+ antibodies that plasma cells produce.
+  
+ 7.2.3 Metaphor
+  
+ The theory suggests that starting with an initial repertoire of general immune 
+ cells, the system is able to change itself (the compositions and densities of 
+ cells and their receptors) in response to experience with the environment. 
+ Through a blind process of selection and accumulated variation on the large 
+ scale of many billions of cells, the acquired immune system is capable of 
+ acquiring the necessary information to protect the host organism from the 
+ specific pathogenic dangers of the environment. It also suggests that the 
+ system must anticipate (guess) at the pathogen to which it will be exposed,",NA
+7.3 Negative Selection Algorithm,"Negative Selection Algorithm, NSA.
+  
+ 7.3.1 
+  
+ Taxonomy
+  
+ The Negative Selection Algorithm belongs to the field of Artificial Immune 
+ Systems. The algorithm is related to other Artificial Immune Systems such 
+ as 
+ the Clonal Selection Algorithm (Section
+  7.2
+ ), and the Immune Network 
+ Algorithm (Section
+  7.5
+ ).
+  
+ 7.3.2 
+  
+ Inspiration
+  
+ The Negative Selection algorithm is inspired by the self-nonself discrimina-
+ tion behavior observed in the mammalian acquired immune system. The 
+ clonal selection theory of acquired immunity accounts for the adaptive behav-
+ ior of the immune system including the ongoing selection and proliferation 
+ of cells that select-for potentially harmful (and typically foreign) material in 
+ the body. An interesting aspect of this process is that it is responsible 
+ for 
+ managing a population of immune cells that do not select-for the tissues of the 
+ body, specifically it does not create self-reactive immune cells known 
+ as auto-
+ immunity. This problem is known as ‘self-nonself discrimination’and it 
+ involves the preparation and on going maintenance of a repertoire of 
+ immune cells such that none are auto-immune. This is achieved by a 
+ negative selection process that selects-for and removes those cells that are 
+ self-reactive during cell creation and cell proliferation. This process has 
+ been observed in the preparation of T-lymphocytes, na¨ıve versions of which 
+ are matured using both a positive and negative selection process in the 
+ thymus.
+  
+ 7.3.3 
+  
+ Metaphor
+  
+ The self-nonself discrimination principle suggests that the anticipatory 
+ guesses made in clonal selection are filtered by regions of infeasibility (pro-
+ tein conformations that bind to self-tissues). 
+  
+ Further, the self-nonself 
+ immunological paradigm proposes the modeling of the unknown domain 
+ (encountered pathogen) by modeling the complement of what is known. This 
+ is unintuitive as the natural inclination is to categorize unknown information 
+ by what is different from that which is known, rather than guessing at the 
+ unknown information and filtering those guesses by what is known.
+  
+ 7.3.4 
+  
+ Strategy
+  
+ The information processing principles of the self-nonself discrimination 
+ process via negative selection are that of a anomaly and change detection",NA
+7.4 ,NA,NA
+Artificial Immune Recognition System,"Artificial Immune Recognition System, AIRS.
+  
+ 7.4.1 Taxonomy
+  
+ The Artificial Immune Recognition System belongs to the field of Artificial 
+ Immune Systems, and more broadly to the field of Computational Intelli-
+ gence. It was extended early to the canonical version called the Artificial 
+ Immune Recognition System 2 (AIRS2) and provides the basis for extensions 
+ such as the Parallel Artificial Immune Recognition System [
+ 8
+ ]. It is related to 
+ other Artificial Immune System algorithms such as the Dendritic Cell 
+ Algorithm (Section
+  7.6
+ ), the Clonal Selection Algorithm (Section
+  7.2
+ ), and the 
+ Negative Selection Algorithm (Section
+  7.3
+ ).
+  
+ 7.4.2 Inspiration
+  
+ The Artificial Immune Recognition System is inspired by the Clonal Selection 
+ theory of acquired immunity. The clonal selection theory credited to Burnet 
+ was proposed to account for the behavior and capabilities of antibodies in 
+ the acquired immune system [
+ 1
+ ,
+  2
+ ]. Inspired itself by the principles of 
+ Darwinian natural selection theory of evolution, the theory proposes that 
+ antigens select-for lymphocytes (both B and T-cells). When a lymphocyte is 
+ selected and binds to an antigenic determinant, the cell proliferates making 
+ many thousands more copies of itself and differentiates into different cell 
+ types (plasma and memory cells). Plasma cells have a short lifespan and 
+ produce vast quantities of antibody molecules, whereas memory cells live 
+ for an extended period in the host anticipating future recognition of the 
+ same determinant. The important feature of the theory is that when a cell is 
+ selected and proliferates, it is subjected to small copying errors (changes to 
+ the genome called somatic hypermutation) that change the shape of the 
+ expressed receptors. It also affects the subsequent determinant recognition 
+ capabilities of both the antibodies bound to the lymphocytes cells surface, 
+ and the antibodies that plasma cells produce.
+  
+ 7.4.3 Metaphor
+  
+ The theory suggests that starting with an initial repertoire of general immune 
+ cells, the system is able to change itself (the compositions and densities of 
+ cells and their receptors) in response to experience with the environment. 
+ Through a blind process of selection and accumulated variation on the large 
+ scale of many billions of cells, the acquired immune system is capable of 
+ acquiring the necessary information to protect the host organism from the 
+ specific pathogenic dangers of the environment. It also suggests that the 
+ system must anticipate (guess) at the pathogen to which it will be exposed,",NA
+7.5 ,NA,NA
+Immune Network Algorithm,"Artificial Immune Network, aiNet, Optimization Artificial Immune Network, 
+ opt-aiNet.
+  
+ 7.5.1 Taxonomy
+  
+ The Artificial Immune Network algorithm (aiNet) is a Immune Network 
+ Algorithm from the field of Artificial Immune Systems. It is related to other 
+ Artificial Immune System algorithms such as the Clonal Selection 
+ Algorithm 
+ (Section
+  7.2
+ ), the Negative Selection Algorithm (Section
+  7.3
+ ), and the 
+ Dendritic Cell Algorithm (Section
+  7.6
+ ). The Artificial Immune Network 
+ algorithm includes the base version and the extension for optimization 
+ problems called the Optimization Artificial Immune Network algorithm 
+ (opt-aiNet).
+  
+ 7.5.2 Inspiration
+  
+ The Artificial Immune Network algorithm is inspired by the Immune Network 
+ theory of the acquired immune system. The clonal selection theory of 
+ acquired immunity accounts for the adaptive behavior of the immune system 
+ including the ongoing selection and proliferation of cells that select-for 
+ potentially harmful (and typically foreign) material in the body. A concern 
+ of 
+ the clonal selection theory is that it presumes that the repertoire of 
+ reactive 
+ cells remains idle when there are no pathogen to which to respond. 
+ Jerne 
+ proposed an Immune Network Theory (Idiotypic Networks) where immune 
+ cells are not at rest in the absence of pathogen, instead antibody and 
+ immune cells recognize and respond to each other [
+ 6
+ –
+ 8
+ ].
+  
+ The Immune Network theory proposes that antibody (both free floating 
+ and surface bound) possess idiotopes (surface features) to which the 
+ receptors of other antibody can bind. As a result of receptor interactions, the 
+ repertoire becomes dynamic, where receptors continually both inhibit and 
+ excite each 
+ other in complex regulatory networks (chains of receptors). The 
+ theory 
+ suggests that the clonal selection process may be triggered by the 
+ idiotopes of other immune cells and molecules in addition to the surface 
+ characteristics of pathogen, and that the maturation process applies both to 
+ the receptors 
+ themselves and the idiotopes which they expose.
+  
+ 7.5.3 Metaphor
+  
+ The immune network theory has interesting resource maintenance and 
+ signaling information processing properties. The classical clonal selection 
+ and negative selection paradigms integrate the accumulative and filtered 
+ learning of the acquired immune system, whereas the immune network 
+ theory proposes an additional order of complexity between the cells and",NA
+7.6 Dendritic Cell Algorithm,"Dendritic Cell Algorithm, DCA.
+  
+ 7.6.1 
+  
+ Taxonomy
+  
+ The Dendritic Cell Algorithm belongs to the field of Artificial Immune 
+ Systems, and more broadly to the field of Computational Intelligence. The 
+ Dendritic Cell Algorithm is the basis for extensions such as the Deterministic 
+ Dendritic Cell Algorithm (dDCA) [
+ 2
+ ]. 
+  
+ It is generally related to other 
+ Artificial Immune System algorithms such as the Clonal Selection Algorithm 
+ (Section
+  7.2
+ ), and the Immune Network Algorithm (Section
+  7.5
+ ).
+  
+ 7.6.2 
+  
+ Inspiration
+  
+ The Dendritic Cell Algorithm is inspired by the Danger Theory of the mam-
+ malian immune system, and specifically the role and function of dendritic 
+ cells. The Danger Theory was proposed by Matzinger and suggests that the 
+ roles of the acquired immune system is to respond to signals of danger, 
+ rather than discriminating self from non-self [
+ 7
+ ,
+  8
+ ]. The theory suggests that 
+ antigen presenting cells (such as helper T-cells) activate an alarm signal 
+ providing the necessarily co-stimulation of antigen-specific cells to respond. 
+ Dendritic cells are a type of cell from the innate immune system 
+ that 
+ respond to some specific forms of danger signals. There are three main types 
+ of dendritic cells: ‘immature’ that collect parts of the antigen and the 
+ signals, 
+ ‘semi-mature’ that are immature cells that internally decide that the local 
+ signals represent safe and present the antigen to T-cells resulting in 
+ tolerance, and ‘mature’ cells that internally decide that the local signals 
+ represent danger and present the antigen to T-cells resulting in a reactive 
+ response.
+  
+ 7.6.3 
+  
+ Strategy
+  
+ The information processing objective of the algorithm is to prepare a set of 
+ mature dendritic cells (prototypes) that provide context specific information 
+ about how to classify normal and anomalous input patterns. This is achieved 
+ as a system of three asynchronous processes of 1) migrating sufficiently 
+ stimulated immature cells, 2) promoting migrated cells to semi-mature (safe) 
+ or mature (danger) status depending on their accumulated response, and 3) 
+ labeling observed patterns as safe or dangerous based on the composition of 
+ the sub-population of cells that respond to each pattern.",NA
+Chapter 8,NA,NA
+Neural Algorithms,NA,NA
+8.1 Overview,"This chapter describes Neural Algorithms.
+  
+ 8.1.1 
+  
+ Biological Neural Networks
+  
+ A Biological Neural Network refers to the information processing elements of 
+ the nervous system, organized as a collection of neural cells, called neurons, 
+ that are interconnected in networks and interact with each other using 
+ electrochemical signals. A biological neuron is generally comprised of an 
+ axon which provides the input signals and is connected to other neurons via 
+ synapses. The neuron reacts to input signals and may produce an output 
+ signal on its output connection called the dendrites.
+  
+ The study of biological neural networks falls within the domain of 
+ neuroscience which is a branch of biology concerned with the nervous 
+ system. Neuroanatomy is a subject that is concerned with the the structure 
+ and function of groups of neural networks both with regard to parts of the 
+ brain and the structures that lead from and to the brain from the rest of the 
+ body. Neuropsychology is another discipline concerned with the structure 
+ and function of the brain as they relate to abstract psychological behaviors. 
+ For further information, refer to a good textbook on any of these general 
+ topics.
+  
+ 8.1.2 
+  
+ Artificial Neural Networks
+  
+ The field of Artificial Neural Networks (ANN) is concerned with the in-
+ vestigation of computational models inspired by theories and observation of 
+ the structure and function of biological networks of neural cells in the brain. 
+ They are generally designed as models for addressing mathemat-ical, 
+ computational, and engineering problems. As such, there is a lot
+  
+ 307",NA
+8.2 Perceptron,"Perceptron.
+  
+ 8.2.1 
+  
+ Taxonomy
+  
+ The Perceptron algorithm belongs to the field of Artificial Neural Networks 
+ and more broadly Computational Intelligence. It is a single layer feedforward 
+ neural network (single cell network) that inspired many extensions and 
+ variants, not limited to ADALINE and the Widrow-Hoff learning rules.
+  
+ 8.2.2 
+  
+ Inspiration
+  
+ The Perceptron is inspired by the information processing of a single neural 
+ cell (called a neuron). A neuron accepts input signals via its axon, which 
+ pass the electrical signal down to the cell body. The dendrites carry the 
+ signal out to synapses, which are the connections of a cell’s dendrites to 
+ other cell’s axons. In a synapse, the electrical activity is converted into 
+ molecular activity (neurotransmitter molecules crossing the synaptic cleft 
+ and binding with receptors). The molecular binding develops an electrical 
+ signal which is passed onto the connected cells axon.
+  
+ 8.2.3 
+  
+ Strategy
+  
+ The information processing objective of the technique is to model a given 
+ function by modifying internal weightings of input signals to produce an 
+ expected output signal. The system is trained using a supervised learning 
+ method, where the error between the system’s output and a known expected 
+ output is presented to the system and used to modify its internal state. 
+ State 
+ is maintained in a set of weightings on the input signals. The weights 
+ are used 
+ to represent an abstraction of the mapping of input vectors to the output 
+ signal for the examples that the system was exposed to during training.
+  
+ 8.2.4 
+  
+ Procedure
+  
+ The Perceptron is comprised of a data structure (weights) and separate 
+ procedures for training and applying the structure. The structure is really 
+ just a vector of weights (one for each expected input) and a bias term.
+  
+ Algorithm
+  8.6.1
+  provides a pseudocode for training the Perceptron. A 
+ weight is initialized for each input plus an additional weight for a fixed bias 
+ constant input that is almost always set to 1.0. The activation of the 
+ network to a given input pattern is calculated as follows:
+  
+ n
+  
+ activation ←
+  
+ w
+ k
+  × x
+ ki
+  
+ + w
+ bias
+  × 1.0
+  
+ (8.1)
+  
+ k=1",NA
+Back-propagation,Chapter 8. Neural Algorithms,NA
+8.3,"Back-propagation, Backpropagation, Error Back Propagation, Backprop, 
+ Delta-rule.
+  
+ 8.3.1 Taxonomy
+  
+ The Back-propagation algorithm is a supervised learning method for multi-
+ layer feed-forward networks from the field of Artificial Neural Networks 
+ and more broadly Computational Intelligence. The name refers to the 
+ backward propagation of error during the training of the network. Back-
+ propagation is the basis for many variations and extensions for training 
+ multi-layer feed-forward networks not limited to Vogl’s Method (Bold Drive), 
+ Delta-Bar-Delta, Quickprop, and Rprop.
+  
+ 8.3.2 Inspiration
+  
+ Feed-forward neural networks are inspired by the information processing of 
+ one or more neural cells (called a neuron). A neuron accepts input signals 
+ via its axon, which pass the electrical signal down to the cell body. The 
+ dendrites carry the signal out to synapses, which are the connections of a 
+ cell’s dendrites to other cell’s axons. In a synapse, the electrical activity is 
+ converted into molecular activity (neurotransmitter molecules crossing the 
+ synaptic cleft and binding with receptors). The molecular binding develops 
+ an electrical signal which is passed onto the connected cells axon. The 
+ Back-
+ propagation algorithm is a training regime for multi-layer feed forward 
+ neural networks and is not directly inspired by the learning processes of the 
+ biological system.
+  
+ 8.3.3 Strategy
+  
+ The information processing objective of the technique is to model a given 
+ function by modifying internal weightings of input signals to produce an 
+ expected output signal. The system is trained using a supervised learning 
+ method, where the error between the system’s output and a known expected 
+ output is presented to the system and used to modify its internal state. State 
+ is maintained in a set of weightings on the input signals. The weights are used 
+ to represent an abstraction of the mapping of input vectors to the output 
+ signal for the examples that the system was exposed to during training. Each 
+ layer of the network provides an abstraction of the information processing 
+ of the previous layer, allowing the combination of sub-functions and higher 
+ order modeling.",NA
+Hopfield Network,Chapter 8. Neural Algorithms,NA
+8.4,"Hopfield Network, HN, Hopfield Model.
+  
+ 8.4.1 Taxonomy
+  
+ The Hopfield Network is a Neural Network and belongs to the field of Arti-
+ ficial Neural Networks and Neural Computation. It is a Recurrent Neural 
+ Network and is related to other recurrent networks such as the Bidirec-
+ tional Associative Memory (BAM). It is generally related to feedforward 
+ Artificial Neural Networks such as the Perceptron (Section
+  8.2
+ ) and the 
+ Back-propagation algorithm (Section
+  8.3
+ ).
+  
+ 8.4.2 Inspiration
+  
+ The Hopfield Network algorithm is inspired by the associated memory 
+ properties of the human brain.
+  
+ 8.4.3 Metaphor
+  
+ Through the training process, the weights in the network may be thought to 
+ minimize an energy function and slide down an energy surface. In a trained 
+ network, each pattern presented to the network provides an attractor, where 
+ progress is made towards the point of attraction by propagating information 
+ around the network.
+  
+ 8.4.4 Strategy
+  
+ The information processing objective of the system is to associate the 
+ components of an input pattern with a holistic representation of the pattern 
+ called Content Addressable Memory (CAM). This means that once trained, 
+ the 
+ system will recall whole patterns, given a portion or a noisy version of the 
+ input pattern.
+  
+ 8.4.5 Procedure
+  
+ The Hopfield Network is comprised of a graph data structure with weighted 
+ edges and separate procedures for training and applying the structure. The 
+ network structure is fully connected (a node connects to all other nodes 
+ except itself) and the edges (weights) between the nodes are bidirectional.
+  
+ The weights of the network can be learned via a one-shot method (one-
+ iteration through the patterns) if all patterns to be memorized by the 
+ network are known. Alternatively, the weights can be updated incrementally 
+ using the Hebb rule where weights are increased or decreased based on",NA
+8.5 ,NA,NA
+Learning Vector Quantization,"Learning Vector Quantization, LVQ.
+  
+ 8.5.1 Taxonomy
+  
+ The Learning Vector Quantization algorithm belongs to the field of Artificial 
+ Neural Networks and Neural Computation. More broadly to the field of 
+ Computational Intelligence. The Learning Vector Quantization algorithm is 
+ an supervised neural network that uses a competitive (winner-take-all) 
+ learning strategy. It is related to other supervised neural networks such as the 
+ Perceptron (Section
+  8.2
+ ) and the Back-propagation algorithm (Section
+  8.3
+ ). 
+ It 
+ is related to other competitive learning neural networks such as the the Self-
+ Organizing Map algorithm (Section
+  8.6
+ ) that is a similar algorithm for 
+ unsupervised learning with the addition of connections between the 
+ neurons. Additionally, LVQ is a baseline technique that was defined with a 
+ few 
+ variants LVQ1, LVQ2, LVQ2.1, LVQ3, OLVQ1, and OLVQ3 as well as many 
+ third-party extensions and refinements too numerous to list.
+  
+ 8.5.2 Inspiration
+  
+ The Learning Vector Quantization algorithm is related to the Self-Organizing 
+ Map which is in turn inspired by the self-organizing capabilities of neurons 
+ in the visual cortex.
+  
+ 8.5.3 Strategy
+  
+ The information processing objective of the algorithm is to prepare a set of 
+ codebook (or prototype) vectors in the domain of the observed input data 
+ samples and to use these vectors to classify unseen examples. An initially 
+ random pool of vectors is prepared which are then exposed to training 
+ samples. A winner-take-all strategy is employed where one or more of the 
+ most similar vectors to a given input pattern are selected and adjusted to be 
+ closer to the input vector, and in some cases, further away from the winner 
+ for runners up. The repetition of this process results in the distribution of 
+ codebook vectors in the input space which approximate the underlying 
+ distribution of samples from the test dataset.
+  
+ 8.5.4 Procedure
+  
+ Vector Quantization is a technique from signal processing where density 
+ functions are approximated with prototype vectors for applications such as 
+ compression. Learning Vector Quantization is similar in principle, although 
+ the prototype vectors are learned through a supervised winner-take-all 
+ method.",NA
+Self-Organizing Map,Chapter 8. Neural Algorithms,NA
+8.6,"Self-Organizing Map, SOM, Self-Organizing Feature Map, SOFM, Kohonen 
+ Map, 
+ Kohonen Network.
+  
+ 8.6.1 Taxonomy
+  
+ The Self-Organizing Map algorithm belongs to the field of Artificial Neural 
+ Networks and Neural Computation. More broadly it belongs to the field of 
+ Computational Intelligence. The Self-Organizing Map is an unsupervised 
+ neural network that uses a competitive (winner-take-all) learning strategy. 
+ It is related to other unsupervised neural networks such as the Adaptive 
+ Resonance Theory (ART) method. It is related to other competitive learning 
+ neural networks such as the the Neural Gas Algorithm, and the Learning 
+ Vector Quantization algorithm (Section
+  8.5
+ ), which is a similar algorithm for 
+ classification without connections between the neurons. Additionally, SOM 
+ is 
+ a baseline technique that has inspired many variations and extensions, not 
+ limited to the Adaptive-Subspace Self-Organizing Map (ASSOM).
+  
+ 8.6.2 Inspiration
+  
+ The Self-Organizing Map is inspired by postulated feature maps of neurons in 
+ the brain comprised of feature-sensitive cells that provide ordered 
+ projections 
+ between neuronal layers, such as those that may exist in the 
+ retina and cochlea. For example, there are acoustic feature maps that 
+ respond to 
+ sounds to which an animal is most frequently exposed, and 
+ tonotopic maps 
+ that may be responsible for the order preservation of 
+ acoustic resonances.
+  
+ 8.6.3 Strategy
+  
+ The information processing objective of the algorithm is to optimally place 
+ a topology (grid or lattice) of codebook or prototype vectors in the domain 
+ of 
+ the observed input data samples. An initially random pool of vectors is 
+ prepared which are then exposed to training samples. A winner-take-all 
+ strategy is employed where the most similar vector to a given input pattern 
+ is selected, then the selected vector and neighbors of the selected vector are 
+ updated to closer resemble the input pattern. The repetition of this process 
+ results in the distribution of codebook vectors in the input space which 
+ approximate the underlying distribution of samples from the test dataset. 
+ The result is the mapping of the topology of codebook vectors to 
+ the 
+ underlying structure in the input samples which may be summarized or 
+ visualized to reveal topologically preserved features from the input space in 
+ a 
+ low-dimensional projection.",NA
+Part III ,NA,NA
+Extensions,343,NA
+Chapter 9,NA,NA
+Advanced Topics,"This chapter discusses a number of advanced topics that may be considered 
+ once one or more of the algorithms described in this book have been 
+ mastered.
+  
+ The topics in this section consider some practical concerns such as:
+  
+ ˆ
+  How to implement an algorithm using a different programming 
+ paradigm 
+ (Section
+  9.1
+ ).
+  
+ ˆ
+  How to devise and investigate a new biologically-inspired algorithm 
+ (Section
+  9.2
+ ).
+  
+ ˆ
+  How to test algorithm implementations to ensure they are implemented 
+  
+ correctly (Section
+  9.3
+ ).
+  
+ ˆ
+  How to visualize problems, algorithm behavior and candidate solutions 
+ (Section
+  9.4
+ ).
+  
+ ˆ
+  How to direct these algorithms toward practical problem solving 
+ (Section
+  9.5
+ ).
+  
+ ˆ
+  Issues to consider when benchmarking and comparing the capabilities 
+  
+ of algorithms (Section
+  9.6
+ ).
+  
+ The objective of this chapter is to illustrate the concerns and skills 
+ necessary for taking the algorithms described in this book into the real-
+ world.
+  
+ 345",NA
+9.1 ,NA,NA
+Programming Paradigms,"This section discusses three standard programming paradigms that may be 
+ used to implement the algorithms described throughput the book:
+  
+ ˆ
+  Procedural Programming (Section
+  9.1.1
+ )
+  
+ ˆ
+  Object-Oriented Programming (Section
+  9.1.2
+ )
+  
+ ˆ
+  Flow Programming (Section
+  9.1.3
+ )
+  
+  
+ Each paradigm is described and an example implementation is provided 
+ using the Genetic Algorithm (described in Section
+  3.2
+ ) as a context.
+  
+ 9.1.1 Procedural Programming
+  
+ This section considers the implementation of algorithms from the Clever 
+ Algorithms project in the Procedural Programming Paradigm.
+  
+ Description
+  
+ The procedural programming paradigm (also called imperative program-
+ ming) is concerned with defining a linear procedure or sequence of pro-
+ gramming statements. A key feature of the paradigm is the partitioning of 
+ functionality into small discrete re-usable modules called procedures 
+ (subroutines or functions) that act like small programs themselves with their 
+ own scope, inputs and outputs. A procedural code example is executed from 
+ a single point of control or entry point which calls out into declared 
+ procedures, which in turn may call other procedures.
+  
+ Procedural programming was an early so-called ‘high-level programming 
+ paradigm’ (compared to lower-level machine code) and is the most common 
+ and well understood form of programming. Newer paradigms (such as 
+ Object-Oriented programming) and modern businesses programming lan-
+ guages (such as C++, Java and C#) are built on the principles of procedural 
+ programming.
+  
+ All algorithms in this book were implemented using a procedural pro-
+ gramming paradigm in the Ruby Programming Language. A procedural 
+ representation was chosen to provide the most transferrable instantiation 
+ of the algorithm implementations. Many languages support the procedural 
+ paradigm and procedural code examples are expected to be easily ported to 
+ popular paradigms such as object-oriented and functional.
+  
+ Example
+  
+ Listing
+  3.1
+  in Section
+  3.2
+  provides an example of the Genetic Algorithm 
+ implemented in the Ruby Programming Language using the procedural 
+ programming paradigm.",NA
+9.2 ,NA,NA
+Devising New Algorithms,"This section provides a discussion of some of the approaches that may be 
+ used to devise new algorithms and systems inspired by biological systems for 
+ addressing mathematical and engineering problems. This discussion covers:
+  
+ ˆ
+  An introduction to adaptive systems and complex adaptive systems as 
+ an approach for studying natural phenomenon and deducing adaptive 
+ strategies that may be the basis for algorithms (Section
+  9.2.1
+ ).
+  
+ ˆ
+  An introduction to some frameworks and methodologies for reducing 
+ natural systems into abstract information processing procedures and 
+ ultimately algorithms (Section
+  9.2.2
+ ).
+  
+ ˆ
+  A summary of a methodology that may be used to investigate a devised 
+ adaptive system that considers the trade-off in model fidelity and 
+ descriptive power proposed by Goldberg, a pioneer in the Evolutionary 
+ Computation field (Section
+  9.2.3
+ ).
+  
+ 9.2.1 Adaptive Systems
+  
+ Many algorithms, such as the Genetic Algorithm have come from the study 
+ and models of complex and adaptive systems. Adaptive systems research 
+ provides a methodology by which these systems can be systematically 
+ investigated resulting in adaptive plans or strategies that can provide the 
+ basis for new and interesting algorithms.
+  
+ Holland proposed a formalism in his seminal work on adaptive systems 
+ that provides a general manner in which to define an adaptive system [
+ 7
+ ]. 
+ Phrasing systems in this way provides a framework under which adaptive 
+ systems may be evaluated and compared relative to each other, the diffi-
+ culties and obstacles of investigating specific adaptive systems are exposed, 
+ and the abstracted principles of different system types may be distilled. 
+ This 
+ section provides a summary of the Holland’s seminal adaptive systems 
+ formalism and considers clonal selection as an example of an adaptive plan.
+  
+ Adaptive Systems Formalism
+  
+ This section presents a brief review of Holland’s adaptive systems formalism 
+ described in [
+ 7
+ ] (Chapter 2). This presentation focuses particularly on the 
+ terms and their description, and has been hybridized with the concise 
+ presentation of the formalism by De Jong [
+ 9
+ ] (page 6). The formalism is 
+ divided into sections: 1) Primary Objects summarized in Table
+  9.1
+ , and 2) 
+ Secondary Objects summarized in Table
+  9.2
+ . Primary Objects are the 
+ conventional objects of an adaptive system: the environment
+  e
+ , the strategy 
+ or adaptive plan that creates solutions in the environment
+  s
+ , and the utility 
+ assigned to created solutions U.",NA
+9.3 Testing Algorithms,"This section provides an introduction to software testing and the testing of 
+ Artificial Intelligence algorithms. Section
+  9.3.1
+  introduces software testing 
+ and focuses on a type of testing relevant to algorithms called unit testing. 
+ Section
+  9.3.2
+  provides a specific example of an algorithm and a prepared 
+ suite of unit tests, and Section
+  9.3.3
+  provides some rules-of-thumb for testing 
+ algorithms in general.
+  
+ 9.3.1 
+  
+ Software Testing
+  
+ Software testing in the field of Software Engineering is a process in the 
+ life-
+ cycle of a software project that verifies that the product or service meets 
+ quality expectations and validates that software meets the requirements 
+ specification. Software testing is intended to locate defects in a program, 
+ although a given testing method cannot guarantee to locate all defects. As 
+ such, it is common for an application to be subjected to a range of testing 
+ methodologies throughout the software life-cycle, such as unit testing during 
+ development, integration testing once modules and systems are completed, 
+ and user acceptance testing to allow the stakeholders to determine if their 
+ needs have been met.
+  
+ Unit testing is a type of software testing that involves the preparation of 
+ well-defined procedural tests of discrete functionality of a program that 
+ provide confidence that a module or function behaves as intended. Unit tests 
+ are referred to as ‘white-box’ tests (contrasted to ‘black-box’ tests) because 
+ they are written with full knowledge of the internal structure of 
+ the 
+ functions and modules under tests. Unit tests are typically prepared by the 
+ developer that wrote the code under test and are commonly automated, 
+ themselves written as small programmers that are executed by a unit testing 
+ framework (such as JUnit for Java or the Test framework in Ruby). The 
+ objective is not to test each path of execution within a unit (called complete-
+ test or complete-code coverage), but instead to focus tests on areas of risk, 
+ uncertainty, or criticality. Each test focuses on one aspect of the code (test 
+ one thing) and are commonly organized into test suites of commonality.
+  
+ Some of the benefits of unit testing include:
+  
+ ˆ
+  Documentation: The preparation of a suite of tests for a given sys-tem 
+ provide a type of programming documentation highlighting the 
+ expected behavior of functions and modules and providing examples 
+ of how to interact with key components.
+  
+ ˆ
+  Readability: Unit testing encourages a programming style of small 
+ modules, clear input and output and fewer inter-component depen-
+ dencies. Code written for easy of testing (testability) may be easier to 
+ read and follow.",NA
+Visualizing Algorithms,Chapter 9. Advanced Topics,NA
+9.4,"This section considers the role of visualization in the development and 
+ application of algorithms from the fields of Metaheuristics, Computational 
+ Intelligence, and Biologically Inspired Computation. Visualization can be a 
+ powerful technique for exploring the spatial relationships between data 
+ (such as an algorithm’s performance over time) and investigatory tool (such 
+ as plotting an objective problem domain or search space). Visualization can 
+ also provide a weak form of algorithm testing, providing observations of 
+ efficiency or efficacy that may be indicative of the expected algorithm 
+ behavior.
+  
+ This section provides a discussion of the techniques and methods that 
+ may be used to explore and evaluate the problems and algorithms described 
+ throughout this book. The discussion and examples in this section are 
+ primarily focused on function optimization problems, although the principles 
+ of visualization as exploration (and a weak form of algorithm testing) are 
+ generally applicable to function approximation problem instances.
+  
+ 9.4.1 Gnuplot
+  
+ Gnuplot is a free open source command line tool used to generate plots from 
+ data. It supports a large number of different plot types and provides 
+ seemingly limitless configurability. Plots are shown to the screen by default, 
+ but the tool can easily be configured to generate image files as well as L
+ A
+ T
+ E
+ X, 
+ PostScript and PDF documents.
+  
+ Gnuplot can be downloaded from the website
+ 2
+ that also provides many 
+ demonstrations of different plot types with sample scripts showing how the 
+ plots were created. There are many tutorials and examples on the web, and 
+ help is provided inside the Gnuplot software by typing help followed by the 
+ command name (for example: help plot). For a more comprehensive 
+ reference on Gnuplot, see Janert’s introductory book to the software, 
+ “Gnuplot in Action” [
+ 1
+ ].
+  
+ Gnuplot was chosen for the demonstrations in this section as useful plots 
+ can be created with a minimum number of commands. Additionally, it is 
+ easily integrated into a range of scripting languages is supported on a range 
+ of modern operating systems. All examples in this section include both the 
+ resulting plot and the script used to generate it. The scripts may be typed 
+ directly into the Gnuplot interpreter or into a file which is processed by the 
+ Gnuplot command line tool. The examples in this section provide a useful 
+ starting point for visualizing the problems and algorithms described 
+ throughout this book.
+  
+ 2
+ Gnuplot URL:
+  http://www.gnuplot.info",NA
+9.5 ,NA,NA
+Problem Solving Strategies,"The field of Data Mining has clear methodologies that guide a practitioner to 
+ solve problems, such as Knowledge Discovery in Databases (KDD) [
+ 16
+ ]. 
+ Metaheuristics and Computational Intelligence algorithms have no such 
+ methodology.
+ 3 
+  
+ This section describes some of the considerations when applying algo-
+ rithms from the fields of Metaheuristics, Computational Intelligence, and 
+ Biologically Inspired Computation to practical problem domains. This 
+ discussion includes:
+  
+ ˆ
+  The suitability of application of a given technique to a given prob-lem 
+ and the transferability of algorithm and problem features (Sec-tion
+  
+ 9.5.1
+ )
+  
+ ˆ
+  The distinction between strong and weak methods which use more or 
+ less problem specific information respectively, and the continuum 
+ between these extremes (Section
+  9.5.2
+ ).
+  
+ ˆ
+  A summary of problem solving strategies that suggest different ways 
+ of applying a given technique to the function optimization and ap-
+ proximation fields (Section
+  9.5.3
+ ).
+  
+ 9.5.1 Suitability of Application
+  
+ From a problem-solving perspective, the tools that emerge from the field of 
+ Computational Intelligence are generally assessed with regard to their 
+ utility as efficiently or effectively solving problems. An important lesson 
+ from the No-Free-Lunch Theorem was to bound claims of applicability (see 
+ Section subsec:nfl), that is to consider the suitability of a given strategy with 
+ regard to the feature overlap with the attributes of a given problem domain. 
+ From a Computational Intelligence perspective, one may consider 
+ the 
+ architecture, processes, and constraints of a given strategy as the features 
+ of 
+ an approach.
+  
+ The suitability of the application of a particular approach to a problem 
+ takes into considerations concerns such as the appropriateness (can the 
+ approach address the problem), the feasibility (available resources and 
+ related efficiency concerns), and the flexibility (ability to address unexpected 
+ or unintended effects). This section summarizes a general methodology 
+ toward addressing the problem of suitability in the context of Computational 
+ Intelligence tools. This methodology involves 1) the systematic elicitation of 
+ system and problem features, and 2) the consideration of the overlap of 
+ problem-problem, algorithm-algorithm, and problem-algorithm overlap of 
+ feature sets.
+  
+  
+ 3
+ Some methods can be used for classification and regression and as such may fit into 
+ methodologies such as KDD.",NA
+9.6 ,NA,NA
+Benchmarking Algorithms,"When it comes to evaluating an optimization algorithm, every researcher 
+ has their own thoughts on the way it should be done. Unfortunately, many 
+ empirical evaluations of optimization algorithms are performed and reported 
+ without addressing basic experimental design considerations. This section 
+ provides a summary of the literature on experimental design and empirical 
+ algorithm comparison methodology. This summary contains rules of thumb 
+ and the seeds of best practice when attempting to configure and compare 
+ optimization algorithms, specifically in the face of the no-free-lunch theorem.
+  
+ 9.6.1 Issues of Benchmarking Methodology
+  
+ Empirically comparing the performance of algorithms on optimization prob-
+ lem instances is a staple for the fields of Heuristics and Biologically Inspired 
+ Computation, and the problems of effective comparison methodology have 
+ been discussed since the inception of these fields. Johnson suggests that the 
+ coding of an algorithm is the easy part of the process; the difficult work is 
+ getting meaningful and publishable results [
+ 24
+ ]. He goes on to provide a 
+ very through list of questions to consider before racing algorithms, as well 
+ as what he describes as his “pet peeves” within the field of empirical 
+ algorithm research.
+  
+ Hooker [
+ 22
+ ] (among others) practically condemns what he refers to as 
+ competitive testing of heuristic algorithms, calling it “fundamentally anti-
+ intellectual”. He goes on to strongly encourag a rigorous methodology of 
+ what he refers to as scientific testing where the aim is to investigate 
+ algorithmic behaviors.
+  
+ Barr, Golden et al. [
+ 1
+ ] list a number of properties worthy of a heuristic 
+ method making a contribution, which can be paraphrased as; efficiency, 
+ efficacy, robustness, complexity, impact, generalizability, and innovation. 
+ This is interesting given that many (perhaps a majority) of conference 
+ papers focus on solution quality alone (one aspect of efficacy). In their 
+ classical work on reporting empirical results of heuristics Barr, Golden et al. 
+ specify a loose experimental setup methodology with the following steps:
+  
+ 1. Define the goals of the experiment.
+  
+ 2. Select measure of performance and factors to explore.
+  
+ 3. Design and execute the experiment.
+  
+ 4. Analyze the data and draw conclusions.
+  
+ 5. Report the experimental results.
+  
+ They then suggest eight guidelines for reporting results, in summary 
+ they are; reproducibility, specify all influential factors (code, computing",NA
+Part IV ,NA,NA
+Appendix,411,NA
+Appendix A,NA,NA
+Ruby: Quick-Start Guide,NA,NA
+A.1 ,NA,NA
+Overview,"All code examples in this book are provided in the Ruby programming 
+ language. This appendix provides a high-level introduction to the Ruby 
+ programming language. This guide is intended for programmers of an 
+ existing imperative or programming language (such as Python, Java, C, C++, 
+ C#) to learn enough Ruby to be able to interpret and modify the code 
+ examples provided in the Clever Algorithms project.",NA
+A.2 ,NA,NA
+Language Basics,"This section summarizes the basics of the language, including variables, flow 
+ control, data structures, and functions.
+  
+ A.2.1 
+  
+ Ruby Files
+  
+ Ruby is an interpreted language, meaning that programs are typed as text 
+ into a
+  .rb
+  file which is parsed and executed at the time the script is run. For 
+ example, the following snippet shows how to invoke the Ruby interpreter on 
+ a script in the file genetic algorithm.rb from the command line: ruby genetic 
+ algorithm.rb 
+  
+ Ruby scripts are written in ASCII text and are parsed and executed in a 
+ linear manner (top to bottom). A script can define functionality (as modules, 
+ functions, and classes) and invoke functionality (such as calling a function).
+  
+ Comments in Ruby are defined by a # character, after which the re-
+ mainder of the line is ignored. The only exception is in strings, where the 
+ character can have a special meaning.
+  
+ 413",NA
+A.3,NA,NA
+Ruby Idioms,"There are standard patterns for performing certain tasks in Ruby, such as 
+ assignment and enumerating. This section presents the common Ruby 
+ idioms used throughout the code examples in this book.
+  
+ A.3.1 
+  
+ Assignment
+  
+ Assignment is the definition of variables (setting a variable to a value). Ruby 
+ allows mass assignment, for example, multiple variables can be assigned to 
+ respective values on a single line.",NA
+A.4 ,NA,NA
+Bibliography,"[1] D. Flanagan and Y. Matsumoto. The Ruby Programming Language. 
+  
+ O’Reilly Media, 2008.
+  
+ [2]
+  D. Thomas, C. Fowler, and A. Hunt. Programming Ruby: The Pragmatic 
+  
+ Programmers’ Guide. Pragmatic Bookshelf, second edition, 2004.",NA
+Index,"Adaptive Immune System,
+  265 
+  
+ cGA,
+  212
+  
+ Adaptive Random Search,
+  34 
+  
+ Clever Algorithms,
+  9
+  
+ Adaptive Systems,
+  356 
+  
+ Algorithm Selection,
+  9
+  
+ Examples,
+  357 
+  
+ Taxonomy,
+  16
+  
+ Formalism,
+  356 
+  
+ Template,
+  17
+  
+ aiNet,
+  292 
+  
+ Clonal Selection Algorithm,
+  270
+  
+ AIRS,
+  284 
+  
+ CLONALG,
+  270
+  
+ Ant Colony Optimization,
+  229
+ ,
+  238
+ ,
+  245 
+ Ant 
+ Colony System,
+  245 
+  
+ Ant Cycle,
+  238 
+  
+ Ant System,
+  238 
+  
+ Ant-Q,
+  245
+  
+ Collective Intelligence,
+  229 
+  
+ Compact Genetic Algorithm,
+  212 
+ Complex Adaptive Systems,
+  360 
+ Computation with Biology,
+  6 
+  
+ Computational Intelligence,
+  6
+  
+ Artificial Immune Network,
+  292 
+  
+  
+ References,
+  20 
+  
+ Artificial Immune Recognition System, 
+  
+ Computationally Motivated Biology,
+  6 
+  
+  
+ 284 
+  
+ Constraint Satisfaction,
+  391 
+  
+ Artificial Immune Systems,
+  7
+ ,
+  265 
+  
+ Cooperative Search,
+  390 
+  
+ Artificial Intelligence,
+  3 
+  
+ Cross-Entropy Method,
+  224 
+  
+ Neat,
+  4 
+  
+ Cultural Algorithm,
+  187 
+  
+ References,
+  20 
+  
+ Scruffy,
+  5 
+  
+ Dendritic Cell Algorithm,
+  299
+  
+ Artificial Neural Networks,
+  7
+ ,
+  307 
+  
+ Back-propagation,
+  316 
+  
+ Bacterial Foraging Optimization Algo-
+  
+ Differential Evolution,
+  114 
+  
+ Domain-Specific Strategies,
+  389
+  
+ Error Back-propagation,
+  316
+  
+ rithm,
+  257 
+ Estimation of Distribution Algorithms,
+  
+ Bandit Problems,
+  15 
+  
+ 199
+  
+ Bayesian Optimization Algorithm,
+  216 
+  
+ Evolution,
+  87
+  
+ Bees Algorithm,
+  252 
+  
+ Benchmark Measures,
+  403 
+ Benchmark Problems,
+  402 
+ Benchmarking,
+  400
+  
+ Evolution Strategies,
+  108 
+  
+ Evolutionary Algorithms,
+  87 
+  
+ Evolutionary Computation,
+  7
+ ,
+  87 
+ Evolutionary Programming,
+  120
+  
+ Issues,
+  400 
+  
+ Extremal Optimization,
+  175
+  
+ Measures,
+  403
+  
+  
+ Parameters,
+  401 
+  
+  
+ Problem Instances,
+  402 
+  
+ Biologically Inspired Computation,
+  6 
+  
+ Frameworks,
+  360 
+  
+  
+ Modeling,
+  362
+  
+ Feed-forward Networks,
+  308 
+  
+ Flow Programming,
+  350 
+  
+ Function Approximation,
+  11
+ ,
+  393 
+  
+ Cooperative,
+  393 
+  
+  
+ Decomposition,
+  394
+  
+ References,
+  20 
+  
+ Definition,
+  12
+  
+ Black Box Algorithms,
+  13 
+  
+ Meta,
+  394
+  
+ Blind Search,
+  30 
+  
+ Parallelization,
+  393
+  
+ BOA,
+  216 
+  
+ Subfields,
+  12
+  
+ Boosting,
+  393 
+  
+ Bootstrap Aggregation,
+  394
+  
+ 421",NA

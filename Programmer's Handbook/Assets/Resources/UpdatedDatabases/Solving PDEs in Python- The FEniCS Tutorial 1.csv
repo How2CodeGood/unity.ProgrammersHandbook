@@ -1,0 +1,1984 @@
+Larger Text,Smaller Text,Symbol
+SIMULA SPRINGER BRIEFS ON ,NA,NA
+COMPUTING 3,NA,NA
+Hans Petter Langtangen,NA,NA
+Anders Logg,NA,NA
+Solving PDEs ,NA,NA
+in ,NA,NA
+Python ,NA,NA
+The FEniCS ,NA,NA
+Tutorial I,NA,NA
+Simula SpringerBriefs on Computing,NA,NA
+Volume 3,"Editor-in-chief
+  
+ Aslak Tveito, Fornebu, Norway
+  
+ Series editors
+  
+ Are Magnus Bruaset, Fornebu, Norway 
+ Kimberly Claffy, San Diego, USA 
+  
+ Magne Jørgensen, Fornebu, Norway 
+  
+ Hans Petter Langtangen, Fornebu, 
+ Norway Olav Lysne, Fornebu, Norway 
+  
+ Andrew McCulloch, La Jolla, USA 
+  
+ Fabian Theis, Neuherberg, Germany 
+  
+ Karen Willcox, Cambridge, USA 
+  
+ Andreas Zeller, Saarbrücken, Germany",NA
+Hans Petter Langtangen,•,NA
+ Anders Logg,NA,NA
+Solving PDEs in Python,NA,NA
+The FEniCS Tutorial I,NA,NA
+Foreword,"Dear reader, 
+  
+ Our aim with the series Simula SpringerBriefs on Computing is to provide 
+ compact introductions to selected fields of computing. Entering a new field of 
+ research can be quite demanding for graduate students, postdocs, and 
+ experienced researchers alike: the process often involves reading hundreds of 
+ papers, and the methods, results and notation styles used often vary 
+ considerably, which makes for a time-consuming and potentially frustrating 
+ experience. The briefs in this series are meant to ease the process by 
+ introducing and explaining important concepts and theories in a relatively 
+ narrow field, and by posing critical questions on the fun-damentals of that 
+ field. A typical brief in this series should be around 100 pages and should be 
+ well suited as material for a research seminar in a well-defined and limited 
+ area of computing.
+  
+ We have decided to publish all items in this series under the SpringerOpen 
+ framework, as this will allow authors to use the series to publish an initial 
+ version of their manuscript that could subsequently evolve into a full-scale 
+ book on a broader theme. Since the briefs are freely available online, the 
+ authors will not receive any direct income from the sales; however, 
+ remuneration is provided for every completed manuscript. Briefs are written 
+ on the basis of an invitation from a member of the editorial board. 
+ Suggestions for possible topics are most welcome and can be sent to 
+ aslak@simula.no.
+  
+ January 2016
+  
+ Prof. Aslak Tveito 
+  
+ CEO
+  
+ Dr. Martin Peters 
+  
+ Executive Editor Mathematics 
+ Springer Heidelberg, 
+ Germany",NA
+Contents,"Preface
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 1
+  
+ 1
+  
+ Preliminaries
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 1.1 The FEniCS Project . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 1.2 What you will learn . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 1.3 Working with this tutorial . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 1.4 Obtaining the software . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 1.4.1 
+  
+ Installation using Docker containers . . . . . . . . . . . . . . . .
+  
+ 1.4.2 
+  
+ Installation using Ubuntu packages . . . . . . . . . . . . . . . . .
+  
+ 1.4.3 
+  
+ Testing your installation . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 1.5 Obtaining the tutorial examples . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 1.6 Background knowledge . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 1.6.1 
+  
+ Programming in Python. . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 1.6.2 
+  
+ The finite element method . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 3
+  
+  
+ 3
+  
+  
+ 4
+  
+  
+ 4
+  
+  
+ 5
+  
+  
+ 6
+  
+  
+ 7
+  
+  
+ 8
+  
+  
+ 8
+  
+  
+ 8
+  
+  
+ 8
+  
+  
+ 9
+  
+ 2
+  
+ Fundamentals: Solving the Poisson equation
+  . . . . . . . . . . . . . . 2.1 
+ Mathematical problem formulation . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 2.1.1 
+  
+ Finite element variational formulation . . . . . . . . . . . . . . .
+  
+ 2.1.2 
+  
+ Abstract finite element variational formulation . . . . . . .
+  
+  
+  
+ Choosing a test problem . . . . . . . . . . . . . . . . . . . . . . . . . . 2.1.3 
+  
+ 2.2 FEniCS implementation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 2.2.1 
+  
+ The complete program . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 2.2.2 
+  
+ Running the program . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ Dissection of the program . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2.3 
+  
+ 2.3.1 
+  
+ The important first line . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 2.3.2 
+  
+ Generating simple meshes . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 2.3.3 
+  
+ Defining the finite element function space . . . . . . . . . . .
+  
+  
+ Defining the trial and test functions . . . . . . . . . . . . . . . . 2.3.4 
+  
+ 2.3.5 
+  
+ Defining the boundary conditions . . . . . . . . . . . . . . . . . . .
+  
+ 2.3.6 
+  
+ Defining the source term . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 2.3.7 
+  
+ Defining the variational problem . . . . . . . . . . . . . . . . . . .
+  
+ 1
+ 1 
+ 1
+ 1 
+ 1
+ 2 
+ 1
+ 5 
+ 1
+ 6 
+ 1
+ 7 
+ 1
+ 7 
+ 1
+ 8 
+ 1
+ 9 
+ 1
+ 9 
+ 2
+ 0 
+ 2
+ vii",NA
+Preface,"This book gives a concise and gentle introduction to finite element program-
+ ming in Python based on the popular FEniCS software library. FEniCS can be 
+ programmed in both C++ and Python, but this tutorial focuses exclu-sively on 
+ Python programming, since this is the simplest and most effective approach 
+ for beginners. After having digested the examples in this tutorial, the reader 
+ should be able to learn more from the FEniCS documentation, the numerous 
+ demo programs that come with the software, and the comprehen-sive FEniCS 
+ book
+  Automated Solution of Differential Equations by the Finite Element 
+ Method
+  [26]. This tutorial is a further development of the opening chapter in 
+ [26].
+  
+ We thank Johan Hake, Kent-Andre Mardal, and Kristian Valen-Sendstad for 
+ many helpful discussions during the preparation of the first version of this 
+ tutorial for the FEniCS book [26]. We are particularly thankful to Professor 
+ Douglas Arnold for very valuable feedback on early versions of the text. Øys-
+ tein Sørensen pointed out numerous typos and contributed with many 
+ helpful comments. Many errors and typos were also reported by Mauricio 
+ Ange-les, Ida Drøsdal, Miroslav Kuchta, Hans Ekkehard Plesser, Marie Rognes, 
+ Hans Joachim Scroll, Glenn Terje Lines, Simon Funke, Matthew Moelter, and 
+ Magne Nordaas. Ekkehard Ellmann as well as two anonymous reviewers 
+ provided a series of suggestions and improvements. Special thanks go to Ben-
+ jamin Kehlet for all his work with the mshr tool and for quickly implementing 
+ our requests for this tutorial.
+  
+  
+ Comments and corrections can be reported as
+  issues
+  for the Git repository 
+ of this book
+ 1
+ , or via email to logg@chalmers.se.
+  
+ Oslo and Smögen, November 2016 
+  
+ Hans Petter Langtangen, Anders Logg
+  
+ 1
+  https://github.com/hplgit/fenics-tutorial/
+  
+ 1",NA
+Chapter 1 ,NA,NA
+Preliminaries,NA,NA
+1.1 The FEniCS Project,"The FEniCS Project is a research and software project aimed at creating 
+ mathematical methods and software for automated computational mathe-
+ matical modeling. This means creating easy, intuitive, efficient, and flexible 
+ software for solving partial differential equations (PDEs) using finite element 
+ methods. FEniCS was initially created in 2003 and is developed in collabo-
+ ration between researchers from a number of universities and research insti-
+ tutes around the world. For more information about FEniCS and the latest 
+ updates of the FEniCS software and this tutorial, visit the FEniCS web page at 
+ https://fenicsproject.org.
+  
+ FEniCS consists of a number of building blocks (software components) 
+ that together form the FEniCS software: DOLFIN [27], FFC [17], FIAT [16], 
+ UFL [1], mshr, and a few others. For an overview, see [26]. FEniCS users 
+ rarely need to think about this internal organization of FEniCS, but since even 
+ casual users may sometimes encounter the names of various FEniCS 
+ components, we briefly list the components and their main roles in FEniCS. 
+ DOLFIN is the computational high-performance C++ backend of FEniCS. 
+ DOLFIN implements data structures such as meshes, function spaces and 
+ functions, compute-intensive algorithms such as finite element assembly and 
+ mesh refinement, and interfaces to linear algebra solvers and data structures 
+ such as PETSc. DOLFIN also implements the FEniCS problem-solving en-
+ vironment in both C++ and Python. FFC is the code generation engine of 
+ FEniCS (the form compiler), responsible for generating efficient C++ code 
+ from high-level mathematical abstractions. FIAT is the finite element back-
+ end of FEniCS, responsible for generating finite element basis functions, UFL 
+ implements the abstract mathematical language by which users may express 
+ variational problems, and mshr provides FEniCS with mesh generation ca-
+ pabilities.
+  
+ © The Author(s) 2016 
+  
+ 3
+  
+ H.P Langtangen and A. Logg, Solving PDEs in Python,
+  
+ Simula SpringerBriefs on Computing 3, DOI 10.1007/978-3-319-52462-7_1",NA
+1.2 What you will learn,"The goal of this tutorial is to demonstrate how to apply the finite element to 
+ solve PDEs in FEniCS. Through a series of examples, we demonstrate how to:
+  
+ •
+  solve linear PDEs (such as the Poisson equation),
+  
+ •
+  solve time-dependent PDEs (such as the heat equation),
+ •
+  
+ solve nonlinear PDEs,
+  
+ •
+  solve systems of time-dependent nonlinear PDEs.
+  
+ Important topics involve how to set boundary conditions of various types 
+ (Dirichlet, Neumann, Robin), how to create meshes, how to define variable 
+ coefficients, how to interact with linear and nonlinear solvers, and how to 
+ postprocess and visualize solutions.
+  
+ We will also discuss how to best structure the Python code for a PDE 
+ solver, how to debug programs, and how to take advantage of testing frame-
+ works.",NA
+1.3 Working with this tutorial,"The mathematics of the illustrations is kept simple to better focus on FEniCS 
+ functionality and syntax. This means that we mostly use the Poisson equation 
+ and the time-dependent diffusion equation as model problems, often with 
+ input data adjusted such that we get a very simple solution that can be 
+ exactly reproduced by any standard finite element method over a uniform, 
+ structured mesh. This latter property greatly simplifies the verification of the 
+ implementations. Occasionally we insert a physically more relevant example 
+ to remind the reader that the step from solving a simple model problem to a 
+ challenging real-world problem is often quite short and easy with FEniCS.
+  
+ Using FEniCS to solve PDEs may seem to require a thorough understand-
+ ing of the abstract mathematical framework of the finite element method as 
+ well as expertise in Python programming. Nevertheless, it turns out that 
+ many users are able to pick up the fundamentals of finite elements
+  and
+  
+ Python programming as they go along with this tutorial. Simply keep on 
+ reading and try out the examples. You will be amazed at how easy it is to 
+ solve PDEs with FEniCS!",NA
+1.4 Obtaining the software,"Working with this tutorial obviously requires access to the FEniCS software. 
+ FEniCS is a complex software library, both in itself and due to its many de-
+ pendencies to state-of-the-art open-source scientific software libraries. Man-
+ ually building FEniCS and all its dependencies from source can thus be a 
+ daunting task. Even for an expert who knows exactly how to configure and 
+ build each component, a full build can literally take hours! In addition to the 
+ complexity of the software itself, there is an additional layer of complexity in 
+ how many different kinds of operating systems (Linux, Mac, Windows) may 
+ be running on a user’s laptop or compute server, with different requirements 
+ for how to configure and build software.
+  
+  
+ For this reason, the FEniCS Project provides prebuilt packages to make the 
+ installation easy, fast, and foolproof.
+  
+ FEniCS download and installation
+  
+ In this tutorial, we highlight two main options for installing the FEniCS 
+ software: Docker containers and Ubuntu packages. While the Docker 
+ containers work on all operating systems, the Ubuntu packages only 
+ work on Ubuntu-based systems. Note that the built-in FEniCS plotting 
+ does currently not work from Docker, although rudimentary plotting is 
+ supported via the Docker Jupyter notebook option.
+  
+ FEniCS may also be installed using other methods, including Conda 
+ packages and building from source. For more installation options and 
+ the latest information on the simplest and best options for installing 
+ FEniCS, check out the official FEniCS installation instructions. These can 
+ be found at https://fenicsproject.org/download.
+  
+  
+ FEniCS version: 2016.2
+  
+ FEniCS versions are labeled 2016.1, 2016.2, 2017.1 and so on, where 
+ the major number indicates the year of release and the minor number is 
+ a counter starting at 1. The number of releases per year varies but typi-
+ cally one can expect 2–3 releases per year. This tutorial was prepared 
+   
+ for and tested with FEniCS version 2016.2.",NA
+1.5 Obtaining the tutorial examples,"In this tutorial, you will learn finite element and FEniCS programming 
+ through a number of example programs that demonstrate both how to solve 
+ particular PDEs using the finite element method, how to program solvers in 
+ FEniCS, and how to create well-designed Python code that can later be ex-
+ tended to solve more complex problems. All example programs are available 
+ from the web page of this book at https://fenicsproject.org/tutorial. The 
+ programs as well as the source code for this text can also be accessed directly 
+ from the Git repository
+ 4
+ for this book.",NA
+1.6 Background knowledge,"1.6.1 Programming in Python
+  
+ While you can likely pick up basic Python programming by working through 
+ the examples in this tutorial, you may want to study additional material on 
+ the Python language. A natural starting point for beginners is the classic 
+ Python Tutorial
+  [11], or a tutorial geared towards scientific computing [22]. 
+ In the latter, you will also find pointers to other tutorials for scientific 
+ computing in Python. Among ordinary books we recommend the general 
+ introduction 
+ Dive into Python
+  [28] as well as texts that focus on scientific 
+ computing with Python [15,18–21].
+  
+ 3
+  For users of FEniCS containers, this means first running the command fenicsproject run.
+  
+ 4
+  https://github.com/hplgit/fenics-tutorial/",NA
+Chapter 2 ,NA,NA
+Fundamentals: Solving the Poisson ,NA,NA
+equation,"The goal of this chapter is to show how the Poisson equation, the most basic of all 
+ PDEs, can be quickly solved with a few lines of FEniCS code. We introduce the most 
+ fundamental FEniCS objects such as Mesh, Function, FunctionSpace, TrialFunction, 
+ and TestFunction, and learn how to write a basic PDE solver, including how to 
+ formulate the mathematical variational problem, apply boundary conditions, call the 
+ FEniCS solver, and plot the solution.",NA
+2.1 Mathematical problem formulation,"Many books on programming languages start with a “Hello, World!” program. 
+ Readers are curious to know how fundamental tasks are expressed in the 
+ language, and printing a text to the screen can be such a task. In the world of
+  
+ finite element methods for PDEs
+ , the most fundamental task must be to solve 
+ the Poisson equation. Our counterpart to the classical “Hello, World!”program 
+ therefore solves the following boundary-value problem:
+  
+ −∇
+ 2
+ u
+ (
+ x
+ ) =
+  f
+ (
+ x
+ )
+ , 
+ x
+  in
+  Ω, 
+ (2.1)
+  
+ u
+ (
+ x
+ ) =
+  u
+ D
+ (
+ x
+ )
+ , 
+  
+ x
+  on
+  ∂Ω . 
+  
+ (2.2)
+  
+ Here,
+  u
+  =
+  u
+ (
+ x
+ ) is the unknown function,
+  f
+  =
+  f
+ (
+ x
+ ) is a prescribed function,
+ ∇
+ 2
+ is 
+ the Laplace operator (often written as
+  ∆
+ ),
+  Ω
+  is the spatial domain, and
+  ∂Ω
+  is 
+ the boundary of
+  Ω
+ . The Poisson problem, including both the PDE
+  −∇
+ 2
+ u
+  =
+  f
+  and 
+ the boundary condition
+  u
+  =
+  u
+ D
+  on
+  ∂Ω
+ , is an example of a
+  boundary-value 
+ problem
+ , which must be precisely stated before it makes sense to start solving 
+ it with FEniCS.
+  
+  
+ In two space dimensions with coordinates
+  x
+  and
+  y
+ , we can write out the 
+ Poisson equation as",NA
+2.2 FEniCS implementation,"2.2.1 The complete program
+  
+ A FEniCS program for solving our test problem for the Poisson equation in 2D 
+ with the given choices of
+  Ω
+ ,
+  u
+ D
+ , and
+  f
+  may look as follows:
+  
+ from
+  fenics
+  import *
+  
+ # Create mesh and define function space 
+ mesh
+  =
+  
+ UnitSquareMesh
+ (8, 8) 
+  
+ V
+  =
+  FunctionSpace
+ (
+ mesh
+ ,
+  ’P’
+ , 1)
+  
+  
+ # Define boundary condition 
+  
+ u_D
+  =
+  Expression
+ (
+ ’1 + x[0]*x[0] + 2*x[1]*x[1]’
+ ,
+  degree
+ =2)
+  
+  
+ def
+  boundary
+ (
+ x
+ ,
+  on_boundary
+ ): 
+  
+ return
+  on_boundary
+  
+ bc
+  =
+  DirichletBC
+ (
+ V
+ ,
+  u_D
+ ,
+  boundary
+ )
+  
+ # Define variational problem 
+ u
+  =
+  
+ TrialFunction
+ (
+ V
+ ) 
+  
+ v
+  =
+  TestFunction
+ (
+ V
+ ) 
+  
+ f
+  =
+  Constant
+ (-6.0) 
+  
+ a
+  =
+  dot
+ (
+ grad
+ (
+ u
+ ),
+  grad
+ (
+ v
+ ))*
+ dx L
+  =
+  
+ f
+ *
+ v
+ *
+ dx
+  
+  
+ # Compute solution 
+  
+ u
+  =
+  Function
+ (
+ V
+ ) 
+  
+ solve
+ (
+ a
+  ==
+  L
+ ,
+  u
+ ,
+  bc
+ )
+  
+  
+ # Plot solution and mesh 
+  
+ plot
+ (
+ u
+ ) 
+  
+ plot
+ (
+ mesh
+ )
+  
+  
+ # Save solution to file in VTK format 
+ vtkfile
+  =
+  
+ File
+ (
+ ’poisson/solution.pvd’
+ ) 
+ vtkfile
+  <<
+  u",NA
+2.3 Dissection of the program,"We shall now dissect our FEniCS program in detail. The listed FEniCS pro-
+ gram defines a finite element mesh, a finite element function space
+  V
+  on this 
+ mesh, boundary conditions for
+  u
+  (the function
+  u
+ D
+ ), and the bilinear and lin-ear 
+ forms
+  a
+ (
+ u,v
+ ) and
+  L
+ (
+ v
+ ). Thereafter, the solution
+  u
+  is computed. At the end of 
+ the program, we compare the numerical and the exact solutions. We also plot 
+ the solution using the plot command and save the solution to a file for 
+ external postprocessing.
+  
+ 2.3.1 The important first line
+  
+ The first line in the program,
+  
+ from
+  fenics
+  import *
+  
+ imports the key classes UnitSquareMesh, FunctionSpace, Function, and so 
+ forth, from the FEniCS library. All FEniCS programs for solving PDEs by the 
+ finite element method normally start with this line.",NA
+2.4 Deflection of a membrane,"Our first FEniCS program for the Poisson equation targeted a simple test 
+ problem where we could easily verify the implementation. We now turn our 
+ attention to a physically more relevant problem with solutions of somewhat 
+ more exciting shape.",NA
+Chapter 3 ,NA,NA
+A Gallery of finite element solvers,"The goal of this chapter is to demonstrate how a range of important PDEs from 
+ science and engineering can be quickly solved with a few lines of FEniCS code. We 
+ start with the heat equation and continue with a nonlinear Poisson equation, the 
+ equations for linear elasticity, the Navier–Stokes equations, and finally look at how 
+ to solve systems of nonlinear advection–diffusion–reaction equations. These 
+ problems illustrate how to solve time-dependent problems, nonlinear problems, 
+ vector-valued problems, and systems of PDEs. For each problem, we derive the 
+ variational formulation and express the problem in Python in a way that closely 
+ resembles the mathematics.",NA
+3.1 The heat equation,"As a first extension of the Poisson problem from the previous chapter, we 
+ consider the time-dependent heat equation, or the time-dependent diffusion 
+ equation. This is the natural extension of the Poisson equation describing the 
+ stationary distribution of heat in a body to a time-dependent problem. 
+  
+ We will see that by discretizing time into small time intervals and applying 
+ standard time-stepping methods, we can solve the heat equation by solving a 
+ sequence of variational problems, much like the one we encountered for the 
+ Poisson equation.
+  
+ 3.1.1 PDE problem
+  
+ Our model problem for time-dependent PDEs reads
+  
+ © The Author(s) 2016 
+  
+ 37
+  
+ H.P Langtangen and A. Logg, Solving PDEs in Python,
+  
+ Simula SpringerBriefs on Computing 3, DOI 10.1007/978-3-319-52462-7_3",NA
+3.2 A nonlinear Poisson equation,"We shall now address how to solve nonlinear PDEs. We will see that 
+ nonlinear problems can be solved just as easily as linear problems in FEniCS, 
+ by sim-ply defining a nonlinear variational problem and calling the solve 
+ function. When doing so, we will encounter a subtle difference in how the 
+ variational problem is defined.
+  
+ 3.2.1 PDE problem
+  
+ As a model problem for the solution of nonlinear PDEs, we take the following 
+ nonlinear Poisson equation:",NA
+3.3 The equations of linear elasticity,"Analysis of structures is one of the major activities of modern engineering, 
+ which likely makes the PDE modeling the deformation of elastic bodies the 
+ most popular PDE in the world. It takes just one page of code to solve the 
+ equations of 2D or 3D elasticity in FEniCS, and the details follow below.",NA
+3.4 The Navier–Stokes equations,"For the next example, we will solve the incompressible Navier–Stokes equa-
+ tions. This problem combines many of the challenges from our previously 
+ studied problems: time-dependence, nonlinearity, and vector-valued 
+ variables. We shall touch on a number of FEniCS topics, many of them quite 
+ advanced. But you will see that even a relatively complex algorithm such as a 
+ second-order splitting method for the incompressible Navier–Stokes 
+ equations, can be implemented with relative ease in FEniCS.
+  
+ 3.4.1 PDE problem
+  
+ The incompressible Navier–Stokes equations form a system of equations for 
+ the velocity
+  u
+  and pressure
+  p
+  in an incompressible fluid:
+  
+ ϱ
+  
+ ∂u
+  
+ ∂t
+ +
+ u·∇u
+  
+ =
+  ∇·σ
+ (
+ u,p
+ )+
+ f,
+  
+ (3.29)
+  
+ ∇·u
+  = 0
+ .
+  
+ (3.30)
+  
+ The right-hand side
+  f
+  is a given force per unit volume and just as for the 
+ equations of linear elasticity,
+  σ
+ (
+ u,p
+ ) denotes the stress tensor, which for a 
+ Newtonian fluid is given by",NA
+3.5 A system of advection–diffusion–reaction ,NA,NA
+equations,"The problems we have encountered so far—with the notable exception of the 
+ Navier–Stokes equations—all share a common feature: they all involve mod-
+ els expressed by a
+  single
+  scalar or vector PDE. In many situations the model is 
+ instead expressed as a system of PDEs, describing different quantities pos-
+ sibly governed by (very) different physics. As we saw for the Navier–Stokes 
+ equations, one way to solve a system of PDEs in FEniCS is to use a splitting 
+ method where we solve one equation at a time and feed the solution from 
+ one equation into the next. However, one of the strengths with FEniCS is the 
+ ease by which one can instead define variational problems that couple 
+ several PDEs into one compound system. In this section, we will look at how 
+ to use FEniCS to write solvers for such systems of coupled PDEs. The goal is 
+ to demonstrate how easy it is to implement fully implicit, also known as 
+ monolithic, solvers in FEniCS.
+  
+ 3.5.1 PDE problem
+  
+ Our model problem is the following system of advection–diffusion–reaction 
+ equations:
+  
+ ∂u
+ 1
+  
+ ∂t
+ +
+ w ·∇u
+ 1
+  −∇·
+ (
+ ϵ∇u
+ 1
+ ) =
+  f
+ 1
+  −Ku
+ 1
+ u
+ 2
+ ,
+  
+ ∂u
+ 2
+  
+ ∂t
+ +
+ w ·∇u
+ 2
+  −∇·
+ (
+ ϵ∇u
+ 2
+ ) =
+  f
+ 2
+  −Ku
+ 1
+ u
+ 2
+ ,
+  
+ ∂u
+ 3
+  
+ ∂t
+ +
+ w ·∇u
+ 3
+  −∇·
+ (
+ ϵ∇u
+ 3
+ ) =
+  f
+ 3
+  +
+ Ku
+ 1
+ u
+ 2
+  −Ku
+ 3
+ .
+  
+ (3.36
+ ) 
+ (3.37
+ ) 
+ (3.38
+ )
+  
+  
+ This system models the chemical reaction between two species
+  A
+  and
+  B 
+ in 
+ some domain
+  Ω
+ :",NA
+Chapter 4 ,NA,NA
+Subdomains and boundary conditions,"So far, we have only looked briefly at how to specify boundary conditions. In this 
+ chapter, we look more closely at how to specify boundary conditions on specific 
+ parts (subdomains) of the boundary and how to combine multiple boundary con-
+ ditions. We will also look at how to generate meshes with subdomains and how to 
+ define coefficients with different values in different subdomains.",NA
+4.1 Combining Dirichlet and Neumann ,NA,NA
+conditions,"Let’s return to the Poisson problem from Chapter 2 and see how to extend the 
+ mathematics and the implementation to handle a Dirichlet condition in 
+ combination with a Neumann condition. The domain is still the unit square, 
+ but now we set the Dirichlet condition
+  u
+  =
+  u
+ D
+  at the left and right sides, 
+ x
+  = 0 
+ and
+  x
+  = 1, while the Neumann condition
+  
+ −∂u∂n
+ =
+  g
+  
+ is applied to the remaining sides
+  y
+  = 0 and
+  y
+  = 1.
+  
+ 4.1.1 PDE problem
+  
+ Let
+  Γ
+ D
+  and
+  Γ
+ N
+  denote the parts of the boundary
+  ∂Ω
+  where the Dirichlet and 
+ Neumann conditions apply, respectively. The complete boundary-value 
+ problem can be written as
+  
+ © The Author(s) 2016 
+  
+ 83
+  
+ H.P Langtangen and A. Logg, Solving PDEs in Python,
+  
+ Simula SpringerBriefs on Computing 3, DOI 10.1007/978-3-319-52462-7_4",NA
+4.2 Setting multiple Dirichlet conditions,"In the previous section, we used a single function
+  u
+ D
+ (
+ x,y
+ ) for setting Dirichlet 
+ conditions on two parts of the boundary. Often it is more practical to use 
+ multiple functions, one for each subdomain of the boundary. Let us return to 
+ the case from Section 4.1 and redefine the problem in terms of two Dirichlet 
+ conditions:
+  
+ −∇
+ 2
+ u
+  =
+  f 
+  
+ in
+  Ω,
+  
+  
+ L 
+  
+ u
+  =
+  u
+ L
+  on
+  Γ
+ D
+ ,
+  
+  
+ R 
+  
+ u
+  =
+  u
+ R
+  on
+  Γ
+ D
+ ,
+  
+ −∂u∂n
+ =
+  g
+  
+ on
+  Γ
+ N
+  .
+  
+  
+  
+ L 
+  
+  
+ R 
+  
+ Here,
+  Γ
+ D
+ is the left boundary
+  x
+  = 0, while
+  Γ
+ D
+ is the right boundary
+  x
+  = 1.
+  
+ We note that
+  u
+ L
+ (
+ x,y
+ ) = 1+2
+ y
+ 2
+ ,
+  u
+ R
+ (
+ x,y
+ ) = 2+2
+ y
+ 2
+ , and
+  g
+ (
+ x,y
+ ) = 4
+ y
+ .
+  
+  
+  
+ L 
+  
+ For the boundary condition on
+  Γ
+ D
+ , we define the usual triple of an expres-
+  
+ sion for the boundary value, a function defining the location of the boundary,
+  
+ and a DirichletBC object:
+  
+  
+ u_L
+  =
+  Expression
+ (
+ ’1 + 2*x[1]*x[1]’
+ ,
+  degree
+ =2) def
+  
+ boundary_L
+ (
+ x
+ ,
+  on_boundary
+ ): 
+  
+  
+ tol
+  = 1
+ E
+ -14 
+  
+  
+ return
+  on_boundary
+  and
+  near
+ (
+ x
+ [0], 0,
+  tol
+ )
+  
+  
+ bc_L
+  =
+  DirichletBC
+ (
+ V
+ ,
+  u_L
+ ,
+  boundary_L
+ )
+  
+ R 
+  
+ For the boundary condition on
+  Γ
+ D
+ , we write a similar code snippet:
+  
+ u_R
+  =
+  Expression
+ (
+ ’2 + 2*x[1]*x[1]’
+ ,
+  degree
+ =2)
+  
+ def
+  boundary_R
+ (
+ x
+ ,
+  on_boundary
+ ): 
+  
+ tol
+  = 1
+ E
+ -14 
+  
+ return
+  on_boundary
+  and
+  near
+ (
+ x
+ [0], 1,
+  tol
+ )
+  
+  
+ bc_R
+  =
+  DirichletBC
+ (
+ V
+ ,
+  u_R
+ ,
+  boundary_R
+ )
+  
+ We collect the two boundary conditions in a list which we can pass to the 
+ solve function to compute the solution:
+  
+ bcs
+  = [
+ bc_L
+ ,
+  bc_R
+ ] 
+  
+ ...
+  
+ solve
+ (
+ a
+  ==
+  L
+ ,
+  u
+ ,
+  bcs
+ )
+  
+  
+ Note that for boundary values that do not depend on
+  x
+  or
+  y
+ , we might 
+ replace the Expression objects by Constant objects.",NA
+4.3 Defining subdomains for different materials,"Solving PDEs in domains made up of different materials is a frequently en-
+ countered task. In FEniCS, these kinds of problems are handled by defining 
+ subdomains inside the domain. A simple example with two materials (subdo-
+ mains) in 2D will demonstrate the idea. We consider the following variable-
+ coefficient extension of the Poisson equation from Chapter 2:
+  
+ −∇·
+ [
+ κ
+ (
+ x,y
+ )
+ ∇u
+ (
+ x,y
+ )] =
+  f
+ (
+ x,y
+ )
+ , 
+  
+ (4.7)
+  
+ in some domain
+  Ω
+ . Physically, this problem may be viewed as a model of heat 
+ conduction, with variable heat conductivity
+  κ
+ (
+ x,y
+ )
+  ≥ κ >
+  0.
+  
+ divide it into two equal subdomains, as depicted in Figure 4.1: For illustration 
+ purposes, we consider the domain
+  Ω
+  = [0
+ ,
+ 1]
+  ×
+  [0
+ ,
+ 1] and
+  
+ Ω
+ 0
+  = [0
+ ,
+ 1]
+ ×
+ [0
+ ,
+ 1
+ /
+ 2]
+ ,Ω
+ 1
+  = [0
+ ,
+ 1]
+ ×
+ (1
+ /
+ 2
+ ,
+ 1]
+ .
+  
+ We define
+  κ
+ (
+ x,y
+ ) =
+  κ
+ 0
+  in
+  Ω
+ 0
+  and
+  κ
+ (
+ x,y
+ ) =
+  κ
+ 1
+  in
+  Ω
+ 1
+ , where
+  κ
+ 0
+ ,κ
+ 1
+  >
+  0 are given 
+ constants.
+  
+  
+ Fig. 4.1 
+  
+ Two subdomains with different material parameters.
+  
+ The variational formulation may be easily expressed in FEniCS as follows:
+  
+ a
+  =
+  kappa
+ *
+ dot
+ (
+ grad
+ (
+ u
+ ),
+  grad
+ (
+ v
+ ))*
+ dx 
+  
+ L
+  =
+  f
+ *
+ v
+ *
+ dx
+  
+ In the remainder of this section, we will discuss different strategies for 
+ defining the coefficient kappa as an Expression that takes on different values 
+ in the two subdomains.",NA
+"4.4 Setting multiple Dirichlet, Neumann, and ",NA,NA
+Robin conditions,"Consider again the variable-coefficient Poisson problem from Section 4.3. We 
+ will now discuss how to implement general combinations of boundary condi-
+ tions of Dirichlet, Neumann, and Robin type for this model problem.",NA
+4.5 Generating meshes with subdomains,"So far, we have worked mostly with simple meshes (the unit square) and 
+ defined boundaries and subdomains in terms of simple geometric tests like 
+ x
+  
+ = 0 or
+  y ≤
+  0
+ .
+ 5. For more complex geometries, it is not realistic to specify 
+ boundaries and subdomains in this way. Instead, the boundaries and subdo-
+ mains must be defined as part of the mesh generation process. We will now",NA
+Chapter 5 ,NA,NA
+Extensions: Improving the Poisson ,NA,NA
+solver,"The FEniCS programs we have written so far have been designed as flat Python 
+ scripts. This works well for solving simple demo problems. However, when you build 
+ a solver for an advanced application, you will quickly find the need for more 
+ structured programming. In particular, you may want to reuse your solver to solve a 
+ large number of problems where you vary the boundary conditions, the domain, and 
+ coefficients such as material parameters. In this chapter, we will see how to write 
+ general solver functions to improve the usability of FEniCS programs. We will also 
+ discuss how to utilize iterative solvers with preconditioners for solving linear 
+ systems, how to compute derived quantities, such as, e.g., the flux on a part of the 
+ boundary, and how to compute errors and convergence rates.",NA
+5.1 Refactoring the Poisson solver,"Most programs discussed in this book are “flat”; that is, they are not orga-
+ nized into logical, reusable units in terms of Python functions. Such flat pro-
+ grams are useful for quickly testing ideas and sketching solution algorithms, 
+ but are not well suited for serious problem solving. We shall therefore look at 
+ how to
+  refactor
+  the Poisson solver from Chapter 2. For a start, this means 
+ splitting the code into functions. But refactoring is not just a reordering of 
+ existing statements. During refactoring, we also try to make the functions we 
+ create as reusable as possible in other contexts. We will also encapsu-late 
+ statements specific to a certain problem into (non-reusable) functions. Being 
+ able to distinguish reusable code from specialized code is a key issue when 
+ refactoring code, and this ability depends on a good mathematical un-
+ derstanding of the problem at hand (what is general, what is special?). In a 
+ flat program, general and specialized code (and mathematics) are often 
+ mixed together, which tends to give a blurred understanding of the problem 
+ at hand.
+  
+ © The Author(s) 2016 
+  
+ 10
+ 9
+  
+ H.P Langtangen and A. Logg, Solving PDEs in Python,",NA
+5.2 Working with linear solvers,"Sparse LU decomposition (Gaussian elimination) is used by default to solve 
+ linear systems of equations in FEniCS programs. This is a very robust and 
+ simple method. It is the recommended method for systems with up to a few 
+ thousand unknowns and may hence be the method of choice for many 2D and 
+ smaller 3D problems. However, sparse LU decomposition becomes slow and 
+ one quickly runs out of memory for larger problems. For large problems, we 
+ instead need to use
+  iterative methods
+  which are faster and require much less 
+ memory. We will now look at how to take advantage of state-of-the-art 
+ iterative solution methods in FEniCS.
+  
+ 5.2.1 Choosing a linear solver and preconditioner
+  
+ Preconditioned Krylov solvers is a type of popular iterative methods that are 
+ easily accessible in FEniCS programs. The Poisson equation results in a 
+ symmetric, positive definite system matrix, for which the optimal Krylov 
+ solver is the Conjugate Gradient (CG) method. For non-symmetric problems, 
+ a Krylov solver for non-symmetric systems, such as GMRES, is a better choice. 
+ Incomplete LU factorization (ILU) is a popular and robust all-round 
+ preconditioner, so let us try the GMRES-ILU pair:
+  
+ solve
+ (
+ a
+  ==
+  L
+ ,
+  u
+ ,
+  bc
+ , 
+  
+ solver_parameters
+ ={
+ ’linear_solver’
+ :
+  ’gmres’
+ ,
+  
+  
+ ’preconditioner’
+ :
+  ’ilu’
+ }) 
+ # Alternative syntax 
+  
+ solve
+ (
+ a
+  ==
+  L
+ ,
+  u
+ ,
+  bc
+ , 
+  
+ solver_parameters
+ =dict(
+ linear_solver
+ =
+ ’gmres’
+ , 
+   
+  
+ preconditioner
+ =
+ ’ilu’
+ ))
+  
+ Section 5.2.6 lists the most popular choices of Krylov solvers and precondi-
+ tioners available in FEniCS.
+  
+ 5.2.2 Choosing a linear algebra backend
+  
+ The actual GMRES and ILU implementations that are brought into action 
+ depend on the choice of linear algebra package. FEniCS interfaces several 
+ linear algebra packages, called
+  linear algebra backends
+  in FEniCS 
+ terminology. PETSc is the default choice if FEniCS is compiled with PETSc. If 
+ PETSc is not available, then FEniCS falls back to using the Eigen backend. The 
+ linear algebra backend in FEniCS can be set using the following command:
+  
+ parameters
+ .
+ linear_algebra_backend
+  =
+  backendname",NA
+5.3 High-level and low-level solver interfaces,"The FEniCS interface allows different ways to access the core functionality, 
+ ranging from very high-level to low-level access. So far, we have mostly used 
+ the high-level call solve(a == L, u, bc) to solve a variational problem a == L 
+ with a certain boundary condition bc. However, sometimes you may need 
+ more fine-grained control of the solution process. In particular, the call to 
+ solve will create certain objects that are thrown away after the solution has 
+ been computed, and it may be practical or efficient to
+  reuse
+  those objects.
+  
+ 5.3.1 Linear variational problem and solver objects
+  
+ In this section, we will look at an alternative interface to solving linear varia-
+ tional problems in FEniCS, which may be preferable in many situations com-",NA
+5.4 Degrees of freedom and function evaluation,"5.4.1 Examining the degrees of freedom
+  
+ We have seen before how to grab the degrees of freedom array from a finite 
+ element function u:
+  
+ nodal_values
+  =
+  u
+ .
+ vector
+ ().
+ array
+ ()
+  
+ For a finite element function from a standard continuous piecewise linear 
+ function space (P
+ 1
+  Lagrange elements), these values will be the same as the 
+ values we get by the following statement:
+  
+ vertex_values
+  =
+  u
+ .
+ compute_vertex_values
+ (
+ mesh
+ )
+  
+ Both nodal_values and vertex_values will be numpy arrays and they will be of 
+ the same length and contain the same values (for P
+ 1
+  elements), but with 
+ possibly different ordering. The array vertex_values will have the same 
+ ordering as the vertices of the mesh, while nodal_values will be ordered in a 
+ way that (nearly) minimizes the bandwidth of the system matrix and thus 
+ improves the efficiency of linear solvers.
+  
+ A fundamental question is: what are the coordinates of the vertex whose 
+ value is nodal_values[i]? To answer this question, we need to understand 
+ how to get our hands on the coordinates, and in particular, the numbering of 
+ degrees of freedom and the numbering of vertices in the mesh.
+  
+ The function mesh.coordinates returns the coordinates of the vertices as a 
+ numpy array with shape (
+ M,d
+ ),
+  M
+  being the number of vertices in the mesh 
+ and
+  d
+  being the number of space dimensions:
+  
+ >>> from
+  fenics
+  import *
+  
+ >>>
+  mesh
+  =
+  UnitSquareMesh
+ (2, 2)
+  
+ >>>
+  coordinates
+  =
+  mesh
+ .
+ coordinates
+ ()
+  
+ >>>
+  coordinates
+  
+ array
+ ([[ 0. , 0. ],
+  
+ [ 0.5, 
+  
+ 0. ],
+  
+ [ 1. , 
+  
+ 0. ],
+  
+ [ 0. , 
+  
+ 0.5],
+  
+ [ 0.5, 
+  
+ 0.5],
+  
+ [ 1. , 
+  
+ 0.5],
+  
+ [ 0. , 
+  
+ 1. ],
+  
+ [ 0.5, 
+  
+ 1. ],
+  
+ [ 1. , 
+  
+ 1. ]])
+  
+ We see from this output that for this particular mesh, the vertices are first 
+ numbered along
+  y
+  = 0 with increasing
+  x
+  coordinate, then along
+  y
+  = 0
+ .
+ 5, and so 
+ on.
+  
+ Next we compute a function u on this mesh. Let’s take
+  u
+  =
+  x
+ +
+ y
+ :
+  
+ >>>
+  V
+  =
+  FunctionSpace
+ (
+ mesh
+ ,
+  ’P’
+ , 1) 
+  
+  
+ >>>
+  u
+  =
+  interpolate
+ (
+ Expression
+ (
+ ’x[0] + x[1]’
+ ,
+  degree
+ =1),
+  V
+ )",NA
+5.5 Postprocessing computations,"As the final theme in this chapter, we will look at how to
+  postprocess computa-
+ tions
+ ; that is, how to compute various derived quantities from the computed 
+ solution of a PDE. The solution
+  u
+  itself may be of interest for visualizing gen-
+ eral features of the solution, but sometimes one is interested in computing 
+ the solution of a PDE to compute a specific quantity that derives from the 
+ solution, such as, e.g., the flux, a point-value, or some average of the solution.
+  
+ 5.5.1 Test problem
+  
+ As a test problem, we consider again the variable-coefficient Poisson problem 
+ with a single Dirichlet boundary condition:
+  
+ −∇·
+ (
+ κ∇u
+ ) =
+  f 
+  
+ in
+  Ω, 
+  
+ (5.1)
+  
+ u
+  =
+  u
+ D 
+  
+ on
+  ∂Ω . 
+  
+ (5.2)
+  
+ Let us continue to use our favorite solution
+  u
+ (
+ x,y
+ ) = 1 +
+  x
+ 2
+ + 2
+ y
+ 2
+ and then 
+ prescribe
+  κ
+ (
+ x,y
+ ) =
+  x
+ +
+ y
+ . It follows that
+  u
+ D
+ (
+ x,y
+ ) = 1+
+ x
+ 2
+ +2
+ y
+ 2
+ and
+  f
+ (
+ x,y
+ ) =
+ −
+ 8
+ x−
+ 10
+ y
+ . 
+ As before, the variational formulation for this model problem can be spec-
+ ified in FEniCS as
+  
+ a
+  =
+  kappa
+ *
+ dot
+ (
+ grad
+ (
+ u
+ ),
+  grad
+ (
+ v
+ ))*
+ dx 
+  
+ L
+  =
+  f
+ *
+ v
+ *
+ dx
+  
+ with the coefficient
+  κ
+  and right-hand side
+  f
+  given by",NA
+5.6 Taking the next step,"If you have come this far, you have learned how to both write simple script-
+ like solvers for a range of PDEs, and how to structure Python solvers using 
+ functions and unit tests. Solving a more complex PDE and writing a more full-
+ featured PDE solver is not much harder and the first step is typically to write 
+ a solver for a stripped-down test case as a simple Python script. As the script 
+ matures and becomes more complex, it is time to think about design, in 
+ particular how to modularize the code and organize it into reusable pieces 
+ that can be used to build a flexible and extensible solver.
+  
+ On the FEniCS web site you will find more extensive documentation, more 
+ example programs, and links to advanced solvers and applications written on 
+ top of FEniCS. Get inspired and develop your own solver for your favorite 
+ application, publish your code and share your knowledge with the FEniCS 
+ community and the world!
+  
+ PS:
+  Stay tuned for the FEniCS Tutorial Volume 2!
+  
+ Open Access
+  This chapter is distributed under the terms of the Creative Commons 
+ Attribution 4.0
+  
+ International License (
+ http://creativecommons.org/licenses/by/4.0/
+ ), which permits use, 
+ duplication,
+  
+ adaptation, distribution and reproduction in any medium or format, as long as you give 
+ appropriate
+  
+ credit to the original author(s) and the source, provide a link to the Creative Commons license 
+ and
+  
+ indicate if changes were made.
+  
+ The images or other third party material in this chapter are included in the work’s Creative 
+ Commons",NA
+References,"[1] M. S. Alnæs, A. Logg, K. B. Ølgaard, M. E. Rognes, and G. N. Wells.
+  
+ Unified Form Language: A domain-specific language for weak formula-
+ tions of partial differential equations.
+  ACM Transactions on Mathemat-
+ ical Software
+ , 40(2), 2014. doi:10.1145/2566630, arXiv:1211.4047.
+  
+ [2] Douglas N. Arnold and Anders Logg. Periodic table of the finite ele-
+  
+ ments.
+  SIAM News
+ , 2014.
+  
+ [3] W. B. Bickford.
+  A First Course in the Finite Element Method
+ . Irwin, 
+  
+ 2nd edition, 1994.
+  
+ [4] D. Braess.
+  Finite Elements
+ . Cambridge University Press, Cambridge, 
+  
+ third edition, 2007.
+  
+ [5] S. C. Brenner and L. R. Scott. 
+  
+ The Mathematical Theory of Finite 
+  
+ Element Methods
+ , volume 15 of
+  Texts in Applied Mathematics
+ . Springer, 
+  
+ New York, third edition, 2008.
+  
+ [6] A. J. Chorin. Numerical solution of the Navier-Stokes equations.
+  Math. 
+  
+ Comp.
+ , 22:745–762, 1968.
+  
+ [7] P. G. Ciarlet.
+  The Finite Element Method for Elliptic Problems
+ , vol-
+  
+ ume 40 of
+  Classics in Applied Mathematics
+ . 
+  
+ SIAM, Philadelphia, 
+  
+ PA, 2002. 
+  
+ Reprint of the 1978 original [North-Holland, Amsterdam; 
+  
+ MR0520174 (58 #25001)].
+  
+ [8] J. Donea and A. Huerta.
+  Finite Element Methods for Flow Problems
+ . 
+  
+ Wiley Press, 2003.
+  
+ [9] K. Eriksson, D. Estep, P. Hansbo, and C. Johnson.
+  Computational Dif-
+  
+ ferential Equations
+ . Cambridge University Press, 1996.
+  
+ [10] A. Ern and J.-L. Guermond.
+  Theory and Practice of Finite Elements
+ . 
+  
+ Springer, 2004.
+  
+ [11] Python Software Foundation. 
+  
+ The Python tutorial. 
+  
+ http://docs. 
+  
+ python.org/2/tutorial.
+  
+ [12] M. Gockenbach.
+  Understanding and Implementing the Finite Element 
+  
+ Method
+ . SIAM, 2006.",NA
+Index,".hdf5 file, 69 
+  
+ .pvd file, 45 
+  
+ .vtu file, 45 
+  
+ .xdmf file, 69
+  
+ abstract variational formulation, 15 
+ advection–diffusion–reaction, 73 
+  
+ assemble, 64, 119, 120 
+  
+ assemble_system, 120 
+  
+ assembly, 119
+  
+ backward difference, 38 
+  
+ boundary conditions, 92 
+  
+ boundary markers, 88 
+  
+ boundary specification (class), 88 
+ boundary specification (function), 21, 
+  
+ 22 
+  
+ BoxField, 136
+  
+ C++ expression syntax, 22 
+ CellFunction, 88 
+  
+ CFD, 56 
+  
+ channel flow, 60 
+  
+ chemical reactions, 73 
+  
+ Chorin’s method, 57 
+  
+ Circle, 102 
+  
+ code, 8 
+  
+ CompiledSubDomain, 91 
+  
+ components, 81
+  
+ constructive solid geometry, 67 
+ contour plot, 137 
+  
+ convergence rate, 132 
+  
+ coordinates, 123 
+  
+ coupled systems, 73 
+  
+ CSG, 67 
+  
+ curve plots, 34 
+  
+ cylinder flow, 65
+  
+ Debian, 7 
+  
+ DEBUG log level, 67 
+  
+ deep copy, 81 
+  
+ degrees of freedom, 25, 29, 30, 129 
+ degrees of freedrom, 123 
+  
+ dimension-independent code, 114 
+ Dirichlet boundary condition, 92 
+ Dirichlet boundary conditions, 20 
+ DirichletBC, 20 
+  
+ Docker, 6 
+  
+ dof to vertex map, 124 
+  
+ dofs, 29 
+  
+ DOLFIN, 3
+  
+ editor, 7 
+  
+ Eigen, 115 
+  
+ elasticity, 50 
+  
+ Emacs, 7 
+  
+ energy functional, 130 
+ error, 28, 133
+  
+ © The Author(s) 2016 
+  
+ 14
+ 5
+  
+ H.P Langtangen and A. Logg, Solving PDEs in Python,
+  
+ Simula SpringerBriefs on Computing 3, DOI 10.1007/978-3-319-52462-7",NA

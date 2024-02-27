@@ -18,12 +18,12 @@ public class ReadCVS : MonoBehaviour
 
    
    public List<string> WriteList(){
-      string filePath = "Assets/Resources/MDData_test- UPDATE _final_FREDJINJ.csv";
+      string filePath = "Assets/Resources/UpdatedDatabases/Beginning Swift.csv";
       string dataPath = Application.dataPath;
       string ReplacementPath = dataPath.Substring(0, dataPath.Length - 7);
       //This needs to be replaced for app
-      string filePath1 = Application.dataPath + "\\Resources\\MDData_test- UPDATE_final_FREDJINJ.csv";
-      // string filePath = Application.dataPath + "\\Med App Trendy_Data\\Resources\\MDData_test.csv";
+    //   string filePath1 = Application.dataPath + "\\Resources\\MDData_test- UPDATE_final_FREDJINJ.csv";
+    //   // string filePath = Application.dataPath + "\\Med App Trendy_Data\\Resources\\MDData_test.csv";
       List<string> Ailments = new List<string>(); 
       StreamReader reader = null;
       // If the file exists
@@ -56,18 +56,12 @@ public class ReadCVS : MonoBehaviour
       var item = 0;
       var count = 0;
       var ListofList = new List<List<string>>();
-      for(item = 0; item< writeList.Count; item+= 10){
-   if((item + 10) < writeList.Count){
+      for(item = 0; item< writeList.Count; item+= 3){
+   if((item + 3) < writeList.Count){
       ListofList.Add(new List<string>());
       ListofList[count].Add(writeList[item]);
       ListofList[count].Add(writeList[item + 1]);
       ListofList[count].Add(writeList[item + 2]);
-      ListofList[count].Add(writeList[item + 3]);
-      ListofList[count].Add(writeList[item + 4]);
-      ListofList[count].Add(writeList[item + 5]);
-      ListofList[count].Add(writeList[item + 6]);
-      ListofList[count].Add(writeList[item + 7]);
-      ListofList[count].Add(writeList[item + 8]);
       count += 1;
    }
 
@@ -268,36 +262,13 @@ private void DestroyButtons()
                     Text Illness = CreateTextElement(openString[count][0]); //Illness
                     createdTextElements.Add(Illness);
                     stringList.Add(openString[count][0]);
-                    if(openString[count][8] != null){
-                     Text Physical = CreateTextElement(openString[count][8]);
-                     createdTextElements.Add(Physical);
-                    }
-                    if(openString[count][6] != null){
-                     Text Physical = CreateTextElement(openString[count][6]);
-                     createdTextElements.Add(Physical);
-                    }
-                    if(openString[count][7] != null){
-                     Text Physical = CreateTextElement(openString[count][7]);
-                     createdTextElements.Add(Physical);
-                    }
+                    
                     if(openString[count][1] != null){
                      Text Physical = CreateTextElement(openString[count][1]);
                      createdTextElements.Add(Physical);
                     }
                     if(openString[count][2] != null){
                      Text Physical = CreateTextElement(openString[count][2]);
-                     createdTextElements.Add(Physical);
-                    }
-                    if(openString[count][3] != null){
-                     Text Physical = CreateTextElement(openString[count][3]);
-                     createdTextElements.Add(Physical);
-                    }
-                    if(openString[count][4] != null){
-                     Text Physical = CreateTextElement(openString[count][4]);
-                     createdTextElements.Add(Physical);
-                    }
-                    if(openString[count][5] != null){
-                     Text Physical = CreateTextElement(openString[count][5]);
                      createdTextElements.Add(Physical);
                     }
                   //   Text newTextElement = CreateTextElement(openString[count][Increment]);
@@ -414,7 +385,7 @@ public List<string> listCell1(List<List<string>> openString, string word){
     }
 private List<Text> Trendy;
    public void Test(){
-      Trendy = Returned_List_AllIllnesses(Create2DList(), "strain");
+      Trendy = Returned_List_AllIllnesses(Create2DList(), "instantiate");
 }
 public void Test2(){
       CreateButtonsForStringList(Trendy, stringList);
