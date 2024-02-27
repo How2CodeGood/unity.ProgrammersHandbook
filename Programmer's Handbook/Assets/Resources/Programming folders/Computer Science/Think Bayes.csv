@@ -1,0 +1,6743 @@
+Larger Text,Smaller Text,Symbol
+Think Bayes,NA,NA
+Allen B. Downey,NA,NA
+Table of Contents,"Preface. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . . . . . . . . . . . .  ix
+  
+ 1. Bayes’s Theorem. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . . . . . . . . . . . . . .  1 
+ Conditional 
+ probability                                
+ 1 
+ Conjoint 
+ probability                                
+ 2 
+ The 
+ cookie 
+ problem                                
+ 3 
+ Bayes’s 
+ theorem                                
+ 3 
+ The 
+ diachronic 
+ interpretation                                
+ 5 
+ The 
+ M&M 
+ problem                                
+ 6 
+ The 
+ Monty 
+ Hall 
+ problem                                
+ 7 
+ Discussion                                
+ 9
+  
+ 2. Computational Statistics. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+  
+ 11 
+ Distributions                                
+ 11 
+ The 
+ cookie 
+ problem                                
+ 12 
+ The 
+ Bayesian 
+ framework                                
+ 13 
+ The 
+ Monty 
+ Hall 
+ problem                                
+ 14 
+ Encapsulating 
+ the 
+ framework                                
+ 15 
+ The 
+ M&M 
+ problem                                
+ 16 
+ Discussion                                
+ 17 
+ Exercises                                
+ 18
+  
+ 3. Estimation. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+ . 
+  
+ 19 
+ The 
+ dice 
+ problem                                
+ 19 
+ The 
+ locomotive 
+ problem                                
+ 20 
+ What 
+ about 
+ that 
+ prior?                                
+ 22 
+ An 
+ alternative 
+ prior                                
+ 23 
+ Credible 
+ intervals                                
+ 25 
+ Cumulative 
+ distribution 
+ functions                                
+ 26",NA
+Preface,NA,NA
+"My theory, which is mine","The premise of this book, and the other books in the 
+ Think X
+  series, is that if you 
+ know how to program, you can use that skill to learn other topics.
+  
+ Most books on Bayesian statistics use mathematical notation and present ideas 
+ in terms of mathematical concepts like calculus. This book uses Python code 
+ instead of math, and discrete approximations instead of continuous 
+ mathematics. As a result, what would be an integral in a math book becomes a 
+ summation, and most operations on probability distributions are simple loops.
+  
+ I think this presentation is easier to understand, at least for people with 
+ programming skills. It is also more general, because when we make modeling 
+ decisions, we can choose the most appropriate model without worrying too 
+ much about whether the model lends itself to conventional analysis.
+  
+ Also, it provides a smooth development path from simple examples to real-
+ world prob‐lems. 
+ Chapter 3
+  is a good example. It starts with a simple example 
+ involving dice, one of the staples of basic probability. From there it proceeds in 
+ small steps to the locomotive problem, which I borrowed from Mosteller’s 
+ Fifty 
+ Challenging Problems in Probability with Solutions
+ , and from there to the German 
+ tank problem, a famously successful application of Bayesian methods during 
+ World War II.",NA
+Modeling and approximation,"Most chapters in this book are motivated by a real-world problem, so they 
+ involve some degree of modeling. Before we can apply Bayesian methods (or 
+ any other analysis), we have to make decisions about which parts of the real-
+ world system to include in the model and which details we can abstract away.
+  
+ For example, in 
+ Chapter 7
+ , the motivating problem is to predict the winner of a 
+ hockey game. I model goal-scoring as a Poisson process, which implies that a 
+ goal is equally",NA
+Working with the code,"Many of the examples in this book use classes and functions defined in 
+ think 
+ bayes.py
+ . You can download this module from 
+ http://thinkbayes.com/thinkbayes.py
+ .
+  
+ Most chapters contain references to code you can download from 
+ http://think 
+ bayes.com
+ . Some of those files have dependencies you will also have to 
+ download. I suggest you keep all of these files in the same directory so they can 
+ import each other without changing the Python search path.
+  
+ You can download these files one at a time as you need them, or you can 
+ download them all at once from 
+ http://thinkbayes.com/thinkbayes_code.zip
+ . This 
+ file also contains the data files used by some of the programs. When you unzip it, 
+ it creates a directory named 
+ thinkbayes_code
+  that contains all the code used in 
+ this book.
+  
+ Or, if you are a Git user, you can get all of the files at once by forking and cloning 
+ this repository: 
+ https://github.com/AllenDowney/ThinkBayes
+ .
+  
+ One of the modules I use is 
+ thinkplot.py
+ , which provides wrappers for some of 
+ the functions in 
+ pyplot
+ . To use it, you need to install 
+ matplotlib
+ . If you don’t 
+ already have it, check your package manager to see if it is available. Otherwise 
+ you can get download instructions from 
+ http://matplotlib.org
+ .
+  
+ Finally, some programs in this book use NumPy and SciPy, which are available 
+ from 
+ http://numpy.org
+  and 
+ http://scipy.org
+ .",NA
+Code style,"Experienced Python programmers will notice that the code in this book does not 
+ comply with PEP 8, which is the most common style guide for Python 
+ (
+ http://www.python.org/ dev/peps/pep-0008/
+ ).
+  
+ Specifically, PEP 8 calls for lowercase function names with underscores between 
+ words, 
+ like_this
+ . In this book and the accompanying code, function and method 
+ names begin with a capital letter and use camel case, 
+ LikeThis
+ .
+  
+ I broke this rule because I developed some of the code while I was a Visiting 
+ Scientist at Google, so I followed the Google style guide, which deviates from 
+ PEP 8 in a few places. Once I got used to Google style, I found that I liked it. And 
+ at this point, it would be too much trouble to change.
+  
+ Also on the topic of style, I write “Bayes’s theorem” with an 
+ s
+  after the 
+ apostrophe, which is preferred in some style guides and deprecated in others. I 
+ don’t have a strong prefer‐ence. I had to choose one, and this is the one I chose.",NA
+Prerequisites,"There are several excellent modules for doing Bayesian statistics in Python, 
+ including 
+ pymc
+  and OpenBUGS. I chose not to use them for this book because 
+ you need a fair amount of background knowledge to get started with these 
+ modules, and I want to keep the prerequisites minimal. If you know Python and 
+ a little bit about probability, you are ready to start this book.
+  
+ Chapter 1
+  is about probability and Bayes’s theorem; it has no code. 
+ Chapter 2
+  
+ introduces 
+ Pmf
+ , a thinly disguised Python dictionary I use to represent a 
+ probability mass function (PMF). Then 
+ Chapter 3
+  introduces 
+ Suite
+ , a kind of Pmf 
+ that provides a framework for doing Bayesian updates. And that’s just about all 
+ there is to it.
+  
+ Well, almost. In some of the later chapters, I use analytic distributions including 
+ the Gaussian (normal) distribution, the exponential and Poisson distributions, 
+ and the beta distribution. In 
+ Chapter 15
+  I break out the less-common Dirichlet 
+ distribution, but I explain it as I go along. If you are not familiar with these 
+ distributions, you can read about them on Wikipedia. You could also read the 
+ companion to this book, 
+ Think Stats
+ , or an introductory statistics book (although 
+ I’m afraid most of them take a math‐ematical approach that is not particularly 
+ helpful for practical purposes).",NA
+Conventions Used in This Book,"The following typographical conventions are used in this book:
+  
+ Italic 
+  
+  
+ Indicates new terms, URLs, email addresses, filenames, and file 
+ extensions.
+  
+ Constant width 
+  
+ Used for program listings, as well as within paragraphs to refer to program 
+ elements such as variable or function names, databases, data types, 
+ environment variables, statements, and keywords.
+  
+ Constant width bold
+  
+ Shows commands or other text that should be typed literally by the user.
+  
+ Constant width italic
+  
+ Shows text that should be replaced with user-supplied values or by values 
+ deter‐mined by context.",NA
+Safari® Books Online,"Safari Books Online (
+ www.safaribooksonline.com
+ ) is an on-
+ demand digital library that delivers expert 
+ content
+  in both 
+ book and video form from the world’s leading authors in 
+ technology and business.
+  
+ Technology professionals, software developers, web designers, and business 
+ and crea‐tive professionals use Safari Books Online as their primary resource 
+ for research, prob‐lem solving, learning, and certification training.
+  
+ Safari Books Online offers a range of 
+ product mixes
+  and pricing programs for 
+ organi‐zations
+ , 
+ government agencies
+ , and 
+ individuals
+ . Subscribers have access 
+ to thousands of books, training videos, and prepublication manuscripts in one 
+ fully searchable database from publishers like O’Reilly Media, Prentice Hall 
+ Professional, Addison-Wesley Pro‐fessional, Microsoft Press, Sams, Que, 
+ Peachpit Press, Focal Press, Cisco Press, John Wiley & Sons, Syngress, Morgan 
+ Kaufmann, IBM Redbooks, Packt, Adobe Press, FT Press, Apress, Manning, New 
+ Riders, McGraw-Hill, Jones & Bartlett, Course Technol‐ogy, and dozens 
+ more
+ . 
+ For more information about Safari Books Online, please visit us 
+ online
+ .",NA
+How to Contact Us,"Please address comments and questions concerning this book to the publisher:
+  
+ O’Reilly Media, Inc.
+  
+ 1005 Gravenstein Highway North 
+  
+ Sebastopol, CA 95472 
+  
+ 800-998-9938 (in the United States or 
+ Canada) 707-829-0515 (international or 
+ local) 
+  
+ 707-829-0104 (fax)
+  
+ We have a web page for this book, where we list errata, examples, and any 
+ additional information. You can access this page at 
+ http://oreil.ly/think-bayes
+ .
+  
+ To comment or ask technical questions about this book, send email to 
+ bookques 
+ tions@oreilly.com
+ .
+  
+ Preface 
+  
+ | 
+  
+ xii
+ i",NA
+Contributor List,"If you have a suggestion or correction, please send email to 
+ downey@allendow‐
+ ney.com
+ . If I make a change based on your feedback, I will add you to the 
+ contributor list (unless you ask to be omitted).
+  
+ If you include at least part of the sentence the error appears in, that makes it 
+ easy for me to search. Page and section numbers are fine, too, but not as easy to 
+ work with. Thanks!
+  
+ • First, I have to acknowledge David MacKay’s excellent book, 
+ Information 
+ Theory, Inference, and Learning Algorithms
+ , which is where I first came to 
+ understand Bayesian methods. With his permission, I use several problems 
+ from his book as examples.
+  
+ • This book also benefited from my interactions with Sanjoy Mahajan, 
+ especially in fall 2012, when I audited his class on Bayesian Inference at Olin 
+ College.
+  
+ • I wrote parts of this book during project nights with the Boston Python User 
+ Group, so I would like to thank them for their company and pizza.
+  
+ • Jonathan Edwards sent in the first typo.
+  
+ • George Purkins found a markup error.
+  
+ • Olivier Yiptong sent several helpful suggestions.
+  
+ • Yuriy Pasichnyk found several errors.
+  
+ • Kristopher Overholt sent a long list of corrections and suggestions.
+  
+ • Robert Marcus found a misplaced 
+ i
+ .
+  
+ • Max Hailperin suggested a clarification in 
+ Chapter 1
+ .
+  
+ • Markus Dobler pointed out that drawing cookies from a bowl with 
+ replacement is an unrealistic scenario.
+  
+ • Tom Pollard and Paul A. Giannaros spotted a version problem with some of 
+ the numbers in the train example.
+  
+ • Ram Limbu found a typo and suggested a clarification.
+  
+ xiv 
+  
+ | 
+  
+ Preface",NA
+CHAPT,NA,NA
+ER 1 ,NA,NA
+Bayes’s ,NA,NA
+Theorem,NA,NA
+Conditional probability,"The fundamental idea behind all Bayesian statistics is Bayes’s theorem, which is 
+ sur‐prisingly easy to derive, provided that you understand conditional 
+ probability. So we’ll start with probability, then conditional probability, then 
+ Bayes’s theorem, and on to Bayesian statistics.
+  
+ A probability is a number between 0 and 1 (including both) that represents a 
+ degree of belief in a fact or prediction. The value 1 represents certainty that a 
+ fact is true, or that a prediction will come true. The value 0 represents certainty 
+ that the fact is false.
+  
+ Intermediate values represent degrees of certainty. The value 0.5, often written 
+ as 50%, means that a predicted outcome is as likely to happen as not. For 
+ example, the probability that a tossed coin lands face up is very close to 50%.
+  
+ A conditional probability is a probability based on some background 
+ information. For example, I want to know the probability that I will have a heart 
+ attack in the next year. According to the CDC, “Every year about 785,000 
+ Americans 
+ have 
+ a 
+ first 
+ coronary 
+ attack 
+ (
+ http://www.cdc.gov/heartdisease/facts.htm
+ ).”
+  
+ The U.S. population is about 311 million, so the probability that a randomly 
+ chosen American will have a heart attack in the next year is roughly 0.3%.
+  
+ But I am not a randomly chosen American. Epidemiologists have identified 
+ many fac‐tors that affect the risk of heart attacks; depending on those factors, 
+ my risk might be higher or lower than average.
+  
+ I am male, 45 years old, and I have borderline high cholesterol. Those factors 
+ increase my chances. However, I have low blood pressure and I don’t smoke, 
+ and those factors decrease my chances.",NA
+Conjoint probability,"Conjoint probability
+  is a fancy way to say the probability that two things are 
+ true. I write 
+ p
+  A
+  and
+  B
+   to mean the probability that 
+ A
+  and 
+ B
+  are both true.
+  
+ If you learned about probability in the context of coin tosses and dice, you might 
+ have learned the following formula:
+  
+ p
+  A
+  and
+  B
+  =p
+  A
+  p
+  B
+  
+ WARNING: not always true
+  
+ For example, if I toss two coins, and 
+ A
+  means the first coin lands face up, and 
+ B
+  
+ means the second coin lands face up, then 
+ p
+  A
+  =p
+  B
+  =0.5
+ , and sure enough,
+  
+  
+ p
+  A
+  and
+  B
+  =p
+  A
+  p
+  B
+  =0.25
+ .
+  
+ But this formula only works because in this case 
+ A
+  and 
+ B
+  are independent; that 
+ is, knowing the outcome of the first event does not change the probability of the 
+ second. Or, more formally, 
+ p
+  B A
+   = 
+ p
+  B
+  .
+  
+ Here is a different example where the events are not independent. Suppose that 
+ A
+  means that it rains today and 
+ B
+  means that it rains tomorrow. If I know that it 
+ rained today, it is more likely that it will rain tomorrow, so 
+ p
+  B A
+  >p
+  B
+  .
+  
+  
+ In general, the probability of a conjunction is
+  
+ p
+  A
+  and
+  B
+  =p
+  A
+  p
+  B A
+   
+  
+ for any 
+ A
+  and 
+ B
+ . So if the chance of rain on any given day is 0.5, the chance of rain 
+ on two consecutive days is not 0.25, but probably a bit higher.",NA
+The cookie problem,"We’ll get to Bayes’s theorem soon, but I want to motivate it with an example 
+ called the
+  
+ cookie problem.
+ 1
+  Suppose there are two bowls of cookies. Bowl 1 contains 30 
+ vanilla
+  
+ cookies and 10 chocolate cookies. Bowl 2 contains 20 of each.
+  
+ Now suppose you choose one of the bowls at random and, without looking, 
+ select a
+  
+ cookie at random. The cookie is vanilla. What is the probability that it came from 
+ Bowl
+  
+ 1?
+  
+ This is a conditional probability; we want 
+ p Bowl 1 vanilla
+  , but it is not obvious 
+ how
+  
+  
+ to compute it. If I asked a different question—the probability of a vanilla cookie 
+ given
+  
+ Bowl 1—it would be easy:
+  
+ p vanilla Bowl 1 =3/4
+  
+  
+ Sadly, 
+ p
+  A B
+   is 
+ not
+  the same as 
+ p
+  B A
+  , but there is a way to get from one to the 
+ other:
+  
+  
+ Bayes’s theorem.",NA
+Bayes’s theorem,"At this point we have everything we need to derive Bayes’s theorem. We’ll start 
+ with the
+  
+ observation that conjunction is commutative; that is
+  
+ p
+  A
+  and
+  B
+  =p
+  B
+  and
+  A
+   
+  
+  
+ for any events 
+ A
+  and 
+ B
+ .
+  
+ Next, we write the probability of a conjunction:
+  
+ p
+  A
+  and
+  B
+  =p
+  A
+  p
+  B A
+   
+  
+ Since we have not said anything about what 
+ A
+  and 
+ B
+  mean, they are 
+ interchangeable.
+  
+ Interchanging them yields
+  
+ p
+  B
+  and
+  A
+  =p
+  B
+  p
+  A B
+   
+  
+ That’s all we need. Pulling those pieces together, we get
+  
+ p
+  B
+  p
+  A B
+  =p
+  A
+  p
+  B A",NA
+The diachronic interpretation,"There is another way to think of Bayes’s theorem: it gives us a way to update the 
+ prob‐ability of a hypothesis, 
+ H
+ , in light of some body of data, 
+ D
+ .
+  
+ This way of thinking about Bayes’s theorem is called the 
+ diachronic 
+ interpretation
+ .“Diachronic” means that something is happening over time; in 
+ this case the probability of the hypotheses changes, over time, as we see new 
+ data.
+  
+ Rewriting Bayes’s theorem with 
+ H
+  and 
+ D
+  yields:
+  
+ p
+  H D
+  = p
+  H
+  p
+  D H 
+  
+  
+ p
+  D
+  
+ In this interpretation, each term has a name:
+  
+ •
+  p
+  H
+   is the probability of the hypothesis before we see the data, called the 
+ prior
+  
+ probability, or just 
+ prior
+ .
+  
+ •
+  p
+  H D
+   is what we want to compute, the probability of the hypothesis after we 
+ see
+  
+ the data, called the 
+ posterior
+ .
+  
+ •
+  p
+  D H
+   is the probability of the data under the hypothesis, called the 
+ likelihood
+ .
+  
+ •
+  p
+  D
+   is the probability of the data under any hypothesis, called the 
+ normalizing constant
+ .
+  
+ Sometimes we can compute the prior based on background information. For 
+ example, the cookie problem specifies that we choose a bowl at random with 
+ equal probability.
+  
+ In other cases the prior is subjective; that is, reasonable people might disagree, 
+ either because they use different background information or because they 
+ interpret the same information differently.
+  
+ The likelihood is usually the easiest part to compute. In the cookie problem, if 
+ we know which bowl the cookie came from, we find the probability of a vanilla 
+ cookie by counting.
+  
+ The normalizing constant can be tricky. It is supposed to be the probability of 
+ seeing the data under any hypothesis at all, but in the most general case it is 
+ hard to nail down what that means.
+  
+ Most often we simplify things by specifying a set of hypotheses that are",NA
+The M&M problem,"M&M’s are small candy-coated chocolates that come in a variety of colors. Mars, 
+ Inc., which makes M&M’s, changes the mixture of colors from time to time.
+  
+ In 1995, they introduced blue M&M’s. Before then, the color mix in a bag of plain 
+ M&M’s was 30% Brown, 20% Yellow, 20% Red, 10% Green, 10% Orange, 10% 
+ Tan. Afterward it was 24% Blue , 20% Green, 16% Orange, 14% Yellow, 13% 
+ Red, 13% Brown.
+  
+ Suppose a friend of mine has two bags of M&M’s, and he tells me that one is 
+ from 1994 and one from 1996. He won’t tell me which is which, but he gives me 
+ one M&M from each bag. One is yellow and one is green. What is the probability 
+ that the yellow one came from the 1994 bag?
+  
+ This problem is similar to the cookie problem, with the twist that I draw one 
+ sample from each bowl/bag. This problem also gives me a chance to 
+ demonstrate the table method, which is useful for solving problems like this on 
+ paper. In the next chapter we will solve them computationally.
+  
+ The first step is to enumerate the hypotheses. The bag the yellow M&M came 
+ from I’ll call Bag 1; I’ll call the other Bag 2. So the hypotheses are:
+  
+ • A: Bag 1 is from 1994, which implies that Bag 2 is from 1996.
+  
+ • B: Bag 1 is from 1996 and Bag 2 from 1994.",NA
+The Monty Hall problem,"The Monty Hall problem might be the most contentious question in the history 
+ of probability. The scenario is simple, but the correct answer is so 
+ counterintuitive that many people just can’t accept it, and many smart people 
+ have embarrassed themselves not just by getting it wrong but by arguing the 
+ wrong side, aggressively, in public.
+  
+ Monty Hall was the original host of the game show 
+ Let’s Make a Deal
+ . The Monty 
+ Hall problem is based on one of the regular games on the show. If you are on the 
+ show, here’s what happens:
+  
+ • Monty shows you three closed doors and tells you that there is a prize 
+ behind each door: one prize is a car, the other two are less valuable prizes 
+ like peanut butter and fake finger nails. The prizes are arranged at random.",NA
+Discussion,"For many problems involving conditional probability, Bayes’s theorem provides 
+ a divide-and-conquer strategy. If 
+ p
+  A B
+   is hard to compute, or hard to measure 
+ exper‐
+  
+ imentally, check whether it might be easier to compute the other terms in 
+ Bayes’s the‐orem, 
+ p
+  B A
+  , 
+ p
+  A
+   and 
+ p
+  B
+  .
+  
+ If the Monty Hall problem is your idea of fun, I have collected a number of 
+ similar problems in an article called “All your Bayes are belong to us,” which you 
+ can 
+ read 
+ at 
+ http://allendowney.blogspot.com/2011/10/all-your-bayes-are-
+ belong-to-us.html
+ .",NA
+CHAPT,NA,NA
+ER 2 ,NA,NA
+Computational ,NA,NA
+Statistics,NA,NA
+Distributions,"In statistics a 
+ distribution
+  is a set of values and their corresponding 
+ probabilities.
+  
+ For example, if you roll a six-sided die, the set of possible values is the numbers 
+ 1 to 6, and the probability associated with each value is 1/6.
+  
+ As another example, you might be interested in how many times each word 
+ appears in common English usage. You could build a distribution that includes 
+ each word and how many times it appears.
+  
+ To represent a distribution in Python, you could use a dictionary that maps from 
+ each value to its probability. I have written a class called 
+ Pmf
+  that uses a Python 
+ dictionary in exactly that way, and provides a number of useful methods. I called 
+ the class Pmf in reference to a 
+ probability mass function
+ , which is a way to 
+ represent a distribution mathematically.
+  
+ Pmf
+  is defined in a Python module I wrote to accompany this book, 
+ thinkbayes.py
+ . You can download it from 
+ http://thinkbayes.com/thinkbayes.py
+ . 
+ For more information see 
+ “Working with the code” on page xi
+ .
+  
+ To use 
+ Pmf
+  you can import it like this:
+  
+ from thinkbayes import Pmf
+  
+ The following code builds a Pmf to represent the distribution of outcomes for a 
+ six-sided die:
+  
+ pmf = Pmf() 
+  
+ for x in [1,2,3,4,5,6]:
+  
+  
+  pmf.Set(x, 1/6.0)",NA
+The cookie problem,"In the context of Bayes’s theorem, it is natural to use a Pmf to map from each 
+ hypothesis to its probability. In the cookie problem, the hypotheses are 
+ B
+ 1
+  and 
+ B
+ 2
+ . In Python, I represent them with strings:
+  
+ pmf = Pmf() 
+  
+ pmf.Set('Bowl 1', 0.5) 
+  
+ pmf.Set('Bowl 2', 0.5)
+  
+ This distribution, which contains the priors for each hypothesis, is called (wait 
+ for it) the 
+ prior distribution
+ .
+  
+ To update the distribution based on new data (the vanilla cookie), we multiply 
+ each prior by the corresponding likelihood. The likelihood of drawing a vanilla 
+ cookie from Bowl 1 is 3/4. The likelihood for Bowl 2 is 1/2.
+  
+ pmf.Mult('Bowl 1', 0.75) 
+  
+ pmf.Mult('Bowl 2', 0.5)",NA
+The Bayesian framework,"Before we go on to other problems, I want to rewrite the code from the previous 
+ section to make it more general. First I’ll define a class to encapsulate the code 
+ related to this problem:
+  
+ class Cookie(Pmf):
+  
+  def __init__(self, hypos):
+  
+  
+  Pmf.__init__(self)
+  
+  
+  for hypo in hypos:
+  
+  
+  
+  self.Set(hypo, 1)
+  
+  
+  self.Normalize()
+  
+ A Cookie object is a Pmf that maps from hypotheses to their probabilities. The 
+ __init__ 
+ method gives each hypothesis the same prior probability. As in the 
+ previous section, there are two hypotheses:
+  
+  hypos = ['Bowl 1', 'Bowl 2']
+  
+  pmf = Cookie(hypos)
+  
+ Cookie
+  provides an 
+ Update
+  method that takes data as a parameter and updates 
+ the probabilities:
+  
+  def Update(self, data):
+  
+  
+  for hypo in self.Values():
+  
+  
+  like = self.Likelihood(data, hypo)
+  
+  
+ self.Mult(hypo, like)
+  
+  
+  self.Normalize()
+  
+ Update
+  loops through each hypothesis in the suite and multiplies its probability 
+ by the likelihood of the data under the hypothesis, which is computed by 
+ Likelihood
+ :",NA
+The Monty Hall problem,"To solve the Monty Hall problem, I’ll define a new class:
+  
+ class Monty(Pmf):
+  
+  def __init__(self, hypos):
+  
+  
+  Pmf.__init__(self)
+  
+  
+  for hypo in hypos:
+  
+  
+  self.Set(hypo, 1)
+  
+  
+  self.Normalize()
+  
+ 14 
+  
+ | 
+  
+ Chapter 2: Computational Statistics",NA
+Encapsulating the framework,"Now that we see what elements of the framework are the same, we can 
+ encapsulate them in an object—a 
+ Suite
+  is a 
+ Pmf
+  that provides 
+ __init__
+ , 
+ Update
+ , and 
+ Print
+ :
+  
+ class Suite(Pmf):
+  
+  
+  """"""Represents a suite of hypotheses and their probabilities.""""""
+  
+  def __init__(self, hypo=tuple()):
+  
+  
+  """"""Initializes the distribution.""""""",NA
+The M&M problem,"We can use the 
+ Suite
+  framework to solve the M&M problem. Writing the 
+ Likelihood 
+ function is tricky, but everything else is straightforward.
+  
+ First I need to encode the color mixes from before and after 1995:
+  
+  mix94 = dict(brown=30,
+  
+  yellow=20,
+  
+  red=20,
+  
+  green=10,
+  
+  orange=10,
+  
+  tan=10)
+  
+  mix96 = dict(blue=24,
+  
+  green=20,
+  
+  orange=16,
+  
+  yellow=14,
+  
+  red=13,
+  
+  brown=13)
+  
+ 16 
+  
+ | 
+  
+ Chapter 2: Computational Statistics",NA
+Discussion,"This chapter presents the Suite class, which encapsulates the Bayesian update 
+ frame‐work.
+  
+ Suite
+  is an 
+ abstract type
+ , which means that it defines the interface a Suite is 
+ supposed to have, but does not provide a complete implementation. The 
+ Suite
+  
+ interface includes 
+ Update
+  and 
+ Likelihood
+ , but the 
+ Suite
+  class only provides an 
+ implementation of 
+ Up date
+ , not 
+ Likelihood
+ .
+  
+ A 
+ concrete type
+  is a class that extends an abstract parent class and provides an 
+ imple‐mentation of the missing methods. For example, 
+ Monty
+  extends 
+ Suite
+ , so it 
+ inherits 
+ Update
+  and provides 
+ Likelihood
+ .
+  
+ Discussion 
+  
+ | 
+  
+ 17",NA
+Exercises,"Exercise 2-1.
+  
+ In 
+ “The Bayesian framework” on page 13
+  I said that the solution to the cookie 
+ problem generalizes to the case where we draw multiple cookies with 
+ replacement.
+  
+ But in the more likely scenario where we eat the cookies we draw, the likelihood 
+ of each draw depends on the previous draws.
+  
+ Modify the solution in this chapter to handle selection without replacement. 
+ Hint: add instance variables to 
+ Cookie
+  to represent the hypothetical state of the 
+ bowls, and modify 
+ Likelihood
+  accordingly. You might want to define a 
+ Bowl
+  
+ object.",NA
+CHAPT,NA,NA
+ER 3 ,NA,NA
+Estimat,NA,NA
+ion,NA,NA
+The dice problem,"Suppose I have a box of dice that contains a 4-sided die, a 6-sided die, an 8-sided 
+ die, a 12-sided die, and a 20-sided die. If you have ever played 
+ Dungeons & 
+ Dragons
+ , you know what I am talking about.
+  
+ Suppose I select a die from the box at random, roll it, and get a 6. What is the 
+ probability that I rolled each die?
+  
+ Let me suggest a three-step strategy for approaching a problem like this.
+  
+ 1. Choose a representation for the hypotheses.
+  
+ 2. Choose a representation for the data.
+  
+ 3. Write the likelihood function.
+  
+ In previous examples I used strings to represent hypotheses and data, but for 
+ the die problem I’ll use numbers. Specifically, I’ll use the integers 4, 6, 8, 12, and 
+ 20 to represent hypotheses:
+  
+  suite = Dice([4, 6, 8, 12, 20])
+  
+ And integers from 1 to 20 for the data. These representations make it easy to 
+ write the likelihood function:
+  
+ class Dice(Suite):
+  
+  
+  def Likelihood(self, data, hypo):
+  
+  
+  
+  if hypo < data:
+  
+  
+  
+  return 0
+  
+  
+  
+  else:
+  
+  
+  
+  return 1.0/hypo",NA
+The locomotive problem,"I found the locomotive problem in Frederick Mosteller’s, 
+ Fifty Challenging 
+ Problems in Probability with Solutions
+  (Dover, 1987):
+  
+ “A railroad numbers its locomotives in order 1..N. One day you see a locomotive 
+ with the number 60. Estimate how many locomotives the railroad has.”
+  
+ Based on this observation, we know the railroad has 60 or more locomotives. 
+ But how many more? To apply Bayesian reasoning, we can break this problem 
+ into two steps:",NA
+What about that prior?,"To make any progress on the locomotive problem we had to make assumptions, 
+ and some of them were pretty arbitrary. In particular, we chose a uniform prior 
+ from 1 to",NA
+An alternative prior,"If more data are not available, another option is to improve the priors by 
+ gathering more background information. It is probably not reasonable to 
+ assume that a train-operating company with 1000 locomotives is just as likely 
+ as a company with only 1.
+  
+ With some effort, we could probably find a list of companies that operate 
+ locomotives in the area of observation. Or we could interview an expert in rail 
+ shipping to gather information about the typical size of companies.
+  
+ But even without getting into the specifics of railroad economics, we can make 
+ some educated guesses. In most fields, there are many small companies, fewer 
+ medium-sized",NA
+Credible intervals,"Once you have computed a posterior distribution, it is often useful to summarize 
+ the results with a single point estimate or an interval. For point estimates it is 
+ common to use the mean, median, or the value with maximum likelihood.
+  
+ For intervals we usually report two values computed so that there is a 90% 
+ chance that the unknown value falls between them (or any other probability). 
+ These values define a 
+ credible interval
+ .
+  
+ Credible intervals 
+  
+ | 
+  
+ 25",NA
+Cumulative distribution functions,"In the previous section we computed percentiles by iterating through the values 
+ and probabilities in a Pmf. If we need to compute more than a few percentiles, it 
+ is more efficient to use a cumulative distribution function, or Cdf.
+  
+ Cdfs and Pmfs are equivalent in the sense that they contain the same 
+ information about the distribution, and you can always convert from one to the 
+ other. The advantage of the Cdf is that you can compute percentiles more 
+ efficiently.
+  
+ thinkbayes
+  provides a 
+ Cdf
+  class that represents a cumulative distribution 
+ function. 
+ Pmf 
+ provides a method that makes the corresponding Cdf:
+  
+ cdf = suite.MakeCdf()
+  
+ And 
+ Cdf
+  provides a function named 
+ Percentile
+  
+  interval = cdf.Percentile(5), cdf.Percentile(95)
+  
+ Converting from a Pmf to a Cdf takes time proportional to the number of values, 
+ len(pmf)
+ . The Cdf stores the values and probabilities in sorted lists, so looking 
+ up a probability to get the corresponding value takes “log time”: that is, time 
+ proportional to the logarithm of the number of values. Looking up a value to get 
+ the corresponding probability is also logarithmic, so Cdfs are efficient for many 
+ calculations.
+  
+ The examples in this section are in 
+ http://thinkbayes.com/train3.py
+ . For more 
+ informa‐tion see 
+ “Working with the code” on page xi
+ .",NA
+The German tank problem,"During World War II, the Economic Warfare Division of the American Embassy 
+ in London used statistical analysis to estimate German production of tanks and 
+ other equipment.
+ 1
+  
+ The Western Allies had captured log books, inventories, and repair records that 
+ included chassis and engine serial numbers for individual tanks.
+  
+ Analysis of these records indicated that serial numbers were allocated by 
+ manufacturer and tank type in blocks of 100 numbers, that numbers in each 
+ block were used sequen‐tially, and that not all numbers in each block were used. 
+ So the problem of estimating German tank production could be reduced, within 
+ each block of 100 numbers, to a form of the locomotive problem.
+  
+ Based on this insight, American and British analysts produced estimates 
+ substantially lower than estimates from other forms of intelligence. And after 
+ the war, records indi‐cated that they were substantially more accurate.
+  
+ They performed similar analyses for tires, trucks, rockets, and other equipment, 
+ yielding accurate and actionable economic intelligence.
+  
+ The German tank problem is historically interesting; it is also a nice example of 
+ real-world application of statistical estimation. So far many of the examples in 
+ this book have been toy problems, but it will not be long before we start solving 
+ real problems. I think it is an advantage of Bayesian analysis, especially with the 
+ computational approach we are taking, that it provides such a short path from a 
+ basic introduction to the research frontier.",NA
+Discussion,"Among Bayesians, there are two approaches to choosing prior distributions. 
+ Some rec‐ommend choosing the prior that best represents background 
+ information about the problem; in that case the prior is said to be 
+ informative
+ . 
+ The problem with using an informative prior is that people might use different 
+ background information (or inter‐pret it differently). So informative priors 
+ often seem subjective.
+  
+ The alternative is a so-called 
+ uninformative prior
+ , which is intended to be as 
+ unre‐stricted as possible, in order to let the data speak for themselves. In some 
+ cases you can identify a unique prior that has some desirable property, like 
+ representing minimal prior information about the estimated quantity.
+  
+ 1. Ruggles and Brodie, “An Empirical Approach to Economic Intelligence in World War II,” 
+ Journal of the 
+  
+ American Statistical Association
+ , Vol. 42, No. 237 (March 1947).
+  
+ The German tank problem 
+  
+ | 
+  
+ 27",NA
+Exercises,"Exercise 3-1.
+  
+ To write a likelihood function for the locomotive problem, we had to answer this 
+ ques‐tion: “If the railroad has 
+ N
+  locomotives, what is the probability that we see 
+ number 60?”
+  
+ The answer depends on what sampling process we use when we observe the 
+ locomotive. In this chapter, I resolved the ambiguity by specifying that there is 
+ only one train-operating company (or only one that we care about).
+  
+ But suppose instead that there are many companies with different numbers of 
+ trains. And suppose that you are equally likely to see any train operated by any 
+ company. In that case, the likelihood function is different because you are more 
+ likely to see a train operated by a large company.
+  
+ As an exercise, implement the likelihood function for this variation of the 
+ locomotive problem, and compare the results.",NA
+CHAPT,NA,NA
+ER 4 ,NA,NA
+More ,NA,NA
+Estimation,NA,NA
+The Euro problem,"In 
+ Information Theory, Inference, and Learning Algorithms
+ , David MacKay poses 
+ this problem:
+  
+ A statistical statement appeared in “The Guardian” on Friday January 4, 2002:
+  
+ When spun on edge 250 times, a Belgian one-euro coin came up heads 
+ 140 times and tails 110. ‘It looks very suspicious to me,’ said Barry 
+ Blight, a statistics lecturer at the London School of Economics. ‘If the coin 
+ were unbiased, the chance of getting a result as extreme as that would be 
+ less than 7%.’
+  
+ But do these data give evidence that the coin is biased rather than fair?
+  
+ To answer that question, we’ll proceed in two steps. The first is to estimate the 
+ probability that the coin lands face up. The second is to evaluate whether the 
+ data support the hypothesis that the coin is biased.
+  
+ You can download the code in this section from 
+ http://thinkbayes.com/euro.py
+ . 
+ For more information see 
+ “Working with the code” on page xi
+ .
+  
+ Any given coin has some probability, 
+ x
+ , of landing heads up when spun on edge. 
+ It seems reasonable to believe that the value of 
+ x
+  depends on some physical 
+ characteristics of the coin, primarily the distribution of weight.
+  
+ If a coin is perfectly balanced, we expect 
+ x
+  to be close to 50%, but for a lopsided 
+ coin, 
+ x 
+ might be substantially different. We can use Bayes’s theorem and the 
+ observed data to estimate 
+ x
+ .
+  
+ Let’s define 101 hypotheses, where 
+ H
+ x
+  is the hypothesis that the probability of 
+ heads is 
+ x
+ %, for values from 0 to 100. I’ll start with a uniform prior where the 
+ probability of 
+ H
+ x 
+ is the same for all 
+ x
+ . We’ll come back later to consider other 
+ priors.",NA
+Summarizing the posterior,"Again, there are several ways to summarize the posterior distribution. One 
+ option is to find the most likely value in the posterior distribution. 
+ thinkbayes
+  
+ provides a function that does that:
+  
+ def MaximumLikelihood(pmf):
+  
+  """"""Returns the value with the highest probability."""""" prob, val = 
+ max((prob, val) for val, prob in pmf.Items()) return val
+  
+ In this case the result is 56, which is also the observed percentage of heads, 
+ 140/250=0.56%
+ . So that suggests (correctly) that the observed percentage is 
+ the max‐imum likelihood estimator for the population.
+  
+ We might also summarize the posterior by computing the mean and median:
+  
+  print 'Mean', suite.Mean()
+  
+  print 'Median', thinkbayes.Percentile(suite, 50)
+  
+ The mean is 55.95; the median is 56. Finally, we can compute a credible interval:
+  
+  print 'CI', thinkbayes.CredibleInterval(suite, 90)
+  
+ The result is 
+ 51,61
+  .
+  
+ Now, getting back to the original question, we would like to know whether the 
+ coin is fair. We observe that the posterior credible interval does not include 
+ 50%, which suggests that the coin is not fair.
+  
+ But that is not exactly the question we started with. MacKay asked, “ Do these 
+ data give evidence that the coin is biased rather than fair?” To answer that 
+ question, we will have to be more precise about what it means to say that data 
+ constitute evidence for a hy‐pothesis. And that is the subject of the next chapter.
+  
+ But before we go on, I want to address one possible source of confusion. Since 
+ we want to know whether the coin is fair, it might be tempting to ask for the 
+ probability that 
+ x 
+ is 50%:
+  
+  print suite.Prob(50)
+  
+ The result is 0.021, but that value is almost meaningless. The decision to 
+ evaluate 101 hypotheses was arbitrary; we could have divided the range into 
+ more or fewer pieces, and if we had, the probability for any given hypothesis 
+ would be greater or less.",NA
+Swamping the priors,"We started with a uniform prior, but that might not be a good choice. I can 
+ believe that if a coin is lopsided, 
+ x
+  might deviate substantially from 50%, but it 
+ seems unlikely that the Belgian Euro coin is so imbalanced that 
+ x
+  is 10% or 90%.
+  
+ Summarizing the posterior 
+  
+ | 
+  
+ 31",NA
+Optimization,"The code I have shown so far is meant to be easy to read, but it is not very 
+ efficient. In general, I like to develop code that is demonstrably correct, then 
+ check whether it is fast enough for my purposes. If so, there is no need to 
+ optimize. For this example, if we care about run time, there are several ways we 
+ can speed it up.
+  
+ The first opportunity is to reduce the number of times we normalize the suite. In 
+ the original code, we call 
+ Update
+  once for each spin.
+  
+  dataset = 'H' * heads + 'T' * tails
+  
+  for data in dataset:
+  
+  
+  suite.Update(data)
+  
+ And here’s what 
+ Update
+  looks like:
+  
+  def Update(self, data):
+  
+  
+  for hypo in self.Values():
+  
+  
+  
+  like = self.Likelihood(data, hypo)
+  
+  
+  self.Mult(hypo, like)
+  
+  
+  return self.Normalize()
+  
+ Optimization 
+  
+ | 
+  
+ 33",NA
+The beta distribution,"There is one more optimization that solves this problem even faster.
+  
+ 34 
+  
+ | 
+  
+ Chapter 4: More Estimation",NA
+Discussion,"In this chapter we solved the same problem with two different priors and found 
+ that with a large dataset, the priors get swamped. If two people start with 
+ different prior beliefs, they generally find, as they see more data, that their 
+ posterior distributions con‐verge. At some point the difference between their 
+ distribution is small enough that it has no practical effect.
+  
+ When this happens, it relieves some of the worry about objectivity that I 
+ discussed in the previous chapter. And for many real-world problems even stark 
+ prior beliefs can eventually be reconciled by data.
+  
+ But that is not always the case. First, remember that all Bayesian analysis is 
+ based on modeling decisions. If you and I do not choose the same model, we 
+ might interpret data differently. So even with the same data, we would compute 
+ different likelihoods, and our posterior beliefs might not converge.
+  
+ Also, notice that in a Bayesian update, we multiply each prior probability by a 
+ likelihood, so if 
+ p
+  H
+   is 0, 
+ p
+  H D
+   is also 0, regardless of 
+ D
+ . In the Euro problem, if 
+ you are convinced that 
+ x
+  is less than 50%, and you assign probability 0 to all 
+ other hypotheses, no amount of data will convince you otherwise.
+  
+ This observation is the basis of 
+ Cromwell’s rule
+ , which is the recommendation 
+ that you should avoid giving a prior probability of 0 to any hypothesis that is 
+ even remotely possible (see 
+ http://en.wikipedia.org/wiki/Cromwell’s_rule
+ ).
+  
+ Cromwell’s rule is named after Oliver Cromwell, who wrote, “I beseech you, in 
+ the bowels of Christ, think it possible that you may be mistaken.” For Bayesians, 
+ this turns out to be good advice (even if it’s a little overwrought).
+  
+ 36 
+  
+ | 
+  
+ Chapter 4: More Estimation",NA
+Exercises,"Exercise 4-1.
+  
+ Suppose that instead of observing coin tosses directly, you measure the outcome 
+ using an instrument that is not always correct. Specifically, suppose there is a 
+ probability 
+ y 
+ that an actual heads is reported as tails, or actual tails reported as 
+ heads.
+  
+ Write a class that estimates the bias of a coin given a series of outcomes and the 
+ value of 
+ y
+ .
+  
+ How does the spread of the posterior distribution depend on 
+ y
+ ?
+  
+ Exercise 4-2.
+  
+ This exercise is inspired by a question posted by a “redditor” named dominosci 
+ on Reddit’s statistics “subreddit” at 
+ http://reddit.com/r/statistics
+ .
+  
+ Reddit is an online forum with many interest groups called subreddits. Users, 
+ called redditors, post links to online content and other web pages. Other 
+ redditors vote on the links, giving an “upvote” to high-quality links and a 
+ “downvote” to links that are bad or irrelevant.
+  
+ A problem, identified by dominosci, is that some redditors are more reliable 
+ than others, and Reddit does not take this into account.
+  
+ The challenge is to devise a system so that when a redditor casts a vote, the 
+ estimated quality of the link is updated in accordance with the reliability of the 
+ redditor, and the estimated reliability of the redditor is updated in accordance 
+ with the quality of the link.
+  
+ One approach is to model the quality of the link as the probability of garnering 
+ an upvote, and to model the reliability of the redditor as the probability of 
+ correctly giving an upvote to a high-quality item.
+  
+ Write class definitions for redditors and links and an update function that 
+ updates both objects whenever a redditor casts a vote.",NA
+CHAPT,NA,NA
+ER 5 ,NA,NA
+Odds and ,NA,NA
+Addends,NA,NA
+Odds,"One way to represent a probability is with a number between 0 and 1, but that’s 
+ not the only way. If you have ever bet on a football game or a horse race, you 
+ have probably encountered another representation of probability, called 
+ odds
+ .
+  
+ You might have heard expressions like “the odds are three to one,” but you 
+ might not know what they mean. The 
+ odds in favor
+  of an event are the ratio of 
+ the probability it will occur to the probability that it will not.
+  
+ So if I think my team has a 75% chance of winning, I would say that the odds in 
+ their favor are three to one, because the chance of winning is three times the 
+ chance of losing.
+  
+ You can write odds in decimal form, but it is most common to write them as a 
+ ratio of integers. So “three to one” is written 
+ 3:1
+ .
+  
+ When probabilities are low, it is more common to report the 
+ odds against
+  
+ rather than the odds in favor. For example, if I think my horse has a 10% chance 
+ of winning, I would say that the odds against are 
+ 9:1
+ .
+  
+ Probabilities and odds are different representations of the same information. 
+ Given a probability, you can compute the odds like this:
+  
+ def Odds(p):
+  
+  
+  return p / (1-p)
+  
+ Given the odds in favor, in decimal form, you can convert to probability like this:
+  
+ def Probability(o):
+  
+  return o / (o+1)
+  
+ If you represent odds with a numerator and denominator, you can convert to 
+ probability like this:",NA
+The odds form of Bayes’s theorem,"In 
+ Chapter 1
+  I wrote Bayes’s theorem in the 
+ probability form
+ :
+  
+ p
+  H D
+  = p
+  H
+  p
+  D H 
+  
+  
+ p
+  D
+  
+ If we have two hypotheses, 
+ A
+  and 
+ B
+ , we can write the ratio of posterior 
+ probabilities like this:
+  
+ p
+  B D
+ = p
+  A
+  p
+  D A
+  
+ Notice that the normalizing constant, 
+ p
+  D
+  , drops out of this equation.
+  
+ If 
+ A
+  and 
+ B
+  are mutually exclusive and collectively exhaustive, that means 
+ p
+  B
+  
+ =1−p
+  A
+  , so we can rewrite the ratio of the priors, and the ratio of the posteriors, 
+ as odds.
+  
+ Writing 
+ o
+  A
+   for odds in favor of 
+ A
+ , we get:
+  
+  
+ p
+  D A 
+  
+ o
+  A D
+  =o
+  A 
+  
+  
+  
+ p
+  D B
+  
+ In words, this says that the posterior odds are the prior odds times the 
+ likelihood ratio. This is the 
+ odds form
+  of Bayes’s theorem.
+  
+ This form is most convenient for computing a Bayesian update on paper or in 
+ your head. For example, let’s go back to the cookie problem:
+  
+ Suppose there are two bowls of cookies. Bowl 1 contains 30 vanilla cookies and 10 
+ choc‐olate cookies. Bowl 2 contains 20 of each.
+  
+ Now suppose you choose one of the bowls at random and, without looking, select a 
+ cookie at random. The cookie is vanilla. What is the probability that it came from 
+ Bowl 1?
+  
+ 40 
+  
+ | 
+  
+ Chapter 5: Odds and Addends",NA
+Oliver’s blood,"Here is another problem from MacKay’s 
+ Information Theory, Inference, and 
+ Learning Algorithms
+ :
+  
+ Two people have left traces of their own blood at the scene of a crime. A suspect, 
+ Oliver, is tested and found to have type ‘O’ blood. The blood groups of the two 
+ traces are found to be of type ‘O’ (a common type in the local population, having 
+ frequency 60%) and of type ‘AB’ (a rare type, with frequency 1%). Do these data 
+ [the traces found at the scene] give evidence in favor of the proposition that Oliver 
+ was one of the people [who left blood at the scene]?
+  
+ To answer this question, we need to think about what it means for data to give 
+ evidence in favor of (or against) a hypothesis. Intuitively, we might say that data 
+ favor a hypothesis if the hypothesis is more likely in light of the data than it was 
+ before.
+  
+ In the cookie problem, the prior odds are 
+ 1:1
+ , or probability 50%. The posterior 
+ odds are 
+ 3:2
+ , or probability 60%. So we could say that the vanilla cookie is 
+ evidence in favor of Bowl 1.
+  
+ The odds form of Bayes’s theorem provides a way to make this intuition more 
+ precise. Again
+  
+  
+ p
+  D A 
+  
+ o
+  A D
+  =o
+  A 
+  
+  
+  
+ p
+  D B
+  
+ Or dividing through by 
+ o
+  A
+  :
+  
+ o
+  A D 
+  
+ = p
+  D A 
+  
+  
+ o
+  A 
+  
+ p
+  D B
+  
+ The term on the left is the ratio of the posterior and prior odds. The term on the 
+ right is the likelihood ratio, also called the 
+ Bayes factor
+ .
+  
+ If the Bayes factor value is greater than 1, that means that the data were more 
+ likely under 
+ A
+  than under 
+ B
+ . And since the odds ratio is also greater than 1, that 
+ means that the odds are greater, in light of the data, than they were before.
+  
+ If the Bayes factor is less than 1, that means the data were less likely under 
+ A
+  
+ than under 
+ B
+ , so the odds in favor of 
+ A
+  go down.
+  
+ Finally, if the Bayes factor is exactly 1, the data are equally likely under either 
+ hypothesis, so the odds do not change.",NA
+Addends,"The fundamental operation of Bayesian statistics is 
+ Update
+ , which takes a prior 
+ distri‐bution and a set of data, and produces a posterior distribution. But solving 
+ real problems usually involves a number of other operations, including scaling, 
+ addition and other arithmetic operations, max and min, and mixtures.
+  
+ This chapter presents addition and max; I will present other operations as we 
+ need them.
+  
+ The first example is based on 
+ Dungeons & Dragons
+ , a role-playing game where 
+ the results of players’ decisions are usually determined by rolling dice. In fact, 
+ before game play starts, players generate each attribute of their characters—
+ strength, intelligence, wis‐dom, dexterity, constitution, and charisma—by 
+ rolling three 6-sided dice and adding them up.
+  
+ So you might be curious to know the distribution of this sum. There are two 
+ ways you might compute it:
+  
+ Simulation: 
+  
+ Given a Pmf that represents the distribution for a single die, you can draw 
+ random samples, add them up, and accumulate the distribution of simulated 
+ sums.",NA
+Maxima,"When you generate a 
+ Dungeons & Dragons
+  character, you are particularly 
+ interested in the character’s best attributes, so you might like to know the 
+ distribution of the maxi‐mum attribute.
+  
+ There are three ways to compute the distribution of a maximum:
+  
+ Simulation: 
+  
+ Given a Pmf that represents the distribution for a single selection, you can 
+ generate random samples, find the maximum, and accumulate the 
+ distribution of simulated maxima.
+  
+ Enumeration: 
+  
+ Given two Pmfs, you can enumerate all possible pairs of values and compute 
+ the distribution of the maximum.
+  
+ Exponentiation: 
+  
+ If we convert a Pmf to a Cdf, there is a simple and efficient algorithm for 
+ finding the Cdf of the maximum.
+  
+ The code to simulate maxima is almost identical to the code for simulating sums:
+  
+ def RandomMax(dists):
+  
+  total = max(dist.Random() for dist in dists) return 
+ total
+  
+ def SampleMax(dists, n):
+  
+  pmf = MakePmfFromList(RandomMax(dists) for i in xrange(n)) 
+ return pmf
+  
+ All I did was replace “sum” with “max”. And the code for enumeration is almost 
+ identical, too:
+  
+ def PmfMax(pmf1, pmf2):
+  
+  res = thinkbayes.Pmf()
+  
+  for v1, p1 in pmf1.Items():
+  
+  
+  for v2, p2 in pmf2.Items():
+  
+  
+  
+  
+  res.Incr(max(v1, v2), p1*p2)
+  
+  return res
+  
+ In fact, you could generalize this function by taking the appropriate operator as 
+ a pa‐rameter.
+  
+ The only problem with this algorithm is that if each Pmf has 
+ m
+  values, the run 
+ time is proportional to 
+ m
+ 2
+ . And if we want the maximum of 
+ k
+  selections, it takes 
+ time propor‐tional to 
+ km
+ 2
+ .
+  
+ If we convert the Pmfs to Cdfs, we can do the same calculation much faster! The 
+ key is to remember the definition of the cumulative distribution function:
+  
+ Maxima 
+  
+ | 
+  
+ 45",NA
+Mixtures,"Let’s do one more example from 
+ Dungeons & Dragons
+ . Suppose I have a box of 
+ dice with the following inventory:
+  
+ 5   4-sided dice 
+  
+ 4   6-sided dice 
+  
+ 3   8-sided dice 
+  
+ 2  12-sided dice 
+  
+ 1  20-sided die
+  
+ I choose a die from the box and roll it. What is the distribution of the outcome?
+  
+ If you know which die it is, the answer is easy. A die with 
+ n
+  sides yields a 
+ uniform distribution from 1 to 
+ n
+ , including both.
+  
+ Mixtures 
+  
+ | 
+  
+ 47",NA
+Discussion,"Other than the odds form of Bayes’s theorem, this chapter is not specifically 
+ Bayesian. But Bayesian analysis is all about distributions, so it is important to 
+ understand the concept of a distribution well. From a computational point of 
+ view, a distribution is any data structure that represents a set of values 
+ (possible outcomes of a random process) and their probabilities.
+  
+ Discussion 
+  
+ | 
+  
+ 49",NA
+CHAPT,NA,NA
+ER 6 ,NA,NA
+Decision ,NA,NA
+Analysis,NA,NA
+The Price is Right problem,"On November 1, 2007, contestants named Letia and Nathaniel appeared on 
+ The 
+ Price is Right
+ , an American game show. They competed in a game called 
+ The 
+ Showcase
+ , where the objective is to guess the price of a showcase of prizes. The 
+ contestant who comes closest to the actual price of the showcase, without going 
+ over, wins the prizes.
+  
+ Nathaniel went first. His showcase included a dishwasher, a wine cabinet, a 
+ laptop com‐puter, and a car. He bid $26,000.
+  
+ Letia’s showcase included a pinball machine, a video arcade game, a pool table, 
+ and a cruise of the Bahamas. She bid $21,500.
+  
+ The actual price of Nathaniel’s showcase was $25,347. His bid was too high, so 
+ he lost.
+  
+ The actual price of Letia’s showcase was $21,578. She was only off by $78, so 
+ she won her showcase and, because her bid was off by less than $250, she also 
+ won Nathaniel’s showcase.
+  
+ For a Bayesian thinker, this scenario suggests several questions:
+  
+ 1. Before seeing the prizes, what prior beliefs should the contestant have about 
+ the 
+  
+ price of the showcase?
+  
+ 2. After seeing the prizes, how should the contestant update those beliefs?
+  
+ 3. Based on the posterior distribution, what should the contestant bid?
+  
+ The third question demonstrates a common use of Bayesian analysis: decision 
+ analysis. Given a posterior distribution, we can choose the bid that maximizes 
+ the contestant’s expected return.",NA
+The prior,"To choose a prior distribution of prices, we can take advantage of data from 
+ previous episodes. Fortunately, fans of the show keep detailed records. When I 
+ corresponded with Mr. Davidson-Pilon about his book, he sent me data collected 
+ by Steve Gee at 
+ http://tpirsummaries.8m.com
+ . It includes the price of each 
+ showcase from the 2011 and 2012 seasons and the bids offered by the 
+ contestants.
+  
+ Figure 6-1
+  shows the distribution of prices for these showcases. The most 
+ common value for both showcases is around $28,000, but the first showcase has 
+ a second mode near $50,000, and the second showcase is occasionally worth 
+ more than $70,000.
+  
+  
+ Figure 6-1. Distribution of prices for showcases on The Price is Right, 2011-12.",NA
+Probability density functions,"So far we have been working with probability mass functions, or PMFs. A PMF is 
+ a map from each possible value to its probability. In my implementation, a Pmf 
+ object provides a method named 
+ Prob
+  that takes a value and returns a 
+ probability, also known as a 
+ probability mass
+ .
+  
+ In mathematical notation, PDFs are usually written as functions; for example, 
+ here is the PDF of a Gaussian distribution with mean 0 and standard deviation 1:
+  
+ f x
+  =
+  
+ 1
+  
+ exp −
+ x
+ 2
+ /2)
+  
+ 2
+ π
+  
+ For a given value of 
+ x
+ , this function computes a probability density. A density is 
+ similar to a probability mass in the sense that a higher density indicates that a 
+ value is more likely.
+  
+ But a density is not a probability. A density can be 0 or any positive value; it is 
+ not bounded, like a probability, between 0 and 1.
+  
+ If you integrate a density over a continuous range, the result is a probability. But 
+ for the applications in this book we seldom have to do that.
+  
+ Instead we primarily use probability densities as part of a likelihood function. 
+ We will see an example soon.",NA
+Representing PDFs,"To represent PDFs in Python, 
+ thinkbayes.py
+  provides a class named 
+ Pdf
+ . 
+ Pdf
+  is an 
+ abstract type
+ , which means that it defines the interface a Pdf is supposed to 
+ have, but does not provide a complete implementation. The 
+ Pdf
+  interface 
+ includes two methods, 
+ Density
+  and 
+ MakePmf
+ :
+  
+ class Pdf(object):
+  
+  def Density(self, x):
+  
+  
+  raise UnimplementedMethodException()
+  
+  def MakePmf(self, xs):
+  
+  
+  pmf = Pmf()
+  
+  
+  for x in xs:
+  
+  
+  pmf.Set(x, self.Density(x))
+  
+ Probability density functions 
+  
+ | 
+  
+ 53",NA
+Modeling the contestants,"The PDFs in 
+ Figure 6-1
+  estimate the distribution of possible prices. If you were a 
+ con‐testant on the show, you could use this distribution to quantify your prior 
+ belief about the price of each showcase (before you see the prizes).
+  
+ To update these priors, we have to answer these questions:
+  
+ Modeling the contestants 
+  
+ | 
+  
+ 55",NA
+Likelihood,"Now we are ready to write the likelihood function. As usual, I define a new class 
+ that extends 
+ thinkbayes.Suite
+ :
+  
+ class Price(thinkbayes.Suite):
+  
+  def __init__(self, pmf, player):
+  
+  thinkbayes.Suite.__init__(self, pmf)
+  
+  self.player = player
+  
+ pmf
+  represents the prior distribution and 
+ player
+  is a Player object as described 
+ in the previous section. Here’s 
+ Likelihood
+ :
+  
+  def Likelihood(self, data, hypo):
+  
+  price = hypo
+  
+  guess = data
+  
+  error = price - guess
+  
+  like = self.player.ErrorDensity(error)
+  
+  return like
+  
+ hypo
+  is the hypothetical price of the showcase. 
+ data
+  is the contestant’s best guess 
+ at the price. 
+ error
+  is the difference, and 
+ like
+  is the likelihood of the data, given the 
+ hypothesis.
+  
+ ErrorDensity
+  is defined in 
+ Player
+ :
+  
+ # class Player:
+  
+  def ErrorDensity(self, error):
+  
+  
+  return self.pdf_error.Density(error)
+  
+ ErrorDensity
+  works by evaluating 
+ pdf_error
+  at the given value of 
+ error
+ . The result 
+ is a probability density, so it is not really a probability. But remember that 
+ Likelihood 
+ doesn’t need to compute a probability; it only has to compute 
+ something 
+ proportional 
+ to a probability. As long as the constant of 
+ proportionality is the same for all likelihoods, it gets canceled out when we 
+ normalize the posterior distribution.
+  
+ And therefore, a probability density is a perfectly good likelihood.",NA
+Update,"Player
+  provides a method that takes the contestant’s guess and computes the 
+ posterior distribution:
+  
+ # class Player
+  
+  def MakeBeliefs(self, guess):
+  
+  pmf = self.PmfPrice()
+  
+  self.prior = Price(pmf, self)",NA
+Optimal bidding,"Now that we have a posterior distribution, we can use it to compute the optimal 
+ bid, which I define as the bid that maximizes expected return (see 
+ http://en.wikipedia.org/ wiki/Expected_return
+ ).",NA
+Discussion,"One of the features of Bayesian estimation is that the result comes in the form of 
+ a posterior distribution. Classical estimation usually generates a single point 
+ estimate or a confidence interval, which is sufficient if estimation is the last step 
+ in the process, but if you want to use an estimate as an input to a subsequent 
+ analysis, point estimates and intervals are often not much help.
+  
+ In this example, we use the posterior distribution to compute an optimal bid. 
+ The return on a given bid is asymmetric and discontinuous (if you overbid, you 
+ lose), so it would be hard to solve this problem analytically. But it is relatively 
+ simple to do computation‐ally.
+  
+ Newcomers to Bayesian thinking are often tempted to summarize the posterior 
+ distri‐bution by computing the mean or the maximum likelihood estimate. 
+ These summaries can be useful, but if that’s all you need, then you probably 
+ don’t need Bayesian methods in the first place.
+  
+ Bayesian methods are most useful when you can carry the posterior distribution 
+ into the next step of the analysis to perform some kind of decision analysis, as 
+ we did in this chapter, or some kind of prediction, as we see in the next chapter.
+  
+ Discussion 
+  
+ | 
+  
+ 63",NA
+CHAPT,NA,NA
+ER 7 ,NA,NA
+Predict,NA,NA
+ion,NA,NA
+The Boston Bruins problem,"In the 2010-11 National Hockey League (NHL) Finals, my beloved Boston Bruins 
+ played a best-of-seven championship series against the despised Vancouver 
+ Canucks. Boston lost the first two games 0-1 and 2-3, then won the next two 
+ games 8-1 and 4-0. At this point in the series, what is the probability that Boston 
+ will win the next game, and what is their probability of winning the 
+ championship?
+  
+ As always, to answer a question like this, we need to make some assumptions. 
+ First, it is reasonable to believe that goal scoring in hockey is at least 
+ approximately a Poisson process, which means that it is equally likely for a goal 
+ to be scored at any time during a game. Second, we can assume that against a 
+ particular opponent, each team has some long-term average goals per game, 
+ denoted 
+ λ
+ .
+  
+ Given these assumptions, my strategy for answering this question is
+  
+ 1. Use statistics from previous games to choose a prior distribution for 
+ λ
+ .
+  
+ 2. Use the score from the first four games to estimate 
+ λ
+  for each team.
+  
+ 3. Use the posterior distributions of 
+ λ
+  to compute distribution of goals for each 
+ team, the distribution of the goal differential, and the probability that each 
+ team wins the next game.
+  
+ 4. Compute the probability that each team wins the series.
+  
+ To choose a prior distribution, I got some statistics from 
+ http://www.nhl.com
+ , 
+ specifi‐cally the average goals per game for each team in the 2010-11 season. 
+ The distribution is roughly Gaussian with mean 2.8 and standard deviation 0.3.",NA
+Poisson processes,"In mathematical statistics, a 
+ process
+  is a stochastic model of a physical system 
+ (“sto‐chastic” means that the model has some kind of randomness in it). For 
+ example, a Bernoulli process is a model of a sequence of events, called trials, in 
+ which each trial has two possible outcomes, like success and failure. So a 
+ Bernoulli process is a natural model for a series of coin flips, or a series of shots 
+ on goal.
+  
+ A Poisson process is the continuous version of a Bernoulli process, where an 
+ event can occur at any point in time with equal probability. Poisson processes 
+ can be used to model customers arriving in a store, buses arriving at a bus stop, 
+ or goals scored in a hockey game.
+  
+ 66 
+  
+ | 
+  
+ Chapter 7: Prediction",NA
+The posteriors,"Now we can compute the likelihood that a team with a hypothetical value of 
+ lam
+  
+ scores 
+ k
+  goals in a game:
+  
+ # class Hockey
+  
+  def Likelihood(self, data, hypo):
+  
+  lam = hypo
+  
+  k = data
+  
+  like = thinkbayes.EvalPoissonPmf(lam, k) return 
+ like
+  
+ Each hypothesis is a possible value of 
+ λ
+ ; 
+ data
+  is the observed number of goals, 
+ k
+ .
+  
+ With the likelihood function in place, we can make a suite for each team and 
+ update them with the scores from the first four games.
+  
+  suite1 = Hockey('bruins')
+  
+  suite1.UpdateSet([0, 2, 8, 4])
+  
+  suite2 = Hockey('canucks')
+  
+  suite2.UpdateSet([1, 3, 1, 0])
+  
+ Figure 7-1
+  shows the resulting posterior distributions for 
+ lam
+ . Based on the first 
+ four games, the most likely values for 
+ lam
+  are 2.6 for the Canucks and 2.9 for the 
+ Bruins.",NA
+The distribution of goals,"To compute the probability that each team wins the next game, we need to 
+ compute the distribution of goals for each team.
+  
+ If we knew the value of 
+ lam
+  exactly, we could use the Poisson distribution again. 
+ think bayes
+  provides a method that computes a truncated approximation of a 
+ Poisson dis‐tribution:
+  
+ def MakePoissonPmf(lam, high):
+  
+  pmf = Pmf()
+  
+  for k in xrange(0, high+1):
+  
+  
+  p = EvalPoissonPmf(lam, k)
+  
+  
+  pmf.Set(k, p)
+  
+  pmf.Normalize()
+  
+  return pmf
+  
+ 68 
+  
+ | 
+  
+ Chapter 7: Prediction",NA
+The probability of winning,"To get the probability of winning, first we compute the distribution of the goal 
+ differential:
+  
+  goal_dist1 
+ = 
+ MakeGoalPmf(suite1)
+  
+  goal_dist2 
+ = 
+ MakeGoalPmf(suite2)
+  
+  diff = goal_dist1 - goal_dist2
+  
+ The subtraction operator invokes 
+ Pmf.__sub__
+ , which enumerates pairs of values 
+ and computes the difference. Subtracting two distributions is almost the same 
+ as adding, which we saw in 
+ “Addends” on page 42
+ .
+  
+ If the goal differential is positive, the Bruins win; if negative, the Canucks win; if 
+ 0, it’s a tie:
+  
+  p_win = diff.ProbGreater(0)
+  
+  p_loss = diff.ProbLess(0)
+  
+  p_tie = diff.Prob(0)
+  
+ With the distributions from the previous section, 
+ p_win
+  is 46%, 
+ p_loss
+  is 37%, 
+ and 
+ p_tie
+  is 17%.
+  
+ 70 
+  
+ | 
+  
+ Chapter 7: Prediction",NA
+Sudden death,"To compute the probability of winning in a sudden death overtime, the 
+ important sta‐tistic is not goals per game, but time until the first goal. The 
+ assumption that goal-scoring is a Poisson process implies that the time between 
+ goals is exponentially distributed.
+  
+ Given 
+ lam
+ , we can compute the time between goals like this:
+  
+ lam = 3.4 
+  
+ time_dist = thinkbayes.MakeExponentialPmf(lam, high=2, n=101)
+  
+ high
+  is the upper bound of the distribution. In this case I chose 2, because the 
+ probability of going more than two games without scoring is small. 
+ n
+  is the 
+ number of values in the Pmf.
+  
+ If we know 
+ lam
+  exactly, that’s all there is to it. But we don’t; instead we have a 
+ posterior distribution of possible values. So as we did with the distribution of 
+ goals, we make a meta-Pmf and compute a mixture of Pmfs.
+  
+ def MakeGoalTimePmf(suite):
+  
+  metapmf = thinkbayes.Pmf()
+  
+  for lam, prob in suite.Items():
+  
+  pmf = thinkbayes.MakeExponentialPmf(lam, high=2, n=2001) 
+ metapmf.Set(pmf, prob)
+  
+  mix = thinkbayes.MakeMixture(metapmf)
+  
+  return mix
+  
+ Figure 7-3
+  shows the resulting distributions. For time values less than one 
+ period (one third of a game), the Bruins are more likely to score. The time until 
+ the Canucks score is more likely to be longer.
+  
+ I set the number of values, 
+ n
+ , fairly high in order to minimize the number of ties, 
+ since it is not possible for both teams to score simultaneously.
+  
+ Now we compute the probability that the Bruins score first:
+  
+  time_dist1 
+ = 
+ MakeGoalTimePmf(suite1)
+  
+  time_dist2 
+ = 
+ MakeGoalTimePmf(suite2)
+  
+  p_overtime = thinkbayes.PmfProbLess(time_dist1, time_dist2)
+  
+ For the Bruins, the probability of winning in overtime is 52%.
+  
+ Finally, the total probability of winning is the chance of winning at the end of 
+ regulation play plus the probability of winning in overtime.
+  
+ Sudden death 
+  
+ | 
+  
+ 71",NA
+Discussion,"As always, the analysis in this chapter is based on modeling decisions, and 
+ modeling is almost always an iterative process. In general, you want to start 
+ with something simple that yields an approximate answer, identify likely 
+ sources of error, and look for oppor‐tunities for improvement.
+  
+ In this example, I would consider these options:
+  
+ • I chose a prior based on the average goals per game for each team. But this 
+ statistic is averaged across all opponents. Against a particular opponent, we 
+ might expect more variability. For example, if the team with the best offense 
+ plays the team with the worst defense, the expected goals per game might 
+ be several standard deviations above the mean.
+  
+ • For data I used only the first four games of the championship series. If the 
+ same teams played each other during the regular season, I could use the 
+ results from those games as well. One complication is that the composition 
+ of teams changes during the season due to trades and injuries. So it might be 
+ best to give more weight to recent games.
+  
+ • To take advantage of all available information, we could use results from all 
+ regular season games to estimate each team’s goal scoring rate, possibly 
+ adjusted by esti‐mating an additional factor for each pairwise match-up. 
+ This approach would be more complicated, but it is still feasible.
+  
+ For the first option, we could use the results from the regular season to estimate 
+ the variability across all pairwise match-ups. Thanks to Dirk Hoag at 
+ http://forechecker.blog spot.com/
+ , I was able to get the number of goals scored 
+ during regulation play (not overtime) for each game in the regular season.
+  
+ Teams in different conferences only play each other one or two times in the 
+ regular season, so I focused on pairs that played each other 4–6 times. For each 
+ pair, I computed the average goals per game, which is an estimate of 
+ λ
+ , then 
+ plotted the distribution of these estimates.
+  
+ The mean of these estimates is 2.8, again, but the standard deviation is 0.85, 
+ substantially higher than what we got computing one estimate for each team.
+  
+ If we run the analysis again with the higher-variance prior, the probability that 
+ the Bruins win the series is 80%, substantially higher than the result with the 
+ low-variance prior, 57%.
+  
+ So it turns out that the results are sensitive to the prior, which makes sense 
+ considering how little data we have to work with. Based on the difference 
+ between the low-variance model and the high-variable model, it seems 
+ worthwhile to put some effort into getting the prior right.
+  
+ Discussion 
+  
+ | 
+  
+ 73",NA
+Exercises,"Exercise 7-1.
+  
+ If buses arrive at a bus stop every 20 minutes, and you arrive at the bus stop at a 
+ random time, your wait time until the bus arrives is uniformly distributed from 
+ 0 to 20 minutes.
+  
+ But in reality, there is variability in the time between buses. Suppose you are 
+ waiting for a bus, and you know the historical distribution of time between 
+ buses. Compute your distribution of wait times.
+  
+ Hint: Suppose that the time between buses is either 5 or 10 minutes with equal 
+ proba‐bility. What is the probability that you arrive during one of the 10 minute 
+ intervals?
+  
+ I solve a version of this problem in the next chapter.
+  
+ Exercise 7-2.
+  
+ Suppose that passengers arriving at the bus stop are well-modeled by a Poisson 
+ process with parameter 
+ λ
+ . If you arrive at the stop and find 3 people waiting, 
+ what is your posterior distribution for the time since the last bus arrived.
+  
+ I solve a version of this problem in the next chapter.
+  
+ Exercise 7-3.
+  
+ Suppose that you are an ecologist sampling the insect population in a new 
+ environment. You deploy 100 traps in a test area and come back the next day to 
+ check on them. You find that 37 traps have been triggered, trapping an insect 
+ inside. Once a trap triggers, it cannot trap another insect until it has been reset.
+  
+ If you reset the traps and come back in two days, how many traps do you expect 
+ to find triggered? Compute a posterior predictive distribution for the number of 
+ traps.
+  
+ Exercise 7-4.
+  
+ Suppose you are the manager of an apartment building with 100 light bulbs in 
+ common areas. It is your responsibility to replace light bulbs when they break.
+  
+ On January 1, all 100 bulbs are working. When you inspect them on February 1, 
+ you find 3 light bulbs out. If you come back on April 1, how many light bulbs do 
+ you expect to find broken?",NA
+CHAPT,NA,NA
+ER 8 ,NA,NA
+Observer ,NA,NA
+Bias,NA,NA
+The Red Line problem,"In Massachusetts, the Red Line is a subway that connects Cambridge and 
+ Boston. When I was working in Cambridge I took the Red Line from Kendall 
+ Square to South Station and caught the commuter rail to Needham. During rush 
+ hour Red Line trains run every 7–8 minutes, on average.
+  
+ When I arrived at the station, I could estimate the time until the next train based 
+ on the number of passengers on the platform. If there were only a few people, I 
+ inferred that I just missed a train and expected to wait about 7 minutes. If there 
+ were more passengers, I expected the train to arrive sooner. But if there were a 
+ large number of passengers, I suspected that trains were not running on 
+ schedule, so I would go back to the street level and get a taxi.
+  
+ While I was waiting for trains, I thought about how Bayesian estimation could 
+ help predict my wait time and decide when I should give up and take a taxi. This 
+ chapter presents the analysis I came up with.
+  
+ This chapter is based on a project by Brendan Ritter and Kai Austin, who took a 
+ class with me at Olin College. The code in this chapter is available from 
+ http://thinkbayes.com/ redline.py
+ . The code I used to collect data is in 
+ http://thinkbayes.com/redline_data.py
+ . For more information see 
+ “Working with 
+ the code” on page xi
+ .",NA
+The model,"Before we get to the analysis, we have to make some modeling decisions. First, I 
+ will treat passenger arrivals as a Poisson process, which means I assume that 
+ passengers are equally likely to arrive at any time, and that they arrive at an 
+ unknown rate, 
+ λ
+ , measured in passengers per minute. Since I observe",NA
+Wait times,"Wait time, which I call 
+ y
+ , is the time between the arrival of a passenger and the 
+ next arrival of a train. Elapsed time, which I call 
+ x
+ , is the time between the 
+ arrival of the previous train and the arrival of a passenger. I chose these 
+ definitions so that 
+ zb = x + y
+ .
+  
+ Given the distribution of 
+ zb
+ , we can compute the distribution of 
+ y
+ . I’ll start with a 
+ simple case and then generalize. Suppose, as in the previous example, that 
+ zb
+  is 
+ either 5 minutes with probability 1/3, or 10 minutes with probability 2/3.",NA
+Predicting wait times,"Let’s get back to the motivating question: suppose that when I arrive at the 
+ platform I see 10 people waiting. How long should I expect to wait until the next 
+ train arrives?
+  
+ As always, let’s start with the easiest version of the problem and work our way 
+ up. Suppose we are given the actual distribution of 
+ z
+ , and we know that the 
+ passenger arrival rate, 
+ λ
+ , is 2 passengers per minute.
+  
+ In that case we can:
+  
+ 1. Use the distribution of 
+ z
+  to compute the prior distribution of 
+ zp
+ , the time 
+ between 
+  
+ trains as seen by a passenger.
+  
+ 2. Then we can use the number of passengers to estimate the distribution of 
+ x
+ , 
+ the 
+  
+ elapsed time since the last train.
+  
+ 3. Finally, we use the relation 
+ y = zp - x
+  to get the distribution of 
+ y
+ .
+  
+ The first step is to create a 
+ WaitTimeCalculator
+  that encapsulates the 
+ distributions of 
+ zp
+ , 
+ x
+ , and 
+ y
+ , prior to taking into account the number of 
+ passengers.
+  
+  wtc = WaitTimeCalculator(pmf_z)
+  
+ pmf_z
+  is the given distribution of gap times.
+  
+ The next step is to make an 
+ ElapsedTimeEstimator
+  (defined below), which 
+ encapsulates the posterior distribution of 
+ x
+  and the predictive distribution of 
+ y
+ .
+  
+  ete = ElapsedTimeEstimator(wtc,
+  
+  lam=2.0/60,
+  
+  num_passengers=15)
+  
+ The parameters are the 
+ WaitTimeCalculator
+ , the passenger arrival rate, 
+ lam
+  
+ (expressed in passengers per second), and the observed number of passengers, 
+ let’s say 15.
+  
+ Here is the definition of 
+ ElapsedTimeEstimator
+ :
+  
+ class ElapsedTimeEstimator(object):
+  
+  def __init__(self, wtc, lam, num_passengers):
+  
+  
+ self.prior_x = Elapsed(wtc.pmf_x)
+  
+  self.post_x = self.prior_x.Copy()
+  
+  self.post_x.Update((lam, num_passengers))
+  
+  self.pmf_y = PredictWaitTime(wtc.pmf_zb, self.post_x)",NA
+Estimating the arrival rate,"The analysis so far has been based on the assumption that we know (1) the 
+ distribution of gaps and (2) the passenger arrival rate. Now we are ready to 
+ relax the second as‐sumption.
+  
+ Suppose that you just moved to Boston, so you don’t know much about the 
+ passenger arrival rate on the Red Line. After a few days of commuting, you could 
+ make a guess, at least qualitatively. With a little more effort, you could estimate 
+ λ
+  quantitatively.
+  
+ Each day when you arrive at the platform, you should note the time and the 
+ number of passengers waiting (if the platform is too big, you could choose a 
+ sample area). Then you should record your wait time and the number of new 
+ arrivals while you are waiting.",NA
+Incorporating uncertainty,"Whenever there is uncertainty about one of the inputs to an analysis, we can 
+ take it into account by a process like this:
+  
+ 1. Implement the analysis based on a deterministic value of the uncertain 
+ parameter 
+  
+ (in this case 
+ λ
+ ).
+  
+ 86 
+  
+ | 
+  
+ Chapter 8: Observer Bias",NA
+Decision analysis,"At this point we can use the number of passengers on the platform to predict the 
+ dis‐tribution of wait times. Now let’s get to the second part of the question: 
+ when should I stop waiting for the train and go catch a taxi?
+  
+ Decision analysis 
+  
+ | 
+  
+ 87",NA
+Discussion,"The analysis so far has been based on the assumption that the arrival rate of 
+ passengers is the same every day. For a commuter train during rush hour, that 
+ might not be a bad assumption, but there are some obvious exceptions. For 
+ example, if there is a special event nearby, a large number of people might 
+ arrive at the same time. In that case, the estimate of 
+ lam
+  would be too low, so the 
+ estimates of 
+ x
+  and 
+ y
+  would be too high.
+  
+ 90 
+  
+ | 
+  
+ Chapter 8: Observer Bias",NA
+Exercises,"Exercise 8-1.
+  
+ This exercise is from MacKay, 
+ Information Theory, Inference, and Learning 
+ Algorithms
+ :
+  
+ Unstable particles are emitted from a source and decay at a distance 
+ x
+ , a real 
+ number that has an exponential probability distribution with [parameter] 
+ λ
+ . Decay 
+ events can only be observed if they occur in a window extending from 
+ x
+ =1
+  cm to 
+ x
+ =20
+  cm. 
+ N
+  decays are observed at locations 
+ 1.5,2,3,4,5,12
+   cm. What is the 
+ posterior distribution of 
+ λ
+ ?
+  
+  
+ You can download a solution to this exercise from 
+ http://thinkbayes.com/decay.py
+ .",NA
+CHAPT,NA,NA
+ER 9 ,NA,NA
+Two ,NA,NA
+Dimension,NA,NA
+s,NA,NA
+Paintball,"Paintball is a sport in which competing teams try to shoot each other with guns 
+ that fire paint-filled pellets that break on impact, leaving a colorful mark on the 
+ target. It is usually played in an arena decorated with barriers and other objects 
+ that can be used as cover.
+  
+ Suppose you are playing paintball in an indoor arena 30 feet wide and 50 feet 
+ long. You are standing near one of the 30 foot walls, and you suspect that one of 
+ your opponents has taken cover nearby. Along the wall, you see several paint 
+ spatters, all the same color, that you think your opponent fired recently.
+  
+ The spatters are at 15, 16, 18, and 21 feet, measured from the lower-left corner 
+ of the room. Based on these data, where do you think your opponent is hiding?
+  
+ Figure 9-1
+  shows a diagram of the arena. Using the lower-left corner of the room 
+ as the origin, I denote the unknown location of the shooter with coordinates 
+ α
+  
+ and 
+ β
+ , or 
+ alpha 
+ and 
+ beta
+ . The location of a spatter is labeled 
+ x
+ . The angle the 
+ opponent shoots at is 
+ θ
+  or 
+ theta
+ .
+  
+ The Paintball problem is a modified version of the Lighthouse problem, a 
+ common example of Bayesian analysis. My notation follows the presentation of 
+ the problem in D.S. Sivia’s, 
+ Data Analysis: a Bayesian Tutorial, Second Edition
+  
+ (Oxford, 2006).
+  
+ You can download the code in this chapter from 
+ http://thinkbayes.com/paintball.py
+ . For more information see 
+ “Working with the 
+ code” on page xi
+ .",NA
+The suite,"To get started, we need a Suite that represents a set of hypotheses about the 
+ location of the opponent. Each hypothesis is a pair of coordinates: 
+ (alpha, beta)
+ .
+  
+ 93",NA
+Trigonometry,"Now we need a likelihood function, which means we have to figure out the 
+ likelihood of hitting any spot along the wall, given the location of the opponent.
+  
+ As a simple model, imagine that the opponent is like a rotating turret, equally 
+ likely to shoot in any direction. In that case, he is most likely to hit the wall at 
+ location 
+ alpha
+ , and less likely to hit the wall far away from 
+ alpha
+ .
+  
+ With a little trigonometry, we can compute the probability of hitting any spot 
+ along the wall. Imagine that the shooter fires a shot at angle 
+ θ
+ ; the pellet would 
+ hit the wall at location 
+ x
+ , where
+  
+ x
+ −
+ α
+ =
+  β
+ tan
+ θ
+  
+ Solving this equation for 
+ θ
+  yields
+  
+ θ
+ =
+ tan
+ −1
+  x
+ −
+ α
+  
+  
+ β
+  
+ So given a location on the wall, we can find 
+ θ
+ .
+  
+ Taking the derivative of the first equation with respect to 
+ θ
+  yields
+  
+ dx
+  
+ β
+  
+ dθ
+ =
+  
+ cos
+ 2
+ θ
+  
+ This derivative is what I’ll call the “strafing speed”, which is the speed of the 
+ target location along the wall as 
+ θ
+  increases. The probability of hitting a given 
+ point on the wall is inversely related to strafing speed.
+  
+ If we know the coordinates of the shooter and a location along the wall, we can 
+ compute strafing speed:
+  
+ def StrafingSpeed(alpha, beta, x):
+  
+  theta = math.atan2(x - alpha, beta)
+  
+  speed = beta / math.cos(theta)**2
+  
+  return speed
+  
+ alpha
+  and 
+ beta
+  are the coordinates of the shooter; 
+ x
+  is the location of a spatter. 
+ The result is the derivative of 
+ x
+  with respect to 
+ theta
+ .
+  
+ Now we can compute a Pmf that represents the probability of hitting any 
+ location on the wall. 
+ MakeLocationPmf
+  takes 
+ alpha
+  and 
+ beta
+ , the coordinates of 
+ the shooter, and 
+ locations
+ , a list of possible values of 
+ x
+ .
+  
+ Trigonometry 
+  
+ | 
+  
+ 95",NA
+Likelihood,"Now all we need is a likelihood function. We can use 
+ MakeLocationPmf
+  to 
+ compute the likelihood of any value of 
+ x
+ , given the coordinates of the opponent.
+  
+ 96 
+  
+ | 
+  
+ Chapter 9: Two Dimensions",NA
+Joint distributions,"When each value in a distribution is a tuple of variables, it is called a 
+ joint 
+ distribution 
+ because it represents the distributions of the variables together, 
+ that is “jointly”. A joint distribution contains the distributions of the variables, as 
+ well information about the relationships among them.
+  
+ Given a joint distribution, we can compute the distributions of each variable 
+ independ‐ently, which are called the 
+ marginal distributions
+ .
+  
+ thinkbayes.Joint
+  provides a method that computes marginal distributions:
+  
+ # class Joint:
+  
+  def Marginal(self, i):
+  
+  
+  pmf = Pmf()
+  
+  
+  for vs, prob in self.Items():
+  
+  
+  
+  pmf.Incr(vs[i], prob)
+  
+  
+  return pmf
+  
+ i
+  is the index of the variable we want; in this example 
+ i=0
+  indicates the 
+ distribution of 
+ alpha
+ , and 
+ i=1
+  indicates the distribution of 
+ beta
+ .
+  
+ Here’s the code that extracts the marginal distributions:
+  
+  marginal_alpha = suite.Marginal(0)
+  
+  marginal_beta = suite.Marginal(1)
+  
+ Figure 9-3
+  shows the results (converted to CDFs). The median value for 
+ alpha
+  is 
+ 18, near the center of mass of the observed spatters. For 
+ beta
+ , the most likely 
+ values are close to the wall, but beyond 10 feet the distribution is almost 
+ uniform, which indicates that the data do not distinguish strongly between these 
+ possible locations.",NA
+Conditional distributions,"The marginal distributions contain information about the variables 
+ independently, but they do not capture the dependence between variables, if 
+ any.
+  
+ One way to visualize dependence is by computing 
+ conditional distributions
+ . 
+ think bayes.Joint
+  provides a method that does that:
+  
+  def Conditional(self, i, j, val):
+  
+  pmf = Pmf()
+  
+  for vs, prob in self.Items():
+  
+ 98 
+  
+ | 
+  
+ Chapter 9: Two Dimensions",NA
+Credible intervals,"Another way to visualize the posterior joint distribution is to compute credible 
+ intervals. When we looked at credible intervals in 
+ “Credible intervals” on page 
+ 25
+ , I skipped over a subtle point: for a given distribution, there are many 
+ intervals with the same level of credibility. For example, if you want a 50% 
+ credible interval, you could choose any set of values whose probability adds up 
+ to 50%.
+  
+ When the values are one-dimensional, it is most common to choose the 
+ central 
+ credible interval
+ ; for example, the central 50% credible interval contains all 
+ values between the 25th and 75th percentiles.
+  
+ In multiple dimensions it is less obvious what the right credible interval should 
+ be. The best choice might depend on context, but one common choice is the 
+ maximum likelihood credible interval, which contains the most likely values 
+ that add up to 50% (or some other percentage).
+  
+ thinkbayes.Joint
+  provides a method that computes maximum likelihood credible 
+ intervals.
+  
+ Credible intervals 
+  
+ | 
+  
+ 99",NA
+Discussion,"This chapter shows that the Bayesian framework from the previous chapters 
+ can be extended to handle a two-dimensional parameter space. The only 
+ difference is that each hypothesis is represented by a tuple of parameters.
+  
+ I also presented 
+ Joint
+ , which is a parent class that provides methods that apply 
+ to joint distributions: 
+ Marginal
+ , 
+ Conditional
+ , and 
+ MakeLikeInterval
+ . In object-
+ oriented terms, 
+ Joint
+  is a mixin (see 
+ http://en.wikipedia.org/wiki/Mixin
+ ).
+  
+ There is a lot of new vocabulary in this chapter, so let’s review:
+  
+ Joint distribution: 
+  
+ A distribution that represents all possible values in a multidimensional 
+ space and their probabilities. The example in this chapter is a two-
+ dimensional space made up of the coordinates 
+ alpha
+  and 
+ beta
+ . The joint 
+ distribution represents the prob‐ability of each (
+ alpha
+ , 
+ beta
+ ) pair.
+  
+ Marginal distribution: 
+  
+ The distribution of one parameter in a joint distribution, treating the other 
+ pa‐rameters as unknown. For example, 
+ Figure 9-3
+  shows the distributions of 
+ alpha 
+ and 
+ beta
+  independently.
+  
+ Conditional distribution: 
+  
+ The distribution of one parameter in a joint distribution, conditioned on one 
+ or more of the other parameters. 
+ Figure 9-4
+  several distributions for 
+ alpha
+ , 
+ condi‐tioned on different values of 
+ beta
+ .
+  
+ Given the joint distribution, you can compute marginal and conditional 
+ distributions. With enough conditional distributions, you could re-create the 
+ joint distribution, at least approximately. But given the marginal distributions 
+ you cannot re-create the joint distribution because you have lost information 
+ about the dependence between variables.
+  
+ If there are 
+ n
+  possible values for each of two parameters, most operations on the 
+ joint distribution take time proportional to 
+ n
+ 2
+ . If there are 
+ d
+  parameters, run 
+ time is propor‐tional to 
+ n
+ d
+ , which quickly becomes impractical as the number of 
+ dimensions increases.
+  
+ If you can process a million hypotheses in a reasonable amount of time, you 
+ could handle two dimensions with 1000 values for each parameter, or three 
+ dimensions with 100 values each, or six dimensions with 10 values each.
+  
+ If you need more dimensions, or more values per dimension, there are 
+ optimizations you can try. I present an example in 
+ Chapter 15
+ .
+  
+ You can download the code in this chapter from 
+ http://thinkbayes.com/paintball.py
+ . For more information see 
+ “Working with the 
+ code” on page xi
+ .",NA
+Exercises,"Exercise 9-1.
+  
+ In our simple model, the opponent is equally likely to shoot in any direction. As 
+ an exercise, let’s consider improvements to this model.
+  
+ The analysis in this chapter suggests that a shooter is most likely to hit the 
+ closest wall. But in reality, if the opponent is close to a wall, he is unlikely to 
+ shoot at the wall because he is unlikely to see a target between himself and the 
+ wall.
+  
+ Design an improved model that takes this behavior into account. Try to find a 
+ model that is more realistic, but not too complicated.
+  
+ Exercises 
+  
+ | 
+  
+ 10
+ 3",NA
+CHAPTE,NA,NA
+R 10 ,NA,NA
+Approximate Bayesian ,NA,NA
+Computation,NA,NA
+The Variability Hypothesis,"I have a soft spot for crank science. Recently I visited Norumbega Tower, which 
+ is an enduring monument to the crackpot theories of Eben Norton Horsford, 
+ inventor of double-acting baking powder and fake history. But that’s not what 
+ this chapter is about.
+  
+ This chapter is about the Variability Hypothesis, which
+  
+ “originated in the early nineteenth century with Johann Meckel, who argued that 
+ males have a greater range of ability than females, especially in intelligence. In 
+ other words, he believed that most geniuses and most mentally retarded people 
+ are men. Because he considered males to be the ’superior animal,’ Meckel 
+ concluded that females’ lack of var‐iation was a sign of inferiority.”
+  
+ From 
+ http://en.wikipedia.org/wiki/Variability_hypothesis
+ .
+  
+ I particularly like that last part, because I suspect that if it turns out that women 
+ are actually more variable, Meckel would take that as a sign of inferiority, too. 
+ Anyway, you will not be surprised to hear that the evidence for the Variability 
+ Hypothesis is weak.
+  
+ Nevertheless, it came up in my class recently when we looked at data from the 
+ CDC’s Behavioral Risk Factor Surveillance System (BRFSS), specifically the self-
+ reported heights of adult American men and women. The dataset includes 
+ responses from 154407 men and 254722 women. Here’s what we found:
+  
+ • The average height for men is 178 cm; the average height for women is 163 
+ cm. So men are taller, on average. No surprise there.
+  
+ • For men the standard deviation is 7.7 cm; for women it is 7.3 cm. So in 
+ absolute terms, men’s heights are more variable.
+  
+ • But to compare variability between groups, it is more meaningful to use the 
+ coef‐ficient of variation (CV), which is the standard deviation divided by the 
+ mean. It is",NA
+Mean and standard deviation,"In 
+ Chapter 9
+  we estimated two parameters simultaneously using a joint 
+ distribution. In this chapter we use the same method to estimate the parameters 
+ of a Gaussian distri‐bution: the mean, 
+ mu
+ , and the standard deviation, 
+ sigma
+ .
+  
+ For this problem, I define a Suite called 
+ Height
+  that represents a map from each 
+ mu, sigma
+  pair to its probability:
+  
+ class Height(thinkbayes.Suite, thinkbayes.Joint):
+  
+  def __init__(self, mus, sigmas):
+  
+  
+  thinkbayes.Suite.__init__(self)
+  
+  pairs = [(mu, sigma) 
+  
+  for mu in mus
+  
+  for sigma in sigmas]
+  
+  thinkbayes.Suite.__init__(self, pairs)
+  
+ mus
+  is a sequence of possible values for 
+ mu
+ ; 
+ sigmas
+  is a sequence of values for 
+ sigma
+ . The prior distribution is uniform over all 
+ mu, sigma
+  pairs.
+  
+ The likelihood function is easy. Given hypothetical values of 
+ mu
+  and 
+ sigma
+ , we 
+ compute the likelihood of a particular value, 
+ x
+ . That’s what 
+ EvalGaussianPdf
+  
+ does, so all we have to do is use it:
+  
+ 106 
+  
+ | 
+  
+ Chapter 10: Approximate Bayesian Computation",NA
+Update,"Finally here’s the code to make and update the suite:
+  
+  mus, sigmas = FindPriorRanges(xs, num_points) suite 
+ = Height(mus, sigmas)
+  
+  suite.UpdateSet(xs)
+  
+  print suite.MaximumLikelihood()
+  
+ This process might seem bogus, because we use the data to choose the range of 
+ the prior distribution, and then use the data again to do the update. In general, 
+ using the same data twice is, in fact, bogus.
+  
+ But in this case it is ok. Really. We use the data to choose the range for the prior, 
+ but only to avoid computing a lot of probabilities that would have been very 
+ small anyway. With 
+ num_stderrs=4
+ , the range is big enough to cover all values 
+ with non-negligible likelihood. After that, making it bigger has no effect on the 
+ results.
+  
+ In effect, the prior is uniform over all values of 
+ mu
+  and 
+ sigma
+ , but for 
+ computational efficiency we ignore all the values that don’t matter.",NA
+The posterior distribution of CV,"Once we have the posterior joint distribution of 
+ mu
+  and 
+ sigma
+ , we can compute 
+ the distribution of CV for men and women, and then the probability that one 
+ exceeds the other.",NA
+Underflow,"If we select the first 100 values from the BRFSS dataset and run the analysis I 
+ just de‐scribed, it runs without errors and we get posterior distributions that 
+ look reasonable.
+  
+ If we select the first 1000 values and run the program again, we get an error in 
+ Pmf.Nor malize
+ :
+  
+ ValueError: total probability is zero.
+  
+ The problem is that we are using probability densities to compute likelihoods, 
+ and densities from continuous distributions tend to be small. And if you take 
+ 1000 small values and multiply them together, the result is very small. In this 
+ case it is so small it can’t be represented by a floating-point number, so it gets 
+ rounded down to zero, which is called 
+ underflow
+ . And if all probabilities in the 
+ distribution are 0, it’s not a distribution any more.
+  
+ A possible solution is to renormalize the Pmf after each update, or after each 
+ batch of 100. That would work, but it would be slow.
+  
+ A better alternative is to compute likelihoods under a log transform. That way, 
+ instead of multiplying small values, we can add up log likelihoods. 
+ Pmf
+  provides 
+ methods 
+ Log
+ , 
+ LogUpdateSet
+  and 
+ Exp
+  to make this process easy.",NA
+Log-likelihood,"Now all we need is 
+ LogLikelihood
+ .
+  
+ # class Height
+  
+  def LogLikelihood(self, data, hypo):
+  
+  x = data
+  
+  mu, sigma = hypo
+  
+  loglike = scipy.stats.norm.logpdf(x, mu, sigma) return 
+ loglike
+  
+ norm.logpdf
+  computes the log-likelihood of the Gaussian PDF.
+  
+ Here’s what the whole update process looks like:
+  
+  suite.Log()
+  
+  suite.LogUpdateSet(xs)
+  
+  suite.Exp()
+  
+  suite.Normalize()
+  
+ To review, 
+ Log
+  puts the suite under a log transform. 
+ LogUpdateSet
+  calls 
+ LogUpdate
+ , which calls 
+ LogLikelihood
+ . 
+ LogUpdate
+  uses 
+ Pmf.Incr
+ , because adding a 
+ log-likelihood is the same as multiplying by a likelihood.
+  
+ After the update, the log-likelihoods are large negative numbers, so 
+ Exp
+  shifts 
+ them up before inverting the transform, which is how we avoid underflow.
+  
+ Once the suite is transformed back, the probabilities are “linear” again, which 
+ means“not logarithmic”, so we can use 
+ Normalize
+  again.
+  
+ Using this algorithm, we can process the entire dataset without underflow, but it 
+ is still slow. On my computer it might take an hour. We can do better.",NA
+A little optimization,"This section uses math and computational optimization to speed things up by a 
+ factor of 100. But the following section presents an algorithm that is even faster. 
+ So if you want to get right to the good stuff, feel free to skip this section.
+  
+ Suite.LogUpdateSet
+  calls 
+ LogUpdate
+  once for each data point. We can speed it up 
+ by computing the log-likelihood of the entire dataset at once.
+  
+ We’ll start with the Gaussian PDF:
+  
+ Log-likelihood 
+  
+ | 
+  
+ 11
+ 1",NA
+∑,"− log
+ σ
+  − 1 2
+  
+ x
+ i
+  −
+ μ
+  
+ 2
+  
+ σ
+  
+ i
+  
+ Pulling out the terms that don’t depend on 
+ i
+ , we get
+  
+ −
+ n
+ log
+ σ
+  −
+  
+ 1 
+  
+ 2
+ σ
+ 2",NA
+ ,NA,NA
+∑,"x
+ i
+  −
+ μ
+ 2
+  
+ which we can translate into Python:
+  
+ # class Height
+  
+  def LogUpdateSetFast(self, data):
+  
+  xs = tuple(data)
+  
+  n = len(xs)
+  
+  for hypo in self.Values():
+  
+  mu, sigma = hypo
+  
+  total = Summation(xs, mu)
+  
+  loglike = -n * math.log(sigma) - total / 2 / sigma**2 
+ self.Incr(hypo, loglike)
+  
+ By itself, this would be a small improvement, but it creates an opportunity for a 
+ bigger one. Notice that the summation only depends on 
+ mu
+ , not 
+ sigma
+ , so we 
+ only have to compute it once for each value of 
+ mu
+ .
+  
+ To avoid recomputing, I factor out a function that computes the summation, and 
+ memoize
+  it so it stores previously computed results in a dictionary (see 
+ http://en.wiki pedia.org/wiki/Memoization
+ ):
+  
+ def Summation(xs, mu, cache={}):
+  
+  try:
+  
+  
+  return cache[xs, mu]
+  
+  except KeyError:
+  
+  
+  ds = [(x-mu)**2 for x in xs]
+  
+  
+  total = sum(ds)
+  
+ 112 
+  
+ | 
+  
+ Chapter 10: Approximate Bayesian Computation",NA
+ABC,"But maybe you don’t have that kind of time. In that case, Approximate Bayesian 
+ Com‐putation (ABC) might be the way to go. The motivation behind ABC is that 
+ the likeli‐hood of any particular dataset is:
+  
+ 1. Very small, especially for large datasets, which is why we had to use the log 
+ trans‐
+  
+ form,
+  
+ 2. Expensive to compute, which is why we had to do so much optimization, and
+  
+ 3. Not really what we want anyway.
+  
+ We don’t really care about the likelihood of seeing the exact dataset we saw. 
+ Especially for continuous variables, we care about the likelihood of seeing any 
+ dataset like the one we saw.
+  
+ For example, in the Euro problem, we don’t care about the order of the coin 
+ flips, only the total number of heads and tails. And in the locomotive problem, 
+ we don’t care about which particular trains were seen, only the number of trains 
+ and the maximum of the serial numbers.
+  
+ Similarly, in the BRFSS sample, we don’t really want to know the probability of 
+ seeing one particular set of values (especially since there are hundreds of 
+ thousands of them). It is more relevant to ask, “If we sample 100,000 people 
+ from a population with hypo‐thetical values of 
+ μ
+  and 
+ σ
+ , what would be the 
+ chance of collecting a sample with the observed mean and variance?”
+  
+ For samples from a Gaussian distribution, we can answer this question 
+ efficiently be‐cause we can find the distribution of the sample statistics 
+ analytically. In fact, we already did it when we computed the range of the prior.
+  
+ If you draw 
+ n
+  values from a Gaussian distribution with parameters 
+ μ
+  and 
+ σ
+ , and 
+ compute
+  
+ the sample mean, 
+ m
+ , the distribution of 
+ m
+  is Gaussian with parameters 
+ μ
+  and 
+ σ
+  /
+  
+ n
+ .
+  
+ ABC 
+  
+ | 
+  
+ 11
+ 3",NA
+Robust estimation,"We are almost ready to look at results, but we have one more problem to deal 
+ with. There are a number of outliers in this dataset that are almost certainly 
+ errors. For ex‐ample, there are three adults with reported height of 61 cm, 
+ which would place them among the shortest living adults in the world. At the 
+ other end, there are four women with reported height 229 cm, just short of the 
+ tallest women in the world.
+  
+ It is not impossible that these values are correct, but it is unlikely, which makes 
+ it hard to know how to deal with them. And we have to get it right, because 
+ these extreme values have a disproportionate effect on the estimated variability.
+  
+ Because ABC is based on summary statistics, rather than the entire dataset, we 
+ can make it more robust by choosing summary statistics that are robust in the 
+ presence of outliers. For example, rather than use the sample mean and 
+ standard deviation, we could use the median and inter-quartile range (IQR), 
+ which is the difference between the 25th and 75th percentiles.",NA
+Who is more variable?,"Finally we are ready to answer the question we started with: is the coefficient of 
+ variation greater for men than for women?
+  
+ Using ABC based on the median and IPR with 
+ num_sigmas=1
+ , I computed 
+ posterior joint distributions for 
+ mu
+  and 
+ sigma
+ . Figures 
+ 10-1
+  and 
+ 10-2
+  show the 
+ results as a contour plot with 
+ mu
+  on the x-axis, 
+ sigma
+  on the y-axis, and 
+ probability on the z-axis.
+  
+  
+ Figure 10-1. Contour plot of the posterior joint distribution of mean and standard 
+ devi‐ation of height for men in the U.S.
+  
+ For each joint distribution, I computed the posterior distribution of CV. 
+ Figure 
+ 10-3 
+ shows these distributions for men and women. The mean for men is 
+ 0.0410; for women it is 0.0429. Since there is no overlap between the 
+ distributions, we conclude with near certainty that women are more variable in 
+ height than men.",NA
+Discussion,"There are two ways you might think of ABC. One interpretation is that it is, as 
+ the name suggests, an approximation that is faster to compute than the exact 
+ value.
+  
+ But remember that Bayesian analysis is always based on modeling decisions, 
+ which implies that there is no “exact” solution. For any interesting physical 
+ system there are many possible models, and each model yields different results. 
+ To interpret the results, we have to evaluate the models.
+  
+ So another interpretation of ABC is that it represents an alternative model of the 
+ like‐lihood. When we compute 
+ p
+  D H
+  , we are asking “What is the likelihood of 
+ the data under a given hypothesis?”
+  
+ For large datasets, the likelihood of the data is very small, which is a hint that we 
+ might not be asking the right question. What we really want to know is the 
+ likelihood of any outcome like the data, where the definition of “like” is yet 
+ another modeling decision.",NA
+Exercises,"Exercise 10-1.
+  
+ An “effect size” is a statistic intended to measure the difference between two 
+ groups (see 
+ http://en.wikipedia.org/wiki/Effect_size
+ ).
+  
+ For example, we could use data from the BRFSS to estimate the difference in 
+ height between men and women. By sampling values from the posterior 
+ distributions of 
+ μ
+  and
+ σ
+ , we could generate the posterior distribution of this 
+ difference.
+  
+ But it might be better to use a dimensionless measure of effect size, rather than 
+ a dif‐ference measured in cm. One option is to use divide through by the 
+ standard deviation (similar to what we did with the coefficient of variation).
+  
+ If the parameters for Group 1 are 
+ μ
+ 1
+ ,
+ σ
+ 1
+  , and the parameters for Group 1 are 
+ μ
+ 2
+ ,
+ σ
+ 2
+  , the dimensionless effect size is
+  
+ μ
+ 1
+  −
+ μ
+ 2
+  
+ σ
+ 1
+  +
+ σ
+ 2
+  /2
+  
+ Write a function that takes joint distributions of 
+ mu
+  and 
+ sigma
+  for two groups 
+ and returns the posterior distribution of effect size.
+  
+ Hint: if enumerating all pairs from the two distributions takes too long, consider 
+ random sampling.",NA
+CHAPTE,NA,NA
+R 11 ,NA,NA
+Hypothesis ,NA,NA
+Testing,NA,NA
+Back to the Euro problem,"In 
+ “The Euro problem” on page 29
+  I presented a problem from MacKay’s 
+ Information Theory, Inference, and Learning Algorithms
+ :
+  
+ A statistical statement appeared in “The Guardian” on Friday January 4, 2002:
+  
+ When spun on edge 250 times, a Belgian one-euro coin came up heads 
+ 140 times and tails 110. ‘It looks very suspicious to me,’ said Barry 
+ Blight, a statistics lecturer at the London School of Economics. ‘If the coin 
+ were unbiased, the chance of getting a result as extreme as that would be 
+ less than 7%.’
+  
+ But do these data give evidence that the coin is biased rather than fair?
+  
+ We estimated the probability that the coin would land face up, but we didn’t 
+ really answer MacKay’s question: Do the data give evidence that the coin is 
+ biased?
+  
+ In 
+ Chapter 4
+  I proposed that data are in favor of a hypothesis if the data are 
+ more likely under the hypothesis than under the alternative or, equivalently, if 
+ the Bayes factor is greater than 1.
+  
+ In the Euro example, we have two hypotheses to consider: I’ll use 
+ F
+  for the 
+ hypothesis that the coin is fair and 
+ B
+  for the hypothesis that it is biased.
+  
+ If the coin is fair, it is easy to compute the likelihood of the data, 
+ p
+  D F
+  . In fact, 
+ we already wrote the function that does it.
+  
+  def Likelihood(self, data, hypo):
+  
+  x = hypo / 100.0
+  
+  head, tails = data
+  
+  like = x**heads * (1-x)**tails
+  
+  return like",NA
+Making a fair comparison,"To make a legitimate comparison, we have to define 
+ B
+  without looking at the 
+ data. So let’s try a different definition. If you inspect a Belgian Euro coin, you 
+ might notice that the “heads” side is more prominent than the “tails” side. You 
+ might expect the shape to have some effect on 
+ x
+ , but be unsure whether it makes 
+ heads more or less likely. So you might say “I think the coin is biased so that 
+ x
+  is 
+ either 0.6 or 0.4, but I am not sure which.”
+  
+ We can think of this version, which I’ll call 
+ B_two
+  as a hypothesis made up of two 
+ sub-hypotheses. We can compute the likelihood for each sub-hypothesis and 
+ then compute the average likelihood.
+  
+  like40 
+ = 
+ suite.Likelihood(data, 
+ 40)
+  
+  like60 
+ = 
+ suite.Likelihood(data, 
+ 60)
+  
+  likelihood = 0.5 * like40 + 0.5 * like60
+  
+ The likelihood ratio (or Bayes factor) for 
+ b_two
+  is 1.3, which means the data 
+ provide weak evidence in favor of 
+ b_two
+ .
+  
+ More generally, suppose you suspect that the coin is biased, but you have no 
+ clue about the value of 
+ x
+ . In that case you might build a Suite, which I call 
+ b_uniform
+ , to represent sub-hypotheses from 0 to 100.
+  
+  b_uniform = Euro(xrange(0, 101))
+  
+  b_uniform.Remove(50)
+  
+  b_uniform.Normalize()",NA
+The triangle prior,"In 
+ Chapter 4
+  we also considered a triangle-shaped prior that gives higher 
+ probability to values of 
+ x
+  near 50%. If we think of this prior as a suite of sub-
+ hypotheses, we can compute its likelihood like this:
+  
+  b_triangle = TrianglePrior()
+  
+  likelihood = b_triangle.Update(data)
+  
+ The triangle prior 
+  
+ | 
+  
+ 12
+ 3",NA
+Discussion,"The Bayes factor for 
+ B_uniform
+  is 0.47, which means that the data provide 
+ evidence against this hypothesis, compared to 
+ F
+ . In the previous section I 
+ characterized this evi‐dence as “weak,” but didn’t say why.
+  
+ Part of the answer is historical. Harold Jeffreys, an early proponent of Bayesian 
+ statistics, suggested a scale for interpreting Bayes factors:
+  
+ Baye
+ s 
+ Facto
+ r
+  
+ Strength
+  
+ 1 – 3
+  
+ Barely worth 
+ mentioning
+  
+ 3 – 10
+  
+ Substantial
+  
+ 10 – 30
+  
+ Strong
+  
+ 30 – 
+ 100
+  
+ Very strong
+  
+ >
+  100
+  
+ Decisive",NA
+Exercises,"Exercise 11-1.
+  
+ Some people believe in the existence of extra-sensory perception (ESP); for 
+ example, the ability of some people to guess the value of an unseen playing card 
+ with probability better than chance.
+  
+ What is your prior degree of belief in this kind of ESP? Do you think it is as likely 
+ to exist as not? Or are you more skeptical about it? Write down your prior odds.
+  
+ Now compute the strength of the evidence it would take to convince you that 
+ ESP is at least 50% likely to exist. What Bayes factor would be needed to make 
+ you 90% sure that ESP exists?
+  
+ Exercise 11-2.
+  
+ Suppose that your answer to the previous question is 1000; that is, evidence 
+ with Bayes factor 1000 in favor of ESP would be sufficient to change your mind.
+  
+ Now suppose that you read a paper in a respectable peer-reviewed scientific 
+ journal that presents evidence with Bayes factor 1000 in favor of ESP. Would 
+ that change your mind?
+  
+ If not, how do you resolve the apparent contradiction? You might find it helpful 
+ to read about David Hume’s article, “Of Miracles,” at 
+ http://en.wikipedia.org/wiki/Of_Miracles
+ .",NA
+CHAPTE,NA,NA
+R 12 ,NA,NA
+Evide,NA,NA
+nce,NA,NA
+Interpreting SAT scores,"Suppose you are the Dean of Admission at a small engineering college in 
+ Massachusetts, and you are considering two candidates, Alice and Bob, whose 
+ qualifications are similar in many ways, with the exception that Alice got a 
+ higher score on the Math portion of the SAT, a standardized test intended to 
+ measure preparation for college-level work in mathematics.
+  
+ If Alice got 780 and Bob got a 740 (out of a possible 800), you might want to 
+ know whether that difference is evidence that Alice is better prepared than Bob, 
+ and what the strength of that evidence is.
+  
+ Now in reality, both scores are very good, and both candidates are probably well 
+ pre‐pared for college math. So the real Dean of Admission would probably 
+ suggest that we choose the candidate who best demonstrates the other skills 
+ and attitudes we look for in students. But as an example of Bayesian hypothesis 
+ testing, let’s stick with a narrower question: “How strong is the evidence that 
+ Alice is better prepared than Bob?”
+  
+ To answer that question, we need to make some modeling decisions. I’ll start 
+ with a simplification I know is wrong; then we’ll come back and improve the 
+ model. I pretend, temporarily, that all SAT questions are equally difficult. 
+ Actually, the designers of the SAT choose questions with a range of difficulty, 
+ because that improves the ability to measure statistical differences between 
+ test-takers.
+  
+ But if we choose a model where all questions are equally difficult, we can define 
+ a characteristic, 
+ p_correct
+ , for each test-taker, which is the probability of 
+ answering any question correctly. This simplification makes it easy to compute 
+ the likelihood of a given score.",NA
+The scale,"In order to understand SAT scores, we have to understand the scoring and 
+ scaling process. Each test-taker gets a raw score based on the number of correct 
+ and incorrect questions. The raw score is converted to a scaled score in the 
+ range 200–800.
+  
+ In 2009, there were 54 questions on the math SAT. The raw score for each test-
+ taker is the number of questions answered correctly minus a penalty of 
+ 1/4
+  
+ point for each question answered incorrectly.
+  
+ The College Board, which administers the SAT, publishes the map from raw 
+ scores to scaled scores. I have downloaded that data and wrapped it in an 
+ Interpolator object that provides a forward lookup (from raw score to scaled) 
+ and a reverse lookup (from scaled score to raw).
+  
+ You can download the code for this example from 
+ http://thinkbayes.com/sat.py
+ . 
+ For more information see 
+ “Working with the code” on page xi
+ .",NA
+The prior,"The College Board also publishes the distribution of scaled scores for all test-
+ takers. If we convert each scaled score to a raw score, and divide by the number 
+ of questions, the result is an estimate of 
+ p_correct
+ . So we can use the distribution 
+ of raw scores to model the prior distribution of 
+ p_correct
+ .
+  
+ Here is the code that reads and processes the data:
+  
+ class Exam(object):
+  
+  def __init__(self):
+  
+  self.scale = ReadScale()
+  
+  scores = ReadRanks()
+  
+  score_pmf = thinkbayes.MakePmfFromDict(dict(scores)) 
+ self.raw = self.ReverseScale(score_pmf)
+  
+  self.prior = DivideValues(raw, 54)
+  
+ Exam
+  encapsulates the information we have about the exam. 
+ ReadScale
+  and 
+ ReadRanks 
+ read files and return objects that contain the data: 
+ self.scale
+  is the 
+ Interpolator
+  that converts from raw to scaled scores and back; 
+ scores
+  is a list of 
+ (score, frequency) pairs.
+  
+ score_pmf
+  is the Pmf of scaled scores. 
+ self.raw
+  is the Pmf of raw scores, and 
+ self.pri or
+  is the Pmf of 
+ p_correct
+ .
+  
+ Figure 12-1
+  shows the prior distribution of 
+ p_correct
+ . This distribution is 
+ approxi‐mately Gaussian, but it is compressed at the extremes. By design, the 
+ SAT has the most power to discriminate between test-takers within two 
+ standard deviations of the mean, and less power outside that range.",NA
+Posterior,"Figure 12-2
+  shows the posterior distributions of 
+ p_correct
+  for Alice and Bob 
+ based on their exam scores. We can see that they overlap, so it is possible that 
+ p_correct
+  is actually higher for Bob, but it seems unlikely.
+  
+  
+ Figure 12-2. Posterior distributions of p_correct for Alice and Bob.
+  
+ 130 
+  
+ | 
+  
+ Chapter 12: Evidence",NA
+A better model,"Remember that the analysis we have done so far is based on the simplification 
+ that all SAT questions are equally difficult. In reality, some are easier than 
+ others, which means that the difference between Alice and Bob might be even 
+ smaller.
+  
+ But how big is the modeling error? If it is small, we conclude that the first 
+ model—based on the simplification that all questions are equally difficult—is 
+ good enough. If it’s large, we need a better model.
+  
+ In the next few sections, I develop a better model and discover (spoiler alert!) 
+ that the modeling error is small. So if you are satisfied with the simple mode, 
+ you can skip to the next chapter. If you want to see how the more realistic model 
+ works, read on...
+  
+ • Assume that each test-taker has some degree of 
+ efficacy
+ , which measures 
+ their ability to answer SAT questions.
+  
+ • Assume that each question has some level of 
+ difficulty
+ .
+  
+ • Finally, assume that the chance that a test-taker answers a question correctly 
+ is related to 
+ efficacy
+  and 
+ difficulty
+  according to this function:
+  
+ def ProbCorrect(efficacy, difficulty, a=1):
+  
+  
+  return 1 / (1 + math.exp(-a * (efficacy - difficulty)))
+  
+ This function is a simplified version of the curve used in 
+ item response theory
+ , 
+ which you can read about at 
+ http://en.wikipedia.org/wiki/Item_response_theory
+ . 
+ efficacy
+  and 
+ difficulty
+  are considered to be on the same scale, and the probability 
+ of getting a question right depends only on the difference between them.
+  
+ When 
+ efficacy
+  and 
+ difficulty
+  are equal, the probability of getting the question 
+ right is 50%. As 
+ efficacy
+  increases, this probability approaches 100%. As it 
+ decreases (or as 
+ difficulty
+  increases), the probability approaches 0%.",NA
+Calibration,"If we were given the distribution of difficulty, we could use 
+ MakeRawScoreDist
+  to 
+ com‐pute the distribution of raw scores. But for us the problem is the other way 
+ around: we are given the distribution of raw scores and we want to infer the 
+ distribution of difficulty.
+  
+ I assume that the distribution of difficulty is uniform with parameters 
+ center
+  and 
+ width
+ . 
+ MakeDifficulties
+  makes a list of difficulties with these parameters.
+  
+ def MakeDifficulties(center, width, n):
+  
+  low, high = center-width, center+width
+  
+  return numpy.linspace(low, high, n)
+  
+ By trying out a few combinations, I found that 
+ center=-0.05
+  and 
+ width=1.8
+  yield a 
+ distribution of raw scores similar to the actual data, as shown in 
+ Figure 12-3
+ .
+  
+  
+ Figure 12-3. Actual distribution of raw scores and a model to fit it.
+  
+ 134 
+  
+ | 
+  
+ Chapter 12: Evidence",NA
+Posterior distribution of efficacy,"Now that the model is calibrated, we can compute the posterior distribution of 
+ efficacy for Alice and Bob. Here is a version of the Sat class that uses the new 
+ model:
+  
+ class Sat2(thinkbayes.Suite):
+  
+  def __init__(self, exam, score):
+  
+  self.exam = exam
+  
+  self.score = score
+  
+  # start with the Gaussian prior
+  
+  efficacies = thinkbayes.MakeGaussianPmf(0, 1.5, 3) 
+ thinkbayes.Suite.__init__(self, efficacies)
+  
+  # update based on an exam score
+  
+  self.Update(score)
+  
+ Update
+  invokes 
+ Likelihood
+ , which computes the likelihood of a given test score 
+ for a hypothetical level of efficacy.
+  
+  def Likelihood(self, data, hypo):
+  
+  efficacy = hypo
+  
+  score = data
+  
+  raw = self.exam.Reverse(score)
+  
+  pmf = self.exam.PmfCorrect(efficacy)
+  
+  like = pmf.Prob(raw)
+  
+  return like",NA
+Predictive distribution,"The analysis we have done so far generates estimates for Alice and Bob’s 
+ efficacy, but since efficacy is not directly observable, it is hard to validate the 
+ results.",NA
+Discussion,"We started this chapter with the question, “How strong is the evidence that Alice 
+ is better prepared than Bob?” On the face of it, that sounds like we want to test 
+ two hy‐potheses: either Alice is more prepared or Bob is.
+  
+ But in order to compute likelihoods for these hypotheses, we have to solve an 
+ estimation problem. For each test-taker we have to find the posterior 
+ distribution of either 
+ p_cor rect
+  or 
+ efficacy
+ .
+  
+ Values like this are called 
+ nuisance parameters
+  because we don’t care what 
+ they are, but we have to estimate them to answer the question we care about.
+  
+ Discussion 
+  
+ | 
+  
+ 13
+ 7",NA
+CHAPTE,NA,NA
+R 13 ,NA,NA
+Simulat,NA,NA
+ion,"In this chapter I describe my solution to a problem posed by a patient with a 
+ kidney tumor. I think the problem is important and relevant to patients with 
+ these tumors and doctors treating them.
+  
+ And I think the solution is interesting because, although it is a Bayesian 
+ approach to the problem, the use of Bayes’s theorem is implicit. I present the 
+ solution and my code; at the end of the chapter I will explain the Bayesian part.
+  
+ If you want more technical detail than I present here, you can read my paper on 
+ this work at 
+ http://arxiv.org/abs/1203.6890
+ .",NA
+The Kidney Tumor problem,"I am a frequent reader and occasional contributor to the online statistics forum 
+ at 
+ http:// reddit.com/r/statistics
+ . In November 2011, I read the following 
+ message:
+  
+ “I have Stage IV Kidney Cancer and am trying to determine if the cancer formed 
+ before I retired from the military. ... Given the dates of retirement and detection is 
+ it possible to determine when there was a 50/50 chance that I developed the 
+ disease? Is it possible to determine the probability on the retirement date? My 
+ tumor was 15.5 cm x 15 cm at detection. Grade II.”
+  
+ I contacted the author of the message and got more information; I learned that 
+ veterans get different benefits if it is “more likely than not” that a tumor formed 
+ while they were in military service (among other considerations).
+  
+ Because renal tumors grow slowly, and often do not cause symptoms, they are 
+ some‐times left untreated. As a result, doctors can observe the rate of growth 
+ for untreated tumors by comparing scans from the same patient at different 
+ times. Several papers have reported these growth rates.",NA
+A simple model,"It is usually a good idea to start with a simple model before trying something 
+ more challenging. Sometimes the simple model is sufficient for the problem at 
+ hand, and if not, you can use it to validate the more complex model.
+  
+ For my simple model, I assume that tumors grow with a constant doubling time, 
+ and that they are three-dimensional in the sense that if the maximum linear 
+ measurement doubles, the volume is multiplied by eight.
+  
+ I learned from my correspondent that the time between his discharge from the 
+ military and his diagnosis was 3291 days (about 9 years). So my first calculation 
+ was, “If this tumor grew at the median rate, how big would it have been at the 
+ date of discharge?”
+  
+ The median volume doubling time reported by Zhang et al is 811 days. 
+ Assuming 3-dimensional geometry, the doubling time for a linear measure is 
+ three times longer.
+  
+  # time between discharge and diagnosis, in days  interval 
+ = 3291.0
+  
+  # doubling time in linear measure is doubling time in volume * 3 dt = 811.0 * 
+ 3
+  
+  # number of doublings since discharge
+  
+  doublings = interval / dt
+  
+  # how big was the tumor at time of discharge (diameter in cm) d1 = 15.5
+  
+  d0 = d1 / 2.0 ** doublings
+  
+ You can download the code in this chapter from 
+ http://thinkbayes.com/kidney.py
+ . For more information see 
+ “Working with the 
+ code” on page xi
+ .
+  
+ The result, 
+ d0
+ , is about 6 cm. So if this tumor formed after the date of discharge, 
+ it must have grown substantially faster than the median rate. Therefore I 
+ concluded that it is“more likely than not” that this tumor formed before the date 
+ of discharge.
+  
+ In addition, I computed the growth rate that would be implied if this tumor had 
+ formed after the date of discharge. If we assume an initial size of 0.1 cm, we can 
+ compute the number of doublings to get to a final size of 15.5 cm:
+  
+  # assume an initial linear measure of 0.1 cm d0 = 0.1
+  
+  d1 = 15.5
+  
+  # how many doublings would it take to get from d0 to d1 
+ doublings = log2(d1 / d0)
+  
+  # what linear doubling time does that imply? dt = 
+ interval / doublings",NA
+A more general model,"Given the size of a tumor at time of diagnosis, it would be most useful to know 
+ the probability that the tumor formed before any given date; in other words, the 
+ distribution of ages.
+  
+ To find it, I run simulations of tumor growth to get the distribution of size 
+ conditioned on age. Then we can use a Bayesian approach to get the distribution 
+ of age conditioned on size.
+  
+ The simulation starts with a small tumor and runs these steps:
+  
+ 1. Choose a growth rate from the distribution of RDT.
+  
+ 2. Compute the size of the tumor at the end of an interval.
+  
+ 3. Record the size of the tumor at each interval.
+  
+ 4. Repeat until the tumor exceeds the maximum relevant size.
+  
+ For the initial size I chose 0.3 cm, because carcinomas smaller than that are less 
+ likely to be invasive and less likely to have the blood supply needed for rapid 
+ growth (see 
+ http://en.wikipedia.org/wiki/Carcinoma_in_situ
+ ).
+  
+ I chose an interval of 245 days (about 8 months) because that is the median time 
+ between measurements in the data source.
+  
+ 144 
+  
+ | 
+  
+ Chapter 13: Simulation",NA
+Implementation,"Here is the kernel of the simulation:
+  
+ def MakeSequence(rdt_seq, v0=0.01, interval=0.67, vmax=Volume(20.0)): seq = 
+ v0,
+  
+  age = 0
+  
+  for rdt in rdt_seq:
+  
+  
+  age += interval
+  
+  
+  final, seq = ExtendSequence(age, seq, rdt, interval)
+  
+  if 
+ final > vmax:
+  
+  
+  
+  break
+  
+  return seq
+  
+ rdt_seq
+  is an iterator that yields random values from the CDF of growth rate. 
+ v0
+  
+ is the initial volume in mL. 
+ interval
+  is the time step in years. 
+ vmax
+  is the final 
+ volume cor‐responding to a linear measurement of 20 cm.
+  
+ Volume
+  converts from linear measurement in cm to volume in mL, based on the 
+ sim‐plification that the tumor is a sphere:
+  
+ def Volume(diameter, factor=4*math.pi/3):
+  
+  
+  return factor * (diameter/2.0)**3
+  
+ ExtendSequence
+  computes the volume of the tumor at the end of the interval.
+  
+ def ExtendSequence(age, seq, rdt, interval): initial = 
+ seq[-1]
+  
+  doublings = rdt * interval
+  
+  final = initial * 2**doublings
+  
+  new_seq = seq + (final,)
+  
+  cache.Add(age, new_seq, rdt)
+  
+  return final, new_seq
+  
+ age
+  is the age of the tumor at the end of the interval. 
+ seq
+  is a tuple that contains 
+ the volumes so far. 
+ rdt
+  is the growth rate during the interval, in doublings per 
+ year. 
+ interval 
+ is the size of the time step in years.
+  
+ The return values are 
+ final
+ , the volume of the tumor at the end of the interval, 
+ and 
+ new_seq
+ , a new tuple containing the volumes in 
+ seq
+  plus the new volume 
+ final
+ .
+  
+ Cache.Add
+  records the age and size of each tumor at the end of each interval, as 
+ explained in the next section.
+  
+ 146 
+  
+ | 
+  
+ Chapter 13: Simulation",NA
+Caching the joint distribution,"Here’s how the cache works.
+  
+ class Cache(object):
+  
+  def __init__(self):
+  
+  
+  self.joint = thinkbayes.Joint()
+  
+ joint
+  is a joint Pmf that records the frequency of each age-size pair, so it 
+ approximates the joint distribution of age and size.
+  
+ At the end of each simulated interval, 
+ ExtendSequence
+  calls 
+ Add
+ :
+  
+ # class Cache
+  
+  def Add(self, age, seq):
+  
+  final = seq[-1]
+  
+  cm = Diameter(final)
+  
+  bucket = round(CmToBucket(cm))
+  
+  self.joint.Incr((age, bucket))
+  
+ Again, 
+ age
+  is the age of the tumor, and 
+ seq
+  is the sequence of volumes so far.
+  
+ Before adding the new data to the joint distribution, we use 
+ Diameter
+  to convert 
+ from volume to diameter in centimeters:
+  
+ def Diameter(volume, factor=3/math.pi/4, exp=1/3.0): 
+ return 2 * (factor * volume) ** exp
+  
+ And 
+ CmToBucket
+  to convert from centimeters to a discrete bucket number:
+  
+ def CmToBucket(x, factor=10):
+  
+  
+  return factor * math.log(x)
+  
+ The buckets are equally spaced on a log scale. Using 
+ factor=10
+  yields a 
+ reasonable number of buckets; for example, 1 cm maps to bucket 0 and 10 cm 
+ maps to bucket 23.
+  
+ After running the simulations, we can plot the joint distribution as a 
+ pseudocolor plot, where each cell represents the number of tumors observed at 
+ a given size-age pair. 
+ Figure 13-3
+  shows the joint distribution after 1000 
+ simulations.",NA
+Conditional distributions,"By taking a vertical slice from the joint distribution, we can get the distribution 
+ of sizes for any given age. By taking a horizontal slice, we can get the 
+ distribution of ages con‐ditioned on size.
+  
+ Here’s the code that reads the joint distribution and builds the conditional 
+ distribution for a given size.
+  
+ # class Cache
+  
+  def ConditionalCdf(self, bucket):
+  
+  pmf = self.joint.Conditional(0, 1, bucket) cdf = 
+ pmf.MakeCdf()
+  
+  return cdf
+  
+ bucket
+  is the integer bucket number corresponding to tumor size. 
+ Joint.Conditional 
+ computes the PMF of age conditioned on 
+ bucket
+ . The result is 
+ the CDF of age condi‐tioned on 
+ bucket
+ .
+  
+ 148 
+  
+ | 
+  
+ Chapter 13: Simulation",NA
+Serial Correlation,"The results so far are based on a number of modeling decisions; let’s review 
+ them and consider which ones are the most likely sources of error:
+  
+ • To convert from linear measure to volume, we assume that tumors are 
+ approxi‐mately spherical. This assumption is probably fine for tumors up to 
+ a few centi‐meters, but not for very large tumors.
+  
+ • The distribution of growth rates in the simulations are based on a 
+ continuous model we chose to fit the data reported by Zhang et al, which is 
+ based on 53 patients. The fit is only approximate and, more importantly, a 
+ larger sample would yield a dif‐ferent distribution.
+  
+ • The growth model does not take into account tumor subtype or grade; this 
+ as‐sumption is consistent with the conclusion of Zhang et al: “Growth rates 
+ in renal tumors of different sizes, subtypes and grades represent a wide 
+ range and overlap substantially.” But with a larger sample, a difference 
+ might become apparent.
+  
+ 150 
+  
+ | 
+  
+ Chapter 13: Simulation",NA
+Discussion,"Well, we got through a whole chapter without using Bayes’s theorem or the 
+ Suite
+  
+ class that encapsulates Bayesian updates. What happened?
+  
+ One way to think about Bayes’s theorem is as an algorithm for inverting 
+ conditional probabilities. Given 
+ p
+  B A
+  , we can compute 
+ p
+  A B
+  , provided we 
+ know 
+ p
+  A
+   and 
+ p
+  B
+  . Of course this algorithm is only useful if, for some reason, it 
+ is easier to compute 
+ p
+  B A
+   than 
+ p
+  A B
+  .
+  
+ In this example, it is. By running simulations, we can estimate the distribution of 
+ size conditioned on age, or 
+ p
+  size age
+  . But it is harder to get the distribution of 
+ age con‐ditioned on size, or 
+ p
+  age size
+  . So this seems like a perfect opportunity 
+ to use Bayes’s theorem.
+  
+ The reason I didn’t is computational efficiency. To estimate 
+ p
+  size age
+   for any 
+ given size, you have to run a lot of simulations. Along the way, you end up 
+ computing
+  
+ p
+  size age
+   for a lot of sizes. In fact, you end up computing the entire joint 
+ distribution
+  
+  
+ of size and age, 
+ p
+  size
+ ,
+ age
+  .",NA
+CHAPTE,NA,NA
+R 14 ,NA,NA
+A Hierarchical ,NA,NA
+Model,NA,NA
+The Geiger counter problem,"I got the idea for the following problem from Tom Campbell-Ricketts, author of 
+ the Maximum Entropy blog at 
+ http://maximum-entropy-blog.blogspot.com
+ . And 
+ he got the idea from E.T. Jaynes, author of the classic 
+ Probability Theory: The 
+ Logic of Science
+ :
+  
+ Suppose that a radioactive source emits particles toward a Geiger counter at an 
+ average rate of 
+ r
+  particles per second, but the counter only registers a fraction, 
+ f
+ , of 
+ the particles that hit it. If 
+ f
+  is 10% and the counter registers 15 particles in a one 
+ second interval, what is the posterior distribution of 
+ n
+ , the actual number of 
+ particles that hit the counter, and 
+ r
+ , the average rate particles are emitted?
+  
+ To get started on a problem like this, think about the chain of causation that 
+ starts with the parameters of the system and ends with the observed data:
+  
+ 1. The source emits particles at an average rate, 
+ r
+ .
+  
+ 2. During any given second, the source emits 
+ n
+  particles toward the counter.
+  
+ 3. Out of those 
+ n
+  particles, some number, 
+ k
+ , get counted.
+  
+ The probability that an atom decays is the same at any point in time, so 
+ radioactive decay is well modeled by a Poisson process. Given 
+ r
+ , the distribution 
+ of 
+ n
+  is Poisson distribution with parameter 
+ r
+ .
+  
+ And if we assume that the probability of detection for each particle is 
+ independent of the others, the distribution of 
+ k
+  is the binomial distribution with 
+ parameters 
+ n
+  and 
+ f
+ .
+  
+ Given the parameters of the system, we can find the distribution of the data. So 
+ we can solve what is called the 
+ forward problem
+ .",NA
+Start simple,"Let’s start with a simple version of the problem where we know the value of 
+ r
+ . 
+ We are given the value of 
+ f
+ , so all we have to do is estimate 
+ n
+ .
+  
+ I define a Suite called 
+ Detector
+  that models the behavior of the detector and 
+ estimates 
+ n
+ .
+  
+ class Detector(thinkbayes.Suite):
+  
+  def __init__(self, r, f, high=500, step=1):
+  
+  pmf = thinkbayes.MakePoissonPmf(r, high, step=step) 
+ thinkbayes.Suite.__init__(self, pmf, name=r)
+  
+  self.r = r
+  
+  self.f = f
+  
+ If the average emission rate is 
+ r
+  particles per second, the distribution of 
+ n
+  is 
+ Poisson with parameter 
+ r
+ . 
+ high
+  and 
+ step
+  determine the upper bound for 
+ n
+  and 
+ the step size between hypothetical values.
+  
+ Now we need a likelihood function:
+  
+ # class Detector
+  
+  def Likelihood(self, data, hypo):
+  
+  k = data
+  
+  n = hypo
+  
+  p = self.f
+  
+  return thinkbayes.EvalBinomialPmf(k, n, p)
+  
+ data
+  is the number of particles detected, and 
+ hypo
+  is the hypothetical number of 
+ particles emitted, 
+ n
+ .
+  
+ If there are actually 
+ n
+  particles, and the probability of detecting any one of them 
+ is 
+ f
+ , the probability of detecting 
+ k
+  particles is given by the binomial distribution.
+  
+ That’s it for the Detector. We can try it out for a range of values of 
+ r
+ :
+  
+  f = 0.1
+  
+  k = 15
+  
+  for r in [100, 250, 400]:
+  
+  suite = Detector(r, f, step=1)
+  
+  suite.Update(k)
+  
+  print suite.MaximumLikelihood()
+  
+ Figure 14-1
+  shows the posterior distribution of 
+ n
+  for several given values of 
+ r
+ .
+  
+ 156 
+  
+ | 
+  
+ Chapter 14: A Hierarchical Model",NA
+Make it hierarchical ,"In the previous section, we assume 
+ r
+  is known. Now let’s relax that assumption. I 
+ define another Suite, called 
+ Emitter
+ , that models the behavior of the emitter and 
+ estimates 
+ r
+ : 
+  
+ class Emitter(thinkbayes.Suite):
+  
+  
+  def __init__(self, rs, f=0.1):
+  
+  
+  
+  detectors = [Detector(r, f) for r in rs]
+  
+  
+  
+  thinkbayes.Suite.__init__(self, detectors) 
+  
+ rs
+  is a sequence of hypothetical value for 
+ r
+ . 
+ detectors
+  is a sequence of Detector 
+ objects, one for each value of 
+ r
+ . The values in the Suite are Detectors, so Emitter 
+ is a 
+ meta-Suite
+ ; that is, a Suite that contains other Suites as values.
+  
+ To update the Emitter, we have to compute the likelihood of the data under each 
+ hy‐pothetical value of 
+ r
+ . But each value of 
+ r
+  is represented by a Detector that 
+ contains a range of values for 
+ n
+ .
+  
+ To compute the likelihood of the data for a given Detector, we loop through the 
+ values of 
+ n
+  and add up the total probability of 
+ k
+ . That’s what 
+ SuiteLikelihood
+  
+ does:
+  
+ Make it hierarchical 
+  
+ | 
+  
+ 15
+ 7",NA
+A little optimization,"You might recognize 
+ SuiteLikelihood
+ ; we saw it in 
+ “Making a fair comparison” on 
+ page 122
+ . At the time, I pointed out that we didn’t really need it, because the 
+ total prob‐ability computed by 
+ SuiteLikelihood
+  is exactly the normalizing 
+ constant computed and returned by 
+ Update
+ .
+  
+ So instead of updating the Emitter and then updating the Detectors, we can do 
+ both steps at the same time, using the result from 
+ Detector.Update
+  as the 
+ likelihood of Emitter.
+  
+ Here’s the streamlined version of 
+ Emitter.Likelihood
+ :
+  
+ # class Emitter
+  
+  def Likelihood(self, data, hypo):
+  
+  
+  return hypo.Update(data)
+  
+ 158 
+  
+ | 
+  
+ Chapter 14: A Hierarchical Model",NA
+Extracting the posteriors,"After we update the Emitter, we can get the posterior distribution of 
+ r
+  by looping 
+ through the Detectors and their probabilities:
+  
+ # class Emitter
+  
+  def DistOfR(self):
+  
+  items = [(detector.r, prob) for detector, prob in self.Items()] return 
+ thinkbayes.MakePmfFromItems(items)
+  
+ items
+  is a list of values of 
+ r
+  and their probabilities. The result is the Pmf of 
+ r
+ .
+  
+ To get the posterior distribution of 
+ n
+ , we have to compute the mixture of the 
+ Detectors. We can use 
+ thinkbayes.MakeMixture
+ , which takes a meta-Pmf that 
+ maps from each distribution to its probability. And that’s exactly what the 
+ Emitter is:
+  
+ # class Emitter
+  
+  def DistOfN(self):
+  
+  
+  return thinkbayes.MakeMixture(self)
+  
+ Figure 14-2
+  shows the results. Not surprisingly, the most likely value for 
+ n
+  is 
+ 150. Given 
+ f
+  and 
+ n
+ , the expected count is 
+ k
+ =
+  f n
+ , so given 
+ f
+  and 
+ k
+ , the expected 
+ value of 
+ n
+  is 
+ k
+ /
+  f
+  , which is 150.
+  
+ And if 150 particles are emitted in one second, the most likely value of 
+ r
+  is 150 
+ particles per second. So the posterior distribution of 
+ r
+  is also centered on 150.
+  
+ The posterior distributions of 
+ r
+  and 
+ n
+  are similar; the only difference is that we 
+ are slightly less certain about 
+ n
+ . In general, we can be more certain about the 
+ long-range emission rate, 
+ r
+ , than about the number of particles emitted in any 
+ particular second, 
+ n
+ .
+  
+ You can download the code in this chapter from 
+ http://thinkbayes.com/jaynes.py
+ . For more information see 
+ “Working with the 
+ code” on page xi
+ .",NA
+Discussion,"The Geiger counter problem demonstrates the connection between causation 
+ and hi‐erarchical modeling. In the example, the emission rate 
+ r
+  has a causal 
+ effect on the number of particles, 
+ n
+ , which has a causal effect on the particle 
+ count, 
+ k
+ .
+  
+ The hierarchical model reflects the structure of the system, with causes at the 
+ top and effects at the bottom.",NA
+Exercises,"Exercise 14-1.
+  
+ This exercise is also inspired by an example in Jaynes, 
+ Probability Theory
+ .
+  
+ Suppose you buy a mosquito trap that is supposed to reduce the population of 
+ mos‐quitoes near your house. Each week, you empty the trap and count the 
+ number of mos‐quitoes captured. After the first week, you count 30 mosquitoes. 
+ After the second week,",NA
+CHAPTE,NA,NA
+R 15 ,NA,NA
+Dealing with ,NA,NA
+Dimensions,NA,NA
+Belly button bacteria,"Belly Button Biodiversity 2.0 (BBB2) is a nation-wide citizen science project 
+ with the goal of identifying bacterial species that can be found in human navels 
+ (
+ http://bbda ta.yourwildlife.org
+ ). The project might seem whimsical, but it is 
+ part of an increasing interest in the human microbiome, the set of 
+ microorganisms that live on human skin and parts of the body.
+  
+ In their pilot study, BBB2 researchers collected swabs from the navels of 60 
+ volunteers, used multiplex pyrosequencing to extract and sequence fragments 
+ of 16S rDNA, then identified the species or genus the fragments came from. Each 
+ identified fragment is called a “read.”
+  
+ We can use these data to answer several related questions:
+  
+ • Based on the number of species observed, can we estimate the total number 
+ of species in the environment?
+  
+ • Can we estimate the prevalence of each species; that is, the fraction of the 
+ total population belonging to each species?
+  
+ • If we are planning to collect additional samples, can we predict how many 
+ new species we are likely to discover?
+  
+ • How many additional reads are needed to increase the fraction of observed 
+ species to a given threshold?
+  
+ These questions make up what is called the 
+ Unseen Species problem
+ .",NA
+Lions and tigers and bears,"I’ll start with a simplified version of the problem where we know that there are 
+ exactly three species. Let’s call them lions, tigers and bears. Suppose we visit a 
+ wild animal preserve and see 3 lions, 2 tigers and one bear.
+  
+ If we have an equal chance of observing any animal in the preserve, the number 
+ of each species we see is governed by the multinomial distribution. If the 
+ prevalence of lions and tigers and bears is 
+ p_lion
+  and 
+ p_tiger
+  and 
+ p_bear
+ , the 
+ likelihood of seeing 3 lions, 2 tigers and one bear is
+  
+ p_lion**3 * p_tiger**2 * p_bear**1
+  
+ An approach that is tempting, but not correct, is to use beta distributions, as in 
+ “The beta distribution” on page 34
+ , to describe the prevalence of each species 
+ separately. For example, we saw 3 lions and 3 non-lions; if we think of that as 3 
+ “heads” and 3 “tails,”then the posterior distribution of 
+ p_lion
+  is:
+  
+  beta = thinkbayes.Beta()
+  
+  beta.Update((3, 3))
+  
+  print beta.MaximumLikelihood()
+  
+ The maximum likelihood estimate for 
+ p_lion
+  is the observed rate, 50%. Similarly 
+ the MLEs for 
+ p_tiger
+  and 
+ p_bear
+  are 33% and 17%.
+  
+ But there are two problems:
+  
+ 1. We have implicitly used a prior for each species that is uniform from 0 to 1, 
+ but since we know that there are three species, that prior is not correct. The 
+ right prior should have a mean of 1/3, and there should be zero likelihood 
+ that any species has a prevalence of 100%.
+  
+ 2. The distributions for each species are not independent, because the 
+ prevalences have to add up to 1. To capture this dependence, we need a 
+ joint distribution for the three prevalences.
+  
+ We can use a Dirichlet distribution to solve both of these problems (see 
+ http://en.wiki pedia.org/wiki/Dirichlet_distribution
+ ). In the same way we used 
+ the beta distribution to describe the distribution of bias for a coin, we can use a 
+ Dirichlet distribution to describe the joint distribution of 
+ p_lion
+ , 
+ p_tiger
+  and 
+ p_bear
+ .
+  
+ The Dirichlet distribution is the multi-dimensional generalization of the beta 
+ distribu‐tion. Instead of two possible outcomes, like heads and tails, the 
+ Dirichlet distribution handles any number of outcomes: in this example, three 
+ species.
+  
+ If there are 
+ n
+  outcomes, the Dirichlet distribution is described by 
+ n
+  parameters, 
+ written
+ α
+ 1
+  through 
+ α
+ n
+ .",NA
+The hierarchical version,"We have solved a simplified version of the problem: if we know how many 
+ species there are, we can estimate the prevalence of each.
+  
+ Now let’s get back to the original problem, estimating the total number of 
+ species. To solve this problem I’ll define a meta-Suite, which is a Suite that 
+ contains other Suites as hypotheses. In this case, the top-level Suite contains 
+ hypotheses about the number of species; the bottom level contains hypotheses 
+ about prevalences.
+  
+ Here’s the class definition:
+  
+ class Species(thinkbayes.Suite):
+  
+  def __init__(self, ns):
+  
+  hypos = [thinkbayes.Dirichlet(n) for n in ns] 
+ thinkbayes.Suite.__init__(self, hypos)",NA
+Random sampling,"There are two ways to generate a random sample from a Dirichlet distribution. 
+ One is to use the marginal beta distributions, but in that case you have to select 
+ one at a time and scale the rest so they add up to 1 (see 
+ http://en.wikipedia.org/wiki/Dirichlet_distri 
+ bution#Random_number_generation
+ ).
+  
+ A less obvious, but faster, way is to select values from 
+ n
+  gamma distributions, 
+ then normalize by dividing through by the total. Here’s the code:
+  
+ # class Dirichlet
+  
+  def Random(self):
+  
+  p = numpy.random.gamma(self.params)
+  
+  return p / p.sum()
+  
+ Now we’re ready to look at some results. Here is the code that extracts the 
+ posterior distribution of 
+ n
+ :
+  
+  def DistOfN(self):
+  
+  
+  pmf = thinkbayes.Pmf()
+  
+  
+  for hypo, prob in self.Items():
+  
+  
+  pmf.Set(hypo.n, prob)
+  
+  
+  return pmf
+  
+ 168 
+  
+ | 
+  
+ Chapter 15: Dealing with Dimensions",NA
+Optimization,"I have to admit that I am proud of this example. The Unseen Species problem is 
+ not easy, and I think this solution is simple and clear, and takes surprisingly few 
+ lines of code (about 50 so far).
+  
+ Optimization 
+  
+ | 
+  
+ 16
+ 9",NA
+Collapsing the hierarchy,"All of the bottom-level Dirichlet distributions are updated with the same data, so 
+ the first 
+ m
+  parameters are the same for all of them. We can eliminate them and 
+ merge the parameters into the top-level suite. 
+ Species2
+  implements this 
+ optimization:
+  
+ class Species2(object):
+  
+  def __init__(self, ns):
+  
+  self.ns = ns
+  
+  self.probs = numpy.ones(len(ns), dtype=numpy.double) 
+ self.params = numpy.ones(self.high, dtype=numpy.int)
+  
+ 170 
+  
+ | 
+  
+ Chapter 15: Dealing with Dimensions",NA
+One more problem,"There’s more we could do to optimize this code, but there’s another problem we 
+ need to fix first. As the number of observed species increases, this version gets 
+ noisier and takes more iterations to converge on a good answer.
+  
+ The problem is that if the prevalences we choose from the Dirichlet distribution, 
+ the 
+ ps
+ , are not at least approximately right, the likelihood of the observed data is 
+ close to zero and almost equally bad for all values of 
+ n
+ . So most iterations don’t 
+ provide any useful contribution to the total likelihood. And as the number of 
+ observed species, 
+ m
+ , gets large, the probability of choosing 
+ ps
+  with non-
+ negligible likelihood gets small. Really small.
+  
+ Fortunately, there is a solution. Remember that if you observe a set of data, you 
+ can update the prior distribution with the entire dataset, or you can break it up 
+ into a series of updates with subsets of the data, and the result is the same either 
+ way.
+  
+ For this example, the key is to perform the updates one species at a time. That 
+ way when we generate a random set of 
+ ps
+ , only one of them affects the 
+ computed likelihood, so the chance of choosing a good one is much better.
+  
+ Here’s a new version that updates one species at a time:
+  
+ class Species4(Species):
+  
+  def Update(self, data):
+  
+  
+  m = len(data)
+  
+  for i in range(m):
+  
+  one = numpy.zeros(i+1)
+  
+  one[i] = data[i]            
+  
+  Species.Update(self, one)
+  
+ This version inherits 
+ __init__
+  from 
+ Species
+ , so it represents the hypotheses as a 
+ list of Dirichlet objects (unlike 
+ Species2
+ ).
+  
+ Update
+  loops through the observed species and makes an array, 
+ one
+ , with all 
+ zeros and one species count. Then it calls 
+ Update
+  in the parent class, which 
+ computes the likeli‐hoods and updates the sub-hypotheses.
+  
+ So in the running example, we do three updates. The first is something like “I 
+ have seen three lions.” The second is “I have seen two tigers and no additional 
+ lions.” And the third is “I have seen one bear and no more lions and tigers.”
+  
+ Here’s the new version of 
+ Likelihood
+ :
+  
+ # class Species4
+  
+  def Likelihood(self, data, hypo):
+  
+  
+  dirichlet = hypo
+  
+ One more problem 
+  
+ | 
+  
+ 17
+ 3",NA
+We’re not done yet,"Performing the updates one species at a time solves one problem, but it creates 
+ another. Each update takes time proportional to 
+ km
+ , where 
+ k
+  is the number of 
+ hypotheses and 
+ m
+  is the number of observed species. So if we do 
+ m
+  updates, the 
+ total run time is pro‐portional to 
+ km
+ 2
+ .
+  
+ But we can speed things up using the same trick we used in 
+ “Collapsing the 
+ hierarchy”on page 170
+ : we’ll get rid of the Dirichlet objects and collapse the two 
+ levels of the hierarchy into a single object. So here’s yet another version of 
+ Species
+ :
+  
+ class Species5(Species2):
+  
+  def Update(self, data):
+  
+  
+  m = len(data)
+  
+  
+  for i in range(m):
+  
+  
+  self.UpdateOne(i+1, data[i])
+  
+  
+  self.params[i] += data[i]
+  
+ This version inherits 
+ __init__
+  from 
+ Species2
+ , so it uses 
+ ns
+  and 
+ probs
+  to represent 
+ the distribution of 
+ n
+ , and 
+ params
+  to represent the parameters of the Dirichlet 
+ distribution.
+  
+ Update
+  is similar to what we saw in the previous section. It loops through the 
+ observed species and calls 
+ UpdateOne
+ :
+  
+ # class Species5
+  
+  def UpdateOne(self, i, count):
+  
+  
+  likes = numpy.zeros(len(self.ns), dtype=numpy.double)",NA
+The belly button data ,"That’s enough about lions and tigers and bears. Let’s get back to belly buttons. 
+ To get a sense of what the data look like, consider subject B1242, whose sample 
+ of 400 reads yielded 61 species with the following counts: 
+  
+  
+ 92, 53, 47, 38, 15, 14, 12, 10, 8, 7, 7, 5, 5, 
+  
+  
+ 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2,
+  
+ The belly button data 
+  
+ | 
+  
+ 17
+ 5",NA
+Predictive distributions,"I introduced the hidden species problem in the form of four related questions. 
+ We have answered the first two by computing the posterior distribution for 
+ n
+  
+ and the prevalence of each species.
+  
+ The other two questions are:
+  
+ • If we are planning to collect additional reads, can we predict how many new 
+ species we are likely to discover?
+  
+ • How many additional reads are needed to increase the fraction of observed 
+ species to a given threshold?
+  
+ To answer predictive questions like this we can use the posterior distributions 
+ to sim‐ulate possible future events and compute predictive distributions for the 
+ number of species, and fraction of the total, we are likely to see.
+  
+ The kernel of these simulations looks like this:
+  
+ 1. Choose 
+ n
+  from its posterior distribution.
+  
+ 2. Choose a prevalence for each species, including possible unseen species, 
+ using the 
+  
+ Dirichlet distribution.
+  
+ 3. Generate a random sequence of future observations.
+  
+ 4. Compute the number of new species, 
+ num_new
+ , as a function of the number 
+ of ad‐
+  
+ ditional reads, 
+ k
+ .
+  
+ 5. Repeat the previous steps and accumulate the joint distribution of 
+ num_new
+  
+ and 
+ k
+ .
+  
+ And here’s the code. 
+ RunSimulation
+  runs a single simulation:
+  
+ # class Subject
+  
+  def 
+ RunSimulation(self, 
+ num_reads):
+  
+  m, 
+ seen 
+ = 
+ self.GetSeenSpecies()
+  
+  n, observations = self.GenerateObservations(num_reads)
+  
+  curve = []
+  
+  for k, obs in enumerate(observations):
+  
+  seen.add(obs)
+  
+  num_new = len(seen) - m
+  
+  curve.append((k+1, num_new))
+  
+  return curve
+  
+ Predictive distributions 
+  
+ | 
+  
+ 17
+ 9",NA
+Joint posterior,"We can use these simulations to estimate the joint distribution of 
+ num_new
+  and 
+ k
+ , and from that we can get the distribution of 
+ num_new
+  conditioned on any 
+ value of 
+ k
+ .
+  
+ def MakeJointPredictive(curves):
+  
+  joint = thinkbayes.Joint()
+  
+  for curve in curves:
+  
+  
+  for k, num_new in curve:
+  
+  
+  
+  
+  joint.Incr((k, num_new))
+  
+  joint.Normalize()
+  
+  return joint
+  
+ MakeJointPredictive
+  makes a Joint object, which is a Pmf whose values are tuples.
+  
+ curves
+  is a list of rarefaction curves created by 
+ RunSimulation
+ . Each curve 
+ contains a list of pairs of 
+ k
+  and 
+ num_new
+ .
+  
+ The resulting joint distribution is a map from each pair to its probability of 
+ occurring. Given the joint distribution, we can use 
+ Joint.Conditional
+  get the 
+ distribution of 
+ num_new
+  conditioned on 
+ k
+  (see 
+ “Conditional distributions” on 
+ page 98
+ ).",NA
+Coverage,"The last question we want to answer is, “How many additional reads are needed 
+ to increase the fraction of observed species to a given threshold?”
+  
+ To answer this question, we need a version of 
+ RunSimulation
+  that computes the 
+ fraction of observed species rather than the number of new species.
+  
+ # class Subject
+  
+  def 
+ RunSimulation(self, 
+ num_reads):
+  
+  m, 
+ seen 
+ = 
+ self.GetSeenSpecies()
+  
+  n, observations = self.GenerateObservations(num_reads)
+  
+  curve = []
+  
+  for k, obs in enumerate(observations):
+  
+  
+  seen.add(obs)
+  
+  frac_seen = len(seen) / float(n)
+  
+  curve.append((k+1, frac_seen))
+  
+  return curve
+  
+ Next we loop through each curve and make a dictionary, 
+ d
+ , that maps from the 
+ number of additional reads, 
+ k
+ , to a list of 
+ fracs
+ ; that is, a list of values for the 
+ coverage achieved after 
+ k
+  reads.
+  
+  def MakeFracCdfs(self, curves):
+  
+  
+  d = {}
+  
+  
+  for curve in curves:
+  
+  
+  
+  for k, frac in curve:
+  
+  
+  
+  
+  d.setdefault(k, []).append(frac)
+  
+  cdfs = {}
+  
+  for k, fracs in d.iteritems():
+  
+  
+  cdf = thinkbayes.MakeCdfFromList(fracs)
+  
+  cdfs[k] = cdf
+  
+  return cdfs
+  
+ Then for each value of 
+ k
+  we make a Cdf of 
+ fracs
+ ; this Cdf represents the 
+ distribution of coverage after 
+ k
+  reads.
+  
+ Remember that the CDF tells you the probability of falling below a given 
+ threshold, so the 
+ complementary
+  CDF tells you the probability of exceeding it. 
+ Figure 15-7
+  shows complementary CDFs for a range of values of 
+ k
+ .
+  
+ To read this figure, select the level of coverage you want to achieve along the 
+ x
+ -
+ axis. As an example, choose 90%.
+  
+ 184 
+  
+ | 
+  
+ Chapter 15: Dealing with Dimensions",NA
+Discussion,"The Unseen Species problem is an area of active research, and I believe the 
+ algorithm in this chapter is a novel contribution. So in fewer than 200 pages we",NA
+Index,NA,NA
+A ,"ABC, 
+ 113
+  
+ bucket, 
+ 147 
+  
+ bus stop problem, 
+ 74
+  
+  
+ abstract type, 
+ 17
+ , 
+ 54 
+  
+ Approximate Bayesian Computation, 
+ 113 
+ arrival rate, 
+ 84 
+  
+ Axtell, Robert, 
+ 24",NA
+C ,"cache, 
+ 113
+ , 
+ 146 
+  
+ calibration, 
+ 134
+  
+ Campbell-Ricketts, Tom, 
+ 155",NA
+B ,"bacteria, 
+ 163 
+  
+ Bayes factor, 
+ 41
+ , 
+ 121
+ –
+ 122
+ , 
+ 122
+ , 
+ 132 
+  
+ Bayesian framework, 
+ 13 
+  
+ Bayes’s theorem, 
+ 3 
+  
+  
+ derivation, 
+ 3 
+  
+  
+ odds form, 
+ 40 
+  
+ Behavioral Risk Factor Surveillance System, 
+ 105 
+ belly button, 
+ 163 
+  
+ Bernoulli process, 
+ 66 
+  
+ beta distribution, 
+ 34
+ , 
+ 164 
+  
+ Beta object, 
+ 35
+ , 
+ 178 
+  
+ biased coin, 
+ 121 
+  
+ binomial coefficient, 
+ 172 
+  
+ binomial distribution, 
+ 130
+ , 
+ 155
+ , 
+ 156 
+  
+ binomial likelihood function, 
+ 35 
+  
+ biodiversity, 
+ 163 
+  
+ bogus, 
+ 108
+ , 
+ 122 
+  
+ Boston, 
+ 77 
+  
+ Boston Bruins, 
+ 65 
+  
+ BRFSS, 
+ 105
+ , 
+ 113
+  
+ carcinoma, 
+ 144 
+  
+ causation, 
+ 155
+ , 
+ 159 
+  
+ CDC, 
+ 105 
+  
+ CDF, 
+ 26 
+  
+ Cdf, 
+ 50
+ , 
+ 56
+ , 
+ 81
+ , 
+ 181 
+  
+ Centers for Disease Control, 
+ 105 
+  
+ central credible interval, 
+ 99 
+  
+ classical estimation, 
+ 107 
+  
+ coefficient of variation, 
+ 106 
+  
+ coin toss, 
+ 1 
+  
+ collectively exhaustive, 
+ 5 
+  
+ College Board, 
+ 128 
+  
+ complementary CDF, 
+ 184 
+  
+ concrete type, 
+ 17
+ , 
+ 54 
+  
+ conditional distribution, 
+ 98
+ , 
+ 102
+ , 
+ 144
+ , 
+ 148
+ , 
+ 154
+ , 
+ 182 
+  
+ conditional probability, 
+ 1 
+  
+ conjoint probability, 
+ 2 
+  
+ conjugate prior, 
+ 35 
+  
+ conjunction, 
+ 3 
+  
+ continuous distribution, 
+ 35 
+  
+ contributors, 
+ xiv
+  
+ We’d like to hear your suggestions for improving our indexes. Send email to index@oreilly.com.
+  
+ 187",NA
+D ,"Davidson-Pilon, Cameron, 
+ 52 
+  
+ decision analysis, 
+ 51
+ , 
+ 59
+ , 
+ 63
+ , 
+ 87 
+  
+ degree of belief, 
+ 1 
+  
+ density, 
+ 53
+ , 
+ 55
+ , 
+ 58
+ , 
+ 107 
+  
+ dependence, 
+ 2
+ , 
+ 98
+ , 
+ 99 
+  
+ diachronic interpretation, 
+ 5 
+  
+ dice, 
+ 11
+ , 
+ 19 
+  
+ Dice problem, 
+ 19 
+  
+ dice problem, 
+ 21 
+  
+ Dirichlet distribution, 
+ 164
+ , 
+ 179 
+  
+ distribution, 
+ 11
+ , 
+ 49
+ , 
+ 63 
+  
+  
+ operations, 
+ 42 
+  
+ divide-and-conquer, 
+ 9 
+  
+ doubling time, 
+ 142 
+  
+ Dungeons and Dragons, 
+ 19
+ , 
+ 42",NA
+G ,"gamma distribution, 
+ 168
+ , 
+ 172 
+  
+ Gaussian distribution, 
+ 53
+ , 
+ 54
+ , 
+ 54
+ , 
+ 56
+ , 
+ 65
+ , 
+ 106
+ , 
+ 113
+ , 
+ 115
+ , 
+ 128
+ , 
+ 133
+ , 
+ 135
+ , 
+ 151 
+  
+ Gaussian PDF, 
+ 54 
+  
+ Gee, Steve, 
+ 52 
+  
+ Geiger counter problem, 
+ 155
+ , 
+ 159 
+  
+ generator, 
+ 151
+ , 
+ 152
+ , 
+ 180 
+  
+ German tank problem, 
+ 20
+ , 
+ 28 
+  
+ growth rate, 
+ 150",NA
+H ,"heart attack, 
+ 1 
+  
+ height, 
+ 106 
+  
+ Heuer, Andreas, 
+ 67 
+  
+ hierarchical model, 
+ 158
+ , 
+ 159
+ , 
+ 166 
+ Hoag, Dirk, 
+ 73 
+  
+ hockey, 
+ 65 
+  
+ horse racing, 
+ 40 
+  
+ Horsford, Eben Norton, 
+ 105 
+  
+ Hume, David, 
+ 125 
+  
+ hypothesis testing, 
+ 121",NA
+I ,"implementation, 
+ 17
+ , 
+ 54 
+  
+ independence, 
+ 2
+ , 
+ 7
+ , 
+ 44
+ , 
+ 46
+ , 
+ 98
+ , 
+ 99
+ , 
+ 138
+ , 
+ 145
+ , 
+ 164 
+ informative prior, 
+ 27 
+  
+ insect sampling problem, 
+ 74
+  
+ inter-quartile range, 
+ 114",NA
+E ,"efficacy, 
+ 132 
+  
+ enumeration, 
+ 42
+ , 
+ 45 
+  
+ error, 
+ 56 
+  
+ ESP, 
+ 125 
+  
+ Euro problem, 
+ 29
+ , 
+ 36
+ , 
+ 113
+ , 
+ 121 
+  
+ evidence, 
+ 4
+ , 
+ 31
+ , 
+ 41
+ , 
+ 42
+ , 
+ 98
+ , 
+ 105
+ , 
+ 121
+ –
+ 122
+ , 
+ 122
+ , 
+  
+ 127 
+  
+ exception, 
+ 110 
+  
+ exponential distribution, 
+ 67
+ , 
+ 71
+ , 
+ 142 
+  
+ exponentiation, 
+ 45 
+  
+ extra-sensory perception, 
+ 125
+  
+ interface, 
+ 17
+ , 
+ 54 
+  
+ intuition, 
+ 8 
+  
+ inverse problem, 
+ 156 
+  
+ IQR, 
+ 114 
+  
+ item response theory, 
+ 132 
+ iterative modeling, 
+ 73 
+  
+ iterator, 
+ 146",NA
+J ,"Jaynes, E.T., 
+ 155 
+  
+ Joint, 
+ 97
+ , 
+ 98
+ , 
+ 99
+ , 
+ 102
+ , 
+ 106 
+  
+ joint distribution, 
+ 97
+ , 
+ 102
+ , 
+ 106
+ , 
+ 138
+ , 
+ 147
+ , 
+ 148
+ ,
+  
+ 153
+ , 
+ 164
+ , 
+ 179
+ , 
+ 182",NA
+F ,"fair coin, 
+ 121
+  
+ Joint object, 
+ 182 
+  
+ Joint pmf, 
+ 94
+  
+ forward problem, 
+ 155
+  
+ 188 
+  
+ | 
+  
+ Index",NA
+K ,"KDE, 
+ 53
+ , 
+ 55 
+  
+ kernel density estimation, 
+ 53
+ , 
+ 55 
+ Kidney tumor problem, 
+ 141",NA
+L ,"least squares fit, 
+ 149 
+ light bulb problem, 
+ 74
+  
+ navel, 
+ 163 
+  
+ NHL, 
+ 65 
+  
+ non-linear, 
+ 87 
+  
+ normal distribution, 
+ 54 
+  
+ normalize, 
+ 59 
+  
+ normalizing constant, 
+ 5
+ , 
+ 7
+ , 
+ 40
+ , 
+ 158 
+  
+ nuisance parameter, 
+ 137 
+  
+ numpy, 
+ xi
+ , 
+ 55
+ , 
+ 56
+ , 
+ 60
+ , 
+ 65
+ , 
+ 85
+ , 
+ 108
+ , 
+ 134
+ , 
+ 165
+ , 
+ 168
+ , 
+ 170
+ –
+ 175
+ , 
+ 175
+  
+ likelihood, 
+ 5
+ , 
+ 56
+ , 
+ 83
+ , 
+ 95
+ , 
+ 96
+ , 
+ 106
+ , 
+ 118
+ , 
+ 123
+ , 
+ 156
+  
+ Likelihood, 
+ 13 
+  
+ likelihood function, 
+ 21 
+  
+ likelihood ratio, 
+ 41
+ , 
+ 122
+ , 
+ 124
+ , 
+ 132 
+ linspace, 
+ 108 
+  
+ lions and tigers and bears, 
+ 164 
+ locomotive problem, 
+ 20
+ , 
+ 28
+ , 
+ 113 
+ log scale, 
+ 147 
+  
+ log transform, 
+ 109 
+  
+ log-likelihood, 
+ 111
+ , 
+ 171
+ , 
+ 172 
+  
+ logarithm, 
+ 109",NA
+M ,"M and M problem, 
+ 6
+ , 
+ 16 
+  
+ MacKay, David, 
+ 29
+ , 
+ 41
+ , 
+ 91
+ , 
+ 121 
+  
+ MakeMixture, 
+ 69
+ , 
+ 71
+ , 
+ 80
+ , 
+ 87
+ , 
+ 134
+ , 
+ 178 
+  
+ marginal distribution, 
+ 97
+ , 
+ 102
+ , 
+ 165 
+  
+ maximum, 
+ 45 
+  
+ maximum likelihood, 
+ 25
+ , 
+ 31
+ , 
+ 63
+ , 
+ 99
+ , 
+ 108
+ , 
+ 111
+ , 
+  
+ 164 
+  
+ mean squared error, 
+ 22 
+  
+ Meckel, Johann, 
+ 105 
+  
+ median, 
+ 31 
+  
+ memoization, 
+ 112 
+  
+ meta-Pmf, 
+ 69
+ , 
+ 71
+ , 
+ 80
+ , 
+ 87
+ , 
+ 134
+ , 
+ 178 
+  
+ meta-Suite, 
+ 157
+ , 
+ 166 
+  
+ microbiome, 
+ 163 
+  
+ mixture, 
+ 48
+ , 
+ 69
+ , 
+ 71
+ , 
+ 80
+ , 
+ 87
+ , 
+ 142
+ , 
+ 178 
+  
+ modeling, 
+ ix
+ , 
+ 28
+ , 
+ 36
+ , 
+ 73
+ , 
+ 118
+ , 
+ 127
+ , 
+ 143
+ , 
+ 144 
+ modeling error, 
+ 132
+ , 
+ 150
+ , 
+ 153 
+  
+ Monty Hall problem, 
+ 7
+ , 
+ 14 
+  
+ Mosteller, Frederick, 
+ 20 
+  
+ Mult, 
+ 12 
+  
+ multinomial coefficient, 
+ 168 
+  
+ multinomial distribution, 
+ 164
+ , 
+ 168
+ , 
+ 171 
+  
+ mutually exclusive, 
+ 5",NA
+N ,"National Hockey League, 
+ 65",NA
+O ,"objectivity, 
+ 28 
+  
+ observer bias, 
+ 79
+ , 
+ 89 
+  
+ odds, 
+ 39 
+  
+ Olin College, 
+ 77 
+  
+ Oliver’s blood problem, 
+ 41 
+  
+ operational taxonomic unit, 
+ 176 
+ optimization, 
+ 33
+ , 
+ 111
+ , 
+ 112
+ , 
+ 159
+ , 
+ 170 
+ OTU, 
+ 176 
+  
+ overtime, 
+ 71",NA
+P ,"Paintball problem, 
+ 93 
+  
+ parameter, 
+ 35 
+  
+ PDF, 
+ 36
+ , 
+ 66 
+  
+ Pdf, 
+ 53
+ , 
+ 53 
+  
+ PEP 8, 
+ xi 
+  
+ percentile, 
+ 26
+ , 
+ 149
+ , 
+ 152 
+  
+ Pmf, 
+ 50
+ , 
+ 53 
+  
+ Pmf class, 
+ 11 
+  
+ Pmf methods, 
+ 12 
+  
+ Poisson distribution, 
+ 67
+ , 
+ 68
+ , 
+ 69
+ , 
+ 83
+ , 
+ 156 
+  
+ Poisson process, 
+ x
+ , 
+ 65
+ , 
+ 66
+ , 
+ 71
+ , 
+ 74
+ , 
+ 77
+ , 
+ 155 
+  
+ posterior, 
+ 5 
+  
+ posterior distribution, 
+ 13
+ , 
+ 31 
+  
+ power law, 
+ 24 
+  
+ predictive distribution, 
+ 74
+ , 
+ 82
+ , 
+ 84
+ , 
+ 87
+ , 
+ 136
+ , 
+ 179 
+ prevalence, 
+ 163
+ , 
+ 166
+ , 
+ 176 
+  
+ Price is Right, 
+ 51 
+  
+ prior, 
+ 5 
+  
+ prior distribution, 
+ 12
+ , 
+ 23 
+  
+ Prob, 
+ 12 
+  
+ probability, 
+ 53 
+  
+ conditional, 
+ 1 
+  
+ conjoint, 
+ 2 
+  
+ probability density, 
+ 53 
+  
+ probability density function, 
+ 36
+ , 
+ 53
+ , 
+ 66 
+  
+ probability mass function, 
+ 11
+  
+  
+ Index 
+  
+ | 
+  
+ 18
+ 9",NA
+R ,"radioactive decay, 
+ 155 
+  
+ random sample, 
+ 168
+ , 
+ 181 
+  
+ rarefaction curve, 
+ 180
+ , 
+ 182 
+  
+ raw score, 
+ 130 
+  
+ rDNA, 
+ 163 
+  
+ Red Line problem, 
+ 77 
+  
+ Reddit, 
+ 37
+ , 
+ 141 
+  
+ regression testing, 
+ x
+ , 
+ 172
+ , 
+ 174 
+  
+ renormalize, 
+ 13",NA
+T ,"table method, 
+ 6 
+  
+ template method pattern, 
+ 18 
+ thinkplot, 
+ xi 
+  
+ total probability, 
+ 6 
+  
+ triangle distribution, 
+ 32
+ , 
+ 123 
+ trigonometry, 
+ 95 
+  
+ tumor type, 
+ 150 
+  
+ tuple, 
+ 34
+  
+ robust estimation, 
+ 114",NA
+S ,"sample bias, 
+ 176 
+  
+ sample statistics, 
+ 114 
+  
+ SAT, 
+ 127 
+  
+ scaled score, 
+ 128 
+  
+ scipy, 
+ xi
+ , 
+ 54
+ , 
+ 55
+ , 
+ 111",NA
+U ,"uncertainty, 
+ 86 
+  
+ underflow, 
+ 109
+ , 
+ 171 
+  
+ uniform distribution, 
+ 29
+ , 
+ 47
+ , 
+ 80
+ , 
+ 169 
+ uninformative prior, 
+ 27 
+  
+ Unseen Species problem, 
+ 163 
+  
+ Update, 
+ 13
+  
+ serial correlation, 
+ 151
+ , 
+ 152
+  
+ Showcase, 
+ 51 
+  
+ simulation, 
+ 42
+ , 
+ 45
+ , 
+ 48
+ , 
+ 144
+ , 
+ 146
+ , 
+ 179 
+ Sivia, D.S., 
+ 93 
+  
+ species, 
+ 163
+ , 
+ 176 
+  
+ sphere, 
+ 145
+ , 
+ 150 
+  
+ standardized test, 
+ 127 
+  
+ stick, 
+ 8 
+  
+ strafing speed, 
+ 95 
+  
+ subjective prior, 
+ 5 
+  
+ subjectivity, 
+ 28 
+  
+ sudden death, 
+ 71",NA
+V ,"Vancouver Canucks, 
+ 65 
+  
+ Variability Hypothesis, 
+ 105 
+  
+ Veterans’ Benefit Administration, 
+ 144 
+ volume, 
+ 145",NA
+W ,"Weibull distribution, 
+ 75 
+  
+ word frequency, 
+ 11
+  
+ suite, 
+ 6
+  
+ 190 
+  
+ | 
+  
+ Index",NA
+About the Author,"Allen Downey
+  is a Professor of Computer Science at the Olin College of 
+ Engineering. He has taught computer science at Wellesley College, Colby College, 
+ and U.C. Berkeley. He has a PhD in Computer Science from U.C. Berkeley and 
+ Master’s and Bachelor’s degrees from MIT.",NA
+Colophon,"The animal on the cover of 
+ Think Bayes
+  is a red striped mullet (
+ Mullus 
+ surmuletus
+ ). This species of goatfish can be found in the Mediterranean Sea, east 
+ North Atlantic Ocean, and the Black Sea. Known for its distinct striped first 
+ dorsal fin, the red striped mullet is a favored delicacy in the Mediterranean—
+ along with its brother goatfish, 
+ Mullus barbatus
+ , which has a first dorsal fin that 
+ is not striped. However, the red striped mullet tends to be more prized and is 
+ said to taste similar to oysters. Stories of ancient Romans rearing the red striped 
+ mullet in ponds, attending to, caressing, and even teaching them to feed at the 
+ sound of a bell. These fish, generally weighing in under two pounds even when 
+ farm-raised, were sometimes sold for their weight in silver.
+  
+ When left to the wild, red mullets are small bottom-feeding fish with a distinct 
+ double beard—known as barbels—on its lower lip, which it uses to probe the 
+ ocean floor for food. Because the red striped mullet feed on sandy and rocky 
+ bottoms at shallower depths, its barbels are less sensitive than its deep water 
+ feeding brother, the 
+ Mullus barbatus
+ .
+  
+ The cover image is from 
+ Meyers Kleines Lexicon
+ . The cover font is Adobe ITC 
+ Gara‐mond. The text font is Adobe Minion Pro; the heading font is Adobe Myriad 
+ Condensed; and the code font is Dalton Maag’s Ubuntu Mono.",NA

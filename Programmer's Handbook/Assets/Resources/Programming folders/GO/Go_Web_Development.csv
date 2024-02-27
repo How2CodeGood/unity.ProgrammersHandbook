@@ -1,0 +1,2069 @@
+Larger Text,Smaller Text,Symbol
+Go Web Development ,NA,NA
+Succinctly,NA,NA
+By ,NA,NA
+Mark Lewin ,NA,NA
+Foreword by Daniel Jebaraj ,NA,NA
+Table of Contents ,"The Story Behind the Succinctly Series of Books ................................................................. 7 
+ About the Author ..................................................................................................................... 9 
+ Acknowledgements ............................................................................................................... 9 
+ Chapter 1  Introduction ...........................................................................................................10 
+ Who is this e-book for? .........................................................................................................10 
+ Why use Go for web development? .................................................................................10 
+ Setting up your development environment ............................................................................11 
+ Installing the Go tools ......................................................................................................11 
+ Creating a workspace ......................................................................................................14 Code 
+ examples ....................................................................................................................14 
+ Chapter 
+ 2  Serving and Routing .............................................................................................16 
+ Go as a 
+ simple web server ...................................................................................................16 Simple 
+ serving and routing ...................................................................................................17 
+ Middleware ......................................................................................................................21 More 
+ advanced serving and routing with the Gorilla Web Toolkit ..........................................25 
+ Installing and referencing the 
+ gorilla/mux
+  package ......................................................25 Using 
+ gorilla/mux
+  .........................................................................................................26 Returning 
+ errors ...............................................................................................................28 
+ Chapter 3  
+ Accessing Data .....................................................................................................30 
+ Getting a 
+ driver for your database ........................................................................................30 sql.DB 
+ ..................................................................................................................................33 Retrieving 
+ data from the database ........................................................................................34 Tidying up 
+ the output .......................................................................................................36 
+ Chapter 4  
+ Templates ..............................................................................................................38
+  
+ 4",NA
+The Story Behind the ,NA,NA
+Succinctly,NA,NA
+ Series ,NA,NA
+of Books ,"Daniel Jebaraj, Vice President",NA
+S ,"Whenever platforms or tools are shipping out of Microsoft, which seems to be 
+ about every other 
+  
+ As many of you may know, 
+ Syncfusion is a provider of software components for the 
+  
+ Microsoft platform. This puts 
+ us in the exciting but challenging position of always 
+  
+ being on the cutting edge. 
+  
+  
+  
+  
+ Syncfusion, Inc.",NA
+taying on the cutting edge ,"week these days, we have to educate ourselves, quickly.",NA
+Information is plentiful but harder to digest ,"In reality, this translates into a lot of book orders, blog searches, and Twitter scans. 
+  
+ While more information is becoming available on the Internet and more and more books are 
+ being published, even on topics that are relatively new, one aspect that continues to inhibit us is 
+ the inability to find concise technology overview books. 
+  
+ We are usually faced with two options: read several 500+ page books or scour the web for 
+ relevant blog posts and other articles. Just as everyone else who has a job to do and customers 
+ to serve, we find this quite frustrating.",NA
+The ,NA,NA
+Succinctly,NA,NA
+ series ,"This frustration translated into a deep desire to produce a series of concise technical books that 
+ would be targeted at developers working on the Microsoft platform.",NA
+"The best authors, the best content ","Each author was carefully chosen from a pool of talented experts who shared our vision. The 
+ book you now hold in your hands, and the others available in this series, are a result of the 
+  
+ authors’ tireless work. You will find original content that is guaranteed to get you up and running 
+ in about the time it takes to drink a few cups of coffee.
+  
+ 7",NA
+Free forever ,"Syncfusion will be working to produce books on several topics. The books will always be free. 
+ Any updates we publish will also be free.",NA
+Free? What is the catch? ,"There is no catch here. Syncfusion has a vested interest in this effort. 
+  
+ As a component vendor, our unique claim has always been that we offer deeper and broader 
+ frameworks than anyone else on the market. Developer education greatly helps us market and 
+ sell against competing vendors who promise to “enable AJAX support with one click,” or “turn 
+ the moon to cheese!”",NA
+Let us know what you think ,"If you have any topics of interest, thoughts, or feedback, please feel free to send them to us at 
+ succinctly-series@syncfusion.com
+ . 
+  
+ We sincerely hope you enjoy reading this book and that it helps you better understand the topic 
+ of study. Thank you for reading. 
+  
+ Please follow us on Twitter and “Like” us on Facebook to help us spread the 
+ word about the 
+ Succinctly 
+ series! 
+  
+  
+  
+ 8",NA
+About the Author ,"Mark Lewin has been developing, teaching, and writing about software for more than 18 years. 
+  
+ His main interests are web development in general and web mapping in particular. While 
+ working for ESRI, the world's largest GIS company, he acted as a consultant, trainer, and 
+ course author. He has been a frequent speaker at industry events, and he currently works with 
+ a wide variety of open-source mapping technologies and a handful of relevant JavaScript 
+ frameworks, including Node.js, Dojo, and JQuery. 
+  
+ Based in the U.K., Mark currently teaches ArcGIS Server/JavaScript development for 
+ Geospatial Training LLC
+  and is the author of the 
+ Google Maps API: Get Started
+ course
+  for 
+ Pluralsight. By day, he writes MySQL courseware for Oracle. 
+  
+ Mark can be reached at 
+ mark@marklewin.com
+  or on Twitter at @gisapps. 
+  
+ This is Mark's third e-book for Syncfusion. The first, 
+ Leaflet.js Succinctly
+ ,
+  was published in 
+ March 2016. And the precursor to this e-book, 
+ Go Succinctly
+ , will be published by the time you 
+ read this.",NA
+Acknowledgements ,"I’d like to thank my children for being little rays of sunshine, even on dark days. Words cannot 
+ express how I feel about you all. 
+  
+ And to my best friend, the “philosopher” David Peters. Everyone needs a friend to help them in 
+ the down times and keep them grounded in the good times, and David does that for me. 
+  
+ 9",NA
+Chapter 1  Introduction ,NA,NA
+Who is this e-book for? ,"This book is for any developer who has a basic familiarity with the Go programming language 
+ and is interested in using Go to write web applications. 
+  
+ If you can write simple console applications with Go, you shouldn’t have any problem 
+ understanding the contents of this short e-book. 
+  
+ If you’re looking for a primer on the language itself, may I humbly recommend my book 
+ Go 
+ Succinctly
+ , which will take you from zero to… well, if not exactly mastery, to an appreciation and 
+ understanding of the Go programming language. It also gives you links to other resources that 
+ will help you become familiar with Go. 
+  
+ Like all e-books in Syncfusion’s 
+ Succinctly
+  series, you can download 
+ Go Succinctly
+  free of 
+ charge from the Syncfusion website.",NA
+Why use Go for web development? ,"Go is an excellent language for writing web applications, specifically for web services. In fact, it 
+ was designed specifically with the web in mind. After all, any modern programming language 
+ can hardly gain traction if it ignores the web. 
+  
+ So, which features of the Go programming language are particularly useful for web 
+ development? Here are a few:",NA
+Concurrency ,"Any decent-sized web server needs to run many thousands of tasks concurrently. Concurrency is 
+ complex and difficult in many languages because it is usually implemented as an 
+  
+ afterthought. Concurrency, however, is built into the Go language. Indeed, concurrency is one of 
+ the main problems the Go language was designed to solve. 
+  
+ In Go, concurrency is achieved by using Goroutines, which are lightweight threads that allow 
+ developers to perform multiple operations asynchronously. These are incredibly useful in web 
+ applications. For example, when a user connects to your web server, you can simply spawn a 
+ Goroutine to handle any interactions with that client. It’s very easy to do—merely prefix the 
+ function call with the 
+ go
+  keyword. Better still, Goroutine scales incredibly well, and your Go web 
+ applications will purr along quite happily while servicing many thousands of users. 
+  
+ 10",NA
+Modularity ,"Web applications, like many other modern applications, usually grow to include a lot of code. 
+ Keeping this code organized and efficient, so that it’s easy to understand and maintain, is a 
+ challenge for today’s developers. This is especially the case when several developers are 
+ working on the same application and each developer formats their code differently. 
+  
+ Go takes away many of these problems by imposing a specific method of structuring and 
+ formatting code. Functions, variables, constants, and type declarations are all expected to be in 
+ predictable places, and Go requires them all to be coded in a specific way. 
+  
+ If Go sounds draconian in this regard, consider this—what you lose in freedom of expression 
+ you gain in predictability; everything is where you expect it to be and formatted identically 
+ throughout. 
+  
+ Go makes it easy for you to satisfy its code formatting rules by providing you with the 
+ fmt 
+ package that you can build into your workflow to automatically Go-ify your code.",NA
+Compilation ,"Unlike many recent web development server-side languages, the Go programming language is 
+ compiled. This means that a problem such as a runtime error that might be difficult to track down 
+ is instead caught in the compilation step. Go’s static typing system also helps you discover 
+ errors during development that might otherwise escape into production.",NA
+The ,NA,NA
+net/http,NA,NA
+ package ,"Go’s 
+ net/http
+  package is excellent and makes starting a web server while having full control of 
+ accepting requests and delivering responses very easy. Routing is handled by a multiplexer. You 
+ can either adopt the one in the standard library or select from several third-party options. In this 
+ book, we’ll start by using Go’s 
+ DefaultServeMux
+ , then we’ll consider a very capable alternative: 
+ gorilla/mux
+ .",NA
+Setting up your development environment ,"I won’t delve too deeply into setup here because I’m going to assume that you have some 
+ experience using Go. However, if you need to recap, I suggest referring to my e-book 
+ Go 
+ Succinctly
+  or visiting the official Golang.org “Getting Started” page: 
+ https://golang.org/doc/install
+ . 
+  
+ The steps involved in setting up your environment consist of: 
+  
+ 
+  
+ 
+  
+ Installing the Go tools. 
+  
+ Creating a workspace and setting the 
+ GOPATH
+  environment variable.",NA
+Installing the Go tools ,"The exact steps you will need to follow depend on which platform you are using. Go binaries are 
+ available for Windows, Mac OS X, and *nix platforms. 
+  
+ 11",NA
+Windows ,"The easiest way to install the Go tools in Windows is to download the MSI installer, launch it, 
+ then follow the prompts. By default, Go installs everything in 
+ C:\Go
+ , then it adds 
+ C:\Go\bin
+  to 
+ your PATH environment variable. 
+  
+ Alternatively, if you would rather have more control over your environment variables, you can 
+ download the .zip file and extract it to a directory of your choice. In this case, you’ll need to 
+ configure the environment variables yourself. 
+  
+ You can set environment variables through the Environment Variables button on the Advanced 
+ tab of the System control panel. Some versions of Windows provide this control panel through 
+ the Advanced System Settings option inside the System control panel. 
+  
+ 12",NA
+Mac OS X ,"Download the 
+ .pkg
+  file and follow the prompts. The package installs the Go distribution to 
+ /usr/local/go
+  and adds 
+ /usr/local/go/bin
+  to your 
+ PATH
+ .",NA
+"Linux, Unix, and FreeBSD ","You’ll notice that *nix-based systems expect a bit more from you. But as a *nix user, you are 
+ more than up to the challenge. 
+  
+ Download the 
+ .tar.gz
+  file and extract it to 
+ /usr/local
+  as the root user, or get it via 
+ sudo
+ : 
+  
+ sudo tar -C /usr/local -xzf go$VERSION.$OS-$ARCH.tar.gz 
+  
+ You next need to add 
+ /usr/local/go/bin
+  permanently to your 
+ PATH
+ . Put the following line in 
+ your 
+ /etc/profile
+  (for all users) or 
+ ~/.profile
+  (for only you) to make this a permanent thing: 
+  
+ export PATH=$PATH:/usr/local/go/bin",NA
+Custom installation locations ,"Those methods decide where Go will be installed. If you don’t like to be bossed around that 
+ way, you must tell Go where to find itself by setting the 
+ GOROOT
+  environment variable. If you’re 
+ happy with the default location, then don’t specify 
+ GOROOT
+ . You’ll only confuse things. 
+  
+ 13",NA
+Creating a workspace ,"The final step is telling Go where any code you write, as well as any third-party libraries that you 
+ download with 
+ go get
+ , will reside. Do this by setting the 
+ GOPATH
+  environment variable using the 
+ same techniques described above. 
+  
+ Go will create 
+ bin
+ , 
+ pkg
+ , and 
+ src
+  files in this location: 
+  
+ 
+  
+ 
+  
+ 
+  
+ bin
+ : Contains executables 
+  
+ pkg
+ : Contains package objects 
+  
+ src
+ : Contains Go source code",NA
+Code examples ,"All code examples in this book can be found on GitHub at 
+ https://github.com/marklewin/go-web-
+ succinctly.git
+ . 
+  
+ Figure 3: The Github Repository for This E-Book's Code Samples 
+  
+ 14",NA
+Chapter 2  Serving and Routing ,"Go’s 
+ net
+  package facilitates all network communications in Go programs, whether it’s over 
+ HTTP, TCP/IP, WebSockets, or any other standard network protocol. 
+  
+ Of course, because this e-book addresses web development, we are primarily concerned with 
+ HTTP, which means the main subpackage we’ll be using is 
+ net/http
+ . 
+  
+ In this chapter, we’ll look at the basic requirements of any Go web application—serving and 
+ routing—and how you can use 
+ net/http
+  and complementary packages to implement them.",NA
+Go as a simple web server ,"Back in the old days, web servers did little more than serve up files that resided in a directory on 
+ that server. If that’s all we want now, we can do something very similar in Go by using the 
+ net/http package
+  in just a few lines of code. 
+  
+ Code Listing 1: Go as a Web Server 
+  
+ package
+  main 
+  
+ import
+  ( 
+  
+  
+ ""net/http"" 
+  
+ ) 
+  
+ func
+  main() { 
+  
+  
+ http.ListenAndServe(
+ "":8999""
+ , 
+  
+  
+  
+  http.FileServer(http.Dir(
+ ""/var/www""
+ ))) 
+ } 
+  
+ It’s very basic, but our program fulfills the core responsibilities of any web server—namely, 
+ listening to a request and serving a response. What’s more, because it doesn’t have to worry 
+ about all the other issues that a more traditional web server must, the program is lightning fast. 
+  
+ In this example, we call the 
+ http.ListenAndServe()
+  function to send all requests on port 8999 
+ to an 
+ http.FileServer
+  handler method, which in turn accepts the directory on the server that 
+ we want to serve files from. Easy! 
+  
+ If you run the program using
+  go run <
+ program_name.go
+ >
+  and enter 
+  
+ http://localhost:8999/
+  in your browser’s address bar, followed by the name of a file that 
+ exists in 
+ /var/www
+  on your server, you’ll see that file’s contents displayed—as in Figure 4. 
+  
+ 16",NA
+Simple serving and routing ,"Go relies on two main components to process HTTP requests—a multiplexor and handlers. A 
+ multiplexor (or “mux”) is essentially an HTTP request router. In Go’s 
+ net/http
+  package, the 
+ multiplexor functionality is provided by 
+ ServeMux
+  and the default serve mux is 
+  
+ DefaultServeMux
+ . 
+  
+ Intuitive, eh? 
+  
+ 17",NA
+Middleware ,"In web development, middleware is code that sits between the web request and your route 
+ handler. Middleware consists of reusable bits of code you can use to perform tasks that must 
+ occur either before the handler is called or afterward. 
+  
+ The term “middleware” is often used with Go programming, but you might also see similar terms 
+ used with other web languages and technologies, such as “interceptor,” “hooking,” and “request 
+ filtering.” 
+  
+ For example, you might want to check the status of a database connection or authenticate a 
+ user before routing the request. You might also want to compress the content of a response or 
+ limit the amount of times a specific handler is called—perhaps as part of some restriction that 
+ you place on users who access your web service free of charge. 
+  
+ Creating middleware is simply a matter of chaining handlers and handler functions, and it’s 
+ something you will see—and use—a lot in Go web development. 
+  
+ The basic idea is that you pass a handler function—let’s call it 
+ f2
+ —into another handler 
+ function—let’s call this one 
+ f1
+ —as a parameter. Handler 
+ f1
+  gets called when the route that 
+ triggers it is visited. 
+ f1
+  does some work, then calls 
+ f2
+ . 
+  
+ 21",NA
+More advanced serving and routing with the Gorilla Web ,NA,NA
+Toolkit ,"The routing functionality offered by Go’s built-in 
+ net/http
+  package only gets you so far. If the 
+ range of possible URLs is complex and if, for example, you want to be able to use regular 
+ expressions or variables to match URLs, you will probably want to consider a third-party 
+ solution. 
+  
+ The Gorilla Web Toolkit is one such solution. Gorilla consists of 22 packages, including: 
+  
+ 
+  
+ 
+  
+ 
+  
+ 
+  
+ 
+  
+ 
+  
+ 
+  
+ 
+  
+ gorilla/context
+  stores global request variables. 
+  
+ gorilla/mux
+  is a powerful URL router and dispatcher. 
+  
+ gorilla/reverse
+  produces reversible regular expressions for regexp-based muxes. 
+ gorilla/rpc
+  implements RPC over HTTP with codec for JSON-RPC. 
+  
+ gorilla/schema
+  converts form values to a struct. 
+  
+ gorilla/securecookie
+  encodes and decodes authenticated and optionally encrypted 
+ cookie values. 
+  
+ gorilla/sessions
+  saves cookie and filesystem sessions and allows custom session 
+ back ends. 
+  
+ gorilla/websocket
+  implements the WebSocket protocol defined in RFC 6455. 
+  
+ As you can see from the list of packages, there is more to Gorilla than merely an alternative 
+ mux for Go routing and serving. In fact, it provides a whole range of different tools to assist you 
+ in your web development efforts. 
+  
+ But here, we’re interested in the mux. The 
+ gorilla/mux
+  module implements the 
+ http.Handler 
+ interface so that it is compatible with the standard Golang. 
+ http.serveMux
+ . 
+  
+ In addition, the 
+ gorilla/mux
+  module gives you the ability to: 
+  
+ 
+  
+ 
+  
+ 
+  
+ Match requests based on URL host, path, path prefix, schemes, header and query 
+ values, HTTP methods, or custom matchers that you define. 
+  
+ Register URLs so that you can build or “reverse” them, thereby maintaining 
+ references to resources. 
+  
+ Use “subrouters”—nested routes that are only tested if their parent routes match. In 
+ this way, you can define “groups” of routes that all have something in common, such 
+ as a host or a path prefix. This optimizes request matching by undertaking some 
+ tests only if they are appropriate to the group (rather than executing tests against all 
+ incoming requests).",NA
+Installing and referencing the ,NA,NA
+gorilla/mux,NA,NA
+ package ,"If you are only interested in the more advanced routing capability offered by Gorilla, you can 
+ install 
+ gorilla/mux
+  in your 
+ GOPATH
+  by using 
+ go get
+ . For example, assuming that you have 
+ git 
+ installed: 
+  
+ go get github.com/gorilla/mux 
+  
+ Next, you must import it into your application, like so: 
+  
+ 25",NA
+Using ,NA,NA
+gorilla/mux ,"For a bit of fun, let’s use 
+ gorilla/mux
+  to create a handler that matches incoming requests for 
+ product IDs based on a regular expression. If the product ID is a single digit long, we have a 
+ match and can route to the appropriate page. If not, we route to an error page. 
+  
+ We’ll first need to import the 
+ gorilla/mux
+  module, which we do in the normal way: 
+  
+ import( 
+  
+  
+  . . .      
+  
+  
+ github.com/gorilla/mux 
+  
+ ) 
+  
+ Next, we’ll need to tell Go to use 
+ gorilla/mux
+  instead of its own 
+ DefaultServeMux
+ :
+  
+ func main() { 
+  
+  
+ router = mux.NewRouter() 
+  
+ } 
+  
+ When we’ve done that, we can use the handler functions we are familiar with, but in the context 
+ of 
+ router
+  and with the extra capabilities 
+ gorilla/mux
+  provides, such as searching for a URL 
+ parameter with a regular expression: 
+  
+ router.HandleFunc(""/product/{id:[0-9]+}"", pageHandler) 
+  
+ That line of code creates a handler function that attempts to match a URL that consists of 
+ /product/
+  with a number from zero to nine, inclusive, which it refers to as 
+ id
+ . If there is a 
+ match, it calls the 
+ pageHandler
+  function. 
+  
+ In our 
+ pageHandler
+  function, we need a way to examine the exact string that 
+ HandleFunc 
+ matched. We can use Gorilla’s 
+ mux.Vars
+  function to do this, passing in the request as a single 
+ parameter and getting back a map of route variables. We can reference the route variable we’re 
+ interested in by its name—
+ id
+ . 
+  
+ Having retrieved the product ID, we can next check for a matching HTML page. Go’s 
+ os
+  module 
+ provides the 
+ Stat
+  and 
+ IsNotExist
+  functions to help us with that. If the file exists on the server, 
+ we use 
+ http.ServeFile
+  in order to send it to the browser. And if it doesn’t exist there, we’ll 
+ return another page telling the user that the product is invalid. 
+  
+ Code Listing 6 shows the full code. 
+  
+ 26",NA
+Returning errors ,"Things don’t always work as we intend. Requests get made for pages that no longer exist, 
+ things get moved from one place to another, and sometimes the connection drops. 
+  
+ 28",NA
+Chapter 3  Accessing Data ,"In the previous chapter, we saw how Go can accept requests from different URLs and route them 
+ to an appropriate handler. So far, however, all of our responses to those requests have served 
+ only static content, which is not enough for today’s web applications. In this chapter, we’ll see 
+ how we can connect our Go web applications to a data source and serve dynamic data instead.",NA
+Getting a driver for your database ,"Go allows you to use any database for which a driver is available. A definitive list of drivers can 
+ be found at 
+ https://github.com/golang/go/wiki/SQLDrivers.
+  
+ Unless you’re using something quite exotic, you should be able to find a driver for your 
+ database in the wiki. 
+  
+ MySQL is a fantastic open-source database and, although it has been around for quite a while, it 
+ continues to be extremely popular, so we’ll use that for our examples in this chapter. However, 
+ whichever database you choose, the steps you need to take will be similar, if not identical, to 
+ those shown here. 
+  
+ You can download the free community edition of MySQL Server from 
+ http://www.mysql.com
+ . 
+ Follow the installation instructions for your platform. If you want to follow along with the 
+  
+ examples in this chapter, you should also install the sample “world” database. There’s an option 
+  
+ in the Windows installer for this, but with Mac and Linux you must download and install it 
+ manually from 
+ https://dev.mysql.com/doc/index-other.html
+ . 
+  
+ Simply connect to the MySQL server using the command-line client (or MySQL Workbench, 
+ which you can also install if you prefer a GUI environment), then execute the following 
+ statement: 
+  
+ mysql> SOURCE < /path/to/world.sql 
+  
+ You can verify that the “world” database is installed by issuing the command in Figure 10 at the 
+ mysql>
+  prompt. 
+  
+ 30",NA
+sql.DB ,"Note from the previous code example that we are using the 
+ database
+  variable that contains 
+ sql.DB
+  to access the database. 
+  
+ The 
+ sql.DB
+  is not the database connection—that’s stored in 
+ dbConn
+ —instead, it’s the 
+  
+ database/sql
+  package’s abstraction of the database. In our example, it refers to the MySQL 
+ database, but because we can use 
+ database/sql
+  to interface with many different data sources, 
+ it could just as easily be a local file or some sort of in-process data store such as 
+ memcache
+ . 
+  
+ sql.DB 
+ takes care of a lot of things on your behalf, including the opening, closing, and pooling 
+ of database connections. 
+  
+ Don’t keep opening and closing databases unless your application requires it. The 
+ sql.DB 
+ object is designed to be long-lived, and all of your interaction with the database will come via 
+ sql.DB
+ . However, you must be certain to close connections by using 
+ sql.DB.Close
+  when you 
+ are finished with them so that they can be returned to the pool. 
+  
+  Tip: If you need to give short-lived function access to 
+ sql.DB
+ , pass it to the 
+ function as a parameter instead of creating a new connection within the function. 
+  
+ We’re getting ahead of ourselves. We haven’t done anything with our database yet. 
+  
+ Let’s rectify that now. 
+  
+ 33",NA
+Retrieving data from the database ,"The following code queries the “world” database’s City table based on whatever the user enters 
+ in the browser’s address bar after 
+ http://localhost:8999/
+ . 
+  
+ Code Listing 8: Querying the Database 
+  
+ package
+  main 
+  
+ import
+  ( 
+  
+ ""database/sql"" 
+  
+ ""fmt"" 
+  
+ ""log"" 
+  
+ ""net/http""
+  
+  
+ _ 
+ ""github.com/go-sql-driver/mysql"" 
+ ) 
+  
+ type
+  City 
+ struct
+  { 
+  
+  
+ Name        
+ string 
+  
+  
+ CountryCode 
+ string 
+  
+  
+ Population  
+ int 
+  
+ } 
+  
+ var
+  database 
+ *
+ sql.DB 
+  
+ func
+  main() { 
+  
+ db, err 
+ :=
+  sql.Open(
+ ""mysql""
+ , 
+  
+  
+ ""root:password@tcp(127.0.0.1:3306)/world""
+ ) 
+ if
+  err 
+ !=
+ nil
+  
+ { 
+  
+  
+ log.Println(
+ ""Could not connect!""
+ ) 
+  
+ } 
+  
+ database = db 
+  
+ log.Println(
+ ""Connected.""
+ ) 
+  
+  
+ http.HandleFunc(
+ ""/""
+ , showCity) 
+  
+ http.ListenAndServe(
+ "":8999""
+ , 
+ nil
+ ) } 
+  
+ func
+  showCity(w http.ResponseWriter, r 
+ *
+ http.Request) { 
+  
+  
+ city 
+ :=
+  City{} 
+  
+  
+ queryParam 
+ :=
+ ""%""
+ +
+  r.URL.Path[
+ 1
+ :] 
+ +
+ ""%"" 
+  
+  
+ rows, err 
+ :=
+  database.Query(
+ ""SELECT Name, CountryCode, 
+  
+  
+  
+  
+  Population FROM city WHERE Name LIKE ?""
+ , queryParam) 
+  
+ if
+  err 
+ !=
+ nil
+  { 
+  
+  
+  
+ log.Fatal(err) 
+  
+  
+ } 
+  
+  
+ defer
+  rows.Close() 
+  
+ 34",NA
+Tidying up the output ,"All we have now is some rather ugly text being dumped out to the browser. Let’s make it a little 
+ bit more pleasant to look at by displaying the query results in an HTML table. We do this simply 
+ by rewriting the code in our handler, as in Code Listing 9. 
+  
+ Code Listing 9: Using HTML to Format the Query Results 
+  
+ func
+  showCity(w http.ResponseWriter, r 
+ *
+ http.Request) { 
+  
+  
+ city 
+ :=
+  City{} 
+  
+  
+ queryParam 
+ :=
+ ""%""
+ +
+  r.URL.Path[
+ 1
+ :] 
+ +
+ ""%"" 
+  
+  
+ rows, err 
+ :=
+  database.Query(
+ ""SELECT Name, CountryCode, Population 
+ FROM city WHERE Name LIKE ?""
+ , queryParam) 
+  
+  
+ if
+  err 
+ !=
+ nil
+  { 
+  
+  
+  
+ log.Fatal(err) 
+  
+  
+ } 
+  
+  
+ defer
+  rows.Close() 
+  
+ html 
+ :=
+ ""<html><head><title>City 
+  
+ Search</title></head><body><h1>Search for""
+ +
+  queryParam 
+ +
+ ""</h1><table 
+ border='1'><tr><th>City</th><th>Country 
+  
+ Code</th><th>Population</th></tr>""
+  
+  
+ for
+  rows.Next() { 
+  
+  
+  
+ err 
+ :=
+  rows.Scan(
+ &
+ city.Name, 
+ &
+ city.CountryCode, 
+  
+  
+  
+  
+  
+ &
+ city.Population) 
+  
+  
+ if
+  err 
+ !=
+ nil
+  { 
+  
+  
+  
+  
+ log.Fatal(err) 
+  
+  
+  
+ } 
+  
+  
+  
+ html 
+ += 
+  
+ fmt.Sprintf(
+ ""<tr><td>%s</td><td>%s</td><td>%d</td></tr>""
+ , city.Name, 
+ city.CountryCode, city.Population) 
+  
+  
+ } 
+  
+  
+ err = rows.Err() 
+  
+  
+ if
+  err 
+ !=
+ nil
+  { 
+  
+  
+  
+ log.Fatal(err) 
+  
+  
+ } 
+ else
+  { 
+  
+  
+  
+ html 
+ +=
+ ""</table></body></html>"" 
+  
+  
+  
+ fmt.Fprintln(w, html) 
+  
+  
+ } 
+  
+ } 
+  
+ When we execute it, we get Figure 14. 
+  
+ 36",NA
+Chapter 4  Templates ,"In the previous chapter, we connected to a data source, then displayed the results of queries to 
+ the user in HTML format. This HTML code was embedded directly within our source code, 
+ which is not desirable (except for very simple scenarios) because it makes the application very 
+ difficult to maintain. 
+  
+ Go comes to the rescue with a rather good templating engine. Not only does this enable us to 
+ separate our program code from the presentation markup, but it also provides some logical 
+ constructs such as loops, variables, and even functions that allow us to offload presentation 
+ logic to the template.",NA
+Introducing templates ,"First, let’s define a template. 
+  
+ Go template functionality is provided by the 
+ template
+  package, which includes a number of 
+ methods, including 
+ Parse
+  and 
+ ParseFile
+ , for loading a template from a string or file, then 
+ Execute
+  for merging the specific content from our application with the more general content 
+ provided by the template itself. 
+  
+ Note that templates typically exist within their own files, but this is not always the case. We can 
+ use template functionality directly within our program logic by encoding the template as a string, 
+ then using the 
+ Parse
+  method to read from it. This is only a slight improvement on encoding 
+ everything as HTML, so in these examples we’ll use separate template files and 
+ ParseFile
+  to 
+ read from them. 
+  
+ First, our template. As you can see, this is simply an HTML file with some special syntax so that 
+ our program knows what to insert and where to insert it. 
+  
+ Code Listing 10: Our HTML File 
+  
+ <
+ html
+ > 
+  
+ <
+ head
+ > 
+  
+ <
+ title
+ >Hello!</
+ title
+ > 
+  
+ </
+ head
+ > 
+  
+ <
+ body
+ > 
+  
+  <
+ h1
+ >A warm hello to....</
+ h1
+ > 
+  
+  <
+ p
+ > 
+  
+   
+  {{.Name}} 
+  
+  </
+ p
+ > 
+  
+ </
+ body
+ > 
+  
+ </
+ html
+ > 
+  
+ 38",NA
+Reworking the data access application using a template ,"Let’s put our newfound knowledge of Go templates to work. First, we need to understand one of 
+ the many capabilities of a template—the ability to iterate over a set of results, then apply the 
+ appropriate formatting to each of them. 
+  
+ In order to achieve this, we must use the 
+ {{range}} {{end}}
+  construct. We’ll use the following 
+ template to build out our table. Everything between 
+ {{range}}
+  and 
+ {{end}}
+  will be repeated 
+ once for every member of the object we pass into it. 
+  
+ Code Listing 12: The Template for Our “Cities” Database Application 
+  
+ <
+ html
+ > 
+  
+ <
+ head
+ > 
+  
+ <
+ title
+ >City Search</
+ title
+ > 
+  
+ </
+ head
+ > 
+  
+ <
+ body
+ > 
+  
+  <
+ h1
+ >Search Results</
+ h1
+ > 
+  
+  <
+ table
+ border
+ =
+ '1'
+ > 
+  
+   
+  <
+ tr
+ > 
+  
+   
+  
+  <
+ th
+ >City</
+ th
+ > 
+  
+ 40",NA
+Using embedded methods in templates ,"Let’s say we want to do something with our templated output. Perhaps we’d like to format the 
+ Population column in the preceding example in order to use a comma as a thousands 
+ separator. 
+  
+ Sure, we could add an extra string field in the 
+ City
+  structure to display formatted output and 
+ write the formatted 
+ Population
+  column figure to it each time we retrieve a row from the table. 
+  
+ But, technically, that’s presentation, right? And haven’t we been keen to get as much 
+ presentation logic out of our main code as possible? 
+  
+ Also, this is especially cumbersome because Go’s 
+ fmt
+  package doesn’t provide this 
+ functionality out of the box, which means we’ll have to roll our own. 
+  
+ So, let’s see if we can offload some of that responsibility to the template. In fact, we can do that 
+ by writing a method in our application that we’ll get the template to invoke. The best way to do 
+ that is to add a method directly to our 
+ City
+  structure, as in Code Listing 14. 
+  
+ 43",NA
+Using conditionals in templates ,"You can offload the evaluation of conditional expressions to your template using 
+ {{if}} 
+ {{else}} {{end}}
+ .
+  
+ Go supports several functions that support basic types, such as 
+ eq
+  (equals), 
+ ne
+  (not equal to), 
+ or 
+ gt 
+ (greater than) that you can use for building expressions. 
+  
+ The use of conditional expressions in templates is best demonstrated by an example. Let’s say 
+ that we’re only interested in populations of less than 5,000,000. Everything else we’ll count as 
+ huge and won’t bother displaying the actual figure. 
+  
+ Code Listing 16 shows our template. 
+  
+ Code Listing 16: Template with Conditional Expression 
+  
+ <
+ html
+ > 
+  
+ <
+ head
+ > 
+  
+ <
+ title
+ >City Search</
+ title
+ > 
+  
+ </
+ head
+ > 
+  
+ <
+ body
+ > 
+  
+  <
+ h1
+ >Search Results</
+ h1
+ > 
+  
+  <
+ table
+ border
+ =
+ '1'
+ > 
+  
+   
+  <
+ tr
+ > 
+  
+   
+  
+  <
+ th
+ >City</
+ th
+ > 
+  
+   
+  
+  <
+ th
+ >Country Code</
+ th
+ > 
+  
+   
+  
+  <
+ th
+ >Population</
+ th
+ > 
+  
+   
+  </
+ tr
+ > 
+  
+   
+  {{range .}} 
+  
+   
+  
+  <
+ tr
+ > 
+  
+   
+  
+  
+  <
+ td
+ >{{.Name}}</
+ td
+ > 
+  
+   
+  
+  
+  <
+ td
+ >{{.CountryCode}}</
+ td
+ > 
+  
+   
+  
+  
+  <
+ td
+ >{{if gt .Population 5000000}} <
+ b
+ >HUGE</
+ b
+ > 
+   
+  
+  
+  
+  {{else}} {{.Population}} 
+  
+   
+  
+  
+  
+  {{end}} 
+  
+   
+  
+  
+  </
+ td
+ > 
+  
+   
+  
+  </
+ tr
+ > 
+  
+   
+  {{end}} 
+  
+  </
+ table
+ > 
+  
+ </
+ body
+ > 
+  
+ </
+ html
+ > 
+  
+ Figure 18 shows the result. 
+  
+ 46",NA
+Chapter 5  Creating a RESTful JSON API ,"We’ve learned a lot already, so let’s see if we can take all that knowledge and do something 
+ useful with it. 
+  
+ In Chapter 1, we examined how Go is an excellent choice for creating web services for many 
+ reasons—for example, its ability to scale massively through its lightweight threading model, its 
+ ease with modularizing code, and its ability to integrate with common tools such as 
+  
+ cryptographic libraries, secure web protocols, and, of course, HTTP servers. 
+  
+ In this chapter, I want to demonstrate how we can create a simple RESTful web service that can 
+ accept JSON requests and return JSON responses in order to facilitate CRUD (Create, Read, 
+ Update, and Delete) operations on a database. 
+  
+ (Actually, I’m going a cheat a little here. In order to minimize the complexity of our application, 
+  
+ I’m going to create a CRD application. The Update functionality will be left as an exercise for the 
+ reader!) 
+  
+ This application will use what we’ve learned so far about serving, routing, and accessing a 
+  
+ database. In building it, I’ll show you how you might design and develop a typical web service. It 
+  
+ won’t be perfect or production-ready, but it should give you a good idea of how easy it is to build 
+ these sorts of services in Go.",NA
+RESTful APIs ,"If you’ve been a developer, or if you’ve spent any time with developers, you have no doubt 
+ heard about REST. Given the amount of hype it has attracted in recent years, you would think 
+ that it, too, was a recent concept. But it’s not. In fact, it’s as old as the web itself. 
+  
+ REST is simply a response to the hundreds of different protocols that have been developed 
+ over the years that have aimed to get computers talking to each other over networks using the 
+ same language. 
+  
+ Some of these protocols have included SOAP (which, because of its reliance on XML as a 
+ transport mechanism, requires a fair amount of data and computing power and began to fall out 
+ of favor as mobile devices became ubiquitous), JMS (which is specific to Java applications and 
+ therefore not really geared for widespread adoption), and XML-RPC (which, like SOAP, uses 
+ XML but without implementing any of the standards that SOAP has). 
+  
+ As with all these approaches, the aim behind REST was to make sharing data easy for 
+ computers while at the same time being transparent enough that human observers can 
+ understand what they are doing. 
+  
+ What REST offers, however, is the ability to do this while remaining very lightweight. Its 
+ methods are familiar to developers because it uses the same, established methods employed 
+ by the web itself. 
+  
+ 48",NA
+Our RESTful web service ,"We’re going to build something similar in this chapter. 
+  
+ You’ve probably already thought: “I could do that with Go routers!” And, indeed, you can. So, all 
+ you need to get going is some data. And we’ve already been playing around with MySQL’s 
+ “world” database, so let’s use that. 
+  
+ Our application will allow users to enter any of the following URL paths and respond in the way 
+ described:",NA
+Serving and routing ,"Let’s define our routes first. We’re going to use 
+ gorilla/mux
+  instead of 
+ net/http
+ ’s 
+  
+ DefaultServeMux
+  because 
+ gorilla/mux
+  is generally nicer to work with. And instead of simply 
+ defining them one at a time, we’re going to store route details in a struct in order to make it 
+ easier to add new routes when we need them. 
+  
+ Here is 
+ routes.go
+ , which defines each of the routes and their handlers in a slice (roughly 
+ analogous to arrays in other programming languages) of 
+ Route
+  types, called 
+ Routes
+ . 
+  
+ Code Listing 17: routes.go 
+  
+ package
+  main 
+  
+ import
+ ""net/http""
+  
+ type
+  Route 
+ struct
+  { 
+  
+  
+ Name        
+ string 
+  
+  
+ Method      
+ string 
+  
+  
+ Pattern     
+ string 
+  
+  
+ HandlerFunc http.HandlerFunc 
+  
+ } 
+  
+ type
+  Routes []Route 
+  
+ var
+  routes = Routes{ 
+  
+  
+ Route{ 
+  
+ 52",NA
+The complete application ,"Let’s next examine a number of code listing examples that demonstrate the complete 
+ application as we separate the various concerns into these modules: 
+  
+ 
+  
+ 
+  
+ 
+  
+ 
+  
+ 
+  
+ 
+  
+ 
+  
+ main.go 
+  
+ router.go 
+  
+ routes.go 
+  
+ handlers.go 
+  
+ database.go 
+  
+ city.go 
+  
+ dbupdate.go
+  
+ Code Listing 28: main.go 
+  
+ package
+  main 
+  
+ import
+  ( 
+  
+  
+ ""log"" 
+  
+  
+ ""net/http"" 
+  
+ ) 
+  
+ func
+  main() { 
+  
+ router 
+ :=
+  NewRouter() 
+  
+ dbConnect() 
+  
+  
+ log.Fatal(http.ListenAndServe(
+ "":8999""
+ , router)) 
+ } 
+  
+ 60",NA
+Running the application ,"We can test the application from within a browser, but that will involve a bit of fiddling around 
+ with the developer console and more clicks than necessary. 
+  
+ Instead, let’s use a command-line utility called 
+ curl
+  (“client URL”). 
+  
+ If you have a Mac or Linux machine, 
+ curl
+  is probably already available to you. If you have 
+ Windows, perhaps the easiest way to access it is by downloading the Git Bash shell that 
+ contains 
+ curl
+  and a wealth of other useful Linux tools. There's even a native Bash shell for 
+ Windows—see 
+ https://msdn.microsoft.com/en-us/commandline/wsl/about
+ . It’s handy to have 
+ around even if you don’t use Git. Another alternative (although, in my opinion, a more bloated 
+ alternative) is Cygwin. 
+  
+ You can download Git Bash at 
+ https://git-for-windows.github.io/
+ .",NA
+Displaying all cities ,"Open two shell windows. 
+  
+ Run the application in the first shell by executing 
+ go run *.go
+  in the same folder as your 
+ application modules, as in Figure 24. 
+  
+ 67",NA
+Displaying a specific city ,"With the application still running in the first shell window, enter the following in the second shell 
+ window: 
+  
+ curl -i localhost:8999/city/1028 
+  
+ You should see details for the city with the ID of 1028—namely, Hyderabad in India. Enter some 
+ random city IDs and see which cities are referenced. 
+  
+ Figure 25: Requesting a Specific City by ID",NA
+Adding a city ,"In the second shell window, enter the following: 
+  
+ curl -H ""Content-Type: application/json"" -d '{""name"":""Whoville"", 
+  
+ ""country"":""ITA"", ""district"":""XXX"", ""pop"":1}' 
+ http://localhost:8999/cityadd
+  
+ Tip: Take care when entering the JSON object that represents the new city. JSON is 
+ simple, but it is not forgiving if you forget to close quotes or braces, or if you put 
+ quotes (that denote the string data type) around a value that is expected to be an 
+ integer. 
+  
+ The record should be added to the database and you should receive the new record ID in the 
+  
+ response, as in Figure 27. 
+  
+ 69",NA
+Deleting a city ,"In order to delete a city, you use a syntax similar to your search for a city by ID. Try using the 
+ same city ID that you just added to the database. For example: 
+  
+ curl -i localhost:8999/citydel/4093 
+  
+ 70",NA
+Challenge step ,"If you’re up for a challenge, try to implement update functionality in the application—that is, to 
+ put the U back into CRUD! 
+  
+ For starters, allow the client to submit a JSON city object that will first delete the existing record 
+ (if there is a matching city ID), then add a new one and report success (or otherwise) in JSON 
+ format, too. 
+  
+ Next, allow the client to submit some partial JSON along with the ID, then simply update an 
+ existing record based on the fields that have changed. For example, the client might submit the 
+ following: 
+  
+ {""id"":4088,""name"":""Whereville”,pop"":2} 
+  
+ This will only update the 
+ Name
+  and 
+ Population
+  fields in the City table. 
+  
+ 71",NA
+Chapter 6  Cookies and Sessions ,"As you are doubtlessly aware, HTTP is a stateless protocol. Each request by a client to a web 
+ server is completely unrelated to any previous exchange between the two, and the 
+  
+ communication mechanism consists solely of request/response pairs. The server is not required 
+ to retain any information regarding any previous requests. 
+  
+ The benefit of this approach is that the server doesn't need to assign memory to do so (because 
+ it doesn’t “remember” any previous requests from the clients), and if the client connection dies, 
+ the server doesn't have to do any cleanup. 
+  
+ The downside of this approach is that, well, the server doesn't remember anything. This can 
+ make it tricky to build a rich, interactive web application because all too often we must send 
+ extra information with each request so that the server knows enough about the state of the 
+ client to provide a useful response. 
+  
+ The keys to making all this happen are cookies and sessions. Let's define both before we 
+ demonstrate how to use them in our Go web applications.",NA
+Introducing cookies and sessions ,NA,NA
+What is a cookie? ,"A cookie is simply a little text file that a browser puts on the user’s computer. It stores 
+ information that helps to maintain the illusion of a persistent connection. 
+  
+ Cookies are often used for authentication, storing site-visitor preferences, maintaining shopping 
+ cart items, and identifying server sessions. 
+  
+ When the browser interacts with the web server, it passes the information in the cookie as part 
+ of the request. Note that cookies are domain-specific. If a browser creates a cookie for 
+ twitter.com, it cannot suddenly send that cookie to google.com. 
+  
+ Essentially, cookies are great for storing information about a user's interaction with a webpage 
+ as he or she moves from one page to the next.",NA
+What is a session? ,"Sessions allow you to store information about the client’s interaction with a website just as 
+ cookies do, but the data gets stored on the server instead of on the client. 
+  
+ 72",NA
+What is a session cookie? Or a persistent cookie? ,"Uh-oh. Just to confuse you even further, there are not only cookies and sessions, but there is 
+ also a session cookie! 
+  
+ With cookies, your application can set an expiry time. You might have seen this when the login 
+ page for a website gives you the “Keep me logged in?” option. 
+  
+ If you set an expiry time, the browser saves the cookie to the local file system. This is called a 
+ persistent cookie. 
+  
+ If you don’t set an expiry time, the browser usually keeps the cookie hanging around in memory, 
+ and this is called a session cookie. 
+  
+ So, session cookies and persistent cookies are simply cookies, but with different expiration 
+ times.",NA
+Working with cookies ,NA,NA
+Setting cookies ,"In order to write information to a cookie in Go, you use the 
+ net/http
+ ’s package’s 
+ SetCookie 
+ function, whose signature looks like this: 
+  
+ http.SetCookie(w ResponseWriter, cookie *Cookie) 
+  
+ The 
+ w
+  is the response to the request and 
+ cookie
+  is a struct: 
+  
+ type Cookie struct { 
+  
+  Name       string 
+  
+  Value      string 
+  
+  Path       string 
+  
+  Domain     string 
+  
+  Expires    time.Time 
+  
+  RawExpires string 
+  
+  MaxAge     int 
+  
+  Secure     bool 
+  
+  HttpOnly   bool 
+  
+  Raw        string 
+  
+  Unparsed   []string 
+  
+ } 
+  
+ 73",NA
+Fetching cookies ,"In order to retrieve a cookie from a request, you can do the following: 
+  
+ cookie, _ := r.Cookie(""username"") 
+  
+ fmt.Fprint(w, cookie.) 
+  
+ Or, if several cookies are associated with a request, you can iterate through them, as follows: 
+  
+ for _, cookie := range r.Cookies() { 
+  
+  
+  fmt.Fprint(w, cookie.Name) 
+  
+ }",NA
+Using cookies ,"Let’s create a simple application that uses a cookie. 
+  
+ The following code checks to see if this is a visitor’s first visit to our site. If it is, it displays a 
+ welcome message. If not, it displays the time of the last visit. 
+  
+ 74",NA
+Working with sessions ,"In order to work with sessions in Go, I’m going to suggest that we revisit the Gorilla Web 
+ Toolkit’s sessions module because, in my opinion, it’s a much cleaner implementation than the 
+ native Go approach. 
+  
+ Install it from GitHub as follows: 
+  
+ go get github.com/gorilla/sessions",NA
+Basics ,"The following code demonstrates the basics of using the 
+ gorilla/sessions
+  package to create 
+  
+ and authenticate a session, retrieve the session, set some values, then save the session. 
+  
+ 77",NA
+Flash messages ,"Gorilla borrowed the idea of flash messages from Ruby. A flash message is simply a session 
+ value that exists until it is read. 
+  
+ We use flash messages to temporarily store data between requests, such as a success or error 
+ message during the form submission process, in order to avoid it being duplicated in error later. 
+ We add a flash message using the session’s 
+ AddFlash
+  method and retrieve the flash messages 
+ by calling 
+ session.Flash
+ . 
+  
+ We won’t dwell too much on flash messages here—just be aware that they exist. Code Listing 
+ 37 demonstrates how to get and set flash messages. 
+  
+ Code Listing 37: Using Flash Messages in gorilla/sessions 
+  
+ package
+  main 
+  
+ import
+  ( 
+  
+ ""fmt"" 
+  
+ ""net/http"" 
+  
+ ""time""
+  
+  
+ ""github.com/gorilla/mux"" 
+  
+  
+ ""github.com/gorilla/sessions"" 
+  
+ ) 
+  
+ var
+  store = sessions.NewCookieStore( 
+  
+  
+  []
+ byte
+ (
+ ""keep-it-secret-keep-it-safe""
+ )) 
+  
+ func
+  handler(w http.ResponseWriter, r 
+ *
+ http.Request) { 
+ session, err 
+ :=
+  store.Get(r, 
+ ""session-name""
+ ) 
+ if
+  
+ err 
+ !=
+ nil
+  { 
+  
+ 79",NA
+Chapter 7  Development Techniques ,"If you’ve stuck around this long, you should now have a good grasp of the various bits and 
+ pieces that go toward creating a web application in Go. In this chapter, I want to cover a couple 
+ of techniques that will help you debug and test your Go web applications.",NA
+Logging ,"Any application that grows beyond the trivial will need good logging in order to enable its 
+ developers to locate and fix errors.",NA
+Basic logging ,"Go’s 
+ log
+  package lets you write to all the standard devices, custom files, or any destination that 
+ supports the 
+ io.Writer
+  interface. So far, we’ve only logged to 
+ stdout
+  (via 
+ fmt.Println
+ , etc), 
+  
+ but that’s not a realistic option for production applications. So, let’s consider how we might log 
+ output to files and be specific about which file gets which type of log message. 
+  
+ In the following code, we create an application that will log notices to 
+ notices.log
+ , warnings to 
+ warnings.log
+ , and errors to 
+ errors.log
+ . 
+  
+ Code Listing 38: Logging to Different Files Based on the Type of Information 
+  
+ package
+  main 
+  
+ import
+  ( 
+  
+  
+ ""log"" 
+  
+  
+ ""os"" 
+  
+ ) 
+  
+ var
+  ( 
+  
+  
+ Notice  
+ *
+ log.Logger 
+  
+  
+ Warning 
+ *
+ log.Logger 
+  
+  
+ Error   
+ *
+ log.Logger 
+  
+ ) 
+  
+ func
+  main() { 
+  
+  
+ noticeFile, err 
+ :=
+  os.OpenFile(
+ ""notice.log""
+ , 
+  
+  
+  
+  os.O_RDWR|os.O_APPEND, 
+ 0660
+ ) 
+  
+ defer
+  
+ noticeFile.Close() 
+  
+  
+ if
+  err 
+ !=
+ nil
+  { 
+  
+  
+  
+ log.Fatal(err) 
+  
+  
+ } 
+  
+  
+ warnFile, err 
+ :=
+  os.OpenFile(
+ ""warnings.log""
+ , 
+  
+ 81",NA
+Logging web requests ,"Let’s revisit the RESTful web service that we created in Chapter 5. Remember how we split the 
+ routes from the router into 
+ routes.go
+  and 
+ router.go
+ , respectively? Let’s look again at a 
+ number of code listing examples and separate the various concerns into these modules: 
+  
+ 
+  
+ 
+  
+ 
+  
+ 
+  
+ 
+  
+ router.go 
+  
+ routes.go 
+  
+ logger.go 
+  
+ logger.go containing Logger middleware 
+ Logger middleware added to routers
+  
+ Code Listing 40: router.go 
+  
+ package
+  main 
+  
+ import
+ ""github.com/gorilla/mux""
+  
+ func
+  NewRouter() 
+ *
+ mux.Router { 
+  
+ router 
+ :=
+  mux.NewRouter().StrictSlash(
+ true
+ ) 
+ for
+  _, route 
+ :=
+ range
+  routes { 
+  
+  
+ router. 
+  
+ Methods(route.Method). 
+  
+ Path(route.Pattern). 
+  
+ Name(route.Name). 
+  
+  
+ Handler(route.HandlerFunc) } 
+  
+  
+ return
+  router 
+  
+ } 
+  
+ Code Listing 41: routes.go 
+  
+ package
+  main 
+  
+ import
+ ""net/http""
+  
+ type
+  Route 
+ struct
+  { 
+  
+  
+ Name        
+ string 
+  
+  
+ Method      
+ string 
+  
+  
+ Pattern     
+ string 
+  
+  
+ HandlerFunc http.HandlerFunc 
+  
+ } 
+  
+ type
+  Routes []Route 
+  
+ 83",NA
+Testing ,"Testing is baked into the Go language, with the 
+ testing
+  package in the standard library. 
+ Testing offers the ability to run tests by executing the 
+ go test
+  command. 
+  
+ And better still, Go testing is quite simple and intuitive. In order to write a test, you need only to 
+ import the 
+ testing
+  package and write a test function. 
+  
+ All test functions in Go begin with the word “Test” and receive a single parameter of type 
+ *testing.T
+ : 
+  
+ package foo 
+  
+ import ""testing"" 
+  
+ func TestSomething(t *testing.T) { 
+  
+ // do your testing here... 
+  
+ } 
+  
+ When you have written a test and saved it in a file with a name ending in 
+ _test.go
+ , you next 
+ exercise it by running 
+ go test
+  in the same directory. 
+  
+ Let’s look at an example of how it all works. 
+  
+ We’ll create a very simple function that calculates the average of a slice of numbers in a 
+ function called 
+ Average
+ , in a package called 
+ math
+ , in a file called 
+ average.go
+ . 
+  
+ 86",NA

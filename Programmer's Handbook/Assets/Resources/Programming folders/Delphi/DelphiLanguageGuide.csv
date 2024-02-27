@@ -1,0 +1,3928 @@
+Larger Text,Smaller Text,Symbol
+Delphi Language Guide,NA,NA
+Delphi for Microsoft Win32,NA,NA
+Delphi for the Microsoft .NET Framework,1,NA
+Reference,"Delphi Language Guide
+  
+ Language Overview ............................................................................................................................................  7 
+ Programs and Units ..........................................................................................................................................  13 
+ Using Namespaces with Delphi ........................................................................................................................  20 
+ Fundamental Syntactic Elements ......................................................................................................................  25 
+ Declarations and Statements ............................................................................................................................  30 
+ Expressions .......................................................................................................................................................  48
+  
+ Data Types, Variables, and Constants
+  
+ Data Types, Variables, and Constants ..............................................................................................................  60 
+ Simple Types ....................................................................................................................................................  62 
+ String Types ......................................................................................................................................................  70 
+ Structured Types ...............................................................................................................................................  76 
+ Pointers and Pointer Types ...............................................................................................................................  87 
+ Procedural Types ..............................................................................................................................................  90 
+ Variant Types ....................................................................................................................................................  93 
+ Type Compatibility and Identity .........................................................................................................................  97 
+ Declaring Types ..............................................................................................................................................  100 
+ Variables .........................................................................................................................................................  102 
+ Declared Constants .........................................................................................................................................  104
+  
+ Procedures and Functions
+  
+ Procedures and Functions ..............................................................................................................................  110 
+ Parameters ......................................................................................................................................................  119 
+ Calling Procedures and Functions ..................................................................................................................  128
+  
+ Classes and Objects
+  
+ Classes and Objects .......................................................................................................................................  132 
+ Fields ...............................................................................................................................................................  138 
+ Methods ..........................................................................................................................................................  140 
+ Properties ........................................................................................................................................................  150 
+ Class References ............................................................................................................................................  157 
+ Exceptions .......................................................................................................................................................  160 
+ Nested Type Declarations ...............................................................................................................................  167
+  
+ Standard Routines and I/O
+  
+ Standard Routines and I/O ..............................................................................................................................  170
+  
+ Libraries and Packages
+  
+ Libraries and Packages ...................................................................................................................................  179 
+ Writing Dynamically Loaded Libraries .............................................................................................................  181 
+ Packages ........................................................................................................................................................  186
+  
+ Object Interfaces
+  
+ Object Interfaces .............................................................................................................................................  191 
+ Implementing Interfaces ..................................................................................................................................  195 
+ Interface References .......................................................................................................................................  199 
+ Automation Objects (Win32 Only) ...................................................................................................................  201
+  
+ Memory Management
+  
+ Memory Management on the Win32 Platform .................................................................................................  205 
+ Internal Data Formats .....................................................................................................................................  207 
+ Memory Management Issues on the .NET Platform .......................................................................................  216
+  
+ 3",NA
+Language Guide,NA,NA
+Delphi,5,NA
+Delphi Language Guide,"The Delphi Language guide describes the Delphi language as it is used in Borland development tools. This book 
+ describes the Delphi language on both the Win32, and .NET development platforms. Specific differences in the 
+ language between the two platforms are marked as appropriate.
+  
+ 6",NA
+Language Overview,"Delphi is a high-level, compiled, strongly typed language that supports structured and object-oriented design. 
+ Based on Object Pascal, its benefits include easy-to-read code, quick compilation, and the use of multiple unit 
+ files for modular programming. Delphi has special features that support Borland's component framework and RAD 
+ environment. For the most part, descriptions and examples in this language guide assume that you are using 
+ Borland development tools.
+  
+ Most developers using Borland software development tools write and compile their code in the integrated 
+ development environment (IDE). Borland development tools handle many details of setting up projects and source 
+ files, such as maintenance of dependency information among units. The product also places constraints on 
+ program organization that are not, strictly speaking, part of the Object Pascal language specification. For 
+ example, Borland development tools enforce certain file- and program-naming conventions that you can avoid if 
+ you write your programs outside of the IDE and compile them from the command prompt.
+  
+ This language guide generally assumes that you are working in the IDE and that you are building applications that 
+ use the Borland Visual Component Library (VCL). Occasionally, however, Delphi-specific rules are distinguished 
+ from rules that apply to all Object Pascal programming. This text covers both the Win32 Delphi language compiler, 
+ and the Delphi for .NET language compiler. Platform-specific language differences and features are noted where 
+ necessary.
+  
+ This section covers the following topics:
+  
+ Program Organization. Covers the basic language features that allow you to partition your application into units 
+  
+ and namespaces.
+  
+ Example Programs. Small examples of both console and GUI applications are shown, with basic instructions 
+  
+ on running the compiler from the command-line.
+  
+ Program Organization
+  
+ Delphi programs are usually divided into source-code modules called units. Most programs begin with a program 
+ heading, which specifies a name for the program. The program heading is followed by an optional uses clause, 
+ then a block of declarations and statements. The uses clause lists units that are linked into the program; these 
+ units, which can be shared by different programs, often have uses clauses of their own.
+  
+ The uses clause provides the compiler with information about dependencies among modules. Because this 
+ information is stored in the modules themselves, most Delphi language programs do not require makefiles, header 
+ files, or preprocessor ""include"" directives.
+  
+ Delphi Source Files
+  
+ The compiler expects to find Delphi source code in files of three kinds:
+  
+ Unit source files (which end with the .pas extension)
+  
+ Project files (which end with the .dpr extension)
+  
+ Package source files (which end with the .dpk extension)
+  
+ Unit source files typically contain most of the code in an application. Each application has a single project file and 
+ several unit files; the project file, which corresponds to the program file in traditional Pascal, organizes the unit 
+ files into an application. Borland development tools automatically maintain a project file for each application.
+  
+ If you are compiling a program from the command line, you can put all your source code into unit (.pas) files. If 
+ you use the IDE to build your application, it will produce a project (.dpr) file.
+  
+ Package source files are similar to project files, but they are used to construct special dynamically linkable 
+ libraries called packages.
+  
+ 7",NA
+Programs and Units,"A Delphi program is constructed from source code modules called units. The units are tied together by a special 
+ source code module that contains either the program, library, or package header. Each unit is stored in its own file 
+ and compiled separately; compiled units are linked to create an application. Delphi 2005 introduces hierarchical 
+ namespaces, giving you even more flexibility in organizing your units. Namespaces and units allow you to
+  
+ Divide large programs into modules that can be edited separately.
+  
+ Create libraries that you can share among programs.
+  
+ Distribute libraries to other developers without making the source code available.
+  
+ This topic covers the overall structure of a Delphi application: the program header, unit declaration syntax, and the 
+ uses clause. Specific differences between the Win32 and .NET platforms are noted in the text. The Delphi 
+ compiler does not support .NET namespaces on the Win32 platform. The Delphi 2005 compiler does support 
+  
+ hierarchical .NET namespaces; this topic is covered in the following section, Using Namespaces with Delphi.
+  
+ Program Structure and Syntax
+  
+ A complete, executable Delphi application consists of multiple unit modules, all tied together by a single source 
+ code module called a project file. In traditional Pascal programming, all source code, including the main program, 
+ is stored in .pas files. Borland tools use the file extension .dpr to designate the main program source module, 
+ while most other source code resides in unit files having the traditional .pas extension. To build a project, the 
+ compiler needs the project source file, and either a source file or a compiled unit file for each unit.
+  
+ Note:
+  Strictly speaking, you need not explicitly use any units in a project, but all programs automatically use the 
+ System
+  unit and the 
+ SysInit
+  unit.
+  
+ The source code file for an executable Delphi application contains
+  
+ a program heading,
+  
+ a uses clause (optional), and
+  
+ a block of declarations and executable statements.
+  
+ Additionally, a Delphi 2005 program may contain a namespaces clause, to specify additional namespaces in 
+ which to search for generic units. This topic is covered in more detail in the section Using .NET Namespaces with 
+ Delphi.
+  
+ The compiler, and hence the IDE, expect to find these three elements in a single project (.dpr) file.
+  
+ The Program Heading
+  
+ The program heading specifies a name for the executable program. It consists of the reserved word program, 
+ followed by a valid identifier, followed by a semicolon. The identifier must match the project source file name.
+  
+ The following example shows the project source file for a program called Editor. Since the program is called 
+ Editor, this project file is called Editor.dpr.
+  
+ program Editor;
+  
+  
+  uses Forms, REAbout, // An ""About"" box
+  
+  
+  REMain;         // Main form
+  
+  
+  {$R *.res}
+  
+  
+  begin
+  
+  
+  Application.Title := 'Text Editor';
+  
+ 13",NA
+Using Namespaces with Delphi,"In Delphi, a unit is the basic container for types. Microsoft's Common Language Runtime (CLR) introduces 
+ another layer of organization called a namespace. In the .NET Framework, a namespace is a conceptual 
+ container of types. In Delphi, a namespace is a container of Delphi units. The addition of namespaces gives 
+ Delphi the ability to access and extend classes in the .NET Framework.
+  
+ Unlike traditional Delphi units, namespaces can be nested to form a containment hierarchy. Nested namespaces 
+ provide a way to organize identifiers and types, and are used to disambiguate types with the same name. Since 
+ they are a container for Delphi units, namespaces may also be used to differentiate between units of the same 
+ name, that reside in different packages.
+  
+ For example, the class 
+ MyClass
+  in 
+ MyNameSpace
+ , is different from the class 
+ MyClass
+  in 
+ YourNamespace
+ . At 
+ runtime, the CLR always refers to classes and types by their fully qualified names: the assembly name, followed 
+ by the namespace that contains the type. The CLR itself has no concept or implementation of the namespace 
+ hierarchy; it is purely a notational convenience of the programming language.
+  
+ The following topics are covered:
+  
+ Project default namespaces, and namespace declaration.
+  
+ Namespace search scope.
+  
+ Using namespaces in Delphi units.
+  
+ Declaring Namespaces
+  
+ In Delphi 2005, a project file (program, library, or package) implicitly introduces its own namespace, called the 
+ project default namespace
+ . A unit may be a member of the project default namespace, or it may explicitly declare 
+ itself to be a member of a different namespace. In either case, a unit declares its namespace membership in its 
+ unit header.
+  
+ For example, consider the following explicit namespace declaration:
+  
+ unit MyCompany.MyWidgets.MyUnit;
+  
+ First, notice that namespaces are separated by dots. Namespaces do not introduce new symbols for the 
+ identifiers between the dots; the dots are part of the unit name. The source file name for this example is 
+  
+ MyCompany.MyWidgets.MyUnit.pas, and the compiled output file name is MyCompany.MyWidgets.MyUnit.dcuil.
+  
+ Second, notice that the dots imply the conceptual nesting, or containment, of one namespace within another. The 
+ example above declares the unit 
+ MyUnit
+  to be a member of the 
+ MyWidgets
+  namespace, which itself is 
+ contained in the 
+ MyCompany
+  namespace. Again, it should be noted that this containment is for documentation 
+ purposes only.
+  
+ A project default namespace declares a namespace for all of the units in the project. Consider the following 
+ declarations:
+  
+ Program MyCompany.Programs.MyProgram;
+  
+  
+ Library MyCompany.Libs.MyLibrary;
+  
+  
+ Package MyCompany.Packages.MyPackage;
+  
+ These statements establish the project default namespace for the program, library, and package, respectively. 
+ The namespace is determined by removing the rightmost identifier (and dot) from the declaration.
+  
+ A unit that omits an explicit namespace is called a 
+ generic unit
+ . A generic unit automatically becomes a member 
+ of the project default namespace. Given the preceding program declaration, the following unit declaration would 
+ cause the compiler to treat 
+ MyUnit
+  as a member of the 
+ MyCompany.Programs
+  namespace.
+  
+ 20",NA
+Fundamental Syntactic Elements,"This topic introduces the Delphi language character set, and describes the syntax for declaring:
+  
+ Identifiers
+  
+ Numbers
+  
+ Character strings
+  
+ Labels
+  
+ Source code comments
+  
+ The Delphi Character Set
+  
+ The Delphi Language uses the Unicode character set, including alphabetic and alphanumeric Unicode characters 
+ and the underscore. It is not case-sensitive. The space character and the ASCII control characters (ASCII 0 
+ through 31 including ASCII 13, the return or end-of-line character) are called 
+ blanks
+ .
+  
+ Fundamental syntactic elements, called 
+ tokens
+ , combine to form expressions, declarations, and statements. A 
+ statement
+  describes an algorithmic action that can be executed within a program. An 
+ expression
+  is a syntactic unit 
+ that occurs within a statement and denotes a value. A 
+ declaration
+  defines an identifier (such as the name of a 
+ function or variable) that can be used in expressions and statements, and, where appropriate, allocates memory 
+ for the identifier.
+  
+ The Delphi Character Set and Basic Syntax
+  
+ On the simplest level, a program is a sequence of tokens delimited by separators. A token is the smallest 
+ meaningful unit of text in a program. A separator is either a blank or a comment. Strictly speaking, it is not always 
+ necessary to place a separator between two tokens; for example, the code fragment
+  
+ Size:=20;Price:=10;
+  
+ is perfectly legal. Convention and readability, however, dictate that we write this as
+  
+ Size := 20;
+  
+  
+ Price := 10;
+  
+ Tokens are categorized as special symbols, identifiers, reserved words, directives, numerals, labels, and 
+ character strings. A separator can be part of a token only if the token is a character string. Adjacent identifiers, 
+ reserved words, numerals, and labels must have one or more separators between them.
+  
+ Special Symbols
+  
+ Special symbols are non-alphanumeric characters, or pairs of such characters, that have fixed meanings. The 
+ following single characters are special symbols:
+  
+ # $ & ' ( ) * + , - . / : ; < = > @ [ ] ^ { }
+  
+ The following character pairs are also special symbols:
+  
+ (* (. *) .) .. // := <= >= <>
+  
+ The following table shows equivalent symbols:
+  
+ 25",NA
+Declarations and Statements,"This topic describes the syntax of Delphi declarations and statements.
+  
+ Aside from the uses clause (and reserved words like implementation that demarcate parts of a unit), a program 
+ consists entirely of 
+ declarations
+  and 
+ statements
+ , which are organized into 
+ blocks
+ .
+  
+ This topic covers the following items:
+  
+ Declarations
+  
+ Simple statements such as assignment
+  
+ Structured statements such as conditional tests (e.g., 
+ if-then
+ , and case), iteration (e.g., 
+ for
+ , and 
+ while
+ ).
+  
+ Declarations
+  
+ The names of variables, constants, types, fields, properties, procedures, functions, programs, units, libraries, and 
+ packages are called 
+ identifiers
+ . (Numeric constants like 26057 are not identifiers.) Identifiers must be declared 
+ before you can use them; the only exceptions are a few predefined types, routines, and constants that the 
+ compiler understands automatically, the variable 
+ Result
+  when it occurs inside a function block, and the variable 
+ Self
+  when it occurs inside a method implementation.
+  
+ A declaration defines an identifier and, where appropriate, allocates memory for it. For example,
+  
+ var Size: Extended;
+  
+ declares a variable called 
+ Size
+  that holds an Extended (real) value, while
+  
+ function DoThis(X, Y: string): Integer;
+  
+ declares a function called 
+ DoThis
+  that takes two strings as arguments and returns an integer. Each declaration 
+ ends with a semicolon. When you declare several variables, constants, types, or labels at the same time, you 
+ need only write the appropriate reserved word once:
+  
+ var
+  
+  
+  Size: Extended;
+  
+  
+  Quantity: Integer;
+  
+  
+  Description: string
+  
+ The syntax and placement of a declaration depend on the kind of identifier you are defining. In general, 
+ declarations can occur only at the beginning of a block or at the beginning of the interface or implementation 
+ section of a unit (after the uses clause). Specific conventions for declaring variables, constants, types, functions, 
+ and so forth are explained in the documentation for those topics.
+  
+ Hinting Directives
+  
+ The 'hint' directives platform, deprecated, and library may be appended to any declaration. These directives will 
+ produce warnings at compile time. Hint directives can be applied to type declarations, variable declarations, class 
+ and structure declarations, field declarations within classes or records, procedure, function and method 
+ declarations, and unit declarations.
+  
+ When a hint directive appears in a unit declaration, it means that the hint applies to everything in the unit. For 
+ example, the Windows 3.1 style OleAuto.pas unit on Windows is completely deprecated. Any reference to that 
+ unit or any symbol in that unit will produce a deprecation message.
+  
+ 30",NA
+Expressions,"This topic describes syntax rules of forming Delphi expressions.
+  
+ The following items are covered in this topic:
+  
+ Valid Delphi Expressions
+  
+ Operators
+  
+ Function calls
+  
+ Set constructors
+  
+ Indexes
+  
+ Typecasts
+  
+ Expressions
+  
+ An expression is a construction that returns a value. The following table shows examples of Delphi expressions:
+  
+ X
+  
+ variable
+  
+ @X
+  
+ address of the variable X
+  
+ 15
+  
+ integer constant
+  
+ InterestRate
+  
+ variable
+  
+ Calc(X, Y)
+  
+ function call
+  
+ X * Y
+  
+ product of X and Y
+  
+ Z / (1 - Z)
+  
+ quotient of Z and (1 - Z)
+  
+ X = 1.5
+  
+ Boolean
+  
+ C in Range1
+  
+ Boolean
+  
+ not Done
+  
+ negation of a Boolean
+  
+ ['a', 'b', 'c']
+  set
+  
+ Char(48)
+  
+ value typecast
+  
+ The simplest expressions are variables and constants (described in Data types, variables, and constants). More 
+ complex expressions are built from simpler ones using operators, function calls, set constructors, indexes, and 
+ typecasts.
+  
+ Operators
+  
+ Operators behave like predefined functions that are part of the the Delphi language. For example, the expression 
+ (X + Y)
+  is built from the variables 
+ X
+  and 
+ Y
+ , called operands, with the 
+ +
+  operator; when 
+ X
+  and 
+ Y
+  represent 
+ integers or reals, 
+ (X + Y)
+  returns their sum. Operators include 
+ @
+ , 
+ not
+ , 
+ ^
+ , 
+ *
+ , 
+ /
+ , 
+ div
+ , 
+ mod
+ , 
+ and
+ , 
+ shl
+ , 
+ shr
+ , 
+ as
+ , 
+ +
+ , 
+ -
+ , 
+ or
+ , 
+ xor
+ , 
+ =
+ , 
+ >
+ , 
+ <
+ , 
+ <>
+ , 
+ <=
+ , 
+ >=
+ , 
+ in
+ , and 
+ is
+ .
+  
+ The operators 
+ @
+ , 
+ not
+ , and 
+ ^
+  are unary (taking one operand). All other operators are binary (taking two operands), 
+ except that 
+ +
+  and 
+ -
+  can function as either a unary or binary operator. A unary operator always precedes its 
+ operand (for example, 
+ -B
+ ), except for 
+ ^
+ , which follows its operand (for example,
+  P^
+ ). A binary operator is placed 
+ between its operands (for example, 
+ A = 7
+ ).
+  
+ 48",NA
+"Data Types, Variables, and Constants ","This section describes the fundamental data types of the Delphi language.
+  
+ 59",NA
+"Data Types, Variables, and Constants","This topic presents a high-level overview of Delphi data types.
+  
+ About Types
+  
+ A type is essentially a name for a kind of data. When you declare a variable you must specify its type, which 
+ determines the set of values the variable can hold and the operations that can be performed on it. Every 
+ expression returns data of a particular type, as does every function. Most functions and procedures require 
+ parameters of specific types.
+  
+ The Delphi language is a 'strongly typed' language, which means that it distinguishes a variety of data types and 
+ does not always allow you to substitute one type for another. This is usually beneficial because it lets the compiler 
+ treat data intelligently and validate your code more thoroughly, preventing hard-to-diagnose runtime errors. When 
+ you need greater flexibility, however, there are mechanisms to circumvent strong typing. These include 
+ typecasting, pointers, Variants, Variant parts in records, and absolute addressing of variables.
+  
+ There are several ways to categorize Delphi data types:
+  
+ Some types are predefined (or built-in); the compiler recognizes these automatically, without the need for a 
+  
+ declaration. Almost all of the types documented in this language reference are predefined. Other types are 
+  
+ created by declaration; these include user-defined types and the types defined in the product libraries.
+  
+ Types can be classified as either fundamental or generic. The range and format of a fundamental type is the 
+  
+ same in all implementations of the Delphi language, regardless of the underlying CPU and operating system. 
+  
+ The range and format of a generic type is platform-specific and could vary across different implementations. 
+  
+ Most predefined types are fundamental, but a handful of integer, character, string, and pointer types are 
+ generic.
+  
+ It's a good idea to use generic types when possible, since they provide optimal performance and portability.
+  
+ However, changes in storage format from one implementation of a generic type to the next could cause 
+ compatibility problems - for example, if you are streaming content to a file as raw, binary data, without type 
+ and versioning information.
+  
+ Types can be classified as simple, string, structured, pointer, procedural, or variant. In addition, type identifiers 
+  
+ themselves can be regarded as belonging to a special 'type' because they can be passed as parameters to 
+  
+ certain functions (such as High, Low, and SizeOf).
+  
+ The outline below shows the taxonomy of Delphi data types.
+  
+ 60",NA
+Simple Types,"Simple types - which include ordinal types and real types - define ordered sets of values.
+  
+ The ordinal types covered in this topic are:
+  
+ Integer types
+  
+ Character types
+  
+ Boolean types
+  
+ Enumerated types
+  
+ Real (floating point) types
+  
+ Ordinal Types
+  
+ Ordinal types include integer, character, Boolean, enumerated, and subrange types. An ordinal type defines an 
+ ordered set of values in which each value except the first has a unique predecessor and each value except the 
+ last has a unique successor. Further, each value has an ordinality which determines the ordering of the type. In 
+ most cases, if a value has ordinality 
+ n
+ , its predecessor has ordinality 
+ n-1
+  and its successor has ordinality 
+ n+1
+ .
+  
+ For integer types, the ordinality of a value is the value itself.
+  
+ Subrange types maintain the ordinalities of their base types.
+  
+ For other ordinal types, by default the first value has ordinality 0, the next value has ordinality 1, and so forth. 
+  
+ The declaration of an enumerated type can explicitly override this default.
+  
+ Several predefined functions operate on ordinal values and type identifiers. The most important of them are 
+ summarized below.
+  
+ Function Parameter
+  
+ Return value
+  
+ Remarks
+  
+ Ord
+  
+ ordinal expression
+  
+ ordinality of expression's value
+  
+ Does not take Int64 arguments.
+  
+ Pred
+  
+ ordinal expression
+  
+ predecessor of expression's value
+   
+ Succ
+  
+ ordinal expression
+  
+ successor of expression's value
+   
+ High
+  
+ ordinal type identifier or variable of
+  
+ highest value in type
+  
+ Also operates on short-string types
+  
+ ordinal type
+  
+ and arrays.
+  
+ Low
+  
+ ordinal type identifier or variable of
+  
+ lowest value in type
+  
+ Also operates on short-string types
+  
+ ordinal type
+  
+ and arrays.
+  
+ For example, 
+ High(Byte)
+  returns 255 because the highest value of type Byte is 255, and 
+ Succ(2)
+  returns 3 
+ because 3 is the successor of 2.
+  
+ The standard procedures 
+ Inc
+  and 
+ Dec
+  increment and decrement the value of an ordinal variable. For example, 
+ Inc (I)
+  is equivalent to 
+ I := Succ(I)
+  and, if 
+ I
+  is an integer variable, to 
+ I := I + 1
+ .
+  
+ Integer Types
+  
+ An integer type represents a subset of the whole numbers. The generic integer types are Integer and Cardinal; 
+ use these whenever possible, since they result in the best performance for the underlying CPU and operating 
+ system. The table below gives their ranges and storage formats for the Delphi compiler.
+  
+ Generic integer types
+  
+ 62",NA
+String Types,"This topic describes the string data types available in the Delphi language. The following types are covered:
+  
+ Short strings.
+  
+ Long strings.
+  
+ Wide (Unicode) strings.
+  
+ About String Types
+  
+ A string represents a sequence of characters. Delphi supports the following predefined string types.
+  
+ String types
+  
+ Type
+  
+ Maximum length
+  
+ Memory required Used for
+  
+ ShortString 255 characters
+  
+ 2 to 256 bytes
+  
+ backward compatibility
+  
+ AnsiString
+  
+ ~2^31 characters 4 bytes to 2GB
+  
+ 8-bit (ANSI) characters, DBCS ANSI, MBCS ANSI, etc.
+  
+ WideString ~2^30 characters 4 bytes to 2GB
+  
+ Unicode characters; multi-user servers and multi-language applications
+  
+ On the Win32 platform, AnsiString, sometimes called the long string, is the preferred type for most purposes. 
+ WideString is the preferred string type on the .NET platform.
+  
+ String types can be mixed in assignments and expressions; the compiler automatically performs required 
+ conversions. But strings passed by reference to a function or procedure (as var and out parameters) must be of 
+ the appropriate type. Strings can be explicitly cast to a different string type.
+  
+ The reserved word string functions like a generic type identifier. For example,
+  
+ var S: string;
+  
+ creates a variable 
+ S
+  that holds a string. On the Win32 platform, the compiler interprets string (when it appears 
+ without a bracketed number after it) as AnsiString. On the .NET platform, the string type maps to the String class. 
+ You can use single byte character strings on the .NET platform, but you must explicitly declare them to be of type 
+ AnsiString.
+  
+ On the Win32 platform, you can use the 
+ {$H-}
+  directive to turn string into ShortString. The 
+ {$H-}
+  directive is 
+ deprecated on the .NET platform.
+  
+ The standard function 
+ Length
+  returns the number of characters in a string. The 
+ SetLength
+  procedure adjusts 
+ the length of a string.
+  
+ Comparison of strings is defined by the ordering of the characters in corresponding positions. Between strings of 
+ unequal length, each character in the longer string without a corresponding character in the shorter string takes on 
+ a greater-than value. For example, 'AB' is greater than 'A'; that is, 'AB' > 'A' returns True. Zero-length strings hold 
+ the lowest values.
+  
+ You can index a string variable just as you would an array. If 
+ S
+  is a string variable and 
+ i
+  an integer expression, 
+ S 
+ [i]
+  represents the 
+ ith
+  character - or, strictly speaking, the 
+ ith
+  byte in 
+ S
+ . For a ShortString or AnsiString, 
+ S[i]
+  is of 
+ type AnsiChar; for a WideString, 
+ S[i]
+  is of type WideChar. For single-byte (Western) locales, 
+ MyString[2] := 
+ 'A';
+  assigns the value 
+ A
+  to the second character of 
+ MyString
+ . The following code uses the standard 
+ AnsiUpperCase
+  function to convert 
+ MyString
+  to uppercase.
+  
+ var I: Integer;
+  
+  
+ begin
+  
+  
+  I := Length(MyString);
+  
+ 70",NA
+Structured Types,"Instances of a structured type hold more than one value. Structured types include sets, arrays, records, and files 
+ as well as class, class-reference, and interface types. Except for sets, which hold ordinal values only, structured 
+ types can contain other structured types; a type can have unlimited levels of structuring.
+  
+ By default, the values in a structured type are aligned on word or double-word boundaries for faster access. When 
+ you declare a structured type, you can include the reserved word packed to implement compressed data storage.
+  
+ For example, 
+ type TNumbers = packed array [1..100] of Real;
+  
+ Using packed slows data access and, in the case of a character array, affects type compatibility (for more 
+ information, see Memory management).
+  
+ This topic covers the following structured types:
+  
+ Sets
+  
+ Arrays, including static and dynamic arrays.
+  
+ Records
+  
+ File types
+  
+ Sets
+  
+ A set is a collection of values of the same ordinal type. The values have no inherent order, nor is it meaningful for 
+ a value to be included twice in a set.
+  
+ The range of a set type is the power set of a specific ordinal type, called the base type; that is, the possible 
+ values of the set type are all the subsets of the base type, including the empty set. The base type can have no 
+ more than 256 possible values, and their ordinalities must fall between 0 and 255. Any construction of the form
+  
+ set of
+ baseType
+  
+ where 
+ baseType
+  is an appropriate ordinal type, identifies a set type.
+  
+ Because of the size limitations for base types, set types are usually defined with subranges. For example, the 
+ declarations
+  
+ type
+  
+  
+  TSomeInts = 1..250; 
+  
+  
+  TIntSet = set of TSomeInts;
+  
+ create a set type called 
+ TIntSet
+  whose values are collections of integers in the range from 1 to 250. You could 
+ accomplish the same thing with
+  
+ type TIntSet = set of 1..250;
+  
+ Given this declaration, you can create a sets like this:
+  
+ var Set1, Set2: TIntSet;
+  
+  
+  ...              
+  
+  
+  Set1 := [1, 3, 5, 7, 9];
+  
+  
+  Set2 := [2, 4, 6, 8, 10]
+  
+ You can also use the 
+ set of ...
+  construction directly in variable declarations:
+  
+ 76",NA
+Pointers and Pointer Types,"A pointer is a variable that denotes a memory address. When a pointer holds the address of another variable, we 
+ say that it points to the location of that variable in memory or to the data stored there. In the case of an array or 
+ other structured type, a pointer holds the address of the first element in the structure. If that address is already 
+ taken, then the pointer holds the address to the first element.
+  
+ Pointers are typed to indicate the kind of data stored at the addresses they hold. The general-purpose Pointer 
+ type can represent a pointer to any data, while more specialized pointer types reference only specific types of 
+ data. Pointers occupy four bytes of memory.
+  
+ This topic contains information on the following:
+  
+ General overview of pointer types.
+  
+ Declaring and using the pointer types supported by Delphi.
+  
+ Overview of pointers
+  
+ To see how pointers work, look at the following example.
+  
+  1         var
+  
+  
+  2           X, Y: Integer;  // X and Y are Integer variables
+  
+  
+  3           P: ^Integer     // P points to an Integer
+  
+  
+  4           begin
+  
+  
+  5             X := 17;      // assign a value to X
+  
+  
+  6             P := @X;      // assign the address of X to P
+  
+  
+  7             Y := P^;      // dereference P; assign the result to Y
+  
+  
+  8           end;
+  
+ Line 2 declares 
+ X
+  and 
+ Y
+  as variables of type Integer. Line 3 declares 
+ P
+  as a pointer to an Integer value; this means 
+ that 
+ P
+  can point to the location of 
+ X
+  or 
+ Y
+ . Line 5 assigns a value to 
+ X
+ , and line 6 assigns the address of 
+ X
+  (denoted 
+ by 
+ @X
+ ) to 
+ P
+ . Finally, line 7 retrieves the value at the location pointed to by 
+ P
+  (denoted by 
+ ^P
+ ) and assigns it to 
+ Y
+ . 
+ After this code executes, 
+ X
+  and 
+ Y
+  have the same value, namely 17.
+  
+ The 
+ @
+  operator, which we have used here to take the address of a variable, also operates on functions and 
+ procedures. For more information, see The @ operator and Procedural types in statements and expressions.
+  
+ The symbol 
+ ^
+  has two purposes, both of which are illustrated in our example. When it appears before a type 
+ identifier
+  
+ ^typeName
+  
+ it denotes a type that represents pointers to variables of type 
+ typeName
+ . When it appears after a pointer variable
+  
+ pointer^
+  
+ it dereferences the pointer; that is, it returns the value stored at the memory address held by the pointer.
+  
+ Our example may seem like a roundabout way of copying the value of one variable to another - something that we 
+ could have accomplished with a simple assignment statement. But pointers are useful for several reasons. First, 
+ understanding pointers will help you to understand the Delphi language, since pointers often operate behind the 
+ scenes in code where they don't appear explicitly. Any data type that requires large, dynamically allocated blocks 
+ of memory uses pointers. Long-string variables, for instance, are implicitly pointers, as are class instance 
+ variables. Moreover, some advanced programming techniques require the use of pointers.
+  
+ Finally, pointers are sometimes the only way to circumvent Delphi's strict data typing. By referencing a variable 
+ with an all-purpose Pointer, casting the Pointer to a more specific type, and then dereferencing it, you can treat 
+ the data
+  
+ 87",NA
+Procedural Types,"Procedural types allow you to treat procedures and functions as values that can be assigned to variables or 
+ passed to other procedures and functions.
+  
+ About Procedural Types
+  
+ Procedural types allow you to treat procedures and functions as values that can be assigned to variables or 
+ passed to other procedures and functions. For example, suppose you define a function called 
+ Calc
+  that takes two 
+ integer parameters and returns an integer:
+  
+ function Calc(X,Y: Integer): Integer;
+  
+ You can assign the 
+ Calc
+  function to the variable 
+ F
+ :
+  
+ var F: function(X,Y: Integer): Integer;
+  
+  
+ F := Calc;
+  
+ If you take any procedure or function heading and remove the identifier after the word procedure or function, 
+ what's left is the name of a procedural type. You can use such type names directly in variable declarations (as in 
+ the previous example) or to declare new types:
+  
+ type
+  
+   
+  TIntegerFunction = function: Integer;
+  
+   
+  TProcedure = procedure;
+  
+   
+  TStrProc = procedure(const S: string);
+  
+   
+  TMathFunc = function(X: Double): Double; 
+  
+ var
+  
+   
+  F: TIntegerFunction;   { F is a parameterless function that returns an integer }
+  
+   
+  Proc: TProcedure;      { Proc is a parameterless procedure }
+  
+   
+  SP: TStrProc;          { SP is a procedure that takes a string parameter }
+  
+  
+  M: TMathFunc;          { M is a function that takes a Double (real) parameter and returns 
+  
+ a Double }
+  
+  
+  procedure FuncProc(P: TIntegerFunction);  { FuncProc is a procedure whose only parameter 
+  
+ is a parameterless integer-valued function }
+  
+ On Win32, the variables shown in the previous example are all procedure pointers - that is, pointers to the 
+ address of a procedure or function. On the .NET platform, procedural types are implemented as delegates. If you 
+ want to reference a method of an instance object (see Classes and objects), you need to add the words 
+ of 
+ object
+  to the procedural type name. For example
+  
+ type
+  
+  
+  TMethod      = procedure of object;
+  
+  
+  TNotifyEvent = procedure(Sender: TObject) of object;
+  
+ These types represent method pointers. A method pointer is really a pair of pointers; the first stores the address of 
+ a method, and the second stores a reference to the object the method belongs to. Given the declarations
+  
+ type
+  
+  
+  TNotifyEvent = procedure(Sender: TObject) of object;
+  
+ 90",NA
+Variant Types,"This topic discusses the use of variant data types.
+  
+ Variants Overview
+  
+ Sometimes it is necessary to manipulate data whose type varies or cannot be determined at compile time. In 
+ these cases, one option is to use variables and parameters of type Variant, which represent values that can 
+ change type at runtime. Variants offer greater flexibility but consume more memory than regular variables, and 
+ operations on them are slower than on statically bound types. Moreover, illicit operations on variants often result 
+ in runtime errors, where similar mistakes with regular variables would have been caught at compile time. You can 
+ also create custom variant types.
+  
+ By default, Variants can hold values of any type except records, sets, static arrays, files, classes, class 
+ references, and pointers. In other words, variants can hold anything but structured types and pointers. They can 
+ hold interfaces, whose methods and properties can be accessed through them. (See Object interfaces.) They can 
+ hold dynamic arrays, and they can hold a special kind of static array called a variant array. (See Variant arrays.) 
+ Variants can mix with other variants and with integer, real, string, and Boolean values in expressions and 
+ assignments; the compiler automatically performs type conversions.
+  
+ Variants that contain strings cannot be indexed. That is, if 
+ V
+  is a variant that holds a string value, the construction 
+ V[1]
+  causes a runtime error.
+  
+ You can define custom Variants that extend the Variant type to hold arbitrary values. For example, you can define 
+ a Variant string type that allows indexing or that holds a particular class reference, record type, or static array. 
+ Custom Variant types are defined by creating descendants to the 
+ TCustomVariantType
+  class.
+  
+ Note:
+  This, and almost all variant functionality, is implemented in the 
+ Variants
+  unit.
+  
+ A variant occupies 16 bytes of memory and consists of a type code and a value, or pointer to a value, of the type 
+ specified by the code. All variants are initialized on creation to the special value Unassigned. The special value 
+ Null
+  indicates unknown or missing data.
+  
+ The standard function 
+ VarType
+  returns a variant's type code. The 
+ varTypeMask
+  constant is a bit mask used to 
+ extract the code from 
+ VarType
+ 's return value, so that, for example,
+  
+ VarType(V) and varTypeMask = varDouble
+  
+ returns True if 
+ V
+  contains a Double or an array of Double. (The mask simply hides the first bit, which indicates 
+ whether the variant holds an array.) The TVarData record type defined in the 
+ System
+  unit can be used to 
+ typecast variants and gain access to their internal representation.
+  
+ Variant Type Conversions
+  
+ All integer, real, string, character, and Boolean types are assignment-compatible with Variant. Expressions can be 
+ explicitly cast as variants, and the 
+ VarAsType
+  and 
+ VarCast
+  standard routines can be used to change the 
+ internal representation of a variant. The following code demonstrates the use of variants and some of the 
+ automatic conversions performed when variants are mixed with other types.
+  
+ var
+  
+  
+  V1, V2, V3, V4, V5: Variant;
+  
+  
+  I: Integer;
+  
+  
+  D: Double;
+  
+  
+  S: string;
+  
+ 93",NA
+Type Compatibility and Identity,"To understand which operations can be performed on which expressions, we need to distinguish several kinds of 
+ compatibility among types and values. These include:
+  
+ Type identity
+  
+ Type compatibility
+  
+ Assignment compatibility
+  
+ Type Identity
+  
+ When one type identifier is declared using another type identifier, without qualification, they denote the same type. 
+ Thus, given the declarations
+  
+ type
+  
+  
+  T1 = Integer;
+  
+  
+  T2 = T1;
+  
+  
+  T3 = Integer;
+  
+  
+  T4 = T2;
+  
+ T1
+ , 
+ T2
+ , 
+ T3
+ , 
+ T4
+ , and Integer all denote the same type. To create distinct types, repeat the word type in the 
+ declaration. For example,
+  
+ type TMyInteger = type Integer;
+  
+ creates a new type called 
+ TMyInteger
+  which is not identical to Integer.
+  
+ Language constructions that function as type names denote a different type each time they occur. Thus the 
+ declarations
+  
+ type
+  
+  
+  TS1 = set of Char;
+  
+  
+  TS2 = set of Char;
+  
+ create two distinct types, 
+ TS1
+  and 
+ TS2
+ . Similarly, the variable declarations
+  
+ var
+  
+  
+  S1: string[10];
+  
+  
+  S2: string[10];
+  
+ create two variables of distinct types. To create variables of the same type, use
+  
+ var S1, S2: string[10];
+  
+ or
+  
+ type MyString = string[10];
+  
+  
+ var
+  
+ 97",NA
+Declaring Types ,"This topic describes the syntax of Delphi type declarations.
+  
+ Type Declaration Syntax 
+  
+ A type declaration specifies an identifier that denotes a type. The syntax for a type declaration is 
+ type 
+ newTypeName
+  = 
+ type 
+  
+ where 
+ newTypeName
+  is a valid identifier. For example, given the type declaration
+  
+ type TMyString = string;
+  
+ you can make the variable declaration
+  
+ var S: TMyString;
+  
+ A type identifier's scope doesn't include the type declaration itself (except for pointer types). So you cannot, for 
+ example, define a record type that uses itself recursively.
+  
+ When you declare a type that is identical to an existing type, the compiler treats the new type identifier as an alias 
+ for the old one. Thus, given the declarations
+  
+ type TValue = Real;
+  
+  
+ var
+  
+  
+  X: Real;
+  
+  
+  Y: TValue;
+  
+ X
+  and 
+ Y
+  are of the same type; at runtime, there is no way to distinguish 
+ TValue
+  from Real. This is usually of little 
+ consequence, but if your purpose in defining a new type is to utilize runtime type informationfor example, to 
+ associate a property editor with properties of a particular type - the distinction between 'different name' and 
+ 'different type' becomes important. In this case, use the syntax 
+  
+ type 
+ newTypeName
+  = 
+ type
+ type 
+  
+ For example,
+  
+ type TValue = type Real;
+  
+ forces the compiler to create a new, distinct type called 
+ TValue
+ .
+  
+ For 
+ var
+  parameters, types of formal and actual must be identical. For example,
+  
+ type
+  
+  
+  TMyType = type Integer
+  
+  
+  procedure p(var t:TMyType);
+  
+  
+  begin
+  
+  
+  end;
+  
+  
+ procedure x;
+  
+  
+ var
+  
+  m: TMyType;
+  
+  i: Integer;
+  
+ begin",NA
+Variables,"A variable is an identifier whose value can change at runtime. Put differently, a variable is a name for a location in 
+ memory; you can use the name to read or write to the memory location. Variables are like containers for data, 
+ and, because they are typed, they tell the compiler how to interpret the data they hold.
+  
+ Declaring Variables
+  
+ The basic syntax for a variable declaration is
+  
+ var 
+ identifierList
+ :
+ type;
+  
+ where 
+ identifierList
+  is a comma-delimited list of valid identifiers and type is any valid type. For example,
+  
+ var I: Integer;
+  
+ declares a variable 
+ I
+  of type Integer, while
+  
+ var X, Y: Real;
+  
+ declares two variables - 
+ X
+  and 
+ Y
+  - of type Real.
+  
+ Consecutive variable declarations do not have to repeat the reserved word var:
+  
+ var
+  
+  
+  X, Y, Z: Double;
+  
+  
+  I, J, K: Integer;
+  
+  
+  Digit: 0..9;
+  
+  
+  Okay: Boolean;
+  
+ Variables declared within a procedure or function are sometimes called local, while other variables are called 
+ global. Global variables can be initialized at the same time they are declared, using the syntax
+  
+ var 
+ identifier: type = constantExpression;
+  
+ where 
+ constantExpression
+  is any constant expression representing a value of type 
+ type
+ . Thus the declaration
+  
+ var I: Integer = 7;
+  
+ is equivalent to the declaration and statement
+  
+ var I: Integer;
+  
+  
+  ...
+  
+  
+ I := 7;
+  
+ Multiple variable declarations (such as 
+ var X, Y, Z: Real;
+ ) cannot include initializations, nor can 
+ declarations of variant and file-type variables.
+  
+ If you don't explicitly initialize a global variable, the compiler initializes it to 0. Local variables, in contrast, cannot 
+ be initialized in their declarations and their contents are undefined until a value is assigned to them.
+  
+ When you declare a variable, you are allocating memory which is freed automatically when the variable is no 
+ longer used. In particular, local variables exist only until the program exits from the function or procedure in which 
+ they are declared. For more information about variables and memory management, see Memory management.
+  
+ 102",NA
+Declared Constants,"Several different language constructions are referred to as 'constants'. There are numeric constants (also called 
+ numerals) like 17, and string constants (also called character strings or string literals) like 'Hello world!'. Every 
+ enumerated type defines constants that represent the values of that type. There are predefined constants like 
+ True, False, and nil. Finally, there are constants that, like variables, are created individually by declaration.
+  
+ Declared constants are either 
+ true constants
+  or 
+ typed constants
+ . These two kinds of constant are superficially 
+ similar, but they are governed by different rules and used for different purposes.
+  
+ True Constants
+  
+ A true constant is a declared identifier whose value cannot change. For example,
+  
+ const MaxValue = 237;
+  
+ declares a constant called 
+ MaxValue
+  that returns the integer 237. The syntax for declaring a true constant is
+  
+ const 
+ identifier = constantExpression
+  
+ where identifier is any valid identifier and 
+ constantExpression
+  is an expression that the compiler can evaluate 
+ without executing your program.
+  
+ If 
+ constantExpression
+  returns an ordinal value, you can specify the type of the declared constant using a value 
+ typecast. For example
+  
+ const MyNumber = Int64(17);
+  
+ declares a constant called 
+ MyNumber
+ , of type Int64, that returns the integer 17. Otherwise, the type of the 
+ declared constant is the type of the 
+ constantExpression
+ .
+  
+ If 
+ constantExpression
+  is a character string, the declared constant is compatible with any string type. If the 
+  
+ character string is of length 1, it is also compatible with any character type.
+  
+ If 
+ constantExpression
+  is a real, its type is Extended. If it is an integer, its type is given by the table below.
+  
+ Types for integer constants
+  
+ Range of constant(hexadecimal)
+  
+ Range of constant(decimal) Type
+  
+ -$8000000000000000..-$80000001
+  
+ -2^63..-2147483649
+  
+ Int64
+  
+ -$80000000..-$8001
+  
+ -2147483648..-32769
+  
+ Integer
+  
+ -$8000..-$81
+  
+ -32768..-129
+  
+ Smallint
+  
+ -$80..-1
+  
+ -128..-1
+  
+ Shortint
+  
+ 0..$7F
+  
+ 0..127
+  
+ 0..127
+  
+ $80..$FF
+  
+ 128..255
+  
+ Byte
+  
+ $0100..$7FFF
+  
+ 256..32767
+  
+ 0..32767
+  
+ $8000..$FFFF
+  
+ 32768..65535
+  
+ Word
+  
+ $10000..$7FFFFFFF
+  
+ 65536..2147483647
+  
+ 0..2147483647
+  
+ $80000000..$FFFFFFFF
+  
+ 2147483648..4294967295
+  
+ Cardinal
+  
+ $100000000..$7FFFFFFFFFFFFFFF 4294967296..2^631
+  
+ Int64
+  
+ Here are some examples of constant declarations:
+  
+ 104",NA
+Procedures and Functions ,"This section describes the syntax of function and procedure declarations.
+  
+ 109",NA
+Procedures and Functions,"This topic covers the following items:
+  
+ Declaring procedures and functions
+  
+ Calling conventions
+  
+ Forward and interface declarations
+  
+ Declaration of external routines
+  
+ Overloading procedures and functions
+  
+ Local declarations and nested routines
+  
+ About Procedures and Functions
+  
+ Procedures and functions, referred to collectively as 
+ routines
+ , are self-contained statement blocks that can be 
+ called from different locations in a program. A function is a routine that returns a value when it executes. A 
+ procedure is a routine that does not return a value.
+  
+ Function calls, because they return a value, can be used as expressions in assignments and operations. For 
+ example,
+  
+ I := SomeFunction(X);
+  
+ calls 
+ SomeFunction
+  and assigns the result to 
+ I
+ . Function calls cannot appear on the left side of an assignment 
+ statement.
+  
+ Procedure calls - and, when extended syntax is enabled (
+ {$X+}
+ ), function calls - can be used as complete 
+ statements. For example,
+  
+ DoSomething;
+  
+ calls the 
+ DoSomething
+  routine; if 
+ DoSomething
+  is a function, its return value is discarded.
+  
+ Procedures and functions can call themselves recursively.
+  
+ Declaring Procedures and Functions
+  
+ When you declare a procedure or function, you specify its name, the number and type of parameters it takes, and, 
+ in the case of a function, the type of its return value; this part of the declaration is sometimes called the prototype, 
+ heading, or header. Then you write a block of code that executes whenever the procedure or function is called; 
+ this part is sometimes called the routine's body or block.
+  
+ Procedure Declarations
+  
+ A procedure declaration has the form
+  
+ procedure procedureName(parameterList); directives;
+  
+  
+  localDeclarations;
+  
+  
+ begin
+  
+  
+  statements
+  
+  
+ end;
+  
+ 110",NA
+Parameters,"This topic covers the following items:
+  
+ Parameter semantics
+  
+ String parameters
+  
+ Array parameters
+  
+ Default parameters
+  
+ About Parameters
+  
+ Most procedure and function headers include a parameter list. For example, in the header
+  
+ function Power(X: Real; Y: Integer): Real;
+  
+ the parameter list is 
+ (X: Real; Y: Integer)
+ .
+  
+ A parameter list is a sequence of parameter declarations separated by semicolons and enclosed in parentheses.
+  
+ Each declaration is a comma-delimited series of parameter names, followed in most cases by a colon and a type
+  
+ identifier, and in some cases by the 
+ =
+  symbol and a default value. Parameter names must be valid identifiers. Any
+  
+ declaration can be preceded by var, const, or out. Examples:
+  
+ (X, Y: Real)
+  
+  
+ (var S: string; X: Integer)
+  
+  
+ (HWnd: Integer; Text, Caption: PChar; Flags: Integer)
+  
+  
+ (const P; I: Integer)
+  
+ The parameter list specifies the number, order, and type of parameters that must be passed to the routine when it
+  
+ is called. If a routine does not take any parameters, omit the identifier list and the parentheses in its declaration:
+  
+ procedure UpdateRecords;
+  
+  
+ begin
+  
+  
+  ...
+  
+  
+ end;
+  
+ Within the procedure or function body, the parameter names (
+ X
+  and 
+ Y
+  in the first example) can be used as local
+  
+ variables. Do not redeclare the parameter names in the local declarations section of the procedure or function 
+ body.
+  
+ Parameter Semantics
+  
+ Parameters are categorized in several ways:
+  
+ Every parameter is classified as value, variable, constant, or out. Value parameters are the default; the 
+ reserved
+  
+ words var, const, and out indicate variable, constant, and out parameters, respectively.
+  
+ Value parameters are always typed, while constant, variable, and out parameters can be either typed or 
+ untyped.
+  
+ Special rules apply to array parameters.
+  
+ Files and instances of structured types that contain files can be passed only as variable (var) parameters.
+  
+ 119",NA
+Calling Procedures and Functions,"This topic covers the following items:
+  
+ Program control and routine parameters
+  
+ Open array constructors
+  
+ The inline directive
+  
+ Program Control and Parameters
+  
+ When you call a procedure or function, program control passes from the point where the call is made to the body 
+ of the routine. You can make the call using the routine's declared name (with or without qualifiers) or using a 
+ procedural variable that points to the routine. In either case, if the routine is declared with parameters, your call to 
+ it must pass parameters that correspond in order and type to the routine's parameter list. The parameters you 
+ pass to a routine are called actual parameters, while the parameters in the routine's declaration are called formal 
+ parameters.
+  
+ When calling a routine, remember that
+  
+ expressions used to pass typed const and value parameters must be assignment-compatible with the 
+  
+ corresponding formal parameters.
+  
+ expressions used to pass var and out parameters must be identically typed with the corresponding formal 
+  
+ parameters, unless the formal parameters are untyped.
+  
+ only assignable expressions can be used to pass var and out parameters.
+  
+ if a routine's formal parameters are untyped, numerals and true constants with numeric values cannot be used 
+  
+ as actual parameters.
+  
+ When you call a routine that uses default parameter values, all actual parameters following the first accepted 
+ default must also use the default values; calls of the form 
+ SomeFunction(,,X)
+  are not legal.
+  
+ You can omit parentheses when passing all and only the default parameters to a routine. For example, given the 
+ procedure
+  
+ procedure DoSomething(X: Real = 1.0; I: Integer = 0; S: string = '');
+  
+ the following calls are equivalent.
+  
+ DoSomething();
+  
+  
+  DoSomething;
+  
+ Open Array Constructors
+  
+ Open array constructors allow you to construct arrays directly within function and procedure calls. They can be 
+ passed only as open array parameters or variant open array parameters.
+  
+ An open array constructor, like a set constructor, is a sequence of expressions separated by commas and 
+ enclosed in brackets.
+  
+ For example, given the declarations
+  
+ var I, J: Integer;
+  
+  
+  procedure Add(A: array of Integer);
+  
+ 128",NA
+Classes and Objects ,"This section describes the object-oriented features of the Delphi language, such as the declaration and usage of 
+ class types.
+  
+ 131",NA
+Classes and Objects,"This topic covers the following material:
+  
+ Declaration syntax of classes
+  
+ Inheritance and scope
+  
+ Visibility of class members
+  
+ Forward declarations and mutually dependent classes
+  
+ Class Types
+  
+ A class, or class type, defines a structure consisting of fields, methods, and properties. Instances of a class type 
+ are called objects. The fields, methods, and properties of a class are called its components or members.
+  
+ A field is essentially a variable that is part of an object. Like the fields of a record, a class' fields represent data 
+  
+ items that exist in each instance of the class.
+  
+ A method is a procedure or function associated with a class. Most methods operate on objectsthat is, 
+ instances 
+  
+ of a class. Some methods (called class methods) operate on class types themselves.
+  
+ A property is an interface to data associated with an object (often stored in a field). Properties have access 
+  
+ specifiers, which determine how their data is read and modified. From other parts of a programoutside of 
+ the 
+  
+ object itselfa property appears in most respects like a field.
+  
+ Objects are dynamically allocated blocks of memory whose structure is determined by their class type. Each 
+ object has a unique copy of every field defined in the class, but all instances of a class share the same methods. 
+ Objects are created and destroyed by special methods called constructors and destructors.
+  
+ A variable of a class type is actually a pointer that references an object. Hence more than one variable can refer 
+ to the same object. Like other pointers, class-type variables can hold the value nil. But you don't have to explicitly 
+ dereference a class-type variable to access the object it points to. For example, 
+ SomeObject.Size := 100 
+ assigns the value 100 to the 
+ Size
+  property of the object referenced by 
+ SomeObject
+ ; you would not write this as 
+ SomeObject^.Size := 100
+ .
+  
+ A class type must be declared and given a name before it can be instantiated. (You cannot define a class type 
+ within a variable declaration.) Declare classes only in the outermost scope of a program or unit, not in a procedure 
+ or function declaration.
+  
+ A class type declaration has the form
+  
+ type 
+  
+  
+  className = class (ancestorClass)
+  
+  
+  memberList  
+  
+  
+  end;
+  
+ where 
+ className
+  is any valid identifier, 
+ (ancestorClass)
+  is optional, and 
+ memberList
+  declares members - that is, 
+ fields, methods, and properties - of the class. If you omit 
+ (ancestorClass)
+ , then the new class inherits directly from 
+ the predefined TObject class. If you include 
+ (ancestorClass)
+  and 
+ memberList
+  is empty, you can omit end. A class 
+ type declaration can also include a list of interfaces implemented by the class; see Implementing Interfaces.
+  
+ Delphi for .NET supports the additional features of sealed classes and abstract classes. A sealed class is one that 
+ cannot be extended through inheritance. This includes all .NET languages that might use the sealed class. Delphi 
+ for .NET also allows an entire class to be declared as abstract, even though it does not contain any abstract 
+ virtual methods. The class declaration syntax for Delphi for .NET is:
+  
+ 132",NA
+Fields,"This topic describes the syntax of class data fields declarations.
+  
+ About Fields
+  
+ A field is like a variable that belongs to an object. Fields can be of any type, including class types. (That is, fields 
+ can hold object references.) Fields are usually private.
+  
+ To define a field member of a class, simply declare the field as you would a variable. All field declarations must 
+ occur before any property or method declarations. For example, the following declaration creates a class called 
+ TNumber
+  whose only member, other than the methods is inherits from TObject, is an integer field called 
+ Int
+ .
+  
+ type TNumber = class 
+  
+  
+  Int: Integer;
+  
+  
+  end;
+  
+ Fields are statically bound; that is, references to them are fixed at compile time. To see what this means, consider 
+ the following code.
+  
+ type 
+  
+  TAncestor = class 
+  
+  
+  Value: Integer; 
+  
+  end; 
+  
+  
+  TDescendant = class(TAncestor)
+  
+  Value: string;    // hides the inherited Value field 
+  
+  end; 
+  
+  
+ var 
+  
+  
+  MyObject: TAncestor; 
+  
+  
+ begin 
+  
+  MyObject := TDescendant.Create; 
+  
+  MyObject.Value := 'Hello!'     // error
+  
+  
+  (MyObject as TDescendant).Value := 'Hello!'   // works! 
+  
+ end;
+  
+ Although 
+ MyObject
+  holds an instance of 
+ TDescendant
+ , it is declared as 
+ TAncestor
+ . The compiler therefore 
+ interprets 
+ MyObject.Value
+  as referring to the (integer) field declared in 
+ TAncestor
+ . Both fields, however, exist 
+ in the 
+ TDescendant
+  object; the inherited 
+ Value
+  is hidden by the new one, and can be accessed through a 
+ typecast.
+  
+ Constants, and typed constant declarations can appear in classes and non-anonymous records at global scope. 
+ Both constants and typed constants can also appear within nested type definitions. Constants and typed 
+ constants can appear only within class definitions when the class is defined locally to a procedure (i.e. they cannot 
+ appear within records defined within a procedure).
+  
+ Class Fields (.NET)
+  
+ Class fields are data fields in a class that can be accessed without an object reference.
+  
+ You can introduce a block of class fields within a class declaration by using the class var block declaration. All 
+ fields declared after class var have static storage attributes. A class var block is terminated by the following:
+  
+ 1
+  Another class var declaration
+  
+ 138",NA
+Methods,"A method is a procedure or function associated with a class. A call to a method specifies the object (or, if it is a 
+ class method, the class) that the method should operate on. For example, 
+ SomeObject.Free
+  calls the 
+ Free
+  
+ method in 
+ SomeObject
+ .
+  
+ This topic covers the following material:
+  
+ Methods declarations and implementation
+  
+ Method binding
+  
+ Overloading methods
+  
+ Constructors and destructors
+  
+ Message methods
+  
+ About Methods
+  
+ Within a class declaration, methods appear as procedure and function headings, which work like forward 
+ declarations. Somewhere after the class declaration, but within the same module, each method must be 
+ implemented by a defining declaration. For example, suppose the declaration of 
+ TMyClass
+  includes a method 
+ called 
+ DoSomething
+ :
+  
+ type 
+  
+  
+  TMyClass = class(TObject) 
+  
+  
+  ... 
+  
+  
+  procedure DoSomething; 
+  
+  
+  ... 
+  
+  
+  end;
+  
+ A defining declaration for 
+ DoSomething
+  must occur later in the module:
+  
+ procedure TMyClass.DoSomething; 
+  
+  
+ begin 
+  
+  
+  ... 
+  
+  
+ end;
+  
+ While a class can be declared in either the interface or the implementation section of a unit, defining declarations 
+ for a class' methods must be in the implementation section.
+  
+ In the heading of a defining declaration, the method name is always qualified with the name of the class to which 
+ it belongs. The heading can repeat the parameter list from the class declaration; if it does, the order, type and 
+ names of the parameters must match exactly, and if the method is a function, the return value must match as 
+ well.
+  
+ Method declarations can include special directives that are not used with other functions or procedures. Directives 
+ should appear in the class declaration only, not in the defining declaration, and should always be listed in the 
+ following order:
+  
+ reintroduce; overload; 
+ binding;calling convention;
+ abstract; 
+ warning
+  
+ where 
+ binding
+  is virtual, dynamic, or override; calling convention is register, pascal, cdecl, stdcall, or safecall; and 
+ warning
+  is platform, deprecated, or library.
+  
+ 140",NA
+Properties,"This topic describes the following material:
+  
+ Property access
+  
+ Array properties
+  
+ Index specifiers
+  
+ Storage specifiers
+  
+ Property overrides and redeclarations
+  
+ Class properties (.NET)
+  
+ About Properties
+  
+ A property, like a field, defines an attribute of an object. But while a field is merely a storage location whose 
+ contents
+  
+ can be examined and changed, a property associates specific actions with reading or modifying its data. 
+ Properties
+  
+ provide control over access to an object's attributes, and they allow attributes to be computed.
+  
+ The declaration of a property specifies a name and a type, and includes at least one access specifier. The syntax
+  
+ of a property declaration is
+  
+ property 
+ propertyName[indexes]: type 
+ index
+  integerConstant specifiers;
+  
+ where
+  
+ propertyName
+  is any valid identifier.
+  
+ [indexes]
+  is optional and is a sequence of parameter declarations separated by semicolons. Each parameter
+  
+ declaration has the form 
+ identifier1
+ , ..., 
+ identifiern
+ : type. For more information, see Array Properties, below.
+  
+ type must be a predefined or previously declared type identifier. That is, property declarations like 
+ property
+  
+ Num: 0..9
+  ... are invalid.
+  
+ the index 
+ integerConstant
+  clause is optional. For more information, see Index Specifiers, below.
+  
+ specifiers is a sequence of read, write, stored, default (or nodefault), and implements specifiers. Every 
+ property
+  
+ declaration must have at least one read or write specifier.
+  
+ Properties are defined by their access specifiers. Unlike fields, properties cannot be passed as var parameters, 
+ nor
+  
+ can the 
+ @
+  operator be applied to a property. The reason is that a property doesn't necessarily exist in memory. It
+  
+ could, for instance, have a read method that retrieves a value from a database or generates a random value.
+  
+ Property Access
+  
+ Every property has a read specifier, a write specifier, or both. These are called access specifiers and they have 
+ the
+  
+ form
+  
+ read 
+ fieldOrMethod
+  
+ write 
+ fieldOrMethod
+  
+ where 
+ fieldOrMethod
+  is the name of a field or method declared in the same class as the property or in an ancestor
+  
+ class.
+  
+ If 
+ fieldOrMethod
+  is declared in the same class, it must occur before the property declaration. If it is declared in
+  
+ an ancestor class, it must be visible from the descendant; that is, it cannot be a private field or method of an
+  
+ ancestor class declared in a different unit.
+  
+ If 
+ fieldOrMethod
+  is a field, it must be of the same type as the property.
+  
+ 150",NA
+Class References,"Sometimes operations are performed on a class itself, rather than on instances of a class (that is, objects). This 
+ happens, for example, when you call a constructor method using a class reference. You can always refer to a 
+ specific class using its name, but at times it is necessary to declare variables or parameters that take classes as 
+ values, and in these situations you need 
+ class-reference types
+ .
+  
+ This topic covers the following material:
+  
+ Class reference types
+  
+ Class operators
+  
+ Class methods
+  
+ Class-Reference Types
+  
+ A class-reference type, sometimes called a metaclass, is denoted by a construction of the form
+  
+ class of 
+ type
+  
+ where 
+ type
+  is any class type. The identifier 
+ type
+  itself denotes a value whose type is 
+ class of 
+ type
+ . If 
+ type1
+  is 
+ an ancestor of 
+ type2
+ , then 
+ class of type2
+  is assignment-compatible with class of 
+ type1
+ . Thus
+  
+ type TClass = class of TObject; 
+  
+  
+ var AnyObj: TClass;
+  
+ declares a variable called 
+ AnyObj
+  that can hold a reference to any class. (The definition of a class-reference type 
+ cannot occur directly in a variable declaration or parameter list.) You can assign the value nil to a variable of any 
+ class-reference type.
+  
+ To see how class-reference types are used, look at the declaration of the constructor for TCollection (in the 
+ Classes
+  unit):
+  
+ type TCollectionItemClass = class of TCollectionItem; 
+  
+  
+  ... 
+  
+  
+ constructor Create(ItemClass: TCollectionItemClass);
+  
+ This declaration says that to create a TCollection instance object, you must pass to the constructor the name of a 
+ class descending from TCollectionItem.
+  
+ Class-reference types are useful when you want to invoke a class method or virtual constructor on a class or 
+ object whose actual type is unknown at compile time.
+  
+ Constructors and Class References
+  
+ A constructor can be called using a variable of a class-reference type. This allows construction of objects whose 
+ type isn't known at compile time. For example,
+  
+ type TControlClass = class of TControl; 
+  
+  
+ function CreateControl(ControlClass: TControlClass; 
+  
+  
+ const ControlName: string; X, Y, W, H: Integer): TControl; 
+  
+  
+ begin 
+  
+ 157",NA
+Exceptions,"This topic covers the following material:
+  
+ A conceptual overview of exceptions and exception handling
+  
+ Declaring exception types
+  
+ Raising and handling exceptions
+  
+ About Exceptions
+  
+ An exception is raised when an error or other event interrupts normal execution of a program. The exception 
+ transfers control to an exception handler, which allows you to separate normal program logic from error-handling. 
+ Because exceptions are objects, they can be grouped into hierarchies using inheritance, and new exceptions can 
+ be introduced without affecting existing code. An exception can carry information, such as an error message, from 
+ the point where it is raised to the point where it is handled.
+  
+ When an application uses the 
+ SysUtils
+  unit, most runtime errors are automatically converted into exceptions. 
+ Many errors that would otherwise terminate an application - such as insufficient memory, division by zero, and 
+ general protection faults - can be caught and handled.
+  
+ When To Use Exceptions
+  
+ Exceptions provide an elegant way to trap runtime errors without halting the program and without awkward 
+ conditional statements. The requirements imposed by exception handling semantics impose a code/data size and 
+ runtime performance penalty. While it is possible to raise exceptions for almost any reason, and to protect almost 
+ any block of code by wrapping it in a 
+ try...except
+  or 
+ try...finally
+  statement, in practice these tools are 
+ best reserved for special situations.
+  
+ Exception handling is appropriate for errors whose chances of occurring are low or difficult to assess, but whose 
+ consequences are likely to be catastrophic (such as crashing the application); for error conditions that are 
+ complicated or difficult to test for in 
+ if...then
+  statements; and when you need to respond to exceptions raised 
+ by the operating system or by routines whose source code you don't control. Exceptions are commonly used for 
+ hardware, memory, I/O, and operating-system errors.
+  
+ Conditional statements are often the best way to test for errors. For example, suppose you want to make sure that 
+ a file exists before trying to open it. You could do it this way:
+  
+ try 
+  
+  
+  AssignFile(F, FileName); 
+  
+  
+  Reset(F);     // raises an EInOutError exception if file is not found 
+  
+  
+ except 
+  
+  
+  on Exception do ... 
+  
+  
+ end;
+  
+ But you could also avoid the overhead of exception handling by using
+  
+ if FileExists(FileName) then    // returns False if file is not found; raises no exception
+  
+  
+ begin 
+  
+  
+  AssignFile(F, FileName); 
+  
+ 160",NA
+Nested Type Declarations,"Type declarations may be nested within class declarations. Nested types are used throughout the .NET 
+ framework, and throughout object-oriented programming in general. They present a way to keep conceptually 
+ related types together, and to avoid name collisions. The same syntax for declaring nested types may be used 
+ with the Win32 Delphi compiler.
+  
+ Declaring Nested Types
+  
+ type
+  
+  
+  className = class [abstract | sealed] (ancestorType)
+  
+  
+  memberList
+  
+  
+  type
+  
+  
+  nestedTypeDeclaration 
+  
+  
+  memberList
+  
+  
+  end;           
+  
+ Where 
+ nestedTypeDeclaration
+  follows the type declaration syntax defined in Declaring Types.
+  
+ Nested type declarations are terminated by the first occurance of a non-identifier token, for example, procedure, 
+ class, type, and all visibility scope specifiers.
+  
+ The normal accessibility rules apply to nested types and their containing types. A nested type can access an 
+ instance variable (field, property, or method) of its container class, but it must have an object reference to do so. A 
+ nested type can access class fields, class properties, and class static methods without an object reference, but 
+ the normal Delphi visibility rules apply.
+  
+ Nested types do not increase the size of the containing class. In other words, creating an instance of the 
+ containing class does not also create an instance of a nested type. Nested types are associated with their 
+ containing classes only by the context of their declaration.
+  
+ Declaring and Accessing Nested Classes
+  
+ The following examples demonstrate how to declare and access fields and methods of a nested class.
+  
+ type
+  
+  
+  TOuterClass = class
+  
+  
+  strict private
+  
+  
+  myField: Integer;
+  
+  
+  public
+  
+  
+  type
+  
+  
+  TInnerClass = class
+  
+  
+  public
+  
+  myInnerField: Integer;
+  
+  procedure innerProc;
+  
+  end;
+  
+  
+  procedure outerProc;
+  
+  
+  end;",NA
+Standard Routines and I/O ,"This section describes the standard routines included in the Delphi runtime library.
+  
+ 169",NA
+Standard Routines and I/O,"These topics discuss text and file I/O and summarize standard library routines. Many of the procedures and 
+ functions listed here are defined in the 
+ System
+  and 
+ SysInit
+  units, which are implicitly used with every application. 
+ Others are built into the compiler but are treated as if they were in the 
+ System
+  unit.
+  
+ Some standard routines are in units such as 
+ SysUtils
+ , which must be listed in a uses clause to make them 
+ available in programs. You cannot, however, list 
+ System
+  in a uses clause, nor should you modify the 
+ System
+  unit 
+ or try to rebuild it explicitly.
+  
+ File Input and Output
+  
+ The table below lists input and output routines.
+  
+ Input and output procedures and functions
+  
+ Procedure or function Description
+  
+ Append
+  
+ Opens an existing text file for appending.
+  
+ AssignFile
+  
+ Assigns the name of an external file to a file variable.
+  
+ BlockRead
+  
+ Reads one or more records from an untyped file.
+  
+ BlockWrite
+  
+ Writes one or more records into an untyped file.
+  
+ ChDir
+  
+ Changes the current directory.
+  
+ CloseFile
+  
+ Closes an open file.
+  
+ Eof
+  
+ Returns the end-of-file status of a file.
+  
+ Eoln
+  
+ Returns the end-of-line status of a text file.
+  
+ Erase
+  
+ Erases an external file.
+  
+ FilePos
+  
+ Returns the current file position of a typed or untyped file.
+  
+ FileSize
+  
+ Returns the current size of a file; not used for text files.
+  
+ Flush
+  
+ Flushes the buffer of an output text file.
+  
+ GetDir
+  
+ Returns the current directory of a specified drive.
+  
+ IOResult
+  
+ Returns an integer value that is the status of the last I/O function performed.
+  
+ MkDir
+  
+ Creates a subdirectory.
+  
+ Read
+  
+ Reads one or more values from a file into one or more variables.
+  
+ Readln
+  
+ Does what Read does and then skips to beginning of next line in the text file.
+  
+ Rename
+  
+ Renames an external file.
+  
+ Reset
+  
+ Opens an existing file.
+  
+ Rewrite
+  
+ Creates and opens a new file.
+  
+ RmDir
+  
+ Removes an empty subdirectory.
+  
+ Seek
+  
+ Moves the current position of a typed or untyped file to a specified component. Not used with text 
+ files.
+  
+ SeekEof
+  
+ Returns the end-of-file status of a text file.
+  
+ SeekEoln
+  
+ Returns the end-of-line status of a text file.
+  
+ SetTextBuf
+  
+ Assigns an I/O buffer to a text file.
+  
+ Truncate
+  
+ Truncates a typed or untyped file at the current file position.
+  
+ Write
+  
+ Writes one or more values to a file.
+  
+ 170",NA
+Libraries and Packages ,"This section describes how to create static and dynamically loadable libraries in Delphi.
+  
+ 178",NA
+Libraries and Packages,"A dynamically loadable library is a dynamic-link library (DLL) on Win32, and an assembly (also a DLL) on the 
+ .NET platform. It is a collection of routines that can be called by applications and by other DLLs or shared objects. 
+ Like units, dynamically loadable libraries contain sharable code or resources. But this type of library is a 
+ separately compiled executable that is linked at runtime to the programs that use it.
+  
+ Delphi programs can call DLLs and assemblies written in other languages, and applications written in other 
+ languages can call DLLs or assemblies written in Delphi.
+  
+ Calling Dynamically Loadable Libraries
+  
+ You can call operating system routines directly, but they are not linked to your application until runtime. This 
+ means that the library need not be present when you compile your program. It also means that there is no 
+ compile-time validation of attempts to import a routine.
+  
+ Before you can call routines defined in DLL or assembly, you must import them. This can be done in two ways: by 
+ declaring an external procedure or function, or by direct calls to the operating system. Whichever method you use, 
+ the routines are not linked to your application until runtime.
+  
+ The Delphi language does not support importing of variables from DLLs or assemblies.
+  
+ Static Loading
+  
+ The simplest way to import a procedure or function is to declare it using the external directive. For example,
+  
+ procedure DoSomething; external 'MYLIB.DLL';
+  
+ If you include this declaration in a program, MYLIB.DLL is loaded once, when the program starts. Throughout 
+ execution of the program, the identifier 
+ DoSomething
+  always refers to the same entry point in the same shared 
+ library.
+  
+ Declarations of imported routines can be placed directly in the program or unit where they are called. To simplify 
+ maintenance, however, you can collect external declarations into a separate ""import unit"" that also contains any 
+ constants and types required for interfacing with the library. Other modules that use the import unit can call any 
+ routines declared in it.
+  
+ Dynamic Loading
+  
+ You can access routines in a library through direct calls to Win32 APIs, including 
+ LoadLibrary
+ , 
+ FreeLibrary
+ , 
+ and 
+ GetProcAddress
+ . These functions are declared in Windows.pas. on Linux, they are implemented for 
+ compatibility in SysUtils.pas; the actual Linux OS routines are 
+ dlopen
+ , 
+ dlclose
+ , and 
+ dlsym
+  (all declared in libc; see 
+ the man pages for more information). In this case, use procedural-type variables to reference the imported 
+ routines.
+  
+ For example,
+  
+ uses Windows, ...; 
+  
+  
+ type
+  
+  
+  TTimeRec = record
+  
+  
+  Second: Integer;
+  
+  
+  Minute: Integer;
+  
+  
+  Hour: Integer;
+  
+  
+  end;
+  
+ 179",NA
+Writing Dynamically Loaded Libraries,"The following topics describe elements of writing dynamically loadable libraries, including
+  
+ The exports clause.
+  
+ Library initialization code.
+  
+ Global variables.
+  
+ Libraries and system variables.
+  
+ Using Export Clause in Libraries
+  
+ The main source for a dynamically loadable library is identical to that of a program, except that it begins with the 
+ reserved word library (instead of program).
+  
+ Only routines that a library explicitly exports are available for importing by other libraries or programs. The 
+ following example shows a library with two exported functions, 
+ Min
+  and 
+ Max
+ .
+  
+ library MinMax;
+  
+   
+  function Min(X, Y: Integer): Integer; stdcall; 
+ begin
+  
+  if X < Y then Min := X else Min := Y;
+  
+  end;
+  
+  function Max(X, Y: Integer): Integer; stdcall; 
+ begin
+  
+  if X > Y then Max := X else Max := Y;
+  
+  end;
+  
+  exports
+  
+    
+  Min,
+  
+  Max;
+  
+  begin
+  
+  end.
+  
+ If you want your library to be available to applications written in other languages, it's safest to specify stdcall in the 
+ declarations of exported functions. Other languages may not support Delphi's default register calling convention.
+  
+ Libraries can be built from multiple units. In this case, the library source file is frequently reduced to a uses clause, 
+ an exports clause, and the initialization code. For example,
+  
+ 181",NA
+Packages,"The following topics describe packages and various issues involved in creating and compiling them.
+  
+ Package declarations and source files
+  
+ Naming packages
+  
+ The requires clause
+  
+ Avoiding circular package references
+  
+ Duplicate package references
+  
+ The contains clause
+  
+ Avoiding redundant source code uses
+  
+ Compiling packages
+  
+ Generated files
+  
+ Package-specific compiler directives
+  
+ Package-specific command-line compiler switches
+  
+ Understanding Packages
+  
+ A package is a specially compiled library used by applications, the IDE, or both. Packages allow you to rearrange
+  
+ where code resides without affecting the source code. This is sometimes referred to as 
+ application partitioning
+ .
+  
+ Runtime packages provide functionality when a user runs an application. Design-time packages are used to install
+  
+ components in the IDE and to create special property editors for custom components. A single package can 
+ function
+  
+ at both design time and runtime, and design-time packages frequently work by referencing runtime packages in 
+ their
+  
+ requires clauses.
+  
+ On Win32, package files end with the .bpl (Borland package library) extension. On the .NET platform, packages 
+ are .
+  
+ NET assemblies, and end with an extension of .dll
+  
+ Ordinarily, packages are loaded statically when an applications starts. But you can use the 
+ LoadPackage
+  and
+  
+ UnloadPackage
+  routines (in the 
+ SysUtils
+  unit) to load packages dynamically.
+  
+ Note:
+  When an application utilizes packages, the name of each packaged unit still must appear in the uses clause
+  
+ of any source file that references it.
+  
+ Package Declarations and Source Files
+  
+ Each package is declared in a separate source file, which should be saved with the .dpk extension to avoid 
+ confusion
+  
+ with other files containing Delphi code. A package source file does not contain type, data, procedure, or function
+  
+ declarations. Instead, it contains:
+  
+ a name for the package.
+  
+ a list of other packages required by the new package. These are packages to which the new package is linked.
+  
+ a list of unit files contained by, or bound into, the package when it is compiled. The package is essentially a
+  
+ wrapper for these source-code units, which provide the functionality of the compiled package.
+  
+ A package declaration has the form
+  
+ package
+ packageName;
+  
+ requiresClause;
+  
+ 186",NA
+Object Interfaces ,"This section describes the use of interfaces in Delphi.
+  
+ 190",NA
+Object Interfaces,"An object interface, or simply interface, defines methods that can be implemented by a class. Interfaces are 
+ declared like classes, but cannot be directly instantiated and do not have their own method definitions. Rather, it is 
+ the responsibility of any class that supports an interface to provide implementations for the interface's methods. A 
+ variable of an interface type can reference an object whose class implements that interface; however, only 
+ methods declared in the interface can be called using such a variable.
+  
+ Interfaces offer some of the advantages of multiple inheritance without the semantic difficulties. They are also 
+ essential for using distributed object models (such as CORBA and SOAP). Using a distributed object model, 
+ custom objects that support interfaces can interact with objects written in C++, Java, and other languages.
+  
+ Interface Types
+  
+ Interfaces, like classes, can be declared only in the outermost scope of a program or unit, not in a procedure or 
+ function declaration. An interface type declaration has the form
+  
+ type interfaceName = interface (ancestorInterface)
+  
+  
+  ['{GUID}']
+  
+  
+  memberList
+  
+  
+ end;
+  
+ where 
+ (ancestorInterface)
+  and
+  ['{GUID}']
+  are optional. In most respects, interface declarations resemble class 
+ declarations, but the following restrictions apply.
+  
+ The 
+ memberList
+  can include only methods and properties. Fields are not allowed in interfaces.
+  
+ Since an interface has no fields, property read and write specifiers must be methods.
+  
+ All members of an interface are public. Visibility specifiers and storage specifiers are not allowed. (But an array 
+  
+ property can be declared as default.)
+  
+ Interfaces have no constructors or destructors. They cannot be instantiated, except through classes that 
+  
+ implement their methods.
+  
+ Methods cannot be declared as virtual, dynamic, abstract, or override. Since interfaces do not implement their 
+  
+ own methods, these designations have no meaning.
+  
+ Here is an example of an interface declaration:
+  
+ type
+  
+ IMalloc = interface(IInterface)
+  
+  ['{00000002-0000-0000-C000-000000000046}']
+  
+  function Alloc(Size: Integer): Pointer; stdcall;
+  
+  function Realloc(P: Pointer; Size: Integer): Pointer; stdcall; 
+ procedure Free(P: Pointer); stdcall;    
+  
+  function GetSize(P: Pointer): Integer; stdcall;
+  
+  function DidAlloc(P: Pointer): Integer; stdcall;
+  
+  procedure HeapMinimize; stdcall;
+  
+ end;
+  
+ In some interface declarations, the interface reserved word is replaced by dispinterface. This construction (along 
+ with the dispid, read only, and write only directives) is platform-specific and is not used in Linux programming.
+  
+ 191",NA
+Implementing Interfaces,"Once an interface has been declared, it must be implemented in a class before it can be used. The interfaces 
+ implemented by a class are specified in the class's declaration, after the name of the class's ancestor.
+  
+ Class Declarations
+  
+ Such declarations have the form
+  
+ type className = class (ancestorClass, interface1, ..., interfacen)
+  
+  
+  memberList
+  
+  
+ end;
+  
+ For example,
+  
+ type
+  
+  
+  TMemoryManager = class(TInterfacedObject, IMalloc, IErrorInfo)
+  
+  
+  .
+  
+  
+  .
+  
+  
+  .
+  
+  
+ end;
+  
+ declares a class called 
+ TMemoryManager
+  that implements the 
+ IMalloc
+  and 
+ IErrorInfo
+  interfaces. When a 
+ class implements an interface, it must implement (or inherit an implementation of) each method declared in the 
+ interface.
+  
+ Here is the (Win32) declaration of TInterfacedObject in the 
+ System
+  unit. On the .NET platform, TInterfacedObject 
+ is an alias for TObject.
+  
+  type
+  
+  
+  TInterfacedObject = class(TObject, IInterface)
+  
+  
+  protected
+  
+  
+  FRefCount: Integer;
+  
+  
+  function QueryInterface(const IID: TGUID; out Obj): HResult; stdcall;
+  
+  
+ function _AddRef: Integer; stdcall;
+  
+  
+  function _Release: Integer; stdcall;
+  
+  
+  public
+  
+  
+  procedure AfterConstruction; override;
+  
+  
+  procedure BeforeDestruction; override;
+  
+  
+  class function NewInstance: TObject; override;
+  
+  
+  property RefCount: Integer read FRefCount;
+  
+  end;
+  
+ TInterfacedObject implements the IInterface interface. Hence TInterfacedObject declares and implements each of 
+ the three IInterface methods.
+  
+ Classes that implement interfaces can also be used as base classes. (The first example above declares 
+ TMemoryManager
+  as a direct descendent of TInterfacedObject.) On the Win32 platform, every interface inherits 
+ from IInterface, and a class that implements interfaces must implement the 
+ QueryInterface
+ , 
+ _AddRef
+ , and 
+ _Release
+  methods. The 
+ System
+  unit's TInterfacedObject implements these methods and is thus a convenient 
+ base from which to derive other classes that implement interfaces. On the .NET platform, IInterface does not 
+ declare these methods, and you do not need to implement them.
+  
+ When an interface is implemented, each of its methods is mapped onto a method in the implementing class that 
+ has the same result type, the same calling convention, the same number of parameters, and identically typed 
+ parameters",NA
+Interface References,"If you declare a variable of an interface type, the variable can reference instances of any class that implements 
+ the interface. These topics describe Interface references and related topics.
+  
+ Implementing Interface References
+  
+ Interface reference variables allow you to call interface methods without knowing at compile time where the 
+ interface is implemented. But they are subject to the following:
+  
+ An interface-type expression gives you access only to methods and properties declared in the interface, not to 
+  
+ other members of the implementing class.
+  
+ An interface-type expression cannot reference an object whose class implements a descendant interface, 
+  
+ unless the class (or one that it inherits from) explicitly implements the ancestor interface as well.
+  
+ For example,
+  
+ type
+  
+  
+  IAncestor = interface 
+  
+ end; 
+  
+ IDescendant = interface(IAncestor)
+  
+  
+  procedure P1; 
+  
+ end; 
+  
+ TSomething = class(TInterfacedObject, IDescendant)
+  
+  procedure P1;
+  
+  
+  procedure P2; 
+  
+ end;
+  
+  
+  .
+  
+  .
+  
+  .
+  
+ var
+  
+  
+  D: IDescendant;
+  
+  
+  A: IAncestor; 
+  
+ begin
+  
+  
+  D := TSomething.Create;  // works!
+  
+  A := TSomething.Create;  // error
+  
+  D.P1;  // works!
+  
+  
+  D.P2;  // error 
+  
+ end;
+  
+ In this example, A is declared as a variable of type 
+ IAncestor
+ . Because 
+ TSomething
+  does not list IAncestor 
+ among the interfaces it implements, a 
+ TSomething
+  instance cannot be assigned to A. But if we changed 
+ TSomething
+ 's declaration to
+  
+ TSomething = class(TInterfacedObject, IAncestor, IDescendant)
+  
+  
+ .
+  
+  
+ .
+  
+  
+ .
+  
+ the first error would become a valid assignment. D is declared as a variable of type 
+ IDescendant
+ . While D 
+ references an instance of 
+ TSomething
+ , we cannot use it to access 
+ TSomething's
+  P2 method, since P2 is not a 
+ method of 
+ IDescendant
+ . But if we changed D's declaration to
+  
+ D: TSomething;
+  
+ 199",NA
+Automation Objects (Win32 Only),"An object whose class implements the IDispatch interface (declared in the 
+ System
+  unit) is an Automation object.
+  
+ Use variants to access Automation objects. When a variant references an Automation object, you can call the 
+ object's methods and read or write to its properties through the variant. To do this, you must include 
+ ComObj
+  in 
+ the uses clause of one of your units or your program or library.
+  
+ Dispatch Interface Types
+  
+ Dispatch interface types define the methods and properties that an Automation object implements through 
+ IDispatch. Calls to methods of a dispatch interface are routed through IDispatch's Invoke method at runtime; a 
+ class cannot implement a dispatch interface.
+  
+ A dispatch interface type declaration has the form
+  
+ type interfaceName = dispinterface
+  
+  
+  ['{GUID}']
+  
+  
+  memberList
+  
+  
+ end;
+  
+ where ['{GUID}'] is optional and memberList consists of property and method declarations. Dispatch interface 
+ declarations are similar to regular interface declarations, but they cannot specify an ancestor. For example,
+  
+ type
+  
+  IStringsDisp = dispinterface
+  
+  ['{EE05DFE2-5549-11D0-9EA9-0020AF3D82DA}']
+  
+  property ControlDefault[Index: Integer]: OleVariant dispid 0; default; 
+ function Count: Integer; dispid 1;
+  
+  property Item[Index: Integer]: OleVariant dispid 2;
+  
+  procedure Remove(Index: Integer); dispid 3;
+  
+  procedure Clear; dispid 4;
+  
+  function Add(Item: OleVariant): Integer; dispid 5;
+  
+  
+  function _NewEnum: IUnknown; dispid -4;
+  
+  end;
+  
+ Dispatch interface methods
+  
+ Methods of a dispatch interface are prototypes for calls to the Invoke method of the underlying IDispatch 
+ implementation. To specify an Automation dispatch ID for a method, include the dispid directive in its declaration, 
+ followed by an integer constant; specifying an already used ID causes an error.
+  
+ A method declared in a dispatch interface cannot contain directives other than dispid. Parameter and result types 
+ must be automatable. In other words, they must be Byte, Currency, Real, Double, Longint, Integer, Single, 
+ Smallint, AnsiString, WideString, TDateTime, Variant, OleVariant, WordBool, or any interface type.
+  
+ Dispatch interface properties
+  
+ Properties of a dispatch interface do not include access specifiers. They can be declared as read only or write 
+ only. To specify a dispatch ID for a property, include the dispid directive in its declaration, followed by an integer 
+ constant; specifying an already used ID causes an error. Array properties can be declared as default. No other 
+ directives are allowed in dispatch-interface property declarations.
+  
+ 201",NA
+Memory Management ,"This section describes memory management issues related to programming in Delphi on Win32, and on .NET.
+  
+ 204",NA
+Memory Management on the Win32 Platform,"The following material describes how memory management on Win32 is handled, and briefly describes memory 
+ issues of variables.
+  
+ The Memory Manager (Win32 Only)
+  
+ The memory manager manages all dynamic memory allocations and deallocations in an application. The 
+ New
+ , 
+ Dispose
+ , 
+ GetMem
+ , 
+ ReallocMem
+ , and 
+ FreeMem
+  standard procedures use the memory manager, and all objects 
+ and long strings are allocated through the memory manager.
+  
+ The memory manager is optimized for applications that allocate large numbers of small- to medium-sized blocks, 
+ as is typical for object-oriented applications and applications that process string data. Other memory managers, 
+ such as the implementations of 
+ GlobalAlloc
+ , 
+ LocalAlloc
+ , and private heap support in Windows, typically do 
+ not perform well in such situations, and would slow down an application if they were used directly.
+  
+ To ensure the best performance, the memory manager interfaces directly with the Win32 virtual memory API (the 
+ VirtualAlloc
+  and 
+ VirtualFree
+  functions). The memory manager reserves memory from the operating 
+ system in 1Mb sections of address space, and commits memory as required in 16K increments. It decommits and 
+ releases unused memory in 16K and 1Mb sections. For smaller blocks, committed memory is further 
+ suballocated.
+  
+ Memory manager blocks are always rounded upward to a 4-byte boundary, and always include a 4-byte header in 
+ which the size of the block and other status bits are stored. This means that memory manager blocks are always 
+ double-word-aligned, which guarantees optimal CPU performance when addressing the block.
+  
+ The memory manager maintains two status variables, 
+ AllocMemCount
+  and 
+ AllocMemSize
+ , which contain the 
+ number of currently allocated memory blocks and the combined size of all currently allocated memory blocks. 
+ Applications can use these variables to display status information for debugging.
+  
+ The 
+ System
+  unit provides two procedures, 
+ GetMemoryManager
+  and 
+ SetMemoryManager
+ , that allow 
+ applications to intercept low-level memory manager calls. The 
+ System
+  unit also provides a function called 
+ GetHeapStatus
+  that returns a record containing detailed memory-manager status information.
+  
+ Variables
+  
+ Global variables are allocated on the application data segment and persist for the duration of the program. Local 
+ variables (declared within procedures and functions) reside in an application's stack. Each time a procedure or 
+ function is called, it allocates a set of local variables; on exit, the local variables are disposed of. Compiler 
+ optimization may eliminate variables earlier.
+  
+ On Win32, an application's stack is defined by two values: the minimum stack size and the maximum stack size. 
+ The values are controlled through the 
+ $MINSTACKSIZE
+  and 
+ $MAXSTACKSIZE
+  compiler directives, and default to 
+ 16,384 (16K) and 1,048,576 (1Mb) respectively. An application is guaranteed to have the minimum stack size 
+ available, and an application's stack is never allowed to grow larger than the maximum stack size. If there is not 
+ enough memory available to satisfy an application's minimum stack requirement, Windows will report an error 
+ upon attempting to start the application.
+  
+ If a Win32 application requires more stack space than specified by the minimum stack size, additional memory is 
+ automatically allocated in 4K increments. If allocation of additional stack space fails, either because more memory 
+ is not available or because the total size of the stack would exceed the maximum stack size, an EStackOverflow 
+ exception is raised. (Stack overflow checking is completely automatic. The 
+ $S
+  compiler directive, which originally 
+ controlled overflow checking, is maintained for backward compatibility.)
+  
+ Dynamic variables created with the 
+ GetMem
+  or 
+ New
+  procedure are heap-allocated and persist until they are 
+ deallocated with 
+ FreeMem
+  or 
+ Dispose
+ .
+  
+ 205",NA
+Internal Data Formats,"The following topics describe the internal formats of Delphi data types.
+  
+ Integer Types
+  
+ The format of an integer-type variable depends on its minimum and maximum bounds.
+  
+ If both bounds are within the range 128..127 (Shortint), the variable is stored as a signed byte.
+  
+ If both bounds are within the range 0..255 (Byte), the variable is stored as an unsigned byte.
+  
+ If both bounds are within the range 32768..32767 (Smallint), the variable is stored as a signed word.
+  
+ If both bounds are within the range 0..65535 (Word), the variable is stored as an unsigned word.
+  
+ If both bounds are within the range 2147483648..2147483647 (Longint), the variable is stored as a signed
+  
+ double word.
+  
+ If both bounds are within the range 0..4294967295 (Longword), the variable is stored as an unsigned double
+  
+ word.
+  
+ Otherwise, the variable is stored as a signed quadruple word (Int64).
+  
+ Note:
+  a ""word"" occupies two bytes.
+  
+ Character Types
+  
+ On the Win32 platform, Char, an AnsiChar, or a subrange of a Char type is stored as an unsigned byte. A 
+ WideChar
+  
+ is stored as an unsigned word.
+  
+ On the .NET platform, a Char is equivalent to WideChar.
+  
+ Boolean Types
+  
+ A Boolean type is stored as a Byte, a ByteBool is stored as a Byte, a WordBool type is stored as a Word, and a
+  
+ LongBool is stored as a Longint.
+  
+ A Boolean can assume the values 0 (False) and 1 (True). ByteBool, WordBool, and LongBool types can assume
+  
+ the values 0 (False) or nonzero (True).
+  
+ Enumerated Types
+  
+ An enumerated type is stored as an unsigned byte if the enumeration has no more than 256 values and the type
+  
+ was declared in the 
+ {$Z1}
+  state (the default). If an enumerated type has more than 256 values, or if the type was
+  
+ declared in the 
+ {$Z2}
+  state, it is stored as an unsigned word. If an enumerated type is declared in the 
+ {$Z4}
+  
+ state,
+  
+ it is stored as an unsigned double-word.
+  
+ Real Types
+  
+ The real types store the binary representation of a sign (
+ +
+  or 
+ -
+ ), an exponent, and a significand. A real value has 
+ the
+  
+ form
+  
+ +/- 
+ significand
+  * 2exponent
+  
+ where the 
+ significand
+  has a single bit to the left of the binary decimal point. (That is, 0 <= 
+ significand
+  < 2.)
+  
+ In the figures that follow, the most significant bit is always on the left and the least significant bit on the right. The
+  
+ numbers at the top indicate the width (in bits) of each field, with the leftmost items stored at the highest addresses.
+  
+ 207",NA
+Memory Management Issues on the .NET Platform,"The .NET Common Language Runtime is a garbage-collected environment. This means the programmer is freed 
+ (for the most part) from worrying about memory allocation and deallocation. Broadly speaking, after you allocate 
+ memory, the CLR determines when it is safe to free that memory. ""Safe to free"" means that no more references to 
+ that memory exist.
+  
+ This topic covers the following memory management issues:
+  
+ Creating and destroying objects
+  
+ Unit initialization and finalization sections
+  
+ Unit initialization and finalization in assemblies and packages
+  
+ Constructors
+  
+ In Delphi for .NET, a constructor must always call an inherited constructor before it may access or initialize any 
+ inherited class members. The compiler generates an error if your constructor code does not call the inherited 
+ constructor (a valid situation in Delphi for Win32), but it is important to examine your constructors to make sure 
+ that you do not access any inherited class fields, directly or indirectly, before the call to the inherited constructor.
+  
+ Note:
+  A constructor can initialize fields from its own class, prior to calling the inherited constructor.
+  
+ Finalization
+  
+ Every class in the .NET Framework (including VCL.NET classes) inherits a method called Finalize. The garbage 
+ collector calls the Finalize method when the memory for the object is about to be freed. Since the method is called 
+ by the garbage collector, you have no control over when it is called. The asynchronous nature of finalization is a 
+ problem for objects that open resources such as file handles and database connections, because the Finalize 
+ method might not be called for some time, leaving these connections open.
+  
+ To add a finalizer to a class, override the 
+ strict protected
+ Finalize procedure that is inherited from TObject. 
+ The .NET platform places limits on what you can do in a finalizer, because it is called when the garbage collector 
+ is cleaning up objects. The finalizer may execute in a different thread than the thread the object was was created 
+ in. A finalizer cannot allocate new memory, and cannot make calls outside of itself. If your class has references to 
+ other objects, a finalizer can refer to them (that is, their memory is guaranteed not to have been freed yet), but be 
+ aware that their state is undefined, as you do not know whether they have been finalized yet.
+  
+ When a class has a finalizer, the CLR must add newly instantiated objects of the class to the finalization list. 
+ Further, objects with finalizers tend to persist in memory longer, as they are not freed when the garbage collector 
+ first determines that they are no longer actively referenced. If the object has references to other objects, those 
+ objects are also not freed right away (even if they don’t have finalizers themselves), but must also persist in 
+ memory until the original object is finalized. Therefore, finalizers do impart a fair amount of overhead in terms of 
+ memory consumption and execution performance, so they should be used judiciously.
+  
+ It is a good practice to restrict finalizers to small objects that represent unmanaged resources. Classes that use 
+ these resources can then hold a reference to the small object with the finalizer. In this way, big classes, and 
+ classes that reference many other classes, do not hoard memory because of a finalizer.
+  
+ Another good practice is to suppress finalizers when a particular resource has already been released in a 
+ destructor. After freeing the resources, you can call SuppressFinalize, which causes the CLR to remove the object 
+ from the finalization list. Be careful not to call SuppressFinalize with a nil reference, as that causes a runtime 
+ exception.
+  
+ 216",NA
+Program Control ,"This section describes how parameters are passed to procedures and functions.
+  
+ 220",NA
+Program Control,"The concepts of passing parameters and function result processing are important to understand before you 
+ undertake your application projects Treatment of parameters and function results is determined by several factors, 
+ including calling conventions, parameter semantics, and the type and size of the value being passed.
+  
+ This following topics are covered in this material:
+  
+ Passing Parameters.
+  
+ Handling Function Results.
+  
+ Handling Method Calls.
+  
+ Understanding Exit Procedures.
+  
+ Passing Parameters
+  
+ Parameters are transferred to procedures and functions via CPU registers or the stack, depending on the routine's 
+ calling convention. For information about calling conventions, see the topic on Calling Conventions.
+  
+ By Value vs. By Reference
+  
+ Variable (var) parameters are always passed by reference, as 32-bit pointers that point to the actual storage 
+ location.
+  
+ Value and constant (const) parameters are passed by value or by reference, depending on the type and size of 
+ the parameter:
+  
+ An ordinal parameter is passed as an 8-bit, 16-bit, 32-bit, or 64-bit value, using the same format as a variable 
+  
+ of the corresponding type.
+  
+ A real parameter is always passed on the stack. A Single parameter occupies 4 bytes, and a Double, Comp, or 
+  
+ Currency parameter occupies 8 bytes. A Real48 occupies 8 bytes, with the Real48 value stored in the lower 6 
+  
+ bytes. An Extended occupies 12 bytes, with the Extended value stored in the lower 10 bytes.
+  
+ A short-string parameter is passed as a 32-bit pointer to a short string.
+  
+ A long-string or dynamic-array parameter is passed as a 32-bit pointer to the dynamic memory block allocated 
+  
+ for the long string. The value 
+ nil
+  is passed for an empty long string.
+  
+ A pointer, class, class-reference, or procedure-pointer parameter is passed as a 32-bit pointer.
+  
+ A method pointer is passed on the stack as two 32-bit pointers. The instance pointer is pushed before the 
+ method 
+  
+ pointer so that the method pointer occupies the lowest address.
+  
+ Under the register and pascal conventions, a variant parameter is passed as a 32bit pointer to a Variant value.
+  
+ Sets, records, and static arrays of 1, 2, or 4 bytes are passed as 8-bit, 16-bit, and 32bit values. Larger sets, 
+  
+ records, and static arrays are passed as 32-bit pointers to the value. An exception to this rule is that records 
+  
+ are always passed directly on the stack under the cdecl, stdcall, and safecall conventions; the size of a record 
+  
+ passed this way is rounded upward to the nearest double-word boundary.
+  
+ An open-array parameter is passed as two 32-bit values. The first value is a pointer to the array data, and the 
+  
+ second value is one less than the number of elements in the array.
+  
+ When two parameters are passed on the stack, each parameter occupies a multiple of 4 bytes (a whole number of 
+ double words). For an 8-bit or 16-bit parameter, even though the parameter occupies only a byte or a word, it is 
+ passed as a double word. The contents of the unused parts of the double word are undefined.
+  
+ Pascal, cdecl, stdcall, and safecall Conventions
+  
+ Under the pascal, cdecl, stdcall and safecall conventions, all parameters are passed on the stack. Under the 
+ pascal convention, parameters are pushed in the order of their declaration (left-to-right), so that the first parameter 
+ ends up
+  
+ 221",NA
+Inline Assembly Code (Win32 Only) ,"This section describes the use of the inline assembler on the Win32 platform.
+  
+ 225",NA
+Using Inline Assembly Code (Win32 Only),"The built-in assembler allows you to write assembly code within Delphi programs. The inline assembler is 
+ available only on the Win32 Delphi compiler. It has the following features:
+  
+ Allows for inline assembly.
+  
+ Supports all instructions found in the Intel Pentium 4, Intel MMX extensions, Streaming SIMD Extensions 
+ (SSE), 
+  
+ and the AMD Athlon (including 3D Now!).
+  
+ Provides no macro support, but allows for pure assembly function procedures.
+  
+ Permits the use of Delphi identifiers, such as constants, types, and variables in assembly statements.
+  
+ As an alternative to the built-in assembler, you can link to object files that contain external procedures and 
+ functions. See the topic on External declarations for more information. If you have external assembly code that 
+ you want to use in your applications, you should consider rewriting it in the Delphi language or minimally 
+ reimplement it using the inline assembler.
+  
+ Using the asm Statement
+  
+ The built-in assembler is accessed through asm statements, which have the form
+  
+ asm statementList end
+  
+ where 
+ statementList
+  is a sequence of assembly statements separated by semicolons, end-of-line characters, or 
+ Delphi comments.
+  
+ Comments in an asm statement must be in Delphi style. A semicolon does not indicate that the rest of the line is a 
+ comment.
+  
+ The reserved word inline and the directive assembler are maintained for backward compatibility only. They have 
+ no effect on the compiler.
+  
+ Using Registers
+  
+ In general, the rules of register use in an asm statement are the same as those of an external procedure or 
+ function. An asm statement must preserve the EDI, ESI, ESP, EBP, and EBX registers, but can freely modify the 
+ EAX, ECX, and EDX registers. On entry to an asm statement, EBP points to the current stack frame and ESP 
+ points to the top of the stack. Except for ESP and EBP, an asm statement can assume nothing about register 
+ contents on entry to the statement.
+  
+ 226",NA
+Understanding Assembler Syntax (Win32 Only),"The inline assembler is available only on the Win32 Delphi compiler. The following material describes the 
+ elements
+  
+ of the assembler syntax necessary for proper use.
+  
+ Assembler Statement Syntax
+  
+ Labels
+  
+ Instruction Opcodes
+  
+ Assembly Directives
+  
+ Operands
+  
+ Assembler Statement Syntax
+  
+ This syntax of an assembly statement is
+  
+ Label: Prefix Opcode Operand1, Operand2
+  
+ where 
+ Label
+  is a label, 
+ Prefix
+  is an assembly prefix opcode (operation code), 
+ Opcode
+  is an assembly instruction
+  
+ opcode or directive, and 
+ Operand
+  is an assembly expression. Label and Prefix are optional. Some opcodes take
+  
+ only one operand, and some take none.
+  
+ Comments are allowed between assembly statements, but not within them. For example,
+  
+  MOV AX,1 {Initial value}             { OK }
+  
+  
+  MOV CX,100 {Count}                                                         { OK }
+  
+  
+  MOV {Initial value} AX,1;                                { Error! }
+  
+  
+  MOV CX, {Count} 100                                                     { Error! }
+  
+ Labels
+  
+ Labels are used in built-in assembly statements as they are in the Delphi languageby writing the label and a colon
+  
+ before a statement. There is no limit to a label's length. As in Delphi, labels must be declared in a label declaration
+  
+ part in the block containing the asm statement. The one exception to this rule is local labels.
+  
+ Local labels are labels that start with an at-sign (
+ @
+ ). They consist of an at-sign followed by one or more letters, 
+ digits,
+  
+ underscores, or at-signs. Use of local labels is restricted to asm statements, and the scope of a local label 
+ extends
+  
+ from the asm reserved word to the end of the asm statement that contains it. A local label doesn't have to be 
+ declared.
+  
+ Instruction Opcodes
+  
+ The built-in assembler supports all of the Intel-documented opcodes for general application use. Note that 
+ operating
+  
+ system privileged instructions may not be supported. Specifically, the following families of instructions are 
+ supported:
+  
+ Pentium family
+  
+ Pentium Pro and Pentium II
+  
+ Pentium III
+  
+ Pentium 4",NA
+Assembly Expressions (Win32 Only),"The built-in assembler evaluates all expressions as 32-bit integer values. It doesn't support floating-point and 
+ string values, except string constants. The inline assembler is available only on the Win32 Delphi compiler.
+  
+ Expressions are built from expression elements and operators, and each expression has an associated 
+ expression class and expression type. This topic covers the following material:
+  
+ Differences between Delphi and Assembler Expressions
+  
+ Expression Elements
+  
+ Expression Classes
+  
+ Expression Types
+  
+ Expression Operators
+  
+ Differences between Delphi and Assembler Expressions
+  
+ The most important difference between Delphi expressions and built-in assembler expressions is that 
+ assembler expressions must resolve to a constant value. In other words, it must resolve to a value that can be 
+ computed at compile time. For example, given the declarations
+  
+ const
+  
+  
+  X = 10;
+  
+  
+  Y = 20;
+  
+  
+ var
+  
+  
+  Z: Integer;
+  
+ the following is a valid statement.
+  
+ asm
+  
+  
+  MOV        Z,X+Y
+  
+  
+ end;
+  
+ Because both 
+ X
+  and 
+ Y
+  are constants, the expression 
+ X + Y
+  is a convenient way of writing the constant 30, and 
+ the resulting instruction simply moves of the value 30 into the variable 
+ Z
+ . But if 
+ X
+  and 
+ Y
+  are variables
+  
+ var
+  
+  
+  X, Y: Integer;
+  
+ the built-in assembler cannot compute the value of 
+ X + Y
+  at compile time. In this case, to move the sum of 
+ X 
+ and 
+ Y
+  into 
+ Z
+  you would use
+  
+ asm
+  
+  
+  MOV            EAX,X
+  
+  
+  ADD            EAX,Y
+  
+  
+  MOV            Z,EAX
+  
+  
+ end;
+  
+ In a Delphi expression, a variable reference denotes the 
+ contents
+  of the variable. But in an assembler expression, 
+ a variable reference denotes the 
+ address
+  of the variable. In Delphi the expression 
+ X + 4
+  (where 
+ X
+  is a variable)
+  
+ 233",NA
+Assembly Procedures and Functions (Win32 Only),"You can write complete procedures and functions using inline assembly language code, without including a 
+ begin...end
+  statement. This topic covers these issues:
+  
+ Compiler Optimizations.
+  
+ Function Results.
+  
+ The inline assembler is available only on the Win32 Delphi compiler.
+  
+ Compiler Optimizations
+  
+ An example of the type of function you can write is as follows:
+  
+ function LongMul(X, Y: Integer): Longint;
+  
+  
+  asm
+  
+  
+  MOV        EAX,X
+  
+  
+  IMUL Y 
+  
+  
+  end; 
+  
+ The compiler performs several optimizations on these routines:
+  
+ No code is generated to copy value parameters into local variables. This affects all string-type value 
+ parameters 
+  
+ and other value parameters whose size isn't 1, 2, or 4 bytes. Within the routine, such parameters 
+ must be treated 
+  
+ as if they were var parameters.
+  
+ Unless a function returns a string, variant, or interface reference, the compiler doesn't allocate a function result 
+  
+ variable; a reference to the @Result symbol is an error. For strings, variants, and interfaces, the caller always 
+  
+ allocates an @Result pointer.
+  
+ The compiler only generates stack frames for nested routines, for routines that have local parameters, or for 
+  
+ routines that have parameters on the stack.
+  
+ Locals is the size of the local variables and Params is the size of the parameters. If both Locals and Params 
+  
+ are zero, there is no entry code, and the exit code consists simply of a RET instruction.
+  
+ The automatically generated entry and exit code for the routine looks like this:
+  
+ PUSH            EBP                                    ;Present if Locals <> 0 or Params <> 0
+  
+  
+ MOV                EBP,ESP                    ;Present if Locals <> 0 or Params <> 0
+  
+  
+ SUB                ESP,Locals        ;Present if Locals <> 0
+  
+  
+ .
+  
+  
+ .
+  
+  
+ .
+  
+  
+ MOV                ESP,EBP                    ;Present if Locals <> 0
+  
+  
+ POP                EBP                                    ;Present if Locals <> 0 or Params 
+ <> 0
+  
+  
+ RET                Params                        ;Always present
+  
+ If locals include variants, long strings, or interfaces, they are initialized to zero but not finalized.
+  
+ Function Results
+  
+ Assembly language functions return their results as follows.
+  
+ Ordinal values are returned in AL (8-bit values), AX (16-bit values), or EAX (32-bit values).
+  
+ Real values are returned in ST(0) on the coprocessor's register stack. (Currency values are scaled by 10000.)
+  
+ 242",NA
+.NET Topics ,"This section contains information specific to programming in Delphi on the .NET platform.
+  
+ 244",NA
+Using .NET Custom Attributes,".NET framework assemblies are self-describing entities. They contain intermediate code that is compiled to native 
+ machine instructions when the assembly is loaded. More than that, assemblies contain a wealth of information 
+ about that code. The compiler emits this descriptive information, or metadata, into the assembly as it processes 
+ the source code. In other programming environments, there is no way to access metadata once your code is 
+ compiled; the information is lost during the compilation process. On the .NET platform, however, you have the 
+ ability to access metadata using runtime reflection services.
+  
+ The .NET framework gives you the ability to extend the metadata emitted by the compiler with your own 
+ descriptive attributes. These customized attributes are somewhat analogous to language keywords, and are 
+ stored with the other metadata in the assembly.
+  
+ Declaring custom attributes
+  
+ Using custom attributes
+  
+ Custom attributes and interfaces
+  
+ Declaring a Custom Attribute Class
+  
+ Creating a custom attribute is the same as declaring a class. The custom attribute class has a constructor, and 
+ properties to set and retrieve its state data. Custom attributes must inherit from TCustomAttribute. The following 
+ code declares a custom attribute with a constructor and two properties:
+  
+  type
+  
+  
+  TCustomCodeAttribute = class(TCustomAttribute)
+  
+  
+  private
+  
+  
+  Fprop1 : integer;
+  
+  
+  Fprop2 : integer;
+  
+  
+  aVal   : integer;
+  
+  
+  procedure Setprop1(p1 : integer);
+  
+  
+  procedure Setprop2(p2 : integer);
+  
+  
+  public
+  
+  
+  constructor Create(const myVal : integer);
+  
+  
+  property prop1 : integer read Fprop1 write Setprop1;
+  
+  
+  property prop2 : integer read Fprop2 write Setprop2;
+  
+  end;
+  
+ The implementation of the constructor might look like
+  
+  constructor TCustomCodeAttribute.Create(const myVal : integer);
+  
+  
+  begin
+  
+  
+  inherited Create;
+  
+  
+  aVal := myVal;
+  
+  
+  end;
+  
+ Delphi for .NET supports the creation of custom attribute classes, as shown above, and all of the custom 
+ attributes provided by the .NET framework.
+  
+ Using Custom Attributes",NA

@@ -1,0 +1,2658 @@
+Larger Text,Smaller Text,Symbol
+American National Standard ,NA,NA
+for Information Systems — ,NA,NA
+Programming Languages — ,NA,NA
+Forth ,"Secretariat 
+  
+ Computer and Business Equipment Manufacturers Association 
+  
+ Approved:  March 24, 1994 
+  
+ American National Standards Institute, Inc.",NA
+American National Standard ,NA,NA
+for Information Systems — ,NA,NA
+Programming Language — ,NA,NA
+Forth ,NA,NA
+1.   Introduction,"1.1   Purpose
+  
+ The purpose of this Standard is to promote the portability of Forth programs for use on a wide variety of 
+ computing systems, to facilitate the communication of programs, programming techniques, and ideas among 
+ Forth programmers, and to serve as a basis for the future evolution of the Forth language. 
+  
+ 1.2   Scope
+  
+ This Standard specifies an interface between a Forth System and a Forth Program by defining the words 
+ provided by a Standard System. 
+  
+ 1.2.1   Inclusions
+  
+ This Standard specifies: 
+  
+ – 
+  
+ the forms that a program written in the Forth language may take; 
+  
+ – 
+  
+ the rules for interpreting the meaning of a program and its data. 
+  
+ 1.2.2   Exclusions
+  
+ This Standard does not specify: 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ the mechanism by which programs are transformed for use on computing systems; 
+  
+ the operations required for setup and control of the use of programs on computing systems; 
+  
+ the method of transcription of programs or their input or output data to or from a storage medium; the 
+ program and Forth system behavior when the rules of this Standard fail to establish an 
+  
+ interpretation; 
+  
+ the size or complexity of a program and its data that will exceed the capacity of any specific computing 
+ system or the capability of a particular Forth system; 
+  
+ the physical properties of input/output records, files, and units; 
+  
+ the physical properties and implementation of storage.",NA
+"2.   Terms, notation, and references","The phrase “See:” is used throughout this Standard to direct the reader to other sections of the Standard that 
+ have a direct bearing on the current section. 
+  
+ In this Standard, “shall” states a requirement on a system or program; conversely, “shall not” is a 
+ prohibition; “need not” means “is not required to”; “should” describes a recommendation of the Standard; 
+ and “may”, depending on context, means “is allowed to” or “might happen”. 
+  
+ Throughout the Standard, typefaces are used in the following manner: 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ This proportional serif typeface is used for text, with 
+ italic
+  used for symbols and the first appearance of 
+ new terms; 
+  
+ A bold proportional sans-serif typeface is used for 
+ headings
+ ; 
+  
+ A bold monospaced serif typeface is used for 
+ Forth-language
+  text. 
+  
+ 2.1   Definitions of terms 
+  
+ Terms defined in this section are used generally throughout this Standard.  Additional terms specific to 
+ individual word sets are defined in those word sets.  Other terms are defined at their first appearance, 
+ indicated by italic type.  Terms not defined in this Standard are to be construed according to the 
+ Dictionary 
+ forInformationSystems
+ , ANSI X3.172-1990. 
+  
+ address unit:
+   Depending on context, either 1) the units into which a Forth address space is divided for the 
+ purposes of locating data objects such as characters and variables; 2) the physical memory storage elements 
+ corresponding to those units; 3) the contents of such a memory storage element; or 4) the units in which the 
+ length of a region of memory is expressed. 
+  
+ aligned address:
+   The address of a memory location at which a character, cell, cell pair, or double-cell 
+ integer can be accessed. 
+  
+ ambiguous condition:
+   A circumstance for which this Standard does not prescribe a specific behavior for 
+ Forth systems and programs. 
+  
+ Ambiguous conditions include such things as the absence of a needed delimiter while parsing, attempted 
+ access to a nonexistent file, or attempted use of a nonexistent word.  An ambiguous condition also exists 
+ when a Standard word is passed values that are improper or out of range. 
+  
+ cell:
+   The primary unit of information in the architecture of a Forth system. 
+  
+ cell pair:
+   Two cells that are treated as a single unit. 
+  
+ character:
+   Depending on context, either 1) a storage unit capable of holding a character; or 2) a member of 
+ a character set. 
+  
+ character-aligned address:
+   The address of a memory location at which a character can be accessed. 
+ character string:
+   Data space that is associated with a sequence of consecutive character-aligned addresses. 
+  
+ Character strings usually contain text.  Unless otherwise indicated, the term “string” means “character 
+ string”. 
+  
+ code space:
+   The logical area of the dictionary in which word semantics are implemented. 
+  
+ compile:
+   To transform source code into dictionary definitions. 
+  
+ compilation semantics:
+   The behavior of a Forth definition when its name is encountered by the text 
+ interpreter in compilation state. 
+  
+ counted string:
+   A data structure consisting of one character containing a length followed by zero or more 
+ contiguous data characters.  Normally, counted strings contain text. 
+  
+ 3",NA
+3.   Usage requirements,"A system shall provide all of the words defined in 
+ 6.1 Core Words
+ .  It may also provide any words defined 
+ in the optional word sets and extensions word sets.  No standard word provided by a system shall alter the 
+ system state in a way that changes the effect of execution of any other standard word except as provided in 
+ this Standard.  A system may contain non-standard extensions, provided that they are consistent with the 
+ requirements of this Standard. 
+  
+ The implementation of a system may use words and techniques outside the scope of this Standard. 
+  
+ A system need not provide all words in executable form.  The implementation may provide definitions, 
+ including definitions of words in the Core word set, in source form only.  If so, the mechanism for adding 
+ the definitions to the dictionary is implementation defined. 
+  
+ A program that requires a system to provide words or techniques not defined in this Standard has an 
+ environmental dependency. 
+  
+ 3.1   Data types
+  
+ A data type identifies the set of permissible values for a data object.  It is not a property of a particular 
+ storage location or position on a stack.  Moving a data object shall not affect its type. 
+  
+ No data-type checking is required of a system.  An ambiguous condition exists if an incorrectly typed data 
+ object is encountered. 
+  
+ Table 3.1 summarizes the data types used throughout this Standard.  Multiple instances of the same type in 
+ the description of a definition are suffixed with a sequence digit subscript to distinguish them. 
+  
+ 3.1.1   Data-type relationships
+  
+ Some of the data types are subtypes of other data types.  A data type 
+ i
+  is a subtype of type 
+ j
+  if and only if the 
+ members of 
+ i
+  are a subset of the members of 
+ j
+ .  The following list represents the subtype relationships using 
+ the phrase “
+ i
+  => 
+ j
+ ” to denote “
+ i
+  is a subtype of 
+ j
+ ”.  The subtype relationship is transitive; if 
+ i
+  => 
+ j
+  and 
+ j
+  => 
+ k 
+ then 
+ i
+  => 
+ k
+ : 
+  
+ +n
+  => 
+ u
+  => 
+ x
+ ; 
+  
+ +n
+  => 
+ n
+  => 
+ x
+ ; 
+  
+ char
+  => 
+ +n
+ ; 
+  
+ a-addr
+  => 
+ c-addr
+  => 
+ addr
+  => 
+ u
+ ; 
+  
+ flag
+  => 
+ x
+ ; 
+  
+ xt
+  => 
+ x
+ ; 
+  
+ +d
+  => 
+ d
+  => 
+ xd
+ ; 
+  
+ +d
+  => 
+ ud
+  => 
+ xd
+ . 
+  
+ Any Forth definition that accepts an argument of type 
+ i
+  shall also accept an argument that is a subtype of 
+ i
+ . 
+  
+ 3.1.2   Character types
+  
+ Characters shall be at least one address unit wide, contain at least eight bits, and have a size less than or 
+ equal to cell size. 
+  
+ The characters provided by a system shall include the graphic characters {32..126}, which represent graphic 
+ forms as shown in table 3.2. 
+  
+ 3.1.2.1   Graphic characters
+  
+ A graphic character is one that is normally displayed (e.g., A, #, &, 6).  These values and graphics, shown in 
+ table 3.2, are taken directly from ANS X3.4-1974 (ASCII) and ISO 646-1983, International Reference 
+ Version (IRV).  The graphic forms of characters outside the hex range {20..7E} are implementation-defined.  
+ Programs that use the graphic hex 24 (the currency sign) have an environmental dependency. 
+  
+ 8",NA
+4.   Documentation requirements,"When it is impossible or infeasible for a system or program to define a particular behavior itself, it is 
+ permissible to state that the behavior is unspecifiable and to explain the circumstances and reasons why this 
+ is so. 
+  
+ 4.1   System documentation
+  
+ 4.1.1   Implementation-defined options
+  
+ The implementation-defined items in the following list represent characteristics and choices left to the 
+ discretion of the implementor, provided that the requirements of this Standard are met.  A system shall 
+ document the values for, or behaviors of, each item. 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ aligned address requirements (
+ 3.1.3.3 Addresses
+ ); 
+  
+ behavior of 
+ 6.1.1320
+ EMIT
+  for non-graphic characters; 
+  
+ character editing of 
+ 6.1.0695
+ ACCEPT
+  and 
+ 6.2.1390
+ EXPECT
+ ; 
+  
+ character set (
+ 3.1.2 Character types
+ , 
+ 6.1.1320 
+ EMIT
+ , 
+ 6.1.1750 
+ KEY
+ ); 
+  
+ character-aligned address requirements (
+ 3.1.3.3 Addresses
+ ); 
+  
+ character-set-extensions matching characteristics (
+ 3.4.2 Finding definition names
+ ); 
+  
+ conditions under which control characters match a space delimiter (
+ 3.4.1.1 Delimiters
+ ); 
+  
+ format of the control-flow stack (
+ 3.2.3.2 Control-flow stack
+ ); 
+  
+ conversion of digits larger than thirty-five (
+ 3.2.1.2 Digit conversion
+ ); 
+  
+ display after input terminates in 
+ 6.1.0695
+ ACCEPT
+  and 
+ 6.2.1390
+ EXPECT
+ ; 
+  
+ exception abort sequence (as in 
+ 6.1.0680
+ ABORT""
+ ); 
+  
+ input line terminator (
+ 3.2.4.1 User input device
+ ); 
+  
+ maximum size of a counted string, in characters (
+ 3.1.3.4 Counted strings
+ , 
+ 6.1.2450
+ WORD
+ ); 
+  
+ maximum size of a parsed string (
+ 3.4.1 Parsing
+ ); 
+  
+ maximum size of a definition name, in characters (
+ 3.3.1.2 Definition names
+ ); 
+  
+ maximum string length for 
+ 6.1.1345
+ ENVIRONMENT?
+ , in characters; 
+  
+ method of selecting 
+ 3.2.4.1 User input device
+ ; 
+  
+ method of selecting 
+ 3.2.4.2 User output device
+ ; 
+  
+ methods of dictionary compilation (
+ 3.3 The Forth dictionary
+ ); 
+  
+ number of bits in one address unit (
+ 3.1.3.3 Addresses
+ ); 
+  
+ number representation and arithmetic (
+ 3.2.1.1 Internal number representation
+ ); 
+  
+ ranges for 
+ n
+ , 
+ +n
+ , 
+ u
+ , 
+ d
+ , 
+ +d
+ , and 
+ ud
+  (
+ 3.1.3 Single-cell types
+ , 
+ 3.1.4 Cell-pair types
+ ); 
+  
+ read-only data-space regions (
+ 3.3.3 Data space
+ ); 
+  
+ size of buffer at 
+ 6.1.2450
+ WORD
+  (
+ 3.3.3.6 Other transient regions
+ ); 
+  
+ size of one cell in address units (
+ 3.1.3 Single-cell types
+ ); 
+  
+ size of one character in address units (
+ 3.1.2 Character types
+ ); 
+  
+ size of the keyboard terminal input buffer (
+ 3.3.3.5 Input buffers
+ ); 
+  
+ size of the pictured numeric output string buffer (
+ 3.3.3.6 Other transient regions
+ ); 
+  
+ size of the scratch area whose address is returned by 
+ 6.2.2000
+ PAD
+  (
+ 3.3.3.6 Other transient regions
+ ); 
+ system case-sensitivity characteristics (
+ 3.4.2 Finding definition names
+ ); 
+  
+ system prompt (
+ 3.4 The Forth text interpreter
+ , 
+ 6.1.2050 
+ QUIT
+ ); 
+  
+ type of division rounding (
+ 3.2.2.1 Integer division
+ , 
+ 6.1.0100 
+ */
+ , 
+ 6.1.0110 
+ */MOD
+ , 
+ 6.1.0230 
+ /
+ , 
+ 6.1.0240 
+ /MOD
+ ,
+  6.1.1890 
+ MOD
+ ); 
+  
+ values of 
+ 6.1.2250
+ STATE
+  when true; 
+  
+ values returned after arithmetic overflow (
+ 3.2.2.2 Other integer operations
+ ); 
+  
+ 21",NA
+5.   Compliance and labeling,"5.1   ANS Forth systems
+  
+ 5.1.1   System compliance
+  
+ A system that complies with all the system requirements given in sections 
+ 3. Usage requirements
+  and 
+ 4.1 
+ System documentation
+  and their sub-sections is a Standard System.  An otherwise Standard System that 
+ provides only a portion of the Core words is a Standard System Subset.  An otherwise Standard System 
+ (Subset) that fails to comply with one or more of the minimum values or ranges specified in 
+ 3. Usage 
+ requirements
+  and its sub-sections has environmental restrictions. 
+  
+ 5.1.2   System labeling
+  
+ A Standard System (Subset) shall be labeled an “ANS Forth System (Subset)”.  That label, by itself, shall 
+ not be applied to Standard Systems or Standard System Subsets that have environmental restrictions. 
+  
+ The phrase “with Environmental Restrictions” shall be appended to the label of a Standard System (Subset) 
+ that has environmental restrictions. 
+  
+ The phrase “Providing 
+ name
+ (
+ s
+ ) from the Core Extensions word set” shall be appended to the label of any 
+ Standard System that provides portions of the Core Extensions word set. 
+  
+ The phrase “Providing the Core Extensions word set” shall be appended to the label of any Standard System 
+ that provides all of the Core Extensions word set. 
+  
+ 5.2   ANS Forth programs
+  
+ 5.2.1   Program compliance
+  
+ A program that complies with all the program requirements given in sections 
+ 3. Usage requirements
+  and 
+ 4.2 Program documentation
+  and their sub-sections is a Standard Program. 
+  
+ 5.2.2   Program labeling
+  
+ A Standard Program shall be labeled an “ANS Forth Program”.  That label, by itself, shall not be applied to 
+ Standard Programs that require the system to provide standard words outside the Core word set or that have 
+ environmental dependencies. 
+  
+ The phrase “with Environmental Dependencies” shall be appended to the label of Standard Programs that 
+ have environmental dependencies. 
+  
+ The phrase “Requiring 
+ name
+ (
+ s
+ ) from the Core Extensions word set” shall be appended to the label of 
+ Standard Programs that require the system to provide portions of the Core Extensions word set. 
+  
+ The phrase “Requiring the Core Extensions word set” shall be appended to the label of Standard Programs 
+ that require the system to provide all of the Core Extensions word set. 
+  
+ 24 
+  
+ Collating Sequence:",NA
+6.   Glossary,"6.1   Core words
+  
+ 6.1.0010   
+ !
+  
+ “store” 
+  
+ CORE 
+  
+ ( 
+ xa-addr--
+  ) 
+  
+ Store 
+ x
+  at 
+ a-addr
+ . 
+  
+ See:
+ 3.3.3.1 Address alignment
+ . 
+  
+ 6.1.0030   
+ #
+  
+ “number-sign” 
+  
+ CORE 
+  
+ ( 
+ ud
+ 1
+  -- 
+ ud
+ 2
+  ) 
+  
+ Divide 
+ ud
+ 1
+  by the number in 
+ BASE
+  giving the quotient 
+ ud
+ 2
+  and the remainder 
+ n
+ .  (
+ n
+  is the least-
+ significant digit of 
+ ud
+ 1
+ .)  Convert 
+ n
+  to external form and add the resulting character to the 
+ beginning of the pictured numeric output string.  An ambiguous condition exists if 
+ #
+  executes 
+ outside of a 
+ <# #>
+  delimited number conversion. 
+  
+ See: 
+ 6.1.0040 
+ #>
+ , 
+ 6.1.0050 
+ #S
+ , 
+ 6.1.0490 
+ <#
+ . 
+  
+ 6.1.0040   
+ #>
+  
+ “number-sign-greater” 
+  
+ CORE 
+  
+ ( 
+ xd
+  -- 
+ c-addru
+  ) 
+  
+ Drop 
+ xd
+ .  Make the pictured numeric output string available as a character string.  
+ c-addr
+  and 
+ u 
+ specify the resulting character string.  A program may replace characters within the string. 
+  
+ See: 
+ 6.1.0030 
+ #
+ , 
+ 6.1.0050 
+ #S
+ , 
+ 6.1.0490 
+ <#
+ . 
+  
+ 6.1.0050   
+ #S
+  
+ “number-sign-s” 
+  
+ CORE 
+  
+ ( 
+ ud
+ 1
+  -- 
+ ud
+ 2
+  ) 
+  
+ Convert one digit of 
+ ud
+ 1
+  according to the rule for 
+ #
+ .  Continue conversion until the quotient is 
+ zero.  
+ ud
+ 2
+  is zero.  An ambiguous condition exists if 
+ #S
+  executes outside of a 
+ <# #>
+  delimited 
+ number conversion. 
+  
+ See: 
+ 6.1.0030 
+ #
+ , 
+ 6.1.0040 
+ #>
+ , 
+ 6.1.0490 
+ <#
+ . 
+  
+ 6.1.0070   
+ '
+  
+ “tick” 
+  
+ CORE 
+  
+ ( “
+ <spaces>name
+ ” -- 
+ xt
+  ) 
+  
+ Skip leading space delimiters.  Parse 
+ name
+  delimited by a space.  Find 
+ name
+  and return 
+ xt
+ , the 
+ execution token for 
+ name
+ .  An ambiguous condition exists if 
+ name
+  is not found. 
+  
+ When interpreting, 
+ ' xyz EXECUTE
+  is equivalent to 
+ xyz
+ . 
+  
+ See:
+ 3.4 The Forth text interpreter
+ , 
+ 3.4.1 Parsing
+ , 
+ A.6.1.2033
+ POSTPONE
+ , 
+ A.6.1.2510 
+ [']
+ , 
+  
+ D.6.7 Immediacy
+ .
+  
+ ! "" # $ % & ' ( ) * + , - . / digits : ; < = > ? @ ALPHA [ \ ] ^ _ ` alpha { | } ~ 
+  
+ 25",NA
+7.   The optional Block word set,"7.1   Introduction
+  
+ 7.2   Additional terms 
+  
+  
+ block:
+   1024 characters of data on mass storage, designated by a block number. 
+  
+ block buffer:
+   A block-sized region of data space where a block is made temporarily available for use.  The 
+ current block buffer is the block buffer most recently accessed by 
+ BLOCK
+ , 
+ BUFFER
+ , 
+ LOAD
+ , 
+ LIST
+ , or 
+ THRU
+ . 
+  
+ 7.3   Additional usage requirements
+  
+ 7.3.1   Environmental queries 
+  
+  
+ Append table 7.1 to table 3.5. 
+  
+ See:  
+ 3.2.6 Environmental queries
+ . 
+  
+ Table 7.1 – Environmental Query Strings
+  
+ String 
+  
+ Value data type Constant? Meaning 
+  
+ BLOCK 
+  
+ BLOCK-EXT
+  
+ flag
+  
+ no 
+  
+ block word set present 
+  
+ flag
+  
+ no 
+  
+ block extensions word set present 
+  
+ 7.3.2   Data space 
+  
+ A program may access memory within a valid block buffer. 
+ See:  
+ 3.3.3 Data Space
+ . 
+  
+ 7.3.3   Block buffer regions 
+  
+ The address of a block buffer returned by 
+ BLOCK
+  or 
+ BUFFER
+  is transient.  A call to 
+ BLOCK
+  or 
+ BUFFER 
+ may render a previously-obtained block-buffer address invalid, as may a call to any word that: 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ parses: 
+  
+ displays characters on the user output device, such as 
+ TYPE
+  or 
+ EMIT
+ ; 
+  
+ controls the user output device, such as 
+ CR
+  or 
+ AT-XY
+ ; 
+  
+ receives or tests for the presence of characters from the user input device such as 
+ ACCEPT
+  or 
+ KEY
+ ; 
+ waits for a condition or event, such as 
+ MS
+  or 
+ EKEY
+ ; 
+  
+ manages the block buffers, such as 
+ FLUSH
+ , 
+ SAVE-BUFFERS
+ , or 
+ EMPTY-BUFFERS
+ ; 
+  
+ performs any operation on a file or file-name directory that implies I/O, such as 
+ REFILL
+  or any word 
+ that returns an 
+ ior
+ ; 
+  
+ implicitly performs I/O, such as text interpreter nesting and un-nesting when files are being used 
+ (including un-nesting implied by 
+ THROW
+ ). 
+  
+ If the input source is a block, these restrictions also apply to the address returned by 
+ SOURCE
+ . 
+ Block buffers are uniquely assigned to blocks. 
+  
+ ! "" # $ % & ' ( ) * + , - . / digits : ; < = > ? @ ALPHA [ \ ] ^ _ ` alpha { | } ~ 
+  
+ 59",NA
+8.   The optional Double-Number word set,"8.1   Introduction
+  
+ Sixteen-bit Forth systems often use double-length numbers.  However, many Forths on small embedded 
+ systems do not, and many users of Forth on systems with a cell size of 32 bits or more find that the use of 
+ double-length numbers is much diminished.  Therefore, the words that manipulate double-length entities 
+ have been placed in this optional word set. 
+  
+ 8.2   Additional terms and notation
+  
+ None. 
+  
+ 8.3   Additional usage requirements
+  
+ 8.3.1   Environmental queries
+  
+ Append table 8.1 to table 3.5. 
+  
+ See:  
+ 3.2.6 Environmental queries
+ . 
+  
+ Table 8.1 – Environmental Query Strings
+  
+ String 
+  
+ Value data type Constant? Meaning 
+  
+ DOUBLE 
+  
+ DOUBLE-EXT
+  
+ flag
+  
+ no 
+  
+ double-number word set present 
+  
+ flag
+  
+ no 
+  
+ double-number extensions word set present 
+  
+ 8.3.2   Text interpreter input number conversion
+  
+ When the text interpreter processes a number that is immediately followed by a decimal point and is not 
+ found as a definition name, the text interpreter shall convert it to a double-cell number. 
+  
+ For example, entering
+  DECIMAL 1234 
+ leaves the single-cell number
+  1234 
+ on the stack, 
+ and entering
+  DECIMAL 1234. 
+ leaves the double-cell number
+  1234 0
+ on the stack. 
+  
+ See:  
+ 3.4.1.3 Text interpreter input number conversion
+ . 
+  
+ 8.4   Additional documentation requirements
+  
+ 8.4.1   System documentation
+  
+ 8.4.1.1   Implementation-defined options
+  
+ – 
+  
+ no additional requirements. 
+  
+ 8.4.1.2   Ambiguous conditions
+  
+ – 
+  
+ d
+  outside range of 
+ n
+  in 
+ 8.6.1.1140
+ D>S
+ . 
+  
+ 8.4.1.3   Other system documentation
+  
+ – 
+  
+ no additional requirements. 
+  
+ 8.4.2   Program documentation
+  
+ – 
+  
+ no additional requirements. 
+  
+  
+ ! "" # $ % & ' ( ) * + , - . / digits : ; < = > ? @ ALPHA [ \ ] ^ _ ` alpha { | } ~ 
+  
+ 65",NA
+9.   The optional Exception word set,"9.1   Introduction
+  
+ 9.2   Additional terms and notation
+  
+ None. 
+  
+ 9.3   Additional usage requirements
+  
+ 9.3.1   
+ THROW
+  values
+  
+ The 
+ THROW
+  values {-255...-1} shall be used only as assigned by this Standard.  The values {-4095...-256} 
+ shall be used only as assigned by a system. 
+  
+ If the File-Access or Memory-Allocation word sets are implemented, it is recommended that the non-zero 
+  
+ values of 
+ ior
+  lie within the range of system 
+ THROW
+  values, as defined above.  In an operating-system 
+ environment, this can sometimes be accomplished by “biasing” the range of operating-system exception-
+  
+ codes to fall within the 
+ THROW
+  range. 
+  
+ Programs shall not define values for use with 
+ THROW
+  in the range {-4095...-1}. 
+  
+ 9.3.2   Exception frame
+  
+ An exception frame is the implementation-dependent set of information recording the current execution 
+  
+ state necessary for the proper functioning of 
+ CATCH
+  and 
+ THROW
+ .  It often includes the depths of the data 
+ stack and return stack. 
+  
+ 9.3.3   Exception stack
+  
+ A stack used for the nesting of exception frames by 
+ CATCH
+  and 
+ THROW
+ .  It may be, but need not be, 
+ implemented using the return stack. 
+  
+ 9.3.4   Environmental queries
+  
+ Append table 9.1 to table 3.5. 
+  
+ See:  
+ 3.2.6 Environmental queries
+ . 
+  
+ Table 9.1 – Environmental query strings
+  
+ String 
+  
+ Value data type Constant? Meaning 
+  
+ EXCEPTION 
+  
+ EXCEPTION-EXT
+  
+ flag
+  
+ no 
+  
+ Exception word set present 
+  
+ flag
+  
+ no 
+  
+ Exception extensions word set present 
+  
+ 9.3.5   Possible actions on an ambiguous condition
+  
+ A system choosing to execute 
+ THROW
+  when detecting one of the ambiguous conditions listed in table 9.3.6 
+ shall use the throw code listed there. 
+  
+ See:  
+ 3.4.4 Possible actions on an ambiguous condition
+ . 
+  
+ 70 
+  
+ Collating Sequence:",NA
+10.   The optional Facility word set,"10.1   Introduction
+  
+ 10.2   Additional terms and notation 
+  
+  
+ None. 
+  
+ 10.3   Additional usage requirements
+  
+ 10.3.1   Character types 
+  
+ Programs that use more than seven bits of a character by 
+ 10.6.2.1305 
+ EKEY
+  have an environmental 
+ dependency. 
+  
+ See:  
+ 3.1.2 Character types
+ . 
+  
+ 10.3.2   Environmental queries 
+  
+  
+ Append table 10.1 to table 3.5. 
+  
+ See:  
+ 3.2.6 Environmental queries
+ . 
+  
+ Table 10.1 – Environmental query strings
+  
+ String 
+  
+ Value data type Constant? Meaning 
+  
+ FACILITY 
+  
+ FACILITY-EXT
+  
+ flag
+  
+ no 
+  
+ facility word set present 
+  
+ flag
+  
+ no 
+  
+ facility extensions word set present 
+  
+ 10.4   Additional documentation requirements
+  
+ 10.4.1   System documentation
+  
+ 10.4.1.1   Implementation-defined options
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ encoding of keyboard events (
+ 10.6.2.1305 
+ EKEY
+ ); 
+ duration of a system clock tick; 
+  
+ repeatability to be expected from execution of 
+ 10.6.2.1905
+ MS
+ . 
+  
+ 10.4.1.2   Ambiguous conditions
+  
+  
+ – 
+  
+ 10.6.1.0742
+ AT-XY
+  operation can't be performed on user output device. 
+  
+ 10.4.1.3   Other system documentation
+  
+  
+ – 
+  
+ no additional requirements. 
+  
+ 10.4.2   Program documentation
+  
+ 10.4.2.1   Environmental dependencies
+  
+  
+ – 
+  
+ using more than seven bits of a character in 
+ 10.6.2.1305
+ EKEY
+ . 
+  
+ 10.4.2.2   Other program documentation
+  
+ 74 
+  
+ – 
+  
+ no additional requirements. 
+  
+ Collating Sequence:",NA
+11.   The optional File-Access word set,"11.1   Introduction
+  
+ These words provide access to mass storage in the form of “files” under the following assumptions: 
+  
+ – 
+  
+ files are provided by a host operating system; 
+  
+ – 
+  
+ file names are represented as character strings; 
+  
+ – 
+  
+ the format of file names is determined by the host operating system; 
+  
+ – 
+  
+ an open file is identified by a single-cell file identifier (
+ fileid
+ ); 
+  
+ – 
+  
+ file-state information (e.g., position, size) is managed by the host operating system; 
+  
+ – 
+  
+ file contents are accessed as a sequence of characters; 
+  
+ – 
+  
+ file read operations return an actual transfer count, which can differ from the requested transfer count. 
+  
+ 11.2   Additional terms
+  
+ file-access method:
+   A permissible means of accessing a file, such as “read/write” or “read only”. 
+  
+ file position:
+   The character offset from the start of the file. 
+  
+ input file:
+   The file, containing a sequence of lines, that is the input source. 
+  
+ 11.3   Additional usage requirements
+  
+ 11.3.1   Data types
+  
+ Append table 11.1 to table 3.1. 
+  
+ Table 11.1 – Data types
+  
+ Symbol 
+  
+ Data type 
+  
+ Size on stack 
+  
+ ior
+  
+ I/O results 
+  
+ 1 cell 
+  
+ fam
+  
+ file access method 
+  
+ 1 cell 
+  
+ fileid
+  
+ file identifiers 
+  
+ 1 cell 
+  
+ 11.3.1.1   File identifiers
+  
+ File identifiers are implementation-dependent single-cell values that are passed to file operators to designate 
+  
+ specific files.  Opening a file assigns a file identifier, which remains valid until closed. 
+  
+ 11.3.1.2   I/O results
+  
+ I/O results are single-cell numbers indicating the result of I/O operations.  A value of zero indicates that the 
+  
+ I/O operation completed successfully; other values and their meanings are implementation-defined. 
+  
+ Reaching the end of a file shall be reported as zero. 
+  
+ An I/O exception in the execution of a File-Access word that can return an I/O result shall not cause a 
+  
+ THROW
+ ; exception indications are returned in the 
+ ior
+ . 
+  
+ 11.3.1.3   File access methods
+  
+ File access methods are implementation-defined single-cell values. 
+  
+ ! "" # $ % & ' ( ) * + , - . / digits : ; < = > ? @ ALPHA [ \ ] ^ _ ` alpha { | } ~ 
+  
+ 77",NA
+12.   The optional Floating-Point word set,"12.1   Introduction
+  
+ 12.2   Additional terms and notation
+  
+ 12.2.1 Definition of terms
+  
+ float-aligned address:
+   The address of a memory location at which a floating-point number can be 
+ accessed. 
+  
+ double-float-aligned address:
+   The address of a memory location at which a 64-bit IEEE double-precision 
+ floating-point number can be accessed. 
+  
+ single-float-aligned address:
+   The address of a memory location at which a 32-bit IEEE single-precision 
+ floating-point number can be accessed. 
+  
+ IEEE floating-point number:
+   A single- or double-precision floating-point number as defined in 
+ ANSI/IEEE 754-1985
+ . 
+  
+ 12.2.2 Notation
+  
+ 12.2.2.1   Numeric notation
+  
+ The following notation is used to define the syntax of the external representation of floating-point numbers: 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ Each component of a floating-point number is defined with a rule consisting of the name of the 
+ component (italicized in angle-brackets, e.g., <
+ sign
+ >), the characters := and a concatenation of tokens 
+ and metacharacters; 
+  
+ Tokens may be literal characters (in bold face, e.g., 
+ E
+ ) or rule names in angle brackets (e.g., <
+ digit
+ >); 
+  
+ The metacharacter * is used to specify zero or more occurrences of the preceding token (e.g., <
+ digit
+ >*); 
+  
+ Tokens enclosed with [ and ] are optional (e.g., [<
+ sign
+ >]); 
+  
+ Vertical bars separate choices from a list of tokens enclosed with braces (e.g., { 
+ +
+  | 
+ -
+  }). 
+  
+ 12.2.2.2   Stack notation
+  
+ Floating-point stack notation when the floating-point stack is separate from the data stack is: 
+  
+ ( F:  
+ before
+  -- 
+ after
+  ) 
+  
+ 12.3   Additional usage requirements
+  
+ 12.3.1   Data types
+  
+ Append table 12.1 to table 3.1. 
+  
+ Table 12.1 – Data Types
+  
+ Symbol 
+  
+ Data type 
+  
+ Size on stack 
+  
+  
+ r
+  
+ floating-point number 
+  
+ implementation-defined 
+  
+  
+ f-addr
+  
+ float-aligned address 
+  
+ 1 cell 
+  
+ sf-addr
+  
+ single-float-aligned address 
+  
+ 1 cell 
+  
+ df-addr
+  
+ double-float-aligned address 
+  
+ 1 cell 
+  
+ 87 
+  
+ ! "" # $ % & ' ( ) * + , - . / digits : ; < = > ? @ ALPHA [ \ ] ^ _ ` alpha { | } ~",NA
+13.   The optional Locals word set,"13.1   Introduction
+  
+ See:  
+ Annex A.13  The Locals Word Set
+ . 
+  
+ 13.2   Additional terms and notation
+  
+ None. 
+  
+ 13.3   Additional usage requirements
+  
+ 13.3.1   Locals
+  
+ A local is a data object whose execution semantics shall return its value, whose scope shall be limited to the 
+ definition in which it is declared, and whose use in a definition shall not preclude reentrancy or recursion. 
+  
+ 13.3.2   Environmental queries
+  
+ Append table 13.1 to table 3.5. 
+  
+ See:  
+ 3.2.6 Environmental queries
+ . 
+  
+ Table 13.1 – Environmental query strings
+  
+ String 
+  
+ Value data type Constant? Meaning 
+  
+ #LOCALS 
+  
+ LOCALS 
+  
+ LOCALS-EXT
+  
+ n
+  
+ yes 
+  
+ maximum number of local variables in a 
+  
+ definition 
+  
+ flag
+  
+ no 
+  
+ locals word set present 
+  
+ flag
+  
+ no 
+  
+ locals extensions word set present 
+  
+ 13.3.3   Processing locals
+  
+ To support the locals word set, a system shall provide a mechanism to receive the messages defined by 
+ (LOCAL)
+  and respond as described here. 
+  
+ During the compilation of a definition after 
+ :
+  (colon), 
+ :NONAME
+ , or 
+ DOES>
+ , a program may begin sending 
+ local identifier messages to the system.  The process shall begin when the first message is sent.  The process 
+ shall end when the “last local” message is sent.  The system shall keep track of the names, order, and number 
+ of identifiers contained in the complete sequence. 
+  
+ 13.3.3.1   Compilation semantics
+  
+ The system, upon receipt of a sequence of local-identifier messages, shall take the following actions at 
+ compile time: 
+  
+ a) Create temporary dictionary entries for each of the identifiers passed to 
+ (LOCAL)
+ , such that each 
+ identifier will behave as a 
+ local
+ .  These temporary dictionary entries shall vanish at the end of the 
+ definition, denoted by 
+ ;
+  (semicolon), 
+ ;CODE
+ , or 
+ DOES>
+ .  The system need not maintain these 
+ identifiers in the same way it does other dictionary entries as long as they can be found by normal 
+ dictionary searching processes.  Furthermore, if the Search-Order word set is present, local identifiers 
+ shall always be searched before any of the word lists in any definable search order, and none of the 
+ Search-Order words shall change the locals’ privileged position in the search order.  Local identifiers 
+ may reside in mass storage. 
+  
+ b) For each identifier passed to 
+ (LOCAL)
+ , the system shall generate an appropriate code sequence that 
+  
+ does the following at execution time: 
+  
+ 102 
+  
+ Collating Sequence:",NA
+14.   The optional Memory-Allocation word set,"14.1   Introduction 
+  
+ 14.2   Additional terms and notation 
+  
+  
+ None. 
+  
+ 14.3   Additional usage requirements 
+  
+ 14.3.1   I/O Results data type 
+  
+  
+ I/O results are single-cell numbers indicating the result of I/O operations.  A value of zero indicates that the 
+  
+ I/O operation completed successfully; other values and their meanings are implementation-defined. 
+  
+ Append table 14.1 to table 3.1. 
+  
+ Table 14.1 – Data types
+  
+ Symbol 
+  
+ Data type 
+  
+ Size on stack 
+  
+ ior
+  
+ I/O results 
+  
+ 1 cell 
+  
+ 14.3.2   Environmental queries 
+  
+  
+ Append table 14.2 to table 3.5. 
+  
+ See:  
+ 3.2.6 Environmental queries
+ . 
+  
+ Table 14.2 – Environmental query strings
+  
+ String 
+  
+ Value data type Constant? Meaning 
+  
+ MEMORY-ALLOC 
+  
+ MEMORY-ALLOC-EXT
+  
+ flag
+  
+ no 
+  
+ memory-allocation word set present 
+  
+ flag
+  
+ no 
+  
+ memory-allocation extensions word set 
+  
+ present 
+  
+ 14.3.3   Allocated regions 
+  
+ A program may address memory in data space regions made available by 
+ ALLOCATE 
+ or 
+ RESIZE
+  and not 
+ yet released by 
+ FREE
+ . 
+  
+ See:  
+ 3.3.3 Data space
+ . 
+  
+ 14.4   Additional documentation requirements 
+ 14.4.1   System documentation 
+  
+ 14.4.1.1   Implementation-defined options
+  
+ – 
+  
+ values and meaning of 
+ ior
+  (
+ 14.3.1 I/O Results data type
+ , 
+ 14.6.1.0707
+ ALLOCATE
+ , 
+ 14.6.1.1605
+ FREE
+ , 
+ 14.6.1.2145
+ RESIZE
+ ). 
+  
+ 14.4.1.2   Ambiguous conditions
+  
+ – 
+  
+ no additional requirements. 
+  
+  
+ ! "" # $ % & ' ( ) * + , - . / digits : ; < = > ? @ ALPHA [ \ ] ^ _ ` alpha { | } ~ 
+  
+ 107",NA
+15.   The optional Programming-Tools word set,"15.1   Introduction 
+  
+  
+ This optional word set contains words most often used during the development of applications. 
+  
+ 15.2   Additional terms and notation 
+  
+  
+ None. 
+  
+ 15.3   Additional usage requirements 
+  
+ 15.3.1   Environmental queries 
+  
+  
+ Append table 15.1 to table 3.5. 
+  
+ See:  
+ 3.2.6 Environmental queries
+ . 
+  
+ Table 15.1 – Environmental query strings
+  
+ String 
+  
+ Value data type Constant? Meaning 
+  
+ TOOLS 
+  
+ TOOLS-
+ EXT
+  
+ flag
+  
+ no 
+  
+ programming-tools word set present 
+  
+ flag
+  
+ no 
+  
+ programming-tools extensions word set 
+  
+ present 
+  
+ 15.3.2   The Forth dictionary 
+  
+ A program using the words 
+ CODE
+  or 
+ ;CODE
+  associated with assembler code has an environmental 
+ dependency on that particular instruction set and assembler notation. 
+  
+ Programs using the words 
+ EDITOR
+  or 
+ ASSEMBLER
+  require the Search Order word set or an equivalent 
+ implementation-defined capability. 
+  
+ See:  
+ 3.3 The Forth dictionary
+ . 
+  
+ 15.4   Additional documentation requirements 
+ 15.4.1   System documentation 
+  
+ 15.4.1.1   Implementation-defined options
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ ending sequence for input following 
+ 15.6.2.0470
+ ;CODE
+  and 
+ 15.6.2.0930
+ CODE
+ ; 
+  
+ manner of processing input following 
+ 15.6.2.0470
+ ;CODE
+  and 
+ 15.6.2.0930
+ CODE
+ ; 
+  
+ search-order capability for 
+ 15.6.2.1300
+ EDITOR
+  and 
+ 15.6.2.0740
+ ASSEMBLER
+  (
+ 15.3.3 The Forth 
+ dictionary
+ ); 
+  
+ source and format of display by 
+ 15.6.1.2194
+ SEE
+ . 
+  
+ 15.4.1.2   Ambiguous conditions
+  
+  
+ – 
+  
+ deleting the compilation word-list (
+ 15.6.2.1580 
+ FORGET
+ ); 
+  
+ – 
+  
+ fewer than 
+ u
+ +1 items on control-flow stack (
+ 15.6.2.1015 
+ CSPICK
+ , 
+ 15.6.2.1020 
+ CSROLL
+ ); 
+  
+ – 
+  
+ name
+  can't be found (
+ 15.6.2.1580 
+ FORGET
+ ); 
+  
+ – 
+  
+ name
+  not defined via 
+ 6.1.1000 
+ CREATE
+  (
+ 15.6.2.0470 
+ ;CODE
+ ); 
+  
+ – 
+  
+ 6.1.2033
+ POSTPONE
+  applied to 
+ 15.6.2.2532
+ [IF]
+ ; 
+  
+ 110 
+  
+  
+ Collating Sequence:",NA
+16.   The optional Search-Order word set ,"16.1   Introduction 
+  
+ 16.2   Additional terms and notation 
+  
+  
+ compilation word list:
+   The word list into which new definition names are placed. 
+  
+ search order:
+   A list of word lists specifying the order in which the dictionary will be searched. 
+  
+ 16.3   Additional usage requirements
+  
+ 16.3.1   Data types 
+  
+ Word list identifiers are implementation-dependent single-cell values that identify word lists. 
+ Append table 16.1 to table 3.1. 
+  
+ Table 16.1 – Data types
+  
+ Symbol 
+  
+ Data type 
+  
+ Size on stack 
+  
+ wid
+  
+ word list identifiers 
+  
+ 1 cell 
+  
+ See:  
+ 3.1  Data types
+ , 
+ 3.4.2  Finding definition names
+ , 
+ 3.4 The Forth text interpreter
+ . 
+  
+ 16.3.2   Environmental queries 
+  
+  
+ Append table 16.2 to table 3.5. 
+  
+ See:  
+ 3.2.6 Environmental queries
+ . 
+  
+ Table 16.2 – Environmental query strings
+  
+ String 
+  
+ Value data type Constant? Meaning 
+  
+ SEARCH-ORDER 
+  
+ SEARCH-ORDER-EXT 
+ WORDLISTS
+  
+ flag
+  
+ no 
+  
+ search-order word set present 
+  
+ flag
+  
+ no 
+  
+ search-order extensions word set present 
+  
+ n
+  
+ yes 
+  
+ maximum number of word lists usable in the 
+  
+ search order 
+  
+ 16.3.3   Finding definition names 
+  
+ When searching a word list for a definition name, the system shall search each word list from its last 
+ definition to its first.  The search may encompass only a single word list, as with 
+ SEARCH-WORDLIST
+ , or 
+ all the word lists in the search order, as with the text interpreter and 
+ FIND
+ . 
+  
+ Changing the search order shall only affect the subsequent finding of definition names in the dictionary. 
+  
+ A system with the Search-Order word set shall allow at least eight word lists in the search order. An 
+ ambiguous condition exists if a program changes the compilation word list during the compilation of a 
+ definition or before modification of the behavior of the most recently compiled definition with 
+ ;CODE
+ , 
+ DOES>
+ , or 
+ IMMEDIATE
+ . 
+  
+ A program that requires more than eight word lists in the search order has an environmental dependency. 
+  
+ See:  
+ 3.4.2  Finding definition names
+  
+ ! "" # $ % & ' ( ) * + , - . / digits : ; < = > ? @ ALPHA [ \ ] ^ _ ` alpha { | } ~ 
+  
+ 117",NA
+17.   The optional String word set,"17.1   Introduction
+  
+ 17.2   Additional terms and notation
+  
+ None. 
+  
+ 17.3   Additional usage requirements
+  
+ Append table 17.1 to table 3.5. 
+  
+ See:  
+ 3.2.6 Environmental queries
+ . 
+  
+ Table 17.1 – Environmental query strings
+  
+ String 
+  
+ Value data type Constant? Meaning 
+  
+ STRING 
+  
+ STRING-EXT
+  
+ flag
+  
+ no 
+  
+ string word set present 
+  
+ flag
+  
+ no 
+  
+ string extensions word set present 
+  
+ 17.4   Additional documentation requirements
+  
+ None. 
+  
+ 17.5   Compliance and labeling
+  
+ 17.5.1   ANS Forth systems
+  
+ The phrase “Providing the String word set” shall be appended to the label of any Standard System that 
+ provides all of the String word set. 
+  
+ The phrase “Providing 
+ name
+ (
+ s
+ ) from the String Extensions word set” shall be appended to the label of any 
+ Standard System that provides portions of the String Extensions word set. 
+  
+ The phrase “Providing the String Extensions word set” shall be appended to the label of any Standard 
+ System that provides all of the String and String Extensions word sets. 
+  
+ 17.5.2   ANS Forth programs
+  
+ The phrase “Requiring the String word set” shall be appended to the label of Standard Programs that require 
+ the system to provide the String word set. 
+  
+ The phrase “Requiring 
+ name
+ (
+ s
+ ) from the String Extensions word set” shall be appended to the label of 
+ Standard Programs that require the system to provide portions of the String Extensions word set. 
+  
+ The phrase “Requiring the String Extensions word set” shall be appended to the label of Standard Programs 
+ that require the system to provide all of the String and String Extensions word sets. 
+  
+ 122 
+  
+ Collating Sequence:",NA
+A.   Rationale (informative annex),"A.1   Introduction
+  
+ A.1.1   Purpose
+  
+ A.1.2   Scope
+  
+ This Standard is more extensive than previous industry standards for the Forth language.  Several things 
+ made this necessary: 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ – 
+  
+ the desire to resolve conflicts between previous standards; 
+  
+ the need to eliminate semantic ambiguities and other inadequacies; 
+  
+ the requirement to standardize common practice, where possible resolving divergences in a way that 
+ minimizes the cost of compliance; 
+  
+ the desire to standardize common system techniques, including those germane to hardware. 
+  
+ The result of the effort to satisfy all of these objectives is a Standard arranged so that the required word set 
+ remains small.  Thus ANS Forth can be provided for resource-constrained embedded systems.  Words 
+ beyond those in the required word set are organized into a number of optional word sets and their 
+ extensions, enabling implementation of tailored systems that are Standard. 
+  
+ When judging relative merits, the members of the X3J14 Technical Committee were guided by the 
+ following goals (listed in alphabetic order): 
+  
+ Consistency 
+  
+ Cost of compliance 
+  
+ Efficiency 
+  
+ Portability 
+  
+ Readability 
+  
+ Utility 
+  
+ The Standard provides a functionally complete set of words with minimal 
+ functional overlap. 
+  
+ This goal includes such issues as common practice, how much existing code 
+ would be broken by the proposed change, and the amount of effort required to 
+ bring existing applications and systems into conformity with the Standard. 
+  
+ Execution speed, memory compactness. 
+  
+ Words chosen for inclusion should be free of system-dependent features. 
+  
+ Forth definition names should clearly delineate their behavior.  That behavior 
+ should have an apparent simplicity which supports rapid understanding.  Forth 
+ should be easily taught and support readily maintained code. 
+  
+ Be judged to have sufficiently essential functionality and frequency of use to be 
+ deemed suitable for inclusion. 
+  
+ A.1.3   Document organization
+  
+ A.1.3.1   Word sets
+  
+ From the beginning, the X3J14 Technical Committee faced not only conflicting ideas as to what “real” 
+ Forth is, but also conflicting needs of the various groups within the Forth community.  At one extreme were 
+ those who pressed for a “bare” Forth.  At the other extreme were those who wanted a “fat” Forth.  Many 
+ were somewhere in between.  All were convinced of the rightness of their own position and of the 
+ wrongness of at least one of the two extremes.  The committee’s composition reflected this full range of 
+ interests. 
+  
+ The approach we have taken is to define a Core word set establishing a greatest lower bound for required 
+ system functionality and to provide a portfolio of optional word sets for special purposes.  This simple 
+ approach parallels the fundamental nature of Forth as an extensible language, and thereby achieves a kind of 
+ meta-extensibility. 
+  
+ 125",NA
+B.   Bibliography (informative annex),"Industry standards 
+  
+  
+ Forth-77Standard
+ , Forth Users Group, FST-780314. 
+  
+ Forth-78Standard
+ , Forth International Standards Team. 
+  
+ Forth-79Standard
+ , Forth Standards Team. 
+  
+ Forth-83Standard
+  and Appendices, Forth Standards Team. 
+  
+ The standards referenced in this section were developed by the Forth Standards Team, a volunteer group 
+ which included both implementors and users.  This was a volunteer organization operating under its own 
+ charter and without any formal ties to ANSI, IEEE or any similar standards body.  Several members of the 
+ Forth Standards Team have also been members of the X3J14 Technical Committee. 
+  
+ Books 
+  
+  
+ Brodie, L.  
+ StartingFORTH
+  (2nd ed).  Englewood Cliffs, NJ:  Prentice Hall, 1987. 
+  
+ Brodie, L.  
+ ThinkingFORTH
+ .  Englewood Cliffs, NJ:  Prentice Hall, 1984. 
+  
+ Feierbach, G. and Thomas, P.  
+ ForthTools&Applications
+ .  Reston, VA:  Reston Computer Books, 1985. 
+ Haydon, Dr. Glen B.  
+ AllAboutFORTH,ThirdEdition
+ .  La Honda, CA: 1990. 
+  
+ Kelly, Mahlon G. and Spies, N.  
+ FORTH:ATextandReference
+ .  Englewood Cliffs, NJ:  Prentice Hall, 
+ 1986. 
+  
+ Knecht, K.  
+ IntroductiontoForth
+ .  Indiana:  Howard Sams & Co., 1982. 
+  
+ Koopman, P. 
+ StackComputers,TheNewWave
+ . Chichester, West Sussex, England: Ellis Horwood Ltd. 
+  
+ 1989 
+  
+ Martin, Thea, editor.  
+ ABibliographyofForthReferences,ThirdEdition
+ .  Rochester, New York: Institute of 
+ Applied Forth Research, 1987. 
+  
+ McCabe, C. K.  
+ ForthFundamentals
+  (2 volumes).  Oregon:  Dilithium Press, 1983. 
+  
+ Pountain, R.  
+ ObjectOrientedForth.
+   London, England:  Academic Press, 1987. 
+  
+ Ouverson,  Marlin, editor.  
+ Dr.DobbsToolbookofForth
+ .  Redwood City, CA:  M&T Press, Vol. 1, 1986; 
+ Vol. 2, 1987. 
+  
+ Terry, J. D.  
+ LibraryofForthRoutinesandUtilities
+ .  New York:  Shadow Lawn Press, 1986 Tracy, 
+ M. and Anderson, A.  
+ MasteringFORTH
+  (revised ed).  New York:  Brady Books, 1989. 
+  
+ Winfield, A.  
+ TheCompleteForth
+ .  New York:  Wiley Books, 1983. 
+  
+ Journals, magazines and newsletters 
+  
+ Forsley, Lawrence P., Conference Chairman.  
+ RochesterForthConferenceProceedings
+ .  Rochester, New 
+ York:  Institute of Applied Forth Research, 1981 to present. 
+  
+ Forsley, Lawrence P., Editor-in-Chief.  
+ TheJournalofForthApplicationandResearch
+ .  Rochester, New 
+ York:  Institute of Applied Forth Research, 1983 to present. 
+  
+ Frenger, Paul, editor.  
+ SIGForthNewsletter
+ .  New York, NY:  Association for Computing Machinery, 1989 
+ to present. 
+  
+ Ouverson, Marlin, editor.  
+ ForthDimensions
+ .  San Jose, CA:  The Forth Interest Group, 1978 to present. 
+  
+ 178",NA
+C.   Perspective (informative annex),"The purpose of this section is to provide an informal overview of Forth as a language, illustrating its history, 
+ most prominent features, usage, and common implementation techniques.  Nothing in this section should be 
+ considered as binding upon either implementors or users.  A list of books and articles is given in Annex 
+ B 
+ for those interested in learning more about Forth. 
+  
+ C.1   Features of Forth
+  
+ Forth provides an interactive programming environment.  Its primary uses have been in scientific and 
+ industrial applications such as instrumentation, robotics, process control, graphics and image processing, 
+ artificial intelligence and business applications.  The principal advantages of Forth include rapid, interactive 
+ software development and efficient use of computer hardware. 
+  
+ Forth is often spoken of as a language because that is its most visible aspect.  But in fact, Forth is both more 
+ and less than a conventional programming language:  more in that all the capabilities normally associated 
+ with a large portfolio of separate programs (compilers, editors, etc.) are included within its range and less in 
+ that it lacks (deliberately) the complex syntax characteristic of most high-level languages. 
+  
+ The original implementations of Forth were stand-alone systems that included functions normally performed 
+ by separate operating systems, editors, compilers, assemblers, debuggers and other utilities.  A single simple, 
+ consistent set of rules governed this entire range of capabilities.  Today, although very fast stand-alone 
+ versions are still marketed for many processors, there are also many versions that run co-resident with 
+ conventional operating systems such as MS-DOS and UNIX. 
+  
+ Forth is not derived from any other language.  As a result, its appearance and internal characteristics may 
+ seem unfamiliar to new users.  But Forth’s simplicity, extreme modularity, and interactive nature offset the 
+ initial strangeness, making it easy to learn and use.  A new Forth programmer must invest some time 
+ mastering its large command repertoire.  After a month or so of full-time use of Forth, that programmer 
+ could understand more of its internal working than is possible with conventional operating systems and 
+ compilers. 
+  
+ The most unconventional feature of Forth is its 
+ extensibility
+ .  The programming process in Forth consists of 
+ defining new “words” – actually new commands in the language.  These may be defined in terms of 
+ previously defined words, much as one teaches a child concepts by explaining them in terms of previously 
+ understood concepts.  Such words are called “high-level definitions”. Alternatively, new words may also be 
+ defined in assembly code, since most Forth implementations include an assembler for the host processor. 
+  
+ This extensibility facilitates the development of special application languages for particular problem areas 
+ or disciplines. 
+  
+ Forth’s extensibility goes beyond just adding new commands to the language.  With equivalent ease, one can 
+ also add new 
+ kinds
+  of words.  That is, one may create a word which itself will define words.  In creating 
+ such a defining word the programmer may specify a specialized behavior for the words it will create which 
+ will be effective at compile time, at run-time, or both.  This capability allows one to define specialized data 
+ types, with complete control over both structure and behavior.  Since the run-time behavior of such words 
+ may be defined either in high-level or in code, the words created by this new defining word are equivalent to 
+ all other kinds of Forth words in performance.  Moreover, it is even easy to add new 
+ compilerdirectives
+  to 
+ implement special kinds of loops or other control structures. 
+  
+ Most professional implementations of Forth are written in Forth.  Many Forth systems include a “meta-
+ compiler” which allows the user to modify the internal structure of the Forth system itself. 
+  
+ C.2   History of Forth
+  
+ Forth was invented by Charles H. Moore.  A direct outgrowth of Moore’s work in the 1960’s, the first 
+ program to be called Forth was written in about 1970.  The first complete implementation was used in 1971 
+ at the National Radio Astronomy Observatory’s 11-meter radio telescope in Arizona.  This system was 
+  
+ 180",NA
+D.   Compatibility analysis of ANS Forth (informative annex),"Prior to ANS Forth, there were several industry standards for Forth.  The most influential are listed here in 
+ chronological order, along with the major differences between ANS Forth and the most recent, Forth 83. 
+  
+ D.1   FIG Forth (circa 1978)
+  
+ FIG Forth was a “model” implementation of the Forth language developed by the Forth Interest Group 
+ (FIG).  In FIG Forth, a relatively small number of words were implemented in processor-dependent machine 
+ language and the rest of the words were implemented in Forth.  The FIG model was placed in the public 
+ domain, and was ported to a wide variety of computer systems.  Because the bulk of the FIG Forth 
+ implementation was the same across all machines, programs written in FIG Forth enjoyed a substantial 
+ degree of portability, even for “system-level” programs that directly manipulate the internals of the Forth 
+ system implementation. 
+  
+ FIG Forth implementations were influential in increasing the number of people interested in using Forth. 
+ Many people associate the implementation techniques embodied in the FIG Forth model with “the nature of 
+ Forth”. 
+  
+ However, FIG Forth was not necessarily representative of commercial Forth implementations of the same 
+ era.  Some of the most successful commercial Forth systems used implementation techniques different from 
+ the FIG Forth “model”. 
+  
+ D.2   Forth 79
+  
+ The Forth-79 Standard resulted from a series of meetings from 1978 to 1980, by the Forth Standards Team, 
+ an international group of Forth users and vendors (interim versions known as Forth 77 and Forth 78 were 
+ also released by the group). 
+  
+ Forth 79 described a set of words defined on a 16-bit, twos-complement, unaligned, linear byte-addressing 
+ virtual machine.  It prescribed an implementation technique known as “indirect threaded code”, and used the 
+ ASCII character set. 
+  
+ The Forth-79 Standard served as the basis for several public domain and commercial implementations, 
+ some of which are still available and supported today. 
+  
+ D.3   Forth 83
+  
+ The Forth-83 Standard, also by the Forth Standards Team, was released in 1983.  Forth 83 attempted to fix 
+ some of the deficiencies of Forth 79. 
+  
+ Forth 83 was similar to Forth 79 in most respects.  However, Forth 83 changed the definition of several 
+ well-defined features of Forth 79.  For example, the rounding behavior of integer division, the base value of 
+ the operands of 
+ PICK
+  and 
+ ROLL
+ , the meaning of the address returned by 
+ '
+ , the compilation behavior of 
+ '
+ , 
+ the value of a “true” flag, the meaning of 
+ NOT
+ , and the “chaining” behavior of words defined by 
+  
+ VOCABULARY
+  were all changed.  Forth 83 relaxed the implementation restrictions of Forth 79 to allow any 
+ kind of threaded code, but it did not fully allow compilation to native machine code (this was not 
+ specifically prohibited, but rather was an indirect consequence of another provision). 
+  
+ Many new Forth implementations were based on the Forth-83 Standard, but few “strictly compliant” 
+ Forth-83 implementations exist. 
+  
+ Although the incompatibilities resulting from the changes between Forth 79 and Forth 83 were usually 
+ relatively easy to fix, a number of successful Forth vendors did not convert their implementations to be 
+ Forth 83 compliant.  For example, the most successful commercial Forth for Apple Macintosh computers is 
+ based on Forth 79. 
+  
+ 189",NA
+E.   ANS Forth portability guide (informative annex),"E.1   Introduction
+  
+ The most popular architectures used to implement Forth have had byte-addressed memory, 16-bit 
+ operations, and two’s-complement number representation.  The Forth-83 Standard dictates that these 
+ particular features must be present in a Forth-83 Standard system and that Forth-83 programs may exploit 
+ these features freely. 
+  
+ However, there are many beasts in the architectural jungle that are bit addressed or cell addressed, or prefer 
+ 32-bit operations, or represent numbers in one’s complement.  Since one of Forth’s strengths is its 
+ usefulness in “strange” environments on “unusual” hardware with “peculiar” features, it is important that a 
+ Standard Forth run on these machines too. 
+  
+ A primary goal of the ANS Forth Standard is to increase the types of machines that can support a Standard 
+ Forth.  This is accomplished by allowing some key Forth terms to be implementation-defined (e.g., how big 
+ is a cell?) and by providing Forth operators (words) that conceal the implementation.  This frees the 
+ implementor to produce the Forth system that most effectively utilizes the native hardware.  The machine 
+ independent operators, together with some programmer discipline, enable a programmer to write Forth 
+ programs that work on a wide variety of machines. 
+  
+ The remainder of this Annex provides guidelines for writing portable ANS Forth programs.  The first 
+ section describes ways to make a program hardware independent.  It is difficult for someone familiar with 
+ only one machine architecture to imagine the problems caused by transporting programs between dissimilar 
+ machines.  Consequently, examples of specific architectures with their respective problems are given.  The 
+ second section describes assumptions about Forth implementations that many programmers make, but can’t 
+ be relied upon in a portable program. 
+  
+ E.2   Hardware peculiarities
+  
+ E.2.1   Data/memory abstraction
+  
+ Data and memory are the stones and mortar of program construction.  Unfortunately, each computer treats 
+ data and memory differently.  The ANS Forth Systems Standard gives definitions of data and memory that 
+ apply to a wide variety of computers.  These definitions give us a way to talk about the common elements of 
+ data and memory while ignoring the details of specific hardware.  Similarly, ANS Forth programs that use 
+ data and memory in ways that conform to these definitions can also ignore hardware details.  The following 
+ sections discuss the definitions and describe how to write programs that are independent of the data/memory 
+ peculiarities of different computers. 
+  
+ E.2.2   Definitions
+  
+ Three terms defined by ANS Forth are address unit, cell, and character.  The address space of an ANS Forth 
+ system is divided into an array of address units; an address unit is the smallest collection of bits that can be 
+ addressed.  In other words, an address unit is the number of bits spanned by the addresses 
+ addr
+  and 
+ addr
+ +1. 
+  
+ The most prevalent machines use 8-bit address units.  Such “byte addressed” machines include the Intel 
+ 8086 and Motorola 68000 families.  However, other address unit sizes exist.  There are machines that are bit 
+ addressed and machines that are 4-bit nibble addressed.  There are also machines with address units larger 
+ than 8-bits.  For example, several Forth-in-hardware computers are cell addressed. 
+  
+ The cell is the fundamental data type of a Forth system.  A cell can be a single-cell integer or a memory 
+ address.  Forth’s parameter and return stacks are stacks of cells.  Forth 83 specifies that a cell is 16-bits.  In 
+ ANS Forth the size of a cell is an implementation-defined number of address units.  Thus, an ANS Forth 
+ implemented on a 16-bit microprocessor could use a 16-bit cell and an implementation on a 32-bit machine 
+ could use a 32-bit cell.  Also 18-bit machines, 36-bit machines, etc., could support ANS Forth systems with 
+ 18 or 36-bit cells respectively.  In all of these systems, 
+ DUP
+  does the same thing:  it duplicates the top of the 
+  
+ 199",NA
+F.   Alphabetic list of words (informative annex),"In the following list, the last, four-digit, part of the reference number establishes a sequence corresponding 
+  
+ to the alphabetic ordering of all standard words.  The first two or three parts indicate the word set and 
+  
+ glossary section in which the word is defined. 
+  
+ .
+ 6.1.0010   
+ !
+   ...................................................... “store”..................................................................CORE....... 25 
+ .
+ 6.1.0030   
+ #
+   ...................................................... “number-sign”......................................................CORE....... 25 
+ .
+ 6.1.0040   
+ #>
+   .................................................... “number-sign-greater” .........................................CORE....... 25 
+ .
+ 6.1.0050   
+ #S
+   .................................................... “number-sign-s”...................................................CORE....... 25 
+ .
+ 6.2.0060   
+ #TIB
+   ............................................... “number-t-i-b” ............................................CORE EXT....... 49 
+ .
+ 6.1.0070   
+ '
+   ...................................................... “tick” ...................................................................CORE....... 25 
+ .
+ 6.1.0080   
+ (
+   ...................................................... “paren”.................................................................CORE....... 26
+  
+ 11.6.1.0080   
+ (
+   ...................................................... “paren”...................................................................FILE....... 80
+  
+ 13.6.1.0086   
+ (LOCAL)
+   ........................................ “paren-local-paren” .......................................... LOCAL..... 105 
+ .
+ 6.1.0090   
+ *
+   ...................................................... “star”....................................................................CORE....... 26 
+ .
+ 6.1.0100   
+ */
+   .................................................... “star-slash”...........................................................CORE....... 26 
+ .
+ 6.1.0110   
+ */MOD
+   ............................................. “star-slash-mod” ..................................................CORE....... 26 
+ .
+ 6.1.0120   
+ +
+   ...................................................... “plus”...................................................................CORE....... 26 
+ .
+ 6.1.0130   
+ +!
+   .................................................... “plus-store”..........................................................CORE....... 27 
+ .
+ 6.1.0140   
+ +LOOP
+   ............................................. “plus-loop” ..........................................................CORE....... 27 
+ .
+ 6.1.0150   
+ ,
+   ...................................................... “comma”..............................................................CORE....... 27 
+ .
+ 6.1.0160   
+ -
+   ...................................................... “minus”................................................................CORE....... 27
+  
+ 17.6.1.0170   
+ -TRAILING
+   ................................... “dash-trailing” .................................................STRING..... 122 
+ .
+ 6.1.0180   
+ .
+   ...................................................... “dot” ....................................................................CORE....... 27 
+ .
+ 6.1.0190   
+ .""
+   .................................................... “dot-quote” ..........................................................CORE....... 28 
+ .
+ 6.2.0200   
+ .(
+   .................................................... “dot-paren” .................................................CORE EXT....... 49 
+ .
+ 6.2.0210   
+ .R
+   .................................................... “dot-r”.........................................................CORE EXT....... 49
+  
+ 15.6.1.0220   
+ .S
+   .................................................... “dot-s” ...............................................................TOOLS..... 112 
+ .
+ 6.1.0230   
+ /
+   ...................................................... “slash”..................................................................CORE....... 28 
+ .
+ 6.1.0240   
+ /MOD
+   ............................................... “slash-mod” .........................................................CORE....... 28
+  
+ 17.6.1.0245   
+ /STRING
+   ........................................ “slash-string” ...................................................STRING..... 123 
+ .
+ 6.1.0250   
+ 0<
+   .................................................... “zero-less” ...........................................................CORE....... 28 
+ .
+ 6.2.0260   
+ 0<>
+   .................................................. “zero-not-equals”........................................CORE EXT....... 49 
+ .
+ 6.1.0270   
+ 0=
+   .................................................... “zero-equals” .......................................................CORE....... 28 
+ .
+ 6.2.0280   
+ 0>
+   .................................................... “zero-greater” .............................................CORE EXT....... 50 
+ .
+ 6.1.0290   
+ 1+
+   .................................................... “one-plus”............................................................CORE....... 28 
+ .
+ 6.1.0300   
+ 1-
+   .................................................... “one-minus”.........................................................CORE....... 29 
+ .
+ 6.1.0310   
+ 2!
+   .................................................... “two-store”...........................................................CORE....... 29 
+ .
+ 6.1.0320   
+ 2*
+   .................................................... “two-star”.............................................................CORE....... 29 
+ .
+ 6.1.0330   
+ 2/
+   .................................................... “two-slash” ..........................................................CORE....... 29 
+ .
+ 6.2.0340   
+ 2>R
+   .................................................. “two-to-r”....................................................CORE EXT....... 50 
+ .
+ 6.1.0350   
+ 2@
+   .................................................... “two-fetch” ..........................................................CORE....... 29
+  
+ 8.6.1.0360   
+ 2CONSTANT
+   ................................... “two-constant”............................................... DOUBLE....... 66 
+ .
+ 6.1.0370   
+ 2DROP
+   ............................................. “two-drop”...........................................................CORE....... 29 
+ .
+ 6.1.0380   
+ 2DUP
+   ............................................... “two-dupe”...........................................................CORE....... 29
+  
+ 8.6.1.0390   
+ 2LITERAL
+   ...................................... “two-literal”................................................... DOUBLE....... 66 
+ .
+ 6.1.0400   
+ 2OVER
+   ............................................. “two-over” ...........................................................CORE....... 29 
+ .
+ 6.2.0410   
+ 2R>
+   .................................................. “two-r-from”...............................................CORE EXT....... 50 
+ .
+ 6.2.0415   
+ 2R@
+   .................................................. “two-r-fetch”...............................................CORE EXT....... 50
+  
+ 8.6.2.0420   
+ 2ROT
+   ............................................... “two-rote”............................................. DOUBLE EXT....... 69 
+ .
+ 6.1.0430   
+ 2SWAP
+   ............................................. “two-swap” ..........................................................CORE....... 30
+  
+ 8.6.1.0440   
+ 2VARIABLE
+   ................................... “two-variable” ............................................... DOUBLE....... 67
+  
+ 204",NA

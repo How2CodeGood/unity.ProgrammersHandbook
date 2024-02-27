@@ -1,0 +1,4752 @@
+Larger Text,Smaller Text,Symbol
+ SQL ,NA,NA
+PERFORMANC,NA,NA
+E ,NA,NA
+EXPLAINED,ENGLISH EDITION,NA
+License Agreement,"This ebook is licensed for your personal enjoyment only. This ebook may 
+ not be re-sold or given away to other people. If you would like to share this 
+ book with another person, please purchase an additional copy for each 
+ person. If you’re reading this book and did not purchase it, or it was not 
+ purchased for your use only, then please return to
+  
+ http://SQL-Performance-Explained.com/
+  
+ and purchase your own copy. Thank you for respecting the hard work of the 
+ author.",NA
+SQL Performance Explained ,NA,NA
+Everything developers need to,NA,NA
+know about SQL performance,"Markus Winand
+  
+ Vienna, Austria",NA
+Contents,"Preface ............................................................................................  vi
+  
+ 1. Anatomy of an Index ...................................................................... 1 The Index Leaf 
+ Nodes ..................................................................  2 The Search Tree (B-Tree) 
+ .............................................................. 
+ 4 
+ Slow 
+ Indexes, 
+ Part 
+ I 
+ ....................................................................  6
+  
+ 2. The Where Clause .........................................................................  9 The Equality 
+ Operator .................................................................. 9 Primary Keys 
+ .......................................................................  10 
+  
+ Concatenated Indexes ..........................................................  12 
+  
+ Slow Indexes, Part II ............................................................  18 
+  
+ Functions .................................................................................. 24 Case-Insensitive 
+ Search Using 
+ UPPER
+  or 
+ LOWER
+  ..........................  24 
+  
+ User-Defined Functions ........................................................ 29 
+  
+ Over-Indexing ......................................................................  31 
+  
+ Parameterized Queries ...............................................................  32 Searching for 
+ Ranges .................................................................  39 Greater, Less and 
+ BETWEEN
+  
+ .....................................................  39 
+  
+ Indexing 
+ LIKE
+  Filters ............................................................. 45 
+  
+ Index Merge ........................................................................ 49 
+  
+ Partial Indexes ........................................................................... 51 
+ NULL
+  in the Oracle 
+ Database .......................................................  53 Indexing 
+ NULL
+  
+ ....................................................................... 54 
+  
+ NOT NULL
+  Constraints ............................................................  56 
+  
+ Emulating Partial Indexes ..................................................... 60 
+  
+ Obfuscated Conditions ............................................................... 62 Date Types 
+ ..........................................................................  62 
+  
+ Numeric Strings ..................................................................  68 
+  
+ Combining Columns ............................................................  70 
+  
+ Smart Logic ......................................................................... 72 
+  
+ Math ..................................................................................  77
+  
+ iv",NA
+Preface,NA,NA
+Developers Need to Index,"SQL performance problems are as old as SQL itself—some might even say 
+ that SQL is inherently slow. Although this might have been true in the early 
+ days of SQL, it is definitely not true anymore. Nevertheless SQL performance 
+ problems are still commonplace. How does this happen?
+  
+ The SQL language is perhaps the most successful fourth-generation 
+ programming language (4GL). Its main benefit is the capability to 
+ separate
+ “what”
+  and 
+ “how”
+ . An SQL statement is a straight description 
+ what
+  
+ is needed without instructions as to 
+ how
+  to get it done. Consider the 
+ following example:
+  
+ SELECT date_of_birth 
+  
+  FROM employees 
+  
+  WHERE last_name = 'WINAND'
+  
+ The SQL query reads like an English sentence that explains the requested 
+ data. Writing SQL statements generally does not require any knowledge 
+ about inner workings of the database or the storage system (such as disks, 
+ files, etc.). There is no need to tell the database which files to open or how to 
+ find the requested rows. Many developers have years of SQL experience yet 
+ they know very little about the processing that happens in the database.
+  
+ The separation of concerns—what is needed versus how to get it—works 
+ remarkably well in SQL, but it is still not perfect. The abstraction reaches its 
+ limits when it comes to performance: the author of an SQL statement by 
+ definition does not care 
+ how
+  the database executes the statement. 
+ Consequently, the author is not responsible for slow execution. However, 
+ experience proves the opposite; i.e., the author must know a little bit about 
+ the database to prevent performance problems.
+  
+ It turns out that the only thing 
+ developers
+  need to learn is how to index. 
+ Database indexing is, in fact, a development task. That is because the most 
+ important information for proper indexing is not the storage system 
+ configuration or the hardware setup. The most important information for 
+ indexing is how the application queries the data. This knowledge—about
+  
+ vi",NA
+Chapter 1,NA,NA
+Anatomy of an Index,"“An index makes the query fast”
+  is the most basic explanation of an index I 
+ have ever seen. Although it describes the most important aspect of an index 
+ very well, it is—unfortunately—not sufficient for this book. This chapter 
+ describes the index structure in a less superficial way but doesn’t dive too 
+ deeply into details. It provides just enough insight for one to understand the 
+ SQL performance aspects discussed throughout the book.
+  
+ An index is a distinct structure in the database that is built using the 
+ create 
+ index
+  statement. It requires its own disk space and holds a copy of the 
+ indexed table data. That means that an index is pure redundancy. Creating 
+ an index does not change the table data; it just creates a new data structure 
+ that refers to the table. A database index is, after all, very much like the 
+ index at the end of a book: it occupies its own space, it is highly redundant, 
+ and it refers to the actual information stored in a different place.",NA
+Clustered Indexes,"SQL Server and MySQL (using InnoDB) take a broader view of 
+ what“
+ index
+ ” means. They refer to tables that consist of the index 
+ structure only as 
+ clustered indexes
+ . These tables are called Index-
+ Organized Tables (IOT) in the Oracle database.
+  
+ Chapter 5, “
+ Clustering Data
+ ”, describes them in more detail and 
+ explains their advantages and disadvantages.
+  
+ Searching in a database index is like searching in a printed telephone 
+ directory. The key concept is that all entries are arranged in a well-defined 
+ order. Finding data in an ordered data set is fast and easy because the sort 
+ order determines each entries position.
+  
+ 1",NA
+The Index Leaf Nodes,"The primary purpose of an index is to provide an ordered representation of 
+ the indexed data. It is, however, not possible to store the data sequentially 
+ because an 
+ insert
+  statement would need to move the following entries to 
+ make room for the new one. Moving large amounts of data is very time-
+ consuming so the 
+ insert
+  statement would be very slow. The solution to the 
+ problem is to establish a logical order that is independent of physical order 
+ in memory.
+  
+ The logical order is established via a doubly linked list. Every node has links 
+ to two neighboring entries, very much like a chain. New nodes are inserted 
+ between two existing nodes by updating their links to refer to the new node. 
+ The physical location of the new node doesn’t matter because the doubly 
+ linked list maintains the logical order.
+  
+ The data structure is called a
+  doubly linked list
+  because each node refers to 
+ the preceding and the following node. It enables the database to read the 
+ index forwards or backwards as needed. It is thus possible to insert new 
+ entries without moving large amounts of data—it just needs to change some 
+ pointers.
+  
+ Doubly linked lists are also used for collections (containers) in many 
+ programming languages.
+  
+ 2",NA
+The Search Tree (B-Tree),"The index leaf nodes are stored in an arbitrary order—the position on the 
+ disk does not correspond to the logical position according to the index 
+ order. It is like a telephone directory with shuffled pages. If you search for 
+ “Smith” but first open the directory at “Robinson”, it is by no means granted 
+ that Smith follows Robinson. A database needs a second structure to find the 
+ entry among the shuffled pages quickly: a 
+ balanced search tree
+ —in short: 
+ the B-tree.
+  
+ Figure 1.2. B-tree Structure
+  
+ Branch Node
+  
+ Leaf Nodes
+  
+ 39
+  
+ 18
+  
+ 11
+  
+ 3C AF
+  
+ 40
+  
+ 4A 1B
+  
+ 43
+  
+ 9F 71
+  
+ 46
+  
+ A2 D2
+  
+ 13
+  
+ F3 91
+  
+ 18
+  
+ 6F B2
+  
+ 21
+  
+ 2C 50
+  
+ 27
+  
+ 0F 1B
+  
+ 46
+  
+ 46
+  
+ 8B 1C
+  
+ 27
+  
+ 27
+  
+ 52 55
+  
+ 39
+  
+ 34
+  
+ 0D 1E
+  
+ 35
+  
+ 44 53
+  
+ 53
+  
+ A0 A1
+  
+ 39
+  
+ 24 5D
+  
+ 40
+  
+ 4A 1B
+  
+ 53
+  
+ 0D 79
+  
+ 43
+  
+ 9F 71
+  
+ 46
+  
+ A2 D2
+  
+ 46
+  
+ 8B 1C
+  
+ 53
+  
+ A0 A1
+  
+ 53
+  
+ 55
+  
+ 9C F6
+  
+ 46
+  
+ 53
+  
+ 0D 79
+  
+ 53
+  
+ 55
+  
+ 9C F6
+  
+ 57
+  
+ 57
+  
+ 83
+  
+ 83
+  
+ 57
+  
+ B1 C1
+  
+ 98
+  
+ 57
+  
+ 50 29
+  
+ 57
+  
+ B1 C1
+  
+ 88
+  
+ 67
+  
+ C4 6B
+  
+ 83
+  
+ 83
+  
+ FF 9D
+  
+ 57
+  
+ 50 29
+  
+ 83
+  
+ AF E9
+  
+ 84
+  
+ 80 64
+  
+ 86
+  
+ 4C 2F
+  
+ 88
+  
+ 06 5B
+  
+ 89
+  
+ 6A 3E
+  
+ 90
+  
+ 7D 9A
+  
+ 67
+  
+ C4 6B
+  
+ 94
+  
+ 94
+  
+ 36 D4
+  
+ 98
+  
+ 95
+  
+ EA 37
+  
+ 83
+  
+ FF 9D
+  
+ 98
+  
+ 5E B2
+  
+ 98
+  
+ D8 4F
+  
+ 83
+  
+ AF E9
+  
+ Figure 1.2 shows an example index with 30 entries. The doubly linked list 
+ establishes the logical order between the leaf nodes. The root and branch 
+ nodes support quick searching among the leaf nodes.
+  
+ The figure highlights a branch node and the leaf nodes it refers to. Each 
+ branch node entry corresponds to the biggest value in the respective leaf 
+ node. That is, 46 in the first leaf node so that the first branch node entry is 
+ also 46. The same is true for the other leaf nodes so that in the end the
+  
+ 4",NA
+"Slow Indexes, Part I","Despite the efficiency of the tree traversal, there are still cases where an 
+ index lookup doesn’t work as fast as expected. This contradiction has fueled 
+ the myth of the 
+ “degenerated index”
+  for a long time. The myth proclaims an 
+ index rebuild as the miracle solution. The real reason trivial statements can 
+ be slow—even when using an index—can be explained on the basis of the 
+ previous sections.
+  
+ The first ingredient for a slow index lookup is the leaf node chain. Consider 
+ the search for “57” in Figure 1.3 again. There are obviously two matching 
+ entries in the index. At least two entries are the same, to be more precise: 
+ the next leaf node could have further entries for “57”. The database 
+ must 
+ read the next leaf node to see if there are any more matching entries. That 
+ means that an index lookup not only needs to perform the tree traversal, it 
+ also needs to follow the leaf node chain.
+  
+ The second ingredient for a slow index lookup is accessing the table. Even a 
+ single leaf node might contain many hits—often hundreds. The 
+ corresponding table data is usually scattered across many table blocks (see 
+ Figure 1.1, “Index Leaf Nodes and Corresponding Table Data”). That means 
+ that there is an additional table access for each hit.
+  
+ An index lookup requires three steps: (1) the tree traversal; (2) following 
+ the leaf node chain; (3) fetching the table data. The tree traversal is the only 
+ step that has an upper bound for the number of accessed blocks—the index 
+ depth. The other two steps might need to access many blocks—they cause a 
+ slow index lookup.
+  
+ 6",NA
+Logarithmic Scalability,"In mathematics, the logarithm of 
+ power or exponent to which the 
+ produce the number [Wikipedia
+ 1
+ ].
+  
+ In a search tree the base correspo 
+ branch node and the exponent to 
+ in Figure 1.2 holds up to four entr 
+ of three. That means that the inde 
+ it grows by one level, it can alrea a 
+ level is 
+ added
+ , the maximum nu 
+ The logarithm reverses this func 
+ log
+ 4
+ (number-of-index-entries).
+  
+ The logarithmic growth enables 
+ the example index to search a 
+ million records with ten tree 
+ levels, but a real world index is 
+ even more efficient. The main 
+ factor that affects the tree depth, 
+ and therefore the lookup perfor-
+ mance, is the number of entries in 
+ each tree node. This number 
+ corresponds to—mathematically 
+ speaking—the basis of the loga-
+ rithm. The higher the basis, the 
+ shallower the tree, the faster the 
+ traversal.
+  
+ Databases exploit this concept to a 
+ entries as possible into each node 
+ every new index level supports a h",NA
+y,"a number to a given base is the 
+ base must be raised in order to
+  
+ nds to the number of entries per 
+ the tree depth. The example index 
+ ies per node and has a tree depth x 
+ can hold up to 64 (4
+ 3
+ ) entries. If 
+ dy hold 256 entries (4
+ 4
+ ). Each 
+ time mber of index entries 
+ quadruples
+ . tion. The tree depth is 
+ therefore
+  
+ Tree Depth
+  
+ Index 
+ Entries
+  
+  
+ 3 
+  
+ 64
+  
+ 4 
+  
+ 256
+  
+ 5 
+  
+ 1,024
+  
+ 6 
+  
+ 4,096
+  
+ 7 
+  
+ 16,384
+  
+ 8 
+  
+ 65,536
+  
+ 9 
+  
+ 262,144
+  
+ 10 
+  
+ 1,048,576
+  
+  maximum extent and put as 
+ many—often hundreds. That 
+ means that undred times more 
+ entries.
+  
+ 1
+  http://en.wikipedia.org/wiki/Logarithm
+  
+ 7",NA
+Chapter 2,NA,NA
+The Where Clause,"The previous chapter described the structure of indexes and explained the 
+ cause of poor index performance. In the next step we learn how to spot and 
+ avoid these problems in SQL statements. We start by looking at the 
+ where
+  
+ clause.
+  
+ The 
+ where
+  clause defines the search condition of an SQL statement, and it 
+ thus falls into the core functional domain of an index: finding data quickly. 
+ Although the 
+ where
+  clause has a huge impact on performance, it is often 
+ phrased carelessly so that the database has to scan a large part of the index. 
+ The result: a poorly written 
+ where
+  clause is the first ingredient of a slow 
+ query.
+  
+ This chapter explains how different operators affect index usage and how to 
+ make sure that an index is usable for as many queries as possible. The last 
+ section shows common anti-patterns and presents alternatives that deliver 
+ better performance.",NA
+The Equality Operator,"The equality operator is both the most trivial and the most frequently used 
+ SQL operator. Indexing mistakes that affect performance are still very 
+ common and 
+ where
+  clauses that combine multiple conditions are 
+ particularly vulnerable.
+  
+ This section shows how to verify index usage and explains how 
+ concatenated indexes can optimize combined conditions. To aid 
+ understanding, we will analyze a slow query to see the real world impact of 
+ the causes explained in Chapter 1.
+  
+ 9",NA
+Primary Keys,"We start with the simplest yet most common 
+ where
+  clause: the primary key
+  
+ lookup. For the examples throughout this chapter we use the 
+ EMPLOYEES 
+ table defined as follows:
+  
+ CREATE TABLE employees (
+  
+  
+  employee_id   NUMBER         NOT NULL,
+  
+  
+  first_name    VARCHAR2(1000) NOT NULL,
+  
+  
+  last_name     VARCHAR2(1000) NOT NULL,
+  
+  
+  date_of_birth DATE           NOT NULL,
+  
+  
+  phone_number  VARCHAR2(1000) NOT NULL, 
+  
+  
+ CONSTRAINT employees_pk PRIMARY KEY (employee_id) 
+ );
+  
+ The database automatically creates an index for the primary key. That
+  
+ means there is an index on the 
+ EMPLOYEE_ID
+  column, even though there is no 
+ create index
+  statement.
+  
+ The following query uses the primary key to retrieve an employee’s name:
+  
+ SELECT first_name, last_name 
+  
+  FROM employees 
+  
+  WHERE 
+ employee_id = 123
+  
+ The 
+ where
+  clause cannot match multiple rows because the primary key
+  
+ constraint ensures uniqueness of the 
+ EMPLOYEE_ID
+  values. The database does 
+ not need to follow the index leaf nodes—it is enough to traverse the index 
+ tree. We can use the so-called 
+ execution plan
+  for verification:
+  
+ ---------------------------------------------------------------
+ |Id |Operation                   | Name         | Rows | Cost 
+ |--------------------------------------------------------------
+ -| 0 |SELECT STATEMENT            |              |    1 |    2 
+ | | 1 | TABLE ACCESS BY INDEX ROWID| EMPLOYEES    |    1 |    2 
+ | |*2 |  
+ INDEX UNIQUE SCAN
+          | 
+ EMPLOYEES_PK
+  |    1 |    1 
+ |--------------------------------------------------------------
+ -
+  
+ Predicate Information (identified by operation 
+ id):-----------------------------------------------
+ ---- 2 - access(""EMPLOYEE_ID""=123)",NA
+Primary Keys without Unique Index,"A primary key does not necessarily need a unique index—you can use 
+ a non-unique index as well. In that case the Oracle database does not 
+ use an 
+ INDEX UNIQUE SCAN
+  but instead the 
+ INDEX RANGE SCAN 
+ operation. Nonetheless, the constraint still maintains the uniqueness 
+ of keys so that the index lookup delivers at most one entry.
+  
+ One of the reasons for using non-unique indexes for a primary keys 
+ are 
+ deferrable constraints
+ . As opposed to regular constraints, which 
+ are validated during statement execution, the database postpones the 
+ validation of deferrable constraints until the transaction is committed. 
+ Deferred constraints are required for inserting data into tables with 
+ circular dependencies.
+  
+ 11",NA
+Concatenated Indexes,"Even though the database creates the index for the primary key 
+ automatically, there is still room for manual refinements if the key consists 
+ of multiple columns. In that case the database creates an index on all 
+ primary key columns—a so-called 
+ concatenated
+  index (also known as 
+ multi-
+ column
+ , 
+ composite
+  or 
+ combined
+  index). Note that the column order of a 
+ concatenated index has great impact on its usability so it must be chosen 
+ carefully.
+  
+ For the sake of demonstration, let’s assume there is a company merger. The 
+ employees of the other company are added to our 
+ EMPLOYEES
+  table so it 
+ becomes ten times as large. There is only one problem: the 
+ EMPLOYEE_ID
+  is 
+ not unique across both companies. We need to extend the primary key by an 
+ extra identifier—e.g., a subsidiary ID. Thus the new primary key has two 
+ columns: the 
+ EMPLOYEE_ID
+  as before and the 
+ SUBSIDIARY_ID
+  to reestablish 
+ uniqueness.
+  
+ The index for the new primary key is therefore defined in the following way:
+  
+ CREATE UNIQUE INDEX employee_pk 
+  
+  ON employees (employee_id, subsidiary_id);
+  
+ A query for a particular employee has to take the full primary key into 
+ account—that is, the 
+ SUBSIDIARY_ID
+  column also has to be used:
+  
+ SELECT first_name, last_name
+  
+  FROM employees
+  
+  WHERE employee_id   = 123 
+  
+  
+ AND subsidiary_id = 30
+ ;
+  
+ ---------------------------------------------------------------
+ |Id |Operation                   | Name         | Rows | Cost 
+ |--------------------------------------------------------------
+ -| 0 |SELECT STATEMENT            |              |    1 |    2 
+ | | 1 | TABLE ACCESS BY INDEX ROWID| EMPLOYEES    |    1 |    2 
+ | |*2 |  
+ INDEX UNIQUE SCAN
+          | 
+ EMPLOYEES_PK
+  |    1 |    1 
+ |--------------------------------------------------------------
+ -
+  
+ Predicate Information (identified by operation id):----
+ ----------------------------------------------- 2 - 
+ access(""EMPLOYEE_ID""=123 AND ""SUBSIDIARY_ID""=30)
+  
+ 12",NA
+Full Table Scan,"The operation 
+ TABLE ACCESS FULL
+ , also known as 
+ full table scan
+ , can be 
+ the most efficient operation in some cases anyway, in particular when 
+ retrieving a large part of the table.
+  
+ This is partly due to the overhead for the index lookup itself, which 
+ does not happen for a 
+ TABLE ACCESS FULL
+  operation. This is mostly 
+ because an index lookup reads one block after the other as the 
+ database does not know which block to read next until the current 
+ block has been processed. A 
+ FULL TABLE SCAN
+  must get the entire table 
+ anyway so that the database can read larger chunks at a time (
+ multi 
+ block read
+ ). Although the database reads more data, it might need to 
+ execute fewer read operations.
+  
+ 13",NA
+"Slow Indexes, Part II","The previous section explained how to gain additional benefits from an 
+ existing index by changing its column order, but the example considered 
+ only two SQL statements. Changing an index, however, may affect all queries 
+ on the indexed table. This section explains the way databases pick an index 
+ and demonstrates the possible side effects when changing existing indexes.
+  
+ The adopted 
+ EMPLOYEE_PK
+  index improves the performance of all queries 
+ that search by subsidiary only. It is however usable for all queries that 
+ search by 
+ SUBSIDIARY_ID
+ —regardless of whether there are any additional 
+ search criteria. That means the index becomes usable for queries that used 
+ to use another index with another part of the 
+ where
+  clause. In that case, if 
+ there are multiple access paths available it is the optimizer’s job to choose 
+ the best one.",NA
+The Query Optimizer,"The query optimizer, or query planner, is the database component 
+ that transforms an SQL statement into an execution plan. This process 
+ is also called 
+ compiling
+  or 
+ parsing
+ . There are two distinct optimizer 
+ types.
+  
+ Cost-based optimizers
+  (CBO) generate many execution plan variations 
+ and calculate a 
+ cost
+  value for each plan. The cost calculation is based 
+ on the operations in use and the estimated row numbers. In the end 
+ the cost value serves as the benchmark for picking the “best”execution 
+ plan.
+  
+ Rule-based optimizers
+  (RBO) generate the execution plan using a hard-
+ coded rule set. Rule based optimizers are less flexible and are seldom 
+ used today.
+  
+ 18",NA
+Statistics,"A cost-based optimizer uses statistics about tables, columns, and 
+ indexes. Most statistics are collected on the column level: the number 
+ of distinct values, the smallest and largest values (data range), the 
+ number of 
+ NULL
+  occurrences and the column histogram (data 
+ distribution). The most important statistical value for a table is its size 
+ (in rows and blocks).
+  
+ The most important index statistics are the tree depth, the number of 
+ leaf nodes, the number of distinct keys and the clustering factor (see 
+ Chapter 5, “
+ Clustering Data
+ ”).
+  
+ The optimizer uses these values to estimate the selectivity of the 
+ where
+  
+ clause predicates.
+  
+ 21",NA
+Functions,"The index on 
+ LAST_NAME
+  has improved the performance considerably, but it 
+ requires you to search using the same case (upper/lower) as is stored in the 
+ database. This section explains how to lift this restriction without a decrease 
+ in performance.
+  
+  
+ Note 
+  
+ MySQL 5.6 does not support function-based indexing as described
+  
+  
+ below. As an alternative, virtual columns were planned for MySQL
+  
+  
+ 6.0 but were introduced in MariaDB 5.2 only.",NA
+Case-Insensitive Search Using ,NA,NA
+UPPER,NA,NA
+ or ,NA,NA
+LOWER,"Ignoring the case in a 
+ where
+  clause is very simple. You can, for example, 
+ convert both sides of the comparison to all caps notation:
+  
+ SELECT first_name, last_name, phone_number 
+ FROM employees
+  
+  WHERE 
+ UPPER(last_name) = UPPER('winand')
+ ;
+  
+ Regardless of the capitalization used for the search term or the 
+ LAST_NAME 
+ column, the 
+ UPPER
+  function makes them match as desired.
+  
+  
+ Note 
+  
+ Another way for case-insensitive matching is to use a different
+  
+  
+ “collation”. The default collations used by SQL Server and MySQL do
+  
+  
+ not distinguish between upper and lower case letters—they are case-
+  
+  
+ insensitive by default.
+  
+ 24",NA
+Compile Time Evaluation,"The optimizer can evaluate the expression on the right-hand side 
+ during “compile time” because it has all the input parameters. The 
+ Oracle execution plan (“Predicate Information” section) therefore only 
+ shows the upper case notation of the search term. This behavior is 
+ very similar to a compiler that evaluates constant expressions at 
+ compile time.
+  
+ 25",NA
+Oracle Statistics for Function-Based Indexes,"The Oracle database maintains the information about the number of 
+ distinct column values as part of the table statistics. These figures are 
+ reused if a column is part of multiple indexes.
+  
+ Statistics for a function-based index (FBI) are also kept on table level 
+ as 
+ virtual columns
+ . Although the Oracle database collects the 
+ index 
+ statistics
+  for new indexes automatically (since release 10
+ g
+ ), it does not 
+ update the 
+ table statistics
+ . For this reason, the Oracle documentation 
+ recommends updating the table statistics after creating a function-
+ based index:
+  
+ After creating a function-based index, collect statistics on 
+ both the index and its base table using the 
+ DBMS_STATS 
+ package. Such statistics will enable Oracle Database to 
+ correctly decide when to use the index.
+  
+ —Oracle Database SQL Language Reference
+  
+ My personal recommendation goes even further: after every index 
+ change, update the statistics for the base table and all its indexes. That 
+ might, however, also lead to unwanted side effects. Coordinate this 
+ activity with the database administrators (DBAs) and make a backup 
+ of the original statistics.
+  
+ 28",NA
+User-Defined Functions,"Function-based indexing is a very generic approach. Besides functions like 
+ UPPER
+  you can also index expressions like 
+ A + B
+  and even use user-defined 
+ functions in the index definition.
+  
+ There is one important exception. It is, for example, not possible to refer to 
+ the current time in an index definition, neither directly nor indirectly, as in 
+ the following example.
+  
+ CREATE FUNCTION 
+ get_age
+ (date_of_birth DATE) 
+  
+ RETURN NUMBER 
+  
+ AS 
+  
+ BEGIN
+  
+  RETURN 
+  
+  
+ TRUNC(MONTHS_BETWEEN(SYSDATE, date_of_birth)/12)
+ ; 
+ END; 
+  
+ /
+  
+ The function 
+ GET_AGE
+  uses the current date (
+ SYSDATE
+ ) to calculate the age 
+ based on the supplied date of birth. You can use this function in all parts of 
+ an SQL query, for example in 
+ select
+  and the 
+ where
+  clauses:
+  
+ SELECT first_name, last_name, 
+ get_age(date_of_birth)
+  
+ FROM employees
+  
+  WHERE 
+ get_age(date_of_birth) = 42
+ ;
+  
+ The query lists all 42-year-old employees. Using a function-based index is an 
+ obvious idea for optimizing this query, but you cannot use the function 
+ GET_AGE
+  in an index definition because it is not 
+ deterministic
+ . That means the 
+ result of the function call is not fully determined by its parameters. Only 
+ functions that always return the same result for the same parameters—
+ functions that are deterministic—can be indexed.
+  
+ The reason behind this limitation is simple. When inserting a new row, the 
+ database calls the function and stores the result in the index and there it 
+ stays, unchanged. There is no periodic process that updates the index. The 
+ database updates the indexed age only when the date of birth is changed by 
+ an 
+ update
+  statement. After the next birthday, the age that is stored in the 
+ index will be wrong.
+  
+ 29",NA
+Over-Indexing,"If the concept of function-based indexing is new to you, you might be 
+ tempted to just index everything, but this is in fact the very last thing you 
+ should do. The reason is that every index causes ongoing maintenance. 
+ Function-based indexes are particularly troublesome because they make it 
+ very easy to create 
+ redundant indexes
+ .
+  
+ The case-insensitive search from above could be implemented with the 
+ LOWER
+  function as well:
+  
+ SELECT first_name, last_name, phone_number 
+ FROM employees
+  
+  WHERE 
+ LOWER(last_name) = LOWER('winand')
+ ;
+  
+ A single index cannot support both methods of ignoring the case. We could, 
+ of course, create a second index on 
+ LOWER(last_name)
+  for this query, but that 
+ would mean the database has to maintain two indexes for each 
+ insert
+ , 
+ update
+ , and 
+ delete
+  statement (see also Chapter 8, “
+ Modifying Data
+ ”). To 
+ make one index suffice, you should consistently use the same function 
+ throughout your application.
+  
+  
+ Tip 
+  
+ Unify the access path so that one index can be used by several
+  
+  
+  
+ queries.
+  
+  
+ Tip 
+  
+ Always aim to index the original data as that is often the most useful
+  
+  
+ information you can put into an index.
+  
+ 31",NA
+Parameterized Queries,"This section covers a topic that is skipped in most SQL textbooks: 
+ parameterized queries
+  and 
+ bind parameters
+ .
+  
+ Bind parameters—also called dynamic parameters or bind variables—are 
+ an alternative way to pass data to the database. Instead of putting the values 
+ directly into the SQL statement, you just use a placeholder like 
+ ?
+ , 
+ :name
+  or 
+ @name
+  and provide the actual values using a separate API call.
+  
+ There is nothing bad about writing values directly into ad-hoc statements; 
+ there are, however, two good reasons to use bind parameters in programs:
+  
+ Security 
+  
+  
+ Bind variables are the best way to prevent SQL injection
+ 1
+ .
+  
+ Performance 
+  
+ Databases with an execution plan cache like SQL Server and the Oracle 
+ database can reuse an execution plan when executing the same 
+ statement multiple times. It saves effort in rebuilding the execution plan 
+ but works only if the SQL statement is 
+ exactly
+  the same. If you put 
+ different values into the SQL statement, the database handles it like a 
+ different statement and recreates the execution plan.
+  
+ When using bind parameters you do not write the actual values but 
+ instead insert placeholders into the SQL statement. That way the 
+ statements do not change when executing them with different values.
+  
+ 1
+  http://en.wikipedia.org/wiki/SQL_injection
+  
+ 32",NA
+Cursor Sharing and Auto Parameterization,"The more complex the optimizer and the SQL query become, the more 
+ important execution plan caching becomes. The SQL Server and 
+ Oracle databases have features to automatically replace the literal 
+ values in a SQL string with bind parameters. These features are called 
+ CURSOR_SHARING
+  (Oracle) or 
+ forced parameterization
+  (SQL Server).
+  
+ Both features are workarounds for applications that do not use bind 
+ parameters at all. Enabling these features prevents developers from 
+ intentionally using literal values.",NA
+Searching for Ranges,"Inequality operators such as 
+ <
+ , 
+ >
+  and 
+ between
+  can use indexes just like the 
+ equals operator explained above. Even a 
+ LIKE
+  filter can—under certain 
+ circumstances—use an index just like range conditions do.
+  
+ Using these operations limits the choice of the column order in multi-
+ column indexes. This limitation can even rule out all optimal indexing 
+ options—there 
+ are 
+ queries 
+ where 
+ you 
+ simply 
+ cannot 
+ define 
+ a 
+ “correct”column order at all.",NA
+"Greater, Less and ",NA,NA
+BETWEEN,"The biggest performance risk of an 
+ INDEX RANGE SCAN
+  is the leaf node 
+ traversal. It is therefore the golden rule of indexing to keep the scanned 
+ index range as small as possible. You can check that by asking yourself 
+ where an index scan starts and where it ends.
+  
+ 39",NA
+Indexing ,NA,NA
+LIKE,NA,NA
+ Filters,"The SQL 
+ LIKE
+  operator very often causes unexpected performance behavior 
+ because some search terms prevent efficient index usage. That means that 
+ there are search terms that can be indexed very well, but others can not. It is 
+ the position of the wildcard characters that makes all the difference.
+  
+ The following example uses the 
+ %
+  wildcard in the middle of the search term:
+  
+ SELECT first_name, last_name, date_of_birth 
+ FROM employees
+  
+  WHERE 
+ UPPER(last_name) LIKE 'WIN%D'
+  
+ ---------------------------------------------------------------
+ |Id | Operation                   | Name        | Rows | Cost 
+ |--------------------------------------------------------------
+ -| 0 | SELECT STATEMENT            |             |    1 |    4 
+ | | 1 |  TABLE ACCESS BY INDEX ROWID| EMPLOYEES   |    1 |    4 
+ | |*2 |   INDEX RANGE SCAN          | EMP_UP_NAME |    1 |    2 
+ |--------------------------------------------------------------
+ -
+  
+ LIKE
+  filters can only use the characters 
+ before the first wildcard
+  during tree 
+ traversal. The remaining characters are just filter predicates that do not 
+ narrow the scanned index range. A single 
+ LIKE
+  expression can therefore 
+ contain two predicate types: (1) the part before the first wildcard as an 
+ access predicate; (2) the other characters as a filter predicate.
+  
+  
+ Caution 
+  
+ For the PostgreSQL database, you might need to specify an operator
+  
+  
+ class (e.g., 
+ varchar_pattern_ops
+ ) to use 
+ LIKE
+  expressions as access
+  
+  
+ predicates. Refer to “Operator Classes and Operator Families” in the
+  
+  
+ PostgreSQL documentation for further details.
+  
+ The more selective the prefix before the first wildcard is, the smaller the 
+ scanned index range becomes. That, in turn, makes the index lookup faster. 
+ Figure 2.4 illustrates this relationship using three different 
+ LIKE 
+ expressions. All three select the same row, but the scanned index range—
+ and thus the performance—is very different.
+  
+ 45",NA
+Labeling Full-Text ,NA,NA
+LIKE,NA,NA
+ Expressions,"When using the 
+ LIKE
+  operator for a full-text search, we could separate 
+ the wildcards from the search term:
+  
+ WHERE text_column LIKE 
+ '%' || ? || '%'
+  
+ The wildcards are directly written into the SQL statement, but we use 
+ a bind parameter for the search term. The final 
+ LIKE
+  expression is 
+ built by the database itself using the string concatenation operator 
+ || 
+ (Oracle, PostgreSQL). Although using a bind parameter, the final 
+ LIKE 
+ expression will always start with a wildcard. Unfortunately databases 
+ do not recognize that.
+  
+ For the PostgreSQL database, the problem is different because PostgreSQL 
+ assumes there 
+ is
+  a leading wildcard when using bind parameters for a 
+ LIKE 
+ expression. PostgreSQL just does not use an index in that case. The only way 
+ to get an index access for a 
+ LIKE
+  expression is to make the actual
+  
+ 47",NA
+Index Merge,"It is one of the most common question about indexing: is it better to create 
+ one index for each column or a single index for all columns of a 
+ where 
+ clause? The answer is very simple in most cases: one index with multiple 
+ columns is better.
+  
+ Nevertheless there are queries where a single index cannot do a perfect job, 
+ no matter how you define the index; e.g., queries with two or more 
+ independent range conditions as in the following example:
+  
+ SELECT first_name, last_name, date_of_birth  
+ FROM employees
+  
+  WHERE 
+ UPPER(last_name) < ? 
+  
+   
+  AND date_of_birth    < ?
+  
+ It is impossible to define a B-tree index that would support this query 
+ without filter predicates. For an explanation, you just need to remember 
+ that an index is a linked list.
+  
+ If you define the index as 
+ UPPER(LAST_NAME)
+ , 
+ DATE_OF_BIRTH
+  (in that order), 
+ the list begins with A and ends with Z. The date of birth is considered only 
+ when there are two employees with the same name. If you define the index 
+ the other way around, it will start with the eldest employees and end with 
+ the youngest. In that case, the names only have a minor impact on the sort 
+ order.
+  
+ No matter how you twist and turn the index definition, the entries are 
+ always arranged along a chain. At one end, you have the small entries and at 
+ the other end the big ones. An index can therefore only support one range 
+ condition as an access predicate. Supporting two independent range 
+ conditions requires a second axis, for example like a chessboard. The query 
+ above would then match all entries from one corner of the chessboard, but 
+ an index is not like a chessboard—it is like a chain. There is no corner.
+  
+ You can of course accept the filter predicate and use a multi-column index 
+ nevertheless. That is the best solution in many cases anyway. The index 
+ definition should then mention the more selective column first so it can be 
+ used with an access predicate. That might be the origin of the “most 
+ selective first” myth but this rule only holds true if you cannot avoid a filter 
+ predicate.
+  
+ 49",NA
+Partial Indexes,"So far we have only discussed which 
+ columns
+  to add to an index. With 
+ partial 
+ (PostgreSQL) or 
+ filtered
+  (SQL Server) indexes you can also specify the 
+ rows 
+ that are indexed.
+  
+  
+ Caution 
+  
+ The Oracle database has a unique approach to partial indexing. The
+  
+  
+ next section explains it while building upon this section.
+  
+ A partial index is useful for commonly used 
+ where
+  conditions that use 
+ constant values—like the status code in the following example:
+  
+ SELECT message
+  
+  FROM messages
+  
+  WHERE 
+ processed = 'N'
+  
+   
+  AND receiver  = ?
+  
+ Queries like this are very common in queuing systems. The query fetches all 
+ unprocessed messages for a specific recipient. Messages that were already 
+ processed are rarely needed. If they are needed, they are usually accessed 
+ by a more specific criteria like the primary key.
+  
+ We can optimize this query with a two-column index. Considering this query 
+ only, the column order does not matter because there is no range condition.
+  
+ CREATE INDEX messages_todo
+  
+  ON messages (receiver, processed)
+  
+ The index fulfills its purpose, but it includes many rows that are never 
+ searched, namely all the messages that were already processed. Due to the 
+ logarithmic scalability the index nevertheless makes the query very fast 
+ even though it wastes a lot of disk space.
+  
+ 51",NA
+NULL,NA,NA
+ in the Oracle Database,"SQL’s 
+ NULL
+  frequently causes confusion. Although the basic idea of 
+ NULL
+ —to 
+ represent missing data—is rather simple, there are some peculiarities. You 
+ have to use 
+ IS NULL
+  instead of 
+ = NULL
+ , for example. Moreover the Oracle 
+ database has additional 
+ NULL
+  oddities, on the one hand because it does not 
+ always handle 
+ NULL
+  as required by the standard and on the other hand 
+ because it has a very “special” handling of 
+ NULL
+  in indexes.
+  
+ The SQL standard does not define 
+ NULL
+  as a value but rather as a placeholder 
+ for a missing or unknown value. Consequently, no value can be 
+ NULL
+ .
+  
+ Instead the Oracle database treats an empty string as 
+ NULL
+ :
+  
+  
+  SELECT     '0 IS NULL???' AS ""what is NULL?"" FROM dual
+  
+  
+  WHERE      0 IS NULL 
+  
+ UNION ALL
+  
+  
+  SELECT    '0 is not null' FROM dual
+  
+   
+  WHERE     0 IS NOT NULL 
+  
+ UNION ALL
+  
+  
+  SELECT ''''' IS NULL???'  FROM dual
+  
+   
+  WHERE    '' IS NULL 
+  
+ UNION ALL
+  
+  
+  SELECT ''''' is not null' FROM dual 
+  
+   
+  WHERE    '' IS NOT NULL;
+  
+ what is NULL?
+  
+ --------------
+  
+ 0 is not null 
+  
+ '' IS NULL???
+  
+ To add to the confusion, there is even a case when the Oracle database treats 
+ NULL
+  as empty string:
+  
+ SELECT dummy
+  
+  
+  , dummy || ''
+  
+  
+  , dummy || NULL
+  
+  FROM dual;
+  
+ D 
+ D 
+ D
+  
+ - 
+ - 
+ -
+  
+ X 
+ X 
+ X
+  
+ Concatenating the 
+ DUMMY
+  column (always containing 
+ 'X'
+ ) with 
+ NULL
+  should 
+ return 
+ NULL
+ .",NA
+Indexing ,NA,NA
+NULL,"The Oracle database does not include rows in an index if all indexed 
+ columns are 
+ NULL
+ . That means that every index is a partial index—like 
+ having a 
+ where
+  clause:
+  
+ CREATE INDEX idx
+  
+  
+  
+  ON tbl (A, B, C, ...)
+  
+  WHERE A IS NOT NULL
+  
+  
+  
+  OR B IS NOT NULL
+  
+  
+  
+  OR C IS NOT NULL
+  
+  
+  
+  
+  ...;    
+  
+ Consider the 
+ EMP_DOB
+  index. It has only one column: the 
+ DATE_OF_BIRTH
+ . A 
+ row that does not have a 
+ DATE_OF_BIRTH
+  value is not added to this index.
+  
+ INSERT INTO employees ( subsidiary_id, employee_id
+  
+  
+  , first_name   , last_name
+  
+  
+  , phone_number)
+  
+  
+  VALUES ( ?, ?, ?, ?, ? );   
+  
+ The 
+ insert
+  statement does not set the 
+ DATE_OF_BIRTH
+  so it defaults to 
+ NULL
+ —
+ hence, the record is not added to the 
+ EMP_DOB
+  index. As a consequence, the 
+ index cannot support a query for records where 
+ DATE_OF_BIRTHIS NULL
+ :
+  
+ SELECT first_name, last_name
+  
+  FROM employees
+  
+  WHERE 
+ date_of_birth IS NULL
+ ;
+  
+ 54",NA
+NOT NULL,NA,NA
+ Constraints,"To index an 
+ IS NULL
+  condition in the Oracle database, the index must have a 
+ column that can never be 
+ NULL
+ .
+  
+ That said, it is not enough that there are no 
+ NULL
+  entries. The database has to 
+ be sure there can never be a 
+ NULL
+  entry, otherwise the database must 
+ assume that the table has rows that are not in the index.
+  
+ The following index supports the query only if the column 
+ LAST_NAME
+  has a 
+ NOT NULL
+  constraint:
+  
+ DROP INDEX emp_dob; 
+  
+ CREATE INDEX emp_dob_name
+  
+  
+  ON employees (date_of_birth, last_name);
+  
+ SELECT *
+  
+  FROM employees
+  
+  WHERE date_of_birth IS NULL;
+  
+ 56",NA
+Emulating Partial Indexes,"The strange way the Oracle database handles 
+ NULL
+  in indexes can be used
+  
+ to emulate partial indexes. For that, we just have to use 
+ NULL
+  for rows that 
+ should not be indexed.
+  
+ To demonstrate, we emulate the following partial index:
+  
+ CREATE INDEX messages_todo
+  
+  
+  
+  ON messages (receiver)
+  
+  WHERE processed = 'N'
+  
+ First, we need a function that returns the 
+ RECEIVER
+  value only if the
+  
+ PROCESSED
+  value is 
+ 'N'
+ .
+  
+ CREATE OR REPLACE 
+  
+ FUNCTION pi_processed(processed CHAR, receiver NUMBER) 
+ RETURN NUMBER 
+  
+ DETERMINISTIC 
+  
+ AS BEGIN
+  
+  
+  IF processed IN ('N') THEN 
+  
+  
+ RETURN receiver;
+  
+  
+  ELSE 
+  
+  
+ RETURN NULL;
+  
+  
+  END IF; 
+  
+ END; 
+  
+ /
+  
+ The function must be deterministic so it can be used in an index definition.
+  
+ Now we can create an index that contains only the rows having
+  
+ PROCESSED='N'
+ .
+  
+ CREATE INDEX messages_todo
+  
+  
+  ON messages (
+ pi_processed(processed, 
+ receiver)
+ );
+  
+ 60",NA
+"Partial Indexes, Part II ","As of release 11
+ g
+ , there is a second—equally scary—approach to 
+ emulating partial indexes in the Oracle database by using an 
+ intentionally broken index partition and the 
+ SKIP_UNUSABLE_INDEX 
+ parameter.
+  
+ 61",NA
+Obfuscated Conditions,"The following sections demonstrate some popular methods for obfuscating 
+ conditions. Obfuscated conditions are 
+ where
+  clauses that are phrased in a 
+ way that prevents proper index usage. This section is a collection of anti-
+ patterns every developer should know about and avoid.",NA
+Date Types,"Most obfuscations involve 
+ DATE
+  types. The Oracle database is particularly 
+ vulnerable in this respect because it has only one 
+ DATE
+  type that always 
+ includes a time component as well.
+  
+ It has become common practice to use the 
+ TRUNC
+  function to remove the time 
+ component. In truth, it does not remove the time but instead sets it to 
+ midnight because the Oracle database has no pure 
+ DATE
+  type. To disregard 
+ the time component for a search you can use the 
+ TRUNC
+  function on both 
+ sides of the comparison—e.g., to search for yesterday’s sales:
+  
+ SELECT ...
+  
+  FROM sales
+  
+  WHERE 
+ TRUNC(sale_date)
+  = TRUNC(sysdate - INTERVAL '1' DAY)
+  
+ It is a perfectly valid and correct statement but it cannot properly make use 
+ of an index on 
+ SALE_DATE
+ . It is as explained in “Case-Insensitive Search Using 
+ UPPER
+  or 
+ LOWER
+ ” on page 24; 
+ TRUNC(sale_date)
+  is something entirely different 
+ from 
+ SALE_DATE
+ —functions are black boxes to the database.
+  
+ There is a rather simple solution for this problem: a function-based index.
+  
+ CREATE INDEX index_name
+  
+  
+  ON table_name (
+ TRUNC(sale_date)
+ )
+  
+ But then you must always use 
+ TRUNC(date_column)
+  in the 
+ where
+  clause. If you 
+ use it inconsistently—sometimes with, sometimes without 
+ TRUNC
+ —then you 
+ need two indexes!
+  
+ 62",NA
+LIKE,NA,NA
+ on Date Types,"The following obfuscation is particularly tricky:
+  
+ sale_date LIKE SYSDATE
+  
+ It does not look like an obfuscation at first glance because it does not 
+ use any functions.
+  
+ The 
+ LIKE
+  operator, however, enforces a string comparison. Depending 
+ on the database, that might yield an error or cause an implicit type 
+ conversion on both sides. The “Predicate Information”section of the 
+ execution plan shows what the Oracle database does:
+  
+ filter( INTERNAL_FUNCTION(SALE_DATE)
+  
+  LIKE TO_CHAR(SYSDATE@!))
+  
+ The function 
+ INTERNAL_FUNCTION
+  converts the type of the 
+ SALE_DATE 
+ column. As a side effect it also prevents using a straight index on 
+ DATE_COLUMN
+ just as any other function would
+ .
+  
+ 67",NA
+Numeric Strings,"Numeric strings are numbers that are stored in text columns. Although it is a 
+ very bad practice, it does not automatically render an index useless if you 
+ consistently treat it as string:
+  
+ SELECT ...
+  
+  FROM ...
+  
+  WHERE 
+ numeric_string = '42'
+  
+ Of course this statement can use an index on 
+ NUMERIC_STRING
+ . If you 
+ compare it using a number, however, the database can no longer use this 
+ condition as an access predicate.
+  
+ SELECT ...
+  
+  FROM ...
+  
+  WHERE 
+ numeric_string = 42
+  
+ Note the missing quotes. Although some database yield an error (e.g. 
+ PostgreSQL) many databases just add an implicit type conversion.
+  
+ SELECT ...
+  
+  FROM ...
+  
+  WHERE 
+ TO_NUMBER(numeric_string) = 42
+  
+ It is the same problem as before. An index on 
+ NUMERIC_STRING
+  cannot be 
+ used due to the function call. The solution is also the same as before: do not 
+ convert the table column, instead convert the search term.
+  
+ SELECT ...
+  
+  FROM ...
+  
+  WHERE 
+ numeric_string = TO_CHAR(42)
+  
+ You might wonder why the database does not do it this way automatically? 
+ It is because converting a string to a number always gives an unambiguous 
+ result. This is not true the other way around. A number, formatted as text, 
+ can contain spaces, punctation, and leading zeros. A single value can be 
+ written in many ways:
+  
+ 42 
+  
+ 042 
+  
+ 0042 
+  
+ 00042 
+  
+ ...
+  
+ 68",NA
+Combining Columns,"This section is about a popular obfuscation that affects concatenated 
+ indexes.
+  
+ The first example is again about date and time types but the other way 
+ around. The following MySQL query combines a data and a time column to 
+ apply a range filter on both of them.
+  
+ SELECT ...
+  
+  FROM ...
+  
+  WHERE 
+ ADDTIME(date_column, time_column)
+  
+  > DATE_ADD(now(), INTERVAL -1 DAY)
+  
+ It selects all records from the last 24 hours. The query cannot use a 
+ concatenated index on (
+ DATE_COLUMN
+ , 
+ TIME_COLUMN
+ ) properly because the 
+ search is not done on the indexed columns but on derived data.
+  
+ You can avoid this problem by using a data type that has both a date and 
+ time component (e.g., MySQL 
+ DATETIME
+ ). You can then use this column 
+ without a function call:
+  
+ SELECT ...
+  
+  FROM ...
+  
+  WHERE 
+ datetime_column
+  
+  
+  > DATE_ADD(now(), INTERVAL -1 DAY)
+  
+ Unfortunately it is often not possible to change the table when facing this 
+ problem.
+  
+ The next option is a function-based index if the database supports it—
+ although this has all the drawbacks discussed before. When using MySQL, 
+ function-based indexes are not an option anyway.
+  
+ It is still possible to write the query so that the database can use a 
+ concatenated index on 
+ DATE_COLUMN
+ , 
+ TIME_COLUMN
+  with an access predicate—
+ at least partially. For that, we add an extra condition on the 
+ DATE_COLUMN
+ .
+  
+  WHERE ADDTIME(date_column, time_column)
+  
+  
+  
+  > DATE_ADD(now(), INTERVAL -1 DAY) 
+  
+ AND date_column
+  
+  >= DATE(DATE_ADD(now(), INTERVAL -1 DAY))
+  
+ 70",NA
+Smart Logic,"One of the key features of SQL databases is their support for ad-hoc queries: 
+ new queries can be executed at any time. This is only possible because the 
+ query optimizer (query planner) works at runtime; it analyzes each 
+ statement when received and generates a reasonable execution plan 
+ immediately. The overhead introduced by runtime optimization can be 
+ minimized with bind parameters.
+  
+ The gist of that recap is that databases are optimized for dynamic SQL—so 
+ use it if you need it.
+  
+ Nevertheless there is a widely used practice that avoids dynamic SQL in 
+ favor of static SQL—often because of the “dynamic SQL is slow” myth. This 
+ practice does more harm than good if the database uses a shared execution 
+ plan cache like DB2, the Oracle database, or SQL Server.
+  
+ For the sake of demonstration, imagine an application that queries the 
+ EMPLOYEES
+  table. The application allows searching for subsidiary id, 
+ employee id and last name (case-insensitive) in any combination. It is still 
+ possible to write a single query that covers all cases by using “smart” logic.
+  
+ 72",NA
+Math,"There is one more class of obfuscations that is smart and prevents proper 
+ index usage. Instead of using logic expressions it is using a calculation.
+  
+ Consider the following statement. Can it use an index on 
+ NUMERIC_NUMBER
+ ?
+  
+ SELECT numeric_number
+  
+  FROM table_name
+  
+  WHERE 
+ numeric_number - 1000 > ?
+  
+ Similarly, can the following statement use an index on 
+ A
+  and 
+ B
+ —you choose 
+ the order?
+  
+ SELECT a, b
+  
+  FROM table_name
+  
+  WHERE 
+ 3*a + 5 = b
+  
+ Let’s put these questions into a different perspective; if you were developing 
+ an SQL database, would you add an equation solver? Most database vendors 
+ just say “No!” and thus, neither of the two examples uses the index.
+  
+ You can even use math to obfuscate a condition intentionally—as we did it 
+ previously for the full text 
+ LIKE
+  search. It is enough to add zero, for example:
+  
+ SELECT numeric_number
+  
+  FROM table_name
+  
+  WHERE 
+ numeric_number + 0 = ?
+  
+ Nevertheless we can index these expressions with a function-based index if 
+ we use calculations in a smart way and transform the 
+ where
+  clause like an 
+ equation:
+  
+ SELECT a, b
+  
+  FROM table_name
+  
+  WHERE 
+ 3*a - b = -5
+  
+ We just moved the table references to the one side and the constants to the 
+ other. We can then create a function-based index for the left hand side of the 
+ equation:
+  
+ CREATE INDEX math ON table_name (3*a - b)
+  
+ 77",NA
+Chapter 3,NA,NA
+Performance and Scalability,"This chapter is about performance and scalability of databases.
+  
+ In this context, I am using the following definition for scalability:
+  
+ Scalability is the ability of a system, network, or process, to 
+ handle a growing amount of work in a capable manner or 
+  
+ its ability to be enlarged to accommodate that growth.
+  
+ —Wikipedia
+ 1
+  
+ You see that there are actually two definitions. The first one is about the 
+ effects of a growing load on a system and the second is about growing a 
+ system to handle more load.
+  
+ The second definition enjoys much more popularity than the first one. 
+ Whenever somebody talks about scalability, it is almost always about using 
+ more hardware. 
+ Scale-up
+  and 
+ scale-out
+  are the respective keywords which 
+ were recently complemented by new buzzwords like 
+ web-scale
+ .
+  
+ Broadly speaking, scalability is about the performance impact of 
+ environmental changes. Hardware is just one environmental parameter that 
+ can change. This chapter covers other parameters like data volume and 
+ system load as well.
+  
+ 1
+  http://en.wikipedia.org/wiki/Scalability
+  
+ 79",NA
+Performance Impacts of Data Volume,"The amount of data stored in a database has a great impact on its 
+ performance. It is usually accepted that a query becomes slower with 
+ additional data in the database. But how great is the performance impact if 
+ the data volume doubles? And how can we improve this ratio? These are the 
+ key questions when discussing database scalability.
+  
+ As an example we analyze the response time of the following query when 
+ using two different indexes. The index definitions will remain unknown for 
+ the time being—they will be revealed during the course of the discussion.
+  
+ SELECT count(*)
+  
+  FROM scale_data
+  
+  WHERE section = ?
+  
+   
+  AND id2 = ?
+  
+ The column 
+ SECTION
+  has a special purpose in this query: it controls the data 
+ volume. The bigger the 
+ SECTION
+  number becomes, the more rows the query 
+ selects. Figure 3.1 shows the response time for a small 
+ SECTION
+ .
+  
+ Figure 3.1. Performance Comparison
+  
+ 0.10 
+  
+ Respon
+ se time 
+ [sec] 
+  
+  
+  
+ 0.08 
+  
+ 0.06 
+  
+ 0.04 
+  
+  
+   
+ 0.02 
+  
+ 0.00
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ 0.10 
+  
+ Respon
+ se time 
+ [sec] 
+  
+ 0.08 
+  
+ 0.06 
+  
+ 0.04 
+  
+ 0.02 
+  
+ 0.00
+  
+ fast 
+  
+ 0.029s
+  
+ slow 
+  
+ 0.055s
+  
+ There is a considerable performance difference between the two indexing 
+ variants. Both response times are still well below a tenth of a second so even 
+ the slower query is probably fast enough in most cases. However the 
+ performance chart shows only one test point. Discussing scalability means 
+ to look at the performance impact when changing environmental 
+ parameters—such as the data volume.
+  
+ 80",NA
+Performance Impacts of System Load,"Consideration as to how to define a multi column index often stops as soon 
+ as the index is used for the query being tuned. However, the optimizer is not 
+ using an index because it is the “right” one for the query, rather because it is 
+ more efficient than a full table scan. That does not mean it is the optimal 
+ index for the query.
+  
+ The previous example has shown the difficulties in recognizing incorrect 
+ column order in an execution plan. Very often the predicate information is 
+ well hidden so you have to search for it specifically to verify optimal index 
+ usage.
+  
+ SQL Server Management Studio, for example, only shows the predicate 
+ information as a tool tip when moving the mouse cursor over the index 
+ operation (“hover”). The following execution plan uses the 
+ SCALE_SLOW 
+ index; it thus shows the condition on 
+ ID2
+  as filter predicate (just“Predicate”, 
+ without Seek).
+  
+ Figure 3.3. Predicate Information as a Tool Tip
+  
+  
+ Obtaining the predicate information from a MySQL or PostgreSQL execution 
+ plan is even more awkward. Appendix A on page 165 has the details.
+  
+ 85",NA
+Response Time and Throughput,"Bigger hardware is not always faster—but it can usually handle more load. 
+ Bigger hardware is more like a wider highway than a faster car: you cannot 
+ drive faster—well, you are not allowed to—just because there are more 
+ lanes. That is the reason that more hardware does not automatically 
+ improve slow SQL queries.
+  
+ We are not in the 1990s anymore. The computing power of single core CPUs 
+ was increasing rapidly at that time. Most response time issues disappeared 
+ on newer hardware—just because of the improved CPU. It was like new car 
+ models consistently going twice as fast as old models—every year! 
+ However, single core CPU power hit the wall during the first few years of the 
+ 21st century. There was almost no improvement on this axis anymore. To 
+ continue building ever more powerful CPUs, the vendors had to move to a 
+ multi-core strategy. Even though it allows multiple tasks to run 
+ concurrently, it does not improve performance if there is only one task. 
+ Performance has more than just one dimension.
+  
+ Scaling horizontally (adding more servers) has similar limitations. Although 
+ more servers can process more requests, they do not the improve response 
+ time for one particular query. To make searching faster, you need an 
+ efficient search tree—even in non-relational systems like CouchDB and 
+ MongoDB.
+  
+  
+ Important 
+  
+ Proper indexing is the best way to reduce query response time—in
+  
+  
+ relational SQL databases as well as in non-relational systems.
+  
+ 87",NA
+Eventual Consistency and the CAP Theorem,"Maintaining strict consistency in a distributed system requires a 
+ synchronous coordination of all write operations between the nodes. 
+ This principle has two unpleasant side effects: (1) it adds latencies 
+ and increases response times; (2) it reduces the overall availability 
+ because multiple members must be available at the same time to 
+ complete a write operation.
+  
+ A 
+ distributed
+  SQL database is often confused with computer clusters 
+ that use a shared storage system or master-slave replication. In fact a 
+ distributed
+  database is more like a web shop that is integrated with an 
+ ERP system—often two different products from different vendors. 
+ The consistency between both systems is still a desirable goal that is 
+ often achieved using the two-phase commit (2PC) protocol. This 
+ protocol established global transactions that deliver the well-
+ known“all-or-nothing” 
+ behavior 
+ across 
+ multiple 
+ databases. 
+ Completing a global transaction is only possible if all contributing 
+ members are available. It thus reduces the overall availability.
+  
+ The more nodes a distributed system has, the more troublesome strict 
+ consistency becomes. Maintaining strict consistency is almost 
+ impossible if the system has more than a few nodes. Dropping strict 
+ consistency, on the other hand, solves the availability problem and 
+ eliminates the increased response time. The basic idea is to 
+ reestablish the global consistency after completing the write 
+ operation on a subset of the nodes. This approach leaves just one 
+ problem unsolved: it is impossible to prevent conflicts if two nodes 
+ accept contradictory changes. Consistency is eventually reached by 
+ handling
+  conflicts, not by 
+ preventing
+  them. In that context, consistency 
+ means that all nodes have the same data—it is not necessarily the 
+ correct or best data.
+  
+ Brewer’s CAP Theorem describes the general dependencies between 
+ C
+ onsistency, 
+ A
+ vailability, and 
+ P
+ artition tolerance.
+  
+ 89",NA
+Solid State Disks (SSD) and Caching,"Solid State Disks (SSD) are a mass storage technology that uses no 
+ moving parts. The typical seek time of SSDs is by an order of 
+ magnitude faster than the seek time of HDDs. SSDs became available 
+ for enterprise storage around 2010 but, due to their high cost and 
+ limited lifetime, are not commonly used for databases.
+  
+ Databases do, however, cache frequently accessed data in the main 
+ memory. This is particularly useful for data that is needed for every 
+ index access—for example the index root nodes. The database might 
+ fully cache frequently used indexes so that an index lookup does not 
+ trigger a single disk seek.
+  
+ 90",NA
+Chapter 4,NA,NA
+The Join Operation,"An SQL query walks into a bar and sees two tables. 
+  
+ He walks up to them and asks ’Can I join you?’
+  
+  
+ —Source: Unknown
+  
+ The join operation transforms data from a normalized model into a 
+ denormalized form that suits a specific processing purpose. Joining is 
+ particularly sensitive to disk seek latencies because it combines scattered 
+ data fragments. Proper indexing is again the best solution to reduce 
+ response times. The correct index however depends on which of the three 
+ common join algorithms is used for the query.
+  
+ There is, however, one thing that is common to all join algorithms: they 
+ process only two tables at a time. A SQL query with more tables requires 
+ multiple steps: first building an intermediate result set by joining two tables, 
+ then joining the result with the next table and so forth.
+  
+ Even though the join order has no impact on the final result, it still affects 
+ performance. The optimizer will therefore evaluate all possible join order 
+ permutations and select the best one. That means that just optimizing a 
+ complex statement might become a performance problem. The more tables 
+ to join, the more execution plan variants to evaluate—mathematically 
+ speaking: n! (factorial growth), though this is not a problem when using 
+ bind parameters.
+  
+  
+ Important 
+  
+ The more complex the statement the more important using bind
+  
+  
+ parameters becomes.
+  
+  
+ Not using bind parameters is like recompiling a program every time.
+  
+ 91",NA
+Pipelining Intermediate Results,"Although intermediate results explain the algorithm very well, it does 
+ not mean that the database has to materialize it. That would mean 
+ storing the intermediate result of the first join before starting the next 
+ one. Instead, databases use pipelining to reduce memory usage. That 
+ means that each row from the intermediate result is immediately 
+ pipelined
+  to the next join operation—avoiding the need to store the 
+ intermediate result set.",NA
+Nested Loops,"The nested loops join is the most fundamental join algorithm. It works like 
+ using two nested queries: the outer or driving query to fetch the results 
+ from one table and a second query 
+ for each row
+  from the driving query to 
+ fetch the corresponding data from the other table.
+  
+ You can actually use “nested selects” to implement the nested loops 
+ algorithm on your own. Nevertheless that is a troublesome approach 
+ because network latencies occur on top of disk latencies—making the 
+ overall response time even worse. “Nested selects” are still very common 
+ because it is easy to implement them without being aware of it. Object-
+ relational mapping (ORM) tools are particularly “helpful” in this respect…to 
+ the extent that the so-called 
+ N+1 selects problem
+  has gained a sad notoriety 
+ in the field.
+  
+ The following examples show these “accidental nested select” joins 
+ produced with different ORM tools. The examples search for employees 
+ whose last name starts with 
+ 'WIN'
+  and fetches all 
+ SALES
+  for these employees.
+  
+ The ORMs don’t generate SQL joins—instead they query the 
+ SALES
+  table 
+ with nested selects. This effect is known as the “N+1 selects problem” or 
+ shorter the “N+1 problem” because it executes N+1 selects in total if the 
+ driving query returns N rows.
+  
+ 92",NA
+Hash Join,"The hash join algorithm aims for the weak spot of the nested loops join: the 
+ many B-tree traversals when executing the inner query. Instead it loads the 
+ candidate records from one side of the join into a hash table that can be 
+ probed very quickly for each row from the other side of the join. Tuning a 
+ hash join requires an entirely different indexing approach than the nested 
+ loops join. Beyond that, it is also possible to improve hash join performance 
+ by selecting fewer 
+ columns
+ —a challenge for most ORM tools.
+  
+ The indexing strategy for a hash join is very different because there is no 
+ need to index the join columns. Only indexes for 
+ independent
+ where 
+ predicates improve hash join performance.
+  
+  
+ Tip 
+  
+ Index the 
+ independent
+ where
+  predicates to improve hash join
+  
+  
+ performance.
+  
+ Consider the following example. It selects all sales for the past six months 
+ with the corresponding employee details:
+  
+ SELECT *
+  
+  FROM sales s
+  
+  JOIN employees e ON (s.subsidiary_id = e.subsidiary_id
+  
+  
+ AND  s.employee_id   = e.employee_id  ) WHERE 
+ s.sale_date 
+ > trunc(sysdate) - INTERVAL '6' MONTH
+  
+ The 
+ SALE_DATE
+  filter is the only independent 
+ where
+  clause—that means it 
+ refers to one table only and does not belong to the join predicates.
+  
+ 101",NA
+Sort Merge,"The sort-merge join combines two sorted lists like a zipper. Both sides of the 
+ join must be sorted by the join predicates.
+  
+ A sort-merge join needs the same indexes as the hash join, that is an index 
+ for the independent conditions to read all candidate records in one shot. 
+ Indexing the join predicates is useless. Everything is just like a hash join so 
+ far. Nevertheless there is one aspect that is unique to the sort-merge join: 
+ absolute symmetry. The join order does not make any difference—not even 
+ for performance. This property is very useful for outer joins. For other 
+ algorithms the direction of the outer joins (left or right) implies the join 
+ order—but not for the sort-merge join. The sort-merge join can even do a 
+ left and right outer join at the same time—a so-called full outer join.
+  
+ Although the sort-merge join performs very well once the inputs are sorted, 
+ it is hardly used because sorting both sides is very expensive. The hash join, 
+ on the other hand, needs to preprocess only one side.
+  
+ The strength of the sort-merge join emerges if the inputs are already sorted. 
+ This is possible by exploiting the index order to avoid the sort operations 
+ entirely. Chapter 6, “
+ Sorting and Grouping
+ ”, explains this concept in detail. 
+ The hash join algorithm is superior in many cases nevertheless.
+  
+ 109",NA
+Chapter 5,NA,NA
+Clustering Data,NA,NA
+The Second Power of Indexing,"The term 
+ cluster
+  is used in various fields. A star cluster, for example, is a 
+ group of stars. A computer cluster, on the other hand, is a group of 
+ computers that work closely together—either to solve a complex problem 
+ (high-performance computing cluster) or to increase availability (failover 
+ cluster). Generally speaking, clusters are related things that appear 
+ together.
+  
+ In the field of computing there is one more type of cluster—one that is often 
+ misunderstood: the data cluster. Clustering data means to store 
+ consecutively accessed data closely together so that accessing it requires 
+ fewer IO operations. Data clusters are very important in terms of database 
+ tuning. Computer clusters, on the other hand, are also very common in a 
+ database context—thus making the term 
+ cluster
+  very ambiguous. The 
+ sentence “Let’s use a cluster to improve database performance” is just one 
+ example; it might refer to a computer cluster but could also mean a data 
+ cluster. In this chapter, cluster generally refers to 
+ data clusters
+ .
+  
+ The simplest data cluster in an SQL database is the row. Databases store all 
+ columns of a row in the same database block if possible. Exceptions apply if 
+ a row doesn’t fit into a single block—e.g., when LOB types are involved.",NA
+Column Stores,"Column oriented databases, or column-stores, organize tables in a 
+ columned way. This model is beneficial when accessing many rows 
+ but only a few columns—a pattern that is very common in data 
+ warehouses (OLAP).
+  
+ 111",NA
+Index Filter Predicates Used Intentionally,"Very often index filter predicates indicate improper index usage caused by 
+ an incorrect column order in a concatenated index. Nevertheless index filter 
+ predicates can be used for a good reason as well—not to improve range 
+ scan performance but to group consecutively accessed data together.
+  
+ Where
+  clause predicates that cannot serve as access predicate are good 
+ candidates for this technique:
+  
+ SELECT first_name, last_name, subsidiary_id, phone_number 
+ FROM employees
+  
+  WHERE subsidiary_id = ?
+  
+  AND 
+ UPPER(last_name) LIKE '%INA%';
+  
+ Remember that 
+ LIKE
+  expressions with leading wildcards cannot use the 
+ index tree. That means that indexing 
+ LAST_NAME
+  doesn’t narrow the scanned 
+ index range—no matter if you index 
+ LAST_NAME
+  or 
+ UPPER(last_name)
+ . This 
+ condition is therefore no good candidate for indexing.
+  
+ However the condition on 
+ SUBSIDIARY_ID
+  is well suited for indexing. We 
+ don’t even need to add a new index because the 
+ SUBSIDIARY_ID
+  is already 
+ the leading column in the index for the primary key.
+  
+ 112",NA
+The Index Clustering Factor,"The index clustering factor is an indirect measure of the probability 
+ that two succeeding index entries refer to the same table block. The 
+ optimizer takes this probability into account when calculating the cost 
+ value of the 
+ TABLE ACCESS BY INDEX ROWID
+  operation.
+  
+ This is exactly where the 
+ second power of indexing
+ —clustering data—comes 
+ in. You can add many columns to an index so that they are automatically 
+ stored in a well defined order. That makes an index a powerful yet simple 
+ tool for clustering data.
+  
+ To apply this concept to the above query, we must extend the index to cover 
+ all columns from the 
+ where
+  clause—even if they do not narrow the scanned 
+ index range:
+  
+ CREATE INDEX empsubupnam ON employees 
+ (subsidiary_id, 
+ UPPER(last_name)
+ );
+  
+ The column 
+ SUBSIDIARY_ID
+  is the first index column so it can be used as an 
+ access predicate. The expression 
+ UPPER(last_name)
+  covers the 
+ LIKE
+  filter as 
+ index filter predicate
+ . Indexing the uppercase representation saves a few 
+ CPU cycles during execution, but a straight index on 
+ LAST_NAME
+  would work 
+ as well. You’ll find more about this in the next section.
+  
+ --------------------------------------------------------------
+ |Id | Operation                   | Name       | Rows | Cost 
+ |-------------------------------------------------------------
+ -| 0 | SELECT STATEMENT            |            |   17 |   20 
+ | | 1 |  TABLE ACCESS BY INDEX ROWID| EMPLOYEES  |   17 |   20 
+ | |*2 |   INDEX RANGE SCAN          | EMPSUBUPNAM|   17 |    3 
+ |-------------------------------------------------------------
+ -
+  
+ Predicate Information (identified by operation id):-
+ --------------------------------------------------
+  
+  2 - access(""SUBSIDIARY_ID""=TO_NUMBER(:A))
+  
+  
+  filter(UPPER(""LAST_NAME"") LIKE '%INA%')
+  
+ The new execution plan shows the very same operations as before. The cost 
+ value dropped considerably nonetheless. In the predicate information we 
+ can see that the 
+ LIKE
+  filter is already applied during the 
+ INDEX RANGE SCAN
+ . 
+ Rows that do not fulfill the 
+ LIKE
+  filter are immediately discarded. The table 
+ access does not have any filter predicates anymore. That means it does not 
+ load rows that do not fulfill the 
+ where
+  clause.
+  
+ 114",NA
+Index-Only Scan,"The index-only scan is one of the most powerful tuning methods of all. It not 
+ only avoids accessing the table to evaluate the 
+ where
+  clause, but avoids 
+ accessing the table completely if the database can find the selected columns 
+ in the index itself.
+  
+ To cover an entire query, an index must contain 
+ all
+  columns from the SQL 
+ statement—in particular also the columns from the 
+ select
+  clause as shown 
+ in the following example:
+  
+ CREATE INDEX sales_sub_eur
+  
+  ON sales
+  
+  
+  
+  ( subsidiary_id, 
+ eur_value
+  );
+  
+ SELECT SUM(
+ eur_value
+ )
+  
+  FROM sales
+  
+  WHERE subsidiary_id = ?;
+  
+ Of course indexing the 
+ where
+  clause takes precedence over the other clauses. 
+ The column 
+ SUBSIDIARY_ID
+  is therefore in the first position so it qualifies as 
+ an access predicate.
+  
+ The execution plan shows the index scan without a subsequent table access 
+ (
+ TABLE ACCESS BY INDEX ROWID
+ ).
+  
+ ----------------------------------------------------------
+ | Id  | Operation         | Name          |  Rows | Cost 
+ |---------------------------------------------------------
+ -|   0 | SELECT STATEMENT  |               |     1 |  104 
+ | |   1 |  SORT AGGREGATE   |               |     1 |      
+ | |*  2 |   INDEX RANGE SCAN| SALES_SUB_EUR | 40388 |  104 
+ |---------------------------------------------------------
+ -
+  
+ Predicate Information (identified by operation 
+ id):-----------------------------------------------
+ ---- 2 - access(""SUBSIDIARY_ID""=TO_NUMBER(:A))
+  
+ The index covers the entire query so it is also called a 
+ covering index
+ .
+  
+ 116",NA
+Index-Organized Tables,"The index-only scan executes an SQL statement using only the redundant 
+ data stored in the index. The original data in the heap table is not needed. If 
+ we take that concept to the next level and put all columns into the index, you 
+ may wonder why we need the heap table.
+  
+ Some databases can indeed use an index as primary table store. The Oracle 
+ database calls this concept 
+ index-organized tables (IOT)
+ , other databases use 
+ the term 
+ clustered index
+ . In this section, both terms are used to either put 
+ the emphasis on the table or the index characteristics as needed.
+  
+ An index-organized table is thus a B-tree index without a heap table. This 
+ results in two benefits: (1) it saves the space for the heap structure; (2) 
+ every access on a clustered index is automatically an index-only scan. Both 
+ benefits sound promising but are hardly achievable in practice.
+  
+ 122",NA
+Why Secondary Indexes have no ,NA,NA
+ROWID,"A direct pointer to the table row would be desirable for a secondary 
+ index as well. But that is only possible, if the table row stays at fixed 
+ storage positions. That is, unfortunately, not possible if the row is part 
+ of an index structure, which is kept in order. Keeping the index order 
+ needs to move rows occasionally. This is also true for operations that 
+ do not affect the row itself. An 
+ insert
+  statement, for example, might 
+ split a leaf node to gain space for the new entry. That means that some 
+ entries are moved to a new data block at a different place.
+  
+ A heap table, on the other hand, doesn’t keep the rows in any order. 
+ The database saves new entries wherever it finds enough space. Once 
+ written, data doesn’t move in heap tables.
+  
+ 126",NA
+Chapter 6,NA,NA
+Sorting and Grouping,"Sorting is a very resource intensive operation. It needs a fair amount of CPU 
+ time, but the main problem is that the database must temporarily buffer the 
+ results. After all, a sort operation must read the complete input before it can 
+ produce the first output. Sort operations cannot be executed in a pipelined 
+ manner—this can become a problem for large data sets.
+  
+ An index provides an ordered representation of the indexed data: this 
+ principle was already described in  Chapter 1. We could also say that an 
+ index stores the data in a presorted fashion. The index is, in fact, sorted just 
+ like when using the index definition in an 
+ order by
+  clause. It is therefore no 
+ surprise that we can use indexes to avoid the sort operation to satisfy an 
+ order by
+  clause.
+  
+ Ironically, an 
+ INDEX RANGE SCAN
+  also becomes inefficient for large data 
+ sets—especially when followed by a table access. This can nullify the 
+ savings from avoiding the sort operation. A 
+ FULL TABLE SCAN
+  with an explicit 
+ sort operation might be even faster in this case. Again, it is the optimizer’s 
+ job to evaluate the different execution plans and select the best one.
+  
+ An indexed 
+ order by
+  execution not only saves the sorting effort, however; it 
+ is also able to return the first results without processing all input data. The 
+ order by
+  is thus executed in a 
+ pipelined
+  manner. Chapter 7,“Partial Results”, 
+ explains how to exploit the pipelined execution to implement efficient 
+ pagination queries. This makes the pipelined 
+ order by 
+ so important that I 
+ refer to it as the 
+ third power of indexing
+ .
+  
+ This chapter explains how to use an index for a pipelined 
+ order by 
+ execution. To this end we have to pay special attention to the interactions 
+ with the 
+ where
+  clause and also to 
+ ASC
+  and 
+ DESC
+  modifiers. The chapter 
+ concludes by applying these techniques to 
+ group by
+  clauses as well.
+  
+ 129",NA
+Indexing Order By,"SQL queries with an 
+ order by
+  clause do not need to sort the result explicitly 
+ if the relevant index already delivers the rows in the required order. That 
+ means the same index that is used for the 
+ where
+  clause must also cover the 
+ order by
+  clause.
+  
+ As an example, consider the following query that selects yesterday’s sales 
+ ordered by sale data and product ID:
+  
+ SELECT sale_date, product_id, quantity
+  
+  FROM sales
+  
+  WHERE sale_date = TRUNC(sysdate) - INTERVAL '1' DAY 
+ ORDER BY sale_date, product_id
+ ;
+  
+ There is already an index on 
+ SALE_DATE
+  that can be used for the 
+ where
+  clause. 
+ The database must, however, perform an explicit sort operation to satisfy 
+ the 
+ order by
+  clause:
+  
+ ---------------------------------------------------------------
+ |Id | Operation                    | Name       | Rows | Cost 
+ |--------------------------------------------------------------
+ -| 0 | SELECT STATEMENT             |            |  320 |   18 
+ | | 1 |  
+ SORT ORDER BY
+                |            |  320 |   18 
+ | | 2 |   TABLE ACCESS BY INDEX ROWID| SALES      |  320 |   17 
+ | |*3 |    INDEX RANGE SCAN          | SALES_DATE |  320 |    3 
+ |--------------------------------------------------------------
+ -
+  
+ An 
+ INDEX RANGE SCAN
+  delivers the result in index order anyway. To take 
+ advantage of this fact, we just have to extend the index definition so it 
+ corresponds to the 
+ order by
+  clause:
+  
+  DROP INDEX sales_date; 
+  
+ CREATE INDEX sales_dt_pr ON sales (
+ sale_date, product_id
+ );
+  
+ ---------------------------------------------------------------
+ |Id | Operation                   | Name        | Rows | Cost 
+ |--------------------------------------------------------------
+ -| 0 | SELECT STATEMENT            |             |  320 |  300 
+ | | 1 |  TABLE ACCESS BY INDEX ROWID| SALES       |  320 |  300 
+ | |*2 |   INDEX RANGE SCAN          | SALES_DT_PR |  320 |    4 
+ |--------------------------------------------------------------
+ -",NA
+Automatically Optimized Clustering Factor,"The Oracle database keeps the clustering factor at a minimum by 
+ considering the 
+ ROWID
+  for the index order. Whenever two index entries 
+ have the same key values, the 
+ ROWID
+  decides upon their final order. 
+ The index is therefore also ordered according to the table order and 
+ thus has the smallest possible clustering factor because the 
+ ROWID 
+ represents the physical address of table row.
+  
+ By adding another column to an index, you insert a new sort criterion 
+ before
+  the 
+ ROWID
+ . The database has less freedom in aligning the index 
+ entries according to the table order so the index clustering factor can 
+ only get worse.
+  
+ Regardless, it is still possible that the index order roughly 
+ corresponds to the table order. The sales of a day are probably still 
+ clustered together in the table as well as in the index—even though 
+ their sequence is not exactly the same anymore. The database has to 
+ read the table blocks multiple times when using the 
+ SALE_DT_PR 
+ index—but these are just the same table blocks as before. Due to the 
+ caching of frequently accessed data, the performance impact could be 
+ considerably lower than indicated by the cost values.
+  
+ 133",NA
+Indexing ,NA,NA
+ASC,NA,NA
+", ",NA,NA
+DESC,NA,NA
+ and ,NA,NA
+NULLS FIRST,NA,NA
+/,NA,NA
+LAST,"Databases can read indexes in both directions. That means that a pipelined 
+ order by
+  is also possible if the scanned index range is in the exact opposite 
+ order as specified by the 
+ order by
+  clause. Although 
+ ASC
+  and 
+ DESC
+  modifiers 
+ in the 
+ order by
+  clause can prevent a pipelined execution, most databases 
+ offer a simple way to change the index order so an index becomes usable for 
+ a pipelined 
+ order by
+ .
+  
+ The following example uses an index in reverse order. It delivers the sales 
+ since yesterday ordered by descending date and descending 
+ PRODUCT_ID.
+  
+ SELECT sale_date, product_id, quantity
+  
+  FROM sales
+  
+  WHERE sale_date >= TRUNC(sysdate) - INTERVAL '1' DAY 
+ ORDER BY sale_date DESC, product_id DESC
+ ;
+  
+ The execution plan shows that the database reads the index in a descending 
+ direction.
+  
+ ---------------------------------------------------------------
+ |Id |Operation                    | Name        | Rows | Cost 
+ |--------------------------------------------------------------
+ -| 0 |SELECT STATEMENT             |             |  320 |  300 
+ | | 1 | TABLE ACCESS BY INDEX ROWID | SALES       |  320 |  300 
+ | |*2 |  
+ INDEX RANGE SCAN DESCENDING
+ | SALES_DT_PR |  320 |    4 
+ |--------------------------------------------------------------
+ -
+  
+ In this case, the database uses the index tree to find the 
+ last
+  matching entry. 
+ From there on, it follows the leaf node chain “upwards” as shown in Figure 
+ 6.2. After all, this is why the database uses a 
+ doubly
+  linked list to build the 
+ leaf node chain.
+  
+ Of course it is crucial that the scanned index range is in the exact opposite 
+ order as needed for the 
+ order by
+  clause.
+  
+  
+ Important 
+  
+ Databases can read indexes in both directions.
+  
+ 134",NA
+Indexing Group By,"SQL databases use two entirely different 
+ group by
+  algorithms. The first one, 
+ the hash algorithm, aggregates the input records in a temporary hash table. 
+ Once all input records are processed, the hash table is returned as the result. 
+ The second algorithm, the sort/group algorithm, first sorts the input data by 
+ the grouping key so that the rows of each group follow each other in 
+ immediate succession. Afterwards, the database just needs to aggregate 
+ them. In general, both algorithms need to materialize an intermediate state, 
+ so they are not executed in a pipelined manner. Nevertheless the sort/ 
+ group algorithm can use an index to avoid the sort operation, thus enabling 
+ a pipelined 
+ group by
+ .
+  
+  
+ Note 
+  
+ MySQL 5.6 doesn’t use the hash algorithm. Nevertheless, the
+  
+  
+ optimization for the sort/group algorithm works as described below.
+  
+ Consider the following query. It delivers yesterday’s revenue grouped by 
+ PRODUCT_ID
+ :
+  
+ SELECT product_id, sum(eur_value)
+  
+  FROM sales
+  
+  WHERE sale_date = TRUNC(sysdate) - INTERVAL '1' DAY 
+ GROUP BY product_id;
+  
+ Knowing the index on 
+ SALE_DATE
+  and 
+ PRODUCT_ID
+  from the previous section, 
+ the sort/group algorithm is more appropriate because an 
+ INDEX RANGE SCAN 
+ automatically delivers the rows in the required order. That means the 
+ database avoids materialization because it does not need an explicit sort 
+ operation—the 
+ group by
+  is executed in a pipelined manner.
+  
+ ---------------------------------------------------------------
+ |Id |Operation                    | Name        | Rows | Cost 
+ |--------------------------------------------------------------
+ -| 0 |SELECT STATEMENT             |             |   17 |  192 
+ | | 1 | 
+ SORT GROUP BY NOSORT
+         |             |   17 |  192 
+ | | 2 |  TABLE ACCESS BY INDEX ROWID| SALES       |  321 |  192 
+ | |*3 |   INDEX RANGE SCAN          | SALES_DT_PR |  321 |    3 
+ |--------------------------------------------------------------
+ -
+  
+ 139",NA
+Chapter 7,NA,NA
+Partial Results,"Sometimes you do not need the full result of an SQL query but only the first 
+ few rows—e.g., to show only the ten most recent messages. In this case, it is 
+ also common to allow users to browse through older messages—either 
+ using traditional paging navigation or the more modern “infinite 
+ scrolling”variant. The related SQL queries used for this function can, 
+ however, cause serious performance problems if 
+ all
+  messages must be 
+ sorted in order to find the most recent ones. A pipelined 
+ order by
+  is 
+ therefore a very powerful means of optimization for such queries.
+  
+ This chapter demonstrates how to use a pipelined 
+ order by
+  to efficiently 
+ retrieve partial results. Although the syntax of these queries varies from 
+ database to database, they still execute the queries in a very similar way. 
+ Once again, this illustrates that they all put their pants on one leg at a time.",NA
+Querying Top-N Rows,"Top-N queries are queries that limit the result to a specific number of rows. 
+ These are often queries for the most recent or the “best” entries of a result 
+ set. For efficient execution, the ranking must be done with a pipelined 
+ order 
+ by
+ .
+  
+ The simplest way to fetch only the first rows of a query is fetching the 
+ required rows and then closing the statement. Unfortunately, the optimizer 
+ cannot foresee that when preparing the execution plan. To select the best 
+ execution plan, the optimizer has to know if the application will ultimately 
+ fetch all rows. In that case, a full table scan with explicit sort operation 
+ might perform best, although a pipelined 
+ order by
+  could be better when 
+ fetching only ten rows—even if the database has to fetch each row 
+ individually. That means that the optimizer has to know if you are going to 
+ abort the statement before fetching all rows so it can select the best 
+ execution plan.
+  
+ 143",NA
+Paging Through Results,"After implementing a pipelined top-N query to retrieve the first page 
+ efficiently, you will often also need another query to fetch the next pages. 
+ The resulting challenge is that it has to skip the rows from the previous 
+ pages. There are two different methods to meet this challenge: firstly the 
+ offset method
+ , which numbers the rows from the beginning and uses a filter 
+ on this row number to discard the rows before the requested page. The 
+ second method, which I call the 
+ seek method
+ , searches the last entry of the 
+ previous page and fetches only the following rows.
+  
+ 147",NA
+Indexing Equivalent Logic,"A logical condition can always be expressed in different ways. You 
+ could, for example, also implement the above shown skip logic as 
+ follows:
+  
+ WHERE (
+  
+  
+   
+  (sale_date < ?)
+  
+  
+  OR
+  
+  
+   
+  (sale_date = ? AND sale_id < ?)
+  
+  
+ )
+  
+ This variant only uses including conditions and is probably easier to 
+ understand—for human beings, at least. Databases have a different 
+ point of view. They do not recognize that the 
+ where
+  clause selects all 
+ rows starting with the respective 
+ SALE_DATE
+ /
+ SALE_ID
+  pair—provided 
+ that the 
+ SALE_DATE
+  is the same for both branches. Instead, the 
+ database uses the entire 
+ where
+  clause as filter predicate. We could at 
+ least expect the optimizer to “factor the condition 
+ SALE_DATE <= ? 
+ out” of the two or-branches, but none of the databases provides this 
+ service.
+  
+ Nevertheless we can add this redundant condition manually—even 
+ though it does not increase readability:
+  
+ WHERE 
+ sale_date <= ?
+  
+  AND 
+ (
+  
+  
+   
+  (sale_date < ?)
+  
+  
+  OR
+  
+  
+   
+  (sale_date = ? AND sale_id < ?)
+  
+  
+ )
+  
+ Luckily, all databases are able to use the this part of the 
+ where 
+ clause 
+ as access predicate. That clause is, however, even harder to grasp as 
+ the approximation logic shown above. Further, the original logic 
+ avoids the risk that the “unnecessary” (redundant) part is accidentally 
+ removed from the 
+ where
+  clause later on.
+  
+ 155",NA
+Using Window Functions for Pagination,"Window functions offer yet another way to implement pagination in SQL. 
+ This is a flexible, and above all, standards-compliant method. However, only 
+ SQL Server and the Oracle database can use them for a pipelined top-N 
+ query. PostgreSQL does not abort the index scan after fetching enough rows 
+ and therefore executes these queries very inefficiently. MySQL does not 
+ support window functions at all.
+  
+ The following example uses the window function 
+ ROW_NUMBER
+  for a 
+ pagination query:
+  
+ SELECT *
+  
+  FROM ( SELECT sales.*
+  
+   
+  
+  , 
+ ROW_NUMBER() OVER (ORDER BY sale_date DESC
+  
+   
+  
+  
+  , sale_id   DESC) rn
+  
+   
+  FROM sales
+  
+  
+  ) tmp 
+  
+ WHERE rn between 11 and 20
+  
+  ORDER BY sale_date DESC, sale_id DESC;
+  
+ The 
+ ROW_NUMBER
+  function enumerates the rows according to the sort order 
+ defined in the 
+ over
+  clause. The outer 
+ where
+  clause uses this enumeration to 
+ limit the result to the second page (rows 11 through 20).
+  
+ The Oracle database recognizes the abort condition and uses the index on
+  
+ SALE_DATE
+  and 
+ SALE_ID
+  to produce a pipelined top-N behavior:
+  
+ ---------------------------------------------------------------
+ |Id | Operation                      | Name    | Rows |  Cost 
+ |--------------------------------------------------------------
+ -| 0 | SELECT STATEMENT               |         | 1004K| 36877 
+ | |*1 |  VIEW                          |         | 1004K| 36877 
+ | |*2 |   
+ WINDOW NOSORT STOPKEY
+         |         | 1004K| 36877 
+ | | 3 |    TABLE ACCESS BY INDEX ROWID | SALES   | 1004K| 36877 
+ | | 4 |     
+ INDEX FULL SCAN DESCENDING
+  | SL_DTID | 1004K|  2955 
+ |--------------------------------------------------------------
+ -
+  
+ Predicate Information (identified by operation id):
+  
+ ---------------------------------------------------
+  
+ 1 - filter(""RN"">=11 AND ""RN""<=20) 
+  
+ 2 - filter(ROW_NUMBER() OVER (
+  
+  
+  ORDER BY ""SALE_DATE"" DESC, ""SALE_ID"" DESC )<=20)
+  
+ 156",NA
+Chapter 8,NA,NA
+Modifying Data,"So far we have only discussed query performance, but SQL is not only about 
+ queries. It supports data manipulation as well. The respective commands—
+ insert
+ , 
+ delete
+ , and 
+ update
+ —form the so-called “data manipulation 
+ language” (DML)—a section of the SQL standard. The performance of these 
+ commands is for the most part negatively influenced by indexes.
+  
+ An index is pure redundancy. It contains only data that is also stored in the 
+ table. During write operations, the database must keep those redundancies 
+ consistent. Specifically, it means that 
+ insert
+ , 
+ delete
+  and 
+ update
+  not only 
+ affect the table but also the indexes that hold a copy of the affected data.",NA
+Insert,"The number of indexes on a table is the most dominant factor for 
+ insert 
+ performance. The more indexes a table has, the slower the execution 
+ becomes. The 
+ insert
+  statement is the only operation that cannot directly 
+ benefit from indexing because it has no 
+ where
+  clause.
+  
+ Adding a new row to a table involves several steps. First, the database must 
+ find a place to store the row. For a regular heap table—which has no 
+ particular row order—the database can take any table block that has 
+ enough free space. This is a very simple and quick process, mostly executed 
+ in main memory. All the database has to do afterwards is to add the new 
+ entry to the respective data block.
+  
+ 159",NA
+Delete,"Unlike the 
+ insert
+  statement, the 
+ delete
+  statement has a 
+ where
+  clause that 
+ can use all the methods described in Chapter 2, “
+ The Where Clause
+ ”, to 
+ benefit directly from indexes. In fact, the 
+ delete
+  statement works like a 
+ select
+  that is followed by an extra step to delete the identified rows.
+  
+ The actual deletion of a row is a similar process to inserting a new one—
+ especially the removal of the references from the indexes and the activities 
+ to keep the index trees in balance. The performance chart shown in Figure 
+ 8.2 is therefore very similar to the one shown for 
+ insert
+ .
+  
+ Figure 8.2. Delete Performance by Number of Indexes
+  
+ Execution time [sec]
+  
+ 0.12
+  
+  
+  
+           
+  
+           
+  
+   
+  
+           
+  
+       
+  
+           
+  
+     
+  
+         
+  
+           
+  
+ 0.12 
+  
+ Executio
+ n time 
+ [sec] 
+  
+ 0.10 
+  
+ 0.08 
+  
+ 0.06 
+  
+ 0.04 
+  
+ 0.02 
+  
+ 0.00
+  
+ 0.10
+  
+ 0.08
+  
+ 0.06
+  
+ 0.04
+  
+ 0.02
+  
+ 0.00
+  
+ 1
+  
+ 2
+  
+ 3
+  
+ 4
+  
+ 5
+  
+ Indexes
+  
+ In theory, we would expect the best 
+ delete
+  performance for a table without 
+ any indexes—as it is for 
+ insert
+ . If there is no index, however, the database 
+ must read the full table to find the rows to be deleted. That means deleting 
+ the row would be fast but finding would be very slow. This case is therefore 
+ not shown in Figure 8.2.
+  
+ Nevertheless it can make sense to execute a 
+ delete
+  statement without an 
+ index just as it can make sense to execute a 
+ select
+  statement without an 
+ index if it returns a large part of the table.
+  
+  
+ Tip 
+  
+ Even 
+ delete
+  and 
+ update
+  statements have an execution plan.
+  
+ 162",NA
+Side Effects of MVCC,"Multiversion concurrency control (MVCC) is a database mechanism 
+ that enables non-blocking concurrent data access and a consistent 
+ transaction view. The implementations, however, differ from database 
+ to database and might even have considerable effects on performance.
+  
+ The PostgreSQL database, for example, only keeps the version 
+ information (=visibility information) on the table level: deleting a row 
+ just sets the “deleted” flag in the table block. PostgreSQL’s delete 
+ performance therefore 
+ does not
+  depend on the number of indexes on 
+ the table. The physical deletion of the table row and the related index 
+ maintenance is carried out only during the VACCUM process.",NA
+Update,"An 
+ update
+  statement must relocate the changed index entries to maintain 
+ the index order. For that, the database must remove the old entry and add 
+ the new one at the new location. The response time is basically the same as 
+ for the respective 
+ delete
+  and 
+ insert
+  statements together.
+  
+ The 
+ update
+  performance, just like 
+ insert
+  and 
+ delete
+ , also depends on the 
+ number of indexes on the table. The only difference is that 
+ update 
+ statements do not necessarily affect all columns because they often modify 
+ only a few selected columns. Consequently, an 
+ update
+  statement does not 
+ necessarily affect all indexes on the table but only those that contain 
+ updated columns.
+  
+ 163",NA
+Appendix A,NA,NA
+Execution Plans,"Before the database can execute an SQL statement, the optimizer has to 
+ create an execution plan for it. The database then executes this plan in a 
+ step-by-step manner. In this respect, the optimizer is very similar to a 
+ compiler because it translates the source code (SQL statement) into an 
+ executable program (execution plan).
+  
+ The execution plan is the first place to look when searching for the cause of 
+ slow statements. The following sections explain how to retrieve and read an 
+ execution plan to optimize performance in various databases.",NA
+Contents,"Oracle Database .............................................................................  166 Getting an 
+ Execution Plan ......................................................... 166 Operations 
+ ............................................................................... 167 Distinguishing Access and Filter-
+ Predicates ................................  170 PostgreSQL 
+ ..................................................................................... 172 Getting an Execution Plan 
+ ......................................................... 172 Operations 
+ ............................................................................... 174 Distinguishing Access and Filter-
+ Predicates ................................  177 SQL Server 
+ .....................................................................................  180 Getting an Execution Plan 
+ ......................................................... 180 Operations 
+ ............................................................................... 182 Distinguishing Access and Filter-
+ Predicates ................................  185 MySQL 
+ ...........................................................................................  188 Getting an Execution Plan 
+ ......................................................... 188 Operations 
+ ............................................................................... 188 Distinguishing Access and Filter-
+ Predicates ................................  190
+  
+ 165",NA
+Oracle Database,"Most development environments (IDEs) can very easily show an execution 
+ plan but use very different ways to format them on the screen. The method 
+ described in this section delivers the execution plan as shown throughout 
+ the book and only requires the Oracle database in release 9
+ i
+ R2 or newer.",NA
+Getting an Execution Plan,"Viewing an execution plan in the Oracle database involves two steps:
+  
+ 1.
+  explain plan for
+  — saves the execution plan in the 
+ PLAN_TABLE
+ .
+  
+ 2. Format and display the execution plan.
+  
+ Creating and Saving an Execution Plan
+  
+ To create an execution plan, you just have to prefix the respective SQL 
+ statement with 
+ explain plan for
+ :
+  
+ EXPLAIN PLAN FOR
+  select * from dual;
+  
+ You can execute the 
+ explain plan for
+  command in any development 
+ environment or SQL*Plus. It will, however, not show the plan but save it into 
+ a table named 
+ PLAN_TABLE
+ . Starting with release 10
+ g
+ , this table is 
+ automatically available as a global temporary table. With previous releases, 
+ you have to create it in each schema as needed. Ask your database 
+ administrator to create it for you or to provide the 
+ create table
+  statement 
+ from the Oracle database installation:
+  
+ $ORACLE_HOME/rdbms/admin/utlxplan.sql
+  
+ You can execute this statement in any schema you like to create the 
+ PLAN_TABLE
+  in this schema.
+  
+  
+ Warning 
+  
+ The 
+ explain plan for
+  command does not necessarily create the same
+  
+  
+ execution plan as though it would when executing the statement.
+  
+ 166",NA
+Operations,"Index and Table Access
+  
+ INDEX UNIQUE SCAN 
+  
+ The 
+ INDEX UNIQUE SCAN
+  performs the B-tree traversal only. The database 
+ uses this operation if a unique constraint ensures that the search 
+ criteria will match no more than one entry. See also Chapter 1,“
+ Anatomy 
+ of an Index
+ ”.
+  
+ INDEX RANGE SCAN 
+  
+ The 
+ INDEX RANGE SCAN
+  performs the B-tree traversal 
+ and
+  follows the leaf 
+ node chain to find all matching entries. See also Chapter 1, “
+ Anatomy of 
+ an Index
+ ”.
+  
+ The so-called index filter predicates often cause performance problems 
+ for an 
+ INDEX RANGE SCAN
+ . The next section explains how to identify 
+ them.
+  
+ 167",NA
+Distinguishing Access and Filter-Predicates,"The Oracle database uses three different methods to apply 
+ where
+  clauses 
+ (predicates):
+  
+ Access predicate (“access”) 
+  
+ The access predicates express the start and stop conditions of the leaf 
+ node traversal.
+  
+ Index filter predicate (“filter” for index operations) 
+  
+ Index filter predicates are applied during the leaf node traversal only. 
+ They do not contribute to the start and stop conditions and do not 
+ narrow the scanned range.
+  
+ Table level filter predicate (“filter” for table operations) 
+  
+ Predicates on columns that are not part of the index are evaluated on 
+ table level. For that to happen, the database must load the row from the 
+ table first.
+  
+ 170",NA
+PostgreSQL,The methods described in this section apply to PostgreSQL 8.0 and later.,NA
+Getting an Execution Plan,"A PostgreSQL execution plan is fetched by putting the 
+ explain
+  command in 
+ front of an SQL statement. There is, however, one important limitation: SQL 
+ statements with bind parameters (e.g., 
+ $1
+ , 
+ $2, etc.)
+  cannot be explained 
+ this way—they need to be prepared first:
+  
+ PREPARE stmt(int) AS
+  SELECT $1;
+  
+ Note that PostgreSQL uses ""
+ $n
+ "" for bind parameters. Your database 
+ abstraction layer might hide this so you can use question marks as defined 
+ by the SQL standard.
+  
+ The execution of the prepared statement can be explained:
+  
+ EXPLAIN EXECUTE stmt(1);
+  
+ Up till PostgreSQL 9.1, the execution plan was already created with the 
+ prepare
+  call and could therefore not consider the actual values provided 
+ with 
+ execute
+ . Since PostgreSQL 9.2 the creation of the execution plan is 
+ postponed until execution and thus can consider the actual values for the 
+ bind parameters.
+  
+  
+ Note 
+  
+ Statements without bind parameters can be explained directly:
+  
+  
+ EXPLAIN SELECT 1;
+  
+  
+ In this case, the optimizer has always considered the actual values
+  
+  
+ during query planning. If you use PostgreSQL 9.1 or earlier and bind
+  
+  
+ parameters in your program, you should also use 
+ explain
+  with bind
+  
+  
+ parameters to retrieve the same execution plan.
+  
+ 172",NA
+Operations,"Index and Table Access
+  
+ Seq Scan 
+  
+ The 
+ Seq Scan
+  operation scans the entire relation (table) as stored on 
+ disk (like 
+ TABLE ACCESS FULL
+ ).
+  
+ Index Scan 
+  
+ The 
+ Index Scan
+  performs a B-tree traversal, walks through the leaf 
+ nodes to find all matching entries, and fetches the corresponding table 
+ data. It is like an 
+ INDEX RANGE SCAN
+  followed by a 
+ TABLE ACCESS BY INDEX 
+ ROWID
+  operation. See also Chapter 1, “
+ Anatomy of an Index
+ ”.
+  
+ The so-called index filter predicates often cause performance problems 
+ for an 
+ Index Scan
+ . The next section explains how to identify them.
+  
+ Index Only Scan (since PostgreSQL 9.2) 
+  
+ The 
+ Index Only Scan
+  performs a B-tree traversal and walks through the 
+ leaf nodes to find all matching entries. There is no table access needed 
+ because the index has all columns to satisfy the query (exception: MVCC 
+ visibility information). See also “Index-Only Scan” on page 116.
+  
+ 174",NA
+Distinguishing Access and Filter-Predicates,"The PostgreSQL database uses three different methods to apply 
+ where 
+ clauses (predicates):
+  
+ Access Predicate (“Index Cond”) 
+  
+ The access predicates express the start and stop conditions of the leaf 
+ node traversal.
+  
+ Index Filter Predicate (“Index Cond”) 
+  
+ Index filter predicates are applied during the leaf node traversal only. 
+ They do not contribute to the start and stop conditions and do not 
+ narrow the scanned range.
+  
+ Table level filter predicate (“Filter”) 
+  
+ Predicates on columns that are not part of the index are evaluated on 
+ the table level. For that to happen, the database must load the row from 
+ the heap table first.
+  
+ PostgreSQL execution plans do not show index access and filter predicates 
+ separately—both show up as “Index Cond”. That means the execution plan 
+ must be compared to the index definition to differentiate access predicates 
+ from index filter predicates.
+  
+  
+ Note 
+  
+ The PostgreSQL explain plan does not provide enough information
+  
+  
+ for finding index filter predicates.
+  
+ The predicates shown as “Filter” are always table level filter predicates—
+ even when shown for an 
+ Index Scan
+  operation.
+  
+ Consider the following example, which originally appeared in 
+ the“Performance and Scalability” chapter:
+  
+ CREATE TABLE scale_data (
+  
+  
+  section NUMERIC NOT NULL,
+  
+  
+  id1     NUMERIC NOT NULL,
+  
+  
+  id2     NUMERIC NOT NULL 
+  
+ ); 
+  
+ CREATE INDEX scale_data_key ON scale_data(section, id1);
+  
+ 177",NA
+SQL Server,"The method described in this section applies to SQL Server Management 
+ Studio 2005 and later.",NA
+Getting an Execution Plan,"With SQL Server, there are several ways to fetch an execution plan. The two 
+ most important methods are:
+  
+ Graphically 
+  
+ The graphical representation of SQL Server execution plans is easily 
+ accessible in the Management Studio but is hard to share because the 
+ predicate information is only visible when the mouse is moved over the 
+ particular operation (“hover”).
+  
+ Tabular 
+  
+ The tabular execution plan is hard to read but easy to copy because it 
+ shows all relevant information at once.
+  
+ Graphically
+  
+ The graphical explain plan is generated with one of the two buttons 
+ highlighted below.
+  
+  
+ The left button explains the highlighted statement directly. The right will 
+ capture the plan the next time a SQL statement is executed.
+  
+ In both cases, the graphical representation of the execution plan appears in 
+ the “Execution plan” tab of the “Results” pane.
+  
+ 180",NA
+Operations,"Index and Table Access
+  
+ SQL Server has a simple terminology: “Scan” operations read the entire 
+ index or table while “Seek” operations use the B-tree or a physical address 
+ (
+ RID
+ , like Oracle 
+ ROWID
+ ) to access a specific part of the index or table.
+  
+ Index Seek 
+  
+ The 
+ Index Seek
+  performs a B-tree traversal 
+ and
+  walks through the leaf 
+ nodes to find all matching entries. See also “
+ Anatomy of an Index
+ ” on 
+ page 1.
+  
+ Index Scan 
+  
+ Reads the entire index—all the rows—in the index order. Depending on 
+ various system statistics, the database might perform this operation if it 
+ needs all rows in index order—e.g., because of a corresponding 
+ order by
+  
+ clause.
+  
+ Key Lookup (Clustered) 
+  
+ Retrieves a single row from a clustered index. This is similar to Oracle 
+ INDEX UNIQUE SCAN
+  for an Index-Organized-Table (IOT). See 
+ also“
+ Clustering Data
+ ” on page 111.
+  
+ 182",NA
+Distinguishing Access and Filter-Predicates,"The SQL Server database uses three different methods for applying 
+ where 
+ clauses (predicates):
+  
+ Access Predicate (“Seek Predicates”) 
+  
+ The access predicates express the start and stop conditions of the leaf 
+ node traversal.
+  
+ Index Filter Predicate (“Predicates” or “where” for index operations) Index 
+ filter predicates are applied during the leaf node traversal only. They do 
+ not contribute to the start and stop conditions and do not narrow the 
+ scanned range.
+  
+ Table level filter predicate (“where” for table operations) 
+  
+ Predicates on columns which are not part of the index are evaluated on 
+ the table level. For that to happen, the database must load the row from 
+ the heap table first.
+  
+ The following section explains how to identify filter predicates in SQL 
+ Server execution plans. It is based on the sample used to demonstrate the 
+ impact of index filter predicates in Chapter 3.
+  
+ CREATE TABLE scale_data (
+  
+  
+  section NUMERIC NOT NULL,
+  
+  
+  id1     NUMERIC NOT NULL,
+  
+  
+  id2     NUMERIC NOT NULL 
+  
+ );
+  
+ CREATE INDEX scale_slow ON scale_data(section, id1, id2);
+  
+ The sample statement selects by 
+ SECTION
+  and 
+ ID2
+ :
+  
+ SELECT count(*)
+  
+  FROM scale_data
+  
+  WHERE section = @sec
+  
+   
+  AND id2 = @id2
+  
+ 185",NA
+MySQL,The method described in this section applies to all versions of MySQL.,NA
+Getting an Execution Plan,"Put 
+ explain
+  in front of an SQL statement to retrieve the execution plan.
+  
+ EXPLAIN
+  SELECT 1;
+  
+ The plan is shown in tabular form (some less important columns removed):
+  
+ ~+-------+------+---------------+------+~+------+------------~ 
+ ~| table | 
+ type
+  | possible_keys | key  |~| rows | Extra 
+  
+ ~+-------+------+---------------+------+~+------+------------~ 
+ ~| NULL  | 
+ NULL
+  | NULL          | NULL |~| NULL | No tables... 
+ ~+-------+------+---------------+------+~+------+------------~
+  
+ The most important information is in the 
+ TYPE
+  column. Although the MySQL 
+ documentation refers to it as “join type”, I prefer to describe it as “access 
+ type” because it actually specifies how the data is accessed. The meaning of 
+ the type value is described in the next section.",NA
+Operations,"Index and Table Access
+  
+ MySQL’s explain plan tends to give a false sense of safety because it says so 
+ much about indexes being used. Although technically correct, it does not 
+ mean that it is using the index efficiently. The most important information is 
+ in the 
+ TYPE
+  column of the MySQL’s 
+ explain
+  output—but even there, the 
+ keyword 
+ INDEX
+  doesn’t indicate proper indexing.
+  
+ 188",NA
+Distinguishing Access and Filter-Predicates,"The MySQL database uses three different ways to evaluate 
+ where
+  clauses 
+ (predicates):
+  
+ Access predicate (via the “key_len” column) 
+  
+ The access predicates express the start and stop conditions of the leaf 
+ node traversal.
+  
+ Index filter predicate (“Using index condition”, since MySQL 5.6) Index filter 
+ predicates are applied during the leaf node traversal only. They do not 
+ contribute to the start and stop conditions and do not narrow the 
+ scanned range.
+  
+ Table level filter predicate (“Using where” in the “Extra” column) Predicates 
+ on columns which are not part of the index are evaluated on the table 
+ level. For that to happen, the database must load the row from the table 
+ first.
+  
+ MySQL execution plans do not show which predicate types are used for each 
+ condition—they just list the predicate types in use.
+  
+ 190",NA
+Index,NA,NA
+Symbols,"2PC, 
+ 89 
+  
+ ?, :var, @var (see bind parameter)",NA
+A,"Access Predicate, 
+ 44 
+  
+ access predicates 
+  
+  
+ recognizing in execution plans 
+  
+  
+  
+ Oracle, 
+ 170 
+  
+  
+  
+ PostgreSQL, 
+ 177 
+  
+  
+  
+ SQL Server, 
+ 185 
+  
+ adaptive cursor sharing (Oracle), 
+ 75 
+ auto 
+ parameterization (SQL Server), 
+ 39",NA
+B,"B-tree (balanced search tree), 
+ 4 
+  
+ between
+ , 
+ 44 
+  
+ bind parameter, 
+ 32 
+  
+  
+ contraindications 
+  
+  
+  
+ histograms, 
+ 34 
+  
+  
+  
+ LIKE
+  filters, 
+ 47 
+  
+  
+  
+ partitions, 
+ 35 
+  
+  
+ for execution plan caching, 
+ 32 
+  
+ type safety, 
+ 66 
+  
+ bind peeking (Oracle), 
+ 75 
+  
+ bitmap index, 
+ 50 
+  
+ Bitmap Index Scan
+  (PostgreSQL), 
+ 175 
+ Brewer’s CAP theorem, 
+ 89",NA
+C,"CAP theorem, 
+ 89 
+  
+ cardinality estimate, 
+ 27 
+  
+ CBO (see optimizer, cost based) 
+  
+ clustered index, 
+ 122 
+  
+  
+ transform to SQL Server heap table, 
+  
+ 127 
+  
+ clustering factor, 
+ 21
+ , 
+ 114 
+  
+  
+ automatically optimized, 
+ 133 
+  
+ clustering key, 
+ 123 
+  
+ collation, 
+ 24 
+  
+ commit 
+  
+  
+ deferrable constraints, 
+ 11 
+  
+  
+ implicit for 
+ truncate table
+ , 
+ 163 
+  
+  
+ two phase, 
+ 89 
+  
+ compiling, 
+ 18 
+  
+ computed columns (SQL Server), 
+ 27 
+ constraint 
+  
+  
+ deferrable, 
+ 11 
+  
+  
+ NOT NULL
+ , 
+ 56 
+  
+ cost value, 
+ 18
+  
+ count(*) 
+  
+  
+ often as index-only scan, 
+ 120 
+  
+  
+ Oracle requires 
+ NOT NULL
+  constraint, 
+ 57 
+ COUNT STOPKEY
+ , 
+ 145 
+  
+ cursor sharing (Oracle), 
+ 39",NA
+D,"data transport object (DTO), 
+ 105 
+ DATE 
+  
+  
+ efficiently working with, 
+ 62 
+ DBMS_XPLAN
+ , 
+ 167 
+  
+ DEALLOCATE
+ , 
+ 174 
+  
+ DEFERRABLE
+  constraint, 
+ 11 
+  
+ DETERMINISTIC
+  (Oracle), 
+ 30 
+  
+ distinct
+ , 
+ 97 
+  
+ distinct() 
+  
+  
+ in JPA and Hibernate, 
+ 97 
+  
+ DML, 
+ 159 
+  
+ doubly linked list, 
+ 2 
+  
+ dynamic-update (Hibernate), 
+ 164",NA
+E,"eager fetching, 
+ 96 
+  
+ eventual consistency, 
+ 89 
+ execution plan, 
+ 10
+ , 
+ 165 
+  
+ cache, 
+ 32
+ , 
+ 75 
+  
+  
+ creating 
+  
+  
+  
+ MySQL, 
+ 188 
+  
+  
+  
+ Oracle, 
+ 166 
+  
+  
+  
+ PostgreSQL, 
+ 172 
+  
+  
+ SQL Server, 
+ 180 
+  
+  
+ operations 
+  
+  
+  
+ MySQL, 
+ 188 
+  
+  
+  
+ Oracle, 
+ 167 
+  
+  
+  
+ PostgreSQL, 
+ 174 
+  
+  
+ SQL Server, 
+ 182 
+  
+ explain 
+  
+  
+ MySQL, 
+ 188 
+  
+  
+ Oracle, 
+ 166 
+  
+  
+ PostgreSQL, 
+ 172",NA
+F,"FBI (see index, function-based) 
+ FETCH ALL PROPERTIES
+  (HQL), 
+ 105 
+ fetch first
+ , 
+ 144 
+  
+ filter predicates 
+  
+  
+ effects (chart), 
+ 81 
+  
+  
+ recognizing in execution plans 
+  
+  
+ Oracle, 
+ 170 
+  
+  
+  
+ PostgreSQL, 
+ 177 
+  
+  
+  
+ SQL Server, 
+ 185
+  
+ 193",NA
+G ,NA,NA
+J,"group by
+ , 
+ 139 
+  
+ with PostrgesSQL and the Oracle 
+ database and an 
+ ASC
+ /
+ DESC
+  index not 
+ pipelined, 
+ 140
+  
+ join, 
+ 91 
+  
+  
+ full outer, 
+ 109",NA
+K,NA,NA
+H ,"Key Lookup (Clustered)
+ , 
+ 182
+  
+ hash join, 
+ 101 
+  
+ HASH GROUP BY
+ , 
+ 169 
+  
+ HASH JOIN
+  (Oracle), 
+ 169 
+  
+ HASH Join
+  (PostgreSQL), 
+ 175 
+ Hash Match
+ , 
+ 183 
+  
+ Hash Match (Aggregate)
+ , 
+ 184 
+ heap table, 
+ 3
+ , 
+ 122 
+  
+  
+ creating in SQL Server, 
+ 127 
+ Hibernate 
+  
+  
+ eager fetching, 
+ 96 
+  
+  
+ ILIKE
+  uses 
+ LOWER
+ , 
+ 98 
+  
+  
+ updates all columns, 
+ 164 
+ hint, 
+ 19",NA
+I,"IMMUTABLE
+  (PostgreSQL), 
+ 30 
+  
+ index 
+  
+  
+ covering, 
+ 117 
+  
+  
+ fulltext, 
+ 48 
+  
+  
+ function-based, 
+ 24 
+  
+  
+  
+ case insensitive, 
+ 24 
+  
+  
+  
+ to index mathematical 
+  
+  
+  
+ calculations, 
+ 77 
+  
+  
+ join, 
+ 50 
+  
+  
+ limits 
+  
+  
+  
+ MySQL, Oracle, PostgreSQL, 
+ 121 
+  
+  
+ SQL Server, 
+ 122 
+  
+  
+ merge, 
+ 49 
+  
+  
+ multi-column, 
+ 12 
+  
+  
+  
+ wrong order (effects), 
+ 81 
+  
+  
+ partial, 
+ 51 
+  
+  
+ prefix (MySQL), 
+ 121 
+  
+  
+ secondary, 
+ 123 
+  
+ index
+  in MySQL execution plans, 
+ 189 
+ index-only scan, 
+ 116 
+  
+ index-organized table, 
+ 122 
+  
+  
+ database support, 
+ 127 
+  
+ Index Cond
+  (PostgreSQL), 
+ 177 
+  
+ INDEX FAST FULL SCAN
+ , 
+ 168",NA
+L,"lazy fetching 
+  
+  
+ for scalar attributes (columns), 
+ 104 
+ leaf node, 
+ 2 
+  
+  
+ split, 
+ 160 
+  
+ LIKE, 
+ 45 
+  
+  
+ alternatives, 
+ 48 
+  
+  
+ as index filter predicate, 
+ 112 
+  
+  
+ on DATE column, 
+ 67 
+  
+  
+ on 
+ DATE
+  columns, 
+ 67 
+  
+ limit
+  (MySQL, PostgreSQL), 
+ 144 
+  
+ logarithmic scalability, 
+ 7 
+  
+ LOWER
+ , 
+ 24",NA
+M,"Merge Join
+ , 
+ 109 
+  
+  
+ PostgreSQL, 
+ 175 
+  
+  
+ SQL Server, 
+ 183 
+  
+ MERGE JOIN
+  (Oracle), 
+ 169 
+  
+ multi-block read 
+  
+  
+ for a full table scan, 
+ 13 
+  
+  
+ for a 
+ INDEX FAST FULL SCAN
+ , 
+ 168 
+  
+ MVCC, 
+ 163 
+  
+  
+ affects PostgreSQL index-only scan, 
+ 174 
+ myths 
+  
+  
+ dynamic SQL is slow, 
+ 72
+ , 
+ 74 
+  
+  
+ most selective column first 
+  
+  
+  
+ disproof, 
+ 43 
+  
+  
+  
+ origin, 
+ 49 
+  
+  
+ Oracle cannot index 
+ NULL
+ , 
+ 56",NA
+N,"N+1 problem, 
+ 92 
+  
+ Nested Loops
+ , 
+ 92 
+  
+  
+ PostgreSQL, 
+ 175 
+  
+  
+ SQL Server, 
+ 183 
+  
+ NESTED LOOPS
+  (Oracle), 
+ 168
+  
+ 194",NA
+O,"offset
+  (MySQL, PostgreSQL), 
+ 148 
+ optimizer, 
+ 18 
+  
+  
+ cost based, 
+ 18 
+  
+  
+ hint, 
+ 19 
+  
+  
+ rule based, 
+ 18 
+  
+  
+ statistics, 
+ 21 
+  
+ OPTIMIZE FOR
+  (SQL Server), 
+ 76 
+ OPTION
+  (SQL Server), 
+ 76 
+  
+ OR 
+  
+  
+ to disable filters, 
+ 72 
+  
+ order by
+ , 
+ 130 
+  
+  
+ ASC
+ , 
+ DESC
+ , 
+ 134 
+  
+  
+ NULLS FIRST/LAST
+ , 
+ 137 
+  
+  
+ support matrix, 
+ 138 
+  
+ OVER()
+ , 
+ 156",NA
+P,"paging, 
+ 147 
+  
+  
+ offset method, 
+ 148 
+  
+  
+ seek method, 
+ 149 
+  
+  
+  
+ approximated, 
+ 152 
+  
+ parameter sniffing (SQL Server), 
+ 76 
+ parsing, 
+ 18 
+  
+ partial index, 
+ 51 
+  
+ partial objects (ORM), 
+ 104 
+  
+ partitions and bind parameters, 
+ 35 
+ pipelining, 
+ 92 
+  
+ PLAN_TABLE
+ , 
+ 166 
+  
+ predicate information, 
+ 20 
+  
+  
+ access vs. filter predicates, 
+ 44 
+  
+ in execution plans 
+  
+  
+  
+ MySQL, 
+ 190 
+  
+  
+  
+ Oracle, 
+ 170 
+  
+  
+  
+ SQL Server, 
+ 185 
+  
+ prepare
+  (PostgreSQL), 
+ 172 
+  
+ primary key w/o unique index, 
+ 11",NA
+Q,query planner (see optimizer),NA
+R,"RBO (see optimizer, rule based) 
+ RECOMPILE
+  (SQL Server hint), 
+ 76 
+ result set transformer, 
+ 98 
+  
+ RID, 
+ 3 
+  
+ RID Lookup (Heap)
+ , 
+ 183 
+  
+ root node, 
+ 5 
+  
+  
+ split, 
+ 160
+  
+ row sequencing, 
+ 113 
+  
+ row values, 
+ 153 
+  
+ ROWID, 
+ 3 
+  
+ ROWNUM
+  (Oracle pseudo column), 
+ 144
+ , 
+ 148 
+ ROW_NUMBER
+ , 
+ 156",NA
+S,"scalability, 
+ 81 
+  
+  
+ horizontal, 
+ 87 
+  
+  
+ logarithmic, 
+ 7 
+  
+ Scalability, 
+ 79 
+  
+ Seek Predicates
+  (SQL Server), 
+ 185 
+  
+ select *
+ , avoid to 
+  
+  
+ enable index-only scans, 
+ 120 
+  
+  
+ improve hash join performance, 
+ 104 
+ Seq Scan
+ , 
+ 174 
+  
+ Sort
+  (SQL Server), 
+ 184 
+  
+ SORT GROUP BY
+ , 
+ 169 
+  
+  
+ NOSORT
+ , 
+ 140 
+  
+ SORT ORDER BY
+ , 
+ 130 
+  
+  
+ STOPKEY
+ , 
+ 145 
+  
+ SQL area, 
+ 75 
+  
+ SQL injection, 
+ 32 
+  
+ SSD (Solid State Disk), 
+ 90 
+  
+ statistics, 
+ 21 
+  
+  
+ for Oracle function-based indexes, 
+ 28 
+ STATISTICS PROFILE
+ , 
+ 181 
+  
+ STOPKEY 
+  
+  
+ COUNT
+ , 
+ 145 
+  
+  
+ SORT ORDER BY
+ , 
+ 146 
+  
+  
+ WINDOW
+ , 
+ 157 
+  
+ Stream Aggregate
+ , 
+ 184",NA
+T,"top
+  (SQL Server), 
+ 145 
+  
+ Top-N Query, 
+ 143 
+  
+ TO_CHAR(DATE)
+ , 
+ 66 
+  
+ TRUNC(DATE)
+ , 
+ 62 
+  
+ truncate table
+ , 
+ 163 
+  
+  
+ triggers not executed, 
+ 163",NA
+U,"UPPER
+ , 
+ 24",NA
+V,"Vaccum (PostgreSQL), 
+ 163 
+  
+ virtual columns for 
+ NOT NULL
+  constraints 
+ on FBI, 
+ 58",NA
+W,"where
+ , 
+ 9 
+  
+  
+ conditional, 
+ 72 
+  
+  
+ in SQL Server execution plan, 
+ 187 
+ window functions, 
+ 156
+  
+ 195",NA
+SQL Performance Explained! — Now what?,"Maybe you still have some questions or a very specific problem that “SQL 
+ Performance Explained” did not answer satisfactory? Instant Coaching is the 
+ solution for you.",NA
+Instant Coaching,"Instant Coaching is the fast, easy and hassle-free way for developers to 
+ resolve difficult SQL database performance issues via desktop sharing.
+  
+ Instant Coaching doesn’t use made up examples; real cases are presented as 
+ this is the optimal way to help you in solving your current problems with 
+ slow SQL databases. Instant Coaching is vendor independent and 
+ efficient…and offered at a very affordable price!
+  
+ Give it a try!
+  
+ Now is the time to learn more about Instant Coaching! Visit our web 
+ site for more information:
+  
+ http://winand.at
+  
+ 196",NA

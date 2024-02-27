@@ -1,0 +1,3359 @@
+Larger Text,Smaller Text,Symbol
+An Introduction to Ada Programming ,NA,NA
+for ,NA,NA
+Experienced  Computer Programmers,NA,NA
+by ,NA,NA
+Richard Riehle,NA,NA
+AdaWorks Software Engineering ,NA,NA
+http://www.adaworks.com ,"Copyright 2002, AdaWorks Software Engineering 
+  
+ Public Edition.  Permission to copy if AdaWorks is acknowledged in copies 
+ Version: July 2003
+  
+ Page1 of 
+ 113",NA
+Table of Contents,"TABLE OF CONTENTS............................................................................................................................. 3 
+ 1. WHAT IS ADA DISTILLED? ................................................................................................................ 4 
+ 2. SUMMARY OF LANGUAGE................................................................................................................ 5 
+ 3. TYPES AND THE TYPE MODEL ...................................................................................................... 16 
+ 4. CONTROL STRUCTURES FOR ALGORITHMS............................................................................ 26 
+ 5. ACCESS TYPES (POINTERS) ............................................................................................................ 33 
+ 6. SUBPROGRAMS................................................................................................................................... 40 
+ 7. PACKAGE DESIGN.............................................................................................................................. 47 
+ 8. CHILD LIBRARY UNITS .................................................................................................................... 52 
+ 9. OBJECT-ORIENTED PROGRAMMING WITH PACKAGES....................................................... 57 
+ 10. USING STANDARD LIBRARIES AND ANNEXES ....................................................................... 64 
+ 11.  EXCEPTION MANAGEMENT........................................................................................................ 71 
+ 12. GENERIC COMPONENTS................................................................................................................ 74 
+ 13. NEW NAMES FROM OLD ONES .................................................................................................... 82 
+ 14. CONCURRENCY WITH TASKING................................................................................................. 87 
+ A.  ANNEXES, APPENDICES AND STANDARD LIBRARIES.......................................................... 92 
+ ANNEX L PRAGMAS - LANGUAGE-DEFINED COMPILER DIRECTIVES............................... 104 
+ WINDOWS 95/98/NT/XP/ME/2000 PROGRAMMING ...................................................................... 105 
+ C.  BIBLIOGRAPHY............................................................................................................................... 107
+  
+  
+ Author's Observation and Opinion
+  
+  
+ The Ada language is designed to maximize the possibilities for error detection early in the development process.   This reduces the 
+ overall cost of software development since it is known that errors corrected early, will cost less than those detected late.  No other 
+ language, not C++, not Java, not Eiffel, provides the level of support for safety-critical software found in Ada.   Developers can and do 
+ make mistakes, even using Ada, but the probability of such mistakes is substantially less when using Ada than it is when using other 
+ languages.
+  
+ Therefore, when failure is not acceptable, during development or during software execution, the wise developer will select Ada.
+  
+ Although Ada is not as popular as some of the more well-known languages, it has substantial benefits over most of them when software 
+ dependability is a primary objective.  In addition, contemporary Ada is as appropriate for developing GUI-based applications, 
+ information systems applications, and computationally intensive systems as any existing language.  It is truly a general-purpose language, 
+ well-suited to any kind of software problem you might encounter.
+  
+ Page 3 
+ of 
+ 113",NA
+1. What is Ada Distilled?,"This book is for  experienced programmers new to Ada.  Heavily commented example programs help 
+ experienced programmer experiment with Ada.  This is not a comprehensive book on the entire Ada 
+ language. In particular, we say very little about Ada.Finalization, Storage Pool Management, 
+  
+ Representation Specifications,  Concurrency, and other more advanced topics.  Other books, listed in the 
+ bibliography, cover advanced topics.   This book is an entry point to your study of Ada.
+  
+ The text is organized around example programs with line-by-line comments.  Ada comments are the 
+ double-hyphen and continue to the end of a line.  Comments might be explanatory notes and/or 
+  
+ corresponding section of the Ada Language Reference Manual (ALRM) in the format of ALRM X.5.3/22.
+  
+  
+ with
+ Ada.Text_IO;
+  
+ --  1  
+ 10.1.2, A.10 Context clause
+  
+  
+ This will compile
+  
+ procedure
+   Hello  
+ is
+  
+ --  2  
+ 6.3       Specification with ""is
+ ""
+   
+ and execute with
+  
+ begin
+  
+ --  3  
+ 6.3       
+ Start algorithmic code
+  
+ any Ada compiler.
+  
+ Ada.Text_IO.Put_Line(“Hello Ada”);
+  
+ --  4  
+ A.10.6 
+ Executable source code
+  
+  
+ end
+  Hello;
+  
+ --  5   
+ 6.3       
+ End of procedure scope
+   
+ where each line is numbered.  The 10.1.2 and 6.3, etc. refer to ALRM Chapters 6.3, 10.1.2. A.10.6 refers to 
+ Annex A.10.6.   There is occasional commentary  by source code line number.  The line numbers are not 
+ part of Ada, but provided on our examples for ease of commentary.  Boxed notes are also included for some 
+ examples.    The preceding example shows one of these as:
+  
+ 1.1 Ada Compilers and Tools
+  
+ Ada 95 compilers support a wide range of platforms.   A free, open source, compiler, GNAT, based on 
+ GNU technology, can be downloaded from the Web.   Commercial Ada compilers and tools are available 
+ from:  Ada Core Technologies (GNAT), DDC-I, Rational (recently acquired by IBM), RR Software, Irvine 
+ Compiler Corporation, Green Hills, SofCheck, Aonix, and OC Systems.    Free editors, including AdaGide, 
+ are useful for developing small Ada programs.  More information on tools, including GUI development 
+ tools, can be accessed using one of the URL's mentioned in the introduction and in the bibliography.
+  
+ Development tools exist for many operating systems.   These include CLAW for Microsoft Operating 
+ Systems, and GtkAda for other GUI environments including Microsoft operating systems, Linux, BSD, 
+ OS/2, Java Virtual Machine, and every variety of Unix.  The AdaGide editor is available for MS Windows.
+  
+ 1.2 Ada Education
+  
+ The bibliography of this book lists some of the books and educational resources available to the student of 
+ Ada.   Some colleges and universities offer Ada courses.  In addition, companies such as AdaWorks 
+ Software Engineering provide classes for anyone interested in Ada software development.
+  
+ 1.3 Ada Software Practice
+  
+ If the software must absolutely work without error, where a software accident could 
+ kill or maim, Ada is the correct choice.
+  
+ There is a lot of misinformation about Ada.   One misconception is that it is a large, bloated language 
+ designed by committee.   This is not true.    Ada is designed around a few simple principles that provide the 
+ architecture for the language syntax and semantics.  Once you understand these principles,  Ada will be as 
+ easy as many other languages.  We highlight some of those design principles in this book.  One important 
+ principle is that the Ada compiler never assumes anything. Everything is explicit.  Nothing in Ada is 
+ implicit.  This helps the compiler help you write more dependable code. Oh, and you'll rarely need the 
+ debugger once you are experienced with Ada.   Also, your Ada programs will usually compile to nearly any 
+ contemporary platform and execute on that platform without change.
+  
+ Page 4 
+ of 
+ 113",NA
+2. Summary of Language ,"2.1 Goals and Philosophy
+  
+ Ada is not an acronym.  It is the name of the daughter of the English Poet, Lord Byron.   She 
+ is credited with being the ""first computer programmer"" because of the prescience 
+  
+ demonstrated in her early writings that described Charles Babbage's Analytical Engine. She 
+ was honored for this contribution by having a language named after her.
+  
+  
+ Every programming language is intended to satisfy some purpose, some set of goals.  Sometimes the goals 
+ are stated in terms of a programming paradigm.  For example, a goal might be to design an object-oriented 
+ programming language.  Another goal might call for a language that conforms to some existing 
+  
+ programming model with extensions to satisfy some new notions of programming techniques.  Ada's goals 
+ correspond to the final product of the software process.  Ada is not designed to satisfy an academic notion 
+ of how programs should be designed and written.  Ada's Goals are:
+  
+ •
+  
+ High reliability and dependability for safety-critical environments,
+  
+ Yes, you can hack solutions
+  
+ in Ada if you want.
+  
+ •
+  
+ Maintainable over a long span by someone who has never seen the code before,
+  
+ However, it is intended as a
+  
+ language for disciplined
+  
+ •
+  
+ Emphasis on program readability instead of program writeability,
+  
+ design and construction of
+  
+ •
+  
+ Capability for efficient software development using reusable components
+  
+ high reliability software.
+  
+ In summary,  Ada is designed to maximize the error checking a compiler can do early in the development 
+ process.  Each syntactic construct is intended to help the compiler meet this goal.  This means some Ada 
+ syntax may initially seem extraneous but has an important role in alerting the compiler to potential errors in 
+ your code. The default for every Ada construct is 
+ safe
+ .   Ada allows you to relax that default when necessary.  
+ Contrast Ada's default of 
+ safe
+  with most of the C family of languages where the default is usually, 
+ unsafe
+ .  
+ The safety default is one of Ada's most important contributions to engineering software.
+  
+ Another important idea is 
+ expressiveness
+  over 
+ expressibility
+ .  Nearly any idea can be expressed in any 
+ programming language.  That is not good enough.  Ada puts emphasis on expressiveness, not just 
+ expressibility.  In Ada, we map the solution to the problem rather than the problem to the solution.
+  
+ 2.2 Elementary Syntax 
+ 2.2.1 Identifiers
+  
+  
+ The syntax of Ada is actually easy to learn and use.  It is only when you get further in your study that you 
+ will discover its full power.  Just as there is ""no royal road to mathematics,"" there is no royal road to 
+ software engineering.  Ada can help, but much of programming still requires diligent study and practice.
+  
+  
+ Identifiers in Ada are not case sensitive.   The identifiers Niacin, NIACIN, NiAcIn will be interpreted by 
+ the compiler as the same.  Underbars are common in Ada source code identifiers; e.g. Down_The_Hatch. 
+ There is a worldwide shortage of curly braces.  Consequently, Ada does not use { and }.   Also, Ada does 
+ not use square braces such as [  and ] .  Ada has sixty-nine reserved words.   Reserved words will usually 
+ be shown in bold-face type in this book. (
+ See Appendix A for a complete list of reserved words
+ ).
+  
+ 2.2.2 Statements, Scope Resolution, Visibility
+  
+ Ada's unique idea of visibility often causes difficulties for new Ada programmers. 
+ Once you understand visibility, nearly everything else about Ada will be clear  to you.
+  
+  
+ An Ada statement is terminated with a semicolon.   The entire scope of a statement is contained within the 
+ start of that statement and the corresponding semicolon.   Compound statements are permitted.  A 
+ compound statement has an explicit 
+ end
+  of scope clause.   A statement may be a subprogram call, a simple 
+ expression, or an assignment statement.  Here are some sample statements:
+  
+ X := C * (A + B); 
+  
+ Move (X , Y); 
+  
+ if
+  A = B 
+ then 
+  
+  
+ J := Ada.Numerics.Pi * Diameter; 
+  
+ else 
+  
+  
+ J := Ada.Numerics.Pi * Radius ** 2; 
+  
+ end  if
+ ; 
+  
+ if
+   (A 
+ and
+  B) 
+ or
+   ((X 
+ and
+  T)  
+ and
+   (P 
+ or
+  Q)) 
+ then 
+  
+ Compute(A); 
+  
+ else 
+  
+  
+ Compute(P); 
+  
+ end  if
+ ; 
+  
+ --  1  
+ Simple assignment statement
+  
+ --  2 
+ A procedure call statement
+  
+ --  3 
+ Start a compound if statement
+  
+ --  4 
+ Compute the circumference of a 
+ circle
+ --  5 
+ Part of compound if statement
+  
+ --  6 
+ Compute area of a circle
+  
+  
+ No curly braces in Ada
+  
+  
+ --  7 
+ End of compound statement scope
+  
+ --  8 
+ Parentheses required in mixed and/or construct
+ --  
+ 9 
+ Call Compute subprogram
+  
+ -- 10 
+ Part of compound statement
+  
+ -- 11 
+ Subprogram call statement
+  
+ -- 12 
+ End of compound statement scope
+  
+ Page 5 
+ of 
+ 113",NA
+:=,"Somewhere among his published aphorisms and deprecations, Edsger Dijkstra observes that too few 
+ programmers really understand the complexities of the assignment statement.   I have not been able to 
+ excavate the exact quote from those of his publications immediately at hand.   It is true, however, that 
+ assignment is increasingly complicated as new programming languages are invented.   Ada is no exception, 
+ and may actually have more complicated rules about assignment than some other languages.
+  
+ The Ada assignment operation, := ,  is a compound symbol composed of a colon symbol and equal symbol. 
+ It is predefined for every Ada type except limited types.     It is illegal, in Ada, to directly overload, rename, 
+ or alias the assignment operation.   In a statement such as,
+  
+  A := B + C * (F / 3);
+  
+  
+ Reminder:  the assignment operator is legal  only on non-limited types.   Also, both sides of the assignment 
+ operator must conform to each other.  Composite types must have the same size and constraints.
+  
+  
+ the expression on the right side of the assignment operation is evaluated and the result of that evaluation is 
+ placed in the location designated by the variable on the left side.    All the variables on both sides must be 
+ of the same type.   In an expression,
+  
+ Note: Although Ada does not allow direct overloading of the assignment operator, it is sometimes useful to do that kind of overloading, and 
+ Ada has a facility for designing in this feature safely but indirectly, by deriving from a controlled type.
+  X := Y;
+  
+ Page 12 
+ of 
+ 113",NA
+3. Types and the Type Model ,"3.1 Rigorous Type Rules
+  
+ Ada has no structural equivalence as found in C, C++, and Modula-3.  Strict  name equivalence 
+ model.  Ada has no automatic promotion of types from one level to another.  We enjoy better 
+ type safety under these rules. Even Java falls short of Ada when considering type safety.  This is 
+ one reason Ada is the right choice for safety-critical and human-rated software applications.
+  
+  
+ Type safety is the language feature for which Ada is best known.  It is actually only one of the many strong 
+ points in Ada. The following discussion will clarify how it works. A type, in Ada, consists of four parts,
+  
+ 1. 
+  
+ A name for the type 
+  
+ 2. 
+  
+ A set of operations for the type 
+  
+ 3. 
+  
+ A set of values for the type 
+  
+ 4. 
+  
+ A set of rules governing type relationships;  e.g., a wall between objects of differing types
+  
+ The last feature, the 
+ wall
+ , is the default of the Ada typing model.  Ada does provide capabilities for getting 
+ around  or over the wall, but the wall is always there.  There are two general categories of type, elementary 
+ and composite.  A composite type is a record or an array.  Everything else, for our purposes in this book, is 
+ an elementary type. (
+ Note
+ : there are minor exceptions to this definition when you get into more advanced 
+ Ada).  Some types are predefined in a package Standard (see this Appendix A of this book). From the 
+ object-oriented viewpoint, a type has 
+ state
+ , operations to 
+ modify
+  state and operations to 
+ query
+  state.
+  
+ 3.2 Type Safety
+  
+ A better way to view strong typing is to think in terms of 
+ type safety
+ .  Every construct in Ada is type safe. 
+ For Ada, type safe is the default. For most languages, type safe is not the default.   In still other languages, 
+ type safety is an illusion because of structural equivalence or implicit type promotion.  Ada does not 
+ support either of those concepts because they are not type-safe.  An Ada designer declares data types, 
+ usually in a 
+ package
+  specification.  The declared types include a constrained set of values and operations 
+ appropriate to the problem being solved.    This ensures a rigorous contract between the client of a type and 
+ the promise made by the 
+ package
+  in which the type is defined.
+  
+ 3.3 Declaring and Defining Types
+  
+ 3.3.1 Categories of types
+  
+ Ada types can be viewed in two broad categories:  
+ limited
+ , and 
+ non-limited
+ .  A type with a 
+ limited
+  view 
+ cannot be used with the := expression, ever.    All other types can be used with := as long as that 
+ assignment is between compatible (or converted view of) types.    Ada defines certain types as always 
+ limited.   These include task types, protected types, and record types with access discriminants.
+  
+ Types in Ada may be considered in terms of their 
+ view
+ .   A type may be defined with a 
+ public view
+  which 
+ can be seen by a client of the type, and a 
+ non-public view
+  that is seen by the implementation of the type. 
+ We sometimes speak of the 
+ partial view
+  of the type.  A partial view is a public view with a corresponding 
+ non-public view. Partial views are usually defined as private or limited private.  Also, the public view of a 
+ type may be limited where the implementation view of that same type may be non-limited.  Ada does not 
+ define a protected view directly analogous to C++ or Java.   However, some of the essential properties of 
+ that view are available as necessary.
+  
+ Another important category is 
+ private
+  type versus 
+ non-private
+  type.   A limited type may also be private. A 
+ type with a private view may also have a view that is not private.    Any Ada data type may have a view 
+ that is private with a corresponding view that is not private.   The predefined operations for a non-limited 
+ private type include:  := operation, = operator, /= operator.    Any other operations for a private type must 
+ be declared explicitly by the package specification in which the type is publicly declared.
+  
+ Page 16 
+ of 
+ 113",NA
+4. Control Structures for Algorithms,"Even in an object-oriented language, there comes the point where we must actually code the algorithmic 
+ implementation.  Ada has a rich set of algorithmic constructs that are easy to code and easy to read.
+  
+ 4.1 Iteration Algorithms in Ada
+  
+ One of the three fundamental building blocks of every computer program is iteration.  In nearly every 
+ serious program there is at least one loop.  I realize some enthusiasts of recursion and/or functional 
+ programming (LISP, ML, CLOS, Haskell, etc.) may object to this statement.
+  
+ 4.1.1 For Loops
+  
+ The famous proof in Italian by Jacopini and Bohm is important here since it is a foundation idea for program structure.   From their proof, we understand the 
+ three fundamental control structures for imperative languages to be:  sequence, iteration, and selection
+  
+  
+ A 
+ forloop
+  is simple in Ada.  Every 
+ loop
+  must have an 
+ end loop
+ .  The type of the index is derived from the 
+ type of the range variables.  The scope of the index is the scope of the loop.  The index is never visible 
+ outside the loop.  Also, during each iteration of the loop, the index is a 
+ constant
+  within the loop; that is, the 
+ index of a loop may not be altered via assignment.   Iteration safety is fundamental to Ada.
+  
+ with
+  Ada.Integer_Text_IO; 
+  
+ --
+  1 
+ Put Library Unit in Scope; 
+  
+ A.10.8/21
+  
+ Test before loop
+  
+ procedure
+  Sawatdee (Start, Stop : 
+ in
+  Integer ) 
+ is
+  
+ --
+  2 
+ ""
+ Good morning"" in Thailand; 
+  
+ 6.2
+  
+ begin
+  
+ --
+  3 
+ Required to initiated sequence of statements
+  
+ for
+  I 
+ in
+  Start..Stop 
+  
+ --
+  4 
+ I is a constant to the loop in each iteration;
+  
+ 5.5/9
+  
+ loop
+  
+ --
+  5 
+ Reserved word loop is required; 
+  
+ 5.5
+  
+ Ada.Integer_Text_IO.Put(I);
+  
+ --
+  6 
+ Note the use of “dot notation” to achieve visibility; A.10.8
+  
+ end loop
+ ;
+  
+ --
+  7 
+ end loop is required for every loop; 
+  
+ 5.5
+  
+ end
+  SaWatDee;  
+ -- 
+ Ada is not case sensitive
+ !
+  
+ --
+   8 
+ Note the label for the enclosing procedure; 
+  
+ 6
+  
+ An Ada enumerated type is an ordered set and may be used as the index of a loop. Also, the machine 
+ values for the enumerated type are not necessarily simple numbers as they are in C of C++.  You will not 
+ need to do arithmetic on them.  For an enumerated type, declared as: 
+  
+  
+ type
+  Week 
+ is
+  (Sun, Mon, Tue, Wed, Thu, Fri, Sat);
+    -- 
+ An enumerated type is an ordered set; (Sun < Mon
+ )
+  
+ consider the following loop.
+  
+ with
+   Ada.Text_IO;
+  
+ --
+  1 
+ Put Library Unit in Scope;  8.2, 10.1.2
+  
+  
+ Always label 
+  
+ loops in 
+  
+ production code. 
+ It helps with both 
+ maintenance and 
+ documentation
+  
+  
+ procedure
+  Dobroe_Uutra  
+ is
+  
+ --
+  2 
+ ""Good morning"" in Russian
+  
+ begin
+  
+ --
+  3 
+ Required to initiated sequence of statemen
+ ts
+  
+ Loop_Name:
+  
+ --
+  4 
+ This is a named loop;  good coding style; 5.5
+  
+ for
+  Index 
+ in
+  Week 
+  
+ --
+  5 
+ Loop index may be any discrete type
+  
+ loop
+  
+ --
+  6 
+ Reserved word loop is required; 
+  
+ 5.5
+  
+ Ada.Text_IO.Put(Week’Image(Index));
+  
+ --
+  7 
+ ‘
+ Image converts Value to Text for  printing
+  
+ end loop 
+ Loop_Name;
+  
+ --
+   8 
+ The name is required if the loop is named; 5.5
+  
+ end
+  Dobroe_Uutra;
+  
+ --
+   9 
+ Note the label for the enclosing procedure
+  
+ Next consider an anonymous array with a range from fifteen through sixty.   We can traverse this with a 
+ simple loop statement and a 'Range attribute.  There can be no indexing off the end of the array.
+  
+ Set : 
+ array
+  (15..60) 
+ of
+  Integer; 
+ an anonymous array;  one of a kind;  no named type
+  
+ consider the following loop with a loop label,
+  
+ with
+  Text_IO;
+  
+ --
+    1  
+ Put Library Unit in Scope 
+  
+ procedure
+  Magandang_Umaga 
+ is
+  
+ --
+    2  
+ ""Good morning"" in Tagalog (language of Phillipines
+ ) 
+ begin
+  
+ --
+    3  
+ Required to initiated sequence of statements
+  
+ Page 26 
+ of 
+ 113",NA
+5. Access Types ,NA,NA
+(Pointers) ,"5.1 Overview of 
+ Access Types
+  
+ We don't really have true pointers in Ada.  The use of 
+ the word pointer is simply to acknowledge a 
+  
+ corresponding capability via access types.   The 
+  
+ important thing is that the default for Ada access types 
+ is 
+ safe
+ , unlike pointers in the C family of languages; no 
+ void pointers in Ada.
+  
+  
+ The British computing pioneer, Maurice Wilkes, is credited with inventing 
+ indirection
+ .  Indirection is a 
+ generalized notion of a pointer.   According to Dr. Wilkes, ""There is no problem in computer programming 
+ that cannot be solved by not adding yet one more level of indirection.""   Pointers, in many languages have 
+ been problematic.   The C family of languages encourages one to do arithmetic on pointers, thereby creating 
+ some really tricky errors.  Ada pointers, called access types, do not have default capability for pointer 
+ arithmetic.  Java, to its credit, adopted some of the Ada philosophy on pointers.    Whenever we use the term 
+ pointer in Ada, we really mean 
+ access
+  type or access object.  When we refer to an access type, we are 
+ referring to a pointer with a default a set of safe rules and no arithmetic operators.
+  
+ There are three forms of access type.
+  
+ Access Type FormTerminology 
+  
+ •
+ Access to a value in a storage pool 
+  
+ storage pool access type
+  
+ •
+ Access to a declared value 
+  
+ general access type
+  
+ •
+ Access to a supbprogram (procedure or function) 
+  
+ access to subprogram type
+  
+ Every access type is type specific to some designated type.
+  
+ Storage pool access types will require some 
+ kind of storage pool management since objects 
+ are dynamically allocated to an area of 
+  
+ memory, possibly the “Heap.”    Ada does not 
+ require automatic garbage collection but some 
+ compilers may provide it.  Otherwise, use the 
+ package System.Storage_Pools defined in 
+  
+ ALRM Chapter 13.
+  
+  
+ type
+  Reference 
+ is access
+  Integer;
+  
+ -- 
+ Can only point to predefined type Integer; storage pool  access type 
+ type
+  
+ Float_Reference 
+ is access all
+  Float;
+  
+ -- 
+ Can only point to predefined type Float; general access type 
+ type
+  
+ Container 
+ is limited private
+ ;
+  
+ -- 
+ Defines a data type with limited format; ordinary limited type 
+ type
+  
+ Container_Pointer 
+ is access all
+  Container;  -- 
+ Can only point to objects of type Container; access to a limited type 
+ type
+  
+ Method 
+ is access procedure … 
+ ; 
+  
+  
+ -- 
+ Points to a procedure with corresponding parameter profile 
+ type
+  
+ Method 
+ is access function … 
+ ; 
+  
+ -- 
+ Points to function with corresponding parameter profile and return type
+  
+ 5.2 Storage Pool Access Type
+  
+ A storage pool access type requires an associated set of storage locations for its allocation.  This might be a 
+ simple heap operation, or the serious Ada programmer can override the operations in System.Storage_Pool 
+ to enable some form of automatic garbage collection within a bounded storage space.
+  
+ with 
+ Ada.Integer_Text_IO;  
+ use
+  Ada;
+  
+ --  1
+ Library package for Integer IO 
+ procedure
+  Access_Type_1 
+ is
+  
+ --  2 
+  
+  
+ type
+  Integer_Pointer 
+ is access
+  Integer;
+  
+ --  3 
+ Storage pool access type 
+  
+ Number : Integer := 42;
+  
+ --  4 
+ Declared value 
+  
+  
+ Location : Integer_Pointer;
+  
+ --  
+ 5 
+ Storage pool access value 
+ begin
+  
+ --  6
+  
+ Location := 
+ new
+  Integer; 
+  
+ Location.
+ all
+  := Number; 
+  
+ Integer_Text_IO.Put(Location); 
+ Integer_Text_IO.Put(Location.
+ all
+ );
+  
+ --  7 
+ The word new is an allocator
+  
+ --  8 
+ all
+  permits reference to the data being 
+ referenced
+ --  9 
+ Illegal.  Location is not an Integer type
+  
+ -- 10 
+ Legal.  Location.all is data of Integer type
+  
+ end
+  Access_Type_1;
+  
+ -- 11
+  
+ Line 3 declares a type that points [only] to objects of type Integer.   It cannot point to any other type. 
+ There is no pointer type in Ada that allows one to point to different types (except for classwide types). 
+ Line 4 declares an object of the pointer type.   It has no value.  The default initial value is 
+ null
+ .  An Ada 
+ pointer can never point to some undefined location in memory.   Line 7 uses the reserved word 
+ new
+ .   In 
+ this context, 
+ new
+  is an 
+ allocator
+ .   An allocator reserves memory, at run time, for an object of some data 
+ type.  On Line 7, the address of that memory is assigned to the variable named Location.   The pointer 
+ named Location is not an Integer.   Instead, it points to a storage location that contains an integer.",NA
+6. Subprograms,"procedures and functions
+  
+  
+ procedure specification as a source file separately from its implementation.
+  
+ with clause could 
+ be moved to
+  
+ with
+  Ada.Text_IO;
+  
+ --  1 
+ Put Text_IO library unit in scope; 
+  
+ 10.1.2, A.10
+  
+ procedure
+   Simple_2;
+  
+ --  2 
+ Specification for a procedure may be compiled 
+  
+ 6.3",NA
+7. Package Design,"At the beginning of this book, we showed an example of an Ada package.  Most Ada programs are designed 
+ with packages.   In fact, a single program is usually composed of many  packages.  A 
+ package 
+ is a 
+ module
+  
+ for collecting related information and services.  It can be thought of as a 
+ contract
+  for services. The user of 
+ that contract may be thought of as a 
+ client
+ .   In this sense, a client may us some of the services but not want 
+ to use all of those services.  Ada allows a client to indentify only those services needed, through its visibility 
+ rules, even though all services might be in scope and potentially visible.
+  
+ The services are in the form of type definitions, data declarations, and subprograms.  A well-designed 
+ package will rarely have data declarations as part of the contract.  Instead, references to data should be 
+ through a call to some subprogram.
+  
+ 7.1 A Simple Package
+  
+ We revise the specification for the earlier Messenger package.
+  
+ package
+  Messenger 
+ is
+  
+ --  1 
+ An Ada Module
+  
+ type
+  Message 
+ is private
+ ; 
+  
+ function
+  Null_Message 
+ return
+  Message; 
+ function
+  Create (S : String) 
+ return
+  Message;
+  
+ --  2 
+ A partial definition of message
+  
+ --  3 
+ Gives a null message
+  
+ --  4 
+ Make a message from a String
+  
+ function
+  Get 
+ return
+  Message;
+  
+ --  5 
+ Get  message from keyboard
+  
+ Public Part
+  
+  
+ procedure
+  Put (M : 
+ in 
+ Message); 
+  
+ procedure
+  Clear (M : 
+ in out
+  Message); 
+  
+ function
+  Text (M : Message) 
+ return
+  String; 
+ function
+  Length (M : Message) 
+ return
+  Natural;
+  
+ --  6 
+ Put Message to Screen
+  
+ --  7 
+ Set message to null message
+  
+ --  8 
+ The string portion of  message
+  
+ --  9 
+ How many of characters
+  
+ private
+  
+ -- 10 
+ Begin private part of package
+  
+  
+ Private
+  
+  
+ type
+  Message 
+ is record
+  
+ -- 11 
+ Full definition of message
+  
+ Data : String(1..200) := (
+ others
+  => ' ');
+  
+ -- 12 
+ Message content; initialized
+  
+ Len  : Natural := 0;
+  
+ -- 13 
+ Message size; initialized
+  
+ endrecord
+ ;
+  
+ -- 14 
+ End of message definition
+  
+ end
+  Messenger;
+  
+ -- 15 
+ End of the specification
+  
+ Notice there is no algorithmic code in a package specification.  Ada lets you declare all the subprograms in 
+ the specification.  The implementation is in another compilation unit called the package body but the 
+ specification and body are both part of the same library unit.  The specification is a contract with a client. It 
+ tells what it will do, not how it will be done.   Ada is forbids algorithmic code in the specification part.
+  
+ A client of package Messenger is only able to see lines 1 through 9 of the specification.  The rest (lines 10 
+ through 14) is only in the specification to satisfy the requirements of the Ada compiler.   We call lines 1 
+ through 9 the public part of the specification and lines 10 through 14, the private part.  The private part of 
+ an Ada package specification is somewhat analogous to a C++ class protected part.    A child library unit 
+ may have some visibility to private part just as C++ derived class has visibility to a protected part of its 
+ parent class.   We examine these visibility issues later.
+  
+ The package Messenger exports some services as subprograms. The algorithmic (procedural) part of these 
+ subprograms must be coded  someplace.   Ada forbids algorithms in the package specification. Algorithms 
+ must be coded in the package body. Subprogram declarations in the specification require a corresponding 
+ implementation in the body. The package body depends on successful compilation of its fully conforming 
+ package specification.   The Ada compiler checks this dependency through compilation unit date and time 
+ stamps.   The package body is an integral part of the library unit.   The package body never needs to 
+ with 
+ the package specification because both are part of the same library unit.
+  
+ Page47 of 
+ 113",NA
+8. Child Library Units,"An Ada package may have a child.   The child may be another package or a subprogram.  A subprogram 
+ may not have a child.   Most of the time, design child library units as packages so they can be extended.  A 
+ child package specification is just like any other package specification.",NA
+P,"package
+  P 
+ is
+  
+ packagebody
+  P 
+ is
+  
+ type
+  T1 
+ is tagged private
+ ;
+  
+  procedure
+  Make(X : 
+ in out
+  T1) 
+ is
+  ... 
+ end
+  Make;
+  
+ procedure
+  Make(X : 
+ in out
+  T1);
+  
+ function
+   OK (X : 
+ in
+  T1) 
+ return
+  Boolean 
+ is
+  ... 
+ end
+  OK;
+  
+ function
+   OK (X : 
+ in
+  T1) 
+ return
+  Boolean;
+  
+ end
+  P;
+  
+ private
+  
+ type
+  T1 
+ istagged record
+  .. 
+ end record
+ ; 
+  
+ end
+  P;
+  
+ Public part of child has
+  
+ private part of child has
+  
+ private part of child has direct visibility to private and public part of parent
+  
+ packagebody
+  P.Q 
+ is
+  
+  procedure
+  Make(X : 
+ in out
+  T2) 
+ is
+  ... 
+ end
+  Make; 
+  
+ function
+   OK (X : 
+ in
+  T2) 
+ return
+  Boolean 
+ is
+  ... 
+ end
+  OK; 
+ end
+  P.Q;
+  
+ direct visibility to 
+ public part of parent 
+ .
+  
+ direct visibility to private 
+  
+ and public part of parent
+  
+ package
+  P.Q 
+ is 
+  
+ type
+  T2 
+ is new 
+ T1
+  with private
+ ; 
+ procedure
+  Make(X : 
+ in out
+  T2);",NA
+P.Q,"function
+   OK (X : 
+ in
+  T2) 
+ return
+  Boolean; 
+ private
+  
+ type
+  T2 
+ isnew
+  T1 
+ withrecord
+  .... 
+  
+ end
+  P.Q;
+  
+ client has no direct visibility
+  
+ to any unit referred to in a 
+  
+ context clause
+  
+ with
+  P.Q; 
+  
+ procedure
+  P_Q_Client 
+ is
+  
+  
+  ...
+  
+ begin
+  
+  
+  ...
+  
+ end
+  P_Q_Client;
+  
+ There is direct upward visibility from a child to its parent.  The 
+ private part and body of a child can see the private and public 
+ part of a parent or grandparent.    No unit ever has direct 
+  
+ visibility to a package body.    A client never has direct visibility 
+ to any other unit.    The client must use one of the visibility 
+ mechanisms to get direct visibility.    The direct visibility of child 
+ units continues all through the parent child hierarchy.
+  
+ Grandchildren bodies can see grandparent private parts.
+  
+ 8.1 Kinds of Child Library Units
+  
+ Child library units may be packages, functions, or procedures.   A function or procedure may not have 
+ additional children.   Ada supports both public and private child library units.   A child unit is public, by 
+ default.   The identifier of a public child may appear in any context clause anywhere in a system.   A private 
+ child may only appear in a context clause for a body (e.g., package body) when that body is for a 
+ specification with the same root (parent, grandparent, etc.).   It is also possible to have generic child library 
+ units.   However, children of generic units must also be generic.
+  
+ 8.2 Visibility Rules 
+  
+ Visibility Rules are a little tricky 
+ but easy once you grok them.
+  
+  
+ a) 
+  
+ Public part of child has direct visibility to public part of parent
+  
+ b) 
+  
+ Private part of child has direct visibility to private and public part of parent.
+  
+ c) 
+  
+ Body of child has direct visibility to private and public part of parent.
+  
+ d) 
+  
+ Grandchild units have direct visibility that corresponds to child units.
+  
+ e) 
+  
+ Private unit can only be with'ed by body of  unit if both have same root package
+ .
+  
+  
+ 8.3 Root Packages
+  
+ Sometimes we want to design a root package that is the home node for a hierarchy or subsystem of other 
+ library units.   A root package can vary greatly in its form.  Sometimes a root package contains nothing bu 
+ a few exception declarations.  Other times it is more complex, possibly with specialized type declarations.
+  
+ the general rule is to keep the root package as simple as possible  Here is one possible root package
+  
+ Page52 of 
+ 113",NA
+9.Object-Oriented Programming With Packages,"Ada includes support for extensible inheritance, polymorphism, and dynamic binding. These are three key
+  
+ features of object-oriented programming (OOP).  Ada enables this through the extensible tagged type.
+  
+ 9.1 An Object-Oriented Type
+  
+ An Ada package is not a first-class object. You cannot 
+ create instances of a package, unless it is a generic package.
+  
+  
+ Consider this package containing a tagged type.  Every instance of a tagged type contains an internal tag. 
+ A tagged type may be extended with additional components.
+  
+ package
+  Machinery 
+ is
+  
+ --  1  
+ An Ada Module
+  
+ type
+  Machine 
+ is tagged  private
+ ; 
+  
+ type
+  Reference 
+ is access all 
+ Machine’Class; 
+ procedure
+  Turn_On (M : 
+ in out
+  Machine); 
+  
+ procedure
+  Turn_Off (M : 
+ in out
+  Machine); 
+ function
+  Is_On  (M : Machine) 
+ return
+  Boolean;
+  
+ --  2  
+ A tagged  partial definition of message
+ --  
+ 3  
+ A classwide access type
+  
+ --  5  
+ Turn on the machine
+  
+ --  6  
+ Turn off the Machine
+  
+ --  7 
+ Is the Machine turned on?
+  
+ private
+  
+ --  8  
+ Begin private part of package
+  
+ type
+  Machine
+  is tagged record
+  
+ --  9  
+ Full tagged definition of message
+  
+ Is_On : Boolean := False;
+  
+ -- 10  
+ Machine content; initialized
+  
+ endrecord
+ ;
+  
+ -- 11 
+ End of machine definition
+  
+ end
+  Machinery;
+  
+ -- 12 
+ End of the package specification
+  
+ 9.2 A Possible Client of the Type
+  
+ A client of package Messenger might be set up as,
+  
+ with
+  Messenger;
+  
+ -- 1 
+ A context clause
+  
+ procedure 
+ Messenger_Processor ...
+  end 
+ Messenger_Processor;
+  
+ -- 2 
+ Three dots are not legal Ada
+  
+ The context clause, 
+ with
+  Messenger, makes package Messenger and all its public services available, but
+  
+ not directly visible, to Messenger_Processor.   Public services can be made visible through a use clause, a
+  
+ use type clause, renaming of the operations, or simple dot notation.
+  
+ 9.3 Inheritance and Extension
+  
+ The Machinery package specification, with its tagged type, Machine, illustrates some important ideas in
+  
+ Ada.   A tagged type may be extended.  Therefore, one could have a client package, Rotating_Machinery,
+  
+ with
+  Machinery;--  1
+  
+ package
+  Rotating_Machinery 
+ is
+  
+ --  2
+  
+ type
+  Rotational 
+ is new 
+ Machinery.Machine 
+ with private; 
+ procedure
+  Turn_On (M : 
+ in out
+  Rotational); 
+  
+ procedure
+  Turn_Off (M : 
+ in out
+  Rotational); 
+  
+ procedure
+  Set_Speed(M : 
+ in out
+  Rotational;  S : 
+ in
+  Positive);
+  
+ --  3  
+ Inherits Machine methods & 
+ data
+ --  4  
+ Overrides 
+ Machinery.Turn_On
+ --  5  
+ Overrides 
+ Machinery.Turn_Off
+ --  6  
+ New 
+ primitive operation
+  
+ private
+  
+ --  7
+  
+ type
+  Rotational
+  is new 
+ Machinery.Machine--  8
+  
+ with record
+  
+ --  9
+  
+  RPM  :  Natural :=  0;-- 10 
+ New component in derivation
+  
+ end record
+ ;
+  
+ -- 11
+  
+ end
+  Rotating_Machinery;
+  
+ -- 12
+  
+ The Rotating_Machinery package declares a data type that extends the content of the parent type.  The
+  
+ type, Rotational now contains two components.  It has the one originally included in Machine plus the one
+  
+ we added in the type derivation statement.
+  
+ Page57 of 
+ 113",NA
+10.Using Standard Libraries and Annexes,"The Ada language standard is published in two parts:  
+ C
+ ore
+  language and 
+ A
+ nnexes
+ .  The Annexes, labled 
+ A through H,  include some standard libary units.   One library unit in Annex A, 
+ package
+  Standard
+ , is 
+ always in scope and always visible.  Other libraries support special needs such as real-time system 
+ development, platform-specific systems programming, distributed systems, and safety and security.   Still 
+ other units support input-output, string handling, and mathematical functions.
+  
+ The most commonly used and misused library unit is package Standard, where all the predefined types 
+ (Boolean, Integer, Float, Character and String) are declared.    Never use Standard numeric types for 
+ production software.  Annexes A through K constitute some implementations of the language, but never 
+ define new syntax or semantics.   Annex K defines the equivalent of intrinsic functions, called Attributes in 
+ Ada, that enable portability of algorithmic design.
+  
+ 10.1  Attributes for Portability (ALRM Annex K)
+  
+ The term, attribute, was used in Ada before it became a 
+ term in OOP. It has a different meaning from that in  the 
+ OOP communiity.
+  
+ Attributes enhance your ability to create flexibile, portable, and easy to read code. Many attributes behave 
+ like built-in functions.    The format for an attribute is a prefix of a  type or object name along followed by 
+ an apostrophe, followed by the attribute itself.  Attributes may have parameters. The format is,
+  
+ Q'Attribute 
+  
+ where there is no parameter for the attribute
+  
+  
+ The apostrophe is 
+  
+ pronounced, ""tic.""  In 
+ this example we would 
+ say, Q tic Attribute
+  
+  
+ Q'Attribute(parameter)
+  
+ where there is a parameter for the attibute
+  
+ In an expression, an attribute might be coded as,
+  
+  
+ X := Q'Attribute 
+  
+ X := Q'Attribute(parameter) 
+ for
+  X 
+ use
+  Y'Attribute
+  
+ where there is no parameter for the attribute 
+ where there is a parameter for the attibute in 
+ a representation specification clause
+  
+ along with other kinds of attribute expressions such as conditional and declarative statements.
+  
+ The prefix Q, shown above can be replaced by any of a number of Ada entities.   When the attributes are 
+ defined in Annex K, they are shown with a prefix that indicates what kind of prefix is required.   The 
+ possibilities are summarized in the following table.
+  
+ Legend for Attribute Prefixes
+  
+ P 
+  
+ Subprogram 
+  
+ X 
+  
+ an object or varible name 
+  
+ S 
+  
+ type or subtype identifier 
+  
+ E 
+  
+ entry or exception 
+  
+ T 
+  
+ task 
+  
+ R 
+  
+ record       (component is R.C') 
+  
+ A 
+  
+ array
+  
+ Examples of attributes are:
+  
+ Integer'Last 
+  
+ The last value in the set for predefined type Integer 
+ Float'Last 
+  
+ The last value for predefined type Float 
+  
+ T1'Callable 
+  
+ Is task T1 still callable 
+  
+ Vector'Last 
+  
+ Where Vector is an array, Last is largest index value 
+ Vector'Length 
+  
+ Where Vector is an array, Length is the length of the array 
+ Byte'Size 
+  
+ The number of bits in type Byte 
+  
+ X'Valid 
+  
+ Is instance named X a valid representation of its own type?
+  
+ Page64 of 
+ 113",NA
+11.  Exception Management,"Ada 83 was one of the first languages to include exception management.  Nearly all modern programming 
+ languages now have this feature.     Exceptions are an essential feature of typed-languages that support 
+ encapsulation.   Think of an exception  handler as a kind of software circuit-breaker.  Just a real circuit-
+ breaker prevents your house from catching fire, the software circuit-breaker can prevent your program 
+ from aborting at uncontrollable points during execution.
+  
+ Ada 95 has four predefined exceptions and allows the programmer to declare exceptions specific to the 
+ problem being solved.  Predefined exceptions from package Standard (Annex A.1) are:
+  
+ Constraint_Error,  Storage_Error,  Program_Error,  Tasking_Error
+  
+ Input/output errors in package IO_Exceptions (Annex A.13) are,
+  
+ Status_Error, Mode_Error, Name_Error, Use_Error, Device_Error, 
+ End_Error, Data_Error, Layout_Error
+  
+ Other Annex packages define other kinds of exceptions.  Exceptions appear in library packages from 
+ various software repositories, including the many freeware packages available from Internet sources.
+  
+ 11.1 Handling an Exception  (ALRM 11.4)
+  
+ An exception handler must appear in a 
+ begin
+ ...
+ end
+  sequence.  Therfore it might appear as,
+  
+  
+  
+  
+  
+  
+ function
+   Ohm (Volt, Amp : Float) 
+ return
+  Float  
+ is
+  
+ --  1 
+ Parameterized function declaration
+ ; 
+  
+ 6.3
+  
+ Reminder:
+  
+ Every Ada program 
+ body can be 
+ viewed in  terms of 
+ the Ada comb even 
+ if one 
+  
+ tooth of the comb 
+ is not shown.
+  
+  
+ Result : Float := 0.0;
+  
+ --  2 
+ Initialized local variable
+  
+ begin
+  
+ --  3 
+ Begins algorithmic statements;
+  
+ 6.3
+  
+ Result := Volt / Amp;
+  
+ --  4 
+ Simple division; cannot divide by zero
+  
+  return 
+ Result;
+  
+ --  5
+  
+ exception
+  
+ --  6 
+ If we try to divide by zero, land here
+ .
+  
+ when
+  Constraint_Error =>
+  
+ --  7 
+ R
+ aised on divide-by-zero; handle it here
+ .
+  
+ Text_IO.Put_Line(“Divide by Zero”);
+  
+ --  8 
+ Display the error  on the console
+  
+ raise
+ ;
+  
+ --  9 
+ Re-raises the exception after handling it
+ .
+  
+ end
+  Ohm;
+  
+ -- 10 
+ Scope terminator with name of unit
+  
+ 6.3
+  
+ It is better not to return an invalid value from a function so it is useful to raise an exception. Sometimes 
+ you want a 
+ begin
+  ... 
+ exception
+  ... 
+ end
+  sequence in-line in other code.  To call the function Ohm from a 
+ procedure, we would want another exception handler.  Since the handler re-raised the same exception (on 
+ line 8), we need another handler in the calling subprogram.
+  
+ with 
+ Ada.Exceptions;  
+ with
+   Ohm;
+  
+  
+ --   1 
+ Chapter 11.4.1 ALRM; also, see the end of this chapter 
+ with 
+ Ada.Text_IO;      
+ use
+     Ada;
+  
+  
+ --   2 
+ OK for use clause on package Ada 
+  
+ procedure
+   Electric (Amp, Volt : 
+ in
+  Float; 
+  
+  
+ --   3 
+ In mode parameters
+  
+   
+  
+  Resistance : 
+ out
+  Float)  
+ is
+  
+  
+ --   4  
+ Out mode parameter; 
+  
+  
+ 6.3 
+  
+ function
+  MSG (X :.Exceptions.Exception_Occurrence)
+  
+  
+ --   5 
+ Profile for Exception_Message function 
+  
+   
+ return
+  String
+  
+  
+ --   6 
+ Return type for Exception_Message 
+  
+   
+ renames
+  Exceptions.Exception_Message;
+  
+   
+ --   7 
+ Rename it to three character  function name 
+ begin
+  
+   
+  
+  
+ --   8 
+ Begins sequence of algorithmic statements; 
+  
+ 6.3 
+  
+ Resistance := Ohm(Amp => Amp, Volt => Volt);--   9 
+ Simple division operation; cannot divide by zero 
+ exception
+   
+  
+ -- 10 
+ If we try to divide by zero, land here
+ .
+  
+ when
+  Electric_Error:
+  
+  
+  Constraint_Error => 
+  
+ Text_IO.Put_Line(MSG(Electric_Error)); 
+  
+ Exceptions.Reraise_Occurrence(Electric_Error);
+  
+ -- 11 
+ data type isAda.Exceptions.Exception_Occurrence
+ -- 
+ 12 
+ This error is raised on divide-by-zero; handle it here
+ .
+  
+ -- 13 
+ See lines 5-7;  renamed Exception_Message function
+ -- 14 
+ Procedure for re-raising the exception by occurrence name
+  
+ end
+  Electric;
+  
+ -- 15 
+ Scope terminator with name of unit
+  
+ 6.3
+  
+ Page 71 
+ of 
+ 113",NA
+12. Generic Components,"12.1 Generic Subprograms
+  
+ In Ada, an algorithm or object can be designed as type-independent, and can be put in the library as a
+  
+ generic reusable component.  There are huge libraries of generic Ada components already in place such as
+  
+ the Public Ada Library.  Here are examples of simple generic subprograms.  The first example is a
+  
+ generalization of the Next function shown earlier.  First we are required to define the generic specification.
+  
+ generic
+  
+ -- 1 
+ Reserved word for defining templates
+  
+ type 
+ Item  
+ is 
+ (<>);  -- 
+ Any discrete type
+  
+ -- 2 
+ Generic formal Parameter   (GFP
+ )
+  
+ function
+  Next (Value :  Item ) 
+ return
+  Item;
+  
+ -- 3 
+ Specification for generic subprogram
+  
+ We would not be allowed to code a generic specification with an is such as,
+  
+ Illegal
+  
+ generic
+  
+ -- 1 
+ As in line 1, above
+  
+ type 
+ Item  
+ is 
+ (<>);
+  
+ -- 2 
+ As in line 2, above
+  
+ function
+  Next (Value :  Item ) 
+ return
+  Item 
+ is
+  
+ -- 
+ 3 
+ Illegal; Specification required
+  
+  ... 
+  
+ -- 4 
+ body of function
+  
+ end
+  Next;
+  
+ -- 5 
+ before implementation
+  
+ because any generic subprogram must be first specified as a specification.  The specification may actually
+  
+ be compiled or may be declared in the specification of a package.
+  
+ Then we code the actual algorithm.  Notice that the algorithm does not change at all for the earlier version
+  
+ of function Next, even though we may now use it for any discrete data type.
+  
+ function
+  Next (Value : Item) 
+ return
+   Item  
+ is
+  
+ -- 1 
+ Item is a generic formal parameter
+  
+ begin
+  
+ -- 2 
+ No local declarations for this function
+  
+ if
+  Item’Succ(Value) = Item’Last 
+ then
+  
+ -- 3 
+ A good use of attribute; see ALRM K/104
+  
+ return
+  Item’First;
+  
+ -- 4 
+ ALRM 6.3
+  
+ else
+  
+ -- 5 
+ ALRM 5.3
+  
+ return
+  Item’Succ(Value);
+  
+ -- 6 
+ Note two returns;  may not be good idea
+  
+ end if
+ ;
+  
+ -- 7 
+ ALRM 5.3
+  
+ end
+  Next;
+  
+ -- 8 
+ Always include the function identifier
+  
+ This function can be instantiated for any discrete data type.  Given the following types, write a few little
+  
+ procedures to cycle through the types,
+  
+ type
+  Month 
+ is
+  (January, Februrary, March, April, May, June, July, August, September, October, November, December);
+  
+ type
+  Color 
+ is
+  (Red, Orange, Yellow, Green, Blue, Indigo, Violet) ;   -- 
+ our friend, Roy G.  Biv.
+  
+ type
+  Day 
+ is
+  (Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday);
+  
+ type
+  Priority 
+ is
+  (Very_Low, Low, Sorta_Medium, Medium, Getting_Higher,  High, Very_High, The_Very_Top);
+  
+ The next generic subprogram is the famous, but simple Swap procedure.  Recall that every non-limited
+  
+ type including a private type has the predefined operators, =, /=, and operation := (assignment).  Therefore,
+  
+ we can instantiate the Swap procedure with any non-limited type in Ada.   That is, a private generic formal
+  
+ parameter, as defined on line 2 below,  can be associated with any non-limited type
+  
+ generic
+  
+ --
+  1 
+ Start the generic formal parameters
+  
+ type 
+ Element (<>)  
+ is private
+ ;
+  
+ --
+  2 
+ Unconstrained generic parameter
+  
+ procedure
+  Swap (Left, Right :  
+ in  out
+  Element) ;
+  
+ --
+  3 
+ Usually compiled separately
+  
+ First we code the the specification then the actual implementation.  Notice the algorithm in the
+  
+ implementation works for any non-limited data type.
+  
+ Page 74 
+ of 
+ 113",NA
+13.New Names from Old Ones,"Renaming is sometimes controversial.  Some people like it.  Others hate it.   The important things to
+  
+ understand are:
+  
+ 1.Renaming does not create new data space.  It simply provides compiler with a new name for an existing entity.
+  
+ 2.Don't rename same item over and over with new names;  you will confuse colleagues -- and yourself.
+  
+ 3.Use renaming to simplify your code.  A new name can sometimes make the code easier to read.
+  
+ 13.1 Making a Long Name Shorter
+  
+ This section demonstrates some useful ideas such as renaming long package names, commenting the begin
+  
+ statement, getting a line of data from a terminal using Get_Line, and catenating two strings.  Also, note that
+  
+ a string may be initialized to all spaces using the 
+ others
+   => aggregate notation.
+  
+ with
+  Text_IO, Ada.Integer_Text_IO;
+  
+ --
+   1 
+ Put Text_IO library unit in scope; 
+  
+ A.10.8/21
+  
+ procedure
+   Gun_Aydin  
+ is
+  
+ --
+   2 
+ ""Good morning"" in Turkish; 
+  
+ 6.1
+  
+ package
+  TIO 
+ renames
+  Text_IO;
+  
+ --
+   3 
+ Shorten a long name with renaming; 
+  
+ 8.5.3
+  
+ package
+  IIO 
+ renames
+  Ada.Integer_Text_IO;
+  
+ --
+   4 
+ Shorter name is same as full name to compiler; 
+  
+ 8.5.3
+  
+ Text_Data  : String (1..80) := (
+ others
+  => 
+ ‘‘
+ );
+  
+ --
+   5 
+ others => ‘ ‘ iniitalizes string to spaces; 
+  
+ 4.3.3
+  
+ Len : Natural;
+  
+ --
+   4 
+ To be used as parameter in Get_Line; 
+  
+ A.10.7
+  
+ begin
+  
+ --
+  Hello_2
+  
+ --
+   6 
+ Good idea to comment every begin statement;
+  2.7/2
+  
+ TIO.Put(“Enter Data: “);
+  
+ --
+   7 
+ Put a string prompt with no carriage return; 
+  
+ A.10
+  
+ TIO.Get_Line(Text_Data, Len);
+  
+ --
+   8 
+ After cursor, get a line of text with its length;
+  A.10
+  
+ IIO.Put (Len);
+  
+ --
+   9 
+ Convert number to text and print it; 
+  
+ A.10 
+ and
+  line 4
+  
+ TIO.Put_Line(“   “ & Text_Data(1..Len));
+  
+ --
+  10 
+ Put catenated string with carriage return; 
+  
+ 4.4.1
+  
+ end
+  Gun_Aydin;
+  
+ --
+  11 
+ end Label same as procedure name; 
+  
+ 6.3
+  
+ 13.2 Renaming an Operator  ALRM 8.5
+  
+ Sometimes an operator for a type declared in a 
+ with'ed
+  package is in scope but not visible .  The rules of
+  
+ Ada require that no entity in scope is directly visible to a client until it is explicitly made visible.   An
+  
+ operator is one of the symbol-based operations such as ""+"", ""/"", "">"", or ""="".    A 
+ use clause
+  makes
+  
+ operators directly visible, but a use clause also makes too many other entities directly visible.   You can
+  
+ selectively makeoperators visible through renaming as shown on lines 6 and 8 below.
+  
+ Renaming makes a specific operator visible without making all other operators visible.  In the following
+  
+ procedure, which draws a text-based diamond on the screen, we rename the packages to make their names
+  
+ shorter and rename the “+” and “-” operators for Text_IO.Count to make them explicitly visible.
+  
+ with
+  ada.text_io;
+  
+ --
+    1 
+ A.10;  context clause
+ .
+  
+ with
+  ada.integer_text_Io;
+  
+ --
+    2 
+ A.10.8/21
+  
+ procedure
+  diamond1 
+ is
+  
+ --
+    3 
+ Parameterless procedure
+  
+ package
+  TIO 
+ renames
+  ada.text_io;
+  
+ --
+    4 
+ Rename a library unit;  8.5.3
+  
+ package
+  IIO 
+ renames
+  ada.integer_text_io;
+  
+ --
+    5 
+ Renames;  8.5.3
+  
+ function
+  ""+"" (L, R : TIO.Count) 
+ return
+  TIO.Count 
+  
+ --
+    6 
+ Rename Operator;  8.5.4
+  
+  renames
+  TIO.""+"";
+ --
+    7 
+ Makes the  operators directly
+  
+ function
+  ""-"" (L, R : TIO.Count) 
+ return
+  TIO.Count 
+  
+ --
+    8          
+ visible for  ""+"" and ""-"" to avoid
+  
+ renames
+  TIO.""-"";
+ --
+    9           
+ the need for a ""use"" clause
+ .
+  
+ Center : 
+ constant
+  TIO.Count     := 37; 
+  
+ Left_Col, Right_Col : TIO.Count := Center; 
+ Symbol : 
+ constant
+  Character := 'X'; 
+  
+ Spacing : TIO.Count := 1; 
+  
+ Increment : TIO.Count := 2;
+  
+ --
+  10 
+ type-specific constant; named 
+ number
+ --
+  11 
+ type-specific variables
+  
+ --
+  12 
+ a character type constant
+  
+ --
+  13 
+ Local variables for counting
+  
+ --
+  14 
+ Initialize the variable
+  
+ begin
+  
+ --
+  Diamond1
+  
+ --
+  15 
+ Always declare comment at begin
+  
+ TIO.Set_Col(Center);
+  
+ --
+  16 
+ Set the column on the screen
+  
+ Page82 of 
+ 113",NA
+14. Concurrency with Tasking,"Ada is unique among general purpose programming languages in its support for concurrency.  There are 
+ two models for Ada concurrency:  
+ multitasking
+ , and 
+ distributedobjects
+ .  The latter, distributed objects is 
+ beyond the scope of this book.  We focus this discussion on multitasking.  In Ada this is simply called 
+ tasking.    Tasking is implemented using standard Ada language syntax and semantics along with two 
+ additional types:  
+ task types
+  and 
+ protected types
+ .   The syntax and semantics of 
+ task
+  types and 
+ protected 
+ types is described in Chapter 9 of the Ada Language Reference Manual (ALRM).   The semantics are 
+ augmented in Annex D and Annex C of the ALRM.
+  
+ Each task is a sequential entity that may operate concurrently with, and communicate with, other tasks.   A 
+ task object may be either an anonymous type or an object of a task type.
+  
+ 14.1 Fundamental Ideas
+  
+ Tasks are concurrent 
+ active
+  objects.   The word 
+ active
+ in that sentence is important.   An active object is 
+ called a 
+ task
+  in Ada.  Once it is created and activated a task is in one of two states:  
+ executing
+  or 
+ suspended
+ .    Ada can support multiple active tasks.  In a single processor implementation, only one task 
+ can be executing at any instant.  In this environment, other active tasks are suspended.   When one active 
+ task begins to execute, all other tasks are suspended.   Tasks can be assigned priorities so they can enter 
+ suspended/executing states according to a scheduling algorithm.  The underlying Ada Run-time Executive 
+ (it comes with every Ada compiler) has a scheduler that controls tasks according to a scheduling model. 
+ The scheduling model may vary according the the needs of the execution environment.
+  
+ Tasks may be designed so they communicate with each other.  The communication is called a 
+ rendezvous
+ . 
+ One task communicates with another by placing requests for rendezvous in the 
+ entry queue
+  of the called 
+ task.    The calling task goes into a suspended state until the entry (request for rendezvous) in the queue is 
+ consumed and and processed by the called task.    The called task does not know its caller.
+  
+ 14.2 A Keyboard Entry Example
+  
+ Task may be anonymous or instances of task types. The following tasks are anonymous. They are 
+ concurrently active.  Only one executes while the others are suspended.
+  
+ package
+  Set_Of_Tasks 
+ is 
+  
+  
+ task
+  T1;
+  
+ --   1    
+ object of anonymous task type 
+  
+ task
+  T2 
+ is
+  
+ --   2    
+ communicating object 
+  
+  
+ entry
+  A;
+  
+ --   3    
+ entry point to task 
+  
+  
+  
+ entry
+  B;
+  
+  
+ --   4    
+ entry point to task 
+  
+ end
+  T2;
+  
+ --   5    
+ end of task 
+ specification 
+  
+ task
+  T3 
+ is
+  
+ --   6    
+ communicating task object 
+  
+  
+ entry
+  X(I : 
+ in
+  Character);
+  
+ --   7    
+ parameterized entry point 
+  
+  
+ entry
+  Y(I : 
+ out
+  Character);
+  
+  
+ --   8    
+ parameterized entry point 
+  
+ end
+  T3;
+  
+ --   9    
+ end of task 
+ specification
+  
+ end
+  Set_Of_Tasks;
+  
+ -- 10  
+ end of package specification
+  
+ A task has two parts: specification and body.  A task may not be a library unit and cannot be compiled by 
+ itself.  A task must be declared inside some other library unit.  In the example, above, there are three task 
+ specifications within a package specification.   The body of each task will be within the body of the 
+ package.    For example,
+  
+ Page 87 
+ of 
+ 113",NA
+"A.  Annexes, Appendices and Standard Libraries","Reserved Word List
+  
+ abort
+  
+ case
+  
+ for
+  
+ new
+  
+ raise
+  
+ tagged
+  
+ abs
+  
+ constant
+  
+ function
+  
+ not
+  
+ range
+  
+ task
+  
+ abstract
+  
+ declare
+  
+ generic
+  
+ null
+  
+ record
+  
+ terminate
+  
+ accept
+  
+ rem
+  
+ then
+  
+ access
+  
+ delay
+  
+ goto
+  
+ of
+  
+ renames
+  
+ type
+  
+ aliased
+  
+ delta
+  
+ if
+  
+ or
+  
+ requeue
+  
+ until
+  
+ all
+  
+ digits
+  
+ others
+  
+ return
+  
+ and
+  
+ do
+  
+ in
+  
+ out
+  
+ reverse
+  
+ use
+  
+ array
+  
+ else
+  
+ is
+  
+ package
+  
+ select
+  
+ when
+  
+ at
+  
+ begin
+  
+ elsif
+  
+ limited
+  
+ pragma
+  
+ separate
+  
+ while
+  
+ end
+  
+ loop
+  
+ private
+  
+ subtype
+  
+ with
+  
+ body
+  
+ entry
+  
+ mod
+  
+ procedure
+  
+ xor
+  
+ exit
+  
+ protected
+  
+  
+ The reserved words in blue are for concurrency and tasking. 
+ Be careful when using the words in red.
+  
+   
+ Every language has reserved words, 
+  
+ sometimes called keywords.   Notice that, 
+ among Ada’s 69 reserved words, there are 
+ no explicit data types.   Instead, pre-defined 
+ types are declared in package Standard.
+  
+ Sometimes people will try to evaluate a 
+ language by counting the number of 
+  
+ reserved words.  This is a silly metric and 
+ the intelligent student will select more 
+ substantive criteria.
+  
+ Some Ada reserved words are overloaded 
+ with more than one meaning, depending on 
+ context.  The compiler will not let you make 
+ a mistake in the use of a reserved word.
+  
+  
+ A.1  Package Standard
+  
+ package Standard is always in scope.  Every entity is directly visible to every part of an Ada 
+ program.  Think of it as the root parent of every other package in any Ada program.
+  
+  
+ package
+  Standard 
+ is         -- 
+ This package is always visible and never needs a with clause or use claus
+ e 
+ pragma
+  Pure(Standard); 
+  
+ type
+ Boolean
+  is (False, True); 
+ -- 
+ An enumerated type; and ordered set;  False is less than True
+  
+ -- 
+ The predefined relational operators for this 
+ type
+  are as follows:
+  
+ -- 
+ function
+  ""=""   (Left, Right : Boolean) 
+ return
+  Boolean;
+  
+ -- 
+ function
+  ""
+ xor
+ "" (Left, Right : Boolean) 
+ return
+  
+ Boolean;-- 
+ function
+  ""
+ not
+ "" (Right : Boolean) 
+ return
+  
+ Boolean;
+  
+ -- 
+ The integer type root_integer is predefined; The corresponding universal type is universal_integer.
+  
+ -- 
+ The predefined operators for type Integer are as follows
+ :
+  
+ -- 
+ function
+  ""=""  (Left, Right : Integer'Base) 
+ return
+  Boolean;-
+ - 
+ function
+  ""/="" (Left, Right : Integer'Base) 
+ return
+  Boolean;-- 
+ function
+  ""<""  (Left, Right : Integer'Base) 
+ return
+  Boolean; 
+  
+ type
+ Integer
+ is range
+ implementation-defined
+ ; 
+  
+  
+ subtype
+ Natural
+ is
+  Integer 
+ range
+  0 .. Integer'Last; 
+  
+  
+ subtype
+ Positive
+ is
+  Integer 
+ range
+  1 .. Integer'Last;
+  
+ Package Standard is the implied 
+ parent of every other Ada package. 
+ It does not need a 
+ with
+  clause or a 
+ use
+  clause.   Every element of 
+  
+ package Standard is always visible 
+ to every part of every Ada 
+  
+ program.
+  
+ This package defines the types, 
+  
+ Integer, Boolean, Float, Character, 
+ String, Duration. It also defines 
+  
+ two subtypes, Natural and Positive.
+  
+ All numeric types are 
+  
+ -- 
+ function
+  ""+""   (Right : Integer'Base) 
+ return
+  Integer'Base;-- 
+ function
+  ""–""   (Right : Integer'Base) 
+ return
+  Integer'Base;-- 
+ function
+  ""
+ abs
+ "" (Right : Integer'Base) 
+ return
+  Integer'Base;-- 
+ function
+  ""+""   (Left, Right : Integer'Base) 
+ return
+  Integer'Base;-- 
+ function
+  ""–""   (Left, Right : Integer'Base) 
+ return
+  Integer'Base;-- 
+ function
+  ""*""   (Left, Right : Integer'Base) 
+ return
+  Integer'Base;-- 
+ function
+  ""/""   (Left, Right : Integer'Base) 
+ return
+  Integer'Base;
+  
+ Page92 of 
+ 113",NA
+Annex L Pragmas - Language-defined Compiler Directives,"Pragmas are Ada compiler directives.  The word pragma has the same root as the word, pragmatic.  It orginates in a
+  
+ Greek word which, roughly translated, means “Do this.”  Some pragmas affect the process of compilation.  Others tell
+  
+ the compiler about what elements belong in the Run-time Environment (RTE), and others restrict or expand the role
+  
+ of of some language feature.
+  
+ pragma
+  
+ All_Calls_Remote[(library_unit_name)];
+  
+ — See E.2.3.
+  
+ pragma
+  
+ Asynchronous(local_name); 
+  
+ — See E.4.1.
+  
+ pragma
+  
+ Atomic(local_name); 
+  
+ — See C.6.
+  
+ pragma
+  
+ Atomic_Components(array_local_name); 
+  
+ — See C.6.
+  
+ pragma
+  
+ Attach_Handler(handler_name, expression); 
+  
+ — See C.3.1.
+  
+ pragma
+  
+ Controlled(first_subtype_local_name); 
+  
+ — See 13.11.3.
+  
+ pragma
+  
+ Convention([Convention =>] convention_identifier,[Entity =>] local_name);
+  
+ — See B.1.
+  
+ pragma 
+  
+ Discard_Names[([On => ] local_name)]; 
+  
+ — See C.5.
+  
+ pragma 
+  
+ Elaborate(library_unit_name{, library_unit_name}); 
+  
+ — See 10.2.1.
+  
+ pragma 
+  
+ Elaborate_All(library_unit_name{, library_unit_name}); 
+  
+ — See 10.2.1.
+  
+ pragma 
+  
+ Elaborate_Body[(library_unit_name)]; 
+  
+ — See 10.2.1.
+  
+ pragma 
+  
+ Export( [Convention =>] convention_identifier, [Entity =>] local_name [, [External_Name =>] string_expression]
+  
+ [, [Link_Name =>] string_expression]);
+  
+ — See B.1.
+  
+ pragma 
+  
+ Import( [Convention =>] convention_identifier, [Entity =>] local_name [, [External_Name =>] string_expression]
+  
+ [, [Link_Name =>] string_expression]);
+  
+ — See B.1.
+  
+ pragma 
+  
+ Inline(name {, name}); 
+  
+ — See 6.3.2.
+  
+ pragma 
+  
+ Inspection_Point[(object_name {, object_name})]; 
+  
+ — See H.3.2.
+  
+ pragma 
+  
+ Interrupt_Handler(handler_name); 
+  
+ — See C.3.1.
+  
+ pragma 
+  
+ Interrupt_Priority[(expression)]; 
+  
+ — See D.1.
+  
+ pragma 
+  
+ Linker_Options(string_expression); 
+  
+ — See B.1.
+  
+ pragma 
+  
+ List(identifier); 
+  
+ — See 2.8.
+  
+ pragma 
+  
+ Locking_Policy(policy_identifier); 
+  
+ — See D.3.
+  
+ pragma 
+  
+ Normalize_Scalars; 
+  
+ — See H.1.
+  
+ pragma 
+  
+ Optimize(identifier); 
+  
+ — See 2.8.
+  
+ pragma 
+  
+ Pack(first_subtype_local_name); 
+  
+ — See 13.2.
+  
+ pragma 
+  
+ Page; 
+  
+ — See 2.8.
+  
+ pragma 
+  
+ Preelaborate[(library_unit_name)]; 
+  
+ — See 10.2.1.
+  
+ pragma 
+  
+ Priority(expression); 
+  
+ — See D.1.
+  
+ pragma 
+  
+ Pure[(library_unit_name)]; 
+  
+ — See 10.2.1.
+  
+ pragma 
+  
+ Queuing_Policy(policy_identifier); 
+  
+ — See D.4.
+  
+ pragma 
+  
+ Remote_Call_Interface[(library_unit_name)]; 
+  
+ — See E.2.3.
+  
+ pragma 
+  
+ Remote_Types[(library_unit_name)]; 
+  
+ — See E.2.2.
+  
+ pragma 
+  
+ Restrictions(restriction{, restriction}); 
+  
+ — See 13.12.
+  
+ pragma 
+  
+ Reviewable; 
+  
+ — See H.3.1.
+  
+ pragma 
+  
+ Shared_Passive[(library_unit_name)];
+  
+ — See E.2.1.
+  
+ pragma 
+  
+ Storage_Size(expression); 
+  
+ — See 13.3.
+  
+ pragma 
+  
+ Suppress(identifier [, [On =>] name]); 
+  
+ — See 11.5.
+  
+ pragma 
+  
+ Task_Dispatching_Policy(policy_identifier ); 
+  
+ — See D.2.2.
+  
+ pragma 
+  
+ Volatile(local_name); 
+  
+ — See C.6.
+  
+ pragma 
+  
+ Volatile_Components(array_local_name); 
+  
+ — See C.6.
+  
+ Page104 of 
+ 113",NA
+Windows 95/98/NT/XP/ME/2000 Programming,"NT_Console Package
+  
+ Not a part of Ada, but a useful package for many 
+ simple programs where formatting is required.
+  
+  
+ This package can be used to format a window with colors, place a cursor wherever you wish, and 
+ create character-based graphics on a Microsoft Windows console screen.  You 
+  
+ can access all of the control characters, and you can print the characters defined in Annex A, package 
+ Ada.Characters.Latin_1.   This package is required form implementing the tasking problems shown 
+ in this book.
+  
+ -----------------------------------------------------------------------
+ --
+  
+ --  File:        nt_console.ads
+  
+ --  Description: Win95/NT console support
+  
+ --  Rev:         0.1
+  
+ --  Date:        18-jan-1998
+  
+ --  Author:      Jerry van Dijk   Mail:        jdijk@acm.org
+  
+ --
+  
+ --  Copyright (c) Jerry van Dijk, 1997, 1998
+  
+ --  Billie Holidaystraat 28 2324 LK  LEIDEN THE NETHERLANDS tel int + 31 71 531 43 65
+  
+ --
+  
+ --  Permission granted to use for any purpose, provided this copyright remains attached and unmodified.
+  
+ --
+  
+ --  THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,-- 
+ WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR-- 
+ PURPOSE.
+  
+ -----------------------------------------------------------------------
+  
+ package
+  NT_Console 
+ is
+  
+ -- 
+ TYPE DEFINITIONS
+  --
+  
+ subtype
+  X_Pos 
+ is
+  Natural 
+ range
+  0 .. 79; 
+  
+ subtype
+  Y_Pos 
+ is
+  Natural 
+ range
+  0 .. 24;
+  
+ type
+  Color_Type 
+ is
+  (Black, Blue, Green, Cyan, Red, Magenta, Brown, Gray, 
+ Light_Blue, Light_Green, Light_Cyan, Light_Red, 
+ Light_Magenta, Yellow, White);
+  
+ -- 
+ CURSOR CONTROL
+  --
+  
+ function
+  Where_X 
+ return
+  X_Pos; 
+  
+ function
+  Where_Y 
+ return
+  Y_Pos;
+  
+ procedure
+  Goto_XY (X : 
+ in
+  X_Pos := X_Pos'First;
+  
+  
+  Y : 
+ in
+  Y_Pos := Y_Pos'First);
+  
+ -- 
+ COLOR CONTROL
+  --
+  
+ function
+  Get_Foreground 
+ return
+  Color_Type; 
+  
+ function
+  Get_Background 
+ return
+  Color_Type;
+  
+ procedure
+  Set_Foreground (Color : 
+ in
+  Color_Type := Gray); 
+ procedure
+  Set_Background (Color : 
+ in
+  Color_Type := Black);
+  
+ -- 
+ SCREEN CONTROL
+  --
+  
+ procedure
+  Clear_Screen (Color : 
+ in
+  Color_Type := Black);
+  
+ -- SOUND
+  CONTROL --
+  
+  procedure
+  Bleep;
+  
+ -- 
+ INPUT CONTROL
+  --",NA
+C.  Bibliography,"Books Related to Ada
+  
+ Ada 95 - The Language Reference Manual ANSI/ISO/IEC 8652:1995 
+  
+ Ada 95 Rationale, The Language and Standard Libraries
+ ,  Ada Joint Program Office (with Intermetrics) 
+  
+ Beidler, John, 
+ Data Structures and Algorithms, An Object-Oriented Approach Using Ada 95
+ , 
+  
+ Springer-Verlag 1997,  New York,  ISBN  0-387-94834-1 
+  
+ Barnes, John G. P., 
+ Programming in Ada 95
+ , Addison-Wesley, 1998,  Second Edition 
+  
+  
+ Be sure you get the second edition; many improvements over the first edition 
+  
+ Ben-Ari, Moti, 
+ Understanding Programming Languages
+ , John Wiley & Sons, 1996 
+  
+ Ben-Ari, Moti, 
+ Ada for Professional Software Engineers
+ , John Wiley & Sons, 1998 
+  
+ Booch, Grady, Doug Bryan, Charles Petersen,
+  Software Engineering with Ada
+ , Third Edition
+  
+  
+   
+  Benjamin/Cummings, 1994  (Ada 83 only) 
+  
+ Booch, Grady,  
+ Object Solutions, Managing the Object-Oriented Project
+ , Addison-Wesley, 1996 
+  
+ Burns, Alan; Wellings, Andy; 
+ Concurrency in Ada
+ , Cambridge University Press, 1995 
+  
+ Burns, Alan; Wellings, Andy; 
+ Real-Time Systems and Programming Languages
+ , Addison-Wesley, 1997 
+  
+ Bryan, Doulass & Mendal, Geoffrey, 
+ Exploring Ada
+  (2 vols), Prentice-Hall, 1992 
+  
+ Cohen, Norman, 
+ Ada As A Second Language
+ , , Second Edition, McGraw-Hill, 1996 
+  
+ Coleman, Derek, et al 
+ Object-Oriented Development; The Fusion Method
+ , Prentice-Hall, 1994 
+  
+ Culwin, Fintan, 
+ Ada, A Developmental Approach
+ , , Second Edition, 1997, Prentice-Hall 
+  
+ English, John, 
+ Ada 95, The Craft of Object-Oriented Programming
+ , Prentice-Hall, 1997
+  
+  
+  (
+ Now available for FTP download on the World Wide Web
+ ) 
+  
+ Fayad, Mohammed;  Schmidt, Douglas;  “Object-Oriented Application Frameworks”, 
+ Communications of the ACM
+ , 
+ October 1997  (Frameworks theme issue of CACM) 
+  
+ Feldman, Michael, 
+ Software Construction and Data Structures with Ada 95
+ , Addison-Wesley, 1997 
+  
+ Feldman, M.B, and E.B. Koffman, 
+ Ada95: Problem Solving and Program Design
+ , Addison-Wesley, 1996 
+ Finklestein A. and Fuks S. (1989) “Multi-party Specification”,  
+ Proceedings of 5th International Workshop on 
+ Software Specification and Design
+ , Pittsburgh, PA ,  pp 185-95 
+  
+ Fowler, Martin and Kendall Scott, 
+ UML Distilled
+ , Addison-Wesley Longman, 1997 
+  
+ Gamma, Erich; Helm, Richard; Johnson, Ralph; Vlissides, John; 
+ Design Patterns, Elements of Resuable Object-
+ Oriented Software
+ , Addison-Wesley, 1995 
+  
+ Gonzalez, Dean , 
+ Ada Programmer’s Handbook
+ , Benjamin/Cummings, 1993  (Ada 83 version only) 
+  
+ Jacobson, Ivar,  
+ Object-Oriented Software Engineering: A Use Case Driven Approach
+ , Addison-Wesley, 1994
+  
+ Page 107 of 
+ 113",NA
+Index,"A 
+  
+ abs · 7, 131, 132 
+  
+ abstract · 19, 78, 79, 87, 89, 131 
+  
+ access · 8, 10, 18, 19, 21, 23, 24, 25, 26, 30, 45, 47, 48, 49, 50, 51, 52, 53, 54, 55, 61, 64, 65, 66, 75, 78, 
+  
+ 79, 80, 84, 85, 86, 87, 88, 89, 91, 101, 102, 104, 107, 108, 111, 112, 114, 115, 116, 122, 128, 131, 137, 
+  
+ 143, 148, 152, 154, 155, 156, 157, 158, 161, 164, 165 
+  
+ Ada Core Technologies · 2, 5, 113, 168 
+  
+ aliased · 48, 49, 50, 51, 131, 148, 160 
+  
+ all · 9, 10, 12, 13, 18, 19, 24, 25, 26, 30, 32, 33, 40, 42, 44, 47, 48, 49, 50, 51, 54, 55, 59, 62, 65, 69, 74, 
+  
+ 76, 78, 80, 82, 83, 84, 85, 86, 87, 88, 89, 91, 92, 94, 100, 101, 103, 104, 105, 108, 111, 112, 114, 115, 
+  
+ 116, 117, 118, 122, 128, 129, 131, 139, 143, 146, 160, 161, 164 
+  
+ and · 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32, 
+  
+ 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 44, 46, 47, 49, 50, 51, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 
+  
+ 66, 69, 70, 73, 74, 75, 77, 79, 80, 81, 82, 83, 84, 85, 87, 89, 90, 92, 93, 94, 95, 96, 98, 99, 100, 101, 102, 
+  
+ 103, 104, 105, 106, 107, 108, 109, 111, 113, 115, 117, 118, 119, 120, 122, 124, 125, 126, 127, 128, 129, 
+  
+ 130, 131, 132, 135, 136, 137, 139, 143, 146, 149, 150, 151, 152, 153, 154, 155, 156, 158, 159, 160, 162, 
+  
+ 164, 166, 167, 168 
+  
+ array · 18, 19, 22, 24, 30, 31, 32, 33, 37, 38, 52, 54, 63, 64, 72, 73, 79, 80, 81, 85, 86, 87, 88, 89, 90, 93, 
+  
+ 101, 102, 104, 107, 108, 121, 131, 134, 143, 149, 151, 152, 153, 156, 162, 163 
+  
+ at · 2, 5, 13, 14, 15, 16, 17, 18, 26, 32, 34, 36, 40, 43, 44, 48, 49, 51, 54, 55, 59, 60, 62, 63, 70, 71, 72, 80, 
+  
+ 81, 86, 90, 94, 95, 100, 105, 106, 107, 109, 118, 124, 126, 130, 131, 138, 146, 149, 151 
+  
+ B 
+  
+ begin · 5, 9, 10, 14, 15, 16, 18, 20, 28, 29, 31, 32, 33, 36, 37, 38, 39, 41, 42, 43, 44, 45, 46, 48, 49, 50, 51, 
+  
+ 52, 53, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 68, 70, 71, 72, 73, 74, 75, 82, 83, 85, 86, 87, 88, 90, 
+  
+ 91, 93, 94, 95, 96, 97, 98, 100, 101, 103, 105, 106, 108, 109, 110, 111, 113, 114, 115, 116, 117, 118, 
+  
+ 119, 120, 121, 125, 126, 127, 129, 130, 131 
+  
+ body · 8, 9, 10, 11, 12, 13, 14, 15, 19, 20, 26, 57, 67, 70, 71, 77, 78, 79, 81, 82, 83, 102, 105, 106, 109, 
+  
+ 113, 
+ 119, 125, 126, 127, 129, 131, 148, 149, 156 
+  
+ C 
+  
+ C++ · 10, 22, 28, 29, 36, 66, 70, 93, 167, 168 
+  
+ case · 6, 18, 36, 39, 40, 42, 43, 44, 62, 63, 81, 89, 94, 95, 96, 101, 131, 148 
+  
+ Child Library Units · 11, 77, 79 
+  
+ COBOL · 93 
+  
+ code blocks · 15, 16, 43, 44, 45, 46, 59, 112, 159 
+  
+ Compilation Unit · 8, 9, 10, 11, 14, 35, 55, 56, 67, 69, 70, 71, 77, 80, 82, 83, 90, 95, 102, 110, 113, 125, 
+  
+ 149, 160, 162 
+  
+ Compilation Units · 9, 10, 11, 14, 67, 69, 70, 83, 95, 149, 160, 162 
+  
+ Compiler Publishers · 5 
+  
+ constant · 9, 16, 21, 34, 36, 38, 44, 60, 64, 65, 66, 74, 94, 103, 104, 118, 131, 135, 136, 137, 146, 147, 150 
+ D 
+  
+ declarations · 8, 9, 12, 14, 15, 16, 20, 24, 27, 29, 31, 44, 45, 51, 54, 57, 58, 64, 67, 69, 70, 73, 78, 105, 146 
+ declare · 7, 13, 14, 15, 16, 24, 44, 45, 46, 49, 50, 51, 54, 66, 69, 70, 71, 72, 86, 93, 100, 109, 115, 118, 
+  
+ 120, 
+ 121, 131 
+  
+ declare block · 14, 15, 16, 44, 45, 46, 49, 86, 121 
+  
+ delay · 18, 131 
+  
+ delta · 24, 71, 131, 134, 141, 148, 150
+  
+ Page110 of 
+ 113",NA

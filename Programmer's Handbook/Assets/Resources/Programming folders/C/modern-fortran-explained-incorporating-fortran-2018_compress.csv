@@ -1,0 +1,2622 @@
+Larger Text,Smaller Text,Symbol
+Modern Fortran Explained,NA,NA
+Incorporating Fortran 2018,NA,NA
+"Michael Metcalf, John Reid, and Malcolm Cohen",NA,NA
+1,NA,NA
+3,"Great Clarendon Street, Oxford, OX2 6DP, 
+  
+ United Kingdom
+  
+ Oxford University Press is a department of the University of Oxford.
+  
+ It furthers the University’s objective of excellence in research, scholarship, 
+ and education by publishing worldwide. Oxford is a registered trade mark of 
+ Oxford University Press in the UK and in certain other countries
+  
+ c
+ ⃝
+  Michael Metcalf, John Reid and Malcolm Cohen 2018 
+ The moral rights of the authors have been asserted
+  
+ First edition published 1987 as
+  Fortran 8x Explained 
+  
+ Second edition published 1989 
+  
+ Third edition published in 1990 as
+  Fortran 90 Explained 
+ Fourth edition published 1996 as
+  Fortran 90/95 Explained 
+ Fifth edition published 1999 
+  
+ Sixth edition published 2004 as
+  Fortran 95/2003 Explained 
+ Seventh edition published 2011 as
+  Modern Fortran Explained 
+ This edition published 2018
+  
+ Impression: 1
+  
+ All rights reserved. No part of this publication may be reproduced, stored in a 
+ retrieval system, or transmitted, in any form or by any means, without the prior 
+ permission in writing of Oxford University Press, or as expressly permitted by 
+ law, by licence or under terms agreed with the appropriate reprographics rights 
+ organization. Enquiries concerning reproduction outside the scope of the above 
+ should be sent to the Rights Department, Oxford University Press, at the address 
+ above
+  
+ You must not circulate this work in any other form 
+  
+ and you must impose this same condition on any acquirer
+  
+ Published in the United States of America by Oxford University Press 
+ 198 Madison Avenue, New York, NY 10016, United States of America
+  
+ British Library Cataloguing in Publication Data
+  
+ Data available
+  
+ Library of Congress Control Number: 2018947662
+  
+ ISBN 978–0–19–881189–3 (hbk.) 
+  
+ ISBN 978–0–19–881188–6 (pbk.)
+  
+ DOI 10.1093/oso/9780198811886.001.0001
+  
+ Printed and bound by 
+  
+ CPI Group (UK) Ltd, Croydon, CR0 4YY",NA
+Preface,"Fortran remains one of the principal languages used in the fields of scientific, 
+ numerical, and engineering programming, and a series of revisions to the standard 
+ defining successive versions of the language has progressively enhanced its power 
+ and kept it competitive with several generations of rivals.
+  
+ Beginning in 1978, the technical committee responsible for the development of 
+ Fortran standards, X3J3 (now PL22.3 but still informally called J3), laboured to 
+ produce a new, much-needed modern version of the language, Fortran 90. Its purpose 
+ was to ‘promote portability, reliability, maintainability, and efficient execution ... on a 
+ variety of computing systems’. That standard was published in 1991, and work began 
+ in 1993 on a minor revision, known as Fortran 95. Subsequently, and with the same 
+ purpose, a further major upgrade to the language was prepared by J3 and the 
+ international committee, WG5. That revision, which included object-oriented 
+ programming features, is now known as Fortran 2003. This was followed by a further 
+ revision, Fortran 2008, including coarrays; and, most recently, a minor revision, 
+ Fortran 2018, including further coarray features. Once again, we have prepared a 
+ definitive informal description of the language that this latest standard defines. This 
+ continues the series of editions of this book – the two editions of
+  Fortran 8x Explained
+  
+ that described the two drafts of the standard (1987 and 1989),
+  Fortran 90 Explained
+  
+ that described the Fortran 90 standard (1990), two editions of
+  Fortran 90/95 
+ Explained
+  that included Fortran 95 as well (1996 and 1999) and
+  Fortran 95/2003
+  
+ (2004), with its added chapters on Fortran 2003. In that endeavour, a third co-author 
+ was welcomed. Finally, the first edition of
+  Modern Fortran Explained
+  (2011) added 
+ further chapters on Fortran 2008.
+  
+  
+ In this edition the basic language is Fortran 2008. An initial chapter sets out the 
+ background to the work on new standards, and Chapters 2 to 19 describe Fortran 
+ 2008 in a manner suitable both for grasping the implications of its features and for 
+ writing programs. The remaining chapters describe the additional features of Fortran 
+ 2018. Some knowledge of programming concepts is assumed. In order to reduce the 
+ number of forward references and also to enable, as quickly as possible, useful 
+ programs to be written based on material already absorbed, the order of presentation 
+ does not always follow that of the standard. In particular, we have chosen to defer to 
+ appendices the description of features that are officially labelled as redundant (some 
+ of which were deleted from the standard) and other features whose use we deprecate. 
+ They may be encountered in old programs, but are not needed in new ones. 
+  
+ Note that, 
+ apart from a small number of deletions, each of the languages Fortran 77, Fortran 90, 
+ Fortran 95, Fortran 2003, Fortran 2008, and Fortran 2018 is a subset of its successor.",NA
+Conventions used in this book,"Fortran displayed text is set in typewriter font:
+  
+  
+ integer :: i, j 
+  
+ A line consisting of vertical dots ( ... 
+ ):
+  
+ subroutine sort 
+  
+ ...
+  
+ end subroutine sort
+  
+ indicates omitted lines and an ellipsis (...):
+  
+ data_distance = ...
+  
+ indicates omitted code.
+  
+  
+ Informal BNF terms are in italics: 
+  
+   
+  
+ if (
+ scalar-logical-expr
+ )
+  action-stmt 
+  
+ Square brackets in italics indicate optional items: 
+  
+   
+ end if
+  [name] 
+  
+ and an ellipsis represents an arbitrary number of repeated 
+ items: 
+   
+ [
+  case
+  selector [name]] 
+  
+   
+  
+ block]
+  ...
+  
+ The italic letter
+  b
+  signifies a blank character.
+  
+  
+ Corrections to any significant errors detected in this book will be made available in 
+ the file 
+ edits.pdf
+  at ftp://ftp.numerical.rl.ac.uk/pub/MRandC.",NA
+Contents,"1
+  
+ Whence Fortran?
+  
+ 1
+  
+ 2
+  
+ 1.1
+  
+ Introductio
+ n
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 1
+  
+ 1.2
+  
+ Fortran’s early history . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 2
+  
+ 1.3
+  
+ The drive for the Fortran 90 
+ standard
+  
+ . . . . . . . . . . . . . . . . . . . . .
+  
+ 2
+  
+ 1.4
+  
+ Language evolution
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 3
+  
+ 1.5
+  
+ Fortran 95
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 4
+  
+ 1.6
+  
+ Extensions to Fortran 95 . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 5
+  
+ 1.7
+  
+ Fortran 2003 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 5
+  
+ 1.8
+  
+ Extensions to Fortran 2003 . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 6
+  
+ 1.9
+  
+ Fortran 2008 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 6
+  
+ 1.10
+  
+ Extensions to Fortran 2008 . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 7
+  
+ 1.11
+  
+ Fortran 2018 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 7
+  
+ 1.12
+  
+ Conformance . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 7
+  
+ Language elements
+  
+ 9
+  
+ 2.1
+  
+ Introductio
+ n
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 9
+  
+ 2.2
+  
+ Fortran character set . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 9
+  
+ 2.3
+  
+ Tokens . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 10
+  
+ 2.4
+  
+ Source 
+ form
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 11
+  
+ 2.5
+  
+ Concept of type . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 13
+  
+ 2.6
+  
+ Literal constants of intrinsic type
+  
+ . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 13
+  
+ 2.6.1
+  
+ Integer literal constants . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 14
+  
+ 2.6.2
+  
+ Real literal 
+ constants
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 15
+  
+ 2.6.3
+  
+ Complex literal constants . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 16
+  
+ 2.6.4
+  
+ Character literal constants . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 16
+  
+ 2.6.5
+  
+ Logical literal constants . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 18
+  
+ 2.6.6
+  
+ Binary, octal, and hexadecimal constants . . . . . . . . . . . . . . .
+  
+ 19
+  
+ 2.7
+  
+ Names
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 19
+  
+ 2.8
+  
+ Scalar variables of intrinsic type . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 20
+  
+ 2.9
+  
+ Derived data types . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 20
+  
+ 2.10
+  
+ Arrays of intrinsic type . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 22
+  
+ 2.10.1
+  
+ Declaring entities of differing shapes . . . . . . . . . . . . . . . . .
+  
+ 25
+  
+ 2.10.2
+  
+ Allocatable objects
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 25",NA
+1. Whence Fortran?,"1.1 
+  
+ Introduction
+  
+ This book is concerned with the Fortran 2008 and Fortran 2018 programming 
+ languages, setting out a reasonably concise description of the whole language. The 
+ form chosen for its presentation is that of a textbook intended for use in teaching or 
+ learning the language. 
+  
+ After this introductory chapter, the chapters are written so 
+ that simple programs can be coded after the first three (on language elements, 
+ expressions and assignments, and control) have been read. Successively more complex 
+ programs can be written as the information in each subsequent chapter is absorbed. 
+ Chapter 5 describes the important concept of the module and the many aspects of 
+ procedures. Chapters 6 and 7 complete the description of the powerful array features, 
+ Chapter 8 considers the details of specifying data objects and derived types, and 
+ Chapter 9 details the intrinsic procedures. Chapters 10, 11 and 12 cover all the 
+ input/output features in a manner such that the reader can also approach this more 
+ difficult area feature by feature, but always with a useful subset already covered. 
+ Many, but not all, of the features described in Chapters 2 to 12 were available in 
+ Fortran 95.
+  
+ Chapter 13 deals with parameterized data types, Chapter 14 with procedure 
+ pointers, Chapter 15 with object-oriented programming, and Chapter 16 with 
+ submodules. Coarrays, which are important for parallel processing, are described in 
+ Chapter 17. Chapter 18 describes floating-point exception handling, and Chapter 19 
+ deals with interoperability with the C programming language. None of the features of 
+ Chapters 13 to 19 were available prior to Fortran 2003 or, in the cases of submodules 
+ and coarrays, Fortran 2008. Finally, the remaining Chapters, 20 to 23, describe the 
+ various enhancements brought to the language by the latest standard, Fortran 2018.
+  
+ In Appendices A and B we describe features that are redundant in the language. 
+ Those of Appendix A are still fully part of the standard but their use is deprecated by 
+ us, while those of Appendix B are designated as obsolescent or deleted by the 
+ standard itself.
+  
+ This introductory chapter has the task of setting the scene for those that follow. 
+ Section 1.2 presents the early history of Fortran, starting with its introduction over 
+ sixty years ago. Section 1.3 continues with the development of the Fortran 90 
+ standard, summarizes its important new features, and outlines how standards are 
+ developed; Section 1.4 looks at the mechanism that has been adopted to permit the 
+ language to evolve. Sections 1.5 to 1.11 consider the development of Fortran 95 and 
+ its extensions, then of Fortran 2003, Fortran 2008, and Fortran 2018. The final section",NA
+2. Language elements,"2.1 
+  
+ Introduction
+  
+ Written prose in a natural language, such as an English text, is composed firstly of 
+ basic elements – the letters of the alphabet. 
+  
+ These are combined into 
+ larger entities, words, which convey the basic concepts of objects, actions, and 
+ qualifications. 
+  
+ The words of the language can be further combined into larger units, 
+ phrases and sentences, according 
+  
+  
+  
+ This tells us 
+ whether a certain to certain rules. One set of rules defines the grammar.
+  
+ combination of words is correct in that it conforms to the
+  syntax
+  of the language; that 
+ is, those acknowledged forms which are regarded as correct renderings of the 
+ meanings we wish to express. Sentences can in turn be joined together into 
+ paragraphs, which conventionally contain the composite meaning of their constituent 
+ sentences, each paragraph expressing a larger unit of information. In a novel, 
+ sequences of paragraphs become chapters and the chapters together form a book, 
+ which usually is a self-contained work, largely independent of all other books.
+  
+ 2.2 
+  
+ Fortran character set
+  
+ Analogies to these concepts are found in a programming language. In Fortran, the 
+ basic elements, or character set, are the 26 letters of the English alphabet, in both 
+ upper and lower case, the ten Arabic numerals, 0 to 9, the underscore, _, and the so-
+ called special characters listed in Table 2.1. Within the Fortran syntax, the lower-case 
+ letters are equivalent to the corresponding upper-case letters; they are distinguished 
+ only when they form part of a character sequence. In this book, syntactically 
+ significant characters will always be written in lower case. The letters, numerals, and 
+ underscore are known as
+  alphanumeric
+  characters. 
+  
+ Except for the currency 
+ symbol, whose graphic may vary (for example, £ in the United Kingdom), the graphics 
+ are fixed, though their styles are not fixed. As shown in Table 2.1, some of the special 
+ characters have no specific meaning within the Fortran language. 
+  
+ In the course of 
+ this and the following chapters we shall see how further analogies with natural 
+ language may be drawn. The unit of Fortran information is the
+  lexical token
+ , which 
+ corresponds to a word or punctuation mark. Adjacent tokens are usually separated by 
+ spaces or the end of a line, but sensible exceptions are allowed just as for a 
+ punctuation mark in prose. Sequences of tokens form
+  statements
+ , corresponding to 
+ sentences. Statements, like sentences, may be joined to form larger units like 
+ paragraphs. In Fortran these are known as
+  program units
+ , and out of these may be 
+ built a
+  program
+ . A program forms a complete",NA
+∑,"a
+ ij
+  x
+ j
+ , 
+  
+  
+ i
+  = 1
+ ,
+ 2
+ ,...,n 
+  
+  
+  
+ j
+ =1
+  
+ from the vector
+  x
+ j
+ , j
+  = 1
+ ,
+ 2
+ ,
+ . . .
+ ,n
+ . In order to use this to calculate
+  
+ BCz
+  
+ we might first make
+  x
+  refer to
+  z
+  and
+  A
+  refer to
+  C
+ , thereby using our code to calculate
+  y
+  
+ =
+  Cz
+ , then make
+  x
+  refer to
+  y
+  and
+  A
+  refer to
+  B
+  so that our code calculates the result 
+ vector we finally want.
+  
+  
+ An object that can be made to refer to other objects in this way is called a
+  pointer
+ , 
+ and must be declared with the pointer attribute, for example
+  
+ real, pointer 
+  
+ :: son
+  
+ real, pointer, dimension(:) 
+  
+ :: x, y
+  
+ real, pointer, dimension(:,:) :: a
+  
+ In the case of an array, only the rank (number of dimensions) is declared, and the 
+ bounds (and hence shape) are taken from that of the object to which it points. Given 
+ such an array pointer declaration, the compiler arranges storage for a descriptor that 
+ will later hold the address of the actual object (known as the
+  target
+ ) and holds, if it is 
+ an array, its bounds and strides. 
+  
+ Besides pointing to existing variables, a pointer may 
+ be made explicitly to point at nothing:
+  
+ nullify (son, x, y, a)
+  
+ (nullify is described in Section 3.14) or may be given fresh storage by an allocate 
+ statement such as
+  
+ allocate (son, x(10), y(-10:10), a(n, n))
+  
+ In the case of arrays, the lower and upper bounds are specified just as for the 
+ dimension attribute (Section 2.10), except that any scalar integer expression is 
+ permitted. This use of pointers provides a means to access dynamic storage but, as 
+ seen in Section 2.10.2 and described later in Chapter 6, allocatable arrays provide a 
+ better way to to do this in cases where the ‘pointing’ property is not essential.
+  
+ By default, pointers are initially undefined (see also the final paragraph of Section 
+ 3.3). This is a very undesirable state since there is no way to test for it. However, it 
+ may be avoided by using the declaration:
+  
+ real, pointer :: son => null()",NA
+3. Expressions and assignments,"3.1 
+  
+ Introduction
+  
+ We have seen in the previous chapter how we are able to build the ‘words’ of Fortran 
+ – the constants, keywords, and names – from the basic elements of the character set. 
+ In this chapter we shall discover how these entities may be further combined into 
+ ‘phrases’ or
+  expressions
+ , and how these, in turn, may be combined into ‘sentences’ or
+  
+ statements
+ .
+  
+ In an expression, we describe a computation that is to be carried out by the computer. 
+ The result of the computation may then be assigned to a variable. A sequence of 
+ assignments is the way in which we specify, step by step, the series of individual 
+ computations to be There are separate sets of rules for carried out in order to arrive at 
+ the desired result.
+  
+ expressions and assignments, depending on whether the
+  operands
+  in question are 
+ numeric, logical, character, or derived in type, and whether they are scalars or arrays. 
+ There are also separate rules for pointer assignments. We shall discuss each set of 
+ rules in turn, including a description of the relational expressions that produce a 
+ result of type logical and are needed in control statements (see next chapter). To 
+ simplify the initial discussion, we commence by considering expressions and 
+ assignments that are intrinsically defined and involve neither arrays nor entities of 
+ derived data types.
+  
+ An expression in Fortran is formed of operands and operators, combined in a way 
+ that follows the rules of Fortran syntax. A simple expression involving a
+  dyadic
+  (or
+  
+ binary
+ ) operator has the form
+  
+ operand operator operand
+  
+ an example being
+  
+ x+y
+  
+ and a
+  unary
+  or
+  monadic
+  operator has the form
+  
+ operator operand
+  
+ an example being
+  
+ -y
+  
+ The type and kind of the result are determined by the type and kind of the operands 
+ and do not depend on their values. The operands may be constants, variables, or 
+ functions (see Chapter 5), and an expression may itself be used as an operand. In this 
+ way we can build up more complicated expressions such as
+  
+ operand operator operand operator operand",NA
+4. Control constructs,"4.1 
+  
+ Introduction
+  
+ We have learnt in the previous chapter how assignment statements may be written, 
+ and how these may be ordered one after the other to form a sequence of code which is 
+ executed step by step. In most computations, however, this simple sequence of 
+ statements is by itself inadequate for the formulation of the problem. For instance, we 
+ may wish to follow one of two possible paths through a section of code, depending on 
+ whether a calculated value is positive or negative. We may wish to sum 1000 elements 
+ of an array, and to do this by writing 1000 additions and assignments is clearly 
+ tedious; the ability to iterate over a single addition is required instead. We may wish 
+ to pass control from one part of a program to another, or even stop processing 
+ altogether.
+  
+ For all these purposes, we have available in Fortran various facilities to enable the 
+ logical flow through the program statements to be controlled. The most important 
+ form is that of a
+  block construct
+ , which begins with an initial keyword statement, 
+ may have intermediate keyword statements, and ends with a matching terminal 
+ statement; it may be entered only at the initial statement. Each sequence of 
+ statements between keyword statements is called a 
+ block
+ . A block may be empty, 
+ though such cases are rare.
+  
+ Block constructs may be
+  nested
+ , that is a block may contain another block 
+ construct. In such a case, the block must contain the whole of the inner construct. 
+ Execution of a block always begins with its first statement.
+  
+ 4.2 
+  
+ The if construct and statement
+  
+ The ifconstruct contains one or more sequences of statements (blocks), at most one of 
+ which is chosen for execution. The general form is shown in Figure 4.1. Here and 
+ throughout the book we use square brackets to indicate optional items, followed by 
+ dots if there may be any number (including zero) of such items. There can be any 
+ number (including zero) of else if statements, and zero or one else statements. Naming 
+ is optional, but an else or else if statement may be named only if the corresponding if 
+ and end if statements are named, and must be given the same name. The name may be 
+ any valid and distinct Fortran name (see Section 5.15 for a discussion on the scope of 
+ names).",NA
+5. Program units and procedures,"5.1 
+  
+ Introduction
+  
+ As we saw in the previous chapter, it is possible to write a complete Fortran program 
+ as a single unit, but it is preferable to break the program down into manageable units. 
+ Each such 
+ program unit
+  corresponds to a program task that can be readily 
+ understood and, ideally, can be written, compiled, and tested in isolation. We will 
+ discuss three kinds of program unit, the main program, external subprogram, and 
+ module. Submodules obviate problems associated with very large modules and are 
+ discussed in Chapter 16.
+  
+ A complete program must, as a minimum, include one
+  main program
+ . This may 
+ contain statements of the kinds that we have met so far in examples, but normally its 
+ most important statements are invocations or calls to subsidiary programs, each of 
+ which is known as a 
+ subprogram
+ . A subprogram defines a
+  function
+  or a
+  subroutine
+ . 
+ These differ in that a function returns a single object and usually does not alter the 
+ values of its arguments (so that it represents a function in the mathematical sense), 
+ whereas a subroutine usually performs a more complicated task, returning several 
+ results through its arguments and by other means. Functions and subroutines are 
+ known collectively as
+  procedures
+ .
+  
+ There are various kinds of subprograms. A subprogram may be a program unit in its 
+ own right, in which case it is called an
+  external subprogram
+  and defines an
+  external 
+ procedure
+ . External procedures may also be defined by means other than Fortran. A 
+ subprogram may be a member of a collection in a program unit called a
+  module
+ , in 
+ which case we call it a
+  module subprogram
+  and it defines a
+  module procedure
+ . A 
+ subprogram may be placed inside a module subprogram, an external subprogram, or a 
+ main program, in which case we call it an
+  internal subprogram
+  and it defines an
+  
+ internal procedure
+ . Internal subprograms may not be nested, that is they may not 
+ contain further subprograms, and we expect them normally to be short sequences of 
+ code, say up to about twenty lines. We illustrate the nesting of subprograms in 
+ program units in Figure 5.1. If a program unit or subprogram contains a subprogram, 
+ it is called the
+  host
+  of that subprogram.
+  
+ Besides containing a collection of subprograms, a module may contain data 
+ definitions, derived-type definitions, interface blocks (Section 5.11), and namelist 
+ groups (Section 8.20). This collection may provide facilities associated with some 
+ particular task, such as providing matrix arithmetic, a library facility, or a database. It 
+ may sometimes be large.",NA
+∑,"i
+ =1
+  
+ x
+ (
+ i
+ )
+  
+ and
+  
+ 2.
+  
+ 1 
+  
+ n
+  
+ variance =
+  
+ n−
+ 1 
+ i
+ =1",NA
+∑,"(
+ x
+ (
+ i
+ )
+ −
+ mean)
+ 2
+  
+ write a subroutine which returns these calculated values as arguments. The subroutine 
+ should check
+  
+ for invalid values of
+  n
+  (
+ ≤
+  1).
+  
+ A subroutine matrix_mult multiplies together two matrices
+  A
+  and
+  B
+ , whose dimensions are
+  i × 
+ j
+  
+ and
+  j × k
+ , respectively, returning the result in a matrix
+  C
+  dimensioned
+  i × k
+ . Write 
+ matrix_mult, given that each element of
+  C
+  is defined by
+  
+ C
+ (
+ m,n
+ ) =
+  
+ j
+  
+ ℓ
+ =1",NA
+∑,"(
+ A
+ (
+ m,ℓ
+ )
+ ×B
+ (
+ ℓ,n
+ ))
+  
+ The matrices should appear as arguments to matrix_mult.
+  
+ 3.
+  
+ 4.
+  
+ The subroutine random_number (Section 9.18.3) returns a random number in the range 0.0 
+ to 1.0, that is
+  
+  
+ call random_number(r) 
+  
+ ! 0
+ ≤
+ r<1 
+  
+ Using this function, write the subroutine shuffle of Figure 
+ 5.4.
+  
+ A character string consists of a sequence of letters. Write a function to return that letter of the 
+ string which occurs earliest in the alphabet; for example, the result of applying the function 
+ to
+  
+ DGUMVETLOIC is C.
+  
+ 5. 
+ 6.
+  
+ Write an internal procedure to calculate the volume, π
+ r
+ 2
+ ℓ
+ , of a cylinder of radius
+  r
+  and 
+ length
+  ℓ
+ , using as the value of π the result of acos(-1.0), and reference it in a host procedure.
+  
+ For a simple card game of your own choice, and using the random number procedure (Sec-
+ tion 9.18.3), write the subroutines deal and play of Section 5.4, using data in a module to
+  
+ communicate between them.",NA
+6. Allocation of data,"6.1 
+  
+ Introduction
+  
+ There is an underlying assumption in Fortran that the processor supplies a 
+ mechanism for managing heap storage. (A heap is a memory management mechanism 
+ whereby fresh storage may be established and old storage may be discarded in any 
+ order. Mechanisms to deal with the progressive fragmentation of the memory are 
+ usually required.) The statements described in this chapter are the user interface to 
+ that mechanism.
+  
+ 6.2 
+  
+ The allocatable attribute
+  
+ As we have seen in Section 2.10.2, sometimes an array is required only after some 
+ data have been read or some calculations performed. For this purpose, an object may 
+ be given the allocatable attribute by a statement such as
+  
+ real, dimension(:, :), allocatable :: a
+  
+ Its rank is specified when it is declared, but the bounds (if it is an array) are undefined 
+ until an allocate statement has been executed for it. Its initial status is unallocated and 
+ it becomes allocated following successful execution of an allocate statement.
+  
+ An important example is shown in Figure 6.1. The array workis placed in a module 
+ and is allocated at the beginning of the main program to a size that depends on input 
+ data. The array is then available throughout program execution in any subprogram 
+ that has a use statement for work_array.
+  
+ Figure 6.1
+  An allocatable array in a module.
+  
+ module work_array
+  
+ integer :: n
+  
+ real, dimension(:,:,:), allocatable :: work
+  
+ end module work_array
+  
+ program main
+  
+ use work_array
+  
+ read *, n
+  
+ allocate (work(n, 2*n, 3*n)) 
+  
+ ...",NA
+7. Array features,"7.1 
+  
+ Introduction
+  
+ In an era when many computers have the hardware capability for efficient processing 
+ of array operands, it is self-evident that a numerically based language such as Fortran 
+ should have matching notational facilities. Such facilities provide not only notational 
+ convenience for the programmer, but also provide an opportunity to enhance 
+ optimization.
+  
+ Arrays were introduced in Sections 2.10 to 2.12, their use in simple expressions and 
+ in assignments was explained in Sections 3.11 and 3.12, and they were used as 
+ procedure arguments in Chapter 5. These descriptions were deliberately restricted 
+ because Fortran contains a very full set of array features whose complete description 
+ would have unbalanced those chapters. The purpose of this chapter is to describe the 
+ array features in detail, but without anticipating the descriptions of the array intrinsic 
+ procedures of Chapter 9; the rich set of intrinsic procedures should be regarded as an 
+ integral part of the array features.
+  
+ 7.2 
+  
+ Zero-sized arrays
+  
+ It might be thought that an array would always have at least one element. However, 
+ such a requirement would force programs to contain extra code to deal with certain 
+ natural situations. 
+  
+ For example, the code in Figure 7.1 solves a lower-triangular 
+ set of linear equations. When i has the value n the sections have size zero, which is just 
+ what is required.
+  
+ Figure 7.1
+  A do loop whose final iteration has a zero-sized array.
+  
+ do i = 1,n
+  
+ x(i) = b(i) / a(i, i)
+  
+ b(i+1:n) = b(i+1:n) - a(i+1:n, i) * x(i)
+  
+ end do
+  
+  
+ Fortran allows arrays to have zero size in all contexts. Whenever a lower bound 
+ exceeds the corresponding upper bound, the array has size zero.
+  
+ There are few special rules for zero-sized arrays because they follow the usual 
+ rules, though some care may be needed in their interpretation. For example, two zero-",NA
+8. Specification statements,"8.1 
+  
+ Introduction
+  
+ In the preceding chapters we have learnt the elements of the Fortran language, how 
+ they may be combined into expressions and assignments, how we may control the 
+ logic flow of a program, how to divide a program into manageable parts, and have 
+ considered how arrays may be processed. We have seen that this knowledge is 
+ sufficient to write programs, when combined with rudimentary read and print 
+ statements and with the end statement. 
+  
+ In Chapters 2 to 7 we met some specification statements when declaring the type 
+ and other properties of data objects, but to ease the reader’s task we did not always 
+ explain all the available options. In this chapter we fill this gap. To begin with, 
+ however, it is necessary to recall the place of specification statements in a 
+ programming language. 
+  
+ A 
+ program is processed by a computer in stages. In the first stage, compilation, the 
+ source code (text) of the program is read by a program known as a
+  compiler
+  which 
+ analyses it, and generates files containing
+  object code
+ . Each program unit of the 
+ complete program is usually processed separately. The object code is a translation of 
+ the source code into a form which can be understood by the computer hardware, and 
+ contains the precise instructions as to what operations the computer is to perform. 
+ Using these files, an executable program is constructed. The final stage consists of the 
+ execution, whereby the coded instructions are performed and the results of the 
+ computations made available.
+  
+ During the first stage, the compiler requires information about the entities involved. 
+ This information is provided at the beginning of each program unit or subprogram by 
+ specification statements. The description of most of these is the subject of this chapter. 
+ The specification statements associated with procedure interfaces, including interface 
+ blocks and the interfacestatement and also the externalstatement, were explained in 
+ Chapter 5. The intrinsic statement is explained in Section 9.1.3.
+  
+ 8.2 
+  
+ Implicit typing
+  
+ Many programming languages require that all typed entities have their types specified 
+ explicitly. Any data entity that is encountered in an executable statement without its 
+ type having been declared will cause the compiler to indicate an error. Fortran also 
+ has implicit typing: an entity is assigned a type according to the initial letter of its 
+ name unless it is explicitly typed by appearing in a type declaration statement or",NA
+9. Intrinsic procedures and modules,"9.1 
+  
+ Introduction
+  
+ In a language that has a clear orientation towards scientific applications, there is an 
+ obvious requirement for the most frequently required mathematical functions to be 
+ provided as part of the language itself, rather than expecting each user to code them 
+ afresh. When provided with the compiler, they are normally coded to be very efficient 
+ and will have been well tested over the complete range of values that they accept. It is 
+ difficult to compete with the high standard of code provided by the vendors.
+  
+ The efficiency of the intrinsic procedures when handling arrays is particularly marked 
+ because a single call may cause a large number of individual operations to be 
+ performed, during the execution of which advantage may be taken of the specific 
+ nature of the hardware. Another feature of a substantial number of the intrinsic 
+ procedures is that they extend the power of the language by providing access to 
+ facilities that are not otherwise available. Examples are inquiry functions for the 
+ presence of an optional argument, the parts of a floating-point number, and the length 
+ of a character string.
+  
+ There are over 170 intrinsic procedures in all, a particularly rich set. They fall into 
+ distinct groups, each of which we describe in turn. Some processors may offer 
+ additional intrinsic procedures. Note that a program containing references to such 
+ procedures is portable only to other processors that provide those same procedures. 
+ In fact, such a program does not conform to the standard.
+  
+ All the intrinsic procedures are generic.
+  
+ 9.1.1 
+  
+ Keyword calls
+  
+ The procedures may be called with keyword actual arguments, using the dummy 
+ argument names as keywords. This facility is not very useful for those with a single 
+ non-optional argument, but is useful for those with several optional arguments. For 
+ example,
+  
+ call date_and_time (date=d)
+  
+ returns the date in the scalar character variable d. The rules for positional and 
+ keyword argument lists were explained in Section 5.13. In this chapter, the dummy 
+ arguments that are optional are indicated with square brackets. We have taken some 
+ ‘poetic licence’ with this notation, which might suggest to the reader that the 
+ positional form is permitted following an absent argument (this is not the case).",NA
+∑,"k
+ =1
+  
+ w
+ k
+  ×r
+ k−
+ 1
+  
+ where
+  s
+  is
+  ±
+ 1,
+  q
+  is a positive integer,
+  r
+  is an integer exceeding 1 (usually 2), and each
+  w
+ k
+  
+ is an integer in the range 0
+  ≤ w
+ k
+  < r
+ . For each kind of real, it is the set
+  
+ x
+  = 0
+  
+ and 
+  
+  
+  
+   
+ p 
+  
+ x
+  =
+  s×b
+ e
+ ×
+ k
+ =1",NA
+∑,"f
+ k
+  ×b
+ −k
+  
+ where
+  s
+  is
+  ±
+ 1,
+  p
+  and
+  b
+  are integers exceeding 1,
+  e
+  is an integer in a range
+  e
+ min
+  ≤ e ≤ e
+ max
+ , 
+ and each
+  f
+ k
+  is an integer in the range 0
+  ≤ f
+ k
+  < b
+  except that
+  f
+ 1
+  is also nonzero. Values of 
+ the parameters in these models are chosen for the processor so as best to fit the 
+ hardware with the proviso that all model numbers are representable. Note that it is 
+ quite likely that there are some machine numbers that lie outside the model. For 
+ example, many computers represent the integer
+  −r
+ q
+ , and the IEEE standard for 
+ floating-point arithmetic (ISO/IEC/IEEE 60559:2011) contains reals with
+  f
+ 1
+  = 0 (called 
+ subnormal numbers) and register numbers with increased precision and range.
+  
+ In the first paragraph of Section 2.6, we noted that the value of a signed zero is 
+ regarded as being the same as that of an unsigned zero. However, many processors 
+ distinguish at the hardware level between a negative real zero value and a positive 
+ real zero value, and the IEEE standard makes use of this where possible. For example, 
+ when the exact result of an operation is nonzero but the rounding produces a zero, the 
+ sign is retained.",NA
+∑,"w
+ k
+  ×
+ 2
+ k
+  
+ This model is valid only in the context of these intrinsics. It is identical to the model for 
+ integers in Section 9.9.1 when
+  r
+  = 2 and
+  w
+ s−
+ 1
+  = 0, but when
+  r ̸
+ = 2 or
+  w
+ s−
+ 1
+  = 1 the models",NA
+10. Data transfer,"10.1 
+  
+ Introduction
+  
+ Fortran has, in comparison with many other high-level programming languages, a 
+ particularly rich set of facilities for input/output (I/O), but it is an area of Fortran into 
+ which not all programmers need to delve very deeply. For most small-scale programs 
+ it is sufficient to know how to read a few data records containing input variables, and 
+ how to transmit to a screen or printer the results of a calculation. In large-scale data 
+ processing, on the other hand, the programs often have to deal with huge streams of 
+ data to and from many files; in these cases it is essential that great attention be paid to 
+ the way in which the I/O is designed and coded, as otherwise both the execution time 
+ and the real time spent in the program can suffer dramatically. The term
+  external file
+  
+ is used for a collection of data outside the main memory. A file is usually organized 
+ into a sequence of
+  records
+ , with access either sequential or direct. An alternative is 
+ provided by stream access, discussed in Section 10.16.
+  
+  
+ This chapter begins by discussing the various forms of
+  formatted I/O
+ , that is, I/O 
+ which deals with records that do not use the internal number representation of the 
+ computer but rather a character string that can be displayed. It is also the form usually 
+ needed for 
+  
+  
+ The so-called
+  edit 
+ descriptors
+ , transmitting data between different kinds of computers.
+  
+ which are used to control the translation between the internal number representation 
+ and the external format, are then explained. Finally, the topics of unformatted (or 
+ binary) I/O and direct-access files are covered.
+  
+ 10.2 
+  
+ Number conversion
+  
+ The ways in which numbers are stored internally by a computer are the concern of 
+ neither the Fortran standard nor this book. However, if we wish to output values – to 
+ display them on a screen or to print them – then their internal representations must 
+ be converted into a character string that can be read in a normal way. For instance, the 
+ contents of a given computer word may be (in hexadecimal) 1d7dbf and correspond 
+ to the value
+  −
+ 0
+ .
+ 000450. For our particular purpose, we may wish to display this 
+ quantity as -.000450, or as -4.5E-04, or rounded to one significant digit as -5E-04. The 
+ conversion from the internal representation to the external form is carried out 
+ according to the information specified by an edit descriptor contained in a
+  format 
+ specification
+ . These will both be dealt with fully in the next chapter; for the moment, it",NA
+11. Edit descriptors,"11.1 
+  
+ Introduction
+  
+ In the description of number conversion in Section 10.2, a few examples of the edit 
+ descriptors were given. As mentioned there, edit descriptors give a precise 
+ specification of how values are to be converted into a character string on an output 
+ device or internal file, or converted from a character string on an input device or 
+ internal file to internal representations. 
+  
+ With certain exceptions noted in the 
+ following text, edit descriptors in a list are separated by commas.
+  
+ Edit descriptors are interpreted without regard to case. This is also true for 
+ numerical and logical input fields; an example is 89AB as a hexadecimal input value. In 
+ output fields, any alphabetic characters are in upper case.
+  
+ Edit descriptors fall into three classes:
+  character string
+ ,
+  data
+ , and
+  control
+ .
+  
+ 11.2 
+  
+ Character string edit descriptor
+  
+ A character literal constant without a specified kind parameter (thus of default kind) 
+ can be transferred to an output file by embedding it in the format specification itself, 
+ as in the example
+  
+ print ""(’ This is a format statement’)""
+  
+ The string will appear each time it is encountered during format processing. In this 
+ descriptor, case is significant. Character string edit descriptors must not be used on 
+ input.
+  
+ 11.3 
+  
+ Data edit descriptors
+  
+ Data edit descriptors
+  are edit descriptors that transfer data between the 
+ input/output list and an internal or external file. A format specification may contain 
+ no data edit descriptor if there is no data in the input/output list, for example, if the 
+ input/output list is empty or consists entirely of zero-sized arrays.
+  
+ No form of value of any of the intrinsic data types, on either input or output, may be 
+ with a kind type parameter. For all the numeric edit descriptors, if an output field is 
+ too narrow to contain the number to be output, it is filled with asterisks.",NA
+12. Operations on external files,"12.1 
+  
+ Introduction
+  
+ So far we have discussed the topic of external files in a rather superficial way. In the 
+ examples of the various I/O statements in the previous chapter, an implicit 
+ assumption has always been made that the specified file was actually available, and 
+ that records could be written to it and read from it. For sequential files, the file control 
+ statements described in the next section further assume that it can be positioned. In 
+ fact, these assumptions are not necessarily valid. In order to define explicitly and to 
+ test the status of external files, three file status statements are provided: open, close, 
+ and inquire. Before beginning their description, however, two new definitions are 
+ required.
+  
+  
+ A computer system contains, among other components, a CPU and a storage system. 
+ Modern storage systems are usually based on some form of disk, which is used to store 
+ files for long or short periods of time. The execution of a computer program is, by 
+ comparison, a transient event. A file may exist for years, whereas programs run for 
+ only seconds or minutes. In Fortran terminology, a file is said to
+  exist
+  not in the sense 
+ we have just used, but in the restricted sense that it exists as a file
+  to which the 
+ program might have access.
+  In other words, if the program is prohibited from using the 
+ file because of a password protection system, or because some other necessary action 
+ has not been taken, the file ‘does not exist’. 
+  
+ A file which exists for a running 
+ program may be empty and may or may not be
+  connected 
+ to that program. The file is 
+ connected if it is associated with a unit number known to the program. Such 
+ connection is usually made by executing an open statement for the file, but many 
+ computer systems will
+  preconnect
+  certain files which any program may be expected to 
+ use, such as terminal input and output. Thus, we see that a file may exist but not be 
+ connected. It may also be connected but not exist. This can happen for a preconnected 
+ new file. The file will only come into existence (be
+  created
+ ) if some other action is 
+ taken on the file: executing an open, write, print, or endfile statement. A unit must not 
+ be connected to more than one file at once, and a file must not be connected to more 
+ than one unit at once.
+ 1 
+  
+  
+ There are a number of other points to note with respect to files.
+  
+ •
+  The set of allowed names for a file is processor dependent.
+  
+ •
+  Both sequential and direct access may be available for some files, but normally a 
+ file is limited to sequential, direct, or stream access.
+  
+ 1
+ But see Section 23.15.5, where Fortran 2018 lifts this restriction.",NA
+13. Advanced type parameter features,"The advanced type parameter features consist of type parameter inquiry and the 
+ ability to parameterize derived types.
+  
+ 13.1 
+  
+ Type parameter inquiry
+  
+ The (current) value of a type parameter of a variable can be discovered by a
+  type 
+ parameter inquiry
+ . This uses the same syntax as for component access, but the value 
+ is always scalar, even if the object is an array; for example, in
+  
+ real(selected_real_kind(10,20)) :: z(100) ...
+  
+ print *,z%kind
+  
+ a single value is printed, that being the result of executing the reference to the 
+ intrinsic function selected_real_kind. This particular case is equivalent to kind(z). 
+ However, the type parameter inquiry may be used even when the intrinsic function is 
+ not available; for example, in
+  
+ subroutine write_centered(ch, len)
+  
+ character(*), intent(inout) :: ch
+  
+ integer, intent(in) 
+  
+ :: len
+  
+ integer 
+  
+ :: i
+  
+ do i=1, (len-ch%len)/2
+  
+ it would not be possible to replace the type parameter inquiry ch%len with a 
+ reference to the intrinsic function len(ch) because len is the name of a dummy 
+ argument.
+  
+  
+ Note that this syntax must not be used to alter the value of a type parameter, say by 
+ appearing on the left-hand side of an assignment statement.
+  
+ 13.2 
+  
+ Parameterized derived types
+  
+ A derived type can have type parameters, in exact analogy with type parameters of 
+ intrinsic types. Like intrinsic type parameters, derived type parameters come in two 
+ flavours: those that must be known at compile time (like the kindparameter for type 
+ real), and those whose evaluation may be deferred until run time (like the len 
+ parameter for type character). The former are known as
+  kind
+  type parameters 
+ (because, for the intrinsic types, these are all named kind), and the latter as
+  length
+  
+ type parameters (by analogy with character length).",NA
+14. Procedure pointers,"Procedure pointers provide the ability to associate a pointer with a procedure, similar 
+ to the way dummy procedures become associated with actual procedures.
+  
+ 14.1 
+  
+ Abstract interfaces
+  
+ We have seen that to declare a dummy or an external procedure with an explicit 
+ interface one needs to use an interface block. This is fine for a single procedure, but is 
+ somewhat verbose for declaring several procedures that have the same interface 
+ (apart from the procedure names). Also, there are several situations where this 
+ becomes impossible (procedure pointer components or abstract type-bound 
+ procedures). For these situations the
+  abstract interface
+  is available. An abstract 
+ interface gives a name to a set of characteristics and argument keyword names that 
+ would constitute an explicit interface to a procedure, without declaring any actual 
+ procedure to have those characteristics. This abstract interface name may be used in 
+ the procedure statement to declare procedures which might be external procedures, 
+ dummy procedures, procedure pointers, or deferred type-bound procedures.
+  
+ An abstract interface block contains the abstract keyword, and each procedure body 
+ declared therein defines a new abstract interface. For example, given the abstract 
+ interface block
+  
+ abstract interface
+  
+ subroutine boring_sub_with_no_args
+  
+ end subroutine boring_sub_with_no_args
+  
+ real function r2_to_r(a, b)
+  
+ real, intent(in) :: a, b
+  
+ end function r2_to_r
+  
+ end interface
+  
+ the declaration statements
+  
+ procedure(boring_sub_with_no_args) :: sub1, sub2
+  
+ procedure(r2_to_r) :: modulus, xyz
+  
+ declare sub1 and sub2 to be subroutines with no actual arguments, and modulus and 
+ xyz to be real functions of two real arguments. The names boring_sub_with_no_args 
+ and r2_to_r are local to the scoping unit in which the abstract interface block is 
+ declared, and do not represent procedures or other global entities in their own right.",NA
+15. Object-oriented programming,"15.1 
+  
+ Introduction
+  
+ The object-oriented approach to programming and design is characterized by its focus 
+ on the data structures of a program rather than the procedures. Often, invoking a 
+ procedure with a data object as its principal argument is thought of as ‘sending a 
+ message’ to the object. Typically, special language support is available for collecting 
+ these procedures (sometimes known as ‘methods’) together with the definition of the 
+ type of the object.
+  
+  
+ This approach is supported in Fortran by type extension, polymorphic variables, 
+ and type-bound procedures.
+  
+ 15.2 
+  
+ Type extension
+  
+ Type extension creates new derived types by extending existing derived types. To 
+ create a new type extending an old one, the extendsattribute is used on the type 
+ definition statement.
+  
+ For example, given an old type such as
+  
+ type person 
+  
+  
+ character(len=10) :: name 
+  
+  
+ real 
+  
+ :: age 
+  
+  
+ integer 
+  
+ :: id 
+  
+ end type person
+  
+ this can be extended to form a new type with
+  
+ type, extends(person) :: employee 
+  
+  
+ integer :: national_insurance_number 
+  
+ real 
+  
+ :: salary 
+  
+ end type employee
+  
+ The old type is known as the
+  parent type
+ . The new type inherits all the components 
+ of the parent type by a process known as
+  inheritace association
+  and may have 
+ additional components. So an employee variable has the inherited components of 
+ name, age, and id, and the additional components of national_insurance_number and 
+ salary. Where the order matters, that is, in a structure constructor that does not use 
+ keywords
+ 1
+ and in default
+  
+ 1
+ The use of keywords in structure constructors was described in Section 8.19.",NA
+16. Submodules,"16.1 
+  
+ Introduction
+  
+ The module facilities that we have described so far are those of Fortran 95. While 
+ adequate for programs of modest size, they have some shortcomings for very large 
+ programs. These shortcomings all arise from the fact that, although modules are an 
+ aid to modularization of the program, they are themselves difficult to modularize. As a 
+ module grows larger, perhaps because the concept it is encapsulating is large, the only 
+ modularization mechanism is to break it into several modules. This exposes the 
+ internal structure, raising the potential for unnecessary global name clashes and 
+ giving the user of the module access to what ought to be private data and/or 
+ procedures. Worse, if the subfeatures of the module are interconnected, they must 
+ remain together in a single module, however large.
+  
+ Another significant shortcoming is that if a change is made to the code inside a 
+ module procedure, even a private one, typical use of makeor similar tools results in 
+ the recompilation of every file which used that module, directly or indirectly.
+  
+ The solution is to allow modules to be split into separate program units called 
+ submodules, which can be in separate files. Module procedures can then be split so 
+ that the interface information remains in the module, but the bodies can be placed in 
+ the submodules. A change in a submodule cannot alter an interface, and so does not 
+ cause the recompilation of program units that use the module. A submodule has 
+ access via host association to entities in the module, and may have entities of its own 
+ in addition to providing implementations of module procedures.
+  
+  
+ Submodules give other benefits, which we can explain more easily once we have 
+ described the feature.
+  
+ 16.2 
+  
+ Separate module procedures
+  
+ The essence of the feature is to separate the definition of a module procedure into two 
+ parts: the interface, which is defined in the module; and the body, which is defined in 
+ the submodule. Such a module procedure is known as a
+  separate module procedure
+ . 
+ A simple example is shown in Figure 16.1. The keyword modulein the prefix of the 
+ functionstatement indicates in the interface block that this is the interface to a module 
+ procedure rather than an external procedure, and in the submodule that this is the 
+ implementation part of a module procedure. The submodule specifies the name of its 
+ parent. Both the interface and the submodule gain access to the type point by host 
+ association.",NA
+17. Coarrays,"17.1 
+  
+ Introduction
+  
+ The coarray programming model is designed to provide a simple syntactic extension 
+ to support parallel programming from the point of view of both
+  work distribution
+  
+ and
+  data distribution
+ .
+  
+  
+ Firstly, consider work distribution. 
+  
+ The coarray extension adopts the Single 
+ Program Multiple Data (SPMD) programming model. A single program is replicated a 
+ fixed number of times, each replication having its own set of data objects. Each 
+ replication of the program is called an
+  image
+ . The number of images could be the 
+ same as, or more than or less than, the number of physical processors. A particular 
+ implementation may permit the number of images to be chosen at compile time, at 
+ link time, or at execution time. Each image executes asynchronously, and the normal 
+ rules of Fortran apply within each image.
+ 1
+ The execution sequence can differ from 
+ image to image as specified by the programmer who, with the help of a unique image 
+ index, determines the actual path using normal Fortran control constructs and explicit 
+ synchronizations. For code between synchronizations, the compiler is free to use 
+ almost all its normal optimization techniques as if only one image were present, but 
+ with access to the additional memory that the other images provide.
+  
+ Secondly, consider data distribution. The coarray extension allows the programmer 
+ to express data distribution by specifying the relationship between memory images in 
+ a syntax very much like normal Fortran array syntax. Coarray objects have an 
+ important property: as well as having access to the local object, each image may 
+ access the corresponding object on any other image. For example, the statements
+  
+ real, dimension(1000), codimension[*] :: x, y
+  
+ real, codimension[*] :: z
+  
+ declare three objects, each as a
+  coarray
+ ; x and y are array coarrays and z is a scalar 
+ coarray. A coarray always has the same shape on each image. In this example, each 
+ image has two real array coarrays of size 1000 and a scalar coarray. If an image 
+ executes the statement:
+  
+ x(:) = y(:)[q]
+  
+ the coarray y on image q is copied into coarray x on the executing image.
+  
+ Subscripts within parentheses follow the normal Fortran rules within one image.
+  
+ Cosub-scripts
+  within square brackets provide an equally convenient notation for 
+ accessing an object
+  
+  
+ 1
+ Although this is not required, we expect implementations to arrange for each image to execute the same 
+ executable file on identical hardware.",NA
+18. Floating-point exception handling,"18.1 
+  
+ Introduction
+  
+ Exception handling is required for the development of robust and efficient numerical 
+ software, a principal application of Fortran. Indeed, the existence of such a facility 
+ makes it possible to develop more efficient software than would otherwise be 
+ possible. Most computers nowadays have hardware based on the IEEE standard for 
+ binary floating-point arithmetic,
+ 1
+ which later became an ISO standard.
+ 2
+ Therefore, the 
+ Fortran exception handling features are based on the ability to test and set the five 
+ flags for floating-point exceptions that the IEEE standard specifies. However, non-IEEE 
+ computers have not been ignored; they may provide support for some of the features 
+ and the programmer is able to find out what is supported or state that certain features 
+ are essential.
+  
+  
+ Few (if any) computers support every detail of the IEEE standard. 
+  
+ This is because 
+ considerable economies in construction and increases in execution performance are 
+ available by omitting support for features deemed to be necessary to few 
+ programmers. It was therefore decided to include inquiry facilities for the extent of 
+ support of the standard, and for the programmer to be able to state which features are 
+ essential in his or her program.
+  
+ The mechanism finally chosen by the committees is based on a set of procedures for 
+ setting and testing the flags and inquiring about the features, collected in an intrinsic 
+ module called ieee_exceptions.
+  
+  
+ Given that procedures were being provided for the IEEE flags, it seemed sensible to 
+ provide procedures for other aspects of the IEEE standard. These are collected in a 
+ separate intrinsic module, ieee_arithmetic, which contains a use statement for 
+ ieee_exceptions. 
+  
+ To provide 
+ control over which features are essential, there is a third intrinsic module, 
+   
+ If 
+ a named ieee_features containing named constants corresponding to the features.
+  
+ constant is accessible in a scoping unit, the corresponding feature must be available 
+ there.
+  
+ 18.2 
+  
+ The IEEE standard
+  
+ In this section we explain those aspects of the IEEE standard that the reader needs to 
+ know in order to understand the features of this chapter. We do not attempt to give a 
+ complete description of the standard.
+  
+ 1
+ IEEE 754-1985, Standard for binary floating-point arithmetic.",NA
+∑,"f
+ k
+  ×b
+ −k
+  
+ where
+  s
+  is
+  ±
+ 1,
+  p
+  and
+  b
+  are integers exceeding one,
+  e
+  is an integer in a range
+  e
+ min
+  ≤ e ≤ 
+ e
+ max
+ , and each
+  f
+ k
+  is an integer in the range 0
+  ≤ f
+ k
+  < b
+  except that
+  f
+ 1
+  is also nonzero. Both 
+ IEEE formats are binary, with
+  b
+  = 2. The precisions are
+  p
+  = 24 and
+  p
+  = 53, and the 
+ exponent ranges are
+  −
+ 125
+  ≤ e ≤
+  128 and
+  −
+ 1021
+  ≤ e ≤
+  1024, for real and double 
+ precision, respectively. In addition, there are numbers with
+  e
+  =
+  e
+ min
+  and
+  f
+ 1
+  = 0, which 
+ are known as
+  denormal-ized
+ 3
+ numbers; note that they all have absolute values less 
+ than that returned by the intrinsic tiny since it considers only numbers within the 
+ Fortran model. Also, zero has a sign and in all intrinsic operations and comparisons, 
+ but it can be detected by the signfunction and is both 0 and
+  −
+ 0 have inverses, ∞ and
+  
+ −
+ ∞. Within Fortran,
+  −
+ 0 is treated as the same as a zero respected on formatted output.
+  
+ The IEEE standard also specifies that some of the binary patterns that do not fit the 
+ model be used for the results of exceptional operations, such as 0/0. Such a number is 
+ known as a
+  NaN
+  (Not a Number). A NaN may be
+  signaling
+  or
+  quiet
+ . Whenever a 
+ signaling NaN appears as an operand, the invalid exception signals and the result is a 
+ quiet NaN. Quiet NaNs propagate through almost every arithmetic operation without 
+ signaling an exception.
+  
+ The standard specifies four rounding modes:
+  
+ nearest
+  rounds the exact result to the nearest representable value;
+  
+ to-zero
+  rounds the exact result towards zero to the next representable value;
+  
+ up
+  rounds the exact result towards +∞ to the next representable value;",NA
+19. Interoperability with C,"19.1 
+  
+ Introduction
+  
+ Fortran provides a standardized mechanism for interoperating with C. Clearly, any 
+ entity involved must be such that equivalent declarations of it may be made in the two 
+ languages. This is enforced within the Fortran program by requiring all such entities 
+ to be
+  interoperable
+ . We will explain in turn what this requires for types, variables, and 
+ procedures. They are all requirements on the syntax so that the compiler knows at 
+ compile time whether an entity is interoperable. We continue with examining 
+ interoperability for global data and then discuss some examples. We conclude with a 
+ syntax for defining sets of integer constants that is useful in this context.
+  
+ 19.2 
+  
+ Interoperability of intrinsic types
+  
+ There is an intrinsic module named iso_c_binding that contains named constants of 
+ type default integer holding kind type parameter values for intrinsic types. Their 
+ names are shown in Table 19.1, together with the corresponding C types. The 
+ processor is required to support only int. Lack of support is indicated with a negative 
+ value of the constant. If the value is positive, it indicates that the Fortran type and kind 
+ type parameter interoperate with the corresponding C type.
+  
+  
+ The negative values are as follows. For the integer types, the value is
+  −
+ 1 if there is 
+ such a C type but no interoperating Fortran kind or
+  −
+ 2 if there is no such C type. For 
+ the real types, the value is
+  −
+ 1 if the C type does not have a precision equal to the 
+ precision of any of the Fortran real kinds,
+  −
+ 2 if the C type does not have a range equal 
+ to the range of any of the Fortran real kinds,
+  −
+ 3 if the C type has neither the precision 
+ nor range of any of the Fortran real kinds, and equal to
+  −
+ 4 if there is no interoperating 
+ Fortran kind for other reasons. The values of c_float_complex, c_double_complex, and 
+ c_long_double_complex are the same as those of c_float, c_double, and c_long_double, 
+ respectively. For logical, the value of c_bool is
+  −
+ 1 if there is no Fortran kind 
+ corresponding to the C type _Bool. For character, 
+  
+ For character type, interoperability 
+ also requires that the length type parameter be the value of c_char is
+  −
+ 1 if there is no 
+ Fortran kind corresponding to the C type char. omitted or be specified by a constant 
+ expression whose value is 1. The following named constants (with the obvious 
+ meanings) are provided: c_null_char, c_alert, c_backspace, c_form_feed, c_new_line, 
+ c_carriage_return, c_horizontal_tab, c_vertical_tab.",NA
+20. Fortran 2018 coarray ,NA,NA
+enhancements,"20.1 
+  
+ Teams
+  
+ Teams have been introduced to allow separate sets of images to execute 
+ independently. An important design objective was that, given code that has been 
+ developed and tested on all images, it should be possible to run the code on a team 
+ without making changes. This requires that if a team has
+  n
+  images, the image indices 
+ within the team run from 1 to
+  n
+ .
+  
+ It was decided that teams should always be formed by partitioning an existing team 
+ into parts, starting with the team of all the images, which is known as the
+  initial team
+ . 
+ The team in which a statement is executed by an image is known as the
+  current team
+ .
+  
+  
+ Information about a team is held collectively on all the images of the team in a scalar 
+ variable of type team_type from the intrinsic module iso_fortran_env. The components 
+ of this type are private, and may contain information to improve communication 
+ efficiency within the team. To facilitate implementation where this information may 
+ be different on different images, a team variable created on one image is not usable on 
+ another image. Therefore, a coarray or coindexed object must not be of type 
+ team_type, and a polymorphic coarray must not be allocated to be of type team_type 
+ or to have a subobject of type team_type. Furthermore, assigning a value of type 
+ team_type to a variable on another image, or vice versa, causes the variable to become 
+ undefined. (These restrictions and effects are the same as for type c_ptr.) 
+  
+  
+ A set of new teams is formed by executing a form team statement on all images of 
+ the current team. The new team to which an image of the current team will belong is 
+ determined by its
+  team number
+ , which is a positive integer. All the images with the 
+ same team number will belong to the same new team. The team number is specified 
+ on the form teamstatement by an integer expression. For example, the code
+  
+ use iso_fortran_env
+  
+ type ( team_type ) new_team 
+  
+ ...
+  
+ form team ( 1 + mod(this_image(),2), new_team )
+  
+ forms two new teams consisting of the images of the current team that have odd or 
+ even image indices. We describe the form team statement in detail in Section 20.3.
+  
+  
+ Changes of team take place at the change team and end team statements, which 
+ mark the beginning and end of a new construct, the change team construct:",NA
+21. Fortran 2018 enhancements ,NA,NA
+to interoperability with C,"21.1 
+  
+ Introduction
+  
+ The design of the C interoperability features in Fortran 2003 followed the principle 
+ that interoperability was only possible where both C and Fortran had very similar 
+ features. Al-though this led to semantics that are relatively easy to understand, and to 
+ write interoperable procedures for, it has meant that some very useful Fortran 
+ features are not available when interoperating with C; in particular,
+  
+ •
+  optional dummy arguments,
+  
+ •
+  assumed-length character dummy 
+ arguments,
+ •
+  assumed-shape arrays,
+  
+ •
+  allocatable dummy arguments, and
+  
+ •
+  pointer dummy arguments.
+  
+  
+ Also, the frequent need to pass C pointers for low-level operations (using c_loc) can 
+ lead to ugly code that is difficult to understand.
+  
+  
+ Fortran 2018 addresses all of these issues. 
+  
+ For optional arguments there are 
+ already widespread C programming idioms that can be followed, and so this was the 
+ simplest deficiency to correct. For all the other advanced Fortran features, the 
+ necessary information that needs to be passed to/from the C functions is passed with 
+ a
+  C descriptor
+ , and there are mechanisms provided for the C functions to use such 
+ descriptors. For more convenient low-level C interoperability,
+  assumed type
+  dummy 
+ arguments are available.
+  
+ Additionally, the new
+  assumed rank
+  feature can also be used in interoperable 
+ procedures. We will now discuss the simplest new C interoperability feature, optional 
+ dummy argument handling.
+  
+ 21.2 
+  
+ Optional arguments
+  
+ The C programming language does not have any direct equivalent of Fortran optional 
+ arguments, and so Fortran 2003 did not provide for any interoperability with them. 
+ However, a widespread programming idiom in C with a similar effect to optional 
+ arguments is to pass the argument by reference, with a null pointer to indicate that 
+ the argument is not present.",NA
+22. Fortran 2018 conformance ,NA,NA
+with ISO/IEC/IEEE 60559:2011,"22.1 
+  
+ Introduction
+  
+ A large number of changes to the intrinsic modules ieee_arithmetic, ieee_exceptions, 
+ and ieee_features have been made for conformance with the new IEEE standard for 
+ floating-point arithmetic (ISO/IEC/IEEE 60559:2011).
+  
+ 22.2 
+  
+ Subnormal values
+  
+ The new IEEE standard uses the term ‘subnormal’ instead of ‘denormal’ for a value 
+ with magnitude less than any normal value and less precision.
+  
+  
+ The named constants ieee_negative_subnormal and ieee_positive_subnormal of type 
+ ieee_class_type have been added to the module ieee_arithmetic with the same values 
+ as ieee_negative_denormal and ieee_positive_denormal, respectively. 
+  
+ The named 
+ constant ieee_subnormal of type ieee_features_type has been added to the module 
+ ieee_features and has the same value as ieee_denormal.
+  
+  
+ The inquiry function ieee_support_subnormal has been added to ieee_arithmetic and 
+ is exactly the same as ieee_support_denormal except for its name.
+  
+ 22.3 
+  
+ Type for floating-point modes
+  
+ The type ieee_modes_typehas been added to ieee_exceptionsfor storing all the 
+ floating-point modes, that is, the rounding modes, underflow mode, and halting mode. 
+ Also added to ieee_exceptions are subroutines for getting and setting the modes.
+  
+ call ieee_get_modes(modes)
+  where modes is a scalar of type ieee_modes_type 
+  
+ that has intent out and is assigned the value of the floating-point modes.
+  
+ call ieee_set_modes(modes)
+  where modes is a scalar of type ieee_modes_type that 
+ has intent inand has a value obtained by a previous call of ieee_get_modes. The 
+ floating-point modes are restored to their values at the time of the previous call.
+  
+ Modern Fortran Explained
+ , 2nd Edition. Michael Metcalf, John Reid, and Malcolm Cohen. Oxford University 
+ Press (2018). c
+ ⃝
+  Michael Metcalf, John Reid, and Malcolm Cohen 2018. DOI 
+ 10.1093/oso/9780198811893.001.0001",NA
+23. Minor Fortran 2018 features,"23.1 
+  
+ Default accessibility for entities accessed from a module
+  
+ If a module a_mod uses module b_mod, the default accessibility for entities it accesses 
+ from b_mod is the overall default accessibility for entities in a_mod (see Section 8.14). 
+ This is inconvenient when a_modis default publicbut does not want to export very 
+ much if anything from b_mod, or when a_mod is default private but wants to export 
+ everything or nearly everything from b_mod.
+  
+ Having to specify the non-default accessibility for most or all of b_mod can be 
+ tedious and error-prone. To overcome this, the default accessibility for entities 
+ accessed from a module can be controlled separately from the default accessibility of 
+ entities declared or defined locally. This is done by using the module name in a public 
+ or private statement; for example,
+  
+ private b_mod
+  
+ makes entities accessed by use b_mod have a default accessibility of private in a_mod, 
+ regardless of the overall default accessibility in a_mod. An explicit public or private 
+ specification for an entity used from b_mod is still permitted, and overrides or 
+ confirms the default.
+  
+  
+ A module name must not appear more than once in all the publicand 
+ privatestatements in the using module.
+  
+ 23.2 
+  
+ Requiring explicit procedure declarations
+  
+ A source of error in Fortran programs that is hard to detect is invoking a procedure 
+ that needs an explicit interface when no such interface is accessible. Similarly, 
+ invoking an external procedure when a module procedure was intended can also be 
+ difficult to find. This happens because using a name as a procedure implicitly declares 
+ it to be a procedure; to enable easier detection of such errors, this implicit declaration 
+ can now be disabled.
+  
+  
+ This is done by new syntax in the implicit none statement (Section 8.2); the general 
+ form of implicit none is now
+  
+ implicit none
+  [
+  (
+  [ implicit-none-spec-list ]
+  )
+  ]
+  
+ where each
+  implicit-none-spec
+  is externalor type; each qualifier may appear at most 
+ once.
+  
+ The appearance of external requires that the names of external and dummy 
+ procedures be explicitly declared to have the external attribute. This may be done by 
+ an external",NA
+A. Deprecated features,"A.1 
+  
+ Introduction
+  
+ This appendix begins by describing features that became redundant with Fortran 95 
+ and whose use we have since deprecated. Descriptions of newer deprecated features 
+ follow in Section A.9. They might become obsolescent in a future revision, but this is a 
+ decision that can be made only within the standardization process. We note that this 
+ decision to group certain features into an appendix and to deprecate their use is ours 
+ alone, and does not have the actual or implied approval of either WG5 or J3.
+  
+  
+ Each description mentions how the feature concerned may be effectively replaced 
+ by a newer feature.
+  
+ A.2 
+  
+ Storage association
+  
+ Storage units
+  are the fixed units of physical storage allocated to certain data. There is 
+ a storage unit called
+  numeric
+  for any non-pointer scalar of the default real, default 
+ integer, and default logical types, and a storage unit called
+  character
+  for any non-
+ pointer scalar of type default character and character length 1. Non-pointer scalars of 
+ type default complex or double precision real (Appendix A.6) occupy two contiguous 
+ numeric storage units. Non-pointer scalars of type default character and length
+  len
+  
+ occupy
+  len
+  contiguous character storage units.
+  
+ As well as numeric and character storage units, there are a large number of
+  
+ unspecified 
+ storage units. A non-pointer scalar object of type non-default integer, real 
+ other than default or double precision, non-default logical, non-default complex, or 
+ non-default character of any particular length occupies a single unspecified storage 
+ unit that is different for each case. A data object with the pointer attribute has an 
+ unspecified storage unit, different from that of any non-pointer object and different 
+ for each combination of type, type parameters, and rank. The standard makes no 
+ statement about the relative sizes of all these storage units and permits storage 
+ association to take place only between objects with the same category of storage unit. 
+ A non-pointer array occupies a sequence of contiguous storage sequences, one for 
+ each element, in array element order.
+  
+ Objects of derived type have no storage association, each occupying an unspecified 
+ storage unit that is different in each case, except where a given type with at least one 
+ component contains a sequence statement making it a
+  sequence type
+ , for example:",NA
+B. Obsolescent and deleted features,"B.1 
+  
+ Features obsolescent in Fortran 95
+  
+ The features of this section are described by the Fortran 95 standard to be 
+ obsolescent. Their replacements are described in the relevant subsections.
+  
+ B.1.1 
+  
+ Fixed source form
+  
+ In the old fixed source form, each statement consists of one or more
+  lines
+  exactly 72 
+ characters long,
+ 1
+ and each line is divided into three
+  fields
+ . The first field consists of 
+ positions 1 to 5 and may contain a
+  statement label
+ . A Fortran statement may be 
+ written in the third fields of up to 256 consecutive lines (only 20 in versions prior to 
+ Fortran 2003). The first line of a multi-line statement is known as the
+  initial line
+  and 
+ the succeeding lines as
+  continuation lines
+ .
+  
+  
+ A non-comment line is an initial line or a continuation line depending on whether 
+ there is a character other than zero or blank in position 6 of the line, which is the 
+ second field. The first field of a continuation line must be blank. The ampersand is not 
+ used for continuation. 
+  
+ The third field, from positions 7 to 72, is reserved for the 
+ Fortran statements themselves.
+  
+ Note that if a construct is named, the name must be placed here and not in the label 
+ field. 
+  
+ Except in a character context, blanks are insignificant.
+  
+ The presence of an asterisk (*) or a character c in position 1 of a line indicates that 
+ the whole line is commentary. An exclamation mark indicates the start of 
+ commentary, except in position 6, where it indicates continuation.
+  
+ Several statements separated by a semicolon (;) may appear on one line. The 
+ semicolon may not, in this case, be in column 6, where it would indicate continuation. 
+ Only the first of the statements on a line may be labelled. A semicolon that is the last 
+ non-blank character of a line, or the last non-blank character ahead of commentary, is 
+ ignored.
+  
+  
+ A program unit end statement must not be continued, and any other statement with 
+ an initial line that appears to be a program unit end statement must not be continued.
+  
+  
+ A processor may restrict the appearance of its defined control characters, if any, in 
+ this source form.
+  
+  
+ In applications where a high degree of compatibility between the old and the new 
+ source forms is required, observance of the following rules can be of great help:
+  
+ 1
+ This limit is processor dependent if the line contains characters other than those of the default type.",NA
+C. Object-oriented list example,"A recurring problem in computing is the need to manipulate a dynamic data structure. 
+ This might be a simple homogeneous linked list like the one encountered in Section 
+ 2.12, but often a more complex structure is required.
+  
+ The example in this appendix consists of a module that provides two types – a list 
+ type anylist and an item type anyitem – for building heterogeneous doubly linked 
+ linear lists, plus a simple item constructor function newitem. Operations on the list or 
+ on items are provided by type-bound procedures. Each list item has a scalar value 
+ which may be of any type; when creating a new list item, the required value is copied 
+ into the item. A list item can be in at most one list at a time.
+  
+  
+ List operations include inserting a new item at the beginning or end of the list, 
+ returning the item at the beginning or end of the list, and counting, printing, or 
+ deleting the whole list. 
+  
+ Operations on an item include removing it from a list, 
+ returning the next or previous item on the list, changing the value of the item, and 
+ printing or deleting the item. When traversing the list backwards (via the 
+ prevfunction), the list is circular; that is, the last item on the list is previous to the first. 
+ When traversing the list forwards (via the next function), a null pointer is returned 
+ after the last item.
+  
+  
+ Internally, the module uses private pointer components (firstptr, nextptr, prevptr, 
+ and upptr) to maintain the structure of the lists.
+  
+ The item print operation may be overridden in an extension to anyitem to provide 
+ printing capability for user-defined types; this is demonstrated by the type myitem. All 
+ the other procedures are non-overridable, so that extending the list type cannot break 
+ the list structure.
+  
+ The source code is available at ftp://ftp.numerical.rl.ac.uk/pub/MRandC/oo.f90
+  
+ module anylist_m
+  
+ !
+  
+ ! Module for a list type that can contain items with any scalar value.
+  
+ ! Values are copied into the list items.
+  
+ !
+  
+ ! A list item can be in at most one list at a time.
+  
+ !
+  
+ implicit none
+  
+ private
+  
+ public :: anylist, anyitem, delete, newitem
+  
+ !
+  
+ ! type(anylist) is the list header type.",NA
+D. Solutions to ,NA,NA
+exercises ,"Note:
+  A few exercises have been 
+ left to the reader.
+  
+ Chapter 2
+  
+ 1.
+  
+ 3
+  
+ b is less than m
+  
+ true
+  
+ 2.
+  
+ 8 is less than 2
+  
+ false
+  
+ * is greater than T
+  
+ not determined
+  
+ $ is less than /
+  
+ not determined
+  
+ blank is greater than A
+  
+ false
+  
+ blank is less than 6
+  
+ true
+  
+ x = y
+  
+ correct
+  
+ a = b+c ! add
+  
+ correct, with commentary
+  
+ word = ’string’
+  
+ correct
+  
+ a = 1.0; b = 2.0
+  
+ correct
+  
+ a = 15. ! initialize a; b = 22. ! and b
+  
+ incorrect (embedded commentary)
+  
+ song = ""Life is just& 
+  
+  
+ & a bowl of cherries"" 
+ chide = ’Waste not, 
+  
+  
+ want not!’
+  
+ correct, initial line 
+  
+ correct, continuation 
+  
+ incorrect, trailing & missing 
+ incorrect, leading & missing
+  
+ 0
+  
+ c(3:4) = ’up""
+  
+ incorrect (invalid statement label;
+  
+ invalid form of character constant)
+  
+ 3.
+  
+ -43
+  
+ integer
+  
+ ’word’
+  
+ character
+  
+ 4.39
+  
+ real
+  
+ 1.9-4
+  
+ not legal
+  
+ 0.0001e+20
+  
+ real
+  
+ ’stuff & nonsense’
+  
+ character
+  
+ 4 9
+  
+ not legal
+  
+ (0.,1.)
+  
+ complex
+  
+ (1.e3,2)
+  
+ complex
+  
+ ’I can’’t’
+  
+ character
+  
+ ’(4.3e9, 6.2)’
+  
+ character
+  
+ .true._1
+  
+ logical
+ 1
+  
+ e5
+  
+ not legal
+  
+ ’shouldn’ ’t’
+  
+ not legal
+  
+ 1_2
+  
+ integer
+ 1
+  
+ ""O.K.""
+  
+ character
+  
+ z10
+  
+ not legal
+  
+ z’10’
+  
+ hexadecimal",NA
+Index,"a
+  edit descriptor, 253, 254 
+  
+ allocatable
+  attribute, 25,
+  105
+ , 133, 
+ 163,
+  
+ abs
+ , 189 
+  
+ 176
+  
+ abstract 
+  
+ allocate
+  statement, 25, 27, 28,
+  105–
+ 117
+ ,
+  
+ interface, 285 
+  
+ 296, 297
+  
+ block, 285 
+ allocated
+ ,
+  188
+  
+ type, 312 allocation (sourced), 298
+  
+ abstract
+  keyword, 312 
+  
+ access=
+  specifier, 270, 
+ 274 accessibility, 159
+  
+ allocation status, 26, 188, 212 
+ alphanumeric characters, 9 
+  
+ alternate return, 460
+  
+ accessor function, 162 
+  
+ ampersand, 12, 17
+  
+ achar
+ , 194 
+  
+ ancestor
+  
+ acos
+ , 191 
+  
+ of submodule, 323
+  
+ acosh
+ , 192 
+  
+ of team, 384
+  
+ action=
+  specifier, 270, 274 
+  
+ anint
+ , 190
+  
+ active (image), 384 
+  
+ ANSI, 2
+  
+ actual 
+  
+ any
+ , 206
+  
+ argument,
+  76–97
+ , 371, 372, 459, argument, 69,
+  76
+ , 82–88, 144, 454, 461
+  
+ 461, 462 
+  
+ association, 77
+  
+ procedure, 86 
+  
+ effective, 79
+  
+ adjustl
+ , 195 
+  
+ intent, 188
+  
+ adjustr
+ , 195 
+  
+ list,
+  88
+ , 97, 461, 468
+  
+ advance=
+  specifier,
+  239
+ , 241 
+  
+ ultimate, 77
+  
+ affector, 245 
+  
+ aimag
+ , 189
+  
+ arithmetic
+  if
+  statement, 475 
+  
+ array, 22–29,
+  119–145
+ , 154, 448
+  
+ aint
+ , 189 
+  
+ allocation, 105 alias, 
+ 134 
+  
+ argument, 76, 78, 120 
+ all
+ , 206 
+  
+ assignment,
+  48
+ , 123
+  
+ allocatable, 105, 174 
+ array,
+  105–117 
+  
+ coarray,
+  330
+ , 386
+  
+ assumed-shape, 78 
+  
+ assumed-size, 371 
+  
+ bounds,
+  22
+ , 28, 78
+  
+ component, 112, 115 
+  
+ constant, 151
+  
+ of coarray, 331–333 
+  
+ constructor, 24, 92,
+  136–137
+ , 151,
+  
+ ultimate, 113 
+  
+ 152, 435
+  
+ dummy argument, 409 
+  
+ element, 129
+  
+ object, 25 
+  
+ element order, 23
+  
+ scalar, 106 
+  
+ explicit-shape, 180",NA

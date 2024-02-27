@@ -1,0 +1,2692 @@
+Larger Text,Smaller Text,Symbol
+R Data ,NA,NA
+Science ,NA,NA
+Quick ,NA,NA
+Reference,NA,NA
+"A Pocket Guide to APIs, ",NA,NA
+"Libraries, and ",NA,NA
+Packages,NA,NA
+—,NA,NA
+Thomas Mailund,NA,NA
+R Data Science ,NA,NA
+Quick ,NA,NA
+Reference,NA,NA
+"A Pocket Guide to APIs, ",NA,NA
+"Libraries, and Packages",NA,NA
+Thomas Mailund,NA,NA
+Table of Contents,"About the Author vii
+  
+ About the Technical Reviewer ix
+  
+ Chapter 1:Introduction1
+  
+ Chapter 2:Importing Data: readr5 
+ Functions for Reading Data 6 File 
+ Headers 8 Column Types 11 String-based Column Type Specification 12 
+ Function-based Column Type Specification 18 Parsing Time and Dates 22 
+ Space-separated Columns 28 Functions for Writing Data 31
+  
+ Chapter 3:Representing Tables: tibble 33 
+ Creating Tibbles 33 Indexing 
+ Tibbles 38
+  
+ Chapter 4:Reformatting Tables: tidyr 45 
+ Tidy Data 45 Gather and 
+ Spread 46 Complex Column Encodings 51
+  
+ iii",NA
+About the Author,"Thomas Mailund
+  is an associate professor in bioinformatics at Aarhus 
+ University, Denmark. He has a background in math and computer science. 
+ For the past decade, his main focus has been on genetics and evolutionary 
+ studies, particularly comparative genomics, speciation, and gene flow 
+ between emerging species. He has published 
+ The Joys of Hashing
+ , 
+  
+ Domain-Specific Languages in R
+ , 
+ Beginning Data Science in R
+ , 
+ Functional 
+ Programming in R
+ , and 
+ Metaprogramming in R
+ , all from Apress, as well as 
+ other books.
+  
+ vii",NA
+About the Technical ,NA,NA
+Reviewer,"Dwight Barry
+  is a principal data scientist at Seattle Children’s Hospital 
+ in Seattle, WA, USA. He’s worked in analytics for more than 20 years, in 
+ both academia and industry, in the fields of health care, hospital 
+ administration, clinical and hospital care, environmental science, and 
+ emergency management.",NA
+CHAPTER 1,NA,NA
+Introduction,"R is a functional programming language with a focus on statistical analysis. 
+  
+ It has built-in support for model specifications that can be manipulated as 
+ first-class objects, and an extensive collection of functions for dealing with 
+ probability distributions and model fitting, both built-in and through 
+ extension packages.
+  
+  
+ The language has a long history. It was created in 1992 and is based on 
+ an even older language, S, from 1976. Many quirks and inconsistencies 
+ have entered the language over the years. There are, for example, at least 
+ three partly incompatible ways of implementing object orientation, and 
+ one of these is based on a naming convention that clashes with some built- 
+ in functions. It can be challenging to navigate through the many quirks of 
+ R, but this is alleviated by a suite of extensions, collectively known as the 
+ “Tidyverse.”
+  
+  
+ While there are many data science applications that involve more 
+ complex data structures, such as graphs and trees, most bread-and-butter 
+ analyses involve rectangular data. That is, the analysis is of data that can 
+ be structured as a table of rows and columns where, usually, the rows 
+ correspond to observations and the columns correspond to explanatory 
+ variables and observations. The usual data sets are also of a size that can 
+ be loaded into memory and analyzed on a single desktop or laptop. I will 
+ assume that both are the case here. If this is not the case, then you need 
+ different, big data techniques that go beyond the scope of this book.
+  
+  
+ The Tidyverse is a collection of extensions to R; packages that are 
+ primarily aimed at analyzing tabular data that fits into your computer’s 
+  
+ © Thomas Mailund 2019 
+  
+ T. Mailund, 
+ R Data Science Quick Reference
+ , 
+ https://doi.org/10.1007/978-1-4842-4894-
+ 2_1
+  
+ 1",NA
+CHAPTER 2,NA,NA
+Importing ,NA,NA
+Data: readr,"Before we can analyze data, we need to load it into R. The main 
+ Tidyverse package for this is called readr, and it is loaded when you load 
+ the tidyverse package.
+  
+ library(tidyverse)
+  
+ But you can also load it explicitly using
+  
+ library(readr)
+  
+ Tabular data is usually stored in text files or compressed text files with 
+ rows and columns matching the table’s structure. Each line in the file is a 
+ row in the table and columns are separated by a known delimiter 
+ character. The readr package is made for such data representation and 
+ contains functions for reading and writing variations of files formatted in 
+ this way. It also provides functionality for determining the types of data in 
+ each column, either by inferring types or through user specifications.
+  
+ © Thomas Mailund 2019 
+  
+ T. Mailund, 
+ R Data Science Quick Reference
+ , 
+ https://doi.org/10.1007/978-1-4842-4894-
+ 2_2
+  
+ 5",NA
+ Functions for Reading Data,"The readr package provides the following functions for reading 
+ tabular data:
+  
+ Function
+  
+ File format
+  
+ read_csv() 
+  
+ read_csv2() 
+  
+ read_tsv() 
+  
+ read_delim() 
+ read_table() 
+ read_table2()
+  
+ Comma-separated values 
+  
+ Semicolon-separated values 
+  
+ Tab-separated values 
+  
+ General column delimiters
+ 1 
+  
+ Space-separated values (fixed length 
+ columns) Space-separated values (variable 
+ length columns)
+  
+ The interface to these functions differs little. In the following file, I 
+ describe read_csv, but I highlight when the other functions differ. The 
+ read_csv function reads data from a file with comma-separated values. 
+  
+ Such a file could look like this:
+  
+ A,B,C,D 
+  
+ 1,a,a,1.2 
+  
+ 2,b,b,2.1 
+  
+ 3,c,c,13.0
+  
+ Unlike the base R read.csv function, read_csv will also handle files with 
+ spaces between the columns, so it will interpret the following data the 
+ same as the preceding file.
+  
+ 1
+  The read_delim() can handle any file format that has a special character that 
+ delimits columns. The read_csv(), read_csv2(), and read_tsv() functions are 
+ specializations of it. The first of these uses commas for the delimiter, the second 
+ semicolons, and the third tabs.
+  
+ 6",NA
+ File Headers,"The first line in a comma-separated file is not always the column names; 
+ that information might be available from elsewhere outside the file. If you 
+ do not want to interpret the first line as column names, you can use the 
+ option col_names = FALSE.
+  
+ read_csv(
+  
+  
+  file = ""data/data.csv"",
+  
+  
+  col_names =FALSE 
+  
+ )
+  
+ 8",NA
+ Column Types,"When read_csv parses a file, it infers the type of each column. This 
+ inference can be slow, or worse the inference can be incorrect. If you 
+ know a priori what the types should be, you can specify this using the 
+ col_types option. If you do this, then read_csv will not make a guess at the 
+ types. It will, however, replace values that it cannot parse as of the right 
+ type into NA.
+ 2
+  
+ 2
+  There is a gotcha here. The types are guessed at after a fixed number of lines are 
+ read (by default 1000). If you have 1000 lines of numbers in a column and line 
+ 1001 has a string, then the type will be inferred as numeric and you lose the 
+ string. If you know the types, it is always better to tell the functions what they 
+ are.
+  
+ 11",NA
+ String-based Column Type Specification,"In the simplest string specification format, you must provide a string with 
+ the same length as you have columns and where each character in the 
+ string specifies the type of one column. The characters specifying different 
+ types are this:
+  
+ Character
+  
+ Type
+  
+ C
+  
+  
+ I 
+  
+ N
+  
+  
+ D
+  
+  
+ L
+  
+  
+ F
+  
+  
+ D
+  
+  
+ T
+  
+  
+ T
+  
+  
+ ?
+  
+ _/-
+  
+ Character 
+  
+ Integer 
+  
+ number 
+  
+ Double 
+  
+ Logical 
+  
+ Factor 
+  
+ Date 
+  
+ Date time 
+  
+ Time 
+  
+ Guess 
+ (default) Skip 
+ the column
+  
+  
+ By default, read_csv guesses, so we could make this explicit using the 
+ type specification ""????"":
+  
+ read_csv(
+  
+  
+  file = ""data/data.csv"",
+  
+  
+  col_types = ""????"" 
+  
+ )
+  
+ The results of the guesses are double for columns A and D and 
+  
+ character for columns B and C. If we wanted to make 
+ this
+  explicit, we 
+ could use ""dccd"".
+  
+ 12",NA
+ Function-based Column Type ,NA,NA
+Specification,"If you are like me, you might find it hard to remember the single-character 
+ codes for different types. If so, you can use longer type names that you 
+ specify using function calls. These functions have names that start with 
+ col_, so you can use autocomplete to get a list of them. The types you can 
+ specify using functions are the same as those you can specify using 
+ characters, of course, and the functions are:
+  
+ 18",NA
+ Parsing Time and Dates,"The most complex types to read (or write) are dates 
+ and
+  time (and 
+  
+ datetime), just because these are written in many different ways. You can 
+  
+ specify the format that dates and datetime are in using a string with codes 
+  
+ that indicate how time information is represented.
+  
+ The codes are these:
+  
+ Code
+  
+ Time format
+  
+ Example string
+  
+ Interpretation
+  
+ %Y
+  
+ 4-digit year
+  
+ 1975
+  
+ The year 1975
+  
+ %y
+  
+ 2-digit year
+ 5
+  
+ 75
+  
+ also the year 75
+  
+ %m
+  
+ 2-digit month
+  
+ 02
+  
+ February
+  
+ %b
+  
+ abbreviated month name
+ 6
+  
+ Feb
+  
+ February
+  
+ %B
+  
+ Full month name
+  
+ February
+  
+ February
+  
+ %d
+  
+ 2-digit day
+  
+ 15
+  
+ The 15th of a month
+  
+ %h
+  
+ hour number on a 24-hour 
+  
+ 18
+  
+ Six o’clock in the 
+  
+ %I
+  
+ clock
+  
+ 6 pm
+  
+ evening
+  
+ hour number on a 12-hour 
+  
+ 18:00 hours
+  
+ clock
+ 7
+  
+ %p
+  
+ am
+ /
+ pm
+  indicator
+  
+ 6 pm
+  
+ 18:00 hours
+  
+ 5
+  Two-digit years are assumed to be either in the twentieth or the twenty-first 
+ century. The cutoff line is 68; years at or below 68 are in the twentieth century 
+ and 69 and above are in the twenty-first century. Therefore, 
+ 75
+  is assumed to be 
+ in the twentieth century, so 
+ 75
+  is 1975.
+  
+ 6
+  The name of months and weekdays varies from language to language, and 
+ so does the abbreviations. Therefore, if you use a format that refers to these, 
+ you either need to use numbers or the format will depend on the locale 
+ option.
+  
+ 7
+  If you use %I, you must also use %p for pm/am.
+  
+ 22",NA
+ Space-separated Columns,"The preceding functions all read delimiter-separated columns. They expect 
+ a single character to separate one column from the next. If the argument 
+ trim_ws is true, they ignore whitespace. This argument is true by default 
+ for read_csv, read_csv2, and read_tsv, but false for read_delim.
+  
+ The functions read_table and read_table2 take a different approach 
+ and separate columns by one or more spaces. The simplest of the two is 
+ read_table2. It expects any sequence of whitespace to separate columns. 
+  
+ Consider
+  
+ read_table2(
+  
+  
+  ""A B C D
+  
+  
+  
+  1 2 3 4
+  
+  
+  15 16 17 18"" 
+  
+ )
+  
+ ## # A tibble: 2 x 4 
+  
+ ##       A     B     C     D 
+  
+ ##   <dbl> <dbl> <dbl> <dbl> 
+  
+ ## 1     1     2     3     4 
+  
+ ## 2    15    16    17    18
+  
+ The header names are separated by two spaces. The first data line has 
+ spaces before the first line since the string is indented the way it is. 
+ Between columns, there are also two spaces. For the second data line, we 
+ have several spaces before the first value, once again, but this time only 
+ single space between the columns. If we used a delimiter character to 
+ specify that we wanted a space to separate columns, we had to have 
+ exactly the same number of spaces between each column.
+  
+ The read_table function instead reads the data as fixed-width 
+  
+ columns. It uses the whitespace in the file to figure out the width of 
+ the 
+  
+ 28",NA
+ Functions for Writing Data,"Writing data to a file is more straightforward than reading data because we 
+ have the data in the correct types and we do not need to deal with different 
+ formats. With readr’s writing functions, we have fewer options to format 
+ our output—for example, we cannot give the functions a locale() and we 
+ cannot specify date and time formatting, but we can use different functions 
+ to specify delimiters and time will be output in ISO 8601 which is what the 
+ reading functions will use as default.
+  
+ The functions are write_delim(), write_csv(), write_csv2(), and 
+ write_tsv(), and for formats that Excel can read, write_excel_csv() and 
+ write_excel_csv2(). The difference between write_csv() and write_ 
+ excel_csv() and between write_csv2() and write_excel_csv2() is that the 
+ Excel functions include a UTF-8 byte order mark so Excel knows that the 
+ file is UTF-8 encoded.
+  
+ The first argument to these functions is the data we want to write and 
+ the second is the path to the file we want to write to. If this file has suffix 
+ .gz, .bz2, or .xz, the output is automatically compressed.
+  
+ I will not list all the arguments for these functions here, but you can 
+ read the documentation for them from the R console. The argument you 
+ are most likely to use is col_names which, if true, means that the function 
+ will write the column names as the first line in the output, and if false, 
+ will not. If you use write_delim(), you might also want to specify the 
+ delimiter character using the delim argument. By default it is a single 
+ space; if you write to a file using write_delim() with the default options, 
+ you get the data in a format that you can read using read_table2().
+  
+ The delimiter characters and the decimal points for write_csv(), 
+ write_csv2(), and write_tsv are the same as for the corresponding read 
+ functions.
+  
+ 31",NA
+CHAPTER 3,NA,NA
+Representing ,NA,NA
+Tables: tibble,"The data that the readr package returns are represented as tibble objects. 
+ These are tabular data representations similar to the base R data frames 
+ but are a more modern version.
+  
+ The package that implements tibbles is tibble. You can load it using:
+  
+ library(tibble)
+  
+ Or as part of the tidy verse:
+  
+ library(tidyverse)",NA
+ Creating Tibbles,"Tidyverse functions that create tabular data will create tibbles rather 
+ than data frames. For example, when we use read_csv to read a file into 
+ memory, the result is a tibble:
+  
+ x <- read_csv(file = ""data/data.csv"")
+  
+ ## Parsed with column specification: ## 
+ cols( 
+  
+ ##   A = col_double(), 
+  
+ ##   B = col_character(),
+  
+ © Thomas Mailund 2019 
+  
+ T. Mailund, 
+ R Data Science Quick Reference
+ , 
+ https://doi.org/10.1007/978-1-4842-4894-
+ 2_3
+  
+ 33",NA
+ Indexing Tibbles,"You can index a tibble in much the same way as you can index a data 
+ frame. You can extract a column using single-bracket index ([]), either by 
+ name or by index:
+  
+ x <- read_csv(file = ""data/data.csv"")
+  
+ ## Parsed with column specification: ## 
+ cols( 
+  
+ ##   A = col_double(), 
+  
+ ##   B = col_character(), 
+  
+ ##   C = col_character(), 
+  
+ ##   D = col_double() 
+  
+ ## )
+  
+ y <- as.data.frame(x) 
+  
+ x[""A""]
+  
+ 38",NA
+CHAPTER 4,NA,NA
+Reformatting ,NA,NA
+Tables: tidyr,"Even if we only consider tabular data, there are still many different ways to 
+ format this data. The packages in the Tidyverse expect that data is 
+ represented as so-called “tidy data”
+ 1
+  (which is where the name Tidyverse 
+ comes from). The tidyr package helps you with formatting your data into 
+ tidy data.
+  
+ You can load tidyr as part of the Tidyverse
+  
+ library(tidyverse)
+  
+ or on its own
+  
+ library(tidyr)",NA
+ Tidy Data,"The fundamental properties that characterize tidy data are that each 
+ variable is in a column, and each observation is in a row. The terms like 
+ variables and observations should be familiar from statistics, but what the 
+ tidy data properties say is that you should not put the values of a variable 
+ in different columns and you should not put more than one observation in 
+ the same row.
+  
+ 1
+ https://en.wikipedia.org/wiki/Tidy_data
+  
+ © Thomas Mailund 2019 
+  
+ T. Mailund, 
+ R Data Science Quick Reference
+ , 
+ https://doi.org/10.1007/978-1-4842-4894-
+ 2_4
+  
+ 45",NA
+ Gather and Spread,"The function gather() can merge several columns into two—a key and a 
+ value column. The key column will be a discrete variable with values taken 
+ from the column names, and the value column will contain the data from 
+ the original columns.
+  
+ 46",NA
+ Complex Column Encodings,"Different variables are not always represented in separated columns. 
+  
+ For example, it is not uncommon to have a column that contains a date, 
+ but that is really a day and a month and possibly a year. The best 
+ representation of a date is, of course, a date object, but for the sake of the 
+ example, let us say that we want to split a date into a day and a month 
+ column. You can do this using the separate() function.
+  
+ tbl <- tribble(
+  
+  ~date,
+  
+  ""11/5"",
+  
+ 51",NA
+" Expanding, Crossing, and Completing","For some applications, it is useful to create all combinations of values from 
+ two or more columns—even those combinations that are missing from the 
+ data. For this, you can use the function expand():
+  
+ tbl <- tribble(
+  
+  
+  ~A, ~B, ~C,
+  
+  
+  
+  1, 11, 21,
+  
+  
+  
+  2, 11, 22,
+  
+  
+  
+  4, 13, 32 
+  
+ )
+  
+ 57",NA
+ Missing Values,"When data has missing values, it often requires application domain 
+ knowledge to deal with it correctly. The tidyr package has some 
+  
+ rudimentary support for cleaning data with missing values; you might 
+ need more features to deal with missing values properly, and you are 
+ likely to find those in the dplyr package; see Chapter 
+ 7
+ .
+  
+ 61",NA
+ Nesting Data,"A final functionality that tidyr provides is nesting data. A tibble entry 
+ usually contains simple data, such as numbers or strings, but it can also 
+ hold complex data, such as other tables.
+  
+ Consider this table:
+  
+ tbl <- tribble(
+  
+  
+  ~A, ~B, ~C,
+  
+  
+  1, 11, 21,
+  
+  
+  1, 11, 12,
+  
+  
+  2, 42, 22,
+  
+  
+  2, 15, 22,
+  
+  
+  2, 15, 32,
+  
+  
+  4, 13, 32 
+  
+ )
+  
+  
+ From this table, we can create one that, for each value in the A column, 
+ contains a table of B and C for that A value.
+  
+ nested_tbl <- nest(tbl, B, C) 
+  
+ nested_tbl
+  
+ ## # A tibble: 3 x 2 
+  
+ ##       A data 
+  
+ ##   <dbl> <list> 
+  
+ ## 1     1 <tibble [2 × 2]> 
+  
+ ## 2     2 <tibble [3 × 2]> 
+  
+ ## 3     4 <tibble [1 × 2]>
+  
+ nested_tbl[[1,2]]
+  
+ ## # A tibble: 2 x 2 
+  
+ ##       B     C 
+  
+ ##   <dbl> <dbl>
+  
+ 66",NA
+CHAPTER 5,NA,NA
+Pipelines: magrittr,"Data analysis consists of several steps, where your data moves through 
+ different stages of transformations and cleaning before you finally get to 
+ model construction. In practical terms, this means that your R code will 
+ consist of a series of function calls where the output of one is the input of 
+ the next. The pattern is typical, but a straightforward implementation of it 
+ has several drawbacks. The Tidyverse provides a “pipe operator” to 
+ alleviate this.
+  
+  
+ The pipe operator is implemented in the magrittr package. You can 
+ load it as part of the tidyverse package:
+  
+ library(tidyverse)
+  
+ Or you can explicitly load the package:
+  
+ library(magrittr)
+  
+ If you load magrittr through the tidyverse package, you will get the 
+ most common pipe operator, %>%, but not alternative ones—see the 
+ following. For those, you need to load magrittr.",NA
+ The Problem with Pipelines,"Consider this data from Chapter 
+ 4
+ .
+  
+ write_csv( 
+  
+  
+ tribble(
+  
+  
+  
+  ~country,  ~`2002`, ~`2003`, ~`2004`, ~`2005`,
+  
+  
+  ""Numenor"",  123456,  132654,      NA,  324156,
+  
+ © Thomas Mailund 2019 
+  
+ T. Mailund, 
+ R Data Science Quick Reference
+ , 
+ https://doi.org/10.1007/978-1-4842-4894-
+ 2_5
+  
+ 71",NA
+ Pipeline Notation,"The pipeline operator, %>%, introduces syntactic sugar for function calls.
+ 1
+  
+ The code
+  
+ x %>% f()
+  
+ is equivalent to
+  
+ f(x)
+  
+ and
+  
+ x %>% f() %>% g() %>% h()
+  
+ is equivalent to
+  
+ h(g(f(x)))
+  
+ So, by the way, is
+  
+ x %>% f %>% g %>% h
+  
+ You do not need the parentheses for the function calls, but most prefer 
+  
+ them to make it clear that we are dealing with functions. Also, if your 
+  
+ functions take more than one argument, parentheses are needed, so if you 
+  
+ always include them, it gives you a consistent notation.
+  
+ 1
+  The pipeline operator is syntactic sugar in the sense that it introduces a more 
+ readable notation for a function call. In compiled languages, syntactic sugar 
+ would be directly translated into the original form and have exactly the same 
+ runtime behavior as the sugar-free version. In R, there is no compile-time phase, 
+ so you pay a runtime cost for all syntactic sugar. The pipe operator is a complex 
+ function, so compared to explicit function calls, it is slow to use it. This is rarely an 
+ issue, though, since the expensive data processing is done inside the function and 
+ not in function calls.
+  
+ 74",NA
+ Pipelines and Function Arguments,"The pipe operator is left-associative, that is, it evaluates from left to right, 
+ and the expression lhs %>% rhs expects the left-hand side (lhs) to be data 
+ and the right-hand side (rhs) to be a function. The result will be rhs(lhs). 
+ The output of this function call is the left-hand side of the next pipe 
+ operator in the pipeline or the result of the entire pipeline. If the right-
+ hand side function takes more than one argument, you provide these in 
+ the rhs expression. The expression
+  
+ lhs %>% rhs(x, y, z)
+  
+ will be evaluated as the function call
+  
+ rhs(lhs, x, y, z)
+  
+ 75",NA
+ Function Composition,"It is trivial to write your own functions such that they work well with 
+ pipelines. All functions map input to output (ideally with no side effects) 
+ so all functions can be used in a pipeline. If the key input is the first 
+ argument of a function you write, the default placement of left-hand side 
+ value will work—so that is preferable—but otherwise you can explicitly 
+ use the dot.
+  
+ When writing pipelines, however, often you do not need to write a 
+ function from scratch. If a function is merely a composition of other 
+ function calls—it is a pipeline function itself—we can define it as 
+ such.
+  
+  
+ In mathematics, the function composition operator, °, defines the 
+ composition of functions 
+ f
+  and 
+ g
+ , 
+ g
+  ° 
+ f
+  to be the function
+  
+ (
+ g ° f
+  )(
+ x
+ ) = 
+ g
+ (
+  f
+  (
+ x
+ ))",NA
+ Other Pipe Operations,"There are three other pipe operators in magrittr. These are not imported 
+ when you import the tidyverse package, so to get access to them, you 
+ have to import magrittr explicitly.
+  
+ library(magrittr)
+  
+  
+ The %<>% operator is used to run a pipeline starting with a variable 
+ and ending by assigning the result of the pipeline back to that variable.
+  
+ The code
+  
+ mydata <- read_csv(""data/income.csv"",
+  
+  col_types = ""cdddd"") 
+ mydata %<>% pipeline()
+  
+ 79",NA
+CHAPTER 6,NA,NA
+Functional ,NA,NA
+Programming: ,NA,NA
+purrr,"A pipeline-based approach to data processing necessitates a functional 
+ programming approach. After all, pipelines are compositions of functions, 
+ and loops and variable assignment do not work well with pipelines. You 
+ are not precluded from imperative programming, but you need to wrap it 
+ in functions.
+  
+ The package purrr makes functional programming easier. As with the 
+ other packages in this book, it will be loaded if you import tidyverse, but 
+ you can load it explicitly with:
+  
+ library(purrr)
+  
+ I will not describe all the functions in the purrr package; there are 
+ many and more could be added between the time I write this and the time 
+ you read it, but I will describe the functions you will likely use often.
+  
+ Many of the examples in this chapter are so trivial that you would not 
+ use purrr for them. Many reduce to vector expressions, and vector 
+ expressions are both more straightforward to read and faster to evaluate. 
+ However, applications where you cannot use vector expressions are more 
+ involved, and I do not want the examples to overshadow the syntax.",NA
+ General Features of purrr Functions,"The functions in the purrr package are “high-order” functions, which 
+ means that the functions either take other functions as input or return 
+ functions when you call them (or both). Most of the functions take data as 
+ their first argument and return modified data. Thus, they are immediately 
+ useable with magrittr pipelines. As additional arguments, they will accept 
+ one or more functions that specify how you want to translate the input 
+ into the output.
+  
+ Other functions do not transform data but instead modify functions. 
+  
+ These are used, so you do not need to write functions for the data 
+ transformation functions explicitly; you can use a small set of functions 
+ and adapt them where needed.",NA
+ Filtering,"One of the most straightforward functional programming patterns is 
+ filtering. Here, you use a high-order filter function. This function takes a 
+ predicate function, that is, a function that returns a logical value, and then 
+ returns all elements where the predicate evaluates to TRUE (the function 
+ keep()) or all elements where the predicate evaluates to FALSE (the 
+ function discard()).
+  
+ is_even <- function(x) x %% 2 == 0 1:6 
+ %>% keep(is_even)
+  
+ ## [1] 2 4 6
+  
+ 1:6 %>% discard(is_even)
+  
+ ## [1] 1 3 5
+  
+ 84",NA
+ Mapping,"Mapping a function, 
+ f
+ , over a sequence 
+ x = x
+ 1
+ , x
+ 2
+ , ... , x
+ n
+  returns a new 
+ sequence of the same length as the input but where each element is an 
+ application of the function: 
+ f
+ (
+ x
+ 1
+ ), 
+ f
+ (
+ x
+ 2
+ ), ... , 
+ f
+ (
+ x
+ n
+ ).
+  
+ The function map() does this and return a list as output. Lists are the 
+ generic sequence data structure in R since they can hold all types of R 
+ objects.
+  
+ is_even <- function(x) x %% 2 == 0 1:4 
+ %>% map(is_even)
+  
+ ## [[1]] 
+  
+ ## [1] FALSE 
+  
+ ## 
+  
+ ## [[2]] 
+  
+ ## [1] TRUE 
+  
+ ##",NA
+ Reduce and Accumulate,"If you want to summarize all your input into a single value, you probably 
+ want to reduce() them. Reduce repeatedly applies a function over your 
+ input sequence: If you have a function of two arguments, 
+ f
+ (
+ a
+ , 
+ x
+ ) and a 
+ sequence 
+ x
+ 1
+ , 
+ x
+ 2
+ , ... , 
+ x
+ n
+ , then reduce(f) will compute 
+ f
+ (... 
+ f
+ (
+ f
+ (
+ x
+ 1
+ , 
+ x
+ 2
+ , 
+ x
+ 3
+ ), ... 
+  
+ ,
+ x
+ n
+ ), 
+ x
+ n
+ ), that is, it will be called on the first two elements of the sequence, 
+ the result will be paired with the next element, and so forth. Think of the 
+ argument 
+ a
+  as an accumulator that keeps the result of the calculation so 
+ far.
+  
+ To make the order of function application clear, I define a “pair” type:
+  
+ pair <- function(first, second) { 
+  
+  
+ structure(list(first = first, second = second),
+  
+  
+  class = ""pair"") 
+  
+ }
+  
+ 97",NA
+ Partial Evaluation and Function ,NA,NA
+Composition,"When you filter, map, or reduce over sequences, you sometimes want to 
+ modify a function to match the interface of purrr’s functions. If you have a 
+ function that takes too many arguments for the interface, but where you 
+ can fix some of the parameters to get the application you want, you can do 
+ what is called a 
+ partial evaluation
+ . This just means that you create a new 
+ function that calls the original function with some of the parameters fixed.
+  
+ 101",NA
+ Lambda Expressions,"Lambda expressions are a concise syntax for defining anonymous 
+  
+ functions, that is, functions that we do not name. The name “lambda 
+ expressions” comes from “lambda calculus,”
+ 1
+  a discipline in formal logic, 
+ but in computer science, it is mostly used as a synonym for anonymous 
+ functions. In some programming languages, you cannot create anonymous 
+ functions; you need to name a function to define it. In other languages, you 
+ have special syntax for lambda expressions. In R, you define anonymous 
+ functions the same way that you define named functions. You always 
+ define functions the same way; you only give them a name when you 
+ assign a function definition to a variable.
+  
+ If this sounds too theoretical, consider this example. When we 
+  
+ filtered values that are even, we defined a function, is_even(), to use as a 
+ predicate.
+  
+ is_even <- function(x) x %% 2 == 0 1:6 
+ %>% keep(is_even)
+  
+ ## [1] 2 4 6
+  
+ We defined the function using the expression function(x) x %% 2 == 
+ 0 and then we assigned the function to the name is_even. Instead of 
+ assigning the function to a name, we could use the function definition 
+ directly in the call to keep():
+  
+ 1:6 %>% keep(function(x) x %% 2 == 0)
+  
+ ## [1] 2 4 6
+  
+ 1
+  The name comes from the syntax for functions that uses the Greek letter lambda, 
+ λ. A function that adds two to its argument would be written as 
+ λx.x
+  + 2.
+  
+ 104",NA
+CHAPTER 7,NA,NA
+Manipulating ,NA,NA
+Data Frames: ,NA,NA
+dplyr,"The dplyr package resembles the functionality in the purrr package, but 
+ it is designed for manipulating data frames. It will be loaded with the 
+ tidyverse package, but you can also load it using
+  
+ library(dplyr)
+  
+ The usual way that you use dplyr is similar to how you use purrr. 
+  
+ You string together a sequence of actions in a pipeline, with the actions 
+ separated by the %>% operator. The difference between the two 
+ packages is that the purrr functions work on sequences, while the dplyr 
+ functions work on data frames.
+  
+ This package is huge and more functionality is added in each new 
+ release, so it would be impossible for me to describe everything you can 
+ do with dplyr. I can only give you a flavor of the package functionality and 
+ refer you to the documentation for more information.",NA
+ Selecting Columns,"One of the simplest operations you can do on a data frame is selecting one 
+ or more of its columns. You can do this by indexing with $:
+  
+ iris_df <- as_tibble(iris) 
+  
+ print(iris_df, n = 3)",NA
+ Filter,"While select() extracts a subset of columns, the filter() function does the 
+ same for rows.
+  
+ The iris_df contains three different species. We can see this using the 
+ distinct() function. This function is also from the dplyr package, and it 
+ gives you all the unique rows from selected columns.
+  
+ 117",NA
+ Sorting,"If you want to sort rows by values in selected columns, the function you 
+ want is called arrange(). You can sort by one or more columns:
+  
+ iris_df %>% 
+  
+ arrange(Petal.Length) %>% 
+  
+ print(n = 5)
+  
+ 125",NA
+ Modifying Data Frames,"When we work with data frames, we usually want to compute values 
+ based on the variables (columns) in our tables. Filtering rows and columns 
+ will only get us so far.
+  
+ The mutate() function lets us add columns to a data frame based on 
+ expressions that can involve any of the existing columns. Consider a table 
+ of widths and heights.
+  
+ df <- tribble(
+  
+  
+  ~height, ~width,
+  
+  
+  
+  10,     12,
+  
+  
+  
+  42,     24,
+  
+  
+  
+  14,     12 
+  
+ )
+  
+ We can add an area column using mutate() and this expression:
+  
+ df %>% mutate(area = height * width)
+  
+ ## # A tibble: 3 x 3 
+  
+ ##   height width  area
+  
+ 127",NA
+ Grouping and Summarizing,"In many analyses, we need summary statistics of our data. If you can map 
+ one or more of your columns into a single summary, you can use the 
+ summarise() function.
+  
+ df <- tibble(x = rnorm(100), y = rnorm(100)) 
+  
+ df %>% summarise(mean_x = mean(x), mean_y = mean(y))
+  
+ 133",NA
+ Joining Tables,"It is not uncommon to have your data in more than one table. This could 
+ be because the tables are created from different calculations, for example, 
+ different kinds of summaries, or it can be because you got the data from 
+ different files.
+  
+ If you merely need to combine tables by row or column, then you can 
+ use the bind_rows() and bind_columns() functions which do precisely 
+ what you would expect.
+  
+ df1 <- tibble(
+  
+  
+  A = paste0(""a"", 1:2),
+  
+  
+  B = paste0(""b"", 1:2) 
+  
+ ) 
+  
+ df2 <- tibble(
+  
+  
+  A = paste0(""a"", 3:4),
+  
+  
+  B = paste0(""b"", 3:4) 
+  
+ ) 
+  
+ df3 <- tibble(
+  
+  
+  C = paste0(""c"", 1:2),
+  
+  
+  D = paste0(""d"", 1:2) 
+  
+ ) 
+  
+ bind_rows(df1, df2)
+  
+ ## # A tibble: 4 x 2 
+  
+ ##   A     B 
+  
+ ##   <chr> <chr> 
+  
+ ## 1 a1    b1 
+  
+ ## 2 a2    b2 
+  
+ ## 3 a3    b3 
+  
+ ## 4 a4    b4
+  
+ 146",NA
+ Income in Fictional Countries,"We had an example with income in fictional countries in Chapter 
+ 4
+ . There, 
+ we did not have the proper tools needed to deal with missing data. We 
+ wanted to replace NA with the mean income for a country in rows with 
+ missing data, but the functions from tidyr didn’t suffice. With dplyr we 
+ have the tools.
+  
+ Recall the data:
+  
+ mean_income <- tribble(
+  
+  
+  ~country,  ~`2002`, ~`2003`, ~`2004`,  ~`2005`,
+  
+  
+ ""Numenor"",  123456,  132654,      NA,   324156,
+  
+  
+ ""Westeros"", 314256,  NA,          NA,   465321,
+  
+  ""Narnia"",   
+ 432156,  NA,          NA,       NA,
+  
+  ""Gondor"",   531426,  
+ 321465,  235461,   463521,
+  
+  ""Laputa"",    14235,   34125,   
+ 45123,    51234, )
+  
+  
+ The following pipeline does what we want. I will explain it here, but 
+ you can try to work out the steps.
+  
+ mean_income %>% 
+  
+  
+  
+ gather(
+  
+  
+   
+  key = ""year"",
+  
+  
+   
+  value = ""mean_income"",
+  
+  
+   
+  -country
+  
+  
+  ) %>% group_by(
+  
+  
+   
+  country
+  
+  
+  ) %>% mutate(
+  
+  
+   
+  mean_per_country = mean(mean_income, na.rm = TRUE),
+  
+  
+  
+  mean_income = ifelse(
+  
+ 155",NA
+CHAPTER 8,NA,NA
+Working with ,NA,NA
+Strings: stringr,"The stringr package gives you functions for string manipulation. The 
+ package will be loaded when you load the tidyverse package:
+  
+ library(tidyverse)
+  
+ You can also load the package alone using
+  
+ library(stringr)",NA
+ Counting String Patterns,"The str_count() function counts how many tokens a string contain, 
+ where tokens, for example, can be characters or words.
+  
+  
+ By default, str_count() will count the number of characters in a 
+ string.
+  
+ strings <- c(
+  
+  ""Give me an ice cream"",
+  
+  ""Get yourself an ice cream"",
+  
+  ""We are all out of ice creams"",
+  
+  ""I scream, you scream, everybody loves ice cream."", ""one ice 
+ cream,
+  
+ © Thomas Mailund 2019 
+  
+ T. Mailund, 
+ R Data Science Quick Reference
+ , 
+ https://doi.org/10.1007/978-1-4842-4894-
+ 2_8
+  
+ 161",NA
+ Splitting Strings,"Sometimes you want to split a string based on some separator—not 
+ unlike how we split on commas in comma-separated value files. The 
+ stringr function for this is str_split().
+  
+ We can, for example, split on a space:
+  
+ strings <- c(
+  
+  
+  ""one"",
+  
+  
+  ""two"",
+  
+  
+  ""one two"",
+  
+  
+  ""one two"",
+  
+  
+  ""one. two."" 
+  
+ ) 
+  
+ str_split(strings, "" "")
+  
+ ## [[1]] 
+  
+ ## [1] ""one"" 
+  
+ ## 
+  
+ ## [[2]]
+  
+ 164",NA
+ Capitalizing Strings ,"You can use the str_to_lower() to transform a string into all lowercase.
+  
+ macdonald <- ""Old MACDONALD had a farm."" 
+  
+ str_to_lower(macdonald) 
+  
+ ## [1] ""old macdonald had a farm."" 
+  
+  
+ Similarly, you can use str_to_upper() to translate it into all 
+ uppercase.
+  
+ str_to_upper(macdonald) 
+  
+ ## [1] ""OLD MACDONALD HAD A FARM."" 
+  
+  
+ If you use str_to_sentence(), the first character is uppercase and the 
+ rest lowercase.
+  
+ str_to_sentence(macdonald) 
+  
+ ## [1] ""Old macdonald had a farm."" 
+  
+  
+ The str_to_title() function will capitalize all words in your string.
+  
+ str_to_title(macdonald) 
+  
+ ## [1] ""Old Macdonald Had A Farm.""",NA
+" Wrapping, Padding, and Trimming ","If you want to wrap strings, that is, add newlines, so they fit into a certain 
+ width, you can use str_wrap().
+  
+ 166",NA
+ Detecting Substrings ,"To check if a substring is found in another string, you can use str_ 
+ detect().
+  
+ str_detect(strings, ""me"") 
+  
+ ## [1] TRUE FALSE FALSE FALSE FALSE FALSE 
+  
+ str_detect(strings, ""I"") 
+  
+ ## [1] FALSE FALSE FALSE TRUE FALSE TRUE 
+  
+ str_detect(strings, ""cream"") 
+  
+ ## [1] TRUE TRUE TRUE TRUE TRUE TRUE 
+  
+  
+ The pattern is a regular expression, so to test for ice cream followed by 
+ a full stop, you cannot search for “ice cream.”.
+  
+ str_detect(strings, ""ice cream."") 
+  
+ ## [1] FALSE FALSE TRUE TRUE TRUE TRUE 
+  
+ You can, again, use a fixed() string.
+  
+ str_detect(strings, fixed(""ice cream."")) ## [1] 
+ FALSE FALSE FALSE TRUE FALSE TRUE 
+ Alternatively, you can escape the dot.
+  
+ str_detect(strings, ""ice cream\\."") 
+  
+ ## [1] FALSE FALSE FALSE TRUE FALSE TRUE
+  
+ 171",NA
+ Extracting Substrings,"To extract a substring matching a pattern, you can use str_extract(). It 
+ gives you the first substring that matches a regular expression.
+  
+ str_extract(strings, ""(s|ice )cream\\w*"")
+  
+ ## [1] ""ice cream"" ""ice cream"" ""ice creams"" ## [4] 
+ ""scream""    ""ice cream"" ""ice cream""
+  
+  
+ It only gives you the first match, but if you want all substrings that 
+ match you can use str_extract_all().
+  
+ strings[4]
+  
+ ## [1] ""I scream, you scream, everybody loves ice cream.""
+  
+ str_extract(strings[4], ""(s|ice )cream\\w*"")
+  
+ ## [1] ""scream""
+  
+ str_extract_all(strings[4], ""(s|ice )cream\\w*"")
+  
+ ## [[1]] 
+  
+ ## [1] ""scream""    ""scream""    ""ice cream""",NA
+ Transforming Strings,"We can replace a substring that matches a pattern with some other 
+ string.
+  
+ lego_str <- str_replace(strings, ""ice cream[s]?"", ""LEGO"") lego_str
+  
+ ## [1] ""Give me an LEGO"" 
+  
+ ## [2] ""Get yourself an LEGO"" 
+  
+ ## [3] ""We are all out of LEGO"" 
+  
+ ## [4] ""I scream, you scream, everybody loves LEGO.""
+  
+ 174",NA
+CHAPTER 9,NA,NA
+Working with ,NA,NA
+Factors: forcats,"If you work with categorical data, you can often represent the categories 
+ by strings. Strings have some drawbacks, however. For example, a spelling 
+ mistake can easily go undiscovered. If you want your categories ordered, 
+ then the lexicographical order on strings will not always be the order you 
+ need. As an alternative to strings for categories is factors. In this chapter, 
+ we look at the functionality that the forcats package provides for creating 
+ and manipulating factors.
+  
+ The package is loaded when you import tidyverse,
+  
+ library(tidyverse)
+  
+ but you can also load it explicitly
+  
+ library(forcats)",NA
+ Creating Factors,"The built-in factor() function is still an excellent choice to build a factor 
+ from scratch, especially if you want to specify the levels of the factor 
+ when you create it.
+  
+ © Thomas Mailund 2019 
+  
+ T. Mailund, 
+ R Data Science Quick Reference
+ , 
+ https://doi.org/10.1007/978-1-4842-4894-
+ 2_9
+  
+ 181",NA
+ Concatenation,"If you have two factors, then you can concatenate them using fct_c(). The 
+ levels of the resulting factor are the union of the levels of the input factors. 
+ The order of the levels depends on the order of the input factors. The 
+ levels in the first factor go first, then the levels in the second. If the factors 
+ share levels, then the order is determined by the first vector.
+  
+  
+ For example, consider again the factors f1 and f2 from the preceding 
+ example.
+  
+ f1
+  
+ ## [1] C B B A D 
+  
+ ## Levels: A B C D
+  
+ f2
+  
+ ## [1] C B B A D 
+  
+ ## Levels: C B A D
+  
+ 183",NA
+ Projection,"It happens that your categorical data is too fine-grained and you want to 
+ group categories into larger classes. If so, the function you want is 
+ fct_collapse(). It lets you map your existing levels to new levels. Its first 
+ argument is a factor and after that you provide named arguments. As 
+ parameters to the named arguments, you must provide a list of level 
+ names. Each name becomes a level, and that level will contain the 
+ elements in the list you give as the argument.
+  
+ fct_collapse( 
+  
+  
+  
+ fct_c(f3, f1),
+  
+  
+  a = c(""A"", ""X""),
+  
+  
+  b = c(""B"", ""Y""),
+  
+  
+  c = c(""C"", ""D"") 
+  
+ )
+  
+ ## [1] a b a c b b a c 
+  
+ ## Levels: a b c
+  
+  
+ You do not need to remap all levels. Those you do not map will stay as 
+ they were.
+  
+ fct_collapse( 
+  
+  
+  
+ fct_c(f3, f1),
+  
+  
+  a = c(""A"", ""X""),
+  
+  
+  b = c(""B"", ""Y"") 
+  
+ )
+  
+ ## [1] a b a C b b a D 
+  
+ ## Levels: a b C D
+  
+  
+ If you only want to rename and not collapse levels, you can use fct_ 
+ recode().
+  
+ 186",NA
+ Adding Levels,"The opposite of fct_drop() is adding extra levels. Assigning to levels(), as 
+ we did previously, will add levels that are not necessarily in the factor, but 
+ it might also rename the levels at the same time. The levels are 
+  
+ renamed; you are not just adding to them. This happened to f1. Its original 
+ levels, 1, 2, 3, and 4, were replaced with A, B, C, and D when we added the 
+ new levels.
+  
+  
+ With the fct_expand() function, you can add levels that are not in 
+ your factor, and any levels that are already in the data will be ignored.
+  
+ f1
+  
+ ## [1] C B B A D 
+  
+ ## Levels: A B C D E F G H I J
+  
+ f3
+  
+ ## [1] X Y A 
+  
+ ## Levels: X Y A
+  
+ fct_expand(f1, levels(f3))
+  
+ ## [1] C B B A D 
+  
+ ## Levels: A B C D E F G H I J X Y
+  
+ Missing data is not considered missing data by R, and often we can 
+ simply ignore it. Sometimes, however, there is information in missing data 
+ that we need to consider. Since R doesn’t play well with missing data in 
+ many statistical tests, it is best to translate it into a category that R 
+ will
+  
+ work with. You can use fct_explicit_na() to map all missing data into a new 
+ category:
+  
+ f2
+  
+ ## [1] C B B A D 
+  
+ ## Levels: C B A D
+  
+ 190",NA
+ Reorder Levels,"If you construct a factor with factor(), you can control the order of the 
+ levels using the levels argument. If you use as.factor(), your levels will get 
+ sorted, and if you use as_factor(), they will be sorted in the order that the 
+ levels appear in the data. You can map between these orders if you want to, 
+ though.
+  
+ If you have a factor created with factor() without specifying the levels, 
+ then the levels will be all elements seen in the input sorted in their natural 
+ order.
+  
+ f <- factor(sample(LETTERS[1:5], 10, replace = TRUE)) f
+  
+ ##  [1] E D B B A C C E A E 
+  
+ ## Levels: A B C D E
+  
+ 191",NA
+CHAPTER 10,NA,NA
+Working with ,NA,NA
+Dates: lubridate,"The lubridate package is essential for working with dates and fits well 
+ with the Tidyverse. It is not, however, loaded when you import the 
+ tidyverse package, so you need to explicitly load it.
+  
+ library(lubridate)",NA
+ Time Points,"You can create dates and dates with time-of-day information using 
+ variations of the ymd() function. The letters y, m, and d stand for year, 
+ month, and day, respectively. With ymd() you should write your data in a 
+ format that puts the year first, the month second, and the day last. The 
+ function is very flexible in what it can parse as a date.
+  
+ ymd(""1975 Feb 15"")
+  
+ ## [1] ""1975-02-15""
+  
+ ymd(""19750215"")
+  
+ ## [1] ""1975-02-15""
+  
+ © Thomas Mailund 2019 
+  
+ T. Mailund, 
+ R Data Science Quick Reference
+ , 
+ https://doi.org/10.1007/978-1-4842-4894-
+ 2_10
+  
+ 19
+ 5",NA
+ Time Zones,"When you add a time of day, a time zone is also necessary. After all, we 
+ do not know what time a given hour is before we know which time 
+ zone we are in. If I tell you that I am going to call you at two o’clock, you 
+ can’t assume that it is two o’clock in your time zone.
+ 1
+  Unless you tell the 
+ functions otherwise, they will assume UTC is the time zone. You can 
+ specify another time zone via the tz argument.
+  
+ 1
+  I am in CEST right now. In Denmark, we switch between CEST and CET 
+ depending on daylight saving time.
+  
+ 197",NA
+ ,NA,NA
+Time Intervals ,"If you have two time points, you also have a time interval: the time 
+ between the two points. You can create an interval object from two time 
+ points using the interval() function.
+  
+ start <- dmy(""02 11 1949"") 
+  
+ end <- dmy(""15 02 1975"") 
+  
+ interval(start, end) 
+  
+ ## [1] 1949-11-02 UTC--1975-02-15 UTC 
+  
+ The infix operator %--% does the same 
+ thing.
+  
+ start %--% end 
+  
+ ## [1] 1949-11-02 UTC--1975-02-15 UTC 
+  
+  
+ You can get the start and end points of an interval using int_start() 
+ and int_end().
+  
+ int <- interval(start, end) 
+  
+ int 
+  
+ ## [1] 1949-11-02 UTC--1975-02-15 UTC 
+ int_start(int) 
+  
+ ## [1] ""1949-11-02 UTC"" 
+  
+ int_end(int) 
+  
+ ## [1] ""1975-02-15 UTC""
+  
+ 199",NA
+CHAPTER 11,NA,NA
+Working with ,NA,NA
+Models: broom ,NA,NA
+and modelr,"There are many models to which you can fit your data, from classical 
+ statistical models to modern machine learning methods, and a thorough 
+ exploration of R packages that support this is well beyond the scope of 
+ this book. The main concern when choosing and fitting models is not the 
+ syntax, and this book is, after all, a syntax reference. We will look at two 
+ packages that aim at making a tidy interface to models.
+  
+  
+ The two packages, broom and modelr, are not loaded with tidyverse 
+ so you must load them individually.
+  
+ library(broom) 
+  
+ library(modelr)",NA
+ broom,"When you fit a model, you get an object in return that holds information 
+ about the data and the fit. This data is represented in different ways—it 
+ depends on the implementation of the function used to fit the data. For a 
+ linear model, for example, we get this information:
+  
+ model <- lm(disp ~ hp + wt, data = mtcars) 
+ summary(model)",NA
+ modelr,"The modelr package also provides functionality for fitting and inspecting 
+ models and for extracting information about model fits. We start with the 
+ latter.
+  
+ Consider the following example model.
+  
+ x <- tibble(
+  
+  
+  x = runif(5),
+  
+  
+  y = 15 *12 * x + 42 + rnorm(5) ) 
+  
+ model <- lm(y ~ x, data = x) 
+  
+ tidy(model)
+  
+ ## # A tibble: 2 x 5 
+  
+ ##   term      estimate std.error statistic   p.value ##   <chr>          
+ <dbl>     <dbl>    <dbl>     <dbl> ## 1 (Interce. . .   41.8    0.271      
+ 154.   5.99e-7 ## 2 x              180.     1.15       157.   5.72e-7
+  
+ 208",NA
+CHAPTER 12,NA,NA
+Plotting: ggplot2,"The ggplot2 package contains a vast number of functions for creating a 
+ wide variety of plots. It would take an entire book to cover it all—there are 
+ already several that cover it—so I cannot attempt this here. In this 
+ chapter, I will only try to give you a flavor of how the package works.
+  
+  
+ The ggplot2 package is loaded when you load tidyverse, but you can 
+ always include it on its own using
+  
+ library(ggplot2)",NA
+ The Basic Plotting Components in ,NA,NA
+ggplot2,"Unlike in R’s base graphics, with ggplot2 you do not create individual plot 
+ components by drawing lines, points, or whatever you need onto a 
+ graphics canvas. Instead, you specify how your data should be mapped to 
+ abstract graphical aesthetics, for example, x- and y-coordinates, colors, 
+ shapes, and so on. Then you specify how aesthetics should be represented 
+ in the graphics, for example, whether x- and y-coordinates should be 
+ plotted as scatter plots or lines. On top of this can add graphics 
+ information such as which shapes points in a scatter plot should have, 
+ which colors the color aesthetics maps, and such. You add attributes as 
+ separate steps which makes it easy to change a plot. If you want to add a 
+ linear regression to your plot, you can do it with a single command; since 
+ ggplot2 already knows which of your data variables are mapped to the x- 
+ and y-coordinates, it simply computes the linear regression and adds it",NA
+ Adding Components to Plot Objects,"The simplest plot we can create is empty. You can create it by calling 
+ ggplot() without any arguments.
+  
+ p <- ggplot()
+  
+ You can see what it consists of by calling the summary() function, but 
+ most of the information is not relevant here. I will highlight lines 
+ relevant to the components we see in this section as we go along.
+  
+ summary(p)
+  
+ ## data: [x] 
+  
+ ## faceting: <ggproto object: Class FacetNull, Facet, gg> ##     
+ compute_layout: function 
+  
+ ##     draw_back: function 
+  
+ ##     draw_front: function
+  
+ 221",NA
+ Adding Data,"You add data to a plot as an argument to ggplot(). If you want to add data 
+ to the empty plot, you will use geometries; see the following example. If 
+ you add data in the ggplot() function, then all components you add to the 
+ plot later will be able to see the data.
+  
+  
+ With some random test data, we can create a plot object with 
+ associated data.
+  
+ dat <- tibble(
+  
+  
+  foo = runif(100),
+  
+  
+  bar = 20 * foo + 5 + rnorm(100, sd = 10),
+  
+  baz = 
+ rep(1:2, each = 50) 
+  
+ ) 
+  
+ p <- ggplot(data = dat)
+  
+ If you call summary(p) you can see the line:
+  
+ data: foo, bar, baz [100x3]
+  
+  
+ It shows you the variables in the data. They are not mapped to any 
+ graphical objects yet; that is the purview of aesthetics.",NA
+ Adding Aesthetics,"What we see in a plot are points, lines, colors, and so on. To create 
+ these plots, ggplot2 needs to know which variables in the data should 
+ be interpreted as coordinates, which determines line thickness, which 
+ determines colors and so on. Aesthetics do this.
+  
+ Consider this plot object:
+  
+ p <- ggplot(data = dat, aes(x = foo, y = bar, color = baz))
+  
+ 223",NA
+Adding Geometries,"Geometries specify the type of the plot. They use the aesthetics’ maps from 
+ the data to graphical properties and create a plot based on them.
+  
+ One of the most straightforward plots is a scatter plot. We can add 
+ the geom_point() geometry to the plot we created previously to get a 
+ scatter plot.
+  
+ p <- ggplot(data = dat, aes(x = foo, y = bar, color = baz)) + 
+  
+ geom_point()
+  
+  
+ If you call summary(p), you will see these lines at the bottom of 
+ the output:
+  
+ geom_point: na.rm = FALSE 
+  
+ stat_identity: na.rm = FALSE
+  
+ They tell you that you have a point geometry and that the statistic that 
+ maps from the data to a summary is the identity. We do not make any 
+ summary of the data when we plot it as points. You can create the plot by 
+ printing the plot object; you can see the result in Figure 
+ 12-1
+ .
+  
+ print(p)
+  
+ 224",NA
+Facets ,"The effect of adding a grid facet is that we get sub-figures where the data 
+ is split into groups determined by the formula we give facet_grid(); see 
+ Figure 
+ 12-7
+ .
+  
+ ggplot(data = dat, aes(x = foo, y = bar)) + geom_point() + 
+  
+ facet_grid(~ factor(baz))
+  
+ 232",NA
+Adding Coordinates,"All the preceding plots were plotted in cartesian coordinates—the 
+ default coordinates. You can change the coordinates of a plot. For 
+ example, you can flip an axis, for example, the x-axis of a plot:
+  
+ ggplot(data = dat, aes(x = foo, y = bar)) + geom_point() + coord_flip()
+  
+ Or you can plot in polar coordinates instead of cartesian coordinates.
+  
+ 236",NA
+CHAPTER 13,NA,NA
+Conclusions,"R, extended with the Tidyverse, is a powerful language for data science. 
+ There is strong support for each step along a data analysis pipeline. 
+  
+ After reading this book, you should have a good grasp of how the 
+ Tidyverse packages work and how you use them. The book did not cover 
+ which data science and machine learning model to use on particular data, 
+ but only how they could fit into pipelines. Covering actual data analysis 
+ and the methods to use—and packages supporting them—is beyond the 
+ scope of this book. Each statistical or machine learning method could fill a 
+ book in itself, and there are many such models in R packages. The book is 
+ mainly a syntax guide and what it covered can be used with any model you 
+ need to apply to your data, so it is a good foundation for how to adapt your 
+ data analysis into the Tidyverse framework.
+  
+ © Thomas Mailund 2019 
+  
+ T. Mailund, 
+ R Data Science Quick Reference
+ , 
+ https://doi.org/10.1007/978-1-4842-4894-
+ 2_13
+  
+ 239",NA
+Index,NA,NA
+A ,"arrange() function, 
+ 125,228
+  
+ complete() function, 
+ 60,61 
+ crossing() function, 
+ 59",NA
+B ,NA,NA
+D,"bootstrap() function, 
+ 214 
+  
+ boundary() function, 
+ 165 
+  
+ broom package 
+  
+  
+ augment(), 
+ 207 
+  
+  
+ example, 
+ 205 
+  
+  
+ glance() function, 
+ 207,215 
+  
+ tidy(), 
+ 206
+  
+ Data frame 
+  
+  
+ column selection 
+  
+  
+  
+ contains() function, 
+ 115 
+  
+  
+ ends_with() function, 
+  
+  
+  
+ 113–115 
+  
+  
+  
+ indices, 
+ 111,112 
+  
+  
+  
+ matches() function, 
+ 115 
+  
+  
+ non-empty strings, 
+ 116",NA
+C,"ranges, 
+ 112 
+  
+ rename, 
+ 117
+  
+  
+ col_factor(), 
+ 19,21 
+  
+ col_ functions, 
+ 20 
+  
+ Column encodings 
+  
+  
+ convert argument, 
+ 52
+  
+  
+ select(), 
+ 110,117 
+  
+  
+ sorting, 
+ 125,126 
+  
+  
+ starts_with() function, 
+ 113 
+ example, countries income
+  
+ extract() function, 
+ 54 
+  
+ dplyr, 
+ 155
+  
+  
+ remove argument, 
+ 52,56 
+  
+  
+ separate() function, 
+ 51,52 
+  
+  
+ separate_rows(), 
+ 56,57 
+  
+ Column types 
+  
+  
+ function-based 
+  
+  
+  
+ specification, 
+ 18–22 
+  
+  
+ string-based (
+ see 
+ String- based 
+  
+  
+ specification)
+  
+  
+  
+ mean_income, 
+ 158 
+  
+  
+ missing data, 
+ 155 
+  
+  
+  
+ mutate(), 
+ 157 
+  
+  
+  
+ reformatting, 
+ 156,157 
+  
+  
+ ungroup table, 
+ 159 
+  
+ Data frames modification 
+  
+ abs() function, 
+ 131 
+  
+  
+ add columns, 
+ 128
+  
+ © Thomas Mailund 2019 
+  
+ T. Mailund, 
+ R Data Science Quick Reference
+ , 
+ https://doi.org/10.1007/978-1-4842-
+ 4894-2
+  
+ 241",NA
+E,"between() function, 
+ 120 
+ filter(), 
+ 118
+  
+  
+ expand() function, 
+ 57–59",NA
+F,"facet_grid(), 
+ 232 
+  
+ factor() function, 
+ 181,182 
+ Factors 
+  
+  
+ adding levels, 
+ 190 
+  
+  
+ concatenation, 
+ 183–
+ 185 
+  
+ creation, 
+ 182 
+  
+  
+ projection 
+  
+  
+  
+ fct_collapse(), 
+ 186 
+  
+  
+ fct_drop(), 
+ 189
+  
+  
+ filter_all() function, 
+ 121, 
+  
+  
+  
+ 124,125 
+  
+  
+ filter_at() function, 
+ 122 
+  
+ filter_if() function, 
+ 123 
+  
+  
+ select(), 
+ 118,120 
+  
+ filter() function, 
+ 117 
+  
+ Forcats package (
+ see 
+ Factors) 
+ force_tz() function, 
+ 198 
+  
+ formulae() function, 
+ 216 
+  
+ full_join() function, 
+ 151 
+  
+ Function composition 
+  
+  
+  
+ operator, 
+ 78
+  
+ fct_lump(), 
+ 187,188 
+ fct_other(), 
+ 188",NA
+"G, H","fct_recode(), 
+ 186 
+  
+  
+ recorder levels, 
+ 191,192 
+ fct_collapse(), 
+ 186 
+  
+ fct_drop(), 
+ 189
+  
+ 242
+  
+ gather() function, 
+ 46 
+  
+  
+ convert to TRUE 
+  
+  
+  
+ argument, 
+ 49,50 
+  
+  
+ key and value arguments, 
+ 51",NA
+L,"Lambda expressions 
+  
+  
+ anonymous 
+  
+  
+  
+  
+ functions, 
+ 104 
+  
+  
+ is_even() function, 
+ 105 
+  
+  
+ keep() function, 
+ 104 
+  
+  
+ purrr function, 
+ 105,106 
+  
+  
+ readable versions, 
+ 106,107 
+ locale() function, 
+ 20,23 
+  
+ Lubridate package 
+  
+  
+ force_tz() function, 
+ 198 
+  
+  
+ time interval 
+  
+  
+  
+ int_aligns(), 
+ 202,203 
+  
+  
+ interval(), 
+ 199 
+  
+  
+  
+ int_flip(), 
+ 200 
+  
+  
+  
+ int_length(), 
+ 200 
+  
+  
+  
+ int_overlaps(), 
+ 202 
+  
+  
+  
+ int_standardize(), 
+ 200 
+  
+  
+ %within% operator, 
+ 201 
+  
+ time points, 
+ 195–197 
+  
+  
+ time zone, 
+ 197,198",NA
+M,"magrittr package, 
+ 71,73,79 
+ map() function, 
+ 86,94,96",NA
+"I, J, K","Mapping function 
+  
+  
+ extract values, 
+ 90
+  
+  
+ int_aligns(), 
+ 202,203 
+ interval(), 
+ 199
+  
+ identity() function, 
+ 89 
+ imap() variations, 
+ 96
+  
+ int_flip(), 
+ 200 
+  
+ lmap(), 
+ 93,95
+  
+ int_overlaps(), 
+ 202 
+  
+ lmap_at(), 
+ 95
+  
+ int_standardize(), 
+ 200 
+  
+ lmap_if(), 
+ 95
+  
+ 243",NA
+N,"Nesting data, 
+ 66 
+  
+  
+ data column, 
+ 68 
+  
+  
+ .key argument, 
+ 67 
+  
+ unnest(), 
+ 68 
+  
+ nesting() function, 
+ 59
+  
+ map_if(), 
+ 92,93 
+ map_lgl(), 
+ 87",NA
+O,"pmap(), 
+ 96 
+  
+ vector expression, 
+ 87
+  
+ ordered argument, 
+ 21
+  
+ Missing values 
+ dplyr, 
+ 64",NA
+"P, Q","drop_na() function, 
+ 62 
+ fill() function, 
+ 64,65
+  
+ Parsing time/dates 
+  
+ codes, 
+ 22,23
+  
+ replace_na() 
+  
+ formats, 
+ 23
+  
+ function, 
+ 63 
+  
+ functions, 
+ 24
+  
+ modelr package, 
+ 208 
+  
+ locale(), 
+ 27
+  
+ add_predictions(), 
+ 209 
+  
+ pm/am formats, 
+ 24
+  
+ add_residuals(), 
+ 209 
+  
+ readr, 
+ 25
+  
+ bootstrap() function, 
+ 214 
+ broom’s glance() 
+  
+ string format, 
+ 24 
+  
+ 24-
+ hour/
+ 12-
+ hour 
+  
+ function, 
+ 215 
+  
+ clocks, 
+ 24
+  
+ crossv_kfold, 
+ 214 
+  
+ UTC, 
+ 26
+  
+ crossv_loo, 
+ 214 
+  
+ example, 
+ 208 
+  
+ fit_with(), 
+ 216,217 
+  
+ gather_predictions(), 
+ 210,213 
+ seq_range() 
+  
+ Partial evaluation, 
+ 101 
+  
+  
+ combine functions, 
+ 103 
+  
+ filter values, 
+ 102 
+  
+  
+ mapping, 
+ 103 
+  
+ partial() function, 
+ 102
+  
+ function, 
+ 210 
+  
+ Pipelines
+  
+ spread_predictions(), 
+ 211 
+ modify() functions, 
+ 97 
+  
+ mutate() function, 
+ 127,141,142
+  
+ 244
+  
+ function arguments, 
+ 75–
+ 78 
+ nested function, 
+ 77 
+  
+ notation, 
+ 74,75",NA
+S,"semi_join(), 
+ 152–154 
+  
+ separate_rows(), 
+ 56 
+  
+ seq_range() function, 
+ 210 
+  
+ Space-separated columns, 
+ 28–30 
+ spread() function, 
+ 50 
+  
+ str_count() function, 
+ 161–163 
+  
+ str_dup() function, 
+ 176 
+  
+ str_extract(), 
+ 174 
+  
+ String-based specification 
+  
+  
+ Boolean values, 
+ 15 
+  
+  
+ characters, 
+ 12 
+  
+  
+ cols() function, 
+ 18 
+  
+  
+ encoding format, 
+ 16 
+  
+  
+ function call, 
+ 13 
+  
+  
+ read_csv, 
+ 13",NA
+R ,"Reading data, functions, 
+ 6–8 
+ readr package
+  
+  
+ strings, 
+ 15,17 
+  
+ Strings 
+  
+  
+ capitalization, 
+ 166 
+  
+ padding, 
+ 168
+  
+  
+ column types, 
+ 11 
+  
+ reading data, 
+  
+  
+ functions, 
+ 6–8 
+  
+ space-separated columns, 
+  
+ str_count(), 
+ 161–163 
+ str_detect(), 
+ 171–
+ 173 
+ str_extract(), 
+ 174 
+  
+ str_split(), 
+ 164–166
+  
+ 28–30 
+  
+ tidyverse package, 
+ 161
+  
+ writing data, functions, 
+ 31 
+  
+ transforming
+  
+ reduce(), 
+ 97,154 
+  
+ operators, 
+ 175
+  
+ accumulate() 
+  
+ regular expressions, 
+ 176
+  
+ function, 
+ 100,101 
+  
+ str_c(), 
+ 177
+  
+ init argument, 
+ 98 
+  
+ str_dup(), 
+ 176
+  
+ pair(), 
+ 98 
+  
+ str_glue(), 
+ 179,180
+  
+ rename_at() function, 
+ 155
+  
+ str_sub(), 
+ 177,178",NA
+T ,NA,NA
+U,"Tables, join 
+  
+ ungroup(), 
+ 141
+  
+ anti_join(), 
+ 154 
+  
+ unnest() operation, 
+ 68
+  
+ bind_columns(), 
+ 146
+  
+ bind_rows(), 
+ 146 
+ distinct(), 
+ 149 
+  
+ full_join(), 
+ 151",NA
+V ,"Vectorize() function, 
+ 132
+  
+ inner_join(), 
+ 147,148,150–153
+  
+ reduce() function, 
+ 154 
+ semi_join(), 
+ 152,153",NA
+"W, X","suffix argument, 
+ 150 
+ Tibbles
+  
+ Writing data, functions, 
+ 31
+  
+ creation 
+  
+  
+ as.data.frame(), 
+ 34",NA
+"Y, Z","246
+  
+ as_tibble(), 
+ 35 
+  
+ ymd() function, 
+ 195,196",NA

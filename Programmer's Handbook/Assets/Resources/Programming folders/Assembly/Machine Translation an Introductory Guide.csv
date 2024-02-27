@@ -1,0 +1,2418 @@
+Larger Text,Smaller Text,Symbol
+Machine Translation: an Introductory Guide ,"Book
+  · 
+ January 1994
+  
+ CITATIONS 
+  
+ 272
+  
+ READS 
+  
+ 9,784
+  
+ 5 authors
+ , including:
+  
+  
+ Doug Arnold
+  
+  
+ Louisa Sadler
+  
+ University of Essex
+  
+ University of Essex
+  
+ 109
+ PUBLICATIONS
+ 1,090
+ CITATIONS
+  
+ 96
+ PUBLICATIONS
+ 1,471
+ CITATIONS
+  
+  
+ SEE PROFILE
+  
+  
+  
+ SEE PROFILE
+  
+  
+ All content following this page was uploaded by 
+ Doug Arnold
+  on 20 November 2017.
+  
+ The user has requested enhancement of the downloaded file.",NA
+MACHINE TRANSLATION,NA,NA
+An Introductory Guide,NA,NA
+Douglas Arnold ,NA,NA
+Lorna Balkan ,NA,NA
+Siety Meijer ,NA,NA
+R. Lee Humphreys ,NA,NA
+Louisa Sadler,"This book was originally published by NCC Blackwell Ltd. as
+  Machine Translation: an 
+ Introductory Guide
+ , NCC Blackwell, London, 1994, ISBN: 1855542-17x. However, it is 
+ now out of print, so we are making this copy available. Please continue to cite the 
+ original publication details.",NA
+Preface,"Automatic translation between human languages (‘Machine Translation’) is a Science 
+ Fic-tion staple, and a long-term scientific dream of enormous social, political, and 
+ scientific importance. It was one of the earliest applications suggested for digital 
+ computers, but turning this dream into reality has turned out to be a much harder, and in 
+ many ways a much more interesting task than at first appeared. Nevertheless, though 
+ there remain many outstanding problems, some degree of automatic translation is now a 
+ daily reality, and it is likely that during the next decade the bulk of routine technical and 
+ business translation will be done with some kind of automatic translation tool, from 
+ humble databases containing canned translations of technical terms to genuine Machine 
+ Translation Systems that can produce reasonable draft translations (provided the input 
+ observes certain restrictions on subject matter, style, and vocabulary).
+  
+ Unfortunately, how this is possible or what it really means is hard to appreciate for those 
+ without the time, patience, or training to read the relevant academic research papers, 
+ which in any case do not give a very good picture of what is involved in practice. It was 
+ for this reason that we decided to try to write a book which would be genuinely 
+ introductory (in the sense of not presupposing a background in any relevant discipline), 
+ but which would look at all aspects of Machine Translation: covering questions of what it 
+ is like to use a modern Machine Translation system, through questions about how it is 
+ done, to questions of evaluating systems, and what developments can be foreseen in the 
+ near to medium future.
+  
+ We would like to express our thanks to various people. First, we would like to thank each 
+ other. The process of writing this book has been slower than we originally hoped (five 
+ authors is five pairs of hands, but also five sets of opinions). However, we think that our 
+ extensive discussions and revisions have in the end produced a better book in terms of 
+ content, style, presentation, and so on. We think we deserve no little credit for 
+ maintaining a pleasant working atmosphere while expending this level of effort and 
+ commitment while under pressure caused by other academic responsibilities.
+  
+ We would also like to thank our colleagues at the Computational Linguistics and Ma-
+ chine Translation (CL/MT) group at the University of Essex for suggestions and practical 
+ support, especially Lisa Hamilton, Kerry Maxwell, Dave Moffat, Tim Nicholas, Melissa 
+ Parker, Martin Rondell and Andy Way.
+  
+ i",NA
+Contents,"Preface i
+  
+ 1
+  
+ Introduction and Overview
+  
+ 1
+  
+ 2
+  
+ 1.1
+  
+ Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 1
+  
+ 1.2
+  
+ Why MT Matters . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 4
+  
+ 1.3
+  
+ Popular Conceptions and Misconceptions
+  
+ . . . . . . . . . . . . . . . . .
+  
+ 6
+  
+ 1.4
+  
+ A Bit of History . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 13
+  
+ 1.5
+  
+ Summary
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 16
+  
+ 1.6
+  
+ Further Reading . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 16
+  
+ Machine Translation in Practice
+  
+ 19
+  
+ 2.1
+  
+ Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 19
+  
+ 2.2
+  
+ The Scenario
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 20
+  
+ 2.3
+  
+ Document Preparation: Authoring and Pre-Editing
+  
+ . . . . . . . . . . . .
+  
+ 28
+  
+ 2.4
+  
+ The Translation Process . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 30
+  
+ 2.5
+  
+ Document Revision . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 34
+  
+ 2.6
+  
+ Summary
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 35
+  
+ 2.7
+  
+ Further Reading . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 36
+  
+ iii",NA
+Chapter 1,NA,NA
+Introduction and Overview,NA,NA
+1.1 ,NA,NA
+Introduction,"The topic of the book is the art or science of
+  Automatic Translation
+ , or
+  Machine 
+ Trans-lation
+  (MT) as it is generally known — the attempt to automate all, or part of the 
+ process of translating from one human language to another. The aim of the book is to 
+ introduce this topic to the general reader — anyone interested in human language, 
+ translation, or computers. The idea is to give the reader a clear basic understanding of the 
+ state of the art, both in terms of
+  what
+  is currently possible, and
+  how
+  it is achieved, and of 
+ what develop-ments are on the horizon. This should be especially interesting to anyone 
+ who is associated with what are sometimes called “the language industries”; particularly 
+ translators, those training to be translators, and those who commission or use translations 
+ extensively. But the topics the book deals with are of general and lasting interest, as we 
+ hope the book will demonstrate, and no specialist knowledge is presupposed — no 
+ background in Computer Science, Artificial Intelligence (AI), Linguistics, or Translation 
+ Studies.
+  
+ Though the purpose of this book is introductory, it is not
+  just
+  introductory. For one thing, 
+ we will, in Chapter 10, bring the reader up to date with the most recent developments. 
+ For another, as well as giving an accurate picture of the state of the art, both practically 
+ and theoretically, we have taken a position on some of what seem to us to be the key 
+ issues in MT today — the fact is that we have some axes to grind.
+  
+ From the earliest days, MT has been bedevilled by grandiose claims and exaggerated ex-
+ pectations. MT researchers and developers should stop over-selling. The general public 
+ should stop over-expecting. One of the main aims of this book is that the reader comes to 
+ appreciate where we are today in terms of actual achievement, reasonable expectation, 
+ and unreasonable hype. This is not the kind of thing that one can sum up in a catchy 
+ headline (“No Prospect for MT” or “MT Removes the Language Barrier”), but it is 
+ something one can absorb, and which one can thereafter use to distill the essence of truth 
+ that will lie behind reports of products and research.
+  
+ 1",NA
+1.2 Why MT Matters,"The topic of MT is one that we have found sufficiently interesting to spend most of our 
+ professional lives investigating, and we hope the reader will come to share, or at least 
+ understand, this interest. But whatever one may think about its intrinsic interest, it is 
+ undoubtedly an important topic — socially, politically, commercially, scientifically, and 
+ intellectually or philosophically — and one whose importance is likely to increase as the 
+ 20th Century ends, and the 21st begins.
+  
+ The
+  social
+  or
+  political
+  importance of MT arises from the socio-political importance of 
+ translation in communities where more than one language is generally spoken. Here the 
+ only viable alternative to rather widespread use of translation is the adoption of a single 
+ common ‘lingua franca’, which (despite what one might first think) is not a particularly 
+ attractive alternative, because it involves the dominance of the chosen language, to the 
+ disadvantage of speakers of the other languages, and raises the prospect of the other lan-
+ guages becoming second-class, and ultimately disappearing. Since the loss of a language 
+ often involves the disappearance of a distinctive culture, and a way of thinking, this is a 
+ loss that should matter to everyone. So translation is necessary for communication — for 
+ ordinary human interaction, and for gathering the information one needs to play a full 
+ part in society. Being allowed to express yourself in your own language, and to receive 
+ infor-mation that directly affects you in the same medium, seems to be an important, if 
+ often violated, right. And it is one that depends on the availability of translation. The 
+ problem is that the demand for translation in the modern world far outstrips any possible 
+ supply. Part of the problem is that there are too few human translators, and that there is a 
+ limit on how far their productivity can be increased without automation. In short, it 
+ seems as though automation of translation is a social and political necessity for modern 
+ societies which do not wish to impose a common language on their members.
+  
+ This is a point that is often missed by people who live in communities where one lan-
+ guage is dominant, and who speak the dominant language. Speakers of English in places 
+ like Britain, and the Northern USA are examples. However, even they rapidly come to 
+ appreciate it when they visit an area where English is not dominant (for example, Welsh 
+ speaking areas of Britain, parts of the USA where the majority language is Spanish, not 
+ to mention most other countries in the world). For countries like Canada and 
+ Switzerland, and organizations like the European Community and the UN, for whom 
+ multilingualism is both a basic principle and a fact of every day life, the point is obvious.
+  
+ The
+  commercial
+  importance of MT is a result of related factors. First, translation itself is 
+ commercially important: faced with a choice between a product with an instruction 
+ manual in English, and one whose manual is written in Japanese, most English speakers 
+ will buy the former — and in the case of a repair manual for a piece of manufacturing 
+ machinery or the manual for a safety critical system, this is not just a matter of taste. Sec-
+ ondly, translation is expensive. Translation is a highly skilled job, requiring much more 
+ than mere knowledge of a number of languages, and in some countries at least, 
+ translators’salaries are comparable to other highly trained professionals. Moreover, 
+ delays in transla-tion are costly. Estimates vary, but producing high quality translations 
+ of difficult material,
+  
+ 4",NA
+1.3 Popular Conceptions and Misconceptions,"Some popular misconceptions about MT are listed on page 7. We will discuss them in 
+ turn.
+  
+  “MT is a waste of time because you will never make a machine that can translate Shake-
+ speare”.
+  
+ The criticism that MT systems cannot, and will never, produce translations of great liter-
+ ature of any great merit is probably correct, but quite beside the point. It certainly does 
+ not show that MT is impossible. First, translating literature requires special literary 
+ skill— it is not the kind of thing that the average professional translator normally 
+ attempts. So accepting the criticism does not show that automatic translation of non-
+ literary texts is impossible. Second, literary translation is a small proportion of the 
+ translation that has to be done, so accepting the criticism does not mean that MT is 
+ useless. Finally, one may wonder who would ever
+  want
+  to translate Shakespeare by 
+ machine — it is a job that hu-man translators find challenging and rewarding, and it is 
+ not a job that MT systems have been designed for. The criticism that MT systems cannot 
+ translate Shakespeare is a bit like criticism of industrial robots for not being able to dance 
+ Swan Lake.
+  
+  “There was/is an MT system which translated
+  The spirit is willing, but the flesh is weak 
+ into the Russian equivalent of
+  The vodka is good, but the steak is lousy
+ , and
+  hydraulic 
+ ram 
+ into the French equivalent of
+  water goat
+ . MT is useless.”
+  
+ The ‘spirit is willing’ story is amusing, and it really is a pity that it is not true. However, 
+ like most MT ‘howlers’ it is a fabrication. In fact, for the most part, they were in 
+ circulation long before any MT system could have produced them (variants of the ‘spirit 
+ is willing’example can be found in the American press as early as 1956, but sadly, there 
+ does not seem to have been an MT system in America which could translate from 
+ English into Russian until much more recently — for sound strategic reasons, work in the 
+ USA had concentrated on the translation of Russian into English, not the other way 
+ round). Of course, there are real MT howlers. Two of the nicest are the translation of 
+ French
+  avocat 
+ (‘advocate’, ‘lawyer’ or ‘barrister’) as
+  avocado
+ , and the translation of
+  Les 
+ soldats sont dans le caf´e
+  as
+  The soldiers are in the coffee
+ . However, they are not as easy 
+ to find as the reader might think, and they certainly do not show that MT is useless.
+  
+  “Generally, the quality of translation you can get from an MT system is very low. This 
+ makes them useless in practice.”
+  
+ 6",NA
+1.4 A Bit of History,"There is some dispute about who first had the idea of translating automatically between 
+ human languages, but the actual development of MT can be traced to conversations and 
+ correspondence between Andrew D. Booth, a British crystallographer, and Warren 
+ Weaver of the Rockefeller Foundation in 1947, and more specifically to a memorandum 
+ written by Weaver in 1949 to the Rockerfeller Foundation which included the following 
+ two sen-tences.
+  
+ “I have a text in front of me which is written in Russian but I am going to 
+ pretend that it is really written in English and that it has been coded in some 
+ strange symbols. All I need to do is strip off the code in order to retrieve the 
+ information contained in the text.”
+  
+ The analogy of translation and decoding may strike the sophisticated reader as simplistic 
+ (however complicated coding gets it is still basically a one-for-one substitution process 
+ where there is only one right answer — translation is a far more complex and subtle 
+ business), and later in the memorandum Weaver proposed some other more sophisticated
+  
+ 12",NA
+1.5 ,NA,NA
+Summary,"This chapter has given an outline of the rest of the book, and given a potted history of 
+ MT. It has also tried to lay a few ghosts, in the form of misconceptions which haunt the 
+ enterprise. Above all we hope to convince the reader that MT is possible and potentially 
+ useful, despite current limitations.
+  
+ 15",NA
+1.6 Further Reading,"A broad, practically oriented view of the field of current MT by a variety of authors can 
+ be found in Newton (1992a). Generally speaking, the best source of material that takes an 
+ MT user’s viewpoint is the series of books titled
+  Translating and the Computer
+ , with 
+ various editors and publishers, including Lawson (1982a), Snell (1979), Snell (1982), 
+ Lawson (1982b), Picken (1985), Picken (1986), Picken (1987), Picken (1988), Mayorcas 
+ (1990), Picken (1990), and Mayorcas (Forthcoming). These are the published 
+ proceedings of the annual Conference on Translating and the Computer, sponsored by 
+ Aslib (The Association for Information Management), and the Institute for Translation 
+ and Interpreting.
+  
+ By far the best technical introduction to MT is Hutchins and Somers (1992). This would 
+ be appropriate for readers who want to know more technical and scientific details about 
+ MT, and we will often refer to it in later chapters. This book contains useful discussions of 
+ some of the main MT systems, but for descriptions of these systems by their actual 
+ designers the reader should look at Slocum (1988), and King (1987). Slocum’s 
+ introduction to the for-mer, Slocum (1986), is particularly recommended as an overview 
+ of the key issues in MT. These books all contain detailed descriptions of the research of 
+ the TAUM group which de-veloped 
+  
+  
+ the 
+ METEO system referred to in section 1.3. The METEO system is discussed further in 
+ Chapter 8.
+  
+ A short assessment of the current state of MT in terms of availability and use of systems 
+ in Europe, North America, and Japan and East Asia can be found in Pugh (1992). An up-
+ to-date picture of the state of MT as regards both commercial and scientific points of 
+ view is provided every two years by the
+  Machine Translation Summits
+ . A report of one 
+ of these can be found in Nagao (1989). There is a description of the successful use of MT 
+ in a corporate setting in Newton (1992b).
+  
+ On the history of MT (which we have outlined here, but which will not be discussed 
+ again), the most comprehensive discussion can be found in Hutchins (1986), though there 
+ are also useful discussions in Warwick (1987), and Buchmann (1987). Nagao (1986) also 
+ provides a useful insight into the history of MT, together with a general introduction to 
+ MT. The ALPAC report is Pierce and Carroll (1966). The work of Wilks’ that is referred 
+ to in section 1.4 is Wilks (1973).
+  
+ For general descriptions and discussion of the activity of translation (both human and 
+ machine) Picken (1989) is a useful and up-to-date source. This contains references to (for 
+ example) works on translation theory, and gives a great deal of practical information of 
+ value to translators (such as lists national translators’ and interpreters’ organizations, and 
+ bibliographies of translations).
+  
+ For up-to-date information about the state of MT, there is the newsletter of the 
+ International Association for Machine Translation
+  MT News International
+ . See the list of 
+ addresses on page 207.",NA
+Chapter 10,NA,NA
+New Directions in MT,NA,NA
+10.1 ,NA,NA
+Introduction,"In the previous chapters, we have tried to give an idea of what is currently possible in 
+ MT. In this chapter, we look to the future. Our aim is to give a flavour of current research 
+ in MT, indicating what issues are receiving attention and what techniques are thought to 
+ be promising.
+  
+ Of course, not all the ideas that are currently important are really
+  new
+  ones. A great deal 
+ of current research is directed at how familiar techniques can be improved — for 
+ example, how standard ‘Linguistic Knowledge’approaches can be improved by using 
+ better linguis-tic analyses (analyses based on better linguistic theories, or a better 
+ understanding of ex-isting theories), and developing or adapting more efficient 
+ processing methods, and better tools for use in constructing and modifying systems. 
+ Likewise, an important feature of current research involves work on sublanguage MT (cf. 
+ Chapter 8), but though the design of tools to aid sublanguage analysis is an increasingly 
+ important area, it is hardly a new development. Other currently important work is 
+ concerned with
+  integration
+ , which can re-late either to the integration of MT with other 
+ Natural Language Processing technologies, or to the (non-trivial) problems of integration 
+ of MT into general document processing technology that arise as one tries to make a 
+ practically and commercially usable system out of a research prototype MT system. A 
+ particularly important example of the former is research on ‘speech-to-speech’ MT 
+ systems — that is, systems that can take spoken input, and produce spoken output (e.g. 
+ for more or less simultaneous interpreting of telephone conversations). Such work is 
+ clearly important, and often throws up interesting differences of emphasis (for example, 
+ in speech-to-speech work, there is an emphasis on speed, and on dealing with sentence 
+ fragments, since one would like to be able to translate each ut-terance as it is spoken, 
+ without waiting for the end. This gives importance to ‘bottom up’methods of analysis, 
+ and severe restrictions on the input in terms of text-type, etc). How-ever, there is an 
+ obvious sense in which such work it is ‘more of the same’ — it involves improving one 
+ aspect of an existing idea, rather than presenting a genuinely new direction,
+  
+ 173",NA
+10.2 Rule-Based MT,"10.2.1 Flexible or Multi-level MT
+  
+ Most transfer or interlingual rule-based systems are based on the idea that success in 
+ prac-tical MT involves defining a level of representations for texts which is abstract 
+ enough to make translation itself straightforward, but which is at the same time 
+ superficial enough to permit sentences in the various source and target languages to be 
+ successfully mapped",NA
+10.3 Resources for MT,"As researchers begin to consider the implications of developing their systems beyond the 
+ level of proof-of-concept research prototypes with very restricted coverage, considerable 
+ attention is being paid to the role that existing bilingual and monolingual corpus and 
+ lexical resources can play. A corpus is essentially a large collection of texts, but for our 
+ purposes we are interested only in such texts stored on computers in a standard format 
+ (e.g. extended ASCII). Such texts may often contain standard markup (e.g. in SGML) 
+ and for most practical purposes one needs a set of corpus access tools for retrieving data 
+ at will.
+  
+ Various research centres throughout the world have been developing monolingual corpus 
+ resources for many years, and there has been a growing awareness throughout the 
+ eighties of their importance to linguistic and lexicographic work. A number of sites hold 
+ substan-tial corpus resources (several millions of words), an example being the Unit for 
+ Computer Research on the English Language at the University of Lancaster which 
+ currently holds in excess of 5 million words of corpus material, of which 4M words have 
+ been tagged with part-of-speech information. Such collections are a rich repository of 
+ information about actual language usage. Efforts are underway at different centres to 
+ (automatically or semi-",NA
+10.4 Empirical Approaches to MT,"Given the questions that have been raised about the feasibility of ‘rule-based’ 
+ approaches, the increasing availability of large amounts of machine readable textual 
+ material has been seen by a number of research groups as opening possibilities for rather 
+ different MT archi-tectures — in particular, so called ‘empirical’ architectures which 
+ apply relatively ‘low-level’ statistical or pattern matching techniques either directly to 
+ texts, or to texts that have been subject to only rather superficial analysis. The reasoning 
+ behind the term empirical is that in such approaches, whatever linguistic knowledge the 
+ system uses is derived em-
+  
+ 2
+ This may use the measure of Mutual Information, taking into account (roughly) the amount of mutual context 
+ elements share",NA
+10.5 Summary,"We have tried in this chapter to give a brief overview of some of the issues and 
+ techniques which are being actively researched today in MT. Of course, there is not 
+ enough room in one chapter to do justice to the field, and we have of necessity omitted 
+ much work that is of interest. In particular, we have restricted our discussion to MT itself 
+ and have said nothing at all about recent work in the development of translators aids, 
+ multilingual authoring packages and terminological systems of various sorts. Nonetheless 
+ we have identified three important trends in current research in MT. The first is the 
+ exploitation of current techniques from computational linguistics to permit a 
+ multidimensional view of the translational relation between two texts. The second in the 
+ increasing orientation of the research community towards the use of existing resources of 
+ various sorts, either to extract useful information or directly as components in systems. 
+ The third, related, trend is towards statistical or empirical models of translation. Though 
+ we have dwelt in some detail in this short survey on ‘pure’ statistical and simple pattern 
+ matching methods, in fact much recent work advocates a mixture of techniques, for 
+ example with statistical methods supplementing rule-based methods in various ways.",NA
+10.6 Further Reading,"Our discussion of flexible translation between Swedish and Norwegian is based on un-
+ published work by Dyvik (1992). The standard references on sign-based approaches to 
+ linguistic representation are Pollard and Sag (1987, 1993). The view of constraint based 
+ translation that we describe is loosely modelled on that used in ‘Shake and Bake’ White-
+ lock (1992); Beaven (1992). See Kaplan et al. (1989), Sadler (1991) and Sadler (1993) 
+ for a slightly different approach. General discussion of how multi-dimensional represen-
+ tations can be used in MT can be found in Sadler and Arnold (1993).
+  
+ On knowledge-based MT see Goodman and Nirenburg (1991), and the special issue of the 
+ journal
+  Machine Translation
+ , Goodman (1989).
+  
+ On the processing of corpora, and their use in linguistics generally, see Garside et al. 
+ (1987), and Aijmer and Altenberg (1991).
+  
+ The idea of example-based MT was first discussed in a paper by Nagao Nagao (1984). For 
+ a review of more recent work along these lines, see Somers (1992).
+  
+ The pure statistical approach to MT is based on the work of a team at IBM, see for 
+ example Brown et al. (1990). As regards aligned, bilingual corpora, the most common 
+ form of alignment takes the sentence to be the organizing unit for chunking, see Brown et 
+ al. (1991) and Gale and Church (1991b) for relevant discussion. On automatic extraction 
+ of
+  
+ 194",NA
+Chapter 2,NA,NA
+Machine Translation in Practice,NA,NA
+2.1 ,NA,NA
+Introduction,"At the time of writing, the use of MT — or indeed, any sort of computerised tool for 
+ translation support — is completely unknown to the vast majority of individuals and or-
+ ganizations in the world, even those involved in the so called ‘language industries’, like 
+ translators, terminologists, technical writers, etc.
+  
+ Given this, one of the first things a reader is likely to want to know about MT is what it 
+ might be like to work with an MT system and how it fits in with the day-to-day business 
+ of translation. The purpose of the present chapter is to provide just such information — a 
+ view of MT at the user level, and from the outside. In later chapters we shall in effect lift 
+ off the covers of an MT system and take a look at what goes on inside. For the moment, 
+ however, the central components of an MT system are treated as a black box.
+  
+ We introduce the business of MT in terms of a scenario describing the usage of MT in-
+ side a fairly large multinational corporation. The scenario is not based exactly on any one 
+ existing corporation. Our description is somewhat idealised in that we assume methods 
+ of working which are only just starting to come into use. However, there is nothing idly 
+ futuristic in our description: it is based on a consensus view of commercial MT experts 
+ and envisages tools which we know to be either already available or in an advanced state 
+ of development in Europe or elsewhere. The commercialisation of MT is not awaiting 
+ a‘miracle breakthrough’ in the science of MT; it is not necessary, nor do we expect it to 
+ occur. What will happen over the next ten years are progressive improvements in func-
+ tionality and performance which, taken in conjunction with the continuously falling costs 
+ of basic computing power, will ensure that MT becomes more and more cost effective. In 
+ short, we have no doubt that in general outline, if not in every detail, we are sketching the 
+ professional life of the machine translator in the 90s, and of most translators in the early 
+ part of the next century.
+  
+ 17",NA
+2.2 The Scenario,"Let us suppose that you are a native English speaker engaged as a professional German-
+ English translator in the Language Centre for a multinational manufacturing company. 
+ One of the products this company supplies is computer products. In this organization the 
+ Language Centre is principally responsible for the translation of documents created 
+ within the company into a variety of European and Oriental languages. The Language 
+ Centre is also charged with exercising control over the content and presentation of 
+ company docu-mentation in general. To this end, it attempts to specify standards for the 
+ final appearance of documents in distributed form, including style, terminology, and 
+ content in general. The overall policy is enshrined in the form of a corporate
+  Document 
+ Design and Content Guide
+  which the Centre periodically updates and revises.
+  
+ The material for which MT is to be used consists of technical documentation such as 
+ User and Repair manuals for software and hardware products manufactured or sourced 
+ by the company. Some classes of highly routine internal business correspondence are 
+ also sub-mitted for MT. Legal and marketing material, and much external business 
+ correspondence, is normally translated by hand, although some translators in the 
+ organization prefer to use MT here as well.
+  
+ All material for translation is available in electronic form on a computer network which 
+ supports the company’s documentation system. Although most documents will be printed 
+ out at some point as standard paper User Manuals and so forth, the system also supports 
+ the preparation of multi-media hypertext documents. These are documents which exist 
+ primarily in electronic form with a sophisticated cross-reference system; they contain 
+ both text and pictures (and perhaps speech and other sounds). These documents are 
+ usually distributed to their final users as CD-ROMs, although they can be distributed in 
+ other electronic forms, including electronic mail. Printed versions of these documents 
+ can also be made.
+  
+ Everyone in the language department has a workstation — an individual computer. These 
+ are linked together by the network. The documentation system which runs on this 
+ network allows users to create and modify documents by typing in text; in other words, it 
+ provides very sophisticated word processing facilities. It also provides sophisticated 
+ means for storing and retrieving electronic documents, and for passing them around the 
+ network inside the company or via external networks to external organizations. As is 
+ usual with current computer systems, everything is done with the help of a friendly 
+ interface based on windows, icons and menus, selections being made with a mouse.
+  
+ The MT system which you use is called ETRANS and forms part of the overall 
+ documen-tation system. (ETRANS is just a name we have invented for a prototypical 
+ MT system.) Parts of an electronic document on the system can be sent to the MT system 
+ in the same way that they can be sent to a printer or to another device or facility on the 
+ network. ETRANS is simultaneously available from any workstation and, for each 
+ person using it, behaves as if it is his or her own personal MT system.
+  
+ 18",NA
+2.3 ,NA,NA
+Document Preparation: Authoring and Pre-Editing,"The corporate language policy as described in the scenario tries to ensure that text which 
+ is submitted to an MT system is written in a way which helps to achieve the best possible 
+ raw MT output. A human translator will often be able to turn a badly written text into a 
+ well written translation; an MT system certainly will not. Bad input means bad output. 
+ Exactly what constitutes
+  good
+  input will vary a little from system to system. However, it 
+ is
+  
+ 25",NA
+2.4 The Translation Process,"In the scenario we sketched above, the source text or some selected portion thereof was 
+ passed to the translation system which then produced raw translated output without any 
+ further human intervention. In fact, this is merely one of many ways the translation step 
+ can proceed.
+  
+ 2.4.1 Dictionary-Based Translation Support Tools
+  
+ One point to bear in mind is that translation support can be given without actually 
+ provid-ing full automatic translation. All MT systems are linked to electronic dictionaries 
+ which, for the present discussion, we can regard as sophisticated variants of their paper 
+ cousins. Such electronic dictionaries can be of immense help even if they are supplied or 
+ used without automatic translation of text. Here is one possible scenario:
+  
+ You are translating a text by hand. Using a mouse or the keyboard, 
+ you click on a word in the source text and a list of its possible 
+ translations is shown on screen. You click on the possible translation 
+ which seems most appropriate in the context and it is inserted directly 
+ into the target language text. Since you usually do this before you 
+ start typing in the translation of the sentence which contains the 
+ unknown work, the",NA
+2.5 ,NA,NA
+Document Revision,"The main factor which decides the amount of post-editing that needs to be done on a 
+ translation produced by machine is of course the quality of the output. But this itself 
+ depends on the requirements of the client, in particular (a) the translation aim and (b) the 
+ time available. In the case of the printer manual in the scenario above the translation aim 
+ was to provide a printer manual in English for export purposes. The fact that the 
+ translation was going to be widely distributed outside the organization required it to be of 
+ high quality — a correct, well-written and clear piece of English text, which means 
+ thorough and conscientious post-editing.
+  
+ The opposite situation occurs when a rough and ready translation is needed out of some 
+ language for personal or internal use, perhaps only to get the gist of some incoming text 
+ to see if it looks interesting enough for proper translation. (If it is not, little time or 
+ money or effort has been wasted finding out). Here is the sort of scenario in which it 
+ might work:
+  
+ You are an English-speaking agronomist monitoring a stream of infor-
+ mation on cereal crop diseases coming in over global computer net-
+ works in four different languages. You have a fast MT system which 
+ is hooked into the network and translates — extremely badly — from 
+ three of the languages into English. Looking at the output and using 
+ your experience of the sort of things that reports contain, you should 
+ be able to get enough of an idea to know whether to ignore it or pass 
+ it on to your specialist translators.
+  
+ Of course, in this situation it is the speed of the MT system, not its quality that matters —",NA
+2.6 ,NA,NA
+Summary,"This chapter has given a picture of how MT might be used in an imaginary company, and 
+ looked in outline at the typical stages of translation:
+  document preparation
+ ,
+  translation 
+ (including various kinds of human involvement and
+  interaction
+ ), and
+  document revision
+ , 
+ and at the various skills and tools required. In doing this we have tried also to give an 
+ idea of some of the different situations in which MT can be useful. In particular, the case 
+ of ‘gist’ translation, where speed is important, and quality less important, compared to 
+ the case where a translation is intended for widespread publication, and the quality of the 
+ finished (post-edited) product is paramount. These are all matters we will return to in the 
+ following chapters.",NA
+2.7 ,NA,NA
+Further Reading,"Descriptions of how MT is actually used in corporate settings can be found in the 
+ Proceed-ings of the Aslib Conferences (normally subtitled
+  Translating and the 
+ Computer
+ ) which we mentioned in the Further Reading section of Chapter 1.
+  
+ For readers interested in finding out more about the practicalities of pre- and post-editing 
+ , there are several relevant contribution in Vasconcellos (1988), in Lawson (1982a). 
+ There is a useful discussion of issues in pre-editing and text preparation, in Pym (1990), 
+ and we will say more about some related issues in Chapter 8.
+  
+ An issue that we have not addressed specifically in this chapter is that of machine aids to 
+ (human) translation, such as on-line and automatic dictionaries and terminological 
+ databases, multilingual word processors, and so on. We will say more about 
+ terminological databases in Chapter 5. Relevant discussion of interaction between 
+ machine (and machine aided) translation systems and human users can be found in 
+ Vasconcellos (1988),Stoll (1988),Knowles (1990) and various papers by Alan Melby, 
+ including Melby (1987, 1992), who discusses the idea of a ‘translator’s workbench’. In 
+ fact, it should be clear that there is no really hard and fast line that can be drawn between 
+ such things and the sort of MT sys-tem we have described here. For one thing, an 
+ adequate MT system should clearly include such aids in addition to anything else. In any 
+ case, in the kind of setting we have described, there is a sense in which even an MT 
+ system which produces very high quality output is really serving as a translators’ aid, 
+ since it is helping improve their productivity by pro-ducing draft translations. What are 
+ sometimes called distinction between ‘Machine Aided Human Translation’, ‘Human 
+ Aided Machine Translation’, and ‘Machine Translation’
+  per se
+  actually form a 
+ continuum.
+  
+ 33",NA
+Chapter 3,NA,NA
+Representation and Processing,NA,NA
+3.1 ,NA,NA
+Introduction,"In this chapter we will introduce some of the techniques that can be used to represent the 
+ kind of information that is needed for translation in such a way that it can be processed 
+ automatically. This will provide some necessary background for Chapter 4, where we 
+ describe how MT systems actually work.
+  
+ Human Translators actually deploy at least five distinct kinds of knowledge:
+  
+ Knowledge of the source language.
+  
+ Knowledge of the target language. This allows them to produce texts that are ac-
+ ceptable in the target language.
+  
+ Knowledge of various correspondences between source language and target lan-
+ guage (at the simplest level, this is knowledge of how individual words can be 
+ trans-lated).
+  
+ Knowledge of the subject matter, including ordinary general knowledge and ‘com-
+ mon sense’. This, along with knowledge of the source language, allows them to 
+ understand what the text to be translated means.
+  
+ Knowledge of the culture, social conventions, customs, and expectations, etc. of 
+ the speakers of the source and target languages.
+  
+ This last kind of knowledge is what allows translators to act as genuine mediators, 
+ ensuring that the target text genuinely communicates the same sort of message, and has 
+ the same sort of impact on the reader, as the source text.
+ 1
+ Since no one has the remotest 
+ idea how
+  
+ 1
+ Hatim and Mason Hatim and Mason (1990) give a number of very good examples where translation requires 
+ this sort of cultural mediation.
+  
+ 35",NA
+3.2,"3.2 REPRESENTING LINGUISTIC KNOWLEDGE
+  
+ 37",NA
+Representing Linguistic Knowledge,"In general, syntax is concerned with two slightly different sorts of analysis of sentences. 
+ The first is
+  constituent
+  or
+  phrase structure
+  analysis — the division of sentences into 
+ their constituent parts and the categorization of these parts as nominal, verbal, and so on. 
+ The second is to do with
+  grammatical relations
+ ; the assignment of grammatical 
+ relations such as SUBJECT, OBJECT, HEAD and so on to various parts of the sentence. 
+ We will discuss these in turn.
+  
+ 3.2.1 
+  
+ Grammars and Constituent Structure
+  
+ Sentences are made up of words, traditionally categorised into
+  parts of speech
+  or
+  cate-
+ gories
+  including nouns, verbs, adjectives, adverbs and prepositions (normally 
+ abbreviated to N, V, A, ADV, and P). A
+  grammar
+  of a language is a set of rules which 
+ says how these parts of speech can be put together to make grammatical, or ‘well-
+ formed’ sentences.
+  
+ For English, these rules should indicate that (1a) is grammatical, but that (1b) is not (we 
+ indicate this by marking it with a ‘*’).
+  
+ (1)
+  
+ a.
+  
+ Put some paper in the printer.
+  
+ b.
+  
+ *Printer some put the in paper.
+  
+ Here are some simple rules for English grammar, with examples. A
+  sentence
+  consists of 
+ a 
+ noun phrase
+ , such as
+  the user
+  followed by a
+  modal
+  or an
+  auxiliary verb
+ , such as
+  
+ should
+ , followed by a
+  verb phrase
+ , such as
+  clean the printer
+ :
+  
+ (2) The user should clean the printer.
+  
+ A
+  noun phrase
+  can consist of a
+  determiner
+ , or
+  article
+ , such as
+  the
+ , or
+  a
+ , and a
+  noun
+ , 
+ such as
+  printer
+  (3a). In some circumstances, the determiner can be omitted (3b).
+  
+ (3)
+  
+ a.
+  
+ the printer
+  
+ b.
+  
+ printers
+  
+ ‘Sentence’, is often abbreviated to S, ‘noun phrase’ to NP, ‘verb phrase’ to VP, 
+ ‘auxiliary’to AUX, and ‘determiner’ to DET. This information is easily visualized by 
+ means of a labelled bracketing of a string of words, as follows, or as a
+  tree diagram
+ , as 
+ in Figure 3.1.
+  
+ (4)
+  
+ a. 
+  
+ b.
+  
+ Users should clean the printer. 
+  
+ users 
+  
+ should
+  
+ clean
+  
+ the
+  
+ printer
+  
+ The auxiliary verb is optional, as can be seen from (5), and the verb phrase can consist of 
+ just a verb (such as
+  stopped
+ ):
+  
+ (5)
+  
+ a.
+  
+ The printer should stop.
+  
+ b.
+  
+ The printer stopped.",NA
+3.3 Processing,"In the previous sections, we have tried to give an outline of some of the different kinds of 
+ knowledge that are needed in text understanding (and hence, translation), and how they 
+ can be represented. We will now give an idea of how this knowledge can be manipulated 
+ automatically. We will do this in two stages. First, we will look at what is called
+  
+ analysis
+ , or
+  parsing
+ . This is the process of taking an input string of expressions, and 
+ producing representations of the kind we have seen in the previous section. Second, we 
+ will look at
+  synthesis
+ , or
+  generation
+ , which is the reverse process – taking a 
+ representation, and producing the corresponding sentence.
+  
+ It may be helpful to point out at the beginning that though the representations we have 
+ given are generally graphic objects — trees or networks drawn with lines — these are not 
+ themselves the representations that the computer deals with. For example, the standard 
+ internal representation of a tree is as a
+  list
+ , containing sublists, with any labels on a node 
+ being represented as the first element of the list. If we write lists between ‘(’ and ‘)’, and 
+ separate elements with commas, then the tree representation given in Figure 3.1 would 
+ look as follows (in fact, we have already shown this sort of representation for linguistic 
+ trees).
+  
+ (S, (NP, (N, users)), (AUX, should), (VP, (V, clean), (NP, (DET, the), (N, printer))))
+  
+ Lists are one of the datastructures that can be represented and manipulated very easily 
+ within a computer.
+  
+ 3.3.1 Parsing
+  
+ The task of an automatic parser is to take a formal grammar and a sentence and apply the 
+ grammar to the sentence in order to (a) check that it is indeed grammatical and (b) given 
+ that it is grammatical, show how the words are combined into phrases and how the 
+ phrases are put together to form larger phrases (including sentences). So, for example, a 
+ parser would use the rules we gave above to check that the sentence
+  The temperature has 
+ affected the printer
+  consists of a noun phrase, consisting of the noun
+  Temperature 
+ followed by an auxiliary verb, followed by a verb phrase, and that the verb phrase
+  
+ affected the printer
+  consists of the verb
+  affect
+  and a noun phrase consisting of the noun
+  
+ printers
+ . In effect, this gives the same information as the sorts of tree structure we have 
+ given
+  
+ 50",NA
+3.4 ,NA,NA
+Summary,"This chapter has introduced the different kinds of knowledge needed to do translation, 
+ namely grammatical or syntactic knowledge, semantic, pragmatic and real world knowl-
+ edge. Focussing on syntactic and semantic knowledge, we then looked at how this 
+ knowl-edge can be represented and described. Finally, again concentrating on syntax and 
+ se-mantics, we looked briefly at how this knowledge can be used for processing by 
+ means of parsing and generation algorithms.",NA
+3.5 ,NA,NA
+Further Reading,"A somewhat more detailed discussion of many of the issues touched on in this Chapter 
+ can be found in Hutchins and Somers (1992), especially Chapters 1, 3, 5, and 7.
+  
+ The issue of how linguistic knowledge should be represented and described is one of the 
+ key concerns of Linguistic theory, and will be covered by most introductory books on 
+ Linguistics. On syntax, Brown and Miller (1991) is an accessible introduction. An ele-
+ mentary introduction to linguistic semantics can be found in Hurford and Heasley (1983),
+  
+ 57",NA
+Chapter 4,NA,NA
+Machine Translation Engines,NA,NA
+4.1 ,NA,NA
+Introduction,"In Chapter 2, we gave an overview of the environment in which a typical MT system 
+ might operate, and outlined the various processes and parts involved. In Chapter 3, we 
+ discussed how basic linguistic knowledge can be represented and used for automatic 
+ analysis and synthesis. It is now time to look inside the most important non-human 
+ component in MT— the component that actually performs automatic translation — what 
+ we will call the 
+ translation engine
+ .
+  
+ MT engines can be classified by their architecture — the overall processing organisation, 
+ or the abstract arrangement of its various processing modules. Traditionally, MT has 
+ been based on
+  direct
+  or
+  transformer
+  architecture engines, and this is still the 
+ architecture found in many of the more well-established commercial MT systems. We 
+ shall therefore look at this architecture in detail in Section 4.2 before moving on to 
+ consider the newer 
+ indirect
+  or
+  linguistic knowledge
+  architectures which, having 
+ dominated MT research for several years, are starting to become available in commercial 
+ form (Section 4.3).",NA
+4.2 ,NA,NA
+Transformer Architectures,"The main idea behind transformer engines is that input (source language) sentences can 
+ be transformed into output (target language) sentences by carrying out the simplest possi-
+ ble parse, replacing source words with their target language equivalents as specified in a 
+ bilingual dictionary, and then roughly re-arranging their order to suit the rules of the 
+ target language. The overall arrangement of such an Engine is shown in Figure 4.1.
+  
+ The first stage of processing involves the parser, which does some preliminary analysis 
+ of the source sentence. The result need not be a complete representation of the kind de-
+ scribed in Chapter 3, but might just be a list of words with their parts of speech. This is 
+ passed to a package of rules which transform the sentence into a target sentence, using
+  
+ 59",NA
+4.3,"ISOLATED BADEVERBOT 
+  
+ Summer vacationers at the coasts of South Europe or 
+ the east - and North Sea must calculate isolated with 
+ impairments of the bath joke.
+  
+ At the Adria Mare and Caorle is dissuaded at Eraclea 
+ because of bacterial burdens from the bath.
+  
+ At the Code D’Azur is to be calculated loudly ADAC
+  
+ isolated with pollutions through tar and oil.
+  
+ Also in
+  
+ Spain am dissuaded at some places at Barcelona 
+ from the bath.
+  
+ Satisfactorily the appraisal sounds for the North Sea 
+ in Schleswig-Holstein and the Netherlands. At the 
+ same time tennisballegrosse appear however in the 
+ North Sea isolated Phenolklumpen.",NA
+Linguistic Knowledge Architectures,"The second major architecture —
+  indirect
+  or
+  linguistic knowledge
+  (LK) architecture —
+ has dominated research in MT design during the past decade and is starting to appear in a 
+ number of commercial systems. The idea behind LK engines is straightforward enough:
+  
+ High quality MT requires linguistic knowledge of
+  both
+  the source and the 
+ target languages as well as the differences between them.
+  
+ We use the term ‘linguistic knowledge’ to refer to extensive formal grammars which 
+ permit abstract/relatively deep analyses in the sense of Chapter 3. We shall see later on 
+ just how deep the analysis can go.
+  
+ With the Transformer architecture, the translation process relies on some knowledge of 
+ the source language and some knowledge about how to transform partly analysed source 
+ sentences into strings that look like target language sentences. With the LK architecture, 
+ on the other hand, translation relies on extensive knowledge of both the source
+  and
+  the 
+ target languages and of the relationships between analysed sentences in both languages. 
+ In short, LK architecture typically accords the target language the same status as the 
+ source language. As can be seen from Figure 4.2, the LK architecture requires two 
+ things:
+  
+ A substantial grammar of both the source language and the target language. These 
+ grammars are used by parsers to analyse sentences in each language into represen-
+ tations which show their underlying structure, and by generators to produce output 
+ sentences from such representations.
+  
+ 66",NA
+4.4,NA,NA
+Summary,"4.4 SUMMARY
+  
+ 81
+  
+ In this chapter we have looked inside two different kinds of MT system, transformer sys-
+ tems, and linguistic knowledge systems, discussing, under the latter heading the 
+ distinction between transfer and interlingual systems. The following chapters will 
+ amplify this pic-ture in various ways, by looking in more detail at the sorts of knowledge 
+ that are involved, for example, in dictionaries, and the representation of ‘meaning’, and 
+ looking at some particular translation problems. In Chapter 10 we will give some more 
+ discussion of the limitations of LK approaches, and describe a recently developed 
+ alternative.",NA
+4.5 ,NA,NA
+Further Reading,"Probably the most famous example of a system with what we have called a transformer 
+ architecture is SYSTRAN. This is described in Hutchins and Somers (1992). A recent 
+ discussion can be found in Wilks (1992).
+  
+ A more detailed overview of transfer systems can be found in Arnold (1993).
+  
+ Examples of transfer systems include the following, ARIANE Vauquois and Boitet 
+ (1985), SUSY Maas (1987), MU (the Japanese National Project) Nagao et al. (July 
+ 1986), METAL Slocum et al. (1987), Bennett and Slocum (1988), TAUM-AVIATION 
+ Isabelle (1987), ETAP-2 Apresian et al. (1992), LMT McCord (1989), EUROTRA 
+ Arnold (1986); Arnold and des Tombe (1987); Copeland et al. (1991a,b), , CAT-2 Sharp 
+ (1988), MIMO Arnold and Sadler (1990), MIMO-2 van Noord et al. (1990), ELU Estival 
+ et al. (1990). Several of these systems are discussed in detail in Hutchins and Somers 
+ (1992).
+  
+ Among interlingual systems, the following are noteworthy: Rosetta Landsbergen 
+ (1987b,a), KBMT Goodman (1989), Goodman and Nirenburg (1991). A recent overview is 
+ given in Nirenburg (1993). (Hutchins and Somers, 1992, Chapter 6) is also recommended. 
+  
+ One 
+ interlingual approach that we have not mentioned here is that which uses a human lan-
+ guage as the interlingual. The best known example of this is DLT, which uses Esperanto, 
+ see Schubert (1992) and (Hutchins and Somers, 1992, Chapter 17).",NA
+Chapter 5,NA,NA
+Dictionaries,NA,NA
+5.1 ,NA,NA
+Introduction,"This Chapter is about the role played by dictionaries in MT. Our decision to devote a 
+ whole chapter to this discussion reflects the importance of dictionaries in MT:
+  
+ Dictionaries are the largest components of an MT system in terms of the amount of 
+ information they hold. If they are more then simple word lists (and they should be, 
+ if a system is to perform well), then they may well be the most expensive 
+ components to construct.
+  
+ More than any other component, the size and quality of the dictionary limits the 
+ scope and coverage of a system, and the quality of translation that can be expected.
+  
+ The dictionaries are where the end user can expect to be able to contribute most to 
+ a system — in fact, an end user can expect to have to make some additions to 
+ system dictionaries to make a system really useful. While MT suppliers rarely 
+ make it possible for users to modify other components, they normally expect them 
+ to make additions to the dictionary. Thus, from the point of view of a user, a basic 
+ understanding of dictionary construction and sensitivity to the issues involved 
+ in‘describing words’ is an important asset.
+  
+ In discussing dictionaries here, we include also some discussion of terminology —
+ it is with respect to the treatment of terminology that MT provides some of its most 
+ useful benefits.
+  
+ We shall approach the question of dictionaries in MT obliquely, by considering in some 
+ detail the information contained in, and issues raised by, the paper dictionaries with 
+ which we are all familiar. There are a number of reasons for this, but the most important 
+ is that the dictionaries in existing MT systems are diverse in terms of formats, coverage, 
+ level
+  
+ 83",NA
+5.2 Paper Dictionaries,"The best place to start our discussion is by looking at typical entries that one might find in 
+ a monolingual English dictionary (cf. page 89), and a bilingual dictionary (cf. page 90).
+ 2
+  
+ We will start by looking at the layout of the first half of the monolingual entry. The entry
+  
+ 1
+ ‘Paper’ here is intended to convey ‘intended for human readers’, as opposed to ‘electronic’ 
+ meaning‘intended for use by computers’. Of course, it is possible for a paper dictionary to be stored on a 
+ computer like any other document, and our use of ‘paper’ here is not supposed to exclude this. If one were 
+ being precise, one should distinguish ‘paper’ dictionaries, ‘machine readable’ dictionaries (conventional 
+ dictionaries which are stored on, and can therefore be accessed automatically by computer), and ‘machine
+  
+ usable
+  dictionaries’.
+  
+ 2
+ The form of the monolingual entry is based on that used in the
+  Oxford Advanced Learner’s Dictionary 
+ (OALD); the bilingual entry is similar to what one finds in
+  Collins-Robert English-French dictionary.
+  
+ 84",NA
+5.3 ,NA,NA
+Types of Word Information,"We have already observed that dictionaries are a, perhaps
+  the
+ , central component of MT 
+ systems. In earlier Chapters, we have presented a highly simplified view of dictionaries 
+ —for example, in Chapter 3 the dictionary was sometimes little more than a list of rules 
+ such as
+  v 
+  
+ walk
+ , which only allows 
+ information about part of speech to be represented, and in Chapter 4 we gave translation 
+ rules which simply paired up the citation forms of source and target words (e.g.
+  
+ temperature temperatur
+ ). However, though some of the information that is 
+ found in a typical paper dictionary is of limited value in MT (e.g. information about 
+ pronunciation is only useful in speech to speech systems), in general the quality and 
+ detail of the information one needs for MT is at least equal to that which one finds in 
+ paper dictionaries. In this section we discuss the various pieces of information about 
+ words that a good MT system must contain, basing ourselves on the dictionary entries 
+ above. An issue we will not address in this Chapter is the treatment of idioms, which one 
+ typically finds in paper dictionary entries. We discuss the treatment of idioms in Chapter 
+ 6.
+  
+ It is useful to make a distinction between the characteristics of a word itself (its inherent 
+ properties) and the restrictions it places on other words in its grammatical environment. 
+ Although this distinction is not explicitly drawn in paper dictionaries, information of 
+ both types is available in them. Information about grammatical properties includes the 
+ indica-tion of gender in the French part of the bilingual dictionary entry, and the 
+ indication of number on nouns (typically, the citation form of nouns is the singular form, 
+ and informa-tion about number is only explicitly given for nouns which have only plural 
+ forms, such as
+  scissors
+ , and
+  trousers
+ ).
+  
+ Information about the grammatical environment a word can appear in is normally 
+ thought of as dividing into two kinds:
+  subcategorization
+  information, which indicates 
+ the syn-tactic environments that a word can occur in, and
+  selectional restrictions
+  which 
+ describe semantic properties of the environment. Typical information about 
+ subcategorization is the information that
+  button
+  is a transitive verb. This is expressed in 
+ the verb code [Tn] in the dictionary entry on page 89. More precisely, this indicates that 
+ it is a verb that appears as the HEAD of sentences with a (noun phrase) SUBJECT and a 
+ (noun phrase) OBJECT. The following gives some examples, together with the 
+ appropriate verb codes from OALD:
+  
+ years to construct even a small size dictionary. Of course, the time it takes to write a dictionary entry is very 
+ variable, depending on how much of the work has already been done by other lexicographers.
+  
+ 4
+ In fact, it is arguable that the vocabulary of a language like English, with relatively productive morpho-
+ logical processes, is infinite, in the sense that there is no longest word of the language. Even the supposedly 
+ longest word
+  antidisestablishmentarianism
+  can be made longer by adding a prefix such as
+  crypto-
+ , or a suffix 
+ such as
+  -ist
+ . The result may not be pretty, but it is arguably a possible word of English. The point is even 
+ clearer when one considers compound words (see Section 5.4.3.",NA
+5.4 ,NA,NA
+Dictionaries and Morphology,"Morphology is concerned with the internal structure of words, and how words can be 
+ formed. It is usual to recognize three different word formation processes.
+  
+ 93",NA
+5.5 ,NA,NA
+Terminology,"The discussion so far has been about issues relating to general vocabulary. However, a 
+ slightly different, and somewhat less troublesome, set of issues arise when one turns to 
+ the specialist vocabulary that one finds in certain types of text in certain subject fields 
+ (the vocabulary of weather reports is an extreme example, other examples might be the 
+ vocabulary of reports on trials for medical reports, reports of tests of pharmaceutical 
+ drugs, or reports of particular kinds of sporting event). Such fields often have a relatively 
+ well-defined terminology, which is sometimes even codified, and given official 
+ recognition by professional bodies. What this codification involves is settling on a 
+ collection of concepts, and assigning each a name (or perhaps several names, one in each 
+ of several languages). When a word (or collection of words in several languages) 
+ designate a single concept in this way, it is called a term. Examples of terms include the 
+ names for material objects, but also the abstract entities (processes, properties, functions, 
+ etc). Concepts, and hence the associated terms, can be organized into conceptual 
+ structures, based on the relationship between them. For example tables, chairs, 
+ cupboards, etc. can be grouped together as 
+ furniture
+ , with a possible subdivision into
+  
+ household furniture
+  and
+  office furniture
+ .
+  
+ Terms may be simple words or multiword expressions. Syntactically, there is nothing to 
+ distinguish terms from ordinary language, although there is a strong tendency for terms 
+ to be nouns, often compound nouns.
+  
+ Terms are potentially more tractable for MT systems than general language vocabulary, 
+ since for the most part they tend to be less ambiguous. While a general language word 
+ may represent more than one concept in a system of concepts, there is frequently a one-
+ to-one mapping between terms and the concepts they represent. Take for example the 
+ word 
+ graduation
+ , which in machine tool terminology has the very precise meaning: 
+ “distribution of divisions on the scale of an apparatus (linear, logarithmic, quadratic, 
+ etc)” The general language word
+  graduation
+ , on the other hand, has many more 
+ meanings, including “the ceremony at which degrees are conferred”. What this means, of 
+ course, is that one can in principle adopt an interlingual approach to terminology. For 
+ example, even in a transfer",NA
+5.6 Summary,"This Chapter has dealt with a number of issues concerning dictionaries in MT, includ-ing 
+ issues relating to various kinds of word structure (morphology), and terminology. Apart 
+ from stressing their importance, we have outlined the main sorts of information that one 
+ typically finds in dictionaries, and raised some questions about how this information 
+ should be represented.",NA
+5.7 Further Reading,"A readable account of what is involved in producing a dictionary can be found in Sinclair 
+ (1987) — in this case the dictionary is monolingual, and intended for human readers, but 
+ many of the issues are similar. A general discussion of what are taken to be the main 
+ theoretical issues in the design and construction of dictionaries for NLP purposes is given 
+ in Ritchie (1987).
+  
+ On morphology, Spencer (1991) provides an excellent up-to-date description of current 
+ linguistic theory. For a more extensive discussion of compounding see Bauer (1983). A 
+ detailed description of the state of the art as regards computational treatments of mor-
+ phological phenomena is given in Ritchie et al. (1992). Almost the only discussion of 
+ morphology which is specifically related to MT is Bennett (1993).
+  
+ For a general introduction to the study of terminology, see Sager (1990), on termbanks, 
+ see Bennett et al. (1986); McNaught (1988b, forthcoming, 1988a). For discussion of 
+ com-puterized termbanks and translation, see Thomas (1992). Experience of using a 
+ termino-logical database in the translation process is reported in Paillet (1990).
+  
+ These days, many paper dictionaries exist in machine readable form (i.e. they have been 
+ created as ‘electronic documents’ in the sense of Chapter 8, below). OALD, the Oxford 
+ Advanced Learners’ Dictionary Hornby et al. (1974), from which the monolingual entry 
+ on page 89 is taken, and LDOCE, Longman’s Dictionary of Contemporary English 
+ Proctor (1978), are typical in this respect. They are sufficiently consistent and explicit to 
+ have been used in a number of experiments which try to take ‘paper’ dictionaries (or 
+ rather the machine readable versions of them), and convert them into a form which can 
+ be used directly in NLP systems. Some of this work is reported in Boguraev and Briscoe 
+ (1989).
+  
+ The representation and use of lexical information in NLP is the focus of a great deal of 
+ research currently. Some idea of the range of this can be obtained from Evens (1988) and 
+ Pustejovsky and 
+  
+ Bergler (1992). 
+  
+ The 
+  
+ idea of 
+  
+ structuring 
+  
+ a dictionary 
+ hierarchically so that individual entries can inherit information (and so be simplified), 
+ which we mentioned briefly, is particularly important in this research. A clearer idea of 
+ what is involved can be gained from (Pollard and Sag, 1987, Chapter 8).
+  
+ 104",NA
+Chapter 6,NA,NA
+Translation Problems,NA,NA
+6.1 ,NA,NA
+Introduction,"In this chapter we will consider some particular problems which the task of translation 
+ poses for the builder of MT systems — some of the reasons why MT is hard. It is useful 
+ to think of these problems under two headings: (i) Problems of
+  ambiguity
+ , (ii) problems 
+ that arise from
+  structural
+  and
+  lexical differences
+  between languages and (iii) multiword 
+ units like idioms and collocations. We will discuss typical problems of ambiguity in 
+ Section 6.2, lexical and structural mismatches in Section 6.3, and multiword units in 
+ Section 6.4.
+  
+ Of course, these sorts of problem are not the only reasons why MT is hard. Other 
+ problems include the sheer size of the undertaking, as indicated by the number of rules 
+ and dictionary entries that a realistic system will need, and the fact that there are many 
+ constructions whose grammar is poorly understood, in the sense that it is not clear how 
+ they should be represented, or what rules should be used to describe them. This is the 
+ case even for English, which has been extensively studied, and for which there are 
+ detailed descriptions– both traditional ‘descriptive’ and theoretically sophisticated – 
+ some of which are written with computational usability in mind. It is an even worse 
+ problem for other languages. Moreover, even where there is a reasonable description of a 
+ phenomenon or construction, producing a description which is sufficiently precise to be 
+ used by an automatic system raises non-trivial problems.",NA
+6.2 ,NA,NA
+Ambiguity,"In the best of all possible worlds (as far as most Natural Language Processing is 
+ concerned, anyway) every word would have one and only one meaning. But, as we all 
+ know, this is not the case. When a word has more than one meaning, it is said to be
+  
+ lexically ambiguous
+ . When a phrase or sentence can have more than one structure it is 
+ said to be
+  structurally ambiguous
+ .
+  
+ 105",NA
+6.3 ,NA,NA
+Lexical and Structural Mismatches,"At the start of the previous section we said that, in the best of all possible worlds for 
+ NLP, every word would have exactly one sense. While this is true for most NLP, it is an 
+ exaggeration as regards MT. It would be a
+  better
+  world, but not the best of all possible 
+ worlds, because we would still be faced with difficult translation problems. Some of 
+ these problems are to do with lexical differences between languages — differences in the 
+ ways in which languages seem to classify the world, what concepts they choose to 
+ express by single words, and which they choose not to lexicalize. We will look at some 
+ of these directly. Other problems arise because different languages use different 
+ structures for the same purpose, and the same structure for different purposes. In either 
+ case, the result is that we have to complicate the translation process. In this section we 
+ will look at some representative examples.
+  
+ Examples like the ones in (9) below are familiar to translators, but the examples of 
+ colours (9c), and the Japanese examples in (9d) are particularly striking. The latter 
+ because they show how languages need differ not only with respect to the fineness or 
+ ‘granularity’ of the distinctions they make, but also with respect to the basis for the 
+ distinction: English chooses different verbs for the action/event of putting on, and the 
+ action/state of wearing. Japanese does not make this distinction, but differentiates 
+ according to the object that is worn. In the case of English to Japanese, a fairly simple 
+ test on the semantics of the NPs that accompany a verb may be sufficient to decide on the 
+ right translation. Some of the colour examples are similar, but more generally, 
+ investigation of colour vocabulary indicates that languages actually carve up the 
+ spectrum in rather different ways, and that deciding on the best translation may require 
+ knowledge that goes well beyond what is in the text, and may even be undecidable. In 
+ this sense, the translation of colour terminology begins to resemble the translation of 
+ terms for cultural artifacts (e.g. words like English 
+ cottage
+ , Russian
+  dacha
+ , French
+  
+ chˆateau
+ , etc. for which no adequate translation exists, and for which the human 
+ translator must decide between straight borrowing, neologism, and
+  
+ 109",NA
+6.4,"a.
+  
+ Sinda node minna ga kanasinda hito wa yumei desita.
+  
+ ‘died hence everyone SUBJ distressed-was man TOP famous was’
+  
+ b.
+  
+ *The man who everyone was distressed because (he) died was famous.
+  
+ c.
+  
+ L’uomo che mi domando chi abbia visto fu arrestato.
+  
+ d.
+  
+ *The man that I wonder who (he) has seen was arrested.",NA
+Multiword units: Idioms and Collocations,"Roughly speaking,
+  idioms
+  are expressions whose meaning cannot be completely under-
+ stood from the meanings of the component parts. For example, whereas it is possible to 
+ work out the meaning of (19a) on the basis of knowledge of English grammar and the 
+ meaning of words, this would not be sufficient to work out that (19b) can mean 
+ something like ‘If Sam dies, her children will be rich’. This is because
+  kick the bucket
+  is 
+ an idiom.
+  
+ (19)
+  
+ a.
+  
+ If Sam mends the bucket, her children will be rich.
+  
+ b.
+  
+ If Sam kicks the bucket, her children will be rich.
+  
+ The problem with idioms, in an MT context, is that it is not usually possible to translate 
+ them using the normal rules. There are exceptions, for example
+  take the bull by the horns 
+ (meaning ‘face and tackle a difficulty without shirking’) can be translated literally into 
+ French as
+  prendre le taureau par les cornes
+ , which has the same meaning. But, for the 
+ most part, the use of normal rules in order to translate idioms will result in nonsense. 
+ Instead, one has to treat idioms as single units in translation.
+  
+ In many cases, a natural translation for an idiom will be a single word — for example, 
+ the French word
+  mourir
+  (‘die’) is a possible translation for
+  kick the bucket
+ . This brings 
+ out the similarity, which we noted above, with lexical holes of the kind shown in (20).",NA
+6.5 Summary,"This chapter looks at some problems which face the builder of MT systems. We charac-
+ terized them as problems of ambiguity (lexical and syntactic) and problems of lexical and 
+ structural mismatches. We saw how different types of linguistic and non-linguistic 
+ knowl-edge are necessary to resolve problems of ambiguity, and in the next chapter we 
+ examine in more detail how to represent this knowledge. In this chapter we discussed 
+ instances of lexical and structural mismatches and the problem of non-compositionality 
+ (as exempli-fied by idioms and collocations) and looked at some strategies for dealing 
+ with them in MT systems.
+  
+ 120",NA
+6.6,NA,NA
+Further Reading,"6.6 FURTHER READING
+  
+ 121
+  
+ The problem of ambiguity is pervasive in NLP, and is discussed extensively in the 
+ introduc-tions to the subject such as those mentioned in the Further Reading section of 
+ Chapter 3.
+  
+ Examples of lexical and structural mismatches are discussed in (Hutchins and Somers, 
+ 1992, Chapter 6). Problems of the
+  venir-de
+ /
+ have just
+  sort are discussed extensively in the 
+ MT literature. A detailed discussion of the problem can be found in Arnold et al. (1988), 
+ and in Sadler (1993). On light verbs or support verbs, see Danlos and Samvelian (1992); 
+ Danlos (1992).
+  
+ Treatments of idioms in MT are given in Arnold and Sadler (1989), and Schenk (1986). 
+ On collocations, see for example Allerton (1984), Benson et al. (1986a), Benson et al. 
+ (1986b) and Hanks and Church (1989). The notion of
+  lexical functions
+  is due to 
+ Mel’ˇcuk, see for example Mel’ˇcuk and Polguere (1987); Mel’ˇcuk and Zholkovsky 
+ (1988).
+  
+ A classic discussion of translation problems is Vinay and Darbelnet (1977). This is 
+ concerned with translation problems as faced by humans, rather than machines, but it 
+ points out several of the problems mentioned here.
+  
+ The discussion in this chapter touches on two issues of general linguistic and 
+ philosophical interest: to what extent human languages really do carve the world up 
+ differently, and whether there are some sentences in some languages which cannot be 
+ translated into other languages. As regards the first question, it seems as though there are 
+ some limits. For example, though languages carve the colour spectrum up rather 
+ differently, so there can be rather large differences between colour words in terms of their 
+ extensions, there seems to be a high level of agreement about ‘best instances’. That is, 
+ though the extension of English
+  red
+ , and Japanese
+  akai
+  is different, nevertheless, the 
+ colour which is regarded as the best instance of
+  red
+  by English speakers is the colour 
+ which is regarded as the best instance of
+  akai
+  by Japanese speakers. The seminal work on 
+ this topic is Berlin and Kay (1969), 
+  
+ and see the title essay of Pullum (1991). The 
+ second question is sometimes referred to as the question of
+  effability
+ , see Katz (1978); 
+ Keenan (1978) for relevant discussion.",NA
+Chapter 7,NA,NA
+Representation and Processing ,NA,NA
+Revisited: Meaning,NA,NA
+7.1 ,NA,NA
+Introduction,"The discussion in previous chapters reinforces the point made in Chapter 3 about the 
+ value of syntactic, and ‘shallow’ semantic analysis, but it also shows why performing a 
+ syntactic analysis alone is not sufficient for translation. As the discussion in Chapter 6 
+ indicates, there are many cases where problems seem to require deeper, more meaning 
+ oriented representations, and enrichment of the kind of knowledge systems are equipped 
+ with. In this chapter we will try to give a flavour of what is involved in this.
+  
+ It is useful to think of this knowledge as being of three kinds: (i) linguistic knowledge 
+ which is independent of context, semantic knowledge; (ii) linguistic knowledge which 
+ relates to the context (e.g. of earlier utterances), sometimes called pragmatic knowledge; 
+ and (iii) common sense, general, non-linguistic knowledge about the real world, which 
+ we will call real world knowledge. It should be stressed that the distinction between these 
+ different kinds of knowledge is not always clear, and there are those who would dispute 
+ whether the distinction is real. However, it is at least a convenient subdivision of the 
+ field, and we will examine each sort of knowledge in turn, in Sections 7.2, 7.3, and 7.4. 
+ Discussing these different kinds of knowledge will also allow us to describe some more 
+ general translation problems.
+  
+ Apart from giving an overview and flavour of what is involved, the point we would like 
+ to stress in this chapter is that though dealing with meaning in a general way poses many 
+ unsolved problems, and in general one should not expect to find much in the way of real 
+ world, pragmatic, or even semantic processing in current commercial MT systems, such 
+ processing it is not
+  totally
+  beyond the reach of current theory.
+  
+ 123",NA
+7.2 Semantics,"Semantics is concerned with the meaning of words and how they combine to form 
+ sentence meanings. It is useful to distinguish
+  lexical
+  semantics, and
+  structural
+  semantics 
+ — the former is to do with the meanings of words, the latter to do with the meanings of 
+ phrases, including sentences. We will begin with the former.
+  
+ There are many ways of thinking about and representing word meanings, but one that has 
+ proved useful in the field of machine translation involves associating words with
+  seman-
+ tic features
+  which correspond to their sense components. For example, the words
+  man
+ , 
+ woman
+ ,
+  boy
+ , and
+  girl
+  might be represented as:
+  
+ man = (+HUMAN, +MASCULINE and +ADULT)
+  
+ woman = (+HUMAN, -MASCULINE and +ADULT)
+  
+ boy = (+HUMAN, +MASCULINE and -ADULT)
+  
+ girl = (+HUMAN, -MASCULINE and -ADULT)
+  
+ Associating words with semantic features is useful because some words impose semantic 
+ constraints on what other kinds of words they can occur with. For example, the verb
+  eat 
+ demands that its AGENT (the eater) is animate and that its PATIENT (that which is 
+ eaten) is edible, — concrete (rather than abstract, like sincerity, or beauty), and solid 
+ (rather than liquid, so one cannot ‘eat’ beer, coffee, etc.; soup is a borderline case). We 
+ can encode this constraint in our grammar by associating the features HUMAN and 
+ EDIBLE with appropriate nouns in our dictionary and describing our entry for
+  eat
+  as 
+ something like
+  cat=verb, AGENT=HUMAN, PATIENT=EDIBLE
+ . The grammar 
+ will now only accept objects of
+  eat
+  that have the feature EDIBLE. Thus these
+  selectional 
+ restrictions
+ , as they are called, act as a filter on our grammar to rule out unwanted 
+ analyses. Consider sentence (1):
+  
+ (1) 
+  
+ John ate the game.
+  
+ The English word
+  game
+  is ambiguous - it can mean several things, including
+  a form of 
+ play or sport
+  or
+  a wild animal hunted or fished for food
+ . Using selectional restrictions of 
+ the sort described above we can eliminate the ‘form of play or sport’ meaning if the 
+ system is able to infer that ‘food’ is EDIBLE, but that forms of play are not.
+  
+ Selectional restrictions have proved a very useful device and are found in most MT 
+ systems to a greater or lesser extent. Unfortunately, however, exceptions to selectional 
+ restrictions abound, especially in metaphorical speech. Thus we find sentences like
+  This 
+ car eats money
+ , used to mean that the car is expensive to maintain, so, rather than use 
+ selectional restrictions to eliminate interpretations, we should use them to state
+  
+ preferences
+  between alternative interpretations.
+  
+ 124",NA
+7.3 ,NA,NA
+Pragmatics ,"Recall that we made a distinction between semantics, or context-independent meaning, 
+ and pragmatics, or context-dependent meaning. The term ‘context’ is used ambiguously, 
+ to refer to the rest of the text in which a sentence occurs (sometimes referred to as the 
+ discourse), and to circumstances external to the text itself, such as who the author of the 
+ text is, and the social setting in which it occurs, which also contribute to its interpretation. 
+ To see why the discourse is important, let us consider the translation of
+  anaphoric pro-
+ nouns
+ . Anaphoric pronouns are those which refer back to some
+  antecedent
+  earlier in the 
+ text, as the pronoun
+  it
+  in (13) refers back to its antecedent
+  the cake
+ .
+  
+ (13) Sam took the cake from the table. Then he ate it.
+  
+ Take the translation of (13) from English into French. We know that
+  it
+  must refer back to 
+ 129",NA
+7.4 Real World Knowledge,"The above discussion may lead one to suspect that all the knowledge we need to extract 
+ the meaning from texts and translate them can be got from the texts or their contexts. 
+ This is, however, clearly not the case, as the following classic examples show:
+  
+ (18)
+  
+ a.
+  
+ Little Johnny was very upset. He had lost his toy train. Then he found it. It
+  
+ 2
+ Politeness dictates that giving by the hearer to the speaker is normally giving ‘downwards’ (
+ kureru
+ ), so 
+ this is the verb used to describe requests, and giving by the speaker to the hearer is normally giving 
+ ‘upwards’(
+ ageru
+ ), so this is the verb used to describe offers, etc.
+  
+ 132",NA
+7.5 ,NA,NA
+Summary,"In this chapter we have looked at three kinds of knowledge that seem to be involved in 
+ solving some sorts of translation problems, namely: semantic, pragmatic, and real world 
+ knowledge. Particular problems we have looked at include the translation of prepositions, 
+ of tense and aspect, and of pronouns. As we stated at the beginning of the chapter, the 
+ point to stress as regards such knowledge is that its representation and manipulation pose 
+ many unsolved problems, and one should not expect to find techniques which exploit it 
+ in existing commercial MT systems (it follows that, for the most part, existing commer-
+ cial MT systems may be expected to lack adequate or general treatments of the sorts of 
+ problem which require such knowledge). On the other hand, such processing is not
+  
+ totally 
+ beyond the reach of current theory. In particular, within certain limits, and in 
+ restricted domains, techniques of semantic, pragmatic, and ‘real world’ knowledge 
+ processing can be exploited with some success.
+  
+ 137",NA
+7.6 Further Reading,"Introductions to linguistic semantics include Hurford and Heasley (1983); Kempson 
+ (1977), and, at a rather more advanced level Cann (1993); Chierchia and McConnell-Ginet 
+ (1990).
+  
+ The discussion of tense and aspect given here is inspired by that used in the EUROTRA 
+ project, which is described in Allegranza et al. (1991); Van Eynde (1993a). This, in its 
+ turn, is inspired by the work of Bruce (1972), and ultimately Reichenbach (1947).
+  
+ As regards pragmatics, Levinson (1983); Leech (1983) are useful introductions. Relevant 
+ work on discourse structure includes Grosz and Sidner (1986); Pustejovsky (1987). The 
+ treatment of common sense inference and real world knowledge is the field of Artificial 
+ Intelligence, see for example Rich (1983); Tennant (1981); Barr and Fiegenbaum (1981); 
+ Shapiro (1987). 
+  
+ On semantic nets, see Sowa (1984). The perspective we have taken in 
+ this Chapter is rather that suggested by the programming language Prolog. For an easy 
+ introduction to this see Rogers (1986). For more advanced material directed at AI 
+ applications, see Bratko (1986), for material focussed on NLP applications, see Gazdar 
+ and Mellish (1989).
+  
+ The
+  play-pen
+  –
+  writing-pen
+  example is from Bar-Hillel Bar-Hillel (1951).
+  
+ 138",NA
+Chapter 8,NA,NA
+Input,NA,NA
+8.1 ,NA,NA
+Introduction,"In the scenario we imagined in Chapter 2, the text was delivered in the form of a 
+ machine-readable document, having been prepared in such a way as to facilitate 
+ translation. This is an important time saver. In this chapter, we describe how the full 
+ potential of machine readable texts can be exploited in three ways: first, by adopting the 
+ notion of an ‘electronic document’ and embedding an MT system in a complete 
+ document processing system; second, by restricting the form of input by using simplified 
+ or
+  controlled language
+ ; and third, by restricting both the form, and the subject matter of 
+ the input texts to those that fall within a
+  sublanguage
+  — it is here that the immediate 
+ prospects for MT are greatest. The common theme of this chapter is how the successful 
+ application of MT can be enhanced by ensuring that the input to the system is 
+ ‘appropriate’. Briefly, the message is this: having texts in machine readable form is a 
+ prerequisite for sensible use of MT, but one can get much better results by (i) adopting 
+ certain standard formats for the input, (ii) controlling the input, so that problematic 
+ constructions, etc., are avoided, and (iii) where possible, tailoring the MT systems to the 
+ language of particular domains.",NA
+8.2 ,NA,NA
+The Electronic Document,"8.2.1 
+  
+ Basic Ideas
+  
+ Every text that is not delivered as an electronic document on a floppy disc, a magnetic 
+ tape, or via a computer network will have to be put into the system manually. Re-typing a 
+ text into the computer solely to make it available for MT is unlikely to be cost-
+ effective— it would often be quicker to have the text translated directly by a human 
+ translator. In recent years it has become practicable to use an optical character reader 
+ (OCR) to input text available only in printed form. Clearly this is much quicker than re-
+ typing, but checking for and correcting scanning errors can be time-consuming.
+  
+ 139",NA
+8.3 ,NA,NA
+Controlled Languages,"The notion of controlled languages was introduced in Chapter 2 where we described it as 
+ a form of language usage restricted by grammar and vocabulary rules. The original idea 
+ arose during the 1930s, when a number of influential linguists and scholars devoted 
+ considerable effort to establishing a ‘minimal’ variety of English, a variety specifically 
+ designed to make English accessible to and usable by the largest possible number of 
+ people world wide.
+  Basic English
+ , as it was called, differed from previous attempts to 
+ construct universal languages in that it was a perfectly well-formed part of English, 
+ rather than some entirely artificial or hybrid construction such as Esperanto. One of the 
+ central ideas of the Basic English movement was that the number of general-purpose 
+ words needed for writing anything from a simple letter of receipt through to a major 
+ speech on the world economic situation could be a few hundred rather than the 75 000 
+ upward available to skilled native speakers. This lexical economy was to be achieved in 
+ part by using ‘operator verbs’ with the set of nouns and adjectives to stand in for the vast 
+ number of derived verbs which are frequently used. For example, whereas in ordinary 
+ English we might write
+  The disc controller design was perfected over numerous 
+ revisions
+ , Basic English would say ...
+  was made perfect ...,
+  where
+  make
+  is one of the 
+ operator verbs and
+  perfect
+  one of the licensed Basic English adjectives.
+  
+ The authors of Basic English explicitly recognised that the dictionary would need to be 
+ extended with special terminology for scientific and technical writing. However, even if 
+ a text contained terminology specific to a certain subject field, the general language
+  
+ 147",NA
+8.4 Sublanguage MT,"In the previous section, we looked at a method of controlling the input to an MT sys-tem, 
+ simplifying it by avoiding certain uses of words, and avoiding potentially ambiguous 
+ constructions. Since the success of the METEO MT system, which we mentioned briefly 
+ in Chapter 1, an important strand of MT has involved concentrating on what we could 
+ loosely call ‘MT for Special Purpose Languages’, or sublanguage MT. Here, rather than 
+ imposing controls or simplifications on writers, one tries to exploit the restrictions in 
+ terms
+  
+ 150",NA
+8.5 Summary,"In this chapter we have discussed three ways in which one can increase the likelihood of 
+ MT being successful by taking care with the input to the system. We first concentrated 
+ on the importance of integrating MT into the general document preparation environment, 
+ introducing the notion of the electronic document. We stressed the importance of 
+ standards in the encoding of texts, and showed how the process of MT can be aided by 
+ the adoption of the SGML markup language. In the following section, we turned to the 
+ content of texts themselves and introduced the notion of controlled languages, in which 
+ one adopts a simplified form of the language in order to communicate simply and 
+ unambiguously with the reader. Using a controlled language input greatly enhances the 
+ quality of output of MT systems. Finally we discussed sublanguage MT, or MT in 
+ restricted domains, observing that the language used in specialized technical domains is 
+ often quite different from and more restricted in style and content than the ‘general 
+ language’, and it is possible to take advantage of these characteristics by tailoring an MT 
+ system to the language of particular domains.
+  
+ 154",NA
+8.6,NA,NA
+Further Reading,"8.6 FURTHER READING
+  
+ 155
+  
+ SGML is defined in ISO 8879, 1986, which is extensively discussed in the standard 
+ refer-ence book on SGML: Goldfarb (1986). An excellent introduction to SGML is 
+ provided in van Herwijnen (1990).
+  
+ The examples of the use of controlled language that we give in the text are based on 
+ those in Pym (1990). See Pym (1990); Newton (1992b) for discussion of the use of 
+ PACE as part of the translation operation in Perkins.
+  
+ A noteworthy example of a controlled language is
+  Simplified English
+  (SE), which is de-
+ scribed in the
+  AECMA/AIA Simplified English Guide
+  AECMA. This grew out of work 
+ done in the late 1970s, on behalf of the Association of European Airlines (AECMA) into 
+ readability of maintenance documentation within the civilian aircraft industry. As a 
+ result, an AECMA working group researched the procedural texts in maintenance 
+ manuals. It contains a limited general vocabulary of about 1500 words and a set of 
+ Writing Rules, similar to those we will describe above.
+  
+ On sublanguage, Arnold (1990) provides a short overview. Lehrberger (1982) and Grish-
+ man and Kittredge (1986) are collections of articles on the subject. More detailed discus-
+ sions can be found in Kittredge (1982), Kittredge (1987), Sager (1982), Slocum (1986), 
+ Teller et al. (1988) and Hirschman (1986).
+  
+ M´et´eo is described in (Hutchins and Somers, 1992, Chapter 12), see also Isabelle 
+ (1987). Recent developments are described in Chandioux (1976), Chandioux (1989a), 
+ Chandioux (1989b), and Grimaila and Chandioux (1992).
+  
+ The example concerning the English-Japanese translation of
+  match
+  in software manuals 
+ is reported in Tsujii et al. (1992).
+  
+ 155",NA
+Chapter 9,NA,NA
+Evaluating MT Systems,NA,NA
+9.1 ,NA,NA
+Introduction,"How can you tell if an MT system is ‘good’? How can you tell which of two systems 
+ is‘better’? What do ‘good’ and ‘better’ mean in this context? These are the questions that 
+ this chapter tries to answer.
+  
+ In a practical domain like MT, such questions reduce to questions of suitability to 
+ users’needs: what is the best and most economical way to deal with the user’s translation 
+ re-quirements? In the ideal case, it should be possible to give a simple and 
+ straightforward answer to this question in a consumers’ magazine. An article in such a 
+ magazine would discuss the most important issues with a comparison table displaying the 
+ achievements of different MT systems on tests of important aspects such as speed and 
+ quality. Unfortu-nately, the information necessary to make informed judgements is not so 
+ readily available, partly because the methods for investigating suitability are not well 
+ developed. In reality, MT users can spend quite a lot of money finding out what a system 
+ can and cannot do for them. In this chapter we will look at the kind of thing that should 
+ matter to potential users of MT systems, and then discuss some existing methods for 
+ assessing MT system performance.
+  
+ As we pointed out in the Introduction (Chapter 1), we think that, in the short term, MT is 
+ likely to be of most benefit to largish corporate organizations doing a lot of translation. 
+ So we adopt this perspective here. However, most of the considerations apply to any 
+ potential user.",NA
+9.2 ,NA,NA
+Some Central Issues,"The evaluation of MT systems is a complex task. This is not only because many different 
+ factors are involved, but because measuring translation performance is itself difficult. 
+ The first important step for a potential buyer is to determine the translational needs of her
+  
+ 157",NA
+9.3 Evaluation of Engine Performance,"Substantial long-term experience with particular MT systems in particular circumstances 
+ shows that productivity improvements and cost-savings actually achieved can be very 
+ vari-able. Not all companies can apply MT as successfully as the following:
+  
+ In the 1980s, Perkins Engines was achieving reported cost savings of 
+ around
+  £
+ 4000 for each diesel engine user manual translated on a PC-
+ based WEIDNER MT system. Moreover, overall translation time per 
+ manual was more than halved from around 26 weeks to 9-12 weeks. 
+ Manuals were written in Perkins Approved Clear English (cf. Chap-ter 
+ 8).(Pym, 1990, pages 91-2)
+  
+ Different organizations experience different results with MT. The above examples 
+ indicate that the kind of input text is one of the important factors for getting good results. 
+ A sound system evaluation is therefore one which is executed within the company itself. 
+ An MT vendor might provide you with translated material which shows what their 
+ system can do. There is, however, no guarantee that the system will do the same in a 
+ different company setting, with different texts. Only a company specific evaluation will 
+ provide the client with the feedback she ultimately wants. Information provided by the 
+ MT vendor can be useful though, e.g. if system specifications indicate what sort of text 
+ type it can or cannot handle or what sort of language constructions are problematic for 
+ their system.
+  
+ In evaluating MT systems one should also take into account the fact that system perfor-
+ mance will normally improve considerably during the first few months after its 
+ installation, as the system is tuned to the source materials, as discussed in Chapter 2. It 
+ follows that performance on an initial trial with a sample of the sort of material to be 
+ translated can only be broadly indicative of the translation quality that might ultimately 
+ be achieved after several months or years of work.
+  
+ Something similar holds for those stages of the translation process which involve the 
+ trans-lator, like dictionary updating and post-editing of the output. Times needed for 
+ these tasks will reduce as translators gain experience.
+  
+ So how do we evaluate a system? Early evaluation studies were mainly concerned with
+  
+ 160",NA
+Intelligibility,"Figure 9.1
+  Typical Quality Profile for an MT System
+  
+ second, yet more time will be needed to fix the errors in it:
+  
+ (1)
+  
+ a.
+  
+ The print
+  
+ page should be from excell ing quality,
+  
+ b.
+  
+ The printed page should his
+  
+ excellent quality.
+  
+ It is true that a comparative evaluation of a number of different MT systems might 
+ demon-strate that one system is in all respects better than the others. The information 
+ however does not tell us whether buying the better MT system will improve the total 
+ translation process — the system could still be unprofitable. And even if two particular 
+ systems have different performance profiles, it may not always be clear whether one 
+ profile is likely to be better matched to the task in hand than the other. For example, look 
+ at the intelligibility ratings for systems A and B in Figure 9.2. For system A the majority 
+ of sentences are neither very good nor bad (rating 3 or 4). System B, by comparison, 
+ tends to do either quite well (scores of 7 are common) or quite badly (scores 1, and 2 are 
+ frequent). Which system will be better in practice? It is not possible to say.
+  
+ 9.3.3 Error Analysis",NA
+Intelligibility,"Figure 9.2
+  Which Performance Curve is Better?
+  
+ take the raw translation we were using in the scenario in Chapter 2 as an example, error 
+ analysis might work as follows.
+  
+ For the example three sorts of error are identified. These three sorts are errors involving 
+ selection of
+  a
+  vs
+  one
+  as the translation of German
+  ein
+ , errors in number agreement (e.g. 
+ *
+ a computers
+ ), and errors in the selection of prepositions. Using some short codes for 
+ each error type, each error occurrence is marked up in the raw output. The resulting 
+ marked text is given below.
+  
+ To calculate the seriousness of the errors, weights in the range 0 to 1 are assigned to the 
+ three error types. The weight for an error in preposition selection is higher than that for 
+ incorrect number because the person responsible considers that incorrect number is 
+ relatively less serious. This is summarized in the following table.
+  
+ ERROR TYPE 
+  
+ a
+ /
+ one
+  selection 
+  
+ Number 
+  
+ Preposition
+  
+ WEIGHT 
+  
+ 0.4 
+  
+ 0.2 
+  
+ 0.6
+  
+ On the basis of this the total error score can be calculated. There are two errors in 
+ NUMber agreement, two involving PREPositions, and one involving A/ONE selection, 
+ so the score is:
+  
+ Although this method gives more direct information on the usefulness of an MT system, 
+ there are immediate problems with using detailed error analysis. The first is practical: it
+  
+ 165",NA
+9.4 Operational Evaluation,"In the previous sections we have discussed various types of quality assessment. One 
+ mayor disadvantage of quality assessment for MT evaluation purposes, however, is the 
+ fact the overall performance of an MT system has to be judged on more aspects than 
+ translation quality only. The most complete and direct way to determine whether MT 
+ performs well in a given set of circumstances is to carry out an operational evaluation on 
+ site comparing the combined MT and post-editing costs with those associated with pure 
+ human translation. The requirement here is that the vendor allows the potential buyer to 
+ test the MT system in her particular translation environment. Because of the enormous 
+ investment that buying a system often represents, vendors should allow a certain test 
+ period. During an operational evaluation a record is kept of all the user’s costs, the 
+ translation times and other relevant aspects. This evaluation technique is ideal in the 
+ sense that it gives the user direct informa-tion on how MT would fit in and change the 
+ existing translation environment and whether it would be profitable.
+  
+ Before starting up the MT evaluation the user should have a clear picture of the costs that 
+ are involved in the current set-up with human translation. When this information on the 
+ cost of the current translation service is available the MT experiment can begin.
+  
+ In an operational evaluation of MT time plays an important role. Translators need to be 
+ paid and the more time they spend on post-editing MT output and updating the system’s 
+ dictionaries, the less profitable MT will be. In order to get a realistic idea of the time 
+ needed for such translator tasks they need to receive proper training prior to the exper-
+ iment. Also, the MT system needs to be tuned towards the texts it is supposed to deal 
+ with.
+  
+ During an evaluation period lasting several months it should be possible to fully cost the 
+ use of MT, and at the end of the period, comparison with the costs of human translation 
+ should indicate whether, in the particular circumstances, MT would be profitable in 
+ finan-cial terms or not.
+  
+ 170",NA
+9.5 ,NA,NA
+Summary,"The purchase of an MT system is in many cases a costly affair and requires careful con-
+ sideration. It is important to understand the organizational consequences and to be aware 
+ of the system’s capacities. Unfortunately, it is not possible to draw up a comparison table 
+ for MT systems on the basis of which MT buyers could choose their system. Although 
+ system specifications can provide us with some useful information there are too many 
+ aspects which influence the performance of MT that cannot be included in such a table. 
+ Furthermore, MT will perform differently in different translation environments, 
+ depending mainly on the character of the typical input texts. Without having the 
+ necessary informa-tion of the kind of input texts the user has in mind, it is not possible to 
+ make a reliable prediction about the cost effectiveness of an MT system. The 
+ consequences are that if we want information about an MT system we have to evaluate it, 
+ and that this evaluation has to be specifically for the user’s translational needs.
+  
+ The evaluation strategies discussed in this chapter are strategies that a buyer might want 
+ to pursue when considering the purchase of an MT system. Although they will provide 
+ the client with a certain amount of useful information, each method has some drawbacks, 
+ which we have tried to point out in our discussion.
+  
+ 171",NA
+9.6 Further Reading,"Useful discussion of evaluation methods can be found in van Slype (1982), and 
+ Lehrberger and Bourbeau (1987). 
+  
+ Practical discussion of many different aspects of MT 
+ evaluation can be found in King and Falkedal (1990), Guida and Mauri (July 1986), and 
+ Balkan et al. (1991).
+  
+ A special issue of the Journal
+  Machine Translation
+  is dedicated to issues of evaluation of 
+ MT (and other NLP) systems. The introduction to the issue, Arnold et al. (in press b), 
+ gives an overview of the state of the issues involved, going into more detail about some 
+ issues glossed over here. Several of the articles which appear in this issue report practical 
+ experience of evaluation, and suggest techniques (for example, Albisser (in press); Flank 
+ et al. (in press); Jordan (in press); Neal et al. (in press).)
+  
+ The problems of focusing evaluation on the MT engine itself (i.e. apart from surrounding 
+ peripherals) are discussed in Krauwer (in press).
+  
+ As things stand, evaluating an MT system (or other NLP system) involves a great deal of 
+ human activity, in checking output, for example. A method for automating part of the 
+ evaluation process is described in Shiwen (in press).
+  
+ Some of the issues involved in construction of test suites are discussed in Arnold et al. (in 
+ press a), and Nerbonne et al. (in press).
+  
+ In this chapter, we have generally taken the users’ perspective. However, evaluation is 
+ also an essential for system developers (who have to be able to guage whether, and how 
+ much, their efforts are improving a system). How evaluation technique can be applied so 
+ as to aid developers discussed in Minnis (in press).
+  
+ One of the best examples of MT evaluation in terms of rigour was that which formed the 
+ basis of the ALPAC report Pierce and Carroll (1966), which we mentioned in Chapter 1 
+ (it is normal to be rude about the conclusions of the ALPAC report, but this should not 
+ reflect on the evaluation on which the report was based: the evaluation itself was a model 
+ of care and rigour — it is the interpretation of the results for the potential of MT which 
+ was regrettable).
+  
+ See (Nagao, 1986, page 59) for more detailed scales and criteria for evaluating fidelity and 
+ ease of understanding.
+  
+ As usual, Hutchins and Somers Hutchins and Somers (1992) contains a useful discussion 
+ of evaluation issues (Chapter 9).
+  
+ 172",NA
+Useful Addresses,"ASLIB, 
+  
+ The Association for Information Management, 
+  
+ Information House, 
+  
+ 20-24, Old Street, 
+  
+ London, EC1V 9AP, 
+  
+ UK.
+  
+ The Association for Computational Linguistics (ACL), 
+ c/o Donald E. Walker, 
+  
+ Bellcore, MRE 2A379, 
+  
+ 445 South Street, Box 1910, 
+  
+ Morristown, NJ 07960-1910, 
+  
+ USA.
+  
+ The Association for Computational Linguistics (European Chapter), 
+ c/o Michael Rosner, 
+  
+ IDSIA, 
+  
+ Corso Elvezia 36, 
+  
+ CH-6900 Lugano, 
+  
+ Switzerland.
+  
+ Computational Linguistics, 
+  
+ MIT Press Journals, 
+  
+ 55 Hayward Street, 
+  
+ Cambridge, MA 02142, 
+  
+ USA.
+  
+ Language Industry Monitor, 
+  
+ Uitgeverij LIM, 
+  
+ Eerste Helmersstraat 183, 
+  
+ 1054 DT Amsterdam, 
+  
+ The Netherlands.
+  
+ 197",NA
+Glossary,"adjective phrase (AP)
+  a complete construction
+  headed
+  by an adjective. APs typically 
+ modify nouns and occur as complements to verbs such as
+  be, seem, become
+ . For 
+ example: 
+ The man
+  guilty of this heinous crime
+  was imprisoned
+ .
+  John seems rather 
+ stupid
+ .
+  
+ adjunct or modifier
+  an optional or secondary element in a construction which can be 
+ removed without affecting the structural status of the rest of the construction. For 
+ example, 
+ yesterday
+  in:
+  John kicked the ball yesterday
+  (Compare
+  John kicked the ball
+  
+ where
+  the ball 
+ is not an adjunct, because *
+ John kicked yesterday
+  is ungrammatical).
+  
+ affix
+  morpheme placed at the beginning (prefix), middle (infix), or end (
+ suffix
+ ) of the
+  
+ root 
+ or
+  stem
+  of a word, e.g.
+  re
+ legal
+ ize
+ .
+  
+ agreement
+  the process whereby the form of one word requires a corresponding form of 
+ another - for example, the plural form
+  boys
+  requires a plural form of the demonstrative 
+ determiner
+  these
+ /*
+ this
+ :
+  these boys
+  vs *
+ this boys
+ .
+  
+ algorithm
+  a prescribed set of well-defined rules or instructions for the solution of a prob-
+ lem.
+  
+ analysis
+  the phase in natural language processing systems (including MT systems) in 
+ which a structure or representation is assigned to source language (input) sentences or the 
+ representation itself or the name for the module of linguistic rules involved.
+  
+ anaphor
+  a word or phrase which refers back to some previously expressed word or 
+ phrase or meaning (typically, pronouns such as
+  herself
+ ,
+  himself
+ ,
+  he
+ ,
+  she
+ ).
+  
+ antecedent
+  the word or phrase to which a later word or phrase (e.g. an
+  anaphor
+ ) refers.
+  
+ Artificial Intelligence (AI)
+  the branch of Computing Science concerned with simulating 
+ aspects of human intelligence such as language comprehension and production, vision, 
+ planning, etc.
+  
+ ASCII
+  American Standard Code for Information Interchange - a standard set of codes 
+ used for representing alphanumeric information in a computer.
+  
+ 199",NA
+Bibliography,"ACL28.
+  28th Annual Meeting of the Association for Computational Linguistics
+ , 
+ Pittsburg, 
+  
+ Pa., 1990.
+  
+ ACL29.
+  29th Annual Meeting of the Association for Computational Linguistics
+ , 
+ Berkeley, 
+  
+ Ca., 1991.
+  
+ ACL30.
+  30th Annual Meeting of the Association for Computational Linguistics
+ , 
+ University 
+  
+ of Delaware, Newark, Delaware, 1992.
+  
+ AECMA.
+  AECMA/AIA Simplified English
+ . AECMA, Paris, 1988.
+  
+ Karin Aijmer and Bengt Altenberg, editors.
+  English Corpus Linguistics
+ . Longman, Lon-
+  
+ don, 1991.
+  
+ D. Albisser. Evaluation of MT systems at Union Bank of Switzerland.
+  Machine Transla-
+  
+ tion
+ , 7, in press. Special Issue on Evaluation.
+  
+ V. Allegranza, P. Bennett, J. Durand, F. Van Eynde, L. Humphreys, P. Schmidt, and E. 
+ Steiner. Linguistics for Machine Translation: The Eurotra linguistic specifications. In 
+ C. Copeland, J. Durand, S. Krauwer, and B. Maegaard, editors,
+  The Eurotra Linguistic 
+ Specifications
+ , pages 15–124. CEC, Luxembourg, 1991.
+  
+ J. Allen.
+  Natural Language Understanding
+ . Benjamin Cummings Pub. Co., Inc., Menlo 
+  
+ Park, Ca., 1987.
+  
+ D.J. Allerton. Three (or four) levels of word cooccurrence restriction.
+  Lingua
+ , 63:17–40, 
+  
+ 1984.
+  
+ Jurij Apresian, Igor Boguslavskij, Leonid Iomdin, Alexandre Lazurskij, Vladimir San-
+ nikov, and Leonid Tsinman. ETAP-2: The linguistics of a Machine Translation 
+ system. 
+ META
+ , XXXVII(4):97–112, 1992.
+  
+ D.J. Arnold. Eurotra: A European perspective on MT.
+  Proceedings of the IEEE
+ , 74(7): 
+  
+ 979–992, 1986.
+  
+ D.J. Arnold. Text typology and Machine Translation: An overview. In Pamela Mayorcas, 
+  
+ editor,
+  Translating and the Computer 10
+ , pages 73–89. Aslib, London, 1990.
+  
+ D.J. Arnold. Sur la conception du transfert. In P. Bouillon and A. Clas, editors,
+  Etudes et 
+ Recherches en Traductique : Problemes de Traduction par Ordinateur
+ . Presses de 
+ Montreal/AUPELF, Montreal, 1993.
+  
+ 207",NA
+Index,"accuracy, 12, 22, 72, 170, 171, 173, 175, 
+  
+ 181 
+  
+ acronym, 153 
+  
+ agreement, 49, 113, 174, 175 
+  
+ Aijmer, K., 205 
+  
+ Albisser, D., 181 
+  
+ Allegranza, V., 144 
+  
+ Allen, J., 61 
+  
+ Allerton, D.J., 128 
+  
+ ALPAC, 14, 15, 17, 170, 179, 181 
+  
+ ALPS system, 7, 15 
+  
+ Altenberg, B., 205 
+  
+ ambiguity, 29, 32, 104–107, 111, 115, 
+  
+ 123, 127, 128, 130, 132, 136, 
+  
+ 157–159, 162, 191, 194, 196, 
+  
+ 201, 206 
+  
+ analysis, 71–73, 75–78, 80, 81, 83, 84, 
+  
+ 88, 94, 107, 123, 125, 127, 185, 
+  
+ 186, 188, 189 
+  
+ anaphoric pronouns, 136–139, 192, 193, 
+  
+ 195 
+  
+ antonym, 108 
+  
+ Apresian, J., 86 
+  
+ Apresian, Y., 15 
+  
+ ARIANE, 86 
+  
+ Arnold, D.J., 86, 128, 164, 180, 181, 205 
+ Aslib, 36 
+  
+ aspect, 118, 133, 135, 144
+  
+ Balkan, L., 180 
+  
+ Bar-Hillel, Y., 13, 145 
+  
+ Barr, A., 144 
+  
+ Basic English, 156 
+  
+ batch, 22 
+  
+ Bauer, L., 109 
+  
+ Beaven, J.L., 205 
+  
+ Bennett, P., 86, 109 
+  
+ Benson, M., 128 
+  
+ Bergler, S., 110
+  
+ 221",NA

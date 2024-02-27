@@ -1,0 +1,5420 @@
+Larger Text,Smaller Text,Symbol
+Prolog Experiments in ,NA,NA
+DiscreteMathematics ,NA,NA
+LogicandComputability,NA,NA
+James L. Hein ,"Portland State University
+  
+ March 2009",NA
+Contents,"Preface.............................................................................................................. 4
+  
+ 1 Introduction to Prolog................................................................................... 5
+  
+ 1.1 
+  
+ Getting Started................................................................................ 5
+  
+ 1.2 
+  
+ An Introductory Example................................................................. 6
+  
+ 1.3 
+  
+ Some Programming Tools ............................................................... 9
+  
+ 2 Beginning Experiments................................................................................ 12
+  
+ 2.1 
+  
+ Variables, Predicates, and Clauses................................................ 12
+  
+ 2.2 
+  
+ Equality, Unification, and Computation ........................................ 16
+  
+ 2.3 
+  
+ Numeric Computations ................................................................... 19
+  
+ 2.4 
+  
+ Type Checking.................................................................................. 20
+  
+ 2.5 
+  
+ Family Trees .................................................................................... 21
+  
+ 2.6 
+  
+ Interactive Reading and Writing..................................................... 23
+  
+ 2.7 
+  
+ Adding New Clauses........................................................................ 25
+  
+ 2.8 
+  
+ Modifying Clauses ........................................................................... 27
+  
+ 2.9 
+  
+ Deleting Clauses.............................................................................. 28
+  
+ 3 Recursive Techniques.................................................................................. 31
+  
+ 3.1 
+  
+ The Ancester Problem ..................................................................... 31
+  
+ 3.2 
+  
+ Writing and Summing..................................................................... 33
+  
+ 3.3 
+  
+ Switching Pays................................................................................. 36
+  
+ 3.4 
+  
+ Inductively Defined Sets.................................................................. 38
+  
+ 4 Logic ............................................................................................................ 42
+  
+ 4.1 
+  
+ Negation and Inference Rules.......................................................... 42
+  
+ 4.2 
+  
+ The Blocks World............................................................................. 44
+  
+ 4.3 
+  
+ Verifying Arguments in First-Order Logic...................................... 46
+  
+ 4.4 
+  
+ Equality Axioms .............................................................................. 48
+  
+ 4.5 
+  
+ SLD-Resolution................................................................................ 49
+  
+ 4.6 
+  
+ The Cut Operation........................................................................... 51
+  
+ 5 List Structures.............................................................................................. 54
+  
+ 5.1 
+  
+ List and String Notation................................................................. 54
+  
+ 5.2 
+  
+ Sets and Bags of Solutions to a Query............................................ 56
+  
+ 5.3 
+  
+ List Membership and Set Operations ............................................ 60
+  
+ 5.4 
+  
+ List Operations................................................................................ 64
+  
+ 2",NA
+Preface,"This book contains programming experiments that are designed to reinforce the 
+ learning of discrete mathematics, logic, and computability. Most of the experiments 
+ are short and to the point, just like traditional homework problems, so that they 
+ reflect the daily classroom work. The experiments in the book are organized to 
+ accompany the material in 
+ Discrete Structures
+ ,
+  Logic
+ , 
+ and Computability
+ , Third 
+ Edition, by James L. Hein. 
+  
+ In traditional experimental laboratories, there are many different tools that are 
+ used to perform various experiments. The Prolog programming language is the tool 
+ used for the experiments in this book. Prolog has both commercial and public 
+ versions. The language is easy to learn and use because its syntax and semantics are 
+ similar to that of mathematics and logic. So the learning curve is steep and no prior 
+ knowledge of the language is assumed. In fact, the experiments are designed to 
+ introduce language features as tools to help explore the problems being studied. 
+  
+ The instant feedback provided by Prolog’s interactive environment can help the 
+ process of learning. When students get immediate feedback to indicate success or 
+ failure, there is a powerful incentive to try and get the right solution. This 
+ encourages students to ask questions like, “What happens if I do this?” This supports 
+ the idea that exploration and experimentation are keys to learning. 
+  
+ The book builds on the traditional laboratory experiences that most students 
+ receive in high school science courses. i.e., experimentation, observation, and 
+ conclusion. Each section contains an informal description of a topic—with examples 
+ as necessary—and presents a list of experiments to perform. Some experiments are 
+ simple, like using a program to check answers to hand calculations, and some 
+ experiments are more sophisticated, like checking whether a definition works, or 
+ constructing a small program to explore a concept. 
+  
+ 4",NA
+1,NA,NA
+Introduction to Prolog ,"The Prolog language allows us to explore a wide range of topics in discrete 
+ mathematics, logic, and computability. Prolog’s powerful pattern-matching ability 
+ and its computation rule give us the ability to experiment in two directions. For 
+ example, a typical experiment might require a test of a definition with a few example 
+ computations. Prolog allows this, as do all programming languages. But the Prolog 
+ computation rule also allows a definition to be tested in reverse, by specifying a 
+ result and then asking for the elements that give the result. From a functional 
+ viewpoint this means that we can ask for domain elements that map to a given result. 
+  
+ After a brief introduction to Prolog we’ll start right in doing experiments. To 
+ keep the emphasis on the discrete mathematics, logic, and computability, we’ll 
+ introduce new Prolog tools in the experiments where they are needed.",NA
+1.1   Getting Started ,"This section introduces a few facts to help you get started using Prolog. To start the 
+ Prolog interpreter in a UNIX environment type 
+ prolog
+  (or 
+ sicstus
+  for those using 
+ SICStus Prolog) and hit return. Once Prolog has started up it displays the prompt 
+  
+  
+ |?- 
+  
+ which indicates that the interpreter is waiting for a command from the user. All 
+ commands must end with a period. For example, the command 
+  
+ |?- integer(3.4). 
+  
+ returns the answer no because 3.4 is not an integer. A command is usually called a 
+ goal
+  or a 
+ query
+ . To exit the interpreter type control D—press the 
+  
+ 5",NA
+1.2   An Introductory Example ,"A Prolog program is a set of facts or rules called 
+ definite clauses
+ . We’ll usually refer to 
+ them as 
+ clauses
+ . The example program that follows describes some family 
+ relationships. We’ll use the predicates “par” and “grand” with the following 
+ meanings. 
+  
+ par(X, Y) means that X is a parent of Y. 
+  
+ grand(X, Y) means that X is a grandparent of Y. 
+  
+ Now we’ll list the program, which consists of some parent facts together with a rule 
+ that defines the grandparent relationship in terms of parents. Note that a comment is 
+ signified by the character % followed by any sequence of characters up to the end of 
+ the line. Another way to comment is to place any sequence of characters, including 
+ new lines, between the symbols /* and */. 
+  
+ % Here is a set of facts describing parental relationships. 
+  
+ par(lloyd, james). 
+  
+ par(lloyd, janet). 
+  
+ par(ruth, james). 
+  
+ par(ruth, janet). 
+  
+ par(emma, lloyd). 
+  
+ par(katherine, ruth). 
+  
+ par(adolph, lloyd). 
+  
+ par(edgar, ruth). 
+  
+ % The grandparent relationship. Any rule of the form % A :- 
+ B, C is read, “A is true if B is true and C is true.” 
+  
+ grand(X, Z) :- par(Y, Z), par(X, Y). 
+  
+ Now, suppose that you have entered this program into a file named 
+ familyTree
+ . To 
+ read in the program type the following command. 
+  
+ |?- [familyTree]. 
+  
+ Once the program has been read in it won’t do anything until it is presented with a 
+ goal. We’ll give some example goals that ask questions about children and 
+ grandparents.",NA
+Finding the Children of a Person ,"Suppose that we want to find the children of ruth. We can find them by typing the 
+ following goal, where the letter C stands for a variable. 
+  
+ |?- par(ruth, C). 
+  
+ Prolog will search the program statements from top to bottom until it can match the 
+ goal with some fact or the left part of a rule. In this case, the goal matches par(ruth, 
+ james) by identifying C with james. Prolog responds with 
+  
+ C = james ? 
+  
+ At this point, we can hit return and Prolog will answer 
+  
+ Yes. 
+  
+ But if we hit a semicolon followed by return, then Prolog will backtrack and continue 
+ to search for another match for the goal par(ruth, C). The goal matches par(ruth, 
+ janet) by identifying C with janet. Prolog responds with 
+  
+ C = janet ? 
+  
+ If we hit a semicolon followed by return, then Prolog will continue to search for 
+ another match. It doesn’t find any and lets us know with the statement 
+  
+ no. 
+  
+ So we can conclude that the two children of ruth are james and janet.",NA
+Finding the Grandparents of a Person ,"Suppose that we want to find all the grandparents of james. In this case, we can enter 
+ the goal 
+  
+  
+ |?- grand(A, james). 
+  
+ Prolog matches this goal with grand(X, Z) in the rule 
+  
+ grand(X, Z) :- par(Y, Z), par(X, Y). 
+  
+ It identifies X with A and Z with james. Now Prolog attempts to find matches for the 
+ two goals on the right side of the grandparent rule: 
+  
+ par(Y, james)     and     par(A, Y).",NA
+1.3   Some Programming Tools ,"We’ll record here several Prolog programming tools that should prove useful in 
+ doing the experiments.",NA
+Loading Information ,"To read in the contents of a file named 
+ filename
+  type 
+  
+ |?- [filename]. 
+  
+ and hit return. If the file name contains characters other than letters or digits, then 
+ put single quotes around the filename. For example, if the name of the file is 
+ file.p
+ , 
+ then type 
+  
+ |?- [‘file.p’]. 
+  
+ will load the file named 
+ file.p
+ . 
+  
+ You can read in several files at once. For example, to read in files named 
+ foo
+ , 
+ goo
+ , and 
+ moo
+  type 
+  
+ |?- [foo, goo, moo]. 
+  
+ Sometimes it may be useful to enter a few clauses directly from the a terminal to test 
+ something or other. In this case you must type the command 
+  
+ |?- [user]. 
+  
+ and hit return. The prompt 
+  
+ | 
+  
+ will appear to indicate that the interpreter is waiting for data. To exit the entry mode 
+ type 
+ Control D
+ , which we’ll signify by writing ^D. For example, to enter the two 
+ statements p(a, b) and q(X, Y) :- p(X, Y) type the following statements. 
+  
+ |?- [user]. 
+  
+ | p(a, b). 
+  
+ | q(X, Y) :- p(X, Y). 
+  
+ |^D",NA
+Listing Clauses ,"To list the clauses of a Prolog program type the command 
+  
+ |?- 
+ listing. 
+  
+ To list only clauses beginning with predicate p type the command 
+  
+ |?- 
+ listing(p). 
+  
+ To list clauses beginning with predicates p, q, and r type the command 
+  
+ |?- 
+ listing([p, q, r]).",NA
+Using Unix Commands ,"To execute UNIX commands from SICStus Prolog, first load the system library 
+ package with the command 
+  
+  
+ |?- use_module(library(system)). 
+  
+ This goal can be automatically loaded and executed by placing the following 
+ command in the 
+ .sicstusrc
+  file. 
+  
+ :- use_module(library(system)). 
+  
+ Then UNIX commands can be executed using the 
+ system
+  predicate. For example, to 
+ edit the file named filename with the vi editor, type 
+  
+  
+ |?- system(‘vi filename’).",NA
+Tracing Note ,"To interactively trace each step of a computation type the trace command. 
+  
+ |?- trace. 
+  
+ Now the execution of any goal will stop after each step. The names of the 
+ computation steps are from the set {call, exit, redo, fail}. To continue the 
+ computation you must react in one of several ways. For example, here are some of 
+ the options that are available.",NA
+Spying Note ,"It is usually not necessary to creep through every execution step of a program. Spy-
+ points make it possible to stop the execution at predicates of your choice. For 
+ example, to stop the execution at each use of the predicate 
+ p
+ , type the goal 
+  
+ |?- 
+ spy p. 
+  
+ You can set more than one spy-point. For example, if you want to set spy-points for 
+ predicates 
+ p
+ , 
+ q
+ , and 
+ r
+ , type the goal 
+  
+  
+ |?- spy [p, q, r]. 
+  
+ Now you can “leap” between uses of spy-points or you can still creep from step to 
+ step. To “leap” to the next use of a spy-point, type 
+ l
+  and hit return. 
+  
+ You can remove spy-points too. For example, to remove 
+ p
+  as a spy-point, type the 
+ nospy goal 
+  
+  
+  
+ |?- nospy p. 
+  
+ To remove 
+ p
+ , 
+ q
+ , and 
+ r
+  as spy-points type the goal 
+  
+ |?- nospy [p, q, r]. 
+  
+ To remove all spy-points type the goal 
+  
+ |?- nospyall.",NA
+2,NA,NA
+Beginning Experiments ,"This chapter contains some simple experiments that are designed to introduce some 
+ of the basic ideas of programming in Prolog.",NA
+"2.1   Variables, Predicates, and Clauses ","In this experiment we’ll see how to represent variables, predicates, clauses, and 
+ goals. We’ll also introduce the computation rule used to execute Prolog programs.",NA
+Variables ,"A variable may be represented by a string of characters made up of letters or digits 
+ or the underscore symbol _, and that begins with either an uppercase letter or _. For 
+ example, the following strings denote variables: 
+  
+ X, Input_list, Answer, _, 
+  
+ A variable name that begins with the underscore symbol represents an unspecified 
+ (or anonymous) variable.",NA
+Predicates ,"A 
+ predicate
+  is a relation. In Prolog the name of a predicate is an alphanumeric string 
+ of characters (including _) that begins with a lowercase letter. For example, we used 
+ the predicate “par” in the introductory example to denote the “is parent of” relation. 
+ The number of arguments that a predicate has is called the 
+ arity
+  of the predicate. For 
+ example, par has arity 2. If a predicate 
+ q 
+ has arity 
+ n
+ , then we sometimes write q/n to 
+ denote this fact. For example, 
+  
+ 12",NA
+Clauses ,"The power of Prolog comes from its ability to process clauses. A 
+ clause
+  is a statement 
+ taking one of the forms 
+  
+ head. 
+  
+ or 
+  
+ head :- body. 
+  
+ where 
+ head
+  is an atomic formula and 
+ body
+  is a sequence of atomic formulas 
+ separated by commas. For example, the following statements are clauses. 
+  
+ capital–of(salem, oregon). 
+  
+ q(b). 
+  
+ p(X) :- q(X), r(X), s(X). 
+  
+ The last clause has head p(X) and its body consists of the atomic formulas q(X), r(X), 
+ and s(X). 
+  
+ Now let’s look at the meaning that Prolog gives to clauses. The meaning of a clause of 
+ the form 
+  
+ head. 
+  
+ is that head is true.  A clause of the form 
+  
+ head :- body. 
+  
+ has a declarative meaning and a procedural meaning. The declarative meaning is that 
+ the head is true if all of the atomic formulas in the body are true. The procedural 
+ meaning is that for head to succeed, each atomic formula in the body must succeed. 
+ For example, suppose we have the clause 
+  
+ p(X) :- q(X), r(X), s(X). 
+  
+ From the declarative point of view this means that 
+  
+ for all X, p(X) is true if q(X) and r(X) and s(X) are true.",NA
+Or Clauses ,"Prolog also allows us to represent the “or” operation in two different ways. For 
+ example, suppose that we have the following two Prolog clauses to define the 
+ parentOf relation in terms of the motherOf and fatherOf relations. 
+  
+ parentOf(X, Y) :- motherOf(X, Y). 
+  
+ parentOf(X, Y) :- fatherOf(X, Y). 
+  
+ We can think of the two clauses as having the following form. 
+  
+ c
+  :- 
+ a
+ . 
+  
+ c
+ :- 
+ b
+ . 
+  
+ From a logical viewpoint, these two clauses represent the conjunction of two 
+ conditionals of the following form. 
+  
+ (
+ a
+ 
+ c
+ ) 
+ 
+  (
+ b
+ 
+ c
+ ). 
+  
+ Now recall that the following equivalence holds. 
+  
+ (
+ a
+ 
+ c
+ ) 
+ 
+  (
+ b
+ 
+ c
+ ) 
+  
+ a
+ (
+ b
+ 
+ c
+ . 
+  
+ The right side of the equivalence can be represented in Prolog as the following or-
+ clause, where the semi-colon denotes disjunction. 
+  
+ c
+  :- 
+ a
+ ;
+ b
+ . 
+  
+ For example, the original two clauses that we used to define the parentOf relation 
+ can also be expressed as the following or-clause. 
+  
+ parentOf(X, Y) :- motherOf(X, Y) ; fatherOf(X, Y).",NA
+Experiments to Perform ,"1.
+  Input the program consisting of the two clauses p(a) and p(b). Then ask the 
+ following questions: 
+  
+ |?- p(a). 
+  
+ |?- p(b). 
+  
+ |?- p(c).",NA
+"2.2   Equality, Unification, and Computation ","Most of us will agree that any object is equal to itself. For example, b is equal to b, 
+ and p(c) is equal to p(c). We might call this “syntactic equality.” It’s the most basic 
+ kind of equality and Prolog represents it with the following symbol. 
+  
+ == 
+  
+ For example try out the following goals. 
+  
+ |?- b == b. 
+  
+ |?- p(a) == p(a). 
+  
+ |?- p(X) == p(b). 
+  
+ |?- 5 == 5. 
+  
+ |?- 2 + 3 == 1 + 4. 
+  
+ The expressions 2 + 3 and 1 + 4 are not syntactically equal, but they both denote the 
+ number 5. This might be called “numerical” or “semantic equality.” Prolog represents 
+ this equality with the following symbol. 
+  
+ =:= 
+  
+ For example try out the following goals. 
+  
+ |?- b =:= b. 
+  
+ |?- p(a) =:= p(a). 
+  
+ |?- p(X) =:= p(b). 
+  
+ |?- 5 =:= 5. 
+  
+ |?- 2 + 3 =:= 1 + 4. 
+  
+ What about expressions like p(X) and p(b)? They are not syntactically equal and they 
+ are not semantically equal. But if we consider X to be a variable, then we can say p(X) 
+ and p(b) are equal under the assumption that X stands for b. This is an example of 
+ “unification” and it is a basic ingredient in the matching process used for 
+ computation in logic programming.",NA
+Unification ,"Unification is the process of matching two expressions by attempting to construct a 
+ set of bindings for the variables so that when the bindings are applied to the two 
+ expressions, they become syntactically equal. Unification is",NA
+Computation ,"A Prolog program executes goals, where a 
+ goal
+  is the body of a clause. In other 
+ words, a goal is one or more atomic formulas separated by commas. The atomic 
+ formulas in a goal are called 
+ subgoals
+ . For example, the following expression is a goal 
+ consisting of two subgoals. 
+  
+ |?- par(X, james), par(Y, X). 
+  
+ The execution of a goal proceeds by unifying the subgoals with heads of clauses. The 
+ search for a matching head starts by examining clauses at the beginning of the 
+ program and proceeds linearly through the clauses. If there are two or more 
+ subgoals, then they are executed from left to right. A subgoal is true in two cases: 
+  
+ 1. It matches a fact (i.e., the head of a bodyless clause). 
+  
+ 2. It matches the head of a clause with a body and when the matching 
+  
+ substitution is applied to the body, each subgoal of the body is true. 
+  
+ A goal is true if there is a substitution that when applied to its subgoals makes each 
+ subgoal true. For example, suppose we have the following goal for the introductory 
+ program example. 
+  
+ |?- par(X, james), par(Y, X). 
+  
+ This goal is true because there is a substitution {X=ruth, Y=katherine} that",NA
+Experiments to Perform ,"1.
+  Try out some unification experiments like the following. First find the answers by 
+ hand. Then check your answers with Prolog. 
+  
+ |?- p(X) = p(a). 
+  
+ |?- p(X, f(Y)) = p(a, Z). 
+  
+ |?- p(X, a, Y) = p(b, Y, Z). 
+  
+ |?- p(X, f(Y, a), Y) = p(f(a, b), V, Z). 
+  
+ |?- p(f(X, g(Y)), Y) = p(f(g(a), Z), b). 
+  
+  2.
+  An algorithm that tries to match terms is called a unification algorithm. 
+  
+ These algorithms have an “occurs check” that stops the process if an attempt is 
+ made to unify a variable X with a non-variable term in which X occurs. For 
+ example, X and p(X) do not unify. However, most versions of Prolog do not 
+ implement the occurs check to save processing time. Try the following tests to 
+ see whether Prolog implements the occurs check. 
+  
+ |?- p(X) = p(g(X)). 
+  
+ |?- p(f(a, X)) = p(X). 
+  
+ |?- f(X) = X. 
+  
+ |?- [a|X] = X. 
+  
+  3.
+  The international standard ISO Prolog has a predicate for unification with the 
+ occurs check. The name of the predicate is 
+  
+  
+  
+ unify_with_occurs_check. 
+  
+  In SICStus Prolog the predicate is in the “terms” library. So the following 
+ command must be executed first. 
+  
+ |?- use_module(library(terms)). 
+  
+  For example, to unify p(X) and p(a) we type the goal 
+  
+ |?- 
+ unify_with_occurs_check(p(X), p(a)).",NA
+2.3   Numeric Computations ,"Prolog has a built-in predicate “is” that is used to evaluate numerical expressions. 
+ The predicate is infix with a variable on the left and a numerical expression on the 
+ right. For example, try out the following goals. 
+  
+ |?- X is 5 + 7. 
+  
+ |?- X is 5 - 4 + 2. 
+  
+ |?- X is 5 * 45. 
+  
+ |?- X is log(2.7). 
+  
+ |?- X is exp(1). 
+  
+ |?- X is 12 mod 5. 
+  
+ The expression on the right must be able to be evaluated. For example, try out the 
+ goal 
+  
+ |?- X is Y + 1. 
+  
+ Now try out the goal 
+  
+ |?- Y is 5, X is Y + 1. 
+  
+ SICStus Prolog has a rich set of numerical operations that includes all of the ISO 
+ operations: 
+  
+ Binary operators 
+  
+  
+ +, –, *, /, //, rem, mod, sin, cos, atan. 
+  
+ Unary operators 
+  
+ +, –, abs, ceiling, floor, float, truncate, round, exp, sqrt, log.",NA
+Experiments to Perform ,"1.
+  Test each of the numeric binary, unary, and comparison operations. 
+  
+ 2.
+  If we 
+ don’t want to type goals of the form “X is expression” we can define 
+  
+ a predicate 
+ to do the job. For example, a predicate to evaluate and print 
+  
+ a numeric 
+ expression can be defined as follows: 
+  
+   
+  
+ eval(X) :- A is X, write(A). 
+  
+  Try it out on several expressions. For example, try the goal 
+  
+  
+ |?- eval(sin(5)*sin(5) + cos(5)*cos(5)).",NA
+2.4   Type Checking ,"Prolog has several built-in predicates for type checking. For example, try out the 
+ following goals. 
+  
+ |?- integer(25). 
+  
+ |?- integer(25.0). 
+  
+ The ISO type checking predicates are listed as follows. 
+  
+ var, nonvar, integer, float, number, atom, atomic, compound. 
+  
+ We can create our own type checkers too. For example, suppose we let nat(X) mean 
+ that X is a natural number. We can define nat as follows. 
+  
+ nat(X) :- integer(X), X >= 0.",NA
+Experiments to Perform ,"1.
+   Test each of the type checker predicates. 
+  
+ 2.
+  Construct a type checker for each of the following sets. 
+  
+ a.
+  The non-negative numbers. 
+  
+ b.
+  The even integers. 
+  
+ c.
+  {0, 1, 2, 3,4, 5, 6, 7, 8}. 
+  
+ 3.
+  We can solve for any of the three variables in X + Y = Z if the other two 
+ arguments are given as follows: 
+  
+  sum(X, Y, Z) :- nonvar(X), nonvar(Y), Z is X + Y.  
+ sum(X, Y, Z) :- nonvar(X), nonvar(Z), Y is Z - X.  
+ sum(X, Y, Z) :- nonvar(Z), nonvar(Y), X is Z - Y. 
+  
+ a.
+  Check it out. 
+  
+ b.
+  Write a solver for the linear equation A*X + B = 0. Let the predicate 
+  
+ linear(A, B, X) return the root X of the equation.",NA
+2.5   Family Trees ,"In this experiment we’ll continue working with a family tree by examining a few of 
+ the many family relations. To keep things short and concise, let 
+  
+ p(X, Y) mean that X is a parent of Y, 
+  
+ and let 
+  
+ g(X, Y) mean that X is a grandparent of Y.",NA
+Experiments to Perform ,"1.
+  Enter the following program into a file. 
+  
+ p(a, b). 
+  
+ p(a, c). 
+  
+ p(a, d). 
+  
+ p(b, e). 
+  
+ p(b, f). 
+  
+ p(c, g). 
+  
+ p(d, h). 
+  
+ p(e, i).",NA
+2.6   Interactive Reading and Writing ,"In this experiment we’ll construct a simple interactive Prolog program. Since 
+ interactive programs need to read and write, we’ll discuss writing to the screen and 
+ reading from the keyboard. Try out the following goals to get familiar with the 
+ “write” predicate. 
+  
+ |?- write(‘hello world’). 
+  
+ |?- write(hello), write(‘ ‘), write(world). 
+  
+ |?- write(hello), tab(10), write(world). 
+  
+ |?- write(hello), nl, write(world). 
+  
+ |?- write(hello world). 
+  
+ |?- write(X). 
+  
+ |?- write(x). 
+  
+ The operation nl means “start a new line”. The operation tab(10) means “tab 10 
+ spaces”. Be sure to place single quotes around text if it contains spaces, punctuation 
+ marks, etc. If a single quote is part of the text, then write two single quotes. 
+  
+ It is easy to read a Prolog term from the keyboard as long as the term ends with a 
+ period followed by a return. Try out the following goals to get the familiar with the 
+ “read” predicate. 
+  
+ |?- read(X). 
+  
+ |?- read(yes). 
+  
+ |?- read(hello). 
+  
+ Note that read(yes) and read(hello) will only succeed if the terms typed are yes and 
+ hello, respectively. Similarly, any read statement with a nonvariable argument will 
+ succeed only if that argument is typed. 
+  
+ Now we’re in position to give an example of a simple interactive program. This 
+ example allows a user to ask for the name of the capital of a state. We’ll",NA
+ Experiments to Perform ,"1.
+  Put the sample data and the modified program in a file. Then make the following 
+ tests. 
+  
+ a.
+  Make three tests by typing cities and three tests by typing states.
+  
+ b.
+  Test the program by typing an uppercase letter followed by a period. 
+  
+ Trace the computation to see what happens. 
+  
+ 2.
+  Write an interactive program to find information in a knowledge base of your 
+ choice. Use a database of at least ten elements. If you can’t think of one, here are 
+ a couple of examples: 
+  
+ a.
+  (Chemistry) Use some facts that associate each chemical element 
+  
+ with its 
+ notation. For example, here are three facts about elements. 
+  
+ element(iron, fe). 
+  
+ element(hydrogen, h). 
+  
+ element(helium, he). 
+  
+ b.
+  (Language Translation) Use some facts that associate words of two different 
+ languages. For example, here are three facts that relate Spanish to English. 
+  
+ translate(adios, goodby). 
+  
+ translate(bueno, good). 
+  
+ translate(porque, because).",NA
+2.7   Adding New Clauses ,"In this experiment we’ll see how to add new clauses (i.e., with new predicate names) 
+ to the program by using the backtracking feature of Prolog. We’ll introduce the idea 
+ with the familiar family tree example. Assume that the following facts have been 
+ input from a file named 
+ familyTree
+ . 
+  
+ p(a, b). 
+  
+ p(a, c). 
+  
+ p(a, d). 
+  
+ p(b, e). 
+  
+ p(b, f).",NA
+Experiments to Perform ,"1.
+  Verify the examples given by starting with a file that contains the “p” facts and 
+ ending with a file that contains the “p” and “sib” predicates. Do a trace to 
+ observe how siblings are found by backtracking. 
+  
+ 2.
+  Use the same technique to add all grandchild facts to the file, where 
+ grandChild(X, Y) means that X is a grandchild of Y.",NA
+2.8   Modifying Clauses ,"In this experiment we’ll see how to modify clauses by declaring their predicates to be 
+ dynamic. We’ll introduce the idea with the familiar family tree example. Assume that 
+ the following facts have been loaded into the program from a file named 
+ familyTree
+ . 
+  
+ p(a, b). 
+  
+ p(a, c). 
+  
+ p(a, d). 
+  
+ p(b, e). 
+  
+ p(b, f). 
+  
+ p(c, g). 
+  
+ p(d, h). 
+  
+ p(e, i). 
+  
+ p(g, j). 
+  
+ p(h, k). 
+  
+ sib(X, Y) :- p(Z, X), p(Z, Y), X \== Y. 
+  
+ Suppose that we want to add all possible sibling relationships to the file. We might 
+ try the following goal. 
+  
+ |?- sib(X, Y), assertz(sib(X, Y)), fail. 
+  
+ This will not work because sib is a predicate that is already used in the “static” file 
+ familyTree. If we wish to modify the predicates of a file we must declare the 
+ predicates to be “dynamic.” We can do this by placing the following declaration at the 
+ beginning of the predicates that we want to be dynamic. 
+  
+ :- dynamic p/2, sib/2. 
+  
+ p(a, b). 
+  
+ p(a, c). 
+  
+ p(a, d). 
+  
+ p(b, e). 
+  
+ p(b, f). 
+  
+ p(c, g). 
+  
+ p(d, h). 
+  
+ p(e, i). 
+  
+ p(g, j).",NA
+Experiments to Perform ,"1.
+  Verify the examples given by starting with a file that contains the given dynamic 
+ declaration of p and sib together with the “p” facts and the definition of the sib 
+ predicate. 
+  
+ 2.
+  Use the same technique to add all grandchild facts to the file. In other words, 
+ place the definition for grandChild(X, Y) into the file and declare grandChild/2 
+ to be a dynamic predicate.",NA
+2.9   Deleting Clauses ,"In this experiment we’ll see how to delete clauses from the program. We’ll introduce 
+ the idea with the familiar family tree example. In previous experiments we’ve seen 
+ that backtracking is a powerful tool for finding",NA
+Experiments to Perform ,"1.
+  Start with a family tree (your own or an example) consisting of parent relations in 
+ the program. Make sure that the tree is large enough to have several cousin 
+ relationships. Next, write a cousin predicate and use it to add all cousin 
+ relations to the program. Then experiment with the retract operation by 
+ retracting cousin(X, Y) if cousin(Y, X) is in the program. 
+  
+ 2.
+  Test the abolish operation on predicates that are dynamic, predicates that are 
+ static, and predicates with the same head name, but with different arities.",NA
+3,NA,NA
+Recursive Techniques ,"This chapter introduces some recursive techniques to explore problems. The use of 
+ recursion makes it possible to write very short programs with a high degree of 
+ accuracy. This allows one to spend most of the time thinking about the experiment 
+ rather than the programming. Each problem includes an experiment that uses the 
+ trace and spy debugging tools to observe how recursive computations work. All the 
+ remaining sections contain problems that use recursion.",NA
+3.1   The Ancestor Problem ,"An ancestor is a person from whom one is descended. We’ll write a predicate for the 
+ ancestor relation, where ancestor(A, B) means that A is an ancestor of B. If we 
+ assume that the knowledge base contains parent relations, then we can easily define 
+ the ancestor relation. Clearly a parent is an ancestor of a child, and any ancestor of a 
+ parent is also an ancestor of the child. For example, suppose we have the following 
+ graph representing some parent relations, where the orientation is such that parents 
+ are directly above their children 
+  
+ n
+  
+ a
+  
+ w
+  
+ z
+  
+  
+  
+ b 
+  
+ c 
+  
+ y
+  
+  
+ d x 
+  
+ m
+  
+  
+ e
+  
+ f
+  
+ t
+  
+ 31",NA
+Experiments to Perform ,"1.
+  Implement the ancestor program along with the given knowledge base. Then 
+ perform the following tests and discuss the results in each case. 
+  
+ a.
+  Try several different goals, and backtrack as much as possible. Include goals 
+ to find the largest list of ancestors, and goals to find no ancestors.",NA
+3.2   Writing and Summing ,"Suppose that for any natural number n we wish to write out the sequence of 
+ consecutive numbers from 0 to n. To discover a program to do the job we can make a 
+ couple of observations. First, we can observe that if the input is 0, then we should 
+ write out 0. On the other hand, if n > 0, then the task will be accomplished if we write 
+ out the sequence from 0 to n – 1 and then write out n. These observations provide us 
+ with the basis case and the recursive case for a predicate “seq” to do the job. For 
+ example, the goal 
+  
+ |?- seq(3).",NA
+Experiments to Perform ,"1.
+  (
+ Tracing and Spying
+ ) Implement the program for the seq predicate and try it out 
+ on several different numbers. Then do each of the following tracing tests. In 
+ parts (b) and (c) you can observe the recursive calls to the seq predicate. 
+  
+ a.
+  |?- seq(3). 
+  
+ b.
+  |?- trace, seq(3). 
+  
+  c.
+  |?- spy seq, seq(3). 
+  
+ (Use l to leap to each use of seq.)",NA
+3.3   Switching Pays ,"Suppose there is a lottery in which the winner will be chosen from among a set of 
+ three numbers {
+ x, y, z
+ }. We choose one of the three numbers, say 
+ x
+ . Later, after the 
+ winning number has been drawn, but not yet made public, we are given the 
+ additional information that one of the other numbers, say 
+ y
+ , is not a winner. Then we 
+ are given the opportunity to switch our choice from 
+ x
+  to 
+ z
+ . What should we do? We 
+ should switch. 
+  
+ To see this, notice that once we pick a number, the probability that we did not 
+ pick the winner is 2/3
+ .
+  In other words, it is more likely that one of the other two 
+ numbers is a winner. So when we are given one of the other numbers and told that it 
+ is not the winner, it follows that the remaining other number has probability 2/3of 
+ being the winner. So go ahead and switch. 
+  
+ We can write an experiment to test the claim by using a random number 
+ generator. The SICStus random number package can be loaded by placing the 
+ following statement within your program. 
+  
+ :- use_module(library(random)). 
+  
+ The random predicate returns a random integer within a specified range. For 
+ example, suppose we type the goal 
+  
+ |?- random(5, 88, Out). 
+  
+ The variable Out will be instantiated to a random integer in the range 
+  
+ 5 ≤ Out < 88. 
+  
+ Now we’re in position to make a definition for the trial predicate, which will perform 
+ one trial of the experiment.",NA
+Experiments to Perform ,"1.
+  Test the claim that switching pays by doing several trials. Switching should pay off 
+ about two thirds of the time. So make several sets of trials with sizes that are 
+ divisible by 3. For example, execute goals like trials(3), trials(6), trials(9), and 
+ so on. And do each of these several times. Make a table to record the statistics. 
+  
+  2.
+  (
+ Tracing and Spying
+ ) Do each of the following tracing tests on the trials program. 
+ In parts (b) and (c) you can observe the recursive calls to the trials predicate. 
+  
+ a.
+  |?- trials(3). 
+  
+ b.
+  |?- trace, trials(3). 
+  
+  c.
+  |?- spy trials, trials(3). 
+  
+ (Use l to leap to each use of trials.) 
+  
+  d.
+  |?- nospy trials, spy random, trials(3). (Use l 
+ to leap to each use of random.) 
+  
+  3.
+  Another way to see that switching is the best policy is to modify the problem to a 
+ set of 50 numbers and a 50-number lottery. If we pick a number, then the 
+ probability that we did not pick a winner ii 49/50
+ .
+  Later we are told that 48 of 
+ the remaining numbers are not winners, but we are",NA
+3.4   Inductively Defined Sets ,"A set S that is inductively defined if it can be described by naming some specific 
+ elements that are in S (the basis case) and giving one or more rules to construct new 
+ elements of S from existing elements of S (the induction case). It is also assumed that 
+ S contains only the elements constructed by these cases. For example, let S be 
+ defined as follows. 
+  
+ Basis: 
+  
+ Induction: 
+  
+ 2 
+  
+  S. 
+  
+ If x 
+  
+  S then x + 3 
+  
+  S.
+  
+ If we let inS(x) stand for a test to see whether x 
+  
+  S, then we can define the inS 
+ predicate in Prolog as follows. 
+  
+ inS(2). 
+  
+ inS(X) :- Y is X - 3, Y >=2, inS(Y). 
+  
+ We can form inductive sets from any operation we wish if we have some basis to 
+ start from. Such a set together with its operations forms a special kind of algebra 
+ called an induction algebra. For example, suppose that we have the induction algebra 
+ 〈
+ A; g, e
+ 〉
+ , where g is a unary operator on A and e 
+  
+  A such that 
+  
+ A = {e, g(e), g(g(e)), ..., g
+ n
+ (e), ... }. 
+  
+ Since the set is infinite we can’t store it anywhere. But we can certainly",NA
+Experiments to Perform ,"1.
+  Write down a description of the set S from the example. Then implement the 
+ definition for the inS predicate. Perform some tests to see whether the inS 
+ predicate does indeed test for membership in the set S that you described. Try 
+ some arguments that are not in S. Try some non integers too. 
+  
+  2.
+  (
+ Tracing and Spying
+ ) Do each of the following tracing tests on the inS predicate. In 
+ parts (b) and (c) you can observe the recursive calls to the inS predicate. 
+  
+ a.
+  |?- inS(5). 
+  
+ b.
+  |?- trace, inS(5). 
+  
+  c.
+  |?- spy inS, inS(11). 
+  
+ (Use l to leap to each use of trials.)",NA
+4,NA,NA
+Logic ,"This chapter contains experiments that use Prolog to explore some basic ideas about 
+ logic.",NA
+4.1   Negation and Inference Rules ,"In this experiment we’ll examine relationships between Prolog and logic by 
+ examining negation and some inference rules. We know from logic that if A is a 
+ statement, then the negation of the A is the statement ¬ A, which is opposite in truth 
+ value from that of A. The modus ponens inference rule says that from the two 
+ statements A and A 
+ 
+  B we can infer B. The hypothetical syllogism inference rule 
+ says that from the two statements A 
+ 
+  B and B 
+ 
+  C we can infer A 
+ 
+  C. 
+  
+ In SICStus Prolog the “not” operation is denoted by the two-character string \+. 
+ For example, the expression \+ p should be written in place of the expression not p. 
+ As the experiments will show, the not operation in Prolog is better thought of as 
+ meaning “not provable from the program facts”.",NA
+Experiments to Perform ,"1.
+   (Negation) Enter the following fact into the program. 
+  
+ p(a). 
+  
+  Try the following two questions. 
+  
+ |?- p(a). 
+  
+ |?- \+ p(a). 
+  
+ 42",NA
+4.2   The Blocks World ,"This experiment introduces the blocks world, which consists of a set of building 
+ blocks arranged in some way. We’ll examine some questions about the blocks world 
+ and see how negation can be used to describe some typical predicates. 
+  
+ To describe the fact that one block is on top of another block we’ll use the “on” 
+ predicate. For example, to say that block 
+ a
+  is sitting on top of block 
+ b
+ , we’ll write the 
+ Prolog fact 
+  
+ on(
+ a, b
+ ). 
+  
+ Once we have a blocks world described by a set of these facts, there are many 
+ questions that can be asked and operations that can be performed. We’ll describe 
+ two such predicates. The “blocked” predicate tells us whether there is a block above 
+ a given block. It can be defined by the following Prolog clause.",NA
+Experiments to Perform ,"1.
+  Load the following program into the program. 
+  
+ on(
+ a, b
+ ). 
+  
+ blocked(X) :- on(Y, X). 
+  
+ onTop(X) :- \+ blocked(X). 
+  
+  For each of the following goals, give the answer that you might expect, and then 
+ execute the goal to see whether Prolog agrees with your answer. 
+  
+  
+ |?- 
+ onTop(a). 
+  
+ |?- onTop(b). 
+  
+ |?- onTop(X). 
+  
+ |?- \+ onTop(a). 
+  
+ |?- \+ onTop(b). 
+  
+ |?- \+ onTop(X). 
+  
+  2.
+  Let’s extend the blocks program to allow us to move blocks around. For example, 
+ we’ll let move(
+ a, b
+ ) mean that block 
+ a
+  is to be moved onto block 
+ b
+  if they are 
+ both on top. To accomplish this we’ll need to test whether the two blocks are on 
+ top and, if so, to retract one clause and to assert another clause. We’ll modify 
+ the program so that on(
+ a
+ , [ ]) means that 
+ a 
+ is on the bottom. Here is the 
+ extended program, which includes a set of blocks to use in testing. 
+  
+ :- dynamic on/2. 
+  
+ on(a, b). 
+  
+ on(b, c). 
+  
+ on(d, [ ]). 
+  
+ on(c, [ ]).",NA
+4.3   Verifying Arguments in First-Order Logic ,"In this experiment we'll see if we can get Prolog to verify an argument in first-order 
+ predicate calculus. We’ll start with an example. Suppose we’re given the following 
+ argument in English: 
+  
+ Every dog likes people or hates cats or both. Rover is a dog. Rover loves cats. 
+ Therefore some dog likes people. 
+  
+ Let 
+ d
+ (
+ x
+ ) mean that 
+ x
+  is a dog, 
+ lp
+ (
+ x
+ ) mean that 
+ x
+  likes people, 
+ lc
+ (
+ x
+ ) mean that 
+ x 
+ loves 
+ cats, and let 
+ a 
+ = Rover. Then the argument can be formalized as follows: 
+  
+  
+ x
+  (
+ d
+ (
+ x
+ ) 
+ 
+ lp
+ (
+ x
+ ) 
+ (
+  ¬ 
+ lc
+ (
+ x
+ )) 
+ 
+ d
+ (
+ a
+ ) 
+ 
+ lc
+ (
+ a
+ ) 
+   
+ x 
+ (
+ d
+ (
+ x
+ ) 
+ 
+ lp
+ (
+ x
+ )). 
+  
+ A formal proof of this statement can be given as follows:",NA
+Experiments to Perform ,"1.
+  Use Prolog to verify the following argument: 
+  
+  
+  Every committee member is rich and famous. Some committee members 
+  
+ are 
+ old. Therefore some committee members are old and famous. 
+  
+  2.
+  Use Prolog to verify the following argument: 
+  
+  
+  No human beings are quadrupeds. All men are human beings. Therefore 
+  
+ no 
+ man is a quadruped. 
+  
+  3.
+  Use Prolog to verify the following argument: 
+  
+ Some freshmen like all sophomores. No freshman likes any junior. Therefore no 
+ sophomore is a junior.",NA
+4.4   Equality Axioms ,"Suppose we have the following two axioms for an equality theory. 
+  
+ EA Axiom: 
+ EE Axiom:
+  
+  
+ x
+  (
+ x
+  = 
+ x
+ ) 
+  
+ (
+ t
+  = 
+ u
+ ) 
+ 
+ p
+ (... 
+ t
+  ...) 
+ 
+ p
+ (... 
+ u
+  ...). 
+  
+ The EA Axiom together with universal instantiation implies the reflexive property 
+ t
+  = 
+ t
+  for any term 
+ t
+ . We’ll call this result the EA Axiom too. 
+  
+ EA Axiom: 
+  
+ t
+  = 
+ t
+  
+ We can use these axioms to prove the following symmetric and transitive 
+  
+ properties for terms: 
+  
+ (
+ t
+  = 
+ u
+ ) 
+ 
+  (
+ u
+  = 
+ t
+ ) 
+  
+ (
+ t
+  = 
+ u
+ ) 
+ 
+  (
+ u
+  = 
+ v
+ ) 
+ 
+  (
+ t
+  = 
+ v
+ ). 
+  
+ For example, we have the following proof of the symmetric property: 
+  
+ 1. 
+ t
+  = 
+ u 
+  
+ P 
+  
+ 2. 
+ t
+  = 
+ t 
+  
+ EA Axiom 
+  
+ 3. (
+ t
+  = 
+ u
+ ) 
+ 
+  (
+ t
+  = 
+ t
+ ) 
+ 
+  (
+ u
+  = 
+ t
+ ) 
+  
+ EE Axiom 
+  
+ 4. (
+ t
+  = 
+ u
+ ) 
+ 
+  (
+ t
+  = 
+ t
+ ) 
+  
+ 1, 2, Conj 
+  
+ 5. 
+ u
+  = 
+ t 
+  
+ 3, 4, MP 
+  
+ QED 
+  
+ 1–5, CP.",NA
+Experiments to Perform ,"1.
+   Why does this Prolog experiment verify the six line proof of symmetry? 
+  
+  2.
+  Consider the following proof of transitivity. 
+  
+ 1. 
+ t
+  = 
+ u
+  
+  2. 
+ u
+  = 
+ v
+  
+  3. (
+ u
+  = 
+ v
+ ) 
+ 
+  (
+ t
+  = 
+ u
+ ) 
+ 
+  (
+ t
+  = 
+ v
+ )  4. (
+ u
+  
+ = 
+ v
+ ) 
+ 
+  (
+ t
+  = 
+ u
+ ) 
+  
+  5. 
+ t
+  = 
+ v 
+  
+  
+ QED 
+  
+ P 
+  
+ P 
+  
+ EE Axiom 
+  
+ 1, 2, Conj 
+  
+ 3, 4, MP 
+  
+ 1– 5, CP 
+  
+  a.
+  Construct a Prolog experiment to verify this proof. 
+  
+  b.
+  Explain how your Prolog experiment verifies the transitivity proof.",NA
+4.5   SLD-Resolution ,"Let’s introduce some terminology regarding computations of logic programs. “SLD-
+ resolution” is name of the inference rule—which is a special case of the resolution 
+ inference rule—that is used to perform computation in logic programs. The rule is 
+ always applied to a goal atom and a clause whose head unifies with the goal atom. An 
+ SLD-derivation is a sequence of applications of the SLD-resolution rule. An SLD-
+ refutation is a finite SLD-derivation that ends with the empty clause. As an example, 
+ let’s consider the logic program 
+ P 
+ consisting of the following clauses. 
+  
+ p(a, b). 
+  
+ p(a, c). 
+  
+ p(b, d). 
+  
+ p(c, e). 
+  
+ g(X, Y) :- p(X, Z), p(Z, Y).",NA
+Experiments to Perform ,"1.
+  For the given program, trace the execution of the goal 
+ G
+ . Then observe the 
+ relationships between the calls of the trace and the clauses on lines 6, 7, 8, and 
+ 9 of the SLD-refutation. 
+  
+  2.
+  For the given example there is another SLD-refutation. All SLD-refutations of are 
+ contained as paths in the computation tree for 
+ P
+ 
+  {
+ G
+ }.",NA
+4.6   The Cut Operation ,"The “cut” is an operation that is used to cut off backtracking when it is not wanted. 
+ For example, consider the following logical statement, where s, p, q, and r are all 
+ predicates. 
+  
+ s(X) = if p(X) then q(X) else r(X). 
+  
+ Suppose we implement the statement in Prolog with the following two clauses. 
+  
+ s(X) :- p(X), q(X). 
+  
+ s(X) :- r(X).",NA
+Experiments to Perform ,"1.
+  Draw a picture of the SLD-tree for the goal |?- 
+ a
+ . 
+  
+  2.
+  Draw a closed curve around the subtree that will be pruned if the cut is 
+ encountered on backtracking. 
+  
+  3.
+  Test the program with different goals to see that the cut performs as expected. For 
+ example, to confirm the results of parts (1) and (2) above, try out the goal 
+  
+  
+ |?- a. 
+  
+  Try some other goals too. For example, try the following goals. 
+  
+ |?- b.     and     |?- c. 
+  
+  Use trace to see what is happening. Make some observations. 
+  
+ Note
+ : In sicstus a goal atom will cause the computation to abort with an existence 
+ error message if the predicate name of the atom does not appear as the head of 
+ any clause in the program. To get a failure rather than an abort, replace each 
+ occurrence of 
+ g, h, i, j,
+  and 
+ k
+  in the program with 
+ g
+ (
+ a
+ ), 
+ h
+ (
+ a
+ ), 
+ i
+ (
+ a
+ ), 
+ j
+ (
+ a
+ ), 
+ k
+ (
+ a
+ ). Then 
+ add the following facts to the program: 
+ g
+ (
+ b
+ ), 
+ h
+ (
+ b
+ ), 
+ i
+ (
+ b
+ ), 
+ j
+ (
+ b
+ ), 
+ k
+ (
+ b
+ ). Now a goal 
+ such as 
+ g
+ (
+ a
+ ) will fail but the computation will continue.",NA
+5,NA,NA
+List Structures ,"Lists are fundamental structures for representing information. In this chapter we’ll 
+ see how to represent and access lists and we’ll see a variety of ways that lists are 
+ used to represent sets and binary trees.",NA
+5.1   List and String Notation ,"A list is represented in Prolog by separating the elements with commas and placing 
+ square brackets at the ends. The empty list is denoted by [ ]. Some examples of lists 
+ are 
+  
+  [a, b, c] 
+  
+ [17, 13, 11, 7, 5, 3, 2] 
+  
+ [orange, orange, apple, banana] 
+  
+ [X, f(A), hello, 3, -9.4] 
+  
+ [a, [a, a], [a, [a, a]], a] 
+  
+ [the, [ ], has, nothing, in, it] 
+  
+ A list can be constructed or taken apart by using the symbol | to separate the head 
+ from the tail. For example, try the following goal. 
+  
+ |?- [H|T] = [a, b, c]. 
+  
+ Notice that H represents the head and T represents the tail of the list. We can also 
+ construct lists. For example, try the following goal. 
+  
+ |?- A = a, B = [b, c], C = [A|B]. 
+  
+ Next we’ll look at two goals that should confirm something that we know 
+  
+ 54",NA
+Experiments to Perform ,"1.
+  Try out a few more examples to get used to the notation for lists. For example, try 
+ out the following goals. 
+  
+ |?- [A, B | C] = [1, 2, 3, 4, 5]. 
+  
+ |?- [[a, b], [c, d]] = [[A, B] | C].",NA
+5.2   Sets and Bags of Solutions to a Query ,In this experiment we’ll examine some powerful tools for constructing sets and bags.,NA
+The Setof Predicate ,"When we work with sets in a programming language we normally work with lists 
+ that have no repeated elements. The Prolog language treats sets in this manner too 
+ and it uses list notation for sets. So, for example, when we think about a set like 
+  
+ {a, b, c},",NA
+The Bagof Predicate ,"A bag (or multiset) is like a set except that repetitions of elements can occur in a bag. 
+ Bags are represented in Prolog as lists. The bagof predicate works just like the setof 
+ predicate except that repeated elements are kept. For example, to find the bag B of 
+ all letters that appear in the first argument of one of the facts in the preceding 
+ example we type the following goal. 
+  
+ | ?- bagof(X, Y^p(X, Y), B). 
+  
+ This goal returns B = [a, a, b, c].",NA
+The Findall Predicate ,"The findall predicate is similar to the bagof predicate. It finds a bag of elements by 
+ examining all solutions to a query without any need to use quantifiers. For example, 
+ to find the bag B of all letters that appear in the first argument of one of the facts in 
+ the preceding example we type the following goal.",NA
+Experiments to Perform ,"1.
+   Try the sample goals for the given set of facts. Then, for each of the following 
+ cases, use the setof predicate to construct and test a goal to compute the given 
+ set. 
+  
+  a.
+  C = {y | 
+  
+ xp(x, y)}  (children). 
+  
+ b.
+  R = {c(y, x) | p(x, y)} 
+  
+ (child relations). 
+  
+  2.
+  Modify the sample goals by eliminating quantified variables. For example, in place 
+ of the goal 
+  
+ |?- setof(X, Y^p(X, Y), S). 
+  
+  use the goal 
+  
+ |?- setof(X, p(X, Y), S). 
+  
+  Also try the goal 
+  
+ |?- setof(X, p(X, _), S). 
+  
+  In each test, be sure to backtrack as much as possible. Try to explain the 
+ difference in the outcomes. 
+  
+  3.
+  The setof predicate returns no instead of the empty set. For example, using the 
+ given set of facts we have {x | 
+  
+ yp(x, a)} = 
+  
+ . 
+  
+ a.
+  Do a test to verify this fact. 
+  
+ b.
+  Define a new predicate “newsetof” that calls the setof predicate. But if the 
+ setof predicate returns no, then newsetof returns [ ]. Test newsetof on 3 
+ nonempty sets and 3 empty sets. 
+  
+  4.
+  Enter the following set of facts in the Prolog database. 
+  
+ p(0, 0, 0, 49). 
+  
+ p(0, 0, 1, 143). 
+  
+ p(0, 1, 0, 78). 
+  
+ p(0, 1, 1, 398). 
+  
+ p(1, 0, 0, 87). 
+  
+ p(1, 0, 1, 398). 
+  
+ p(1, 1, 0, 49). 
+  
+ p(1, 1, 1, 374).",NA
+5.3   List Membership and Set Operations ,"Most versions of Prolog have a predicate to test whether an element is a member of a 
+ list. In SICStus Prolog the “member” predicate resides in the lists library. But it is 
+ easy to define in any case. Here is one definition that we can use. 
+  
+ member(H, [H|_]). 
+  
+ member(X, [_|T]) :- member(X, T). 
+  
+ For example, the goal 
+  
+ |?- member(a, [b, a, c, b]). 
+  
+ succeeds with the answer yes. We can use the backtracking feature of Prolog to 
+ generate all elements in a list. For example, the goal 
+  
+ |?- member(X, [b, a, c, b]). 
+  
+ succeeds with X = b. With backtracking the other elements of the list will also be 
+ found.",NA
+Subset and Equality Relations ,"Since a set is a list with no repeated elements, we can use the member predicate to 
+ test for membership in a set too. This gives us a tool that can be used to construct 
+ many useful operations that involve sets. 
+  
+ We’ll start with the subset relation. Recall that 
+ A
+ 
+ B
+  if and only if every element 
+ of A is an element of B. It follows from this that the empty set is a subset of every set. 
+ This gives us the basis case for the following recursive definition of the subset 
+ predicate.",NA
+"Union, Intersection, and Difference of Sets ","Now we’ll look at a few standard operations to construct sets. We’ll start with the 
+ union operation. The union S of two sets A and B is the set 
+  
+  
+ S = A",NA
+,"B
+  = {
+ x
+  | 
+ x
+  
+ A
+  or 
+ x
+  
+ B
+ }. 
+  
+ We might try to define the union operation by using the setof predicate as the 
+ follows. 
+  
+ union(A, B, S) :- setof(X, (member(X, A); member(X, B)), S). 
+  
+ A problem with this definition, which we can observe with testing, is that the setof 
+ predicate will return a set only if the statement in the middle argument is true for 
+ some X. Otherwise a no answer will be returned. So a goal like |?- union([ ], [ ], S). 
+  
+ will return a no answer instead of giving S the value [ ]. This problem is easily fixed 
+ by adding the fact union([ ], [ ], [ ]) to the definition. So the complete definition looks 
+ like the following.",NA
+),"B
+  = {
+ x
+  | 
+ x
+  
+ A
+  and 
+ x
+  
+ B
+ }. 
+  
+ Suppose we attempt to define the intersection operation using the setof predicate as 
+ follows. 
+  
+ intersect(A, B, S) :- setof(X, (member(X, A), member(X, B)), S). 
+  
+ In this case, the middle statement of the setof predicate will be false if either of both 
+ of A and B are [ ]. So we need to add cases to handle this problem as follows to get a 
+ proper definition. 
+  
+ intersect([ ], _, [ ]). 
+  
+ intersect(_, [ ], [ ]). 
+  
+ intersect(A, B, S) :- setof(X, (member(X, A), member(X, B)), S). 
+  
+ Now we’ll describe two other set operations and leave the Prolog definitions as 
+ experiments. The 
+ difference
+  between 
+ A
+  and 
+ B
+  (also called the 
+ relative complement
+  of 
+ B
+  in 
+ A
+ ) is the set of elements in 
+ A
+  that are not in 
+ B
+ , and it is denoted by 
+ A
+  – 
+ B
+ . A 
+ natural extension of the difference 
+ A
+  – 
+ B
+  is the 
+ symmetric difference
+  of sets 
+ A
+  and 
+ B
+ , 
+ which is the union of 
+ A
+  – 
+ B
+  with 
+ B
+  – 
+ A
+  and is denoted by 
+ A
+ 
+ B
+ . For example, if 
+ A
+  = {
+ a
+ ,
+  b
+ ,
+  
+ c
+ } and 
+ B
+  = {
+ c
+ ,
+  d
+ }, then we have 
+  
+ A
+  – 
+ B
+  = {
+ a
+ ,
+  b
+ }     and     
+ A
+ 
+ B
+  = {a, b, d}.",NA
+Experiments to Perform ,"1.
+  Check each of the following statements by hand and then use “member” to 
+ confirm your answers: 
+  
+ a.
+  x
+   
+  {a, b}. 
+  
+ b.
+  x
+   
+  {a, x}. 
+ c.
+  
+ a
+   
+  {a}. 
+  
+ d.
+    
+  {a, b}. 
+  
+ e.
+     
+ . 
+  
+ f.
+   
+  {
+  
+ }. 
+  
+ g.
+  {a, b} 
+  
+  {a, b, c}. 
+ h.
+  {a, b} 
+  
+  {{a, b}, b, c}. 
+  
+  2.
+  Use “member” and Prolog’s backtracking feature to generate all elements in each 
+ of the following sets: 
+  
+ a.
+  {a, b}. 
+  
+ b.
+  
+ . 
+ c.
+  {
+  
+ }. 
+  
+ d.
+  {{a, b}, b, c}. 
+  
+ e.
+  {{a}, b, {{
+  
+ }}}.",NA
+5.4   List Operations ,"This experiment focuses on defining and testing a variety of operations that use lists. 
+ The emphasis will be on short recursive definitions for predicates to implement the 
+ operations. We’ll give some examples and then continue with more problems in the 
+ experiments. 
+  
+ For example, suppose we need to find the length of a list. Since most versions of 
+ Prolog already have a length predicate for lists, we’ll use the name “lngth” for our 
+ definition. The definition can be constructed once we observe that the length of an 
+ empty list is 0 and the length of a nonempty list is 1 plus the length of its tail. This 
+ gives us the basis case ( the length of the empty list is 0) and the recursive case (the 
+ length of [H|T] is 1 plus the length of T) that we can use to construct a definition for 
+ the lngth predicate. 
+  
+ lngth([ ], 0). 
+  
+ lngth([Head|Tail], L) :- lngth (Tail, N), L is 1 + N. 
+  
+ For another example, suppose we need to construct a predicate “cat” to concatenate 
+ two lists. For example, if [h, e] and [l, l, o] are two lists, then the goal",NA
+Experiments to Perform ,"1.
+  Test cat on a few lists. For example the goal 
+  
+ |?- cat ([a, b], [c, a], A). 
+  
+  should return the answer A = [a, b, c, a]. Now try the same goal with the trace 
+ command. Try a few tests with variables in different argument positions. 
+  
+  2.
+  Implement the following definition for the “last” predicate, which finds the last 
+ element of a non-empty list. 
+  
+ last([X], X). 
+  
+ last([_|T], L) :- last(T, L). 
+  
+ Test the predicate on several lists. Use the trace command on one test. Try a 
+ few tests with variables in different argument positions. 
+  
+  3.
+  Construct a recursive Prolog program for the “first” predicate, which removes the 
+ rightmost element of a nonempty list. For example, the goal 
+  
+ |?- first([a, b, c], X). 
+  
+  returns X = [a, b]. Test the predicate on several lists. Use the trace command on 
+ one test. Try a few tests with variables in different argument positions.",NA
+6,NA,NA
+List Applications ,"This chapter contains a variety of experiments, all of which use recursive techniques 
+ to explore problems that use lists.",NA
+6.1   Binary Trees ,"Binary trees are inherently recursive in nature. In this experiment we’ll see how 
+ binary trees can be created, searched, and traversed by simple recursive algorithms. 
+ SICStus Prolog has a package of binary tree operations that can be accessed by 
+  
+ | ?- use_module(library(trees)). 
+  
+ The empty binary tree is denoted by the letter 
+  
+ t. 
+  
+ A nonempty tree is represented by an expression of the form 
+  
+ t(Root, Left, Right), 
+  
+ where Root is the root of the tree and Left and Right are the left and right subtrees, 
+ respectively. Lists can be transformed into binary trees by the predicate list_to_tree. 
+ For example, try out the following goal. 
+  
+ |?-list_to_tree([a, b, c, d, e, f], Tree). 
+  
+ We can observe the way that the tree is constructed by examining the output 
+  
+ 68",NA
+Experiments to Perform ,"1.
+  Do some testing to see whether list_to_tree constructs a binary tree of the 
+ smallest possible depth. Test the predicate on lists of length 3, 4, 7, and 8. For 
+ each test draw a picture of the corresponding tree. 
+  
+  2.
+  The expression to represent a binary tree is not very inviting. To see the 
+ information in a binary tree we can traverse it by one of the standard methods, 
+ preorder, inorder, and postorder. 
+  
+ a.
+  Test the preorder predicate “pre” as follows 
+  
+ | ?- list_to_tree([a, b, c, d], T), pre(T, Out).",NA
+6.2   Arranging Objects ,"The process of arranging things seems to be part of almost every kind of endeavor. In 
+ this section we’ll look at arbitrary arrangements (permutations) and specific 
+ arrangements (sorting).",NA
+Permutations ,"Suppose we want to generate permutations of a list. For example, suppose “perm” is 
+ a predicate such that the goal 
+  
+ |?- perm([a, b, c], A). 
+  
+ returns the permutation A = [a, b, c], and on backtracking will return the other five 
+ permutations of [a, b, c]. We can write a definition of “perm” as follows: 
+  
+ perm([ ], [ ]). 
+  
+ perm([H|T], [A|B]) :- delete(A, [H|T], X), perm(X, B). 
+  
+ where “delete” is the predicate that deletes the first occurrence of an element from a 
+ list. For example, the goal 
+  
+ |?- delete(a, [b, a, c], X). 
+  
+ returns X = [b, c]. We can write a definition of “delete” as follows: 
+  
+ delete(H, [H|T], T). 
+  
+ delete(X, [H|T], [H|Y]) :- delete(X, T, Y).",NA
+Sorting ,"Let’s write a sorting predicate for a list of numbers. We’ll use the idea of sorting by 
+ insertion, where the head of the list is inserted into the sorted version of the tail of 
+ the list. For the moment, we’ll assume that “insert” does the job of inserting an 
+ element into a sorted list. We’ll use the name “isort” because SICStus Prolog already 
+ has its own “sort” predicate. 
+  
+ isort(
+ 〈
+  
+ 〉
+ ) = 
+ 〈
+  
+ 〉
+  
+ isort(h :: t) = insert(h, isort(t)) 
+  
+ Now we’ll translate this definition into a Prolog program. 
+  
+ isort( [ ], [ ]). 
+  
+ isort([H|T], S) :- isort(T, A), insert(H, A, S). 
+  
+ Of course, we can’t test this definition until we write the definition for the insert 
+ predicate. This predicate inserts an element into a sorted list by comparing the 
+ element with each member of the list until it reaches a larger element or the end of 
+ the list, at which time the element is placed in the proper position. Here’s a definition 
+ for the insert predicate in if-then-else form: 
+  
+ insert(a, x) =  if x = 
+ 〈
+  
+ 〉
+  
+ then 
+ 〈
+ a
+ 〉
+  
+ else if a <= head(x) then a :: x 
+ else hd(x) :: insert(a, tail(x))) fi 
+  
+ Here’s a Prolog definition for the insert predicate. 
+  
+ insert(A, [ ], [A]). 
+  
+ insert(A, [H|T], [A|[H|T]]) :- A =< H. 
+  
+ insert(A, [H|T], [H|S]) :- insert(A, T, S). 
+  
+ Now we can test both the insert predicate and the isort predicate. 
+  
+ |?- insert(7, [1, 4, 9, 14], X). 
+  
+ |?- isort([4, 9, 3, 5, 0], X);",NA
+Experiments to Perform ,"1.
+  Test “perm” with both arguments as atomic lists (e.g., perm([a, b], [b, a])), both as 
+ variables, and both cases where one argument is a variable and the other an 
+ atomic list. Use backtracking to observe any patterns. 
+  
+  2. 
+ Test “delete” with various combinations of the three arguments as variables. Use 
+ backtracking to observe any patterns. 
+  
+  3.
+  Perform several tests of insert and isort and do at least one trace for each 
+ predicate. 
+  
+  4.
+  What happens if we insert an element into a list that is not sorted?
+  
+  5.
+  Modify the definition of insert by replacing =< with <. Try out some tests on lists 
+ that have repeated elements to see what happens. Is one version more efficient 
+ than the other? 
+  
+  6.
+  Try backtracking with both isort and insert and notice the results. Find a way to 
+ modify the definition of insert so that both isort and insert return “no” on 
+ backtracking. 
+  
+  7.
+  Try out the sort predicate that comes with the system. Notice whether it removes 
+ repeated occurrences of elements. Write a second version of insert so that 
+ repeated occurrences of elements are removed. 
+  
+ 8.
+  (
+ Slow Sorting
+ ). The following slowsort program sorts a list X of numbers by 
+ generating permutations of X until a sorted version is found. 
+  
+ slowsort(X, Y) :- perm(X, Y), sorted(Y). 
+  
+ sorted([ ]). 
+  
+ sorted([X]). 
+  
+ sorted([X|[Y|Z]]) :- X =< Y, sorted([Y|Z]). 
+  
+ perm([ ],[ ]). 
+  
+ perm([X|Y], [U|V]) :- delete(U, [X|Y], Z), perm(Z, V). 
+ delete(X, [X|Y], Y). 
+  
+ delete(X, [Y|Z], [Y|W]) :- delete(X, Z, W). 
+  
+ a.
+  Try out some simple examples to see whether slowsort works. For 
+  
+ example, try the goal 
+  
+ |?- slowsort([4, 8, 2, 5], Y). 
+  
+ Do a trace of one goal to observe the order in which permutations are 
+ generated. 
+  
+ b. 
+ Try out slowsort with X free and Y bound and then with both X and Y 
+  
+ free.",NA
+6.3   Simple Ciphers ,"This experiment involves ciphers for encoding or decoding messages. To get things 
+ started we’ll construct a cipher that will encode or decode a string of text by means 
+ of a simple translation of the characters. For example, the message ‘abc’ translated 
+ by 5 letters becomes ‘fgh’. We'll construct a predicate ‘cipher’ to do the job in such a 
+ way that the goal 
+  
+ |?- cipher(abc, 5, B). 
+  
+ will return the value B = fgh. 
+  
+ We’ll assume that the messages use only the alphabet of lowercase letters a to 
+ z, which have ASCII codes 97 to 122. With this assumption the cipher is easy to write 
+ once we figure out how to wrap around the end of the alphabet. For example, to 
+ translate the letter z (i.e., 122) by 5 we need to come up with the letter e (i.e., 101). 
+ All we need to do is add the two numbers (z – 97) and 5 modulo 26. Then add 97 to 
+ the result to get back within the proper ASCII range. Since we want to be able to use 
+ any integer as a key, we need to make sure that for any integer n we have 0 ≤ n mod 
+ 26 < 26. Since the Sicstus mod function returns negative results if n is negative, we'll 
+ write a predicate ""mod2"" to implement the mod function that we need. Here is the 
+ program. 
+  
+ cipher(A, Key, B) :- 
+  
+ name(A, X), 
+  
+ change(X, Key, Y), 
+  
+ name(B, Y). 
+  
+ change([ ], _, [ ]). 
+  
+ change([H|T], Key, [R|S]) :- 
+  
+ mod2(H – 97 + Key, 26, A), 
+  
+ R is A + 97, 
+  
+ change(T, Key, S). 
+  
+ mod2(X, Y, Z) :- Z is integer(X - Y*floor(X/Y)).",NA
+Experiments to Perform ,"1.
+  Implement the given program for an additive cipher. Perform the following tests 
+ to see whether the algorithm can be used for encoding and decoding. 
+  
+ a.
+  Perform tests on a message with two different keys. Then perform tests to 
+ decode the encoded messages. Do a test on messages that wrap around the 
+ left and the right ends of the alphabet. 
+  
+ b.
+  Make some tests on several different keys to be sure that a 
+  
+ permutation of 
+ the cipher alphabet results. For example, try the goal 
+  
+ |?- cipher(abcdefghijklmnopqrstuvwxyz, –2, X). 
+  
+  2.
+  A 
+ multiplicative
+  cipher is a monoalphabetic cipher that translates each letter by 
+ using a multiplier key. 
+  
+ a.
+  Modify the algorithm for an additive cipher to obtain an algorithm for a 
+ multiplicative cipher that does multiplication modulo 26. Perform tests on a 
+ message with two different keys. 
+  
+ b.
+  For a given key, will we get a permutation of the original alphabet? For 
+ example, try the following goal, and see whether the key 2 gives a 
+ permutation of the alphabet. 
+  
+ |?- cipher(abcdefghijklmnopqrstuvwxyz, 2, X).",NA
+6.4   The Birthday Problem ,"The “birthday problem” illustrates that some coincidences are actually probable 
+ events. This experiment is designed to reinforce this idea. For example, we know that 
+ if we choose 23 numbers (e.g., birthdays) at random out of 365 possible numbers 
+ (e.g., the days of the year), then the probability that two of the chosen numbers will 
+ be the same is 0.507. For 30 numbers the probability is 0.706, and for 40 numbers 
+ the probability is 0.891. Consider the following Prolog program to generate a list of 
+ random numbers in the interval 1 to 365. 
+  
+ birth(0, [ ]). 
+  
+ birth(N, [Out|T]) :-  random(1, 366, Out), K is N 
+ - 1, 
+  
+ birth(K, T). 
+  
+ The random number package can be loaded by the following statement: 
+  
+ |?- use_module(library(random)). 
+  
+ After the program has been loaded, a goal such as 
+  
+ |?- birth(23, L). 
+  
+ will return a list L of 23 random integers in the range 1 to 365.",NA
+Experiments to Perform ,"1.
+  It is hard for our eyes to find duplicates in a list of random numbers. But it is not 
+ hard to write a program that for any given list of numbers returns a list of any 
+ duplicates that occur. Let dup(L, D) mean that D is a list of duplicates that occur 
+ in the list L. For example, the goal 
+  
+  |?- dup([2, 6, 2, 7, 2, 6, 9], D). 
+  
+  should return D = [2, 6]. Now we can let trial(N, D) mean that D is a list of 
+ duplicates that occur in a list of N random numbers in the interval 1 to 365. The 
+ definition for trial is easy.",NA
+6.5   Predicates as Variables ,"In first-order predicate calculus, the only arguments allowed in a predicate are 
+ terms. If a predicate is allowed as an argument to another predicate, then the logic is 
+ of second or higher order. Prolog has a mechanism for passing predicates as 
+ arguments. The two Prolog operations that are needed to accomplish the task are 
+  
+ =..     and     
+ call
+ . 
+  
+ These operations are used in a Prolog program whenever we want to process an 
+ arbitrary predicate that is passed as an argument to the program. For example, to 
+ process R(A, B), where R varies over different predicate names that have two 
+ arguments, we must write the following sequence of two statements. 
+  
+ P =.. [R, A, B], call(P) 
+  
+ For another example, to process R(A, B, C), where R varies over different predicate 
+ names that have three arguments, we must write the following sequence of two 
+ statements. 
+  
+ P =.. [R, A, B, C], call(P) 
+  
+ The following tests serve to introduce these two operations.",NA
+Experiments to Perform ,"1.
+  Ask the following questions to get used to the =.. operation. The answer to the last 
+ question will be an error message. 
+  
+ |?- A =.. [r, a, b].",NA
+6.6   Mapping Numeric Functions ,"The built-in numeric functions in Prolog are evaluated with the “is” predicate. For 
+ example, try out the following goals. 
+  
+ |?- X is floor(-3.1). 
+  
+ |?- X is ceiling(-3.1). 
+  
+ |?- X is truncate(-3.1). 
+  
+ |?- X is exp(2, 16). 
+  
+ |?- X is log(2, 16). 
+  
+ It is often convenient to examine a list of values for a function. For example, if ƒ is a 
+ function and [
+ a
+ , 
+ b
+ , 
+ c
+ , 
+ d
+ ] is a list of elements in the domain of ƒ, then we might want to 
+ examine the list [ƒ(
+ a
+ ), ƒ(
+ b
+ ), ƒ(
+ c
+ ), ƒ(
+ d
+ )]. We’ll define the predicate “mapf” to do the job 
+ for any Prolog numeric function of a single variable that is evaluated with the “is” 
+ predicate. For example, the goal 
+  
+ |?- mapf(floor, [-1.5, 2.4, 8.9], X). 
+  
+ returns X = [-2.0, 2.0, 8.0]. 
+  
+ Here is the definition of mapf. 
+  
+ mapf(F, [ ], [ ]). 
+  
+ mapf(F, [H|T], [A|B]) :- G =.. [F, H], 
+  
+ A is G, 
+  
+ mapf(F, T, B).",NA
+Experiments to Perform ,"1.
+  Use gen and mapf to compare the following arithmetic functions over the rational 
+ numbers. 
+  
+ floor, ceiling, truncate, round. 
+  
+ How are they different? How are they alike? Find sets of rationals where they 
+ are equal/not equal. 
+  
+  2.
+  Construct and test a program to define the predicate genSeq, where genSeq(S, I, N, 
+ L) means that L is a list of N numbers beginning with S such that succeeding 
+ numbers differ by interval I. Test the predicate by using it with mapf to explore 
+ values of the following functions. 
+  
+ a.
+  round(X). 
+  
+ b.
+  sin(X). 
+  
+ c.
+  
+ cos(X).",NA
+6.7   Mapping Predicates ,"If a predicate contains one or more input variables and an output variable, then we 
+ can map the predicate onto a list of input values to return a list of output values. 
+ We’ll define a “map” predicate to do the job. For example, suppose the program 
+ contains the following facts.",NA
+Experiments to Perform ,"1. 
+ If a function is a composition of several numeric functions, then it cannot be 
+ mapped with “mapf” because it does not have a name. So we must define it as a 
+ predicate and then use “map”. For example, we know that among binary trees with n 
+ nodes, that the minimum depth of any tree is floor(log
+ 2
+  n). Suppose that we want find 
+ out the value of the composition on the list [1, 2, 3, 4, 5, 5, 7, 8]. To do this we need to 
+ define a predicate that we can pass to the map function. For example, suppose we 
+ define 
+  
+ minDepth(N, X) :- X is floor(log(2, N)). 
+  
+  now we can map minDepth as follows 
+  
+ |?- map(minDepth, [1, 2, 3, 4, 5, 5, 7, 8], X). 
+  
+  Of course, we can use gen to generate lists of numbers. For example, if we want 
+ to map minDepth onto the list [1, 2, ..., 16], then the following goal will do the 
+ job. 
+  
+ |?- gen(1, 16, X), mapf(minDepth, X, Y). 
+  
+  Use map to test the following compositions and compare them over several 
+ ranges of values with minDepth. 
+  
+ a.
+  ceiling(log(2, X)). 
+  
+ b.
+  integer(log(2, X)). 
+  
+ c.
+  truncate(log(2, X)). 
+  
+  2.
+  The following two predicates provide alternative definitions for the mod function. 
+ The first uses the mod function provided by Prolog. 
+  
+  mod1(X, Y, Z) :- Z is X mod Y. 
+  
+  mod2(X, Y, Z) :- Z is integer(X - Y*floor(X/Y)). 
+  
+  Do they agree? If not, describe the differences between the two functions. 
+  
+ Use map to test the two definitions over sets of integers. Hint: pick a modulus, say 
+ 5, and define 
+  
+  mod1_5(X, Y) :- mod1(X, 5, Y). 
+  
+  mod2_5(X, Y) :- mod2(X, 5, Y). 
+  
+  Then do some tests of mod1_5 and mod2_5 using gen and map. Be sure to 
+ include some negative integers in your tests. Also use different moduli.",NA
+6.8   Comparing Numeric Functions ,"Suppose that we want to compare two arithmetic functions over a set of values. We’ll 
+ write a predicate “comparef” to do the job. For example, to compare whether floor 
+ and truncate agree on the 5-element set 
+  
+  
+  
+ {–2.5, –1.5, –0.5, 0.5, 1.5} 
+  
+ we type the goal 
+  
+ |?- gen(–2.5, 5, X), comparef(floor, truncate, X, Answer). 
+  
+ The following results are returned. 
+  
+ X = [-2.5,-1.5,-0.5,0.5,1.5], 
+  
+ Answer = [false, false, false, true, true] 
+  
+ which indicate that floor and truncate do not agree on the set. Here is a definition of 
+ the comparef predicate. 
+  
+ comparef(F, G, [ ], [ ]). 
+  
+ comparef(F, G, [H|T], [true|S]) :- A =.. [F, H], X is A, B =.. [G, 
+ H],Y is B, X =:= Y, 
+  
+ comparef(F, G, T, S). 
+  
+ comparef(F, G, [H|T], [false|S]) :- comparef(F, G, T, S). 
+  
+ gen(_, 0, [ ]). 
+  
+ gen(S, N, [S|T]) :- K is S + 1, M is N - 1, gen(K, M, T).",NA
+Experiments to Perform ,"1. 
+ Use comparef to test pairs of the following functions. 
+  
+ floor, ceiling, truncate, round. 
+  
+  How are they different? How are they alike? Find sets of rationals where they are 
+ equal/not equal. 
+  
+  2. 
+ To compare functions that are compositions of Prolog numeric functions, we need 
+ to represent them as predicates. For example, consider the following two 
+ compositions.",NA
+6.9   Comparing Predicates ,"Problems can usually be solved in many different ways. So it is useful to be able to 
+ easily compare solutions. It would be nice if we had a tool to compare two predicates 
+ to see whether they agree over various domains. We’ll construct a predicate 
+ “compare” to do the job. For example, suppose we have the two predicates “pop” and 
+ “quiz” defined as follows. 
+  
+  pop(N, X) :- X is floor(log(2, N)). 
+  
+  quiz(N, X) :- X is ceiling(log(2, N)). 
+  
+ To test the two predicates over the 6-element set {4, 5, 6, 7, 8, 9} we’ll type the goal 
+  
+ |?- gen(4, 6, X), compare(pop, quiz, X, Result). 
+  
+ The goal should return 
+  
+  
+ Result = [true, false, false, false, true, false]. 
+  
+ This indicates that the two predicates agree on the set {4, 8} and they disagree on the 
+ set {5, 6, 7, 9}. Here is a definition for compare.",NA
+Experiments to Perform ,"1.
+  Suppose that we have two different definitions to test whether a number is even, 
+ given as “even1” and “even2” as follows. 
+  
+ even1(N, true) :- N mod 2 =:= 0. 
+  
+ even1(_, false). 
+  
+ even2(N, true) :- N =:= 2*floor(N/2). 
+  
+ even2(_, false).
+  
+  Compare the two definitions over several sets of integers to see whether they 
+ agree. 
+  
+  2.
+  The compare predicate returns a list of Boolean values that is not very interesting 
+ and can get cumbersome if we are testing two functions over a large set of 
+ integers. We can modify the program to return a subset of {true, false} by 
+ replacing the compare predicate with the following compare2 predicate, which 
+ uses the remove_duplicates predicate in the lists library. 
+  
+ compare2(F, G, X, Result) :- 
+  
+ map(F, X, A), 
+  
+  
+ map(G, X, B), 
+  
+  
+ compare_lists(A, B, C), 
+  
+  
+ remove_duplicates(C, Result). 
+  
+ a.
+  Use compare2 to test whether pop and quiz are equal over several 
+  
+ different large ranges of integers. 
+  
+ b.
+  Use compare2 to test whether even1 and even2 from Experiment 1 
+  
+ are 
+ equal over several different large ranges of integers. 
+  
+  3.
+  Write two different definitions for a predicate to test whether a number is odd. 
+ Test your definitions to make sure that they agree on the numbers in the set {-
+ 1000, ... 1000}.",NA
+7,NA,NA
+Languages and Expressions ,"This chapter contains experiments that use Prolog to explore some of the basic ideas 
+ of language parsing. We’ll also explore associated semantic actions to evaluate 
+ arithmetic expressions.",NA
+7.1   Grammar and Parsing ,"How can we implement a parser for the language of a grammar? If the grammar is 
+ context-free and all left recursion has been removed, then it is quite easy to build a 
+ parser in Prolog. 
+  
+ Recall that each step in a leftmost derivation of a string consists of replacing the 
+ leftmost nonterminal of a sentential form with the right side of a production. So each 
+ nonterminal often derives only a proper substring of the given string. For this 
+ reason, each nonterminal will be associated with a predicate having two arguments, 
+ one for the given string and one to hold the rightmost portion of the string not 
+ derived by the nonterminal. 
+  
+ Let’s do an example to help get the idea. Suppose we start with the following 
+ grammar. 
+  
+ S
+ 
+ aST 
+ | 
+ 
+  
+ T
+ 
+ aSb 
+ | c 
+  
+ Let 
+ s
+  and 
+ t
+  denote the predicates to be associated with nonterminals 
+ S
+  and 
+ T
+ , 
+ respectively. We’ll represent strings as lists for ease of notation. Now we can give the 
+ Prolog definitions of s and t as follows. 
+  
+ 86",NA
+Experiments to Perform ,"1.
+  Test the example parser on five strings that are accepted and five strings that are 
+ not accepted. Then observe how computation takes place by tracing the goal 
+  
+  
+  
+ |?- s([a, a, b], [ ]). 
+  
+  2.
+  Write and test a parser for each of the following grammars and observe in each 
+ case how computation takes place by tracing a goal. 
+  
+ a. 
+ S
+ 
+ aSb 
+ | 
+ 
+ . 
+  
+ b. 
+ S
+ 
+ AB
+  | 
+ abA
+  | 
+ bBab 
+  
+ A 
+ 
+ aA
+  | 
+ 
+  
+ B 
+ 
+ bB
+  | 
+ c.",NA
+7.2   A Parsing Macro ,"Prolog has a nice macro facility for constructing a parser for the language of a 
+ grammar. For example, suppose we have the following grammar that we used in 
+ Section 7.1. 
+  
+ S
+ 
+ aST 
+ | 
+ 
+  
+ T
+ 
+ aSb 
+ | c 
+  
+ To create a parser for the language of this grammar we simply write the following 
+ ""macro"" clauses.",NA
+Experiments to Perform ,"1.
+  Try out the parser for the example grammar on five strings that are in the 
+ language of the grammar and five strings that are not in the language of the 
+ grammar. 
+  
+  2.
+  Find out how Prolog expands the parsing macros for the sample grammar by 
+ typing the following query. 
+  
+ |?- listing. 
+  
+ a.
+  Notice that the clauses in the listing use the predicate ‘C’, which is a 
+  
+ system predicate defined by the single fact 
+  
+ ‘C’([H|T], H, T). 
+  
+ For example, the goal ‘C’(B, c, D) will succeed if 
+ B
+  is a list with head 
+ c 
+ and tail 
+ D
+ . In other words, C’(B, c, D) is the same as the Prolog statement B = [c|D]. In 
+ section 7.1 we constructed our own parsers using clauses that included 
+ statements such as B = [c|D] to recognize a letter. Compare the clauses in 
+ the listing with the clauses for the example parser given in Section 7.1. 
+  
+ b.
+  Observe how computation takes place by tracing the goal 
+  
+ |?- s(“
+ aab
+  ”, [ ]). 
+  
+ Compare this trace with the trace that you did in Experiment 1 of Section 7. 
+ 1. 
+  
+  3.
+  Write a grammar and a parser for each of the following languages. Test your 
+ results on several strings. 
+  
+ a.
+  {
+ a
+ n
+ b
+ n
+ | 
+ n
+  
+ ℕ}. 
+  
+ b.
+  {
+ a
+ m
+ b
+ n
+ c
+ m
+  + 
+ n
+ | 
+ m, n
+  
+ ℕ}.",NA
+7.3   Programming Language Parsing ,"In this experiment we’ll consider the problem of parsing a simple imperative 
+ programming language given by the following grammar:
+  
+ P
+ 
+ S
+  | 
+ ST
+  
+ T
+ 
+  ;
+ ST
+  | 
+ 
+  
+ S
+ 
+  while 
+ V
+  <> 0 do 
+ P
+  od | 
+ V 
+ := 0 | 
+ V
+  := succ(
+ V
+ ) | 
+ V 
+ := pred(
+ V
+ ) 
+  
+ V
+ 
+  identifier",NA
+Experiments to Perform ,"1.
+  Test the parser with ten example program statements. Make sure you test all 
+ parts of the grammar. E.g., “A:=0;B:=succ(A)”, and so on. 
+  
+  2.
+  Modify the Prolog implementation of the grammar so that an arbitrary number of 
+ spaces are allowed in the usual places in a program. Do ten tests to show that 
+ the experiment is a success.",NA
+7.4   Arithmetic Expression Evaluation ,"In this experiment we’ll consider the problem of parsing and evaluating arithmetic 
+ expressions. For example, consider the following grammar. 
+  
+ E
+ 
+ N
+ –
+ E
+  | 
+ N 
+  
+ N
+ 
+ D
+  | 
+ DN 
+  
+ D
+ 
+  decimal digit.",NA
+Experiments to Perform ,"1.
+  Do five tests to evaluate correct expressions. Do five tests of incorrect 
+ expressions. 
+  
+ 2.
+  Try to discover how evaluation takes place during parsing. First, list the contents 
+ of the program to see the code that is generated by the",NA
+8 ,NA,NA
+Computability ,"The experiments in this chapter use Prolog to explore some of the basic 
+ computational models. We’ll be looking at various kinds of finite automata, 
+ pushdown automata, and Turing machines. We’ll also see the string processing 
+ models of Markov and Post.",NA
+8.1   Deterministic Finite Automata ,"Let’s see how to build an interpreter for executing deterministic finite automata. The 
+ input for the interpreter will be a DFA in the form of a transition table. If 
+ t
+  is the 
+ transition function for a DFA, then we’ll represent the state transitions in the Prolog 
+ program as a collection of facts having the following form: 
+  
+  
+ t(state, letter, nextstate). 
+  
+ To indicate that state 
+ i
+  is the start state we’ll write the fact 
+ start(
+ i
+ ). 
+  
+ To indicate that state 
+ s
+  is a final state, we’ll write the fact 
+ final(
+ s
+ ). 
+  
+ For example, the following DFA recognizes the language of the regular expression 
+ ab
+ *. 
+  
+ 94",NA
+Experiments to Perform ,"1.
+  Calculate the transition function 
+ t
+  for the following DFA and enter it as a collection 
+ of Prolog facts into an input file.",NA
+8.2   Nondeterministic Finite Automata ,"Let’s see how to build an interpreter for executing nondeterministic finite automata. 
+ The input for the interpreter will be an NFA in the form of a transition table. If 
+ t
+  is the 
+ transition function for an NFA, then we’ll represent the state transitions in the Prolog 
+ program as a collection of facts having the following form: 
+  
+ t
+ (state, symbol, nextstate). 
+  
+ We’ll use the empty list [ ] to denote the symbol 
+ 
+ . To indicate that state 
+ i
+  is",NA
+Experiments to Perform ,"1.
+  Calculate the transition function 
+ t
+  for the following NFA and enter it as a collection 
+ of Prolog facts into an input file: 
+  
+ b
+  
+ Start
+  
+ 0
+  
+ 
+ ,  b
+  
+ a
+  
+ 1
+  
+ b
+  
+ 3
+  
+ 2
+  
+ a
+  
+ a
+  
+ a.
+  Use the NFA interpreter to test five strings that are accepted by the 
+  
+ NFA and five strings that are rejected by the NFA. 
+  
+ b.
+  To gain a better understanding of how the NFA interpreter works, trace the 
+ execution on a string that is accepted and on a string that is rejected by the 
+ NFA. 
+  
+  2.
+  See whether you can generate some strings that are accepted by the NFA by using 
+ backtracking of goals that contain variables in place of letters. For example, try 
+ out goals like the following with backtracking. 
+  
+ |?- accept([A, B, C]). 
+  
+ |?- accept([a|T]). 
+  
+ |?- accept([b|T]). 
+  
+ |?- accept([H|T]). 
+  
+ Note:
+  If an infinite loop occurs, do a trace to see what is happening. 
+  
+  3.
+  Find an NFA for the regular expression 
+  
+ ab
+ *
+ c
+  + 
+ b
+ *
+ c
+  + 
+ ac
+ *
+ b
+ . 
+  
+  Draw a picture of the NFA. Use the NFA interpreter to test the NFA on five strings 
+ that are accepted and five strings that are rejected. Try backtracking with goals 
+ that contain variables in place of letters. 
+  
+  4.
+  Since any DFA is an NFA by default, we should be able to execute any DFA on the 
+ NFA interpreter. Try it out with a DFA of your own choosing.",NA
+8.3   Mealy Machines ,"Recall that a Mealy machine is a finite automaton with output where each edge has a 
+ label of the form 
+ a/x
+ , where 
+ a
+  is a letter of the input alphabet and 
+ x
+  is an output 
+ letter. For example, a typical edge from state i to state j with input a and output x 
+ looks like the following. 
+  
+ i
+  
+ a/x
+  
+ j
+  
+ If the machine is in state 
+ i
+  with input letter 
+ a
+ , then the letter 
+ x
+  is output and the 
+ machine moves to state 
+ j
+ . There is a start state but no final state since we are not 
+ concerned with acceptance or rejection of an input string. A Mealy machine has one 
+ edge out of each state for each letter of the alphabet. For",NA
+Experiments to Perform ,"1.
+  Use the Mealy machine interpreter and the example Mealy machine to perform 
+ each of the following tests. 
+  
+ a.
+  Test the Mealy machine interpreter and the Mealy machine on five 
+  
+ input strings. 
+  
+ b.
+  To gain a better understanding of how the Mealy machine interpreter 
+  
+ works, trace the execution on at least two strings. 
+  
+  2.
+  See whether you can generate some input and/or output strings for the example 
+ Mealy machine by using backtracking of goals that contain variables as 
+ arguments. For example, try out goals like the following with backtracking to 
+ see if any patterns occur. 
+  
+ |?- mealy(X, Y). 
+  
+ |?- mealy(X, [a]). 
+  
+ |?- mealy(X, [b]). 
+  
+ |?- mealy(X, [c]). 
+  
+  3.
+  Construct a Mealy machine to decode a string of binary digits of even length, 
+ where the code is defined as follows: 00 = 
+ a
+ , 01 = 
+ b
+ , 10 = 
+ c
+ , 11 = 
+ d
+ . For example, 
+ the string 010011 decodes to the string 
+ bad
+ . Representing strings as lists, the 
+ goal 
+  
+ |?- mealy([0, 1, 0, 0, 1, 1], X). 
+  
+  will return X = [b, a, d]. Use the Mealy interpreter to test the machine on five 
+ input strings. Do a trace on one of the tests. 
+  
+ Note:
+  If you wish, you may create a more sophisticated code together with a 
+ Mealy machine to decode strings. 
+  
+  4.
+  Construct a Mealy machine to model a candy machine that dispenses two kinds of 
+ 15 cent candy bars and accepts only nickels and dimes. Let 
+ n 
+ and 
+ d
+  represent 
+ nickel and dime, respectively. Let 
+ a
+  and
+  b 
+ represent",NA
+8.4   Moore Machines ,"Recall that a Moore machine is a finite automaton with output that occurs at each 
+ state. For example, if the output associated with state 
+ i
+  is 
+ x
+ , we’ll write 
+ i
+ /
+ x
+  inside the 
+ state circle. A typical state transition for a Moore machine can 
+  
+ be pictured as follows: 
+  
+ i/x
+  
+ a
+  
+ j/y
+  
+ Each time a state is entered, an output takes place. So the first output always occurs 
+ as soon as the machine is started. There is a start state but no final state since we are 
+ not concerned with acceptance or rejection of an input string. A Moore machine has 
+ one edge out of each state for each letter of the alphabet. For example, let’s construct 
+ a Moore machine to interchange 
+ a
+ ’s and 
+ b
+ ’s in strings over the alphabet {
+ a, b
+ }. For 
+ example, the input 
+ abab
+  will yield the output 
+ baba
+ . Here is a picture of the machine. 
+  
+ We can represent a state transition as a fact of the form 
+  
+ t
+ (state, output, input, nextstate). 
+  
+ To indicate that state 
+ i
+  is the start state we’ll write the fact 
+  
+ start(
+ i
+ ).",NA
+Experiments to Perform ,"1.
+  Use the Moore machine interpreter and the example Moore machine to perform 
+ each of the following tests. 
+  
+ a.
+  Test the Moore machine interpreter and the Moore machine on five 
+  
+ input strings. 
+  
+ b.
+  To gain a better understanding of how the Moore machine interpreter 
+  
+ works, trace the execution on at least two strings. 
+  
+  2.
+  See whether you can generate some input and/or output strings for the example 
+ Moore machine by using backtracking of goals that contain variables as 
+ arguments. For example, try out goals like the following with backtracking to 
+ see if any patterns occur. 
+  
+ |?- moore(X, Y).",NA
+8.5   Pushdown Automata ,"In this experiment we’ll construct an interpreter for pushdown automata. Suppose 
+ we write a pushdown automaton as a set of Prolog facts of the following two forms. 
+  
+ t
+ (state, letter, top, operation, nextstate). 
+  
+ start(state). 
+  
+ final(state). 
+  
+ In order to write a simple interpreter for PDAs, we’ll need to make a few 
+ assumptions. The input string will be represented as a list. The stack is a list that is 
+ initialized with the value [
+ e
+ ], which means 
+ e
+  is always the starting stack symbol. 
+ We’ll reserve the letters 
+ p
+  and 
+ n
+  for the operations pop and nop, and we’ll agree to let 
+ the push instruction be represented by the symbol that is to be pushed. For example, 
+ in the instruction 
+  
+ t
+ (0, 
+ a
+ , 
+ e
+ , 
+ b
+ , 1) 
+  
+ the letter 
+ b
+  means push 
+ b
+ . 
+  
+ For example, a PDA to recognize the language {
+ a
+ n
+ b
+ n
+ | 
+ n
+  
+ ℕ} can be written as the 
+ following set of facts. 
+  
+ start(0). 
+  
+ t
+ ( 0, 
+ a, e, a
+ , 0 ). 
+  
+ t
+ ( 0, 
+ a, a, a
+ , 0 ). 
+  
+ t
+ ( 0, 
+ b, a, p
+ , 1 ). 
+  
+ t
+ ( 0, [ ], 
+ e, n
+ , 2 ). 
+  
+ t
+ ( 1, 
+ b, a, p,
+  1 ). 
+  
+ t
+ ( 1, [ ], 
+ e
+ , 
+ n
+ , 2 ). 
+  
+ final(2). 
+  
+ To check whether this PDA accepts the string 
+ aabb
+ , we type the following goal:",NA
+Experiments to Perform ,"1.
+  Use the PDA interpreter and the example PDA to perform each of the following 
+ tests. 
+  
+ a.
+  Test five strings that are accepted and five strings that are rejected.. 
+  
+ b.
+  To gain a better understanding of how the PDA interpreter works, trace the 
+ execution on two acceptable strings and a string that is not accepted. 
+  
+  2.
+  Find a PDA for the language of all strings over {
+ a, b
+ } that have the same number of 
+ a
+ ’s and 
+ b
+ ’s. Test your solution with the PDA interpreter. 
+  
+  3.
+  Modify the PDA interpreter so that it executes PDAs that accept by empty stack 
+ rather than by final state. The following PDA accepts the language {
+ a
+ n
+ b
+ n
+ | 
+ n
+  
+ ℕ} 
+ by empty stack. 
+  
+ t
+ ( 0, 
+ a, e, e
+ , 0 ). 
+  
+ t
+ ( 0, [ ], 
+ e, p
+ , 1 ).",NA
+8.6   Turing Machines ,"We’ll describe a logic program interpreter for Turing machines. The interpreter will 
+ execute any Turing machine with a single two-way infinite tape. We’ll make the 
+ following assumptions about any Turing machine that is to be executed by the 
+ interpreter. 
+  
+ The read/write head is at the left end of any nonempty input string. The 
+ letters 
+ l
+ , 
+ s
+ , and r represent the moves of the read/write head. The symbol 
+ # denotes a blank tape cell. 
+  
+ Instructions are represented as facts of the following form. 
+  
+ t
+ (state, letterToRead, letterToWrite, move, nextState). 
+ start(state). 
+  
+ For example, a Turing machine to add 1 to a binary number can be written as the 
+ following set of facts: 
+  
+ start(0). 
+  
+ t
+ ( 0, 0, 0, 
+ r
+ , 0 ). 
+  
+ t
+ ( 0, 1, 1, 
+ r
+ , 0 ). 
+  
+ t
+ ( 0, #, #, 
+ l
+ , 1 ). 
+  
+ t
+ ( 1, 0, 1, 
+ s
+ , halt ). 
+  
+ t
+ ( 1, 1, 0, 
+ l
+ , 1 ).
+  
+ t
+ ( 1, #, 1, 
+ s
+ , halt ). 
+  
+ To find the result of adding 1 to the binary number 1011, we type the goal 
+  
+ |?- compute([1, 0, 1, 1], Out).",NA
+Experiments to Perform ,"1.
+  Use the Turing machine interpreter and the sample Turing machine to perform 
+ each of the following tests. 
+  
+ a.
+  Test five input strings that represent binary numbers as lists like 
+  
+ [0],    [1, 1, 1, 1],    [0, 1, 1, 0, 0, 1, 1],    and so on.",NA
+8.7   Markov Algorithms ,"Markov algorithms, which are string processing functions, form a computational 
+ model that has the same power as Turing machines. We’ll describe a logic program 
+ interpreter for Markov algorithms. 
+  
+ A 
+ Markov algorithm
+  over an alphabet 
+ A
+  is a finite ordered sequence of 
+ productions 
+ x
+ 
+ y
+ , where 
+ x
+ , 
+ y
+  
+ A
+ *. Some productions may be labeled with the word 
+ “halt,” although this is not a requirement. A Markov algorithm trans-forms an input 
+ string into an output string. In other words, a Markov algo-rithm computes a 
+ function from 
+ A
+ * to 
+ A
+ *. Here’s how the execution proceeds: 
+  
+ Given an input string 
+ w
+ , the productions are scanned, starting at the beginning 
+ of the ordered sequence. If there is a production 
+ x
+ 
+ y
+  such that 
+ x
+  occurs as a 
+ substring of 
+ w
+ , then the leftmost occurrence of 
+ x
+  in 
+ w
+  is replaced by 
+ y
+  to obtain a 
+ transformed string. If 
+ x
+ 
+ y
+  is a halt production, then the process halts with the 
+ transformed string as output. Otherwise, the process starts all over again with 
+ the transformed string, where again the scan starts at the beginning of the 
+ ordered sequence of productions. If a scan of the instructions occurs without 
+ any new re-placements of the current string, then the process halts with the 
+ current string as output. 
+  
+ If a production has the form 
+ 
+ y
+ , then it transforms any string 
+ w
+  into the string 
+ yw
+ . For example, suppose we wish to transform any string of the form 
+ a
+ i
+  into the 
+ string 
+ a
+ i
+ +1
+ . The following single production Markov algorithm will do the job: 
+  
+ 
+ a
+   (halt). 
+  
+ This production causes the letter 
+ a
+  to be appended to the left of any input string, 
+ after which the process halts. 
+  
+ Here is a simple example of a Markov algorithm to interchange a’s and b’s in a 
+ string over {a, b}. For example, the string 
+ abba
+  will be transformed into the string 
+ baab
+ . The algorithm consists of the following productions. 
+  
+ #a 
+ 
+  b# 
+  
+ #b 
+ 
+  a# 
+  
+ # 
+ 
+  (halt) 
+  
+ 
+  # 
+  
+ The interpreter is quite simple to construct once we decide on the 
+ representation for the productions. Since strings are represented internally as lists, 
+ we’ll assume that all strings are lists of characters represented in",NA
+Experiments to Perform ,"1.
+  Use the Markov interpreter and the example Markov algorithm to perform each of 
+ the following tests. 
+  
+ a.
+  Test five input strings. 
+  
+ b.
+  To gain a better understanding of how the Markov interpreter works, 
+  
+ trace the execution on at least two strings. 
+  
+  2.
+  Construct and test a Markov algorithm to collapse strings over {a, b} into strings 
+ with no repeated substrings of a’s or b’s. For example, the string 
+ aaabbbabbb
+  
+ will be transformed into the string 
+ abab
+ . 
+  
+  3.
+  Construct and test a Markov algorithm to reverse a string over the alphabet {a, b}. 
+ For example, if the input string is 
+ abbaa
+ , then the output string is 
+ aabba
+ .",NA
+8.8   Post Algorithms ,"Post algorithms, which are string processing functions, form a computational model 
+ that has the same power as Turing machines. We’ll describe a logic program 
+ interpreter for Post algorithms. 
+  
+ A 
+ Post algorithm
+  over an alphabet 
+ A
+  is a finite set of productions that are used 
+ to transform strings. So a Post algorithm computes a function from 
+ A
+ * to 
+ A
+ *. The 
+ productions have the form 
+ s
+ 
+ t
+ , where 
+ s
+  and 
+ t
+  are strings made up of symbols from 
+ A
+  
+ and possibly some variables. A variable 
+ X
+  occurs in 
+ s
+  if and only if it occurs in 
+ t
+ . There 
+ is no particular ordering of the productions in a Post algorithm, unlike the ordering 
+ of productions in Markov algorithms. Some productions may be labeled with the 
+ word “halt,” although this is not required. 
+  
+ The computation of a Post algorithm proceeds by string pattern match-ing. If 
+ the input string matches the left side of some production, then we con-struct a new 
+ string to match the right side of the same production. If the pro-duction is a halt 
+ production, then the computation halts, and the new string is",NA
+Experiments to Perform ,"1.
+  Implement the interpreter for Post algorithms and test it in the following ways. 
+  
+ a.
+  Test the sample Post algorithm to remove the rightmost occurrence of the 
+ letter b from any string over {a, b}. Be sure to test the algorithm on a variety 
+ of strings such as: the empty string; the single letter a; the single letter b; all 
+ a’s; all b’s; b’s followed by a’s; a’s followed by b’s; and intermixed a’s and b’s. 
+  
+ b.
+  To gain a better understanding of how the Post interpreter works, 
+  
+ trace the execution on at least two strings. 
+  
+ c.
+  The Post algorithm consisting of the single production XaY 
+ 
+  XY is a 
+ nondeterministic algorithm to remove all occurrences of the letter a from 
+ any string over any alphabet. Use the interpreter to test this Post algorithm 
+ on at least five input strings. 
+  
+  2.
+  Construct and test a Post algorithm to collapse strings over {a, b} into strings with 
+ no repeated substrings of a’s or b’s. For example, the string 
+ aaabbbabbb
+  will be 
+ transformed into the string 
+ abab
+ . 
+  
+  3.
+  Construct and test a Post algorithm to reverse a string over the alphabet {a, b}. 
+ For example, if the input string is 
+ baabba
+ , then the output string is 
+ abbaab
+ .",NA
+9,NA,NA
+Problems and Projects ,"The experiments in this chapter use Prolog to explore a variety of problems and 
+ projects that have lengthier programming needs.",NA
+9.1   Lambda Closure ,"When constructing a DFA from an NFA, we need to calculate the lambda closure of 
+ various sets of states. In this experiment, the predicate “closure” will do the job. For 
+ example, suppose we are given an NFA with states 0, 1, 2, 3, 4. To calculate the 
+ closure of the set {0, 1} we can type the following goal: 
+  
+ |?- closure([0, 1], [0, 1, 2, 3, 4], C). 
+  
+ In the following program for closure, as in the NFA experiment, an NFA table is 
+ represented as a collection of facts of the form 
+  
+ t
+ (state, symbol, nextstate). 
+  
+ The lamba transitions for the NFA are represented in the form 
+  
+ t(state, [ ], nextstate). 
+  
+ We can write a program for the closure predicate as follows. 
+  
+ %  The closure predicate. 
+  
+ closure(S, [ ], [ ]). 
+  
+ closure(S, [H|T], Ans) 
+  
+  
+  :-inClosure(H, S), closure(S, T, B), append([H], B, Ans). 
+ closure(S, [H|T], Ans) :-closure(S, T, Ans). 
+  
+ 116",NA
+Experiments to Perform ,"1.
+  Suppose we have the following NFA table: 
+  
+ Final
+  
+  
+ a          b
+ 
+  
+ 0 
+  
+ 1   
+ 2 
+  
+  
+       {1, 2}     {1}      {2} 
+   
+  
+  
+         {2}        {1} 
+  
+ Start
+  
+  For this NFA, compute the lambda closures of the following sets by hand, and 
+ then use the closure predicate to verify your answers. 
+  
+ a.
+  {0}. 
+  
+ b.
+  {1}. 
+  
+ c.
+  {2}. 
+  
+ d.
+  {0, 1}. 
+  
+ e.
+  {1, 2}. 
+  
+  2.
+  It can get tedious to type goals that always include the states of an NFA. For 
+ example, if there are 12 states in some NFA {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11} and 
+ we want the closure of the set {0, 1}, then we have to type the goal 
+  
+ |?- closure([0, 1], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], C).",NA
+9.2   Transforming an NFA into a DFA ,"In this experiment, we’ll develop and test an algorithm to transform any NFA to an 
+ equivalent DFA such that both machines recognize the same regular language. We’ll 
+ assume that an NFA is represented in the program in the usual way. For example, 
+ suppose we have the following NFA. 
+  
+ b
+  
+ Start
+  
+ 0
+  
+ a
+  
+ 1
+  
+ b
+  
+ 3
+  
+ 
+  
+ 
+ ,  b
+  
+ 2
+  
+ a
+  
+ a
+  
+ This NFA will be represented by the following set of facts. 
+  
+ start(0). 
+  
+ t(0, a, 1). 
+  
+ t(0, b, 2). 
+  
+ t(0, [ ], 2) 
+  
+ t(1, b, 1). 
+  
+ t(1, b, 3). 
+  
+ t(1, [ ], 2). 
+  
+ t(2, a, 2). 
+  
+ t(2, a, 3). 
+  
+ final (3).",NA
+Experiments to Perform ,"1.
+  Implement the translator and test it with the example NFA. You will have to find a 
+ definiton for the union predicate. Notice that the output is not ready to be 
+ executed by the DFA interpreter. For example, if S is the start state, then we 
+ need to construct a Prolog fact of the following form. 
+  
+ start(S). 
+  
+  Similarly, for each final state S in the list of final states, we need to construct a 
+ Prolog fact of the following form. 
+  
+ final(S). 
+  
+  For each instruction in the table of the form t(S, A, N) we need to construct a 
+ Prolog fact of the following form 
+  
+ t(S, A, N). 
+  
+ a.
+  Write a predicate “outPut” to place the DFA into a file as Prolog facts. Then 
+ test it with the following goal, where filename is the name of the file that 
+ will hold the DFA instructions. 
+  
+ |?- dfa(S, T, F), outPut(S, T, F, filename). 
+  
+ b.
+  Test the translator and the outPut predicate from part (a) on the 
+  
+ following 
+ NFA 
+  
+ . 
+  
+ Start 
+  
+  
+  
+ a b
+  
+ 0
+  
+ 1
+  
+ 2
+  
+  
+ {1,2} {1} 
+ {2} 
+  
+  
+  
+ {2} 
+  
+ {1}
+  
+  
+ Final 
+  
+ c.
+  Test the translator and the outPut predicate from part (a) on a DFA of your 
+ own choosing. Is there any change between the given DFA and the output 
+ DFA? 
+  
+  2.
+  Do the following tests to observe whether the translator constructs equivalent 
+ DFAs. 
+  
+ a.
+  Use the NFA interpreter to test the sample NFA on five strings that 
+  
+ it 
+ accepts and five strings that it rejects. 
+  
+ b.
+  Then use the DFA interpreter to test the DFA obtained from the 
+  
+ sample 
+ NFA on the same ten strings.",NA
+9.3   Minimum-State DFA ,"This experiment implements and tests a Prolog program to transform a DFA into an 
+ equivalent minimum-state DFA. As a concrete example, we’ll consider the following 
+ DFA from Example 4, page 623 of DS,L,&C. 
+  
+ start(0). 
+  
+ t(0,a,1). 
+  
+ t(0,b,2). 
+  
+ t(1,a,4). 
+  
+ t(1,b,1). 
+  
+ t(2,a,4). 
+  
+ t(2,b,3). 
+  
+ t(3,a,4). 
+  
+ t(3,b,3). 
+  
+ t(4,a,4). 
+  
+ t(4,b,5). 
+  
+ t(5,a,5). 
+  
+ t(5,b,5). 
+  
+ final(4). 
+  
+ final(5). 
+  
+ The algorithm must construct a partition of the set of DFA states into equivalence 
+ classes, where each class contains a subset of DFA states that are equivalent. We 
+ start the process by forming the set 
+  
+ E
+ 0
+  
+ of distinct pairs of the form {
+ s
+ , 
+ t
+ }, where 
+ s
+  and 
+ t
+  are either both final or both nonfinal. 
+ E
+ 0
+  contains the possible equivalent pairs. 
+  
+ Next we construct a new collection 
+ E
+ 1
+  from 
+ E
+ 0
+  by throwing away any pair {
+ s
+ , 
+ t
+ } 
+ if there is some letter 
+ a
+  such that {
+ T
+ (
+ s
+ , 
+ a
+ ), 
+ T
+ (
+ t
+ , 
+ a
+ )} is a distinct pair that does not occur 
+ in 
+ E
+ 0
+ . This means that the pair {
+ T
+ (
+ s
+ , 
+ a
+ ), 
+ T
+ (
+ t
+ , 
+ a
+ )} contains two states of different types. 
+ So we must throw {
+ s
+ , 
+ t
+ } away. 
+  
+ The process continues by constructing a new collection 
+ E
+ 2
+  from 
+ E
+ 1
+  by throwing 
+ away {
+ s
+ , 
+ t
+ } if there is some letter 
+ a
+  such that {
+ T
+ (
+ s
+ , 
+ a
+ ), 
+ T
+ (
+ t
+ , 
+ a
+ )} is a dis-tinct pair that 
+ does not occur in 
+ E
+ 1
+ . This means that there is a string of length 2 such that the DFA, if 
+ started from either 
+ s
+  or 
+ t
+ , consumes the string and enters two different types of 
+ states. So we must throw {
+ s
+ , 
+ t
+ } out of 
+ E
+ 1
+ . 
+  
+ We continue the process by constructing a descending sequence 
+  
+ E
+ 0
+ 
+ E
+ 1
+ 
+ E
+ 2
+ 
+ ...
+ 
+ E
+ n
+ 
+ ... .",NA
+Experiments to Perform ,"1.
+  Implement the minimum-state transformer. Be sure to include definitions for the 
+ set operations minus, equal, and subset. Test the transformer on the example 
+ DFA. Then perform the following two tests. 
+  
+ a.
+  Use the DFA interpreter to test the sample DFA on five strings that 
+  
+ it 
+ accepts and five strings that it rejects. 
+  
+ b.
+  Then use the DFA interpreter to test the minimum-state DFA 
+  
+ obtained 
+ from the sample DFA on the same ten strings. 
+  
+  2.
+  Take the minimum-state DFA obtained from the example DFA and use it as input 
+ for the the minimum-state transformer. Is the output the same?",NA
+9.4   Defining Operations ,"Prolog has a predicate that allows one to define atoms as unary and binary 
+ operators. For example, suppose that we want to use the atoms “or” and “and” to 
+ denote two binary operations. We can do this by typing the goals 
+  
+ |?- op(500, xfy, or). 
+  
+ |?- op(400, xfy, and). 
+  
+ We can test the operations with a few goals as follows. 
+  
+ |?- a or b or c = A or B. 
+  
+ |?- a and b and c = A and B. 
+  
+ |?- a or b and c = A and B. 
+  
+ |?- a or b and c = A or B.",NA
+Experiments to Perform ,"1.
+  Try out the tests and then make some conjectures about the precedence and 
+ associativity properties of the two defined operators. 
+  
+  2.
+  Redefine the two operators by using “yfx” rather than “xfy” in both cases. Perform 
+ the same tests. What conjectures can you make about the redefined operators? 
+  
+  3.
+  Now redefine the operators using “xfy” again, but interchange the 400 and 500 in 
+ the first arguments. Perform the same tests. What conjectures can you make 
+ about the redefined operators? 
+  
+  4.
+  Redefine the operators by using “yfx” in both cases. Perform the same tests. What 
+ conjectures can you make about the redefined operators? 
+  
+  5.
+  Now redefine both operators using “xfx” in both cases. Perform the same tests. 
+ What conjectures can you make about the redefined operators? 
+  
+  6.
+  We can define prefix unary operators using “fx” or “fy.” Similarly, we can define 
+ postfix unary operators using “xf” or “yf.” Try out various definitions for unary 
+ operators. To start things off you might try the definition 
+  
+ |?- op(100, fx, ~). 
+  
+  Then test the definition with something like 
+  
+ |?- ~ ~ p = ~ A. 
+  
+  Try out all combinations and make some conjectures about the various different 
+ definitions of your operators. 
+  
+ 7.
+  If we have a binary predicate, then we can make it into an infix operator. For 
+ example, suppose that we have written a definition for the “subset” predicate to 
+ test whether a set is a subset of another set, where sets are represented as lists. 
+ Then a typical goal might look like 
+  
+ |?- subset([a, b], [c, b, d, a]). 
+  
+  It we want to also use subset as an infix operator, we can make the following 
+ definition. 
+  
+ |?- op(400, xfy, subset). 
+  
+  Then we can use either form for the same goal. For example, the following goals 
+ should return the same result.",NA
+9.5   Tautology Tester ,"Recall that a propositional wff is a tautology if it is true for all assignments of truth 
+ values to its letters. The goal of this experiment is to write a logic program to test 
+ whether a wff is a tautology. For this experiment we’ll assume the wffs use lowercase 
+ letters, together with the four operators in the set {¬, 
+ 
+ , 
+ (
+ , 
+ 
+  }. We’ll use the method of 
+ Quine together with the following fact. 
+  
+ If 
+ A
+  is a wff containing a letter 
+ p
+ , then 
+ A
+  is a tautology iff 
+ A
+ (
+ p
+  / true) and 
+ A
+ (
+ p
+  / 
+ false) are both tautologies. 
+  
+ To implement this idea, let “replace” be the predicate defined as follows: 
+  
+ replace(
+ p
+ , true, 
+ A
+ , 
+ B
+ ) means 
+ B
+  = 
+ A
+ (
+ p
+  / true). 
+  
+ Then we can say that A is a tautology iff B and C are tautologies where B and C are 
+ calculated by 
+  
+ replace(
+ p
+ , true, 
+ A
+ , 
+ B
+ )     and     replace(
+ p
+ , false, 
+ A
+ , 
+ C
+ ). 
+  
+ At this point, B and C might contain another letter, say 
+ q
+ . In this case we would call 
+  
+ replace(
+ q
+ , true, 
+ B
+ 
+ C
+ , 
+ D
+ )     and     replace(
+ q
+ , false, 
+ B
+ 
+ C
+ , 
+ E
+ ). 
+  
+ Then we can say that A is a tautology iff D and E are tautologies. We continue in this 
+ manner until there are no propositional letters left. If D and E consist only of 
+ expressions involving true and false, then we find the value of 
+ D 
+ 
+ E 
+ by calling the 
+ predicate 
+  
+ val(
+ D 
+ 
+ E
+ , Answer) 
+  
+ which returns the truth value of 
+ D 
+ 
+ E
+  and puts it in Answer. 
+  
+ This is a very sketchy introduction to the problem. Now we’ll give a partially 
+ completed Prolog program to solve the problem. Note that the",NA
+Experiments to Perform ,"1.
+  What is accomplished by putting the clause replace(P, true, X, X) as the last clause 
+ for replacing P by true in a wff? 
+  
+  2.
+  Could we remove the clause replace(P, true, ~P, false) from the program? Why or 
+ why not? 
+  
+  3.
+  Could we remove the following two clauses from the program? Why or why not? 
+  
+ replace(P, true, P&Q, T):- replace(P, true, Q, T). 
+ replace(P, true, Q&P, T):- replace(P, true, Q, T). 
+  
+  4.
+  Finish the definitions asked for in the comments of the program and put the 
+ completed program in a file named “program.” Then create a file for each of the 
+ following files. Test the program by following the instructions in the “Readme” 
+ file.",NA
+9.6   CNF Generator ,"Recall that a conjunctive normal form (CNF) is a conjunction of fundamental 
+ disjunctions, each of which is a disjunction of literals, where a literal is either a 
+ propositional letter or its negation. For example, the following wff is a CNF. 
+  
+ p
+ 
+  (¬ 
+ q
+ (
+ p
+ ) 
+ 
+  (
+ q
+ ( 
+ r
+ ( 
+ ¬ 
+ p
+ ). 
+  
+ Any propositional wff is equivalent to a CNF. For example, 
+  
+ p
+ 
+  (
+ q
+ (
+ r
+ ) 
+ 
+ s
+ 
+  ¬ 
+ p
+ (
+  ¬ (
+ q
+ (
+ r
+ ) 
+ (
+ s
+  
+  
+ ¬ 
+ p
+ (
+  (¬ 
+ q
+ 
+  ¬ 
+ r
+ ) 
+ (
+ s
+  
+  ((
+ ¬ 
+ p
+ (
+  ¬ 
+ q
+ ) 
+ 
+  (¬ 
+ p
+ ( 
+ ¬ 
+ r
+ )) 
+ (
+ s
+  (
+ ¬ 
+ p
+ (
+  ¬ 
+ q
+ (
+ s
+  ) 
+ 
+  (¬ 
+ p
+ (
+  ¬ 
+ r
+ (
+ s
+ ) 
+  (
+ ¬ 
+ p
+ (
+  ¬ 
+ q
+ (
+ s
+ ) 
+ 
+  (¬ 
+ p
+ (
+  ¬ 
+ r
+ (
+ s
+ ) 
+  
+ How can we write a Prolog program to find a CNF for any wff? First of all, Prolog has 
+ a predicate “atom” that we can use to define a literal, and thus to define a 
+ fundamental disjunction. Let fundis(X) mean that X is a fundamental disjunction and 
+ let literal(X) mean that X is a literal. We can define these predicates as follows. 
+  
+ fundis(A) :- literal(A). 
+  
+ fundis(A#B) :- fundis(A), fundis(B). 
+  
+ literal(A) :- atom(A). 
+  
+ literal(~A) :- atom(A). 
+  
+ Now let cnf(X, Y) mean that X has a CNF Y. We can start the definition of cnf by 
+ noticing that a wff is already in CNF if it is a fundamental disjunction. 
+  
+ cnf(X, X) :- fundis(X).",NA
+Experiments to Perform ,"1.
+  Finish the program by writing a loop to read a file of wffs and convert each wff to 
+ CNF. Test the program on a variety of wffs. 
+  
+  2.
+  For each cnf clause in the program, find a wff that uses the clause to calculate its 
+ CNF. 
+  
+  3.
+  Argue or give a counterexample to show that the cnf clauses will do the job of 
+ finding a CNF for any propositional wff.",NA
+9.7   Resolution Theorem Prover for Propositions ,"The resolution inference rule is nice from a computational point of view because it is 
+ a single rule that can be applied repeatedly to prove propositions. The resolution 
+ inference rule works something like a cancellation process. It takes two clauses and 
+ constructs a new clause from them by deleting all occurrences of a positive literal 
+ p
+  
+ from one clause and all occurrences of ¬ 
+ p
+  from the other clause. For example, 
+ suppose we are given",NA
+Experiments to Perform ,"1.
+  Write a program to test whether a propositional wff is a tautology by checking 
+ whether there is a resolution proof for the negation of the wff. You can use the 
+ predicates given in the discussion as a starting point. Then supply the missing 
+ definitions for the three predicates: distinct, removeAll, and makeSet. 
+  
+  2.
+  Modify your program so that the clauses of a resolution proof are output for each 
+ input wff that is a tautology.",NA
+10,NA,NA
+Logic Programming Theory ,"The experiments in this chapter use Prolog to explore some of the theoretical ideas 
+ that underlie logic programming.",NA
+10.1   The Immediate Consequence Operator ,"For a definite logic program 
+ P
+ , the 
+ Herbrand base
+  of 
+ P
+  is the set of ground atoms that 
+ can be formed by the predicate names, constants, and function names that occur in 
+ P
+ . 
+ The set of atoms in the Herbrand base of 
+ P
+  that are logical consequences of 
+ P
+  can be 
+ calculated using the immediate consequence operator 
+ T
+ P
+ . 
+ T
+ P
+  has the power set of the 
+ Herbrand base of 
+ P
+  for its domain and codomain, and it is defined as follows, where 
+ I
+  
+ is any set of atoms in the Herbrand base of 
+ P
+ . 
+  
+ T
+ P
+ (I) = {
+ A
+  | 
+ A
+ 
+ B
+ 1
+ , ..., 
+ B
+ n
+  is a ground instance of a clause in 
+ P
+  and 
+ B
+ i
+  
+ I
+ }. 
+  
+ If we start with the empty set and keep applying 
+ Tp
+  to the previous result, we obtain 
+ the following sequence of sets that are ordered by inclusion. 
+  
+   
+ T
+ P
+ (
+  
+ ) 
+ 
+ T
+ P
+ (
+ T
+ P
+ (
+  
+ )) 
+   
+ T
+ P
+ k
+ (
+  
+ ) 
+  
+  
+ The symbol 
+ T
+ P
+ 
+ k
+  is used to denote 
+ T
+ P
+ k
+ (
+  
+ ). So the sequence can be written as 
+  
+  
+ T
+ P
+ 
+ 1 
+ 
+ T
+ P
+ 
+ 2 
+ 
+  ... 
+ 
+ T
+ P
+ 
+ k
+ 
+  ... 
+  
+ The union of this sequence is denoted by 
+ T
+ P
+ 
+  and it equals the set of atoms 
+  
+ 140",NA
+Experiments to Perform ,"1.
+  Translate the given program into Prolog. Then make some tests to convince 
+ yourself that the calculation of 
+ T
+ P
+ 
+  is correct. 
+  
+  2.
+  Add the following clause to the given program: 
+  
+ p
+ (
+ b
+ ) 
+ 
+  
+  Let 
+ P
+  denote the new larger program. Calculate 
+ T
+ P
+ 
+  for this new program 
+ P
+ . 
+ Translate the new program into Prolog. Then make some tests to convince 
+ yourself that your calculation of 
+ T
+ P
+ 
+  is correct.",NA
+10.2   Negation as Failure ,"We’ll examine theorems about the soundness and completeness of the negation as 
+ failure rule.",NA
+Soundness ,"A normal logic program is a logic program in which the clauses may contain negative 
+ atoms in their bodies. A normal goal is a goal that may contain negative atoms. If 
+ P
+  is 
+ a normal program, then the completion of 
+ P
+  is denoted by comp(
+ P
+ ). A soundness 
+ theorem regarding the negation as failure rule in logic programming can be stated in 
+ terms of the program’s completion. 
+  
+ Let 
+ P
+  be a normal program and let 
+ G
+  be a normal goal. If 
+ P
+ 
+  {
+ G
+ } has a finitely 
+ failed SLDNF-tree, then 
+ G
+  is a logical consequence of comp(
+ P
+ ). 
+  
+ This result assumes that a negative literal is picked during resolution only if its atom 
+ is grounded. This is called the 
+ safeness
+  condition. If we drop the safeness condition 
+ and allow the computation to proceed without regard to",NA
+Completeness ,"A completeness theorem regarding the negation as failure rule in logic programming 
+ can be stated as follows: 
+  
+ Let 
+ P
+  be a definite program and 
+ G
+  be a definite goal. If comp(
+ P
+ ) logically implies 
+ G
+ , then every fair SLD-tree for 
+ P
+ 
+  {
+ G
+ } is finitely failed. 
+  
+ This result does not extend to normal programs. We’ll examine the reasons in the 
+ experiments.",NA
+Experiments to Perform ,"1.
+  (
+ Without the Safeness Condition
+ ). Let 
+ P
+  be the following program. 
+  
+ p
+ 
+  ¬ 
+ q
+ (
+ x
+ ) 
+  
+ q
+ (
+ a
+ ) 
+ 
+  
+ Consider the goal 
+  
+ 
+ p
+ . 
+  
+ a.
+  Compute comp(
+ P
+ ) and show that ¬ 
+ p
+  is not a logical consequence of 
+  
+ comp(
+ P
+ ). 
+  
+ b.
+  Translate 
+ P
+  and the goal 
+ 
+ p
+  into Prolog and test whether the safeness 
+  
+ condition holds. Use the trace facility to construct the SLDNF-tree. 
+  
+  2.
+  (
+ With the Safeness Condition
+ ). Let 
+ P
+  be the following program, which is similar to 
+ the program in Experiment (1). 
+  
+ p
+ 
+  ¬ 
+ r 
+  
+ r
+ 
+ q
+ (
+ x
+ ) 
+  
+ q
+ (
+ a
+ ) 
+ ",NA
+10.3   SLDNF-Resolution ,"We’ll examine theorems about the soundness and non-completeness of the SLDNF-
+ resolution rule.",NA
+Soundness ,"The term SLDNF means SLD-resolution with the Negation as Failure rule. A 
+ soundness theorem regarding computed answers via SLDNF-resolution in logic 
+ programming can be stated as follows: 
+  
+ Let 
+ P
+  be a normal program and let 
+ G
+  be a normal goal. Then every computed 
+ answer for 
+ P
+ 
+  {
+ G
+ } is a correct answer for comp(
+ P
+ ) 
+ 
+  {
+ G
+ }. 
+  
+ For example, let 
+ P
+  be the program 
+  
+ p
+ (
+ a
+ ) 
+ 
+  
+ q
+ (
+ b
+ ) 
+ ",NA
+Non-Completeness ,"SLDNF-resolution is not complete. For example, consider the following program 
+ P
+ . 
+  
+  
+  
+ p
+ (
+ x
+ ) 
+ 
+  
+  
+  
+ q
+ (
+ a
+ ) 
+ 
+  
+  
+  
+ r
+ (
+ b
+ ) 
+  
+  
+ We will consider the goal 
+ G
+ : 
+  
+  
+  
+ p
+ (
+ x
+ ), ¬ 
+ q
+ (
+ x
+ ).",NA
+Experiments to Perform ,"1.
+  Show that there is an SLDNF-refutation of 
+ P
+ 
+  {
+ G
+ } with computed answer {
+ x
+ /
+ b
+ }. 
+ Then show that {
+ x
+ /
+ b
+ } is a correct answer for comp(
+ P
+ ) 
+ 
+  {
+ G
+ }. 
+  2.
+  Translate the 
+ program into Prolog and find out whether Prolog preserves the soundness of SLDNF-
+ resolution in this case. 
+  
+  3.
+  Show that {
+ x
+ /
+ b
+ } is a correct answer for comp(
+ P
+ ) 
+ 
+  {
+ G
+ }. In other words, show that 
+ p
+ (
+ b
+ )
+ 
+  ¬ 
+ q
+ (
+ b
+ ) is a logical consequence of comp(
+ P
+ ). 
+  
+  4.
+  Translate the program into Prolog and try to verify that {
+ x
+ /
+ b
+ } cannot be an 
+ instance of any computed answer for 
+ P
+ 
+  {
+ G
+ }. 
+  
+  5.
+  For another example of non-completeness of SLDNF-resolution, consider the 
+ following program 
+ P
+ . 
+  
+ r
+ (
+ a
+ ) 
+ 
+ p
+ (
+ a
+ ) 
+  
+ r
+ (
+ a
+ ) 
+ 
+  ¬ 
+ p
+ (
+ a
+ ) 
+  
+ p
+ (
+ x
+ ) 
+  
+ p
+ (ƒ(
+ x
+ )) 
+  
+  We will consider the goal 
+ G
+ : 
+  
+  
+  
+ r
+ (
+ a
+ ). 
+  
+ a.
+  Show that the empty substitution is a correct answer for 
+ comp(
+ P
+ ) 
+ 
+  {
+ G
+ }. 
+  
+ In other words, show that 
+ r
+ (
+ a
+ )is a logical consequence of comp(
+ P
+ ). 
+  
+ b.
+  Translate the program into Prolog and try to verify that the empty 
+  
+ substitution cannot be an instance of any computed answer for 
+  
+  
+  
+ P
+ 
+  {
+ G
+ }.",NA
+Answers to ,NA,NA
+s,NA,NA
+elected,NA,NA
+Experiments,NA,NA
+Chapter 2,"2.5 Family Trees 
+  
+ 1.
+  |?- p(a, e). means “Is 
+ a
+  a parent of 
+ e
+ ?” 
+  
+  
+ |?- p(X, e). means “Who is a parent of 
+ e
+ ?” 
+  
+  
+ |?- p(a, X). means “Who is a child of 
+ a
+ ?” 
+  
+  
+ |?- g(a, T). means “Who is a grandchild of?” 
+  
+  
+ |?- g(M, e). means “Who is a grandparent of 
+ e
+  ?” 
+  
+  
+ |?- g(U, V). means “Is there a grandparent-grandchild pair?” 
+ 2a.
+  
+ ch(X, Y) :- p(Y, X). 
+  
+ 2b.
+  gch(X, Y) :- g(Y, X). 
+  
+ 3a.
+  co(X, Y) :- p(A, X), p(B, Y), sib(A, B). 
+  
+ 3b.
+  sco(X, Y):- p(A, X), p(B, Y), co(A, B).",NA
+Chapter 3,"3.1 The Ancestor Problem 
+  
+ 4.
+   ancestor(X, Y, 1) :- p(X, Y). 
+  
+  ancestor(X, Y, N) :- p(X, W), ancestor(W, Y, M), N is M + 1. 
+  
+ 3.3 Switching Pays 
+  
+ 4. 
+ rands(_, _, 0):- write(' Done with trials.'), nl. 
+  
+ rands(A, B, N) :- 
+  
+ N >= 1, 
+  
+ random(A, B, Out), 
+  
+ write(Out), nl, 
+  
+ K is N - 1, 
+  
+ rands(A, B, K). 
+  
+ 145",NA
+Chapter 4,"4.1 Negation and Inferences in Prolog 
+  
+ 5.
+  The experiment is a proper test for hypothetical syllogism because we have the 
+ following equivalence 
+  
+ [((p 
+ 
+  q) 
+ 
+  (q 
+ 
+  r) 
+ 
+  p) 
+ 
+  r] 
+ 
+  [(p 
+ 
+  q) 
+ 
+  (q 
+ 
+  r) 
+ 
+  (p 
+ 
+  r)]. 
+  
+ 4.2 The Blocks World 
+  
+ 1.
+  The answers we might expect are: yes, no, X = a, no, yes, X = b. 
+  
+ The third and sixth goals might have problems because negation is used without the 
+ varible being instantiated. In these cases the goals and answers are as follows: 
+  
+  
+ |?- onTop(X). 
+  
+ no 
+  
+ |?- \+ onTop(X). 
+  
+  
+ yes 
+  
+ 2b.
+  
+ bottom(A, A):- on(A, [ ]). 
+  
+ bottom(A, Y):- on(A, X), bottom(X, Y). 
+  
+ 2c.
+  
+ move_ordered(A, B) :- 
+  
+ onTop(A), onTop(B), 
+  
+ bottom(A, X), 
+  
+ retract(on(X, [ ])), assertz(on(X, B)).",NA
+Chapter 5 ,"5.1 List and String Notation 
+  
+ 3.
+  q([b]). 
+  
+ q([b, b|X]) :- q(X).",NA
+Chapter 6,"6.1 Binary Trees 
+  
+ 2b.  
+ in(t, [ ]). 
+  
+  in(t(A, B, C), X) :- in(B, S), in(C, T), append(S, [A|T], X).
+  
+ 2c.  
+ post(t, [ ]). 
+  
+  post(t(A, B, C), X) :- post(B, S), post(C, T), 
+  
+  
+ append(S, T, Y), apppend(Y, [A], X). 
+  
+ 4.
+  isIn(N, t(N, _, _)). 
+  
+ isIn(N, t(A, B, C)) :- N < A, isIn(N, B). 
+  
+ isIn(N, t(A, B, C)) :- N > A, isIn(N, C).
+  
+ 6.2 Arranging Objects 
+  
+ 6.
+  One solution replaces the third clause of insert with 
+  
+ insert(A, [H|T], [H|S]) :- A > H, insert(A, T, S). 
+  
+ Another solution places a cut at the end of the second clause of insert: 
+  
+ insert(A, [H|T], [A|[H|T]]) :- A =< H, !. 
+  
+ 6.3 Simple Ciphers 
+  
+ 2b.
+  Here is a simple loop to do the job. It can be executed by the call 
+  
+ |?- loop(1). 
+  
+ loop(27). 
+  
+ loop(K) :-  cipher(abcdefghijklmnopqrstuvwxyz, K, S), 
+ distinct(S, L), 
+  
+ print(S), tab(3), print(L), nl, 
+  
+ M is K + 1, 
+  
+ loop(M). 
+  
+ 3.
+  An affine cipher can be defined as follows, where “additive” and “multiplicative” 
+ are additive and a multiplicative cipher, respectively. 
+  
+ affine(In, AddKey,MultKey, Out) :- 
+  
+ additive(In, AddKey, X), 
+  
+ multiplicative(X, MultKey,Out).",NA
+Chapter 7,"7.4 Arithmetic Expressions 
+  
+ 3.
+  We can define a grammar for strings of spaces as follows: 
+  
+ space --> [ ]|"" "", space. 
+  
+ Now we can insert space where ever we wish to allow zero or more spaces. For 
+ example, to allow spaces on either side of the – symbol, we would change the 
+ production 
+  
+ expr --> nat, ""–"", expr. 
+  
+ to 
+  
+  
+ expr --> nat, space, ""–"", space, expr. 
+  
+ 5.
+  
+ expr(A) --> term(B), r(C), {eval([B|C],A)}. 
+  
+ r(A) --> ""+"",term(B), r(C), {A = [B,+|C]}. 
+  
+ r(A) --> ""–"",term(B), r(C), {A = [B,–|C]}. 
+  
+ r(A) --> [ ], {A = [ ]}. 
+  
+ term(A) --> factor(B), t(C), {eval([B|C],A)}. t(A) 
+ --> ""*"", factor(B), t(C), {A = [B, *|C]}. t(A) --> [ ], 
+ {A = [ ]}. 
+  
+ factor(A) --> “(“, expr(B), “)”, {A is B}. 
+  
+ factor(A) --> nat(B, T), {A is B}. 
+  
+ nat(X, 1) --> dig(X). 
+  
+ nat(X, T) --> dig(A), nat(B, S), {T is 10*S, X is A*T + B}.",NA
+Chapter 8,"8.2 Nondeterministic Finite Automata 
+  
+ 5.
+  To add the capability of executing instructions that include a list of next states 
+ (e.g., t(0, a, [2, 3])), add two more path clauses at the end of the definition to obtain 
+ the following program. 
+  
+ accept(S) :- start(I), path(I, S). 
+  
+ path(K, [ ]) :- final(K). 
+  
+ path(K, [H|T]) :- t(K, H, N), path(N, T). 
+  
+ path(K, X) :- t(K, [ ], N), path(N, X). 
+  
+ path([K|M], X) :- path(K, X). 
+  
+ path([K|M], X) :- path(M, X). 
+  
+ 8.3 Mealy Machines 
+  
+ 2. 
+ The goal mealy(X, Y) yields, upon backtracking, pairs of the form 
+  
+ X = Y = [ ] and X = [a, a, ..., a], Y = [a]. 
+  
+ The goal mealy(X, [a]) yields inputs of the form X = [a, a, ..., a]. The goal mealy(X, [b]) 
+ yields inputs of the form X = [b, b, ..., b]. The goal mealy(X, [c]) returns no. 
+  
+ 4.
+  t(0, a, [ ], 0) 
+  
+ t(1, a, n, 0) 
+  
+ t(2, a, n, rn) 
+  
+ t(0, b, [ ], 0) 
+  
+ t(1, b, n, 0) 
+  
+ t(2, b, n, rn) 
+  
+ t(0, n, [ ], 1) 
+  
+ t(1, n, [ ], 2) 
+  
+ t(2, d, n, 3) 
+  
+ t(0, d, [ ], 4) 
+  
+ t(1, d, [ ], 3) 
+  
+ t(2, n, [ ], 3) 
+  
+ t(rn, [ ], n, 0) 
+  
+ t(3, a, alpha, 0) 
+  
+ t(4, a, d, 0) 
+  
+ t(3, b, beta, 0) 
+  
+ t(4, b, d, 0) 
+  
+ t(3, n, n, 3) 
+  
+ t(4, n, [ ], 3) 
+  
+ t(3, d, d, 3) 
+  
+ t(4, d, n, 3)",NA
+Chapter 9,"9.1 Lambda Closure 
+  
+ 2.
+  newClosure(In, Out) :- states(S), closure(In, X, Out). 
+  
+ 4.
+  newClosure(In, Out) :- states(S), closure(In, X, Out). 
+ states(S):- s([ ], S). 
+  
+ s(X, Y) :- t(A, _, _), \+ member(A, X), s([A|X], Y). s(X, 
+ X). 
+  
+ 9.2 Transforming an NFA into an equivalent DFA 
+  
+ 1a. 
+  outPut(S,T,F, File) :- tell(File), 
+  
+  write('start('), write(S), write(').'), nl,  
+ outDFA(T), 
+  
+  outFinals(F), 
+  
+  told. 
+  
+ outDFA([H|T]):-write(H), write('.'), nl, outDFA(T). 
+ outDFA([ ]). 
+  
+ outFinals([H|T]):- write('final('), write(H), write(').'), nl, outFinals(T). 
+ outFinals([ ]).",NA
+Chapter 10,"10.1 The Immediate Consequence Operator 
+  
+ 2. 
+ T
+ P
+ 
+  = {
+ p
+ (ƒ
+ n
+ (
+ a
+ )) | 
+ n
+  
+ ℕ} 
+  
+ {
+ p
+ (ƒ
+ n
+ (
+ b
+ )) | 
+ n
+  
+ ℕ} 
+ 
+  {
+ q
+ (ƒ
+ n
+ (
+ b
+ )) | 
+ n
+  
+ ℕ}.",NA
+Index,"Abolishing a clause, 30 
+  
+ Eval, 20 
+  
+ Ancestor problem, 31 
+  
+ First-order logic, 46 
+  
+ Arity, 12 
+  
+ Gen, 79 
+  
+ Atomic formula, 13 
+  
+ Goal, 5, 17 
+  
+ Binary trees, 68 
+  
+ Grand, 6 
+  
+ Birthday paradox, 76 
+ Blocks world, 44 
+  
+ Body of a clause, 13 
+  
+ Head of a clause, 13 
+  
+ Herbrand base
+ , 140 
+  
+ Hypothetical syllogism, 42 
+  
+ Clause, 6, 13 
+  
+ If-then-else, 43 
+  
+ operator, 
+  
+ body, 13 
+  
+ Immediate 
+  
+ consequence 
+  
+ head, 13 
+  
+ 140 
+  
+ or, 14 
+  
+ Induction algebra, 38 
+  
+  
+ CNF generator, 134 
+  
+ Completeness of negation as failure, 
+  
+ Inductively defined sets, 38 
+ Inequality operation, 22 
+  
+ 142 
+  
+ Intersect predicate, 62 
+  
+ Concatenate lists, 64 
+  
+ Is predicate, 19, 79 
+  
+ Cut, 51 
+  
+ Lambda closure, 116 
+  
+ Definite clause, 6 
+  
+ Length of a list, 64 
+  
+ Delete an element, 70 
+  
+ List 
+  
+ Deterministic finite automata, 94 
+  
+ concatenate, 64 
+  
+ Difference, 62 
+  
+ length, 64 
+  
+ Dynamic declaration, 27 
+  
+ printing, 67 
+  
+ Equal sets predicate, 61 
+  
+ List notation, 54 
+  
+ Equality 
+  
+ Map, 80 
+  
+ semantic, 16 
+  
+ Mapf, 79 
+  
+ syntactic, 16 
+  
+ unification, 17 
+  
+ Markov algorithm
+ , 110 
+  
+ Mealy machine, 99 
+  
+ 156",NA

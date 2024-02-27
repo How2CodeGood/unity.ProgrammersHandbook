@@ -1,0 +1,1922 @@
+Larger Text,Smaller Text,Symbol
+The Unicode ,NA,NA
+Cookbook ,NA,NA
+for Linguists,NA,NA
+Managing writing systems using,NA,NA
+orthography profiles,NA,NA
+Steven Moran,NA,NA
+Michael Cysouw,NA,NA
+Translation and Multilingual Natural,"language 
+  
+ science",NA
+Language Processing 10,press,NA
+The Unicode ,NA,NA
+Cookbook ,NA,NA
+for Linguists,NA,NA
+Managing writing systems using,NA,NA
+orthography profiles,NA,NA
+Steven Moran,NA,NA
+Michael Cysouw,NA,NA
+Preface,"This text is meant as a practical guide for linguists and programmers who 
+ work with data in multilingual computational environments. We introduce 
+ the basic concepts needed to understand how writing systems and 
+ character encodings function, and how they work together. 
+ The intersection of the Unicode Standard and the International Phonetic 
+ Al-phabet is often met with frustration by users. Nevertheless, the two 
+ standards have provided language researchers with the computational 
+ architecture needed to process, publish and analyze data from many 
+ different languages. We bring to light common, but not always transparent, 
+ pitfalls that researchers face when working with Unicode and IPA. 
+ In our research, we use quantitative methods to compare languages to 
+ uncover and clarify their phylogenetic relationships. However, the majority 
+ of lexical data available from the world’s languages is in author- or 
+ document-specific orthogra-phies. Having identified and overcome the 
+ pitfalls involved in making writing systems and character encodings 
+ syntactically and semantically interoperable (to the extent that they can be), 
+ we have created a suite of open-source Python and R software packages to 
+ work with languages using profiles that adequately describe their 
+ orthographic conventions. Using these tools in combination with 
+ orthography profiles allows users to tokenize and transliterate text from 
+ diverse sources, so that they can be meaningfully compared and analyzed. 
+ We welcome comments and corrections regarding this book, our source 
+ code, and the supplemental case studies that we provide online.
+ 1
+ Please use 
+ the issue tracker, email us directly, or make suggestions on PaperHive.
+ 2
+  
+ Steven Moran  
+ Michael Cysouw 
+ 1
+ https://github.com/unicode-
+ cookbook/ 
+  
+ 2
+ https://paperhive.org/",NA
+Acknowledgments,"We gratefully acknowledge Robert Forkel, Jeff Good, Jeremy Kahn, Dan 
+ McCloy, Sebastian Nordhoff, and Richard Wright, for insights and 
+ inspiration. The re-search leading to these results has received funding 
+ from the European Research Council under the European Union’s Seventh 
+ Framework Programme (FP7/2007-2013)/ERC grant agreement n° 240816 
+ (PI Michael Cysouw).",NA
+Contents,"Preface  
+ i 
+ Acknowledgments  
+ iii 
+ 1  Writing systems 1 
+ 1.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 1 
+ 1.2 Encoding . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  
+ 4 
+ 1.3 Linguistic terminology . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 7 
+ 2  The Unicode approach 
+  
+ 13 
+ 2.1 Background  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 13 
+ 2.2 The Unicode Standard . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 13 
+ 2.3 Character encoding system . . . . . . . . . . . . . . . . . . . . . 
+  
+ 14 
+ 2.4 Grapheme clusters . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 17 
+ 3  Unicode pitfalls 19 
+ 3.1 Wrong it ain’t . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 19 
+ 3.2 Pitfall: Characters are not glyphs . . . . . . . . . . . . . . . . . . 
+  
+ 20 
+ 3.3 Pitfall: Characters are not graphemes . . . . . . . . . . . . . . . 
+  
+ 21 
+ 3.4 Pitfall: Missing glyphs . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 22 
+ 3.5 Pitfall: Faulty rendering . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 23 
+ 3.6 Pitfall: Blocks  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+  
+ 24",NA
+1 Writing systems,NA,NA
+1.1 Introduction,"Writing systems arise and develop in a complex mixture of cultural, 
+ technolog-ical and practical pressures. They tend to be highly conservative, 
+ in that people who have learned to read and write in a specific way – 
+ however impractical or te-dious – are mostly unwilling to change their 
+ habits. Writers tend to resist spelling reforms. In all literate societies there 
+ exists a strong socio-political mainstream that tries to force unification of 
+ writing (for example by strongly enforcing “right”from “wrong” spelling in 
+ schools). However, there are also communities of users who take as many 
+ liberties in their writing as they can get away with. 
+ For example, the writing of tone diacritics in Yoruba is often proclaimed 
+ to be the right way to write, although many users of Yoruba orthography 
+ seem to be perfectly fine with leaving them out. As pointed out by the 
+ proponents of the official rules, there are some homographs when leaving 
+ out the tone diacritics (Olúmúyı̀w 2013: 44). However, writing systems (and 
+ the languages they repre-sent) are normally full of homographs (and 
+ homophones), which is not a problem at all for speakers of the language. 
+ More importantly, writing is not just a purely functional tool, but just as 
+ importantly it is a mechanism to signal social affilia-tion. By showing that 
+ you
+  know the rules
+  of expressing yourself in writing, others will more easily 
+ accept you as a worthy participant in their group – whether it means 
+ following the official rules when writing a job application or conforming to 
+ the informal rules when writing text messages. The case of Yoruba writing 
+ is an exemplary case, as even after more than a century of efforts to 
+ standardize the writing systems, there is still a wide range of variation of 
+ writing in daily use (Olúmúyı̀w 2013). 
+ Formalizing orthographic structure 
+ The resulting cumbersome and often illogical structure of writing systems, 
+ and the enormous variability of existing writing systems for the world’s 
+ languages, is a fact of life that scholars have to accept and they should try to",NA
+1.2 Encoding,"There are many in-depth histories of the origin and development of writing 
+ sys-tems (e.g. Robinson 1995; Powell 2012), a story that we therefore will 
+ not repeat here. However, the history of turning writing into machine-
+ readable code is not so often told, so we decided to offer a short survey of 
+ the major developments of such encoding here.
+ 2
+ This history turns out to be 
+ intimately related to the history of telegraphic communication. 
+ 2
+ Because of the recent history as summarized in this section, we have used mostly rather 
+ ephemeral internet sources. When not referenced by traditional literature in the 
+ bibliography, we have used http://www.unicode.org/history/ and various Wikipedia 
+ pages for the informa-tion presented here. A useful survey of the historical development 
+ of the physical hardware of telegraphy and telecommunication is Huurdeman (2003). 
+ Most books that discuss the de-velopment of encoding of telegraphic communication 
+ focus of cryptography, e.g. Singh (1999),",NA
+1.3 Linguistic terminology,"Linguistically speaking, a writing system is a symbolic system that uses visi-
+ ble or tactile signs to represent language in a systematic way. The term 
+ writing system has two mutually exclusive meanings. First, it may refer to 
+ the way a particular language is written. In this sense the term refers to the 
+ writing system of a particular language, as, for example, in
+  the Serbian 
+ writing system uses two scripts: Latin and Cyrillic
+ . Second, the term writing",NA
+2 The Unicode approach,NA,NA
+2.1 Background,"The conceptualization and terminology of writing systems was rejuvenated 
+ by the development of the Unicode Standard, with major input from Mark 
+ Davis, co-founder and long-term president of the Unicode Consortium. For 
+ many years,“exotic” writing systems and phonetic transcription systems on 
+ personal com-puters were constrained by the American Standard Code for 
+ Information Inter-change (ASCII) character encoding scheme, based on the 
+ Latin script, which only allowed for a strongly limited number of different 
+ symbols to be encoded. This implied that users could either use and adopt 
+ the (extended) Latin alphabet or they could assign new symbols to the small 
+ number of code points in the ASCII encoding scheme to be rendered by a 
+ specifically designed font (Bird & Simons 2003). In this situation, it was 
+ necessary to specify the font together with each document to ensure the 
+ rightful display of its content. To alleviate this problem of assigning 
+ different symbols to the same code points, in the late 80s and early 90s the 
+ Unicode Consortium set itself the ambitious goal of developing a single 
+ universal character encoding to provide a unique number, a code point, for 
+ every character in the world’s writing systems. Nowadays, the Unicode 
+ Standard is the default encoding of the technologies that support the World 
+ Wide Web and for all modern operating systems, software and 
+ programming languages.",NA
+2.2 The Unicode Standard,"The Unicode Standard represents a massive step forward because it aims to 
+ erad-icate the distinction between universal (ASCII) versus language-
+ particular (font) by adding as much language-specific information as 
+ possible into the univer-sal standard. However, there are still 
+ language/resource-specific specifications necessary for the proper usage of 
+ Unicode, as will be discussed below. Within the Unicode structure many of 
+ these specifications can be captured by so-called Unicode Locales, so we are 
+ moving to a new distinction of universal (Unicode Standard) versus 
+ language-particular (Unicode Locale). The major gain is much",NA
+2.3 Character encoding system,"The Unicode Standard is a character encoding system whose goal is to 
+ support the interchange and processing of written characters and text in a 
+ computational 
+ 1
+ All documents of the Unicode Standard are available at: 
+ http://www.unicode.org/versions/ latest/. For a quick survey of the use of terminology 
+ inside the Unicode Standard, their glossary is particularly useful, available at: 
+ http://www.unicode.org/glossary/. For a general introduc-tion to the principles of 
+ Unicode, Chapter 2 of the core specification, called general struc-ture, is particularly 
+ insightful. Unlike many other documents in the Unicode Standard, this general 
+ introduction is relatively easy to read and illustrated with many interesting examples 
+ from various orthographic traditions from all over the world.
+  
+ 2
+ More information about the ICU is available here: http://icu-project.org.",NA
+2.4 Grapheme clusters,"There are many cases in which a sequence of characters (i.e. a sequence of 
+ more than one code point) represents what a user perceives as an 
+ individual unit in a particular orthographic writing system. For this reason 
+ the Unicode Standard dif-ferentiates between abstract character and user-
+ perceived character. Se-quences of multiple code points that correspond to 
+ a single user-perceived char-acters are called grapheme clusters in Unicode 
+ parlance. Grapheme clusters come in two flavors: (default) grapheme 
+ clusters and tailored grapheme clusters. 
+ The (default) grapheme clusters are locale-independent graphemes, i.e. 
+ they always apply when a particular combination of characters occurs 
+ independent of the writing system in which they are used. These character 
+ combinations are de-fined in the Unicode Standard as functioning as one 
+ text element.
+ 7
+ The simplest example of a grapheme cluster is a base 
+ character followed by a letter modifier character. For example, the sequence 
+ <n> + <
+ ◌
+ ̃> (i.e. latin small letter n at 
+ U+006E
+ , followed by combining tilde at
+  
+ U+0303
+ ) combines visually into <ñ>, a user-perceived character in writing 
+ systems like that of Spanish. In effect, what the user perceives as a single 
+ character actually involves a multi-code-point se-quence. Note that this 
+ specific sequence can also be represented with a single so-called 
+ precomposed code point, the latin small letter n with tilde at 
+ U+00F1
+ , but 
+ this is not the case for all multi-code-point character sequences. A solution 
+ to the problem of multiple encodings for the same text element was de-
+ veloped early on in the Unicode Standard. It is called canonical eqivalence, 
+ e.g. for <ñ>, the sequence
+  U+006E U+0303
+  should in all situations be treated 
+ iden-tically to the precomposed
+  U+00F1
+ . By doing so, Unicode can also 
+ support spe-cial or precomposed characters in legacy character sets. To 
+ determine canonical equivalence, the Unicode Standard offers different 
+ kinds of normalization to ei-ther decompose precomposed characters 
+ (called NFD for normalization form canonical decomposition) or to combine 
+ sequences of code points into pre-composed characters (called NFC for 
+ normalization form canonical compo- 
+ 7
+ The Glossary of Unicode Terms defines text element as: “A minimum unit of text in 
+ relation to a particular text process, in the context of a given writing system. In general, 
+ the mapping between text elements and code points is many-to-many.”",NA
+3 Unicode pitfalls,NA,NA
+3.1 Wrong it ain’t,"In this chapter we describe some of the most common pitfalls that we have 
+ en-countered when using the Unicode Standard in our own work, or in 
+ discussion with other linguists. This section is not meant as a criticism of 
+ the decisions made by the Unicode Consortium; rather we aim to highlight 
+ where the technical as-pects of the Unicode Standard diverge from many 
+ users’ intuitions. What have sometimes been referred to as problems or 
+ inconsistencies in the Unicode Stan-dard are mostly due to legacy 
+ compatibility issues, which can lead to unexpected behavior by linguists 
+ using the standard. However, there are also some cases in which the 
+ Unicode Standard has made decisions that theoretically could have been 
+ made differently, but for some reason or another (mostly very good 
+ reasons) were accepted as they are now. We call such behavior that 
+ executes without er-ror but does something different than the user 
+ expected – often unknowingly –a pitfall. 
+ In this context, it is important to realize that the Unicode Standard was 
+ not developed to solve linguistic problems per se, but to offer a consistent 
+ compu-tational environment for written language. In those cases in which 
+ the Unicode Standard behaves differently than expected, we think it is 
+ important not to dis-miss Unicode as wrong or deficient, because our 
+ experience is that in almost all cases the behavior of the Unicode Standard 
+ has been particularly well thought through. The Unicode Consortium has a 
+ wide-ranging view of matters and often examines important practical use 
+ cases that are not normally considered from a linguistic point of view. Our 
+ general guideline for dealing with the Unicode Stan-dard is to accept it as it 
+ is, and not to tilt at windmills. Alternatively, of course, it is possible to 
+ actively engage in the development of the standard itself, an effort that is 
+ highly appreciated by the Unicode Consortium.",NA
+3.2 Pitfall: Characters are not glyphs,"A central principle of Unicode is the distinction between character and 
+ glyph. A character is the abstract notion of a symbol in a writing system, 
+ while a glyph is the visual representation of such a symbol. In practice, 
+ there is a complex interac-tion between characters and glyphs. A single 
+ Unicode character may of course be rendered as a single glyph. However, a 
+ character may also be a piece of a glyph, or vice-versa. Actually, all possible 
+ relations between glyphs and characters are attested. 
+ First, a single character may have different contextually determined 
+ glyphs. For example, characters in writing systems like Hebrew and Arabic 
+ have differ-ent glyphs depending on where they appear in a word. Some 
+ letters in Hebrew change their form at the end of the word, and in Arabic, 
+ primary letters have four contextually-sensitive variants (isolated, word 
+ initial, medial and final). 
+   Second, a single character may be rendered as a sequence of multiple 
+ glyphs. For example, in Tamil one Unicode character may result in a 
+ combination of a consonant and vowel, which are rendered as two adjacent 
+ glyphs by fonts that support Tamil, e.g. tamil letter au at
+  U+0B94
+  represents 
+ a single character <
+ ஔ
+ >, composed of two glyphs <
+ ஓ
+ > and <
+ ன
+ >. Perhaps 
+ confusingly, in the Unicode Standard there are also two individual 
+ characters, i.e. tamil letter oo at
+  U+0B93
+  and
+  U+0BA9
+  tamil letter nnna, each 
+ of which is a glyph. Another example is Sinhala sinhala vowel sign kombu 
+ deka at
+  U+0DDB
+  <",NA
+ෛ ,NA,NA
+◌,">, which is visually two glyphs, each represented 
+ by sinhala vowel sign kombuva at 
+ U+0DD9
+  <",NA
+ෙ ,NA,NA
+◌,">. 
+ Third, a single glyph may be a combination of multiple characters. For 
+ example, the ligature <fi>, a single glyph, is the result of two characters, <f> 
+ and <i>, that have undergone glyph substitution by font rendering (see also 
+ Section 3.5). Like contextually-determined glyphs, ligatures are (intended) 
+ artifacts of text process-ing instructions. Finally, a single glyph may be a 
+ part of a character, as exempli-fied by diacritics like the diaeresis <
+ ◌
+ ̈> in 
+ <ë>. 
+ Further, the rendering of a glyph is dependent on the font being used. For 
+ ex-ample, the Unicode character latin small letter g appears as <g> and <
+ g
+ > 
+ in the Linux Libertine and Courier fonts, respectively, because their 
+ typefaces are designed differently. Furthermore, the font face may change 
+ the visual appear-ance of a character, for example Times New Roman two-
+ story <
+ a
+ > changes to a single-story glyph in italics <
+ a
+ >. This becomes a real 
+ problem for some phonetic typesetting (see Section 5.3).",NA
+3.3 Pitfall: Characters are not graphemes,"The Unicode Standard encodes characters. This becomes most clear with 
+ the notion of grapheme. From a linguistic point of view, graphemes are the 
+ basic building blocks of a writing system (see Section 1.3). It is extremely 
+ common for writing systems to use combinations of multiple symbols (or 
+ letters) as a single grapheme, such as <sch>, <th> or <ei>. There is no way 
+ to encode such complex graphemes using the Unicode Standard. 
+ The Unicode Standard deals with complex graphemes only inasmuch as 
+ they consist of base characters with diacritics (see Section 5.9 for a 
+ discussion of the notion of diacritic). The Unicode Standard calls such 
+ combinations
+  grapheme clus-ters
+ . Complex graphemes consisting of 
+ multiple base characters, like <sch>, are called
+  tailored grapheme clusters
+  
+ (see Chapter 2). 
+ There are special Unicode characters that glue together characters into 
+ larger tailored grapheme clusters, specifically the zero width joiner at
+  
+ U+200D
+  and the combining grapheme joiner at
+  U+034F
+ . However, these 
+ characters are con-fusingly named (cf. Section 3.7). Both code points 
+ actually do not join characters, but explicitly separate them. The zero-width 
+ joiner (ZWJ) can be used to solve special problems related to ordering 
+ (called
+  collation
+  in Unicode parlance). The combining grapheme joiner (CGJ) 
+ can be used to separate characters that are not supposed to form ligatures. 
+ To solve the issue of tailored grapheme clusters, Unicode offers some 
+ assis-tance in the form of Unicode Locales.
+ 1
+ However, in the practice of 
+ linguistic re-search, this is not a real solution. To address this issue, we 
+ propose to use orthog-raphy profiles (see Chapter 7). Basically, both 
+ orthography profiles and Unicode Locales offer a way to specify tailored 
+ grapheme clusters. For example, for En-glish one could specify that <sh> is 
+ such a cluster. Consequently, this sequence of characters is then always 
+ interpreted as a complex grapheme. For cases in which this is not the right 
+ decision, like in the English word
+  mishap
+ , the zero width joiner at
+  U+200D
+  
+ has to be entered between <s> and <h>. 
+ 1
+ http://cldr.unicode.org/locale_faq-html",NA
+3.4 Pitfall: Missing glyphs,"The Unicode Standard is often praised (and deservedly so) for solving many 
+ of the perennial problems with the interchange and display of the world’s 
+ writing sys-tems. Nevertheless, a common complaint from users is that 
+ some symbols do not display correctly, i.e.
+  not at all
+  or from a
+  fall back font
+ , 
+ e.g. a rectangle <>, ques-tion mark <?>, or the Unicode replacement 
+ character <>. The user’s computer does not have the fonts installed that 
+ map the desired glyphs to Unicode char-acters. Therefore the glyphs cannot 
+ be displayed. This is not the Unicode Stan-dard’s fault because it is a 
+ character encoding system and not a font. Computer-internally everything 
+ works as expected; any handling of Unicode code points works 
+ independently of how they are displayed on the screen. So although users 
+ might see alien faces on display, they should not fret because everything is 
+ still technically in order below the surface. 
+ There are two obstacles regarding missing glyphs. One is practical: 
+ designing glyphs includes many different considerations and it is a time-
+ consuming pro-cess, especially when done well. Traditional expectations of 
+ what specific charac-ters should look like need to be taken into account 
+ when designing glyphs. Those expectations are often not well documented, 
+ and it is mostly up to the knowledge and expertise of the font designer to 
+ try and conform to them. Furthermore, the number of characters supported 
+ by Unicode is vast. Therefore, most designers produce fonts that only 
+ include glyphs for certain parts of the Unicode Standard. 
+ The second obstacle is technical: the maximum number of glyphs that can 
+ be defined by the TrueType font standard and the OpenType specification 
+ (ISO/IEC 14496-22:2015) is 65,535. The current version of the Unicode 
+ Standard contains 137,374 characters. Thus, no single font can provide 
+ individual glyphs for all Uni-code characters. 
+  
+ A simple solution to missing glyphs is to install additional fonts providing 
+ additional glyphs. For broad coverage, there is the Noto font family, a 
+ project de-veloped by Google, which covers over 100 scripts and nearly 
+ 64,000 characters.
+ 2 
+ The Unicode Consortium also provides, but does not 
+ endorse, an extensive list of fonts and font libraries online.
+ 3 
+  
+  
+ For the more exotic characters there is often not much choice. We have 
+ had success using Michael Everson’s Everson Mono font, which has 9,756 
+ different glyphs (not including Chinese)
+ 4
+ and with the somewhat older Titus 
+ Cyberbit 
+ 2
+ https://www.google.com/get/noto/ 
+  
+ 3
+ http://unicode.org/resources/fonts.ht
+ ml 
+  
+ 4
+ http://www.evertype.com/emono/",NA
+3.5 Pitfall: Faulty rendering,"A similar complaint to missing glyphs, discussed previously, is that while a 
+ glyph might be displayed, it does not look right. There are two reasons for 
+ unexpected visual display, namely automatic font substitution and faulty 
+ rendering. Like missing glyphs, any such problems are independent from 
+ the Unicode Standard. The Unicode Standard only includes very general 
+ information about characters and leaves the specific visual display for 
+ others to decide on. Any faulty display is thus not to be blamed on the 
+ Unicode Consortium, but on a complex interplay of different mechanisms 
+ happening in a computer to turn Unicode code points into visual symbols. 
+ We will only sketch a few aspects of this complex interplay here. 
+ Most modern software applications (like Microsoft Word) offer some 
+ approach to automatic font substitution. This means that when a text is 
+ written in a specific font (e.g. Times New Roman) and an inserted Unicode 
+ character does not have a glyph within this font, then the software 
+ application will automatically search for another font to display the glyph. 
+ The result will be that this specific glyph will look slightly different from the 
+ others. This mechanism works dif-ferently depending on the software 
+ application; only limited user influence is usually expected and little 
+ feedback is given. This may be rather frustrating to font-aware users. 
+ 5
+ http://titus.fkidg1.uni-frankfurt.de/unicode/tituut.asp 
+ 6
+ http://www.unicode.org/policies/lastresortfont_eula.h
+ tml 
+ 7
+ http://unifoundry.com/unifont.html 
+  
+ 8
+ http://scripts.sil.org/UnicodeBMPFallbackFont
+  
+ 23",NA
+3.6 Pitfall: Blocks,"The Unicode code space is subdivided into blocks of contiguous code points. 
+ For example, the block called Cyrillic runs from
+  U+0400
+  till
+  U+04FF
+ . These 
+ blocks 
+ 9
+ For more details about OpenType, see 
+ http://www.adobe.com/products/type/opentype.html and 
+ http://www.microsoft.com/typography/otspec/. Additional systems for complex text 
+ lay-out are, among others, Microsoft’s DirectWrite 
+ (https://msdn.microsoft.com/library/dd368038. aspx) and the open-source project 
+ HarfBuzz (http://www.freedesktop.org/wiki/Software/ HarfBuzz/).
+  
+ 10
+ More information about AAT can be found at: https://developer.apple.com/fonts/.
+  
+ Graphite is described in detail at: http://scripts.sil.org/default.",NA
+3.7 Pitfall: Names,"The names of characters in the Unicode Standard are sometimes misnomers 
+ and should not be misinterpreted as definitions. For example, the combining 
+ graph-eme joiner at
+  U+034F
+  does not join characters into larger graphemes 
+ (see Sec-tion 3.3) and the latin letter retroflex click
+  U+01C3
+  is actually not 
+ the IPA symbol for a retroflex click, but for an alveolar click (see Section 
+ 5.3). In a sense, these names can be seen as errors. However, it is probably 
+ better to realize that 
+ 11
+ The Unicode website offers a basic interface to the code charts at: 
+ http://www.unicode.org/ charts/index.html. As a more flexible interface, we particularly 
+ like PopChar from Ergonis Software, available for both Mac and Windows. There are also 
+ various free websites that offer search interfaces to the Unicode code tables, like 
+ http://unicode-search.net or http://unicode-search.net. Another useful approach for 
+ searching for characters using shape matching (Be-longie et al. 2002) is: 
+ http://shapecatcher.com.",NA
+3.8 Pitfall: Homoglyphs,"Homoglyphs are visually indistinguishable glyphs (or highly similar glyphs) 
+ that have different code points in the Unicode Standard and thus different 
+ character semantics. As a principle, the Unicode Standard does not specify 
+ how a char-acter appears visually on the page or the screen. So in most 
+ cases, a different appearance is caused by the specific design of a font, or by 
+ user-settings like size or boldface. Taking an example already discussed in 
+ Section 2.3, the following symbols <g
+  g
+  g
+  g
+  g
+  g
+ > are different glyphs of the 
+ same character, i.e. they may be rendered differently depending on the 
+ typography being used, but they all share the same code point (viz. latin 
+ small letter g at
+  U+0067
+ ). In contrast, the symbols <AАΑ
+ Ꭺᗅ
+ ᴀ
+ ꓮ
+ 𐊠
+ 𝖠𝙰> are all 
+ different code points, although they look highly similar – in some cases even 
+ sharing exactly the same glyph in some fonts. All these different A-like 
+ characters include the following code points in the Unicode Standard: 
+ <A> latin capital letter a, at
+  U+0041 
+  
+ <А> cyrillic capital letter a, at
+  U+0410 
+  
+ <Α> greek capital letter alpha, at
+  U+0391 
+  
+ <
+ Ꭺ
+ > cherokee letter go, at
+  U+13AA 
+  
+ <
+ ᗅ
+ > canadian syllabics carrier gho, at
+  U+15C5 
+ <ᴀ> latin small letter capital a, at
+  U+1D00
+  
+ 12
+ All proposals and other documents that are the basis of Unicode decisions are available 
+ at: http: //www.unicode.org/L2/all-docs.html. The actual decisions that make up the 
+ Unicode Standard are documented in the minutes of the Unicode Technical Committee, 
+ available at: http://www. unicode.org/consortium/utc-minutes.html.
+  
+ 26",NA
+3.9 Pitfall: Canonical equivalence,"For some characters, there is more than one possible encoding in the 
+ Unicode Standard. This means that for the computer there exists multiple 
+ different en-tities, which for the user, may be visually the same. This leads 
+ to, for example, 
+ 13
+ A particularly nice interface to look for homoglyphs is http://shapecatcher.com, based on 
+ the 
+  
+ principle of recognizing shapes (Belongie et al. 2002).
+  
+ 14
+ The first words consists completely of Latin characters: U+0076, U+006F, U+0063, 
+ U+0065 and U+0073. The second is a mix of Cyrillic and Greek characters: U+03BD, 
+ U+03BF, U+0041, U+0435 and U+0455.",NA
+3.10 Pitfall: Absence of canonical equivalence,"Although in most cases canonical equivalence will take care of alternative 
+ encod-ings of the same character, there are some cases in which the 
+ Unicode Standard decided against equivalence. This leads to identical 
+ characters that are not equiv-alent, like <ø> latin small letter o with stroke 
+ at
+  U+00F8
+  and <o̷> a combina-tion of latin small letter o at
+  U+006F
+  with 
+ combining short solidus overlay at
+  U+0037
+ . The general rule followed is that 
+ extensions of Latin characters that are connected to the base character are 
+ not separated as combining diacritics. For example, characters like <ŋ ɲ ɳ> 
+ or <ɖ ɗ> are obviously derived from <n> and <d> respectively, but they are 
+ treated like new separate characters in the Unicode Standard. Likewise, 
+ characters like <ø> and <ƈ> are not separated into a base character <o> and 
+ <c> with an attached combining diacritic. 
+ Interestingly, and somewhat illogically, there are three elements which 
+ are di-rectly attached to their base characters, but which are still treated as 
+ separable in the Unicode Standard. Such characters are decomposed (in 
+ NFD normalization) into a base character with a combining diacritic. 
+ However, it is these cases that should be considered the exceptions to the 
+ rule. These three elements are the following: 
+ • <
+ ◌
+ ̧>: the combining cedilla at
+  U+0327 
+  
+ This diacritic is for example attested in the precomposed character 
+ <ç> latin small letter c with cedilla at
+  U+00E7
+ . This <ç> will thus be de-
+ composed in NFC normalization. 
+ • <
+ ◌
+ ̨>: the combining ogonek at
+  U+0328 
+  
+ This diacritic is for example attested in precomposed <ą> latin small 
+ let-ter a with ogonek at
+  U+0105
+ . This <ą> will thus be decomposed in 
+ NFC normalization. 
+ • <
+ ◌
+ ̛>: the combining horn at
+  U+031B 
+  
+ This diacritic is for example attested in precomposed <ơ> latin small 
+ let-ter o with horn at
+  U+01A1
+ . This <ơ> will thus be decomposed in 
+ NFC normalization. 
+ There are further combinations that deserve special care because it is 
+ actually possible to produce identical characters in different ways without 
+ them being . In these situations, the general rule holds, namely that 
+ characters with attached extras are not decomposed. However, in the 
+ following cases the extras actually exist as combining diacritics, so there is 
+ also the possibility to construct a char-acter by using a base character with 
+ those combining diacritics.",NA
+3.11 Pitfall: Encodings,"Before we discuss the pitfall of different file formats in Section 3.12, it is 
+ pertinent to point out that the common usage of the term encoding 
+ unfortunately does not distinguish between
+  encoded
+  sequences of code 
+ points and text
+  encoded
+  as bit pat-terns. Recall, a code point is simply a 
+ numerical representation of some defined entity; in other words, a code 
+ point is a character encoding-specific unique identi-fier or ID. In the 
+ Unicode Standard encoding, code points are numbers that serve as unique 
+ identifiers, each of which is associated with a set of character prop-erties 
+ defined by the Unicode Consortium in the Unicode Character Database.
+ 18 
+ The number of each code point can be
+  encoded
+  in various formats, including 
+ as a decimal integer (e.g. 112), as an 8-bit binary sequence (01110000) or 
+ hexadecimal (0070). This example Unicode code point,
+  U+0070
+ , represents 
+ latin small letter p and its associated Unicode properties, such as it belongs 
+ to the category Letter, Lowercase [Ll], in the Basic Latin block, and that its 
+ title case and upper case is associated with code point
+  U+0050
+ .
+ 19 
+  
+  The other meaning of encoding has to do with the fact that computers 
+ rep-resent data and instructions in patterns of bits. A bit pattern is a 
+ combination of binary digits arranged in a sequence. And how these 
+ sequences are carved up into bit patterns is determined by how they are
+  
+ encoded
+ . Thus the term encoding is used for both sequences of code points 
+ and text encoded as bit patterns. Hence",NA
+3.12 Pitfall: File formats,"Unicode is a character encoding standard, but characters of course appear 
+ in-side some kind of computer file. The most basic Unicode-based file format 
+ is pure line-based text, i.e. strings of Unicode-encoded characters separated 
+ by line breaks (note that these line breaks are what for most people 
+ intuitively corre-sponds to paragraph breaks). Unfortunately, even within 
+ this apparently basic setting there exists a multitude of variants. In general 
+ these different possibili-ties are well-understood in the software industry, 
+ and nowadays they normally do not lead to any problems for the end user. 
+ However, there are some situations in which a user is suddenly confronted 
+ with cryptic questions in the user inter-face involving abbreviations like LF, 
+ CR, BE, LE or BOM. Most prominently this occurs with exporting or 
+ importing data in several software applications from Microsoft. Basically, 
+ there are two different issues involved. First, the encoding of line breaks and, 
+ second, the encoding of the Unicode characters into code units and the 
+ related issue of endianness. 
+ 20
+ UTF stands for Unicode Transformation Format. It a method for translating numbers into 
+ bi-nary data and vice versa. There are several different UTF encoding formats, e.g. UTF-8 
+ is a variable-length encoding that uses 8-bit code units, is compatible with ASCII, and is 
+ common on the web. UTF-16 is also variable-length, uses 16-bit code units, and is used 
+ system-internally by Windows and Java. See further discussion under
+  Code units
+  in Section 
+ 3.12. For more in-depth discussion, refer to the Unicode Frequently Asked Questions and 
+ additional sources therein: http://unicode.org/faq/utf_bom.html.",NA
+3.13 Pitfall: Incomplete implementations,"Another pitfall that we encounter when using the Unicode Standard is its in-
+ complete implementation in different standards and programming 
+ languages, e.g. SQL, XML, XLST, Python. For example, although the Unicode 
+ Standard mandates that the comparison of Unicode text be done using 
+ normalized text, this is not the case with the equality operator “==” in 
+ Python. Furthermore, it is not al-ways transparent what the operating 
+ system or specific software applications do when text is being copied and 
+ pasted. For example, copy and pasting the char-acter sequence
+  U+0061
+  latin 
+ small letter a <a> and
+  U+0301
+  combining acute accent <
+ ◌
+ ́>, visually <á>, into 
+ the text editor TextWrangler leaves the sequence decomposed as two 
+ characters. But when pasting the decomposed sequence into 
+ 34",NA
+3.14 Recommendations,"Summarizing the pitfalls discussed in this chapter, we propose the following 
+ rec-ommendations: 
+ • To prevent strange boxes instead of nice glyphs, always install a few 
+ fonts  
+ with a large glyph collection and at least one fall-back font 
+ (see Section 3.4).• Unexpected visual impressions of symbols do not 
+ necessarily mean that  
+  
+  
+ the actual encoding is wrong. 
+ It is mostly a problem of faulty rendering   
+ (see Section 3.5). 
+ • Do not trust the names of code points as a definition of the character 
+ (see Section 3.7). Also do not trust Unicode blocks as a strategy to 
+ find specific characters (see Section 3.6). 
+ • To ensure consistent encoding of texts, apply Unicode normalization 
+ (NFC  
+ or NFD, see Section 3.9). 
+ • To prevent remaining inconsistencies after normalization, for example 
+ stem-ming from homoglyphs (see Section 3.8) or from missing 
+ canonical equiv-alence in the Unicode Standard (see Section 3.10), use 
+ orthography profiles (see Chapter 7). 
+ • To deal with tailored grapheme clusters (Section 3.3), use Unicode 
+ Locale  
+ Descriptions, or orthography profiles (see Chapter 7). 
+ • As a preferred file format, use Unicode Format UTF-8 in Normalization 
+ Form Composition (NFC) with LF line endings, but without byte order 
+ mark (BOM), whenever possible (see Section 3.12). This last nicely 
+ cryp-tic recommendation has T-shirt potential: 
+ I prefer it  
+ UTF-8 NFC LF no BOM 
+ 35",NA
+4 The International Phonetic Alphabet,"In this chapter we present a brief history of the IPA (Section 4.1), which 
+ dates back to the late 19th century, not long after the creation of the first 
+ typewriter with a QWERTY keyboard. An understanding of the IPA and its 
+ premises and principles (Section 4.2) leads to a better appreciation of the 
+ challenges that the International Phonetic Association faced when digitally 
+ encoding the IPA’s set of symbols and diacritics (Section 4.3). Occurring a 
+ little over a hundred years after the inception of the IPA, its encoding was a 
+ major challenge (Section 4.4); many linguists have encountered the pitfalls 
+ when the two are used together (Chapter 5).",NA
+4.1 Brief history,"Established in 1886, the international phonetic association (henceforth
+  As-
+ sociation
+ ) has long maintained a standard alphabet, the international pho-
+ netic alphabet or IPA, which is a standard in linguistics to transcribe sounds 
+ of spoken languages. It was first published in 1888 as an international 
+ system of phonetic transcription for oral languages and for pedagogical 
+ purposes. It con-tained phonetic values for English, French and German. 
+ Diacritics for length and nasalization were already present in this first 
+ version, and the same symbols are still used today. 
+ Originally, the IPA was a list of symbols with pronunciation examples 
+ using words in different languages. In 1900 the symbols were first 
+ organized into a chart and were given phonetic feature labels, e.g. for 
+ manner of articulation among oth-ers
+  plosives
+ ,
+  nasales
+ ,
+  fricatives
+ , for place of 
+ articulation among others
+  bronchiales
+ , 
+ laryngales
+ ,
+  labiales
+  and for vowels 
+ e.g.
+  fermées
+ ,
+  mi-fermées
+ ,
+  mi-ouvertes
+ ,
+  ouvertes
+ . Throughout the last century, 
+ the structure of the chart has changed with in-creases in phonetic 
+ knowledge. Thus, similar to notational systems in other sci-entific 
+ disciplines, the IPA reflects facts and theories of phonetic knowledge that 
+ have developed over time. It is natural then that the IPA is modified 
+ occasionally to accommodate scientific innovations and discoveries. In fact, 
+ updates are part",NA
+4.2 Premises and principles,"Premises
+  
+ Any IPA transcription is based on two premises: (i) that it is possible to 
+ describe the acoustic speech signal (sound waves) in terms of sequentially 
+ ordered dis-crete segments, and, (ii) that each segment can be characterized 
+ by an articula-tory target. 
+ Once spoken language data are segmented, the IPA provides symbols to 
+ un-ambiguously represent phonetic details. However, since phonetic detail 
+ could potentially include anything, e.g. something like “deep voice”, the IPA 
+ restricts phonetic detail to linguistically relevant aspects of speech. 
+ Phonological consid-erations thus inextricably play a roll in transcription. In 
+ other words, phonetic observations beyond quantitative acoustic analysis 
+ are always made in terms of some phonological framework. 
+ Today, the IPA chart reflects a linguistic theory grounded in principles of 
+ phonological contrast and in knowledge about the attested linguistic 
+ variation. This fact is stated explicitly in several places, including in the
+  
+ Report on the 1989 Kiel convention
+  published in the
+  Journal of the 
+ International Phonetic Association 
+ (Roach 1989: 67–68): 
+ The IPA is intended to be a set of symbols for representing all the 
+ possi-ble sounds of the world’s languages. The representation of these 
+ sounds uses a set of phonetic categories which describe how each 
+ sound is made. These categories define a number of natural classes of 
+ sounds that operate in phonological rules and historical sound changes. 
+ The symbols of the IPA are shorthand ways of indicating certain 
+ intersections of these categories. 
+ and in the
+  Handbook
+  (The International Phonetic Association 1999: 18): 
+ […] a symbol can be regarded as a shorthand equivalent to a phonetic 
+ de-scription, and a way of representing the contrasting sounds that 
+ occur in a language. Thus [m] is equivalent to “voiced bilabial nasal”, 
+ and is also a",NA
+4.3 IPA encodings,"In 1989, an IPA revision convention was held in Kiel, Germany. As in 
+ previous meetings, there were changes made to the repertoire of phonetic 
+ symbols in the IPA chart, which reflected what had been discovered, 
+ described and cataloged by linguists about the phonological systems in the 
+ world’s languages in the in-terim. Personal computers were also becoming 
+ more commonplace, and linguists were using them to create databases. A 
+ cogent example is the UCLA Phonologi-cal Segment Inventory Database 
+ (UPSID; Maddieson 1984), which was expanded (Maddieson & Precoda 
+ 1990) and then encoded and distributed in a computer",NA
+4.4 The need for a single multilingual environment,"In hindsight it is easy to lose sight of how impactful 30 years of 
+ technological development have been on linguistics, from theory 
+ development using quantita-tive means to pure data collection and 
+ dissemination. But at the end of the 1970s, virtually no ordinary working 
+ linguist was using a personal computer (Simons 1996). Personal computer 
+ usage, however, dramatically increased throughout the 1980s. By 1990, 
+ dozens of character sets were in common use. They varied in their 
+ architecture and in their character repertoires, which made things a mess. 
+ During the 1980s, it became increasingly clear that an adequate solution 
+ to the problem of multilingual computing environments was needed. 
+ Linguists were on the forefront of addressing this issue because they faced 
+ these challenges head-on by wishing to publish and communicate electronic 
+ text with phonetic symbols which were not included in basic ASCII. One only 
+ needs to look at facsimiles of older electronic documents to see exotic 
+ symbols written in by hand after the preparation of typed version. 
+ 9
+ See http://www.let.rug.nl/kleiweg/L04/ and http://www.splitstree.org/, respectively.",NA
+5 IPA meets Unicode,NA,NA
+5.1 The twain shall meet,"The International Phonetic Alphabet (IPA) is a common standard in 
+ linguistics to transcribe sounds of spoken language into discrete segments 
+ using a Latin-based alphabet. Although IPA is reasonably easily adhered to 
+ with pen and paper, it is not trivial to encode IPA characters electronically. 
+ In this chapter we discuss vari-ous pitfalls with the encoding of IPA in the 
+ Unicode Standard. We will specifically refer to the 2015 version of the IPA 
+ (The International Phonetic Association 2015) and the 11.0.0 version of 
+ Unicode (The Unicode Consortium 2018). 
+ As long as a transcription is only directed towards phonetically trained 
+ eyes, then all the details of the Unicode-encoding are unimportant. For a 
+ linguist read-ing an IPA transcription, many of the details that will be 
+ discussed in this chap-ter might seem like hair-splitting trivialities. 
+ However, if IPA transcriptions are intended to be used across resources 
+ (e.g. searching similar phenomena across different languages) then it 
+ becomes crucial that there are strict encoding guide-lines. Our main goal in 
+ this chapter is to present the encoding issues and propose 
+ recommendations for a strict IPA encoding for situations in which cross-
+ resource consistency is crucial. 
+ There are several pitfalls to be aware of when using the Unicode Standard 
+ to encode IPA. As we have said before, from a linguistic perspective it might 
+ some-times look like the Unicode Consortium is making incomprehensible 
+ decisions, but it is important to realize that the consortium has tried and is 
+ continuing to try to be as consistent as possible across a wide range of use 
+ cases, and it does place linguistic traditions above other orthographic 
+ choices. Furthermore, when we look at the history of how the IPA met 
+ Unicode, we see that many of the decisions for IPA symbols in the Unicode 
+ Standard come directly from the In-ternational Phonetic Association itself. 
+ Therefore, many pitfalls that we will en-counter have their grounding in the 
+ history of the principles of the IPA, as well as in the technological 
+ considerations involved in creating a single multilingual encoding. In 
+ general, we strongly suggest to linguists to not complain about any",NA
+5.2 Pitfall: No complete IPA code block,"The ambivalent nature of IPA glyphs arises because, on the one hand, the 
+ IPA uses Latin-based glyphs like <a>, <b> or <p>. From this perspective, the 
+ IPA seems to be just another orthographic tradition using Latin characters, 
+ all of which do not get a special treatment within the Unicode Standard (just 
+ like e.g. the French, German, or Danish orthographic traditions do not have a 
+ special status). On the other hand, the IPA uses many special symbols (like 
+ turned <ɐ>, mirrored <ɘ> and/or extended <ɧ> Latin glyphs) not found in 
+ any other Latin-based writing system. For this reason a special block with 
+ code points, called IPA Extensions was already included in the first version 
+ of the Unicode Standard (Version 1.0 from 1991). 
+ As explained in Section 3.6, the Unicode Standard code space is 
+ subdivided into character blocks, which generally encode characters from a 
+ single script. However, as is illustrated by the IPA, characters that form a 
+ single writing sys-tem may be dispersed across several different character 
+ blocks. With its diverse collection of symbols from various scripts and 
+ diacritics, the IPA is spread across 12 blocks in the Unicode Standard:
+ 1
+  
+ 1
+ This number of blocks depends on whether only IPA-sanctioned symbols are counted or 
+ if the phonetic symbols commonly found in the literature are also included, see Moran 
+ (2012: Appendix C). The 159 characters from 12 code blocks shown here are the 
+ characters proposed for strict IPA encoding, as discussed in Section 5.13.",NA
+5.3 Pitfall: IPA homoglyphs in Unicode,"Another problem is the large number of homoglyphs, i.e. different 
+ characters that have highly similar glyphs (or even completely identical 
+ glyphs, depend-ing on the font rendering). For example, a user of a Cyrillic 
+ computer keyboard should ideally not use the <а> cyrillic small letter a at 
+ code point
+  U+0430
+  for IPA transcriptions, but instead use the <a> latin small 
+ letter a at code point 
+ U+0061
+ , although visually they are mostly 
+ indistinguishable, and the Cyrillic char-",NA
+5.4 Pitfall: Homoglyphs in IPA,"Reversely, there are a few cases in which the IPA distinguishes different 
+ pho-netic concepts, but the visual characters used by the IPA look very 
+ much alike. Such cases are thus homoglyphs in the IPA itself, which of 
+ course need different encodings. 
+ • The dental click <ǀ> and the indication of a minor group break <|> look 
+ almost the same in most fonts. For a proper encoding, the latin letter 
+ dental click at
+  U+01C0
+  and the vertical line at
+  U+007C
+  should be used, 
+ respectively. 
+ • Similarly, the alveolar lateral click <ǁ> should be encoded with a latin 
+ letter lateral click at
+  U+01C1
+ , different from <‖>, which according to 
+ the IPA is the character to by used for a major group break (by 
+ intonation), to be encoded by double vertical line at
+  U+2016
+ . 
+ • The marking of primary stress < ˈ > looks like an apostrophe, and is 
+ often typed with the same symbol as the ejective <
+ ◌
+ ʼ>. For a proper 
+ encoding, these two symbols should be typed as modifier letter 
+ vertical line at 
+ U+02C8
+  and modifier letter apostrophe at
+  U+02BC
+ , 
+ respectively. 
+ 6
+ http://langsci-press.org/catalog/book/74 
+  
+ 7
+ According to the Unicode Standard, latin small letter i with stroke <ɨ> at U+0268 cannot 
+ be decomposed into, say, latin small letter i <i> at U+0069 and combining short stroke 
+ overlay <
+ ◌
+ ̵> at U+0335. We discuss the pitfall of missing decomposition forms in Section 
+ 5.8.",NA
+5.5 Pitfall: Multiple encoding options in IPA,"It is not just the Unicode Standard that offers multiple options for encoding 
+ the IPA. Even the IPA specification itself offers some flexibility in how 
+ transcriptions have to be encoded. There are a few cases in which the IPA 
+ explicitly allows for different options of transcribing the same phonetic 
+ content. This is understand-able from a transcriber’s point of view, but it is 
+ not acceptable when the goal is in-teroperability between resources written 
+ in IPA. We consider it crucial to distin-guish between valid IPA, for which it 
+ is sufficient that any phonetically-trained reader is able to understand the 
+ transcription, and strict IPA, which should be standardized on a single 
+ unique encoding for each sound, so search will work across resources. We 
+ are aware of the following non-unique encoding options in the IPA, which 
+ will be discussed in turn below: 
+ • The marking of tone 
+ • The marking of <g> 
+ • The marking of velarization and 
+ pharyngealization• The placement of diacritics 
+ The first case in which the IPA allows for different encodings is the question 
+ of how to transcribe tone (cf. Maddieson (1990)). There is an old tradition 
+ to use diacritics on vowels to mark different tone levels (The International 
+ Phonetic Association 1949). Prior to the 1989 Kiel convention, IPA-
+ approved tone symbols included diacritics above or below the vowel or 
+ syllable, e.g. high and low tones marked with macrons (<
+ ◌
+ ̄
+ >, <
+ ◌
+ ̱
+ >), and acute 
+ and grave accents for high rising tone <
+ ◌
+ ́
+ >, low rising tone <
+ ◌
+ ̗
+ >, high falling 
+ tone <
+ ◌
+ ̀
+ > and low falling tone <
+ ◌
+ ̖
+ >. These tone symbols, however, had failed 
+ to catch on (probably) due to aesthetic objections and matters of adequacy 
+ for transcription (Maddieson 1990: 29). 
+ After the 1989 Kiel convention, the accent tone symbols were updated to 
+ the tradition that we are familiar with today and which was already in wide 
+ use by Africanists and others, namely level tones <
+ ◌
+ ̋
+ ,
+  ◌
+ ́
+ ,
+  ◌
+ ̄
+ ,
+  ◌
+ ̀
+ ,
+  ◌
+ ̏
+ > and contour 
+ tones",NA
+5.6 Pitfall: Tie bar,"In the major revision of the IPA in 1932, affricates were represented by two 
+ con-sonants <tʃ>, ligatures <ʧ>, or with the tie bar <t͡ʃ>. In the 1938 revision 
+ the tie bar’s semantics were broadened to indicate simultaneous 
+ articulation, as for ex-ample in labial velars such as <k͡p>. Thus, the tie bar is 
+ a convenient diacritic for visually tokenizing input strings into chunks of 
+ phonetically salient groups, including affricates, doubly articulated 
+ consonants or diphthongs. 
+ The tie bar can be placed above or below the base characters, e.g. <
+ t͡s
+ > or 
+ <
+ t͜s
+ >. IPA allows both options. The choice between the two symbols is purely 
+ for legible rendering; there is no difference in semantics between the two 
+ symbols. However, rendering is such a problematic issue for tie bars in 
+ general that many linguists simply do not use them. Just looking at a few 
+ different fonts already indicates that actually no font designer really gets the 
+ placement right in combination with superscripts and subscripts. If really 
+ necessary, we propose to standardize on the tie bar above the base 
+ characters, using a combining double inverted breve at
+  U+0361
+ .
+ 11
+  
+ 11
+ Also note that the undertie at U+203F looks like the tie bar below and is easily confused 
+ with it. However, it is a different character and has a different function in IPA. The 
+ undertie is",NA
+5.7 Pitfall: Ligatures and digraphs,"One important distinction to acknowledge is the difference between 
+ multigraphs and ligatures. Multigraphs are groups of characters (in the 
+ context of IPA e.g. <tʃ> or <ou>) while ligatures are single characters (e.g. 
+ <ʧ> latin small letter tesh 
+ used as a linking symbol to indicate the lack of a boundary, e.g. French
+  petit ami
+  
+ [pətit
+ ‿
+ ami]‘boyfriend’.",NA
+5.8 Pitfall: Missing decomposition,"Although many combinations of base character with diacritic are treated as 
+ with precomposed characters, there are a few combinations in IPA that 
+ allow for mul-tiple, apparently identical, encodings that are not (see Section 
+ 3.9 on the principle of canonical equivalence). For that reason, the following 
+ elements should not be treated as diacritics when encoding IPA in Unicode: 
+ <
+ ◌
+ ̡> combining palatalized hook below at
+  U+0321 
+ <
+ ◌
+ ̢> combining retroflex hook below at
+  U+0322 
+ <
+ ◌
+ ̵> combining short stroke overlay at
+  U+0335 
+ <
+ ◌
+ ̷> 
+ combining short solidus overlay at
+  U+0337
+  
+ 61",NA
+5.9 Pitfall: Different notions of diacritics,"Another pitfall relates to the question, what is a diacritic? The problem is 
+ that the meaning of the term diacritic as used by the IPA is not the same as it 
+ is used in the Unicode Standard. Specifically, diacritics in the IPA-sense are 
+ ei-ther so-called combining diacritical marks or spacing modifier letters in 
+ the Unicode Standard. Crucially, Combining Diacritical Marks are by 
+ definition combined with the character before them (to form so-called 
+ default grapheme clusters, see Chapter 2). In contrast, Spacing Modifier 
+ Letters are by definition 
+ not
+  combined into grapheme clusters with the 
+ preceding character, but simply treated as separate letters. In the context of 
+ the IPA, the following IPA-diacritics are actually Spacing Modifier Letters in 
+ the Unicode Standard: 
+ Length marks, namely:  
+ <
+ ◌
+ ː> modifier letter triangular colon at
+  U+02D0 
+ <
+ ◌
+ ˑ> 
+ modifier letter half triangular colon at
+  U+02D1
+  
+ Tone letters, including but not limited to: 
+ <˥> modifier letter extra-high tone bar at
+  U+02E5 
+ <˨> 
+ modifier letter low tone bar at
+  U+02E8
+  
+ Superscript letters, including but not limited to:
+ 12 
+  
+  
+ <
+ ◌
+ ʰ> modifier letter small h at
+  U+02B0 
+  
+  
+ <
+ ◌
+ ˤ> modifier letter small reversed glottal stop at
+  U+02E4 
+  
+ <
+ ◌
+ ⁿ> superscript latin small letter n at
+  U+207F 
+  
+ The rhotic hook:
+ 13 
+  
+  
+ <
+ ◌
+ ˞> modifier letter rhotic hook at
+  U+02DE
+  
+ Although linguists might expect these characters to belong together with 
+ the character in front of them, at least for tone letters, stress symbols and 
+ <ʰ> modi- 
+ 12
+ The Unicode Standard defines the
+  Phonetic Extensions
+  block that defines symbols used in 
+ pho-netic notation systems, including the Uralic Phonetic Alphabet, Americanist and 
+ Russianist phonetic notations, Oxford English and American dictionaries, etc. Among 
+ other symbols, the 
+ Phonetic Extensions
+  block includes the superscript letters <
+ m, ŋ, b
+ >, 
+ which are not valid IPA characters, although we have seen them used in linguistic 
+ practice.
+  
+ 13
+ It is really unfortunate that the rhotic hook in Unicode is classified as a Spacing Modifier, 
+ and not as a Combining Diacritical Mark. Although the rhotic hook is placed to the right 
+ of its base character (and not above or below), it still is always connected to the 
+ character in front, even physically connected to it. We cannot find any reason for this 
+ treatment, and consider it an error in Unicode. We hope it will be possible to change this 
+ classification in the future.",NA
+5.10 Pitfall: No unique diacritic ordering,"Also related to diacritics is the question of ordering. To our knowledge, the 
+ In-ternational Phonetic Association does not specify an ordering for 
+ diacritics that combine with phonetic base symbols; this exercise is left to 
+ the reasoning of the transcriber. However, such marks have to be explicitly 
+ ordered if sequences of them are to be interoperable and compatible 
+ computationally. An example is a labialized aspirated alveolar plosive: 
+ <tʷʰ>. There is nothing holding linguists back from using <tʰʷ> instead 
+ (with exactly the same intended meaning). How-ever, from a technical 
+ standpoint, these two sequences are different; if both se-quences are used 
+ in a document, searching for <tʷʰ> will not find any instances of <tʰʷ>, and 
+ vice versa. Likewise, a creaky voiced syllabic dental nasal can be encoded in 
+ various orders, e.g. <n̪̰̩>, <n̩̰̪> or <n̩̪̰>.",NA
+5.11 Pitfall: Revisions to the IPA,"With each revision of the IPA, many decisions need to be made by the 
+ Association as to which symbols should be added, removed or changed. For 
+ example, in the 1989 revision of the IPA at the Kiel Convention, changes to 
+ specific symbols (in previous charts) were debated and the Association’s 
+ members made certain deci-sions. The prevailing mood at the convention 
+ was not to change specific symbols unless a strong case was made 
+ (Ladefoged 1990). For example, two such decisions included: 
+ • Symbols for clicks were changed from <ʇ ʖ ʗ> to <ǀ ǁ ǃ> because the 
+ latter  
+ were the symbols used by nearly all Khoisanists and 
+ Bantuists. 
+ • The Americanist tradition of using using <
+ ◌
+ ̌>, a combining caron at
+  
+ U+030C
+  for all postalveolar sounds, like in <š ž č ǰ>, was not adopted 
+ because the Association members at the convention “were not 
+ sufficiently impressed by arguments … to the effect that these sounds 
+ formed a natural class, and thus is would be appropriate to recognize 
+ this by maintaining a common aspect to their symbolism” (Ladefoged 
+ 1990: 62).",NA
+5.12 Additions to the IPA,"In the course of collecting a large sample of phoneme systems across the 
+ world’s languages, Moran et al. (2014) found that in order to preserve 
+ distinctions both within and across language descriptions, additions to the 
+ approved IPA glyph set were needed. Wherever possible these additions 
+ were drawn from the extIPA symbols for disordered speech (Duckworth et 
+ al. 1990).
+ 17
+ This section describes these proposed additions to the IPA glyph 
+ set. The additions are not part of the official IPA recommendations, so they 
+ should be used with caution. 
+ • Retroflex click  
+ Retroflex clicks can be represented by <‼> double exclamation mark 
+ at 
+ U+203C
+ . Note that the (post-)alveolar click <ǃ> at
+  U+01C3
+  is 
+ confusingly re-ferred to as latin letter retroflex click in the Unicode 
+ Standard, which is probably best considered an error. 
+ • Voiced retroflex implosive  
+ Although the IPA includes a series of voiced implosives (marked with 
+ a hook on top, see Section 5.8), there is no voiced retroflex implosive. 
+ Fol-lowing the spirit of the IPA, we propose to use <
+ ᶑ
+ > latin small 
+ letter d with hook and tail at
+  U+1D91
+  for this sound. 
+ • Fortis/lenis  
+ Languages described as having a fortis/plain/lenis distinction that 
+ corre-sponds poorly with the traditional voiced/voiceless-
+ unaspirated/voiceless-aspirated continuum can be marked using the 
+ voiceless glyph for the plain phoneme, and then <
+ ◌
+ ͈> combining 
+ double vertical line below at 
+ U+0348
+  to mark the fortis articulation, 
+ and/or <
+ ◌
+ ͉> combining left angle below at
+  U+0349
+  for the lenis 
+ articulation. 
+ • Frictionalization  
+  The diacritic <
+ ◌
+ ͓> combining x below at
+  U+0353
+  can be used to 
+ represent",NA
+5.13 Unicode IPA Recommendations,"Summarizing the pitfalls as discussed in this chapter, we propose to define 
+ three different IPA encodings: strict-IPA, valid-IPA and widened-IPA. 
+ Informally speak-ing, valid-IPA represents the current state of the IPA (The 
+ International Phonetic Association 2015). Strict-IPA represents a more 
+ constrained version of IPA, while widened-IPA is a slightly extended version 
+ of IPA, allowing a few more symbols. 
+ 70",NA
+6 Practical recommendations,"This chapter is meant to be a short guide for novice users who are not 
+ interested in the programmatic aspects presented in Chapters 7 & 8. 
+ Instead, we provide links to quickly find general information about the 
+ Unicode Standard and the International Phonetic Alphabet (IPA). We target 
+ ordinary working linguists who want to know how to easily insert special 
+ characters into their digital documents and applications.",NA
+6.1 Unicode,"We discussed the Unicode Consortium’s approach to computationally 
+ encoding writing systems in Chapter 2. The common pitfalls that we have 
+ encountered when using the Unicode Standard are discussed in detail in 
+ Chapter 3. Together these chapters provide users with an in-depth 
+ background about the hurdles they may encounter when using the Unicode 
+ Standard for encoding their data or for developing multilingual 
+ applications. For general background information about Unicode and 
+ character encodings, see these resources: 
+ • http://www.unicode.org/standard/WhatIsUnicode.html 
+ • https://en.wikipedia.org/wiki/Unicode 
+ • https://www.w3.org/International/articles/definitions-
+ characters/ 
+ For practical purposes, users need a way to insert special characters (i.e. 
+ charac-ters that are not easily entered via their keyboards) into documents 
+ and software applications. There are a few basic approaches for inserting 
+ special characters. One way is to use software-specific functionality, when it 
+ is available. For ex-ample, Microsoft Word has an insert-special-symbol-or-
+ character function that allows users to scroll through a table of special 
+ characters across different scripts. Special characters can be then inserted 
+ into the document by clicking on them. Another way is to install a system-
+ wide application for special character inser-tion. We have long been fans of 
+ the PopChar application from Ergonis Software,",NA
+6.2 IPA,"In Chapter 4 we described in detail the history and principles of the 
+ International Phonetic Alphabet (IPA) and how it became encoded in the 
+ Unicode Standard. In Chapter 5 we describe the resulting pitfalls from their 
+ marriage. These two chap-ters provide a detailed overview of the 
+ challenges that users face when working with the two standards. 
+  For general information about the IPA, the standard text is the
+  Handbook 
+ of the International Phonetic Association: A Guide to the Use of the 
+ International Phonetic Alphabet
+  (The International Phonetic Association 
+ 1999). The handbook describes in detail the principles and premises of the 
+ IPA, which we have summarized in Section 4.2. The handbook also provides 
+ many examples of how to use the IPA. The Association also makes available 
+ information about itself online
+ 2
+ and it pro-vides the most current IPA 
+ charts.
+ 3
+ Wikipedia also has a comprehensive article about the IPA.
+ 4 
+  
+  There are several good Unicode IPA character pickers available through 
+ the browser, including: 
+ • https://r12a.github.io/pickers/ipa/ 
+ • https://westonruter.github.io/ipa-
+ chart/keyboard/• http://ipa.typeit.org/ 
+ Various linguistics departments also provide information about IPA fonts, 
+ soft-ware, and inserting Unicode IPA characters. Two useful resources are: 
+ • http://www.phon.ucl.ac.uk/resource/phonetics/ 
+ • https://www.york.ac.uk/language/current/resources/freeware/ipa-
+ fonts-and- software/ 
+ Regarding fonts that display Unicode IPA correctly, many linguists turn 
+ to the IPA Unicode fonts developed by SIL International. The complete SIL 
+ font list is available online.
+ 5
+ There is also a page that describes IPA 
+ transcription using the SIL fonts and provides an informative discussion on 
+ deciding which font to use.
+ 6 
+ Traditionally, IPA fonts popular with linguists 
+ were created and maintained by SIL International, so it is often the case in 
+ our experience that we encounter 
+ 2
+ https://www.internationalphoneticassociation.org/ 
+  
+ 3
+ https://www.internationalphoneticassociation.org/content/ipa-
+ chart 
+ 4
+ https://en.wikipedia.org/wiki/International_Phonetic_Alphabet 
+ 5
+ http://scripts.sil.org/SILFontList 
+  
+ 6
+ http://scripts.sil.org/ipahome",NA
+6.3 For programmers and potential programmers,"If you have made it this far, and you are eager to know more about the 
+ technical aspects of the Unicode Standard and how they relate to software 
+ programming, we recommend two light-hearted blog posts on the topic. The 
+ classic blog post about what programmers should know about the Unicode 
+ Standard is Joel Spol-sky’s
+  The Absolute Minimum Every Software Developer 
+ Absolutely, Positively Must Know About Unicode and Character Sets (No 
+ Excuses!)
+ .
+ 8
+ A more recent blogpost, with a bit more of the technical details, is 
+ by David C. Zentgraf and is titled, 
+ What Every Programmer Absolutely, 
+ Positively Needs To Know About Encodings And Character Sets To Work With 
+ Text
+ .
+ 9
+ This post is aimed at software developers and uses the PHP language 
+ for examples. 
+ For users of Python, see the standard documentation on how to use 
+ Unicode in your programming applications.
+ 10
+ For R users we recommend 
+ the stringi li-brary.
+ 11
+ For L
+ A
+ TEX users the TIPA package is useful for 
+ inserting IPA characters into your typeset documents. See these resources: 
+ 7
+ http://scripts.sil.org/FontFAQ_IPA93 
+  
+ 8
+ https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-
+     
+ developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-
+ excuses/ 
+ 9
+ http://kunststube.net/encoding/",NA
+7 Orthography profiles,NA,NA
+7.1 Characterizing writing systems,"The Unicode Standard offers a very detailed technical approach for 
+ characteriz-ing writing systems computationally. As such, it is sometimes 
+ too complex for the day-to-day practice of many linguists, as exemplified by 
+ the need to under-stand the common pitfalls that we discussed in Chapters 
+ 3 & 5. Therefore, in this section we propose some simple guidelines for 
+ linguists working in multilingual environments. 
+ Our aims for adopting a Unicode-based solution are: (i) to improve the 
+ con-sistency of the encoding of sources, (ii) to transparently document 
+ knowledge about the writing system (including transliteration), and (iii) to 
+ do all of that in a way that is easy and quick to manage for many different 
+ sources with many dif-ferent writing systems. The central concept in our 
+ proposal is the orthography profile, a simple delimited text file, that 
+ characterizes and documents a writ-ing system. We also offer basic 
+ implementations in Python and R to assist with the production of such files, 
+ and to apply orthography profiles for consistency testing, grapheme 
+ tokenization and transliteration. Not only can orthography profiles be 
+ helpful in the daily practice of linguistics, they also succinctly docu-ment the 
+ orthographic details of a specific source, and, as such, might fruitfully be 
+ published alongside sources (e.g. in digital archives). Also, in high-level 
+ linguistic analyses in which the graphemic detail is of central importance 
+ (e.g. phonotactic or comparative-historical studies), orthography profiles 
+ can transparently docu-ment the decisions that have been taken in the 
+ interpretation of the orthography in the sources used. 
+ Given these goals, Unicode Locales (see Chapter 2) might seem like the 
+ ideal orthography profiles. However, there are various practical obstacles 
+ preventing the use of Unicode Locales in the daily linguistic practice, 
+ namely: (i) the XML structure
+ 1
+ is too verbose to easily and quickly produce 
+ or correct manually, (ii) Unicode Locales are designed for a wide scope of 
+ information (like date formats or names of weekdays) most of which is not 
+ applicable for documenting writing 
+ 1
+ http://unicode.org/reports/tr35/",NA
+7.2 Informal description,"An orthography profile describes the Unicode code points, characters, 
+ graphemes and orthographic rules in a writing system. An orthography 
+ profile is a language-specific (and often even resource-specific) description 
+ of the units and rules that",NA
+7.3 Formal specification,"File Format
+  
+ The formal specifications of an orthography profile (or simply profile for 
+ short) are the following: 
+ A1. A profile is a unicode utf-
+ 8
+  encoded text file that includes informa-
+   
+ tion pertinent to the orthography.
+ 3 
+  
+ A2. A profile is a delimited text file with an obligatory header line. 
+ A minimal profile must have a single column with the header
+  Grapheme
+ . 
+ For any additional columns, the name in the header must be 
+ specified. The actual ordering of the columns is unimportant. The 
+ header list must be delimited in the same way as the rest of the file’s 
+ contents. Each record must be kept on a separate line. Separate lines 
+ with comments are not allowed. Comments that belong to specific 
+ lines must be put in a separate column of the file, e.g. add a column 
+ called comments. 
+ A3. Metadata should be added in a separate utf-
+ 8
+  text file using the JSON-
+ LD dialect specified in
+  Metadata Vocabulary for Tabular Data
+ .
+ 4
+ This 
+ metadata format allows for easy inclusion of Dublin Core 
+ metadata,
+ 5
+ which should be used to specify information about the 
+ orthographic description in the orthography profile.
+ 6
+ The orthography 
+ profile metadata should min-imally include provenance information 
+ including: (i) author, (ii) date, (iii) title of the profile, and (iv) 
+ bibliographic data for resource(s) that illustrate the orthography 
+ described in the profile. Crucially, the metadata should 
+ 3
+ See Section 3.12 in which we suggest to use NFC, no-BOM and LF line breaks because of 
+ the pit-falls they avoid. A keen reviewer notes, however, that specifying a convention for 
+ line endings and BOM is overly strict because most computing environments (now) 
+ transparently handle both alternatives. For example, using Python a file can be decoded 
+ using the encoding “utf-8-sig”, which strips away the BOM (if present) and reads an input 
+ full in text mode, so that both line feed variants “LF” and “CRLF” will be stripped.
+  
+ 4
+ https://www.w3.org/TR/tabular-metadata/ 
+  
+ 5
+ http://dublincore.org/ 
+  
+ 6
+ http://w3c.github.io/csvw/metadata/#dfn-common-
+ property",NA
+8 Implementation,NA,NA
+8.1 Overview,"To illustrate the practical applications of orthography profiles, we have 
+ imple-mented two versions of the specifications presented in Chapter 7: 
+ one in Python
+ 1 
+ and one in R.
+ 2
+ In this chapter, we introduce these two 
+ software libraries and pro-vide practical step-by-step guidelines for 
+ installing and using them. Various sim-ple and sometimes somewhat 
+ abstract examples will be discussed to show the different options available, 
+ and to illustrate the intended usage of orthography profiles in general. 
+ Note that our two libraries have rather different implementation 
+ histories, thus they may not give the same results in all situations (as 
+ discussed in Chap-ter 7). However, we do provide extensive test suites for 
+ each implementation that follow standard practices to make sure that 
+ results are correct. Users should refer to these tests and to the 
+ documentation in each release for specifics about each implementation. 
+ Note that due to the different naming convention practices in Python and R, 
+ function names differ between the two libraries. Also, the perfor-mance 
+ with larger datasets may not be comparable between the Python and R 
+ implementations. In sum, our two libraries should be considered as proofs 
+ of con-cept and not as the final word on the practical application of the 
+ specifications discussed in the previous chapter. In our experience, the 
+ current versions are sufficiently fast and stable to be useful for academic 
+ practice (e.g. checking data consistency, or analyzing and transliterating 
+ small to medium sized data sets), but they should probably not be used for 
+ full-scale industry applications without adaptation. 
+ First, in Section 8.2 we explain how to install Python
+ 3
+ and R.
+ 4
+ Then in 
+ Sections 8.3 & 8.4, we discuss our Python and R software packages, 
+ respectively. In addi-tion to the material presented here to get users 
+ started, we maintain several case 
+ 1
+ https://pypi.python.org/pypi/segm
+ ents 
+  
+ 2
+ https://github.com/cysouw/qlcData 
+  
+ 3
+ https://www.python.org/ 
+  
+ 4
+ https://www.r-project.org/",NA
+8.2 How to install Python and R,"When one encounters problems installing software, or bugs in 
+ programming code, search engines are your friend! Installation problems 
+ and incomprehen-sible error messages have typically been encountered 
+ and solved by other users. Try simply copying and pasting the output of an 
+ error message into a search engine; the solution is often already somewhere 
+ online. We are fans of Stack Ex-change
+ 7
+ – a network of question-and-answer 
+ websites – which are extremely helpful in solving issues regarding software 
+ installation, bugs in code, etc. 
+ Searching the web for “install r and python” returns numerous tutorials 
+ on how to set up your machine for scientific data analysis. Note that there is 
+ no sin-gle correct setup for a particular computer or operating system. Both 
+ Python and R are available for Windows, Mac, and Unix operating systems 
+ from the Python and R project websites. Another option is to use a so-called 
+ package manager, i.e. a software program that allows the user to manage 
+ software packages and their dependencies. On Mac, we use Homebrew,
+ 8
+ a 
+ simple-to-install (via the Terminal App) free and open source package 
+ management system. Follow the instructions on the Homebrew website and 
+ then use Homebrew to install R and Python (as well as other software 
+ packages such as Git and Jupyter Notebooks). 
+ Alternatively for R, RStudio
+ 9
+ provides a free and open source integrated 
+ de-velopment environment (IDE). This application can be downloaded and 
+ installed (for Mac, Windows and Unix) and it includes its own R installation 
+ and R libraries package manager. For developing in Python, we recommend 
+ the free community version of PyCharm,
+ 10
+ an IDE which is available for Mac, 
+ Windows, and Unix. 
+ Once you have R or Python (or both) installed on your computer, you are 
+ ready to use the orthography profiles software libraries presented in the 
+ next two sec-tions. As noted above, we make this material available online 
+ on GitHub,
+ 11
+ a 
+ 5
+ http://jupyter.org/ 
+  
+ 6
+ https://github.com/unicode-
+ cookbook/ 
+  
+ 7
+ https://stackexchange.com/ 
+  
+ 8
+ https://brew.sh/ 
+  
+ 9
+ https://www.rstudio.com/ 
+  
+ 10
+ https://www.jetbrains.com/pychar",NA
+8.3 Python package: segments,"The Python package
+  segments
+  is available both as a command line interface 
+ (CLI) and as an application programming interface (API). 
+ Installation
+  
+ To install the Python package
+  segments
+  (Forkel & Moran 2018) from the 
+ Python Package Index (PyPI) run: 
+ $ pip install segments
+  
+ on the command line. This will give you access to both the CLI and 
+ programmatic functionality in Python scripts, when you import the
+  segments
+  
+ library. 
+ You can also install the
+  segments
+  package from the GitHub repository,
+ 15
+ in 
+ par-ticular if you would like to contribute to the code base:
+ 16
+  
+ $ git clone https://github.com/cldf/segments
+  
+ $ cd segments
+  
+ $ python setup.py develop
+  
+ Application programming interface
+  
+ The
+  segments
+  API can be accessed by importing the package into Python. 
+ Here is an example of how to import the library, create a tokenizer object, 
+ tokenize a 
+ 12
+ https://help.github.com/articles/cloning-a-repository/ 
+  
+ 13
+ https://git-scm.com/ 
+  
+ 14
+ https://github.com/unicode-cookbook/recipes 
+  
+ 15
+ https://github.com/cldf/segments 
+  
+ 16
+ https://github.com/cldf/segments/blob/master/CONTRIBUTIN
+ G.md",NA
+8.4 R library: qlcData,"Installation
+  
+ The R implementation is available in the package
+  qlcData
+  (Cysouw 2018), 
+ which is directly available from the central R repository CRAN 
+ (Comprehensive R Archive Network). The R software environment itself has 
+ to be downloaded from its web-site.
+ 23
+ After starting the included R program, 
+ the
+  qlcData
+  package for dealing with orthography profiles can be simply 
+ installed as follows:  
+ 22
+ https://github.com/unicode-cookbook/recipes 
+  
+   
+ 23
+ https://www.r-project.org
+  
+ 105",NA
+8.5 Recipes online,"We provide several use cases online – what we refer to as
+  recipes
+  – that 
+ illustrate 
+ the 
+ applications 
+ of 
+ orthography 
+ profiles 
+ using 
+ our 
+ implementations in Python and R.
+ 28
+ Here we briefly describe these use 
+ cases and we encourage users to try them out using Git and Jupyter 
+ Notebooks. 
+  First, as we discussed above, we provide a basic tutorial on how to use 
+ the Python
+  segments
+ 29
+ and R
+  qlcData
+ 30
+ libraries. This recipe simply shows the 
+ basic functions of each library to get you started.
+ 31 
+  
+  The two recipes using the Python
+  segments
+  package include a tutorial on 
+ how to segment graphemes in IPA text: 
+ • https://github.com/unicode-cookbook/recipes/tree/master/JIPA 
+ and an example of how to create an orthography profile to tokenize 
+ fieldwork data from a large comparative wordlist. 
+ • https://github.com/unicode-cookbook/recipes/tree/master/Dogon 
+ The JIPA recipes uses excerpts from
+  The North Wind and the Sun
+  passages 
+ from the Illustrations of the IPA published in the Journal of the International 
+ Phonetic Alphabet. Thus the recipe shows how a user might tokenize IPA 
+ proper. The Do-gon recipe uses fieldwork data from the Dogon languages of 
+ Mali language docu-mentation project.
+ 32
+ This recipe illustrates how a user 
+ might tokenize fieldwork data from numerous linguists using different 
+ transcription practices by defining these practices with an orthography 
+ profile to make the output unified and com-parable. 
+  
+ The two recipes using the R
+  qlcData
+  library include a use case for 
+ tokenizing wordlist data from the Automated Similarity Judgment Program 
+ (ASJP):
+ 33
+  
+ • https://github.com/unicode-cookbook/recipes/tree/master/ASJP 
+ and for tokenizing a corpus of text in Dutch orthography: 
+ • https://github.com/unicode-cookbook/recipes/tree/master/Dutch 
+ 28
+ https://github.com/unicode-cookbook/recipes 
+  
+ 29
+ https://pypi.python.org/pypi/segments 
+  
+ 30
+ https://github.com/cysouw/qlcData 
+  
+ 31
+ https://github.com/unicode-
+ cookbook/recipes/tree/master/Basics 
+ 32
+ http://dogonlanguages.org/ 
+  
+ 33
+ http://asjp.clld.org/",NA
+References,"Abercrombie, David. 1964.
+  English phonetic texts
+ . London: Faber & Faber 
+ LTD. Anderson, Lloyd B. 1984. Multilingual text processing in a two-byte 
+ code. In
+  Pro-ceedings of the 10th International Conference on Computational 
+ Linguistics
+ , 1–4. 
+ Stanford, CA: Association for Computational Linguistics. 
+ http://dx.doi.org/10. 
+ 3115/980431.980492.  
+ DOI:10.3115/980431.980492 
+  
+ Apple Computer. 1985. The font manager.
+  Inside Machintosh
+  1. 215–
+ 240. 
+ Apple Computer. 1986. The font manager.
+  Inside Machintosh
+  4. 27–46. 
+ Apple Computer. 1988. The script manager.
+  Inside Machintosh
+  5. 293–322. 
+ Becker, Joseph D. 1984. Multilingual word processing.
+  Scientific American
+  
+ 251(1). 96–107. http://www.jstor.org/stable/24969416. 
+ Beider, Alexander & Stephen P. Morse. 2008. Beider-Morse phonetic 
+ matching: An alternative to Soundex with fewer false hits.
+  Avotaynu: the 
+ International Review of Jewish Genealogy
+  24(2). 12. 
+ Belongie, Serge, Jitendra Malik & Jan Puzicha. 2002. Shape matching and 
+ object  
+ recognition using shape contexts.
+  IEEE Transactions on 
+ Pattern Analysis and 
+  
+ Machine Intelligence
+  24(4). 509–522. 
+ http://www.dtic.mil/get-tr-doc/pdf?AD= ADA640016. 
+  
+ DOI:10.1109/34.993558 
+  
+ Bird, Steven & Gary F. Simons. 2003. Seven dimensions of portability  for 
+ language documentation and description.
+  Language
+  79(3). 557–582. 
+  
+ DOI:https://doi.org/10.1353/lan.2003.0149 
+  
+ Brindle, Jonathan. 2017.
+  A dictionary and grammatical outline of Chakali
+ . 
+ Vol. 2  
+ (African Language Grammars and Dictionaries). Berlin: Language 
+ Science  Press.  
+ DOI:https://doi.org/10.5281/zenodo.344813 
+  
+ Brown, Cecil H., Eric W. Holman & Søren Wichmann. 2013. Sound 
+ correspondences in the world’s languages. 
+ Language
+  89(1). 4–
+ 29. 
+ DOI:10.1353/lan.2013.0009 
+  
+ Chao, Yuen Ren. 1930. A system of tone letters.
+  Le Maı̂tre Phonétique
+  30. 24–
+ 27. Cysouw, Michael. 2018.
+  cysouw/qlcData: Zenodo release (Version",NA
+Name index,"Abercrombie, David, 41  
+ Anderson, Lloyd B., 44, 
+ 48 Apple Computer, 48 
+ Becker, Joseph D., 
+ 48 Beider, 
+ Alexander, 8 
+ Belongie, Serge, 27  
+ Bird, Steven, 13, 46  
+ Bright, William, 10  
+ Brindle, Jonathan, 
+ 56 Brown, Cecil H., 8 
+ Chao, Yuen Ren, 58 
+ Daniels, Peter T., 9, 10  
+ Dolgopolsky, Aharon B., 
+ 8 Duckworth, Martin, 69 
+ Esling, John H., 43–45, 48, 
+ 49 Evans, Nicholas, 48 
+ Gaultney, J. Victor, 10  
+ Gaylord, Harry, 43–45, 48, 
+ 49 
+ Hieronymus, James L., 46 
+ Huurdeman, Anton A., 4 
+ Jones, Daniel, 9 
+ Kemp, Alan, 8, 9  
+ Knuth, Donald E., 8 
+ Ladusaw, William A., 44 
+ Levinson, Stephen C., 
+ 48 List, Johann-Mattis, 
+ 8 
+ Maddieson, Ian, 42, 43, 55, 57  
+ Mania, Hubert, 5  
+ McCloy, Daniel, 66  
+ McLaughlin, Fiona, 68  
+ Meinhof, Carl, 9  
+ Meyer, Julien, 5  
+ Mielke, Jeff, 55  
+ Moran, Steven, 9, 18, 52, 65, 66, 
+ 69 Morse, Stephen P., 8 
+ Olúmúyı̀w, Tèmı́to ́pe ́, 1 
+ Postel, Hans J., 8  
+ Powell, Barry B., 4  
+ Precoda, Kristin, 42, 
+ 43 Pullum, Geoffrey 
+ K., 44 
+ Roach, P. J., 39, 44  
+ Robinson, Andrew, 4 
+ Sampson, Geoffrey, 48  
+ Simons, Gary F., 13, 46–
+ 48 Singh, Simon, 4  
+ Sproat, Richard, 10 
+ The International Phonetic 
+ Associa-tion, 4, 38–40, 44, 
+ 49, 51, 57, 
+ Kohrt, Manfred, 10  
+ 58, 70, 83 
+ Ladefoged, Peter, 38, 67, 68",NA
+Did you like this ,NA,NA
+book?,NA,NA
+This book was brought to you for ,NA,NA
+free,NA,NA
+Please help us in providing free access to ,NA,NA
+linguistic research worldwide. Visit ,NA,NA
+http://www.langsci-press.org/donate to ,NA,NA
+provide financial support or register as a ,NA,NA
+community proofreader or typesetter ,NA,NA
+at http://www.langsci-press.org/register.,NA,NA
+The Unicode Cookbook,NA,NA
+for Linguists,"This text is a practical guide for linguists, and programmers, who work with data in 
+ multilingual computational environments. We introduce the basic concepts needed 
+ to understand how writing systems and character encodings function, and how they 
+ work together at the intersection between the Unicode Standard and the 
+ International Pho-netic Alphabet. Although these standards are often met with 
+ frustration by users, they nevertheless provide language researchers and 
+ programmers with a consistent computa-tional architecture needed to process, 
+ publish and analyze lexical data from the world’s languages. Thus we bring to light 
+ common, but not always transparent, pitfalls which researchers face when working 
+ with Unicode and IPA. Having identified and overcome these pitfalls involved in 
+ making writing systems and character encodings syntactically and semantically 
+ interoperable (to the extent that they can be), we created a suite of open-source 
+ Python and R tools to work with languages using orthography profiles that describe 
+ author- or document-specific orthographic conventions. In this cookbook we 
+ describe a formal specification of orthography profiles and provide recipes using 
+ open source tools to show how users can segment text, analyze it, identify errors, 
+ and to trans-
+  
+ form it into different written forms for comparative linguistics research.
+  
+  
+ ISBN 978-3-96110-090-3",NA

@@ -1,0 +1,2613 @@
+Larger Text,Smaller Text,Symbol
+Preface,"1 0 0 setrgbcolor 
+  
+ newpath 
+  
+ 0 0 1 0 360 arc 
+  
+ stroke 
+  
+ newpath 
+  
+ 1 0 1 0 360 arc 
+  
+ stroke
+  
+ This book will show how to use PostScript for producing mathematical graphics, at several levels of 
+ sophistication. It includes also some discussion of the mathematics involved in computer graphics as well as a 
+ few remarks about good style in mathematical illustration.
+  
+ To explain mathematics well often requires good illustrations, and computers in our age have changed 
+ drastically the potential of graphical output for this purpose. There are many aspects to this change. The most 
+ apparent is that computers allow one to produce graphics output of sheer volume never before imagined. A less 
+ obvious one is that they have made it possible for amateurs to produce their own illustrations of professional 
+ quality. Possible, but not easy, and certainly not as easy as it is to produce their own mathematical writing with 
+ Donald Knuth’s program TEX. In spite of the advances in technology over the past 50 years, it is still not a 
+ trivial matter to come up routinely with figures that show exactly what you want them to show, exactly where 
+ you want them to show it. This is to some extent inevitable—pictures at their best contain a lot of information, 
+ and almost by definition this means that they are capable of wide variety. It is surely not possible to come up 
+ with a really simple tool that will let you create easily all the graphics you want to create—the range of 
+ possibilities is just too large. All you can hope for is that the amount of work involved in producing an 
+ illustration is in proportion to the intrinsic difficulty of what you want to do. And the intrinsic difficulty of 
+ producing a good mathematical illustration inevitably means that you should expect to do some interesting 
+ mathematics as well as solve interesting computational problems along the way. Mathematical illustrations are 
+ a special breed—a good mathematical illustration almost always requires mathematics in the process of making 
+ it.
+  
+ Nowadays there are many tools to help one produce mathematical graphics, of course. A partial list would 
+ include the free packages
+  xfig
+ ,
+  pictex
+ ,
+  PSTricks
+ ,
+ MetaFont
+  and
+  MetaPost
+ , as well as commercial mathematical 
+ programs such as
+  Maple
+  and
+  Mathematica
+  and professional graphics design tools such as
+  Illustrator
+ . Which 
+ one to choose apparently involves a trade-off between simplicity and quality, in which most go for what they 
+ perceive to be simplicity. 
+  
+ The truth is that the trade-off is unnecessary—once one has made a small initial 
+ investment of effort, by far the best thing to do in most situations is to write a program in the graphics 
+ programming language PostScript. There is practically no limit to the quality of the output of a PostScript 
+ program, and as one acquires experience the difficulties of using the language decrease rapidly. The apparent 
+ complexity involved in producing simple figures by programming in PostScript, as I hope this book will 
+ demonstrate, is largely an illusion. And the amount of work involved in producing more complicated figures 
+ will usually be neither more nor less than what is necessary.
+  
+ The principal advantage of PostScript is that it allows essentially complete control over the final product, some-
+ thing impossible with all of the graphics packages I listed above. Having such fine control over your figures 
+ means that once your code is in place, it is often quite easy to modify it. This makes it a great tool for 
+ discovering, not only explaining, mathematics.
+  
+ The advantage of control is very evident to those who have used, say,
+  xfig
+  or
+  pictex
+ , less so perhaps for
+  Maple 
+ and
+  Mathematica
+ . What becomes apparent in the course of heavy usage, however, is that a program like
+  Maple
+  
+ is designed for graphics only incidentally. It produces huge files—really, unnecessarily huge—and in practice 
+ seems reluctant to draw exactly what you want to draw. It does do all sorts of interesting computations, but 
+ normally the best way to use this talent is to have it output data files which a PostScript program can then 
+ access. The program
+  Mathematica
+  seems to be better adapted for graphics, but there are still many simple tasks 
+ it has trouble",NA
+Table of contents,"Chapter 1. Getting started in PostScript
+  
+  
+ 1
+  
+  
+ 1. Simple drawing 
+  
+ 2. Simple coordinate changes 
+  
+ 3. Coordinate frames 
+  
+ 4. Doing arithmetic in PostScript 
+  
+ 5. Errors 
+  
+ 6. Working with files and viewers
+  GhostView
+  or
+  
+ GSView 
+ 7. Some fine points 
+  
+ 8. A trick for eliminating redundancy 
+  
+ 9. Summary 
+  
+ 10. Code
+  
+ 2 
+  
+ 7 
+  
+ 9 
+  
+ 11 
+ 14 
+ 16 
+ 19 
+ 22 
+ 22 
+ 24 
+ 26 
+ 26 
+ 27 
+ 32 
+ 34 
+ 37 
+ 39 
+ 41 
+ 41 
+ 44 
+ 46 
+ 46 
+ 48 
+ 50 
+ 52 
+ 54 
+ 55 
+ 57 
+ 59 
+ 59 
+ 62 
+ 65 
+ 67 
+ 71 
+ 73 
+ 78 
+ 81 
+ 82 
+ 83 
+ 84 
+ 84 
+ 86 
+ 87
+  
+ Chapter 2. Elementary coordinate geometry
+  
+  
+ 1. Points and vectors 
+  
+ 2. Areas of parallelograms 
+  
+ 3. Lengths 
+  
+ 4. Vector projections 
+  
+ 5. Rotations 
+  
+ 6. The cosine rule 
+  
+ 7. Dot products in higher dimensions 
+  
+ 8. Lines 
+  
+ 9. Code
+  
+ Chapter 3. Variables and procedures
+  
+  
+ 1. Variables in PostScript 
+  
+ 2. Procedures in PostScript 
+  
+ 3. Keeping track of where you are 
+  
+ 4. Passing arguments to procedures 
+  
+ 5. Procedures as functions 
+  
+ 6. Local variables 
+  
+ 7. A final improvement
+  
+ Chapter 4. Coordinates and conditionals
+  
+  
+ 1. Coordinates 
+  
+ 2. How PostScript stores coordinate transformations 
+  
+ 3. Picturing the coordinate system 
+  
+ 4. Moving into three dimensions 
+  
+ 5. How coordinate changes are made 
+  
+ 6. Drawing infinite lines: conditionals in PostScript 
+  
+ 7. Another way to draw lines 
+  
+ 8. Clipping 
+  
+ 9. Order counts 
+  
+ 10. Code
+  
+ Chapter 5. Drawing polygons: loops and arrays
+  
+  
+ 1. The repeat loop 
+  
+ 2. The for loop 
+  
+ 3. The loop loop",NA
+Getting started in PostScript,"PostScript is a rather low level computer language developed by Adobe Systems in its startup days. Its primary 
+ purpose is to produce high quality graphics from computers, and especially to output computer graphics on 
+ printers. Professional graphics designers, for example, often work with high-end programs that in turn 
+ produce their output through PostScript. To them, the PostScript itself is usually invisible. One would not 
+ therefore expect PostScript to be comprehensible to humans. It is nonetheless a convenient computer language 
+ for producing by hand, so to speak, designs with a large mathematical component. One great virtue of 
+ PostScript is that there is no effective limit on the quality of the final product, precisely because it is designed 
+ for use by professionals. Some other virtues are that it is amenable to ‘programming by cut and paste’, and that 
+ the effects of commands are very local in nature—local, that is to say, within the text of the program. Both 
+ virtues and drawbacks will become better known as we proceed.
+  
+ In this book we shall use a program called
+  Ghostscript
+ , as well as one of several programs which in turn rely 
+ on Ghostscript running behind the scenes, to serve as our PostScript interpreter and interface. All the programs 
+ we shall use are available without cost through the Internet. Be careful—the language we are writing our 
+ programs in is
+  PostScript
+ , and the program we’ll use to interpret them is Ghostscript. See Appendix 2 for how 
+ to set up your programming environment.
+  
+ The interpreter Ghostscript has by itself a relatively primitive user interface which will turn out to be too 
+ awkward to use for very long, but learning this interface will give you a valuable feel for the way PostScript 
+ works.
+  
+ Furthermore, it will continue to serve a useful although limited purpose, in debugging as well as animations.
+  
+ We shall begin in this chapter by showing how Ghostscript works, and then later on explain a more convenient 
+ way to produce pictures with PostScript.
+  
+ 1. Simple drawing
+  
+ Start up Ghostscript. On Unix networks this is usually done by typing
+  gs
+  in a terminal window, and on other 
+ systems it is usually done by clicking on the icon for Ghostscript. (You can also run Ghostscript in a terminal 
+ window, even on Windows systems—see Appendix 2.) What you get while
+  gs
+  is running are two windows, 
+ one a kind of terminal window into which you type commands and from which you read plain text output, 
+ and the other a graphics window in which things are drawn.",NA
+Elementary coordinate geometry,"C
+  
+  
+ The page on which you draw may, for all practical purposes, be considered as a window onto a plane 
+ extending uniformly to infinity. We shall not look too closely at the assumptions made in this statement, but 
+ instead rely strongly on intuition depending on visual experience to deduce important facts about this plane.
+  
+ Using computers to draw requires translating from geometry to numbers—i.e. to a coordinate system—and 
+ back again. There are a few basic formulas that are used over and over again. It is best to memorize them. 
+ Calculating the distance between points whose coordinates are given requires Pythagoras’ Theorem, which we 
+ recall almost at the beginning of this chapter. Before that, however, comes a discussion of the areas of 
+ parallelograms; and even before that comes a short note about distinguishing points from vectors. Towards the 
+ end of the chapter we shall look at a number of results related principally to projections.
+  
+ For many readers, the results presented in this chapter will be well known. Even for them, however, the use of 
+ visual reasoning might be interesting and, in some aspects, novel.
+  
+ 1. Points and vectors
+  
+ It is important to distinguish
+  points
+  from
+  vectors
+ , even though a coordinate system assigns a pair of numbers 
+ to either a point or a vector. Points are
+  . . .
+  well, points. They possess no attribute other than
+  position
+ , and in 
+ particular they are (in spite of how they are drawn!) without dimension or size or color or smell or
+  . . .
+  anything 
+ other than position. Vectors, on the other hand, have magnitude and direction. They measure
+  relative position
+ . 
+ It is very important to keep in mind that both points and vectors are objects independent of which coordinate 
+ system is being used.
+  
+ Vectors can be added to each other, and they can be multiplied by constants. There is also a kind of limited 
+ algebra involving points. If
+  P = (x
+ P
+  , y
+ P
+  )
+  and
+  Q = (x
+ Q
+ , y
+ Q
+ )
+  are two points then there is a unique vector with tail at
+  
+ P
+  and head at
+  Q
+  whose coordinates are
+  x
+ Q
+  − x
+ P
+  and
+  y
+ Q
+  − y
+ P
+  , describing the relative position of the two points. It 
+ is written as
+  Q − P
+  . One reason that it is common to confuse points with vectors is that to each point
+  P 
+ corresponds the vector
+  P − O
+  from the origin to
+  P
+  . However, if the coordinate system changes, the origin may 
+ change. The points themselves won’t change, but the vectors they correspond to will likely do so.
+  
+ If we are given a coordinate system, the vector with coordinates
+  x
+ ,
+  y
+  will be
+  [x, y]
+  and the point with those 
+ coordinates will be
+  (x, y)
+ . The
+  (x, y)
+  corresponds to the vector
+  [x, y]
+  from the origin to itself—but I repeat that 
+ this point and this vector are not the same geometrical object.
+  
+ If
+  P
+  is a point and
+  v
+  a vector it makes sense to consider
+  P + v
+  as a point—it is the point
+  Q
+  such that
+  Q − P = v
+ . It is 
+ the point
+  P
+  displaced
+  or
+  translated
+  by
+  v
+ . If
+  t
+  is a real number between
+  0
+  and
+  1
+  then the point
+  t
+  of the way from
+  
+ P
+  to
+  Q
+  is equal to
+  P + t(Q − P)
+  with coordinates
+  (1 − t)x
+ P
+  + tx
+ Q
+ , (1 − t)y
+ P
+  + ty
+ Q
+ )
+ . I write it as 
+ (1 − t)P + tQ
+ . It is a 
+ kind of weighted average of
+  P
+  and
+  Q
+ . For example, the point point midway between
+  P
+  and 
+ Q
+  is
+  (1/2)P + 
+ (1/2)Q
+ . As we shall see later, we can also take weighted averages of collections of several points.
+  
+ In summary: we can subtract two points to get a vector; or calculate a weighted average to obtain another point; 
+ but the sum of two points or a scalar multiple of a point makes no intrinsic sense.",NA
+Variables and procedures,"At this point, I have explained how to draw only the simplest figures. In particular, I have given no hint of how 
+ to use the real programming capability of PostScript.
+  
+ debugging:1 
+  
+ Before beginning to look at more complex features of the language, place this principle firmly in your mind:
+  
+ •
+  To get good results from PostScript, first get a simple picture up on the screen that comes somewhere close 
+ to what you want, and then refine it and add to it until it is exactly what you want.
+  
+ It is the secret to efficient PostScript programming, because once you have a picture—any picture—you can 
+ often visualize your errors. Another suggestion is that since debugging large chunks of PostScript all at once is 
+ extremely painful, you want to keep small the scope of your errors. Yet another thing to keep in mind as you 
+ develop programs is flexibility. Ask yourself frequently if you might reuse in another drawing what you are 
+ doing in this one. We shall see how to take advantage of reusable code in an efficient way.
+  
+ variables:1
+  
+ The basic technique of this chapter will be to see how one PostScript program evolves according to this process. 
+ Technically, the main ingredients we are going to add to our tool kit are
+  variables
+  and
+  procedures
+ .
+  
+ 1. Variables in PostScript
+  
+ The following program draws a square one inch on a side roughly in the middle of a page.
+  
+ %!
+  
+ 72 72 scale 
+  
+ 4.25 5.5 translate 
+  
+ 1 72 div setlinewidth
+  
+ newpath 
+  
+ 0 0 moveto 
+  
+ 1 0 rlineto 
+  
+ 0 1 rlineto
+  
+ -1 0 rlineto 
+  
+ closepath 
+  
+ stroke
+  
+ showpage
+  
+ It is extremely simple, and frankly not very interesting.
+  
+ Among other things, it is not very flexible. Suppose you wanted to change the size of the square? You would
+  
+ variables:1
+  
+ have to replace each occurrence of “1” with the new size. This is awkward—you might miss an occurrence, at 
+ least if your program were more complicated. It would be better to introduce a
+  variable
+  s
+  to control the length 
+ of
+  
+ the side of the square.",NA
+Coordinates and conditionals,"We’ll take up here a number of drawing problems which require some elementary mathematics and a few new 
+ PostScript techniques. These will require that we can interpret absolute location on a page no matter what 
+ coordinate changes we have made, and therefore motivate a discussion of coordinate systems in PostScript.
+  
+ At the end we will have, among other things, a complete set of procedures that will draw an arbitrary line 
+ specified by its equation. This is not an extremely difficult problem, but is one of many whose solution will 
+ require understanding how PostScript handles coordinate transformations.
+  
+ 1. Coordinates
+  
+ The main purpose of PostScript is to draw something, to render it visible by making marks on a physical device 
+ of some kind. Every PostScript interpreter is linked to a physical device—Ghostscript running on your 
+ computer is linked to your monitor, and printers capable of turning PostScript code into an image possess an 
+ interpreter of their own.
+  
+ dered immediately:1 
+  
+ When you write a command like
+  0 0 moveto
+  or
+  1 0 lineto
+  that takes part in constructing a path, the PostScript 
+  
+ interpreter immediately translates the coordinates in the command into coordinates more specifically tied to 
+ the 
+  
+ physical device, and then adds these coordinates and the command to a list of commands that will be applied 
+ to 
+  
+ make marks when the path is finally stroked or filled.
+  
+ Thus a PostScript interpreter needs a way to translate the coordinates you write to those required by the 
+ physical device—it has to transform the user’s coordinates to the ones relevant to the device, and it must store 
+ internally some data necessary for this task.
+  
+ In fact, PostScript deals internally—at least implicitly—with a total of three coordinate systems.
+  
+ ordinates:physical:1
+  The first is the
+  physical
+  coordinate system. This system is the one naturally adapted to the physical device you 
+ are working on. Here, even the location of the origin will depend on the device your pictures are being drawn 
+ in.
+  
+ For example, on a computer running a version of the Windows operating system it is apparently always at the lower 
+ left. But on a Unix machine it is frequently at the upper left, with the
+  y
+  coordinate reading down. The basic 
+ pixel:1
+  units 
+ of length in the physical coordinate system are usually the width and the height of one
+  pixel
+  (one horizontal, the other 
+ vertical), which is the smallest mark that the physical device can deal with. On your computer screen a pixel is typically
+  
+ 1/75
+  of an inch wide and high, while on a high quality laser printer it might be
+  1/1200
+  of an inch on a side. This makes 
+ sense, because in the end every drawing merely colours certain pixels on your screen or printer page.
+  
+ coordinates:page:1
+  The second is what I call the
+  page
+  coordinate system. This is the one you start up with, in which the origin is at 
+ the lower left of the page, but the unit of length is one Adobe point—equal to
+  1/72
+  of an inch—in each 
+ direction. This might be thought of as a kind of ideal physical device.
+  
+ coordinates:user:1
+  The third is the system of
+  user
+  coordinates. These are the coordinates you are currently using to draw. When 
+  
+  
+ PostScript starts up, page coordinates and user coordinates are the same, but certain operations such as
+  scale
+ , 
+ ordinate changes:1 
+  
+ translate
+ , and
+  rotate
+  change the relationship between the two. For example, the sequence
+  72 72 scale 
+   
+ makes the unit in 
+ user coordinates equal to an inch. If we then subsequently perform
+  4.25 5.5 translate
+ , 
+  
+  
+ the translation takes place 
+ in the new user coordinates, so the origin is shifted up and right by several inches.",NA
+Drawing polygons: ,NA,NA
+loops and arrays,"We begin by learning how to draw regular polygons, and then look at arbitrary polygons. Both will use loops, 
+ and the second will require learning about arrays.
+  
+ There are several kinds of loop constructs in PostScript. Three are frequently used.
+  
+ 1. The repeat loop
+  
+ repeat:1 
+  
+ The simplest loop is the
+  repeat
+  loop. It works very directly. The basic pattern is:
+  
+ N { 
+  
+  
+ ...
+  
+ } repeat
+  
+ Here
+  N
+  is an integer. Next comes a procedure, followed by the command
+  repeat
+ . The effect is very simple: the 
+ lines of the procedure are repeated
+  N
+  times. Of course these lines can have side effects, so the overall 
+ complexity of the loop might not be negligible.
+  
+ One natural place to use a loop in PostScript is to draw a regular
+  N
+ -sided polygon. This is a polygon that has
+  N 
+ sides all of the same length, and which also possesses central symmetry around a single point. If you are 
+ drawing a regular polygon by hand, the simplest thing to do is draw first a circle of the required size, mark
+  N
+  
+ points evenly around this circle, and then connect neighbours. Here we shall assume that the radius is to be
+  1
+ , 
+ and that the location of the
+  N
+  points is fixed by assuming one of them to be
+  (1, 0)
+ .
+  
+ (cos 72
+ ◦
+ , sin 72
+ ◦
+ )
+  
+  
+ (cos 144
+ ◦
+ , sin 144
+ ◦
+ )
+  
+ (1, 0)
+  
+ If we set
+  θ = 360/N
+ , then the other points on the circle will be
+  (cos θ, sin θ)
+ ,
+  (cos 2θ, sin 2θ)
+ , etc. To draw the 
+ regular polygon, we first move to
+  (1, 0)
+  and then add the lines from one vertex to the next. At the
+  n
+ -th stage we 
+ must add a line from
+  (cos(n−1)θ, sin(n−1)θ)
+  to
+  (cos nθ, sin nθ)
+ . How can we make this into a repetitive 
+ action?",NA
+Curves,"So far, the only paths we have learned how to draw in PostScript are sequences of line segments. It is possible 
+ to assemble a good approximation of just about any curve by a large number of segments, but there are more 
+ elegant and efficient ways, involving
+  B´ezier curves
+ .
+  
+ 1. Arcs
+  
+ The simplest curves are circles. There are two special commands to draw circles and pieces of circles. 
+  
+ The 
+ sequence
+  
+ 0 0 10 47 67 arc
+  
+ will add to the current path the short arc of a circle of radius
+  10
+ , centred at the origin, between arguments
+  
+ 47
+ ◦
+ and
+  67
+ ◦
+ . If
+  arcn
+  is used it will draw the clockwise arc around the long way, instead (
+ arcn
+  for
+  arc n
+ egative).
+  
+ It would be a good idea to investigate here what ‘adding to the current path’ means, because it is behaviour 
+ many of our later procedures will imitate. Here are two short sketches that should illustrate how it works. In 
+ the first, we draw a line and then continue drawing an arc. The default behaviour is for an arc to continue the 
+ current path in this way—to add a line from the last point of the previous path to the first point of the arc. 
+ Sometimes this is not what one wants or expects, in which case it is necessary to add a
+  moveto
+  to break up the 
+ path, as in the second figure.
+  
+ newpath 
+  
+ 0 0 moveto 
+  
+ 1 0 lineto 
+  
+ 0 0 1 45 90 arc 
+  
+ stroke
+  
+ newpath 
+  
+ 0 0 moveto 
+  
+ 1 0 lineto
+  
+  
+  
+ 45 cos 45 sin moveto 
+  
+ 0 0 1 45 90 arc 
+  
+ stroke
+  
+ Another curiousity of
+  arc
+  is that in a coordinate system in which
+  y
+ -units are distinct from
+  x
+ -units it produces an 
+ ellipse. In other words, it always draws the locus of an equation
+  (x − a)
+ 2
+ + (y − b)
+ 2
+ = r
+ 2
+ in user coordinates 
+ (x, y)
+ . 
+ If the axes are not perpendicular or the
+  x
+  and
+  y
+  units are different, it will look like an ellipse.",NA
+Interlude,"At this point you have seen just about all the basic PostScript commands you’ll ever use. The rest of this book 
+ will be spent showing you how to combine them together to make some very complicated—one would hope 
+ even very beautiful—figures.
+  
+ In principle you should by now have no trouble drawing simple figures, but are starting to worry about how to 
+ do more difficult things. I want to offer you some advice, in part just to collect in one place remarks I have 
+ made throughout the text. Much of what I have to say is not specific to PostScript, but might well be made 
+ about programming in general.
+  
+ •
+  Most programs you write will be just an assembly of smaller chunks that are themselves quite simple. Your 
+ coding should reflect this, making the chunks in your code as independent of each other as possible. Just 
+ like your pages should be independent of each other.
+  
+ •
+  The reason you should try to arrange your program so it looks as much as possible like an assembly of 
+ smaller chunks is that you can then concentrate on getting each chunk completely correct. The most 
+ important thing to keep in mind in good programming is, as the real estate agents (don’t) say,
+  locality
+ ,
+  
+ Locality
+ ,
+  LOCALITY
+ . The effects of your code should be carefully set up to be local in nature, affecting if 
+ possible only data needed at the moment it is running. One example of this I have already remarked on is 
+ that procedures above all, which may be called from anywhere in your code, should use local variables 
+ and have few or no side effects. Those it does have should be clearly specified.
+  
+ •
+  Procedures should be as isolated as possible from the rest of your code. Best is to put them in separate files 
+ and
+  run
+  these. Then you can test your procedures independently of the rest of your program. With the 
+ PERL script described in Appendix 2, embedding files that are
+  run
+  during development into the final 
+ program is simple.
+  
+ •
+  In particular, make up a file defining your favourite constants like
+  e
+ ,
+  π
+  etc. and run that file to obtain access 
+ to them. One thing I haven’t mentioned is that for efficiency you can get PostScript to embed these 
+ numbers directly if you write using
+  //
+ . For example,
+  //pi
+  will immediately substitute
+  3.1415 . . .
+  if you 
+ have previously written
+  /pi 3.1415926535 def
+ . (Whereas ordinarily it defers evaluating the expression 
+ pi
+  
+ because you might very well have redefined it. It doesn’t know that you mean it to be a constant.) I don’t 
+ suppose that for the programs we are concerned with here that this really increases speed much, but it 
+ makes you feel good.
+  
+ •
+  As a programming language, PostScript is special because of its direct link to graphics. Use this feature. 
+ When starting to draw a picture, begin by getting something up on the screen that looks roughly like what 
+ you want and then begin to modify it. Visual debugging compensates somewhat for the otherwise terrible 
+ debugging environment of PostSCript.
+  
+ •
+  Debugging PostScript using Ghostscript is nasty. The only way to avoid it, however, is to write only perfect 
+ lines of code that never need rewriting. But for those presumably rare moments when things aren’t going 
+ quite right, you’ll have to descend to the land of mortals. So far I have mentioned the techniques of 
+ spilling out data in the terminal window and running
+  gsnd
+ . To make this easier I myself use a procedure
+  
+ display 
+ with one argument
+  n
+  that spills out in an array, without destruction, the top
+  n
+  items on the stack:
+  
+ /display { 1 dict begin 
+  
+  
+ /n exch def 
+  
+  
+ n copy [ n 1 add 1 roll ] == 
+  
+ end } def",NA
+Drawing curves automatically: ,NA,NA
+procedures as arguments,"moveto 
+ lineto 
+  
+ curveto 
+ stroke 
+  
+ fill 
+  
+ clip
+  
+  
+ The process of drawing curves by programming each one specially is too complicated to be done easily. In this 
+ chapter we shall see how to construct procedures to help out enormously. We proceed in stages, starting with a 
+ reasonably simple example.
+  
+ 1. Drawing an hyperbola
+  
+ The curves we have drawn so far are really too simple to give you an idea of how useful B´ezier curves are. 
+ This is because the B´ezier curve is guaranteed to match exactly the graph of any polynomial of degree
+  3
+  or 
+ less, so no approximation is involved. In this section we will develop a procedure
+  hyperbola
+  with three 
+ arguments—
+ x
+ 0
+ , 
+ x
+ 1
+ ,
+  N
+ —that constructs the graph of the upper branch of an hyperbola
+  
+ y
+ 2
+ − x
+ 2
+ = 1,
+  
+ y =
+  
+ 1 + x
+ 2
+ .
+  
+ by using
+  N
+  B´ezier segments in between
+  x
+ 0
+  and
+  x
+ 1
+ .
+  
+ As is usually the best idea, the procedure builds the path without drawing it. Thus the sequence
+  
+ newpath
+  
+ -2 2 4 hyperbola
+  
+  
+ stroke 
+  
+ will draw the curve
+  y =
+  
+ √1 + x
+ 2
+ from
+  x = −2
+  to
+  x = 2
+  in
+  4
+  B´ezier segments.
+  
+  
+ Paths drawn by
+  -2 2 1 hyperbola
+  (pink) and
+  -2 2 2 hyperbola
+  (red).
+  
+ What goes into the procedure
+  hyperbola
+ ? We can immediately write down the skeleton
+  
+ /hyperbola { 16 dict begin 
+  
+ /N exch def 
+  
+ /x1 exch def 
+  
+ /x0 exch def",NA
+thales ,NA,NA
+pythagoras ,NA,NA
+eudoxus ,NA,NA
+euclid ,NA,NA
+archimedes,"7. Code
+  
+ The file
+  mkpath.inc
+  contains a procedure
+  mkpath
+  as well as
+  mkgraph
+  a few related ones.",NA
+Non-linear 2D transformations: ,NA,NA
+deconstructing paths,"Sometimes we want to draw a figure after a non-linear transformation has been applied to it. In image 
+ manipula-tion programs, this is often called
+  morphing
+ . For example, here is a morphed
+  10×10
+  grid produced 
+ by a program in which the basic drawing commands drew a square grid and these were followed by some 
+ transforming code before stroking.
+  
+  
+ In order to apply transformations to paths, we just have to understand (a) transformations and (b) paths!
+  
+ 1. Two dimensional transformations
+  
+ A 2D transformation is a function
+  f(x, y)
+  of two variables which returns a pair of numbers
+  u(x, y)
+  and
+  v(x, y)
+ , 
+ the coordinates of the transform of the point
+  (x, y)
+ . We have already seen affine transformations where
+  
+ f(x, y) = (ax + by + c, dx + ey + f)
+  
+ for suitable constants
+  a
+ ,
+  b
+ , etc. But now we want to allow more complicated ones. I should say right at the 
+ beginning that these can be very complicated. An affine transformation is not so difficult to visualize because 
+ we know what the transformation does everywhere if we know what it does to just a single square. But an 
+ arbitrary transformation may have very different effects in different parts of the plane, and this is the source of 
+ much difficulty in comprehending it. Indeed, the nature of 2D transformations has been in not-so-distant times 
+ the subject of interesting mathematical research. (I am referring to the stability of properties of such 
+ transformations under perturbation, part of the so-called ‘catastrophe theory’.)
+  
+ I’ll spend some time looking at one which is not too complicated:
+  
+ f(x, y) = (x
+ 2
+ − y
+ 2
+ , 2xy) .
+  
+ This is not quite a random choice—it is derived from the function of complex numbers that takes
+  z
+  to
+  z
+ 2
+ , since
+  
+ (x + iy)
+ 2
+ = (x
+ 2
+ − y
+ 2
+ ) + i (2xy) .",NA
+Roman ,"produces (except for the comparison image in light gray)
+  
+ transformed as curves.
+  
+ 6. Code
+  
+ The procedures
+  subdivide
+  and
+  ctransform
+  are to be found in the package
+  transform.inc
+ . The map data can be 
+ found in the PostScript files
+  coasts.1.inc
+  etc, which I have made from the
+  MWDB
+  files mentioned below. The 
+ index indicates level of detail—index
+  1
+  is the greatest detail, index
+  5
+  the least.
+  
+ References
+  
+ 1. John P. Snyder,
+  Flattening the Earth: Two Thousand Years of Map Projections
+ , University of Chicago Press, 
+ 1993. This is a very readable history of map-making, including descriptions of dozens of different ones.
+  
+ 2. For the maps I have used the data from the ‘World Database II’, which is now included in the file
+  world.zip
+  
+ accessible by clicking on the icon
+  
+  
+ at
+  
+ http://archive.msmonline.com/1999/12/vis2.htm
+  
+ These map data, which are now in the public domain, were compiled by Fred Pospeschil and Antonio Riveria 
+ from data originally created by the Central intelligence Agency. The particular files I have used incorporate 
+ further modifications by by Paul Anderson of Global Associates, Ltd. The Bodleian Library of Oxford 
+ University maintains a convenient web page with links to sources of other map data available without cost.
+  
+ 3. Tristan Needham,
+  Visual Complex Analysis
+ , Oxford University Press, 1997. This explains the relationship 
+ between complex numbers and conformal maps with lots of illustrations.
+  
+ 4. Timothy G. Freeman,
+  Portraits of the Earth—A mathematician looks at maps
+ , American Mathematical 
+ Society, 2002. An appendix includes an account of how what seems to be the same map data that I have used 
+ can be used to draw maps using
+  Maple
+ .
+  
+ 5. David Hilbert and Stephan Cohn-Vossen,
+  Geometry and the Imagination
+ , Chelsea, 1952. Many maps are 
+ conformal—preserve angles—and one of the basic theorems in the subject is that stereographic projection is a 
+ conformal map. Nowadays this can be proven quickly by calculus, but an elegant geometric proof can be found 
+ in
+  §
+ 36 of this book. Early Greek astronomers knew that stereographic projection maps circles to circles, which is 
+ closely related to conformality. But this theorem was apparently first stated and proved by the English 
+ mathematician Thomas Harriot, who was Walter Raleigh’s navigation expert, in about 1600, in the golden age 
+ of map-making stimulated by the discovery of America and the great Portugese voyages to the Far East. 
+ Harriot’s proof was unpublished, but it can be reconstructed from a rather handsome sketch in his 
+ manuscripts. A reproduction can be found in the article by J. A. Lohne, ‘Thomas Harriot als Mathematiker’, 
+ Centaurus 11 (1965/66). The first published proof was by Edmund Halley, who is often and incorrectly given 
+ credit for having discovered it first.",NA
+Recursion in PostScript,"For various technical reasons, recursion in PostScript is a tricky business. It is possible, however, and in some 
+ circumstances nearly indispensable. 
+  
+ It is extremely useful to have some idea of how to deal with it, since 
+ standard algorithms in the literature, for example those traversing lists of various kinds, are often laid out in 
+ terms of recursion.
+  
+ 9.1. The perils of recursion
+  
+ The factorial
+  n!
+  of a positive integer
+  n
+  is defined informally by the rule that it is the product of all positive 
+ integers less than or equal to
+  n
+ . Thus
+  4! = 1 · 2 · 3 · 4 = 24
+ . If we want to get a computer to calculate it, we 
+ follow these rules: (1) if
+  n = 1
+  then
+  n! = 1
+ ; (2) if
+  n > 1
+  then
+  n! = n·(n−1)!
+ . This sort of formula, where a function is 
+ evaluated directly by reduction to a simpler case, is called
+  recursion
+ . It could be argued that recursion 
+ encapsulates the essence of mathematics—which trys to reduce every assertion either to an axiom or to one that 
+ has already been proven, or in broad terms to reduce every problem to a simpler one that has already been 
+ solved.
+  
+ At any rate, we can write a procedure in PostScript that follows these two last rules exactly:
+  
+ /factorial { 1 dict begin 
+  
+  
+ /n exch def 
+  
+  
+ n 0 eq { 
+  
+  
+ 1 
+  
+  
+ }{ 
+  
+  
+ n n 1 sub factorial mul 
+  
+  
+ } ifelse 
+  
+ end } def
+  
+ This code is correct and will run, but probably only if
+  n
+  is small. Why is that? Well, there are two reasons. One 
+ is that
+  n!
+  is large number, and will exceed the size of allowable PostScript integers. This happens even on 
+ calculators and in most computer software. But there is another, more technical reason. When you
+  begin
+  a 
+ dictionary in a procedure, that dictionary is put on top of a stack of dictionaries, and when you
+  end
+  that 
+ dictionary it is taken off this stack. Unlike a few other stacks used by PostScript, the dictionary stack is usually 
+ severely limited in size. If you call a procedure recursively which uses a local dictionary, the size of the 
+ dictionary stack will build up with every call, quite possibly beyond the maximum size allowed. If this occurs 
+ you will get a
+  dictstackoverflow 
+ error message. So this procedure might very well work for small values of
+  n
+  
+ but fail for large ones.
+  
+ Therefore
+  
+ •
+  You should never introduce a dictionary to handle local variables in a recursive procedure exactly as you 
+ do in others.
+  
+ There is nothing wrong with using dictionaries in recursive procedures, but they shouldn’t remain open across 
+ the recursive procedure calls. That is to say, you should
+  begin
+  and
+  end
+  the dictionary without making any 
+ recursive calls in between. You might very well want to do this so as to do some complicated calculations",NA
+Perspective and homogeneous coordinates,"Many image manipulation programs have a tool for modifying the perspective of images. Thus, I start out with 
+ this familiar picture
+  
+   
+  
+  
+  
+  
+   
+  
+ and then I import it into my image manipulation program (which happens to be the
+  G
+ nu
+  I
+ mage
+  M
+ anipulation 
+ GIMP:1
+ P
+ rogram or
+  GIMP
+ ). I next open the transform tool and choose the perspective option. When I click now in the 
+ image window, what I see is this:
+  
+  
+ pective transform:1
+  
+ The tool lays down a grid on top of my image, and simultaneously brings up what it calls a
+  Perspective 
+ Transform Info
+  window, in which is displayed a
+  3 × 3
+  matrix. It also shows some boxes at the corners of the 
+ grid that I can grab and move around. When I do so, the original image remains the same, and the grid adjusts 
+ itself to my
+  
+ choices. In effect, a geometrical transform of some kind is applied to the grid. The matrix changes, alas, in some 
+ apparently incomprehensible manner.",NA
+Introduction to drawing in three dimensions,"Drawing figures in 3D is considerably more complicated than drawing in 2D, because we want to create the 
+ illusion of three dimensions on a two-dimensional page. 
+  
+ There are in fact different ways to deal with this 
+ problem. I shall illustrate a few ideas by showing a progression of pictures of a cube.
+  
+ ection:orthogonal:1 
+  
+ The first is a simple
+  orthogonal projection
+  of the
+  frame
+  of the cube. This just renders the image of the cube 
+  
+ projected by parallel lines onto the
+  (x, y)
+  plane.
+  
+  
+ ction:perspective:1 
+  
+ In the next we use
+  perspective projection
+ , which in effect renders the image of the cube by intersecting the
+  (x, 
+ y) 
+  
+ plane with rays from points in space to a fixed location, which plays the role of the eye. This scheme has the 
+  
+ virtue that objects further away from the eye look smaller. This provides an illusion of distance.
+  
+  
+ In the third we hide those faces of the cube which the eye lies behind. This adds the illusion of solidity.
+  
+  
+ shading:1
+  In the fourth we vary the darkness of the face of the cube according to the degree to which they face towards an 
+  
+ imaginary vertical light source. We also get some colour.",NA
+Transformations in ,NA,NA
+3D,"There are no built-in routines for 3D drawing in PostScript. For this purpose we shall have to use a library of 
+ PostScript procedures designed especially for the task, as an extension to basic PostScript. In this chapter we 
+ shall look at some of the mathematics behind such a library, which is much more complicated than that 
+ required in 2D.
+  
+ nsformations:rigid:1 
+  
+ We shall examine principally
+  rigid transformations
+ , those which affect an object without distorting it, but then 
+ at 
+  
+ the end look at something related to shadow projections. The importance of rigid transformations is especially 
+  
+ great because in order to build an illusion of 3D through 2D images the illusion of motion helps a lot. One 
+  
+ point is that motion leads to an illusion of depth through size change, and another is that it allows one to see 
+ an 
+  
+ object from different sides. The motions used will be mostly rotations and translations, those which occur most 
+  
+ commonly in the real world.
+  
+ There are several reasons why it is a good idea to examine such transformations in dimensions one and two as 
+ well as three.
+  
+ 1. Rigid transformations
+  
+ If we move an object around normally, it will not visibly distort—that is to say, to all appearances it will 
+ remain rigid. The points of the object themselves will move around, but the relative distances between points 
+ of the object will not change. We can formulate this notion more precisely. Suppose we move an object from 
+ one position to another. In this process, a point
+  P
+  will be moved to another point
+  P
+ ∗
+ . We shall say that the 
+ points of the object are
+  transformed
+  into other points. A transformation is said to be
+  rigid
+  if it preserves relative 
+ distances—that is to say, if
+  P
+  and
+  Q
+  are transformed to
+  P
+ ∗
+  and
+  Q
+ ∗
+  then the distance from
+  P
+ ∗
+  to
+  Q
+ ∗
+  is the same as 
+ that from
+  P
+  to
+  Q
+ .
+  
+ We shall take for granted something that can actually be proven, but by a somewhat distracting argument:
+  
+ •
+  A rigid transformation is
+  affine
+ .
+  
+ This means that if we have chosen a linear coordinate system in whatever context we are looking at (a line, a 
+ plane, or space). then the transformation
+  P → P
+ ∗
+  is calculated in terms of coordinate arrays
+  x
+  and
+  x
+ ∗
+  according to 
+ the formula 
+  
+  
+ x
+ ∗
+  = xA + v
+  
+ where
+  A
+  is a matrix and
+  v
+  a vector. Another way of saying this is that first we apply a linear transformation 
+ whose matrix is
+  A
+ , then a translation by
+  v
+ . In 3D, for example, we require that
+  
+ [ x
+ ∗
+  y
+ ∗
+  z
+ ∗
+  ] = [ x y z ] A + [ v
+ x
+  v
+ y
+  v
+ z
+  ] .
+  
+ The matrix
+  A
+  is called the
+  linear component
+ ,
+  v
+  the
+  translation component
+  of the transformation.
+  
+ It is clear that what we would intuitively call a rigid transformation preserves relative distances, but it might 
+ not be so clear that this requirement encapsulates rigidity completely. The following assertion may add 
+ conviction:",NA
+R,"Now the transformed letter
+  R
+  is qualitatively different from the original—there is no continuous way to deform
+  
+ orientation:8
+  
+ one into the other without some kind of one-dimensional degeneration. In effect, reflection in the
+  y
+ -axis 
+ changes 
+ orientation
+  in the plane. This is always the case:
+  
+ •
+  A linear transformation with negative determinant changes orientation.",NA
+PostScript in 3D,"In this chapter I’ll explain a 3D extension to PostScript that I call
+  ps3d
+ , which you can find in the file
+  ps3d.inc
+ . 
+ In order to make this extension available, just put a line
+  (ps3d.inc) run
+  at the top of your program, once you 
+ have downloaded
+  ps3d.inc
+ . The 3D graphics environment you get in this way is as close to the usual 2D one as 
+ I could make it, with a few unusual features I’ll mention later.
+  
+ The underlying computations involved in 3D drawing are much more intensive than that for 2D, and in view of 
+ that it was surprising to me that package
+  ps3d
+  has turned out to be acceptably efficient. As I have mentioned 
+ already, I have used the usual PostScript routines in 2D as a model, except that instead of being restricted to 
+ affine transformations, and therefore in this case to matrix arrays of size
+  3
+ 2
+ + 3 = 12
+ , the underlying code works 
+ with arbitrary homogeneous
+  4 × 4
+  matrices, or arrays of size
+  16
+ . There are several reasons for doing this, 
+ among them that it makes the final perspective rendering simpler. It also makes it possible to cast shadows 
+ easily. But the principal one, I have to confess, is mathematical simplicity. The disadvantage might be slowness, 
+ but although noticeable in some circumstances it doesn’t seem to be a fatal problem. This whole package owes 
+ much to Jim Blinn’s book
+  A Trip Down the Graphics Pipeline
+ , mostly for the rigourous use of homogeneous 
+ coordinates throughout. On the other hand, using normal functions instead of just normal vectors is something 
+ only a mathematician would suggest happily. The advantage of doing this is that non-orthogonal 
+ transformations can be handled, although this is perhaps only a theoretical advantage, since most coordinate 
+ changes are in fact orthogonal.
+  
+ Still following graphics conventions (i.e. as opposed to mathematical ones) point-vectors are rows, and matrices 
+ are applied to them on the right. Affine functions
+  Ax + By + Cz + D
+  will be expressed as column vectors.
+  
+ Matrices multiply them on the left, and evaluation of such a function is a matrix product
+  
+ Ax + By + Cz + D = [ x
+  
+ y
+  
+ z
+  
+ 1 ]
+  
+  
+ A
+  
+  
+  .
+  
+ B
+  
+ C
+  
+ D
+  
+ I recall that composition on the stack is the principal motivation for these conventions of order in PostScript
+  
+ programming.
+  
+ Thus
+  x S T
+  conveniently applies
+  S
+  to
+  x
+  and then
+  T
+  .
+  
+ This conforms to the usual PostScript
+  
+ convention of applying operators to the object operated on so as to be ready to apply the next operator.
+  
+ In this package, four dimensional directions are expressed in homogeneous coordinates as
+  [x, y, z, w]
+ . Such a 
+ point with
+  w ̸= 0
+  can be identified with the 3D point
+  (x/w, y/w, z/w)
+ , and one with
+  w = 0
+  can be identified with 
+ a non-oriented direction in 3D. There is some inconsistency involved in this last point, because sometimes the 
+ package implicitly uses oriented directions.",NA
+Drawing surfaces in 3D,"Only in mathematics books do spheres look like the thing on the left below, rather than the one on the right.
+  
+  
+ What your eye sees in reality are fragments of surfaces, or rather the light reflected from them. In computer 
+ graphics, a surface is an assembly of
+  flat plates
+ , each of which is a 2D polygon moved into location in space, 
+ together with a specification of one of its two sides. One difference between surfaces drawn by computer and 
+ those in the real world is that in the real world surfaces possess detail down to microscopic size, including the 
+ appearance of smooth curvature. Surfaces drawn by a computer can only be an approximation of these. 
+ Sometimes the plates making up a surface will have some extra data added to them to help make the illusion of 
+ reality stronger.
+  
+ PostScript is not efficient enough to do very realistic 3D rendering. Among other things, it does not have access 
+ to specialized 3D hardware, and in particular has little comprehension of depth. But it is efficient enough to do 
+ a reasonable job on mathematical images.
+  
+ 1. Faces
+  
+ surface fragments:1
+  
+ A
+  surface fragment
+  or sometimes
+  face
+  will be an oriented polygon made up of 3D points all lying in some 
+ single plane. The orientation means a choice of
+  side
+  to the polygon—a top as opposed to a bottom, or an 
+ outside as
+  
+ opposed to an inside. The orientation in practice means that the vertices of the polygon are arranged in an array 
+  
+ right hand rule:1
+  going around the edges of the polygon according to the right hand rule—so that if the right hand curls around in 
+ the direction the vertices are numbered, the thumb points towards the side chosen. In other words, if the polygon 
+  
+ is on a plane in front of you and the vertices are arranged in a counter-clockwise direction, your eye is on the 
+  
+ outside.",NA
+The regular polyhedra,"A regular figure is one which is
+  . . .
+  well, more regular than most. A polyhedron is a shape in three dimensions 
+  
+ olyhedron:regular:1
+  whose surface is a collection of flat polygons, and
+  a regular polyhedron
+  is one all of whose faces and vertices 
+ look the same. It has been known for a very long time that there are exactly five regular polyhedra. Although they are 
+  
+ favourites for computer graphics, they are probably not clearly understood by those who draw them.
+  
+  
+  
+  
+  
+  
+ That there are no more than five is by no means a trivial fact, although it is one to which we have become 
+  
+ accustomed. The regular polyhedra have been known for a very long time as mathematical history goes—the 
+  
+ oldest extant Greek mathematical text, some scribbling on discarded pottery discovered on Elephantine Island 
+  
+ near the Aswan cataracts that dates to about 250 B.C., is concerned with them. Their properties are in fact not easy 
+  
+ to understand, and perhaps familiarity has made it more difficult to realize how remarkable they are. Although 
+  
+ it is perhaps not the most mathematically sophisticated part of Euclid, the regular polyhedra are discussed only 
+  
+ Elements:Euclid’s:1
+  in the last book of the Elements, and the treatment is not at all transparent. In order to show how an extended 
+ graphical reconstruction of Euclid can go, I will sketch his treatment in this Chapter.
+  
+ There are two quite different parts of the story: (1) It is possible to construct five different regular polyhedra; 
+ (2) it is not possible to construct any others. Exactly what these assertions mean, and how very distinct they 
+ are, will be appreciated later on. For both, at least to start with, I shall follow Euclid rather closely. At an 
+ elementary level, it is a hard act to beat.
+  
+ I shall begin with part (2), and deal with the construction later on. But first a few more opening remarks.",NA
+Summary of PostScript commands,"This Appendix offers a summary of PostScript operators useful for producing mathematical figures. Most have 
+ already been introduced. In addition, a few that are likely to be more rarely used than the rest are explained 
+ here. This is a large list, but by no means a complete list of PostScript commands. The PostScript reference 
+ manual (‘Red Book’) contains a complete list by function as well as a list in alphabetical order in which the 
+ operators are described in occasionally invaluable detail.
+  
+ There are many operators even in this restricted list, but fortunately most commands are very close to normal 
+ English usage and should be easy to remember.
+  
+ The symbol
+  ∅
+  means no arguments, or no return value.
+  
+ 1. Mathematical functions
+  
+ Arguments
+  
+ Command
+  
+ Left on stack; side effects
+  
+ x y
+  
+ add
+  
+ x + y
+  
+ x y
+  
+ sub
+  
+ x − y xy
+  
+ x y
+  
+ mul
+  
+ x y
+  
+ div
+  
+ x/y
+  
+ x y
+  
+ idiv
+  
+ the integral part of
+  x/y
+  
+ x y
+  
+ mod
+  
+ the remainder of
+  x
+  after division by
+  y
+  
+ x
+  
+ abs
+  
+ the absolute value of
+  x
+  
+ x
+  
+ neg
+  
+ the integer just above
+  x−x
+  
+ x
+  
+ ceiling
+  
+ x
+  
+ floor
+  
+ the integer just below
+  x
+  
+ x
+  
+ round
+  
+ x
+  rounded to nearest integer
+  
+ x
+  
+ truncate
+  
+ x
+  with fractional part chopped off
+  
+ x
+  
+ sqrt
+  
+ square root of
+  x
+  
+ y x
+  
+ atan
+  
+ the polar argument of the point
+  (x, y)
+  
+ x
+  
+ cos
+  
+ cos x
+  (
+ x
+  in degrees)
+  
+ x
+  
+ sin
+  
+ sin x
+  (
+ x
+  in degrees)
+  
+ x y
+  
+ exp
+  
+ x
+ y
+  
+ x
+  
+ ln
+  
+ ln x
+  
+ x
+  
+ log
+  
+ log x
+  (base
+  10
+ )
+  
+ rand
+  
+ a random number
+  
+ PostScript works with two kinds of numbers, integers and real. Real numbers are floating point, with a limited 
+ number of decimals of accuracy. Arguments for some operations, such as
+  repeat
+ , must be integers. I leave as an 
+ exercise to tell whether
+  ceiling
+  etc. return—i.e. leave on the stack—integers or real numbers. Many operations 
+ have an implicit range restriction—i.e.
+  sqrt
+  must be applied to a non-negative number.",NA
+Setting up your PostScript environment,"In order to run PostScript programs, you will need to have a PostScript viewer installed on your machine. The 
+ most convenient way to do this is to install the basic PostScript interpreter Ghostscript, and then on top of that 
+ one of several possible interactive viewers that call on Ghostscript for basic graphics rendering. The program 
+ Ghostscript is available without cost for download from
+  http://www.cs.wisc.edu/~ghost/
+ . The viewers 
+ GhostView
+ ,
+  GSView
+ ,
+  MacGSView
+ , and
+  GV
+  (for various platforms) can also be found there.
+  
+ On UNIX and Macs the command line interface for the interpreter Ghostscript (as opposed to a file viewer) 
+ should be straightforward to figure out, but for Windows machines it is a little more difficult. First run (i.e.
+  
+ Run
+ ) the program
+  cmd.exe
+ , and then in the terminal window that pops up type
+  gswin32c.exe
+  togther with 
+ various options to get Ghostscript on its own. One variant that you can use fruitfully for debugging is
+  
+ gswin32c.exe -dNODISPLAY <filename>
+  
+ You should be able to set shortcuts up so that not so much typing is involved.
+  
+ 1. Editing PostScript files
+  
+ It is important to use the right text editor in writing PostScript programs, or at least to know how to use 
+ correctly the one that you do use. First of all, a PostScript file must be just an ordinary text file, without 
+ formatting adornments such as those produced by Microsoft
+  Word
+  in its default configuration. So you must be 
+ careful, if necessary, to save your file as a plain text file. In some text editors, text files will be automatically 
+ given an extension _txt. This is not necessarily a problem, but for your own long-term sanity it is probably best 
+ to store all your PostScript files with an extension
+  .ps
+  (or a variation like
+  .eps
+ ). This may require that you 
+ explicitly rename it.
+  
+ 2. Running external files
+  
+ Once you have installed Ghostscript and a viewer, you will have to do a small amount of work to configure 
+ your environment for easy PostScript program development. I have described in this book a number of 
+ packages of PostScript procedures that you will want to incorporate in your own programs with the PostScript
+  
+ run
+  command. This command simply loads a file that it interprets as any other sequence of PostScript code. But 
+ for security reasons, the way most PS viewers are configured by default is to disallow this. In order to allow it 
+ you must toggle one of the viewer options, usually associated with the keyword
+  Safer
+ . In
+  GSView
+ , for example, 
+ you can do this by opening the
+  Options
+  menu (here showing
+  Safer
+  toggled on):",NA
+Structured PostScript documents,"A PostScript program is just a sequence of PostScript commands to be interpreted in the order in which they 
+ are encountered. It swallows one command after another. Once it has executed a sequence of commands, it 
+ essentially forgets them. In short, the PostScript interpreter knows nothing about the global structure of your 
+ file,
+  
+ in a PostScript file:1 
+ ocument structure:1
+  
+ and in particular has no idea of the separate pages as individual items.
+  
+ But there are conventions which allow you to put such a structure in your file. These are called
+  document
+  
+ structure comments
+ .
+  
+ You will likely have seen these, if you ever peeked at a PostScript file produced by
+  
+  
+ some other program. For example, the program
+  dvips
+  that turns the
+  .dvi
+  files produced by the mathematical 
+ %%BoundingBox:1 
+  
+ typesetting program TEX into PostScript might produce a file that looks like this:
+  
+ %!PS-Adobe-2.0 
+  
+ %%Creator: dvips(k) 5.86 Copyright 1999 Radical Eye Software %%Title: 
+  
+ a3.dvi 
+  
+ %%Pages: 
+  
+ 2 
+  
+  
+   
+ Ascend 
+  
+ %%PageOrder: %%BoundingBox: 
+  
+ 0 0 596 842 
+  
+ %%DocumentFonts: 
+   
+ Helvetica-Bold Palatino-Roman CMTT10 
+  
+ %%EndComments 
+  
+ %DVIPSWebPage: 
+  
+ (www.radicaleye.com) 
+  
+ %DVIPSCommandLine: 
+  
+ dvips a3.dvi -o a3.ps 
+  
+ %%BeginProcSet: 
+   
+ texc.pro 
+  
+ ...
+  
+ %%EndProlog 
+  
+ %%BeginSetup 
+  
+  
+ *Resolution 600dpi %%Feature: 
+  
+ TeXDict begin 
+  
+ %%PaperSize: 
+  
+ letter 
+  
+ %%EndSetup 
+  
+ %%Page: 1 1 
+  
+ 1 0 bop 0 191 a Fd(Appendix)24 b(3.)36 b(Structured)24 
+  
+ b(P)l(ostScript)i(documents)0 540 y Fc(A)h(PostScript)h(pr)o(ogram)f ...
+  
+ %%Trailer 
+  
+ end 
+  
+ userdict /end-hook known{end-hook}if 
+  
+ %%EOF
+  
+ Indeed, this is the PostScript file making up this very appendix! All those lines starting with
+  %%
+  are
+  document 
+ DSC:1
+ structure comments
+  (with acronym
+  DSC
+ ) meant to be interpreted by a program such as a PostScript viewer that 
+ allows it to output some information about the source of this document and allow a reader to move around in it from 
+ one page to the other, not necessarily in the order in which the pages were naturally encountered. Some of these 
+ comments are more important than the others, in particular those allowing moving around among the pages. And 
+ any PostScript program that intends to allow this sort of page-by-page viewing must follow certain conventions that 
+ make it feasible.
+  
+ A PostScript program following DSC conventions should begin with a line such as",NA
+Simple text display,"You will very often want to put text in your figures. PostScript’s font-handling capabilities are extremely good, 
+ but most of the techniques for high quality font management are designed to be automated by some other 
+ program, because good text—especially mathematical text—requires a lot of computation to get font choices, 
+ spacing, and sizes right.
+  
+ In this Appendix I’ll explain how to place simple text in PostScript figures. and also a few playful possibilities. 
+ What I explain here will be adequate for many purposes. (See Appendix 7 for more sophisticated techniques.)
+  
+ 1. Simple PostScript text
+  
+ The simplest, essentially the only simple, way to put text into pictures is to use the almost universally available 
+ PostScript fonts to assemble your text ‘by hand’, i.e. by thinking out for yourself what layout, font choice, and 
+ text size are to be. This is a relatively straightforward process, and probably your best choice, if the text you 
+ want to include is not too complicated.
+  
+ There are three steps to be carried out each time you want to use a new font.
+  
+ (1) You must decide which font you are going to use. There is a limited choice of fonts guaranteed to be 
+ available
+  
+ fonts:PostScript:1
+  
+ in all environments. The choice is, roughly, from this list:
+  
+ Times-Bolditalic
+  
+ Times-Roman
+  
+ Times-Italic
+  
+ Times-Bold
+  
+ Helvetica
+  
+ Helvetica-Oblique
+  
+ Helvetica-Bold
+  
+ Helvetica-Bold-Oblique
+  
+ Courier
+  
+ Courier-Oblique
+  
+ Courier-Bold
+  
+ Courier-Bold-Oblique
+  
+ Symbol
+  
+  
+ The Helvetica fonts have no serifs, and display well on a computer. The Courier fonts have uniform 
+ character 
+ findfont:1 
+  
+ spacing. The Symbol font contains Greek letters. You load a font with the command
+  findfont
+  applied 
+ to 
+  
+ the name of the font.
+  
+ scalefont:1 
+ (2) You decide what scale you are going to use it at. With the command
+  scalefont
+ , you set what is essentially 
+  
+  
+ the vertical size of the letters in terms of the current unit.
+  
+ setfont:1 
+ (3) You apply the command
+  setfont
+ .
+  
+ If the current unit is one inch, for example, this will give you letters
+  1/4
+ ′′
+ high:
+  
+ /Helvetica-Bold findfont 
+  
+ 0.25 scalefont 
+  
+ setfont
+  
+ The command
+  findfont
+  loads the font named onto the stack. The command
+  scalefont
+  sets the size of the font on 
+ the stack, leaving the font there. The command
+  setfont
+  sets the current font to the one on the top of the stack. 
+ The current font is part of the graphics state, so it is affected by the
+  gsave
+  and
+  grestore
+  commands.
+  
+ Of course, you can switch back and forth among several fonts. If you are going to do this, you will probably 
+ want to write procedures to do this efficiently, rather than having to go through the whole sequence above.
+  
+ You can use other PostScript fonts, too, but you ought to include them explicitly in your file. I’ll say something 
+ about that later. I’ll also explain later how to display all the characters in a font.
+  
+ show:1
+  
+ To put text on a page, after you have set a current font, you move to where you want the text to begin, and then 
+ use the
+  show
+  command. The text itself is made into a
+  string
+  by enclosing it within parentheses. Thus",NA
+Geometry,"You can print out the value of a variable on the page. To do this, you must convert the variable to a string with 
+ riables:displaying:2 
+  
+ the command
+  cvs
+ , using an empty string of sufficient size to hold the variable’s value.
+  
+ 0 0 moveto 
+  
+ (x = ) show 
+  
+ x ( ) cvs show
+  
+ will produce this, if
+  x = 3
+ :",NA
+x = 3,"A font is part of the graphics state, and the way it’s displayed depends entirely on the current coordinate 
+ system. You can understand exactly what happens if you keep this in mind:
+  
+ •
+  PostScript treats letters as paths.
+  
+ Scaling of a font is in terms of the current units. Changing the scale of the entire figure will also affect a font’s 
+ true size, along with the size of everything else. But you can also shear a font or reverse it by suitable
+  concat 
+ operations. You can get interesting effects.
+  
+ 2. Outline fonts
+  
+ If characters are paths, you should be able to do with them all the things you can do with ordinary paths. This 
+  
+ font encryption:2
+  is almost true—the only exception is that often the inner details of fonts are hidden from close inspection. This is 
+ for legal reasons. Characters from a font, along with all other images, are subject to copyright, but because of 
+  
+ their high reproducibility they are often encrypted. On the other hand, there are a lot of high quality fonts which 
+  
+ are in the public domain and unencrypted.
+  
+ The command
+  show
+  applied to a string fills in a special way the path generated by the string. But you can 
+ access the path itself by using the command
+  charpath
+ , which appends the path of the string to the current path. 
+ You could then fill it, but for that task this wouldn’t be a very efficient way of proceeding. One more 
+ interesting thing you can do, however, is stroke it or clip to it. The command
+  charpath
+  takes two arguments, a 
+ string and a boolean value. Use
+  true
+  if you intend to stroke the outline,
+  false
+  if you intend to fill or clip. It is 
+ also a good idea to set the values of
+  linejoin
+  and
+  linecap
+  to something other than
+  0
+ .",NA
+Zooming,"One of the greatest advantages of using PostScript for illustrations is that it is scalable—there are no artefacts in 
+ the illustration that show up when it is examined closely. This is in opposition to digital photographs, for 
+ example, when blow-up will start to show pixels. This appendix will explain how to take advantage of this.
+  
+ 1. Zooming
+  
+ zoom:1
+  I shall explain here a procedure called
+  zoom
+  which has the effect of zooming in at a point by a given scale. The 
+  
+ overall effect can be illustrated by these three figures, where the zoom factor is
+  2
+ :
+  
+ 
+  
+ 
+  
+ 
+  
+ How can we do this? There are three arguments for this procedure. One is the scale factor
+  c
+ . If it’s greater than 
+ one, the scale change is a magnification and we are zooming in. If it’s less than
+  1
+ , we are zooming out, not in. If 
+ it’s exactly
+  1
+ , there is no scale change, the zoom will amount to a translation of the origin. Another argument is 
+ a point
+  (x, y)
+  in the original figure. The last argument is the point
+  (c
+ x
+ , c
+ y
+ )
+  to which
+  (x, y)
+  is to be relocated. If we 
+ want to locate
+  (x, y)
+  at the centre of a page, for example, and if the current coordinate system is the page 
+ coordinate system. then
+  (c
+ x
+ , c
+ y
+ ) = (306, 396)
+ . But if the origin of the current coordinate system is already at the 
+ centre of the page it is
+  (0, 0)
+ .
+  
+ I call
+  c
+  the
+  zoom factor
+ ,
+  (x, y)
+  the
+  focus
+  of the zoom,
+  (c
+ x
+ , c
+ y
+ )
+  its
+  centre
+ .
+  
+ It is more or less clear that what we want is a succession of translation and scales, but in what order? And 
+ which ones? The simplest way to decide is to portray geometrically what has to be done:
+  
+  
+  
+  
+  
+ centre
+  
+   
+ focus
+  
+ origin
+  
+   
+  
+  
+ centre
+  
+ focus
+  
+ origin
+  
+  
+  
+  
+   
+   
+ origin
+  
+  
+   
+   
+ centre
+  
+   
+   
+ focus
+  
+  
+  
+  
+ origin
+  
+  
+   
+   
+ centre
+  
+   
+   
+ focus",NA
+Evaluating polynomials:,NA,NA
+getting along without variables,"polynomials:1
+  Being able to evaluate arbitrary polynomials is very useful. We want a procedure with two arguments, the first a 
+ number
+  x
+  and the second an array
+  [a
+ 0
+  a
+ 1
+  . . . a
+ n−1
+ ]
+  to be interpreted as the coefficients of a polynomial. The 
+ procedure should return
+  P(x) = a
+ 0
+  + a
+ 1
+ x + · · · + a
+ n−1
+ x
+ n−1
+ . In choosing this order for the arguments, I am 
+ following the usual rule of PostScript with an argument
+  x
+  first and then the object to be applied to it (the 
+ polynomial). The point is that this choice makes composition easy.
+  
+ In using polynomial evaluation in some tools, such as
+  mkpath
+ , the derivatives of
+  P
+  are also needed. The method 
+ used to evaluate
+  P(x)
+  can evaluate
+  P
+ ′
+ (x)
+  with little extra effort.
+  
+ In many applications, a polynomial has to be evaluated many times, and it is therefore important to design the 
+ evaluation procedure to be efficient. This will offer an excuse to include a few remarks about managing the 
+ stack without variable names.
+  
+ 1. The most straightforward way to do it
+  
+ Here is a simple procedure that will evaluate an arbitrary polynomial
+  a
+ 3
+ x
+ 3
+ + a
+ 2
+ x
+ 2
+ + a
+ 1
+ x + a
+ 0
+  of degree three.
+  
+ % arguments: 
+  
+ number x and array a = [ a0 a1 a2 a3 ] 
+  
+ cubic-poly { 2 dict begin 
+  
+  
+ /a exch def 
+  
+  
+ /x exch def 
+  
+  
+ a 0 get 
+  
+  
+ a 1 get x mul add 
+  
+  
+ a 2 get x 2 exp mul add 
+  
+  
+ a 3 get x 3 exp mul add 
+  
+ end } def
+  
+ Exercise 1.
+  Extend this procedure, using a
+  for
+  loop, so that it will evaluate a polynomial of arbitrary degree. Be 
+ careful that your procedure works even for a polynomial of degree
+  0
+  (a constant). Also, it should return
+  0
+  if the 
+ array is empty. (Note that the degree is one less than the length of the coefficient array.)
+  
+ Exercise 2.
+  Extend in turn the procedure from the previous exercise so that it will return the array of two 
+ numbers 
+ [P(x) P
+ ′
+ (x)]
+ .
+  
+ 2. Horner’s method
+  
+ thod of evaluation:1
+  The PostScript command
+  exp
+  is somewhat slow, and the straightforward procedure used above is therefore 
+  
+  
+ probably inefficient. Better is an elegant method of evaluating polynomials due to the nineteenth century English 
+ Horner, W. 
+ G.:1 
+  
+ mathematician W. G. Horner. It does not use
+  exp
+ , but gets by with just successive multiplications and additions.
+  
+ We start off by rewriting a cubic polynomial:
+  
+ P(x) = a
+ 3
+ x
+ 3
+ + a
+ 2
+ x
+ 2
+ + a
+ 1
+ x + a
+ 0
+  = (((a
+ 3
+ )x + a
+ 2
+ )x + a
+ 1
+ )x + a
+ 0
+  .",NA
+Importing PostScript files,"ng PostScript files:1 
+  
+ Very often you want to import one PostScript file into another. The one you want to import will quite possibly 
+  
+ have been produced by another program, and may be a more or less generic PostScript file, so you have to be 
+  
+ prepared for almost anything. You have to
+  encapsulate
+ the imported file so that it does not upset the 
+ environment 
+  
+ into which it is imported.
+  
+ A special case of this is one of the most vexing tasks among all those a professional mathematician encounters, 
+ labels:TEX:1
+  
+ that of putting high quality TEX labels into a mathematical diagram. The most general task of this nature can indeed be 
+ daunting, but the exact one described here need not be.
+  
+ I’ll explain what to do by a simple example, then add remarks on fancier or more difficult variations.
+  
+ 1. Labelling a graph
+  
+ Let’s suppose you have created the graph of a parabola:
+  
+ 72 dup scale
+  
+ 1 72 div setlinewidth 
+  
+ /N 100 def 
+  
+ newpath 
+  
+ /x -1.25 def 
+  
+ /dx 2.5 N div def 
+  
+ x dup dup mul moveto 
+  
+ N { 
+  
+  
+ /x x dx add def
+  
+  
+ x dup dup mul lineto
+  
+ } repeat
+  
+ stroke
+  
+ and now you want to add a label to it, so it becomes:
+  
+ y = x
+ 2
+  
+ You could produce your own label in PostScript, but getting the fonts to look right, and getting the spacing 
+ right
+  
+ in mathematical text—for example the superscript in this case—is hard, and better left to some other program. I
+  
+ have used Donald Knuth’s program TEX here to make up the label, and then
+  dvips
+ , a program written by John 
+ Hobby (once a graduate student of Knuth’s), to produce from the TEX output a PostScript file. I’ll say more 
+ about this process later, even though it is not really a PostScript matter. The important thing is that in the end I 
+ get a file called, say,
+  label.eps
+  which contains the PostScript code to write the text ‘
+ y = x
+ 2
+ ’. The basic idea is
+  
+ now simple—to include a line
+  (label.eps) run
+  in the PostScript file containing the parabola. There are two
+  
+ additional things to do, however: (1) take into account the different coordinate systems in parabola drawing 
+ and
+  
+ in the label file; (2) isolate effects of the program in the label file.",NA
+y = x,NA,NA
+2,"( 290, 695)
+  
+ The line
+  -290 -695 translate
+  therefore sets the lower left corner of the imported image at the origin of the figure 
+ it is being imported to. So dealing with different coordinate systems is very simple, actually. All you need to do 
+ is figure out the bounding box of the imported file. The line
+  10 10 translate
+  placed before the importation thus 
+ has the effect of locating this corner at
+  (10, 10)
+  in the importing file. You might very well want to do some 
+ other transformations to that imported file. Suppose that in addition you want to scale the import in place, for 
+ example: make it
+  
+ 10 10 translate 
+  
+ 4 4 scale
+  
+ -290 -695 translate
+  
+  
+ Order is important here, as it always is in coordinate changes.
+  
+ Deciding where to place the imported file may not be straightforward, and usually
+  
+ requires some fiddling around.
+  
+ Most Ghostscript viewers track the location of the
+  
+ mouse in default coordinates to help you out in this task.
+  
+ The viewer I use, for
+  
+ example, records those coordinates—here
+  (12, 307)
+ —in the upper left corner.
+  
+ This
+  
+ is often extremely useful. In order to take advantage of this feature, you must restore 
+ default coordinates before importing files.
+  
+ What I have said so far will handle most imports, but sometimes a somewhat more robust technique is 
+ required. The principal new feature is to restore the default graphics environment before importation. Also, 
+ messy stack handling by the imported files has to be allowed for.
+  
+ /BeginImport { 
+  
+   
+ % save the current state 
+  
+  
+ save /SavedState exch def 
+  
+   
+ % save the sizes of two stacks 
+  
+  
+ count /OpStackSize exch def 
+  
+  
+ /DictStackSize countdictstack def 
+  
+   
+ % turn off showpage 
+  
+  
+ /showpage {} def 
+  
+   
+ % set up default graphics state 
+  
+  
+ 0 setgray 0 setlinecap 
+  
+  
+ 1 setlinewidth 0 setlinejoin 
+  
+  
+ 10 setmiterlimit [] 0 setdash newpath 
+  
+  
+ /languagelevel where",NA
+Epilogue,"The association between mathematics and graphics is ancient. Indeed, as the 
+ scholar of Greek mathematics T. L. Heath has observed, the Greek root of the 
+ word ‘graphics’ seems to mean in places ‘to prove’. But the association is far 
+ older than even the civilization of classical Greece. One of the very oldest 
+ math-ematical documents we now possess is YBC 7289, a tablet dating from 
+ about 1800 B.C. and now found in the Yale Babylonian Collection. The three 
+ numbers written on the tablet (in base
+  60
+  notation) express
+  1/2
+ , an 
+ approximation of
+ √2 
+ to about 8 decimal figures, and the corresponding 
+ product
+ √2/2
+ . The diagram on it is plausibly a part of a simple geometric 
+ proof of Pythagoras’ theorem for isosceles right triangles, closely related to 
+ the well known figure associated with the discussion of this result in Plato’s 
+ Meno. This extraordinary object
+  
+ therefore seems to show that the person who made it knew both that the ratio of the diagonal to the side of a 
+ square was a real number whose square was two, and why it was so. I like to think that this diagram tells us 
+ that the association of logical reasoning with mathematics originated with deductions from figures, although of 
+ course any train of real evidence of how mathematical reasoning came about is to us is beyond recovery.
+  
+ The quality of mathematical reasoning made an extraordi-
+  
+ tion between pictures and reasoning has continued for the entire history of mathematics, although with varying 
+ impor-tance. It reached a low point during the 18th century, prob-ably because from the earliest days of modern 
+ mathematical analysis it was realized that pictures were inadequate to deal
+  
+ nary leap among the Greeks, notably with the appearance 
+ of the Elements of Euclid. Figures were still required, of 
+ course, and one small but significant advance was made 
+ by linking text and figures with labels. Of course the 
+ connec-
+  
+ with the complexities of the subject, and could be seriously deceptive. The tone was struck most forcefully in 
+ Lagrange’s famous boast in the preface to his Analytical mechanics that “One will not find any figures in this 
+ work. The methods which I explain in it require neither constructions nor geometrical nor mechanical 
+ reasoning, but only algebraic operations.” Such an attitude towards illustration in mathematics continued to be 
+ sounded, and with some justification, through the entire nineteenth century and into the twentieth. During 
+ much of that time, it was often amateurs who came up with the best graphics in mathematics, although there 
+ were notable exceptions. Technology was poor—even through the nineteenth century technical illustrations 
+ were often done with woodcuts. To compensate for this, labour was fairly cheap during much of the century, 
+ but eventually costs overtook convenience, and the quality of mathematical illustration went down. Cost 
+ presumably explains why we had in the twentieth century otherwise fine books on geometry notoriously",NA
+Clipping,"In Chapter 4 the Hodgman-Sutherland clipping algorithm was explained. Given an affine function
+  f(x)
+  and a 
+ polygonal path
+  γ
+ , it returns the truncation of
+  γ
+  to the region
+  f ≤ 0
+ . It has one major fault, however—if the path 
+ being clipped does not enclose a convex region and when clipped is really a union of distinct components, this 
+ algorithm returns a single path instead of the collection of paths one would expect. We’ll see a new version in 
+ this note, one that can also be used with minor modification to draw regions on spheres, clipping them to the 
+ visible side of the sphere.
+  
+ 1. The problem
+  
+ This figure explains the problem:
+  
+  
+ The Hodgman-Sutherland algorithm described in Chapter 4 returns here a single path instead of two—the 
+ figure on the left instead of that on the right:",NA

@@ -1,0 +1,6591 @@
+Larger Text,Smaller Text,Symbol
+Practical Foundations for Programming Languages,"This text develops a comprehensive theory of programming languages based on 
+ type sys-tems and structural operational semantics. Language concepts are 
+ precisely defined by their static and dynamic semantics, presenting the essential 
+ tools both intuitively and rigorously while relying on only elementary mathematics. 
+ These tools are used to analyze and prove properties of languages and provide the 
+ framework for combining and comparing language features. The broad range of 
+ concepts includes fundamental data types such as sums and products, polymorphic 
+ and abstract types, dynamic typing, dynamic dispatch, subtyping and refinement 
+ types, symbols and dynamic classification, parallelism and cost semantics, and 
+ concurrency and distribution. The methods are directly applicable to language 
+ imple-mentation, to the development of logics for reasoning about programs, and to 
+ the formal verification language properties such as type safety.
+  
+  
+ This thoroughly revised second edition includes exercises at the end of nearly 
+ every chapter and a new chapter on type refinements.
+  
+ Robert Harper
+  is a professor in the Computer Science Department at Carnegie 
+ Mellon University. His main research interest is in the application of type theory to 
+ the design and implementation of programming languages and to the 
+ mechanization of their meta-theory. Harper is a recipient of the Allen Newell Medal 
+ for Research Excellence and the Herbert A. Simon Award for Teaching Excellence, 
+ and is an Association for Computing Machinery Fellow.",NA
+Practical Foundations ,NA,NA
+for Programming ,NA,NA
+Languages,NA,NA
+Second Edition,NA,NA
+Robert Harper ,Carnegie Mellon University,NA
+Contents,"page
+  xv
+  
+ Preface to the First Edition 
+  
+ xvii
+  
+ Part I Judgments and Rules
+  
+ 1
+  Abstract Syntax  
+ 3
+  
+ 1.1 
+  
+ Abstract Syntax Trees 
+  
+ 3
+  
+ 1.2 
+  
+ Abstract Binding Trees 
+  
+ 6
+  
+ 1.3 
+  
+ Notes 
+  
+ 10
+  
+ 2
+  Inductive Definitions 
+  
+ 1
+ 2
+  
+ 2.1 Judgments 
+  
+ 12
+  
+ 2.2 Inference Rules 
+  
+ 12
+  
+ 2.3 Derivations 
+  
+ 14
+  
+ 2.4 Rule Induction 
+  
+ 15
+  
+ 2.5 Iterated and Simultaneous Inductive Definitions 
+  
+ 17
+  
+ 2.6 Defining Functions by Rules 
+  
+ 18
+  
+ 2.7 Notes 
+  
+ 19
+  
+ 3
+  Hypothetical and General Judgments 
+  
+ 2
+ 1
+  
+ 3.1 Hypothetical Judgments 
+  
+ 21
+  
+ 3.2 Hypothetical Inductive Definitions 
+  
+ 24",NA
+Preface to the Second Edition,"Writing the second edition to a textbook incurs the same risk as building the second 
+ version of a software system. It is difficult to make substantive improvements, while 
+ avoiding the temptation to overburden and undermine the foundation on which one 
+ is building. With the hope of avoiding the second system effect, I have sought to 
+ make corrections, revisions, expansions, and deletions that improve the coherence 
+ of the development, remove some topics that distract from the main themes, add 
+ new topics that were omitted from the first edition, and include exercises for almost 
+ every chapter.
+  
+  
+ The revision removes a number of typographical errors, corrects a few material 
+ errors (especially the formulation of the parallel abstract machine and of 
+ concurrency in Algol), and improves the writing throughout. Some chapters have 
+ been deleted (general pattern matching and polarization, restricted forms of 
+ polymorphism), some have been completely rewritten (the chapter on higher 
+ kinds), some have been substantially revised (general and parametric inductive 
+ definitions, concurrent and distributed Algol), several have been reorganized (to 
+ better distinguish partial from total type theories), and a new chapter has been 
+ added (on type refinements). Titular attributions on several chapters have been 
+ removed, not to diminish credit, but to avoid confusion between the present and the 
+ original formulations of several topics. A new system of (pronounceable!) language 
+ names has been introduced throughout. The exercises generally seek to expand on 
+ the ideas in the main text, and their solutions often involve significant technical 
+ ideas that merit study. Routine exercises of the kind one might include in a 
+ homework assignment are deliberately few. 
+  
+ My purpose in writing this book 
+ is to establish a comprehensive framework for formu-lating and analyzing a broad 
+ range of ideas in programming languages. If language design and programming 
+ methodology are to advance from a trade-craft to a rigorous discipline, it is essential 
+ that we first get the definitions right. Then, and only then, can there be mean-ingful 
+ analysis and consolidation of ideas. My hope is that I have helped to build such a 
+ foundation.
+  
+ I am grateful to Stephen Brookes, Evan Cavallo, Karl Crary, Jon Sterling, James R. 
+ Wilcox and Todd Wilson for their help in critiquing drafts of this edition and for 
+ their suggestions for modification and revision. I thank my department head, Frank 
+ Pfenning, for his support of my work on the completion of this edition. Thanks also 
+ to my editors, Ada Brunstein and Lauren Cowles, for their guidance and assistance. 
+ And thanks to Andrew Shulaev for corrections to the draft.
+  
+ Neither the author nor the publisher make any warranty, express or implied, that 
+ the definitions, theorems, and proofs contained in this volume are free of error, or 
+ are consistent with any particular standard of merchantability, or that they will",NA
+Preface to the First Edition,"Types are the central organizing principle of the theory of programming languages. 
+ Lan-guage features are manifestations of type structure. The syntax of a language is 
+ governed by the constructs that define its types, and its semantics is determined by 
+ the interactions among those constructs. The soundness of a language design—the 
+ absence of ill-defined programs—follows naturally.
+  
+ The purpose of this book is to explain this remark. A variety of programming 
+ language features are analyzed in the unifying framework of type theory. A 
+ language feature is defined by its
+  statics
+ , the rules governing the use of the feature 
+ in a program, and its
+  dynamics
+ , the rules defining how programs using this feature 
+ are to be executed. The concept of
+  safety 
+ emerges as the coherence of the statics and 
+ the dynamics of a language.
+  
+ In this way, we establish a foundation for the study of programming languages. 
+ But why these particular methods? The main justification is provided by the book 
+ itself. The methods we use are both
+  precise
+  and
+  intuitive
+ , providing a uniform 
+ framework for explaining programming language concepts. Importantly, these 
+ methods
+  scale
+  to a wide range of programming language concepts, supporting 
+ rigorous analysis of their properties. Although it would require another book in 
+ itself to justify this assertion, these methods are also 
+ practical
+  in that they are
+  
+ directly applicable
+  to implementation and
+  uniquely effective
+  as a basis for 
+ mechanized reasoning. No other framework offers as much.
+  
+ Being a consolidation and distillation of decades of research, this book does not 
+ provide an exhaustive account of the history of the ideas that inform it. Suffice it to 
+ say that much of the development is not original but rather is largely a 
+ reformulation of what has gone before. The notes at the end of each chapter 
+ signpost the major developments but are not intended as a complete guide to the 
+ literature. For further information and alternative perspectives, the reader is 
+ referred to such excellent sources as Constable (1986, 1998), Girard (1989), Martin-
+ L¨of (1984), Mitchell (1996), Pierce (2002, 2004), and Reynolds (1998).
+  
+ The book is divided into parts that are, in the main, independent of one another. 
+ Parts I and II, however, provide the foundation for the rest of the book and must 
+ therefore be considered prior to all other parts. On first reading, it may be best to 
+ skim Part I, and begin in earnest with Part II, returning to Part I for clarification of 
+ the logical framework in which the rest of the book is cast.
+  
+ Numerous people have read and commented on earlier editions of this book and 
+ have suggested corrections and improvements to it. I am particularly grateful to 
+ Umut Acar, Jesper Louis Andersen, Carlo Angiuli, Andrew Appel, Stephanie Balzer, 
+ Eric Bergstrom, Guy E. Blelloch, Iliano Cervesato, Lin Chase, Karl Crary, Rowan",NA
+P A R T I,NA,NA
+Judgments and Rules,NA,NA
+1,NA,NA
+Abstract Syntax,"Programming languages express computations in a form comprehensible to both 
+ people and machines. The syntax of a language specifies how various sorts of 
+ phrases (expressions, commands, declarations, and so forth) may be combined to 
+ form programs. But what are these phrases? What is a program made of?
+  
+ The informal concept of syntax involves several distinct concepts. The
+  surface
+ , or
+  
+ con-crete
+ ,
+  syntax
+  is concerned with how phrases are entered and displayed on a 
+ computer. The surface syntax is usually thought of as given by strings of characters 
+ from some alphabet (say, ASCII or Unicode). The
+  structural
+ , or
+  abstract
+ ,
+  syntax
+  is 
+ concerned with the structure of phrases, specifically how they are composed from 
+ other phrases. At this level, a phrase is a tree, called an
+  abstract syntax tree
+ , whose 
+ nodes are operators that combine several phrases to form another phrase. The
+  
+ binding
+  structure of syntax is concerned with the introduction and use of 
+ identifiers: how they are declared, and how declared identifiers can be used. At this 
+ level, phrases are
+  abstract binding trees
+ , which enrich abstract syntax trees with the 
+ concepts of binding and scope.
+  
+ We will not concern ourselves in this book with concrete syntax but will instead 
+ consider pieces of syntax to be finite trees augmented with a means of expressing 
+ the binding and scope of identifiers within a syntax tree. To prepare the ground for 
+ the rest of the book, we define in this chapter what is a “piece of syntax” in two 
+ stages. First, we define abstract syntax trees, or ast’s, which capture the hierarchical 
+ structure of a piece of syntax, while avoiding commitment to their concrete 
+ representation as a string. Second, we augment abstract syntax trees with the 
+ means of specifying the binding (declaration) and scope (range of significance) of an 
+ identifier. Such enriched forms of abstract syntax are called abstract binding trees, 
+ or abt’s for short.
+  
+ Several functions and relations on abt’s are defined that give precise meaning to 
+ the informal ideas of binding and scope of identifiers. The concepts are infamously 
+ difficult to define properly and are the mother lode of bugs for language 
+ implementors. Consequently, precise definitions are essential, but they are also 
+ fairly technical and take some getting used to. It is probably best to skim this 
+ chapter on first reading to get the main ideas, and return to it for clarification as 
+ necessary.
+  
+ 1.1 Abstract Syntax Trees",NA
+2,NA,NA
+Inductive Definitions,"Inductive definitions are an indispensable tool in the study of programming 
+ languages. In this chapter we will develop the basic framework of inductive 
+ definitions and give some examples of their use. An inductive definition consists of a 
+ set of
+  rules
+  for deriving 
+ judgments
+ , or
+  assertions
+ , of a variety of forms. Judgments are 
+ statements about one or more abstract binding trees of some sort. The rules specify 
+ necessary and sufficient conditions for the validity of a judgment, and hence fully 
+ determine its meaning.
+  
+ 2.1 Judgments
+  
+ We start with the notion of a
+  judgment
+ , or
+  assertion
+ , about an abstract binding tree. 
+ We shall make use of many forms of judgment, including examples such as these:
+  
+ n
+  nat 
+  
+ n
+  is a natural number 
+  
+ n
+ 1
+  +
+  n
+ 2
+  =
+  nτ
+  type 
+  
+ n
+  is the sum of
+  n
+ 1
+  
+ and
+  n
+ 2
+  
+ τ
+  is a type 
+  
+ e
+  :
+  τ
+  
+ expression
+  e
+  has type
+  τ
+  
+ e
+  ⇓
+  v 
+  
+ expression
+  e
+  has value
+  
+ v
+  
+ A judgment states that one or more abstract binding trees have a property or 
+ stand in some relation to one another. The property or relation itself is called a
+  
+ judgment form
+ , and the judgment that an object or objects have that property or 
+ stand in that relation is said to be an
+  instance
+  of that judgment form. A judgment 
+ form is also called a
+  predicate
+ , and the objects constituting an instance are its
+  
+ subjects
+ . We write
+  a
+  J or J
+  a
+ , for the judgment asserting that J holds of the abt
+  a
+ . 
+ Correspondingly, we sometimes notate the judgment form J by − J, or J −, using a 
+ dash to indicate the absence of an argument to J. When it is not important to stress 
+ the subject of the judgment, we write
+  J
+  to stand for an unspecified judgment, that is, 
+ an instance of some judgment form. For particular judgment forms, we freely use 
+ prefix, infix, or mix-fix notation, as illustrated by the above examples, in order to 
+ enhance readability.
+  
+ 2.2 Inference Rules",NA
+3,NA,NA
+Hypothetical and General ,NA,NA
+Judgments,"A
+  hypothetical judgment
+  expresses an entailment between one or more hypotheses 
+ and a conclusion. We will consider two notions of entailment, called
+  derivability
+  and
+  
+ admissibil-ity
+ . Both express a form of entailment, but they differ in that derivability 
+ is stable under extension with new rules, admissibility is not. A
+  general judgment
+  
+ expresses the universal-ity, or genericity, of a judgment. There are two forms of 
+ general judgment, the
+  generic
+  and the
+  parametric
+ . The generic judgment expresses 
+ generality with respect to all substitution instances for variables in a judgment. The 
+ parametric judgment expresses generality with respect to renamings of symbols.
+  
+ 3.1 Hypothetical Judgments
+  
+ The hypothetical judgment codifies the rules for expressing the validity of a 
+ conclusion conditional on the validity of one or more hypotheses. There are two 
+ forms of hypothetical judgment that differ according to the sense in which the 
+ conclusion is conditional on the hypotheses. One is stable under extension with 
+ more rules, and the other is not.
+  
+ 3.1.1 Derivability 
+ For a given set
+  R
+  of rules, we define the
+  derivability
+  judgment, written
+  J
+ 1
+ , . . . , J
+ k
+  ⊢
+ R
+  K
+ , 
+ where each
+  J
+ i
+  and
+  K
+  are basic judgments, to mean that we may derive
+  K
+  from the
+  
+ expansion
+  
+ R
+  ∪ {
+  J
+ 1
+ , . . . , J
+ k
+  } of the rules
+  R
+  with the axioms
+  
+ J
+ 1
+  
+ . . .
+  
+ J
+ k
+  
+ .
+  
+ We treat the
+  hypotheses
+ , or
+  antecedents
+ , of the judgment,
+  J
+ 1
+ , . . . , J
+ k
+  as “temporary 
+ axioms,”and derive the
+  conclusion
+ , or
+  consequent
+ , by composing rules in
+  R
+ . Thus, 
+ evidence for a hypothetical judgment consists of a derivation of the conclusion from 
+ the hypotheses using the rules in
+  R
+ .
+  
+ We use capital Greek letters, usually or, to stand for a finite set of basic judgments, 
+ and write
+  R
+  ∪ for the expansion of
+  R
+  with an axiom corresponding to each judgment 
+ in . The judgment ⊢
+ R
+  K
+  means that
+  K
+  is derivable from rules
+  R
+  ∪, and the judgment⊢
+ R
+  
+ means that ⊢
+ R
+  J
+  for each
+  J
+  in. An equivalent way of defining
+  J
+ 1
+ , . . . , J
+ n
+  ⊢
+ R
+  J
+  is",NA
+P A R T II,NA,NA
+Statics and Dynamics,NA,NA
+4,NA,NA
+Statics,"Most programming languages exhibit a
+  phase distinction
+  between the
+  static
+  and
+  
+ dynamic 
+ phases of processing. The static phase consists of parsing and type 
+ checking to ensure that the program is well-formed; the dynamic phase consists of 
+ execution of well-formed programs. A language is said to be
+  safe
+  exactly when well-
+ formed programs are well-behaved when executed.
+  
+ The static phase is specified by a
+  statics
+  comprising a set of rules for deriving
+  
+ typing judgments
+  stating that an expression is well-formed of a certain type. Types 
+ mediate the interaction between the constituent parts of a program by “predicting” 
+ some aspects of the execution behavior of the parts so that we may ensure they fit 
+ together properly at run-time. Type safety tells us that these predictions are 
+ correct; if not, the statics is considered to be improperly defined, and the language 
+ is deemed
+  unsafe
+  for execution.
+  
+  
+ In this chapter, we present the statics of a simple expression language,
+  E
+ , as an 
+ illustration of the method that we will employ throughout this book.
+  
+ 4.1 Syntax
+  
+ When defining a language we shall be primarily concerned with its abstract syntax, 
+ specified by a collection of operators and their arities. The abstract syntax provides 
+ a systematic, unambiguous account of the hierarchical and binding structure of the 
+ language and is considered the official presentation of the language. However, for 
+ the sake of clarity, it is also useful to specify minimal concrete syntax conventions, 
+ without going through the trouble to set up a fully precise grammar for it.
+  
+ We will accomplish both of these purposes with a
+  syntax chart
+ , whose meaning is 
+ best illustrated by example. The following chart summarizes the abstract and 
+ concrete syntax of
+  E
+ .
+  
+ Typ
+  
+ τ
+  
+ ::=
+  
+ num
+  
+ num
+  
+ numbers
+  
+ str
+  
+ str
+  
+ strings
+  
+ Exp
+  
+ e
+  
+ ::=
+  
+ x
+  
+ x
+  
+ variable
+  
+ num[
+ n
+ ]
+  
+ n
+  
+ numeral
+  
+ str[
+ s
+ ]
+  
+ ""
+ s
+ ""
+  
+ literal
+  
+ plus(
+ e
+ 1
+ ;
+  e
+ 2
+ )
+  
+ e
+ 1
+  +
+  e
+ 2 
+  
+ e
+ 1
+  ∗
+  e
+ 2 
+ e
+ 1
+  
+ ^
+  e
+ 2
+  
+ addition
+  
+ times(
+ e
+ 1
+ ;
+  e
+ 2
+ )
+  
+ multiplication
+  
+ cat(
+ e
+ 1
+ ;
+  e
+ 2
+ )
+  
+ concatenation
+  
+ len(
+ e
+ )
+  
+ |
+ e
+ | 
+  
+ let
+  x
+  be
+  e
+ 1
+  in
+  e
+ 2
+  
+ length
+  
+ let(
+ e
+ 1
+ ;
+  x.e
+ 2
+ )
+  
+ definition",NA
+5,NA,NA
+Dynamics,"The
+  dynamics
+  of a language describes how programs are executed. The most 
+ important way to define the dynamics of a language is by the method of
+  structural 
+ dynamics
+ , which defines a
+  transition system
+  that inductively specifies the step-by-
+ step process of executing a program. Another method for presenting dynamics, 
+ called
+  contextual dynamics
+ , is a variation of structural dynamics in which the 
+ transition rules are specified in a slightly different way. An
+  equational dynamics
+  
+ presents the dynamics of a language by a collection of rules defining when one 
+ program is
+  definitionally equivalent
+  to another.
+  
+ 5.1 Transition Systems
+  
+ A
+  transition system
+  is specified by the following four forms of judgment:
+  
+ 1.
+  s
+  state, asserting that
+  s
+  is a
+  state
+  of the transition system.
+  
+ 2.
+  s
+  final, where
+  s
+  state, asserting that
+  s
+  is a
+  final
+  state.
+  
+ 3.
+  s
+  initial, where
+  s
+  state, asserting that
+  s
+  is an
+  initial
+  state.
+  
+ 4.
+  s
+  −→
+  s
+ ′
+ , where
+  s
+  state and
+  s
+ ′
+ state, asserting that state
+  s
+  may transition to state
+  s
+ ′
+ .
+  
+ In practice, we always arrange things so that no transition is possible from a final 
+ state: if 
+ s
+  final, then there is no
+  s
+ ′
+ state such that
+  s
+  −→
+  s
+ ′
+ . A state from which no 
+ transition is possible is
+  stuck
+ . Whereas all final states are, by convention, stuck, 
+ there may be stuck states in a transition system that are not final. A transition 
+ system is
+  deterministic
+  iff for every state
+  s
+  there exists at most one state
+  s
+ ′
+ such that
+  s
+  
+ −→
+  s
+ ′
+ ; otherwise, it is
+  non-deterministic
+ . A
+  transition sequence
+  is a sequence of states
+  
+ s
+ 0
+ , . . . , s
+ n
+  such that
+  s
+ 0
+  initial, and
+  s
+ i
+  −→
+  s
+ i
+ +1 
+ for every 0 ≤
+  i < n
+ . A transition sequence is
+  
+ maximal
+  iff there is no
+  s
+  such that
+  s
+ n
+  −→
+  s
+ , and it is
+  complete
+  iff it is maximal and
+  s
+ n
+  
+ final. Thus, every complete transition sequence is maximal, but maximal sequences 
+ are not necessarily complete. The judgment
+  s
+  ↓ means that there is a complete 
+ transition sequence starting from
+  s
+ , which is to say that there exists 
+ s
+ ′
+ final such that
+  
+ s
+  −→
+ ∗
+ s
+ ′
+ .
+  
+  
+ The
+  iteration
+  of transition judgment
+  s
+  −→
+ ∗
+ s
+ ′
+ is inductively defined by the following 
+ rules:",NA
+6,NA,NA
+Type Safety,"Most programming languages are
+  safe
+  (or,
+  type safe
+ , or
+  strongly typed
+ ). Informally, 
+ this means that certain kinds of mismatches cannot arise during execution. For 
+ example, type safety for
+  E
+  states that it will never arise that a number is added to a 
+ string, or that two numbers are concatenated, neither of which is meaningful.
+  
+ In general, type safety expresses the coherence between the statics and the 
+ dynamics. The statics may be seen as predicting that the value of an expression will 
+ have a certain form so that the dynamics of that expression is well-defined. 
+ Consequently, evaluation cannot“get stuck” in a state for which no transition is 
+ possible, corresponding in implementation terms to the absence of “illegal 
+ instruction” errors at execution time. Safety is proved by showing that each step of 
+ transition preserves typability and by showing that typable states are well-defined. 
+ Consequently, evaluation can never “go off into the weeds” and, hence, can never 
+ encounter an illegal instruction.
+  
+ Type safety for the language
+  E
+  is stated precisely as follows:
+  
+ Theorem 6.1
+  (Type Safety)
+ .
+  
+ 1. If e
+  :
+  τ and e
+  −→
+  e
+ ′
+ , then e
+ ′
+ :
+  τ.
+  
+ 2. If e
+  :
+  τ, then either e val, or there exists e
+ ′
+ such that e
+  −→
+  e
+ ′
+ .
+  
+ The first part, called
+  preservation
+ , says that the steps of evaluation preserve 
+ typing; the second, called
+  progress
+ , ensures that well-typed expressions are either 
+ values or can be further evaluated. Safety is the conjunction of preservation and 
+ progress.
+  
+ We say that an expression
+  e
+  is
+  stuck
+  iff it is not a value, yet there is no
+  e
+ ′
+ such that 
+ e
+  
+ −→
+  e
+ ′
+ . It follows from the safety theorem that a stuck state is necessarily ill-typed. 
+ Or, putting it the other way around, that well-typed states do not get stuck.
+  
+ 6.1 Preservation
+  
+ The preservation theorem for
+  E
+  defined in Chapters 4 and 5 is proved by rule 
+ induction on the transition system (rules (5.4)).",NA
+7,NA,NA
+Evaluation Dynamics,"In Chapter 5, we defined evaluation of expressions in
+  E
+  using a structural dynamics. 
+ Structural dynamics is very useful for proving safety, but for some purposes, such as 
+ writing a user manual, another formulation, called
+  evaluation dynamics
+ , is 
+ preferable. An evaluation dynamics is a relation between a phrase and its value that 
+ is defined without detailing the step-by-step process of evaluation. A
+  cost dynamics
+  
+ enriches an evaluation dynamics with a
+  cost measure
+  specifying the resource usage 
+ of evaluation. A prime example is time, measured as the number of transition steps 
+ required to evaluate an expression according to its structural dynamics.
+  
+ 7.1 Evaluation Dynamics
+  
+ An
+  evaluation dynamics
+  consists of an inductive definition of the evaluation 
+ judgment
+  e
+  ⇓
+  v 
+ stating that the closed expression
+  e
+  evaluates to the value
+  v
+ . The 
+ evaluation dynamics of
+  E 
+ is defined by the following rules:
+  
+ num[
+ n
+ ] ⇓ num[
+ n
+ ]
+  
+ (7.1a)
+  
+ str[
+ s
+ ] ⇓ str[
+ s
+ ]
+  
+ (7.1b)
+  
+ e
+ 1
+  ⇓ num[
+ n
+ 1
+ ] 
+ e
+ 2
+  ⇓ num[
+ n
+ 2
+ ] 
+  
+ n
+ 1
+  +
+  n
+ 2
+  is
+  n
+  nat
+  
+ plus(
+ e
+ 1
+ ;
+  e
+ 2
+ ) ⇓ num[
+ n
+ ]
+  
+ (7.1c)
+  
+ e
+ 1
+  ⇓ str[
+ s
+ 1
+ ] 
+  
+ e
+ 2
+  ⇓ str[
+ s
+ 2
+ ] 
+ s
+ 1
+  ˆ
+  s
+ 2
+  =
+  s
+  str
+  
+ cat(
+ e
+ 1
+ ;
+  e
+ 2
+ ) ⇓ str[
+ s
+ ]
+  
+ (7.1d)
+  
+ e
+  ⇓ str[
+ s
+ ] |
+ s
+ | =
+  n
+  nat
+  
+ len(
+ e
+ ) ⇓ num[
+ n
+ ]
+  
+ (7.1e)
+  
+ [
+ e
+ 1
+ /x
+ ]
+ e
+ 2
+  ⇓
+  v
+ 2 
+  
+ let(
+ e
+ 1
+ ;
+  x.e
+ 2
+ ) ⇓
+  v
+ 2
+  
+ (7.1f)
+  
+ The value of a let expression is determined by substitution of the binding into the 
+ body.
+  
+ The rules are not syntax-directed, because the premise of rule (7.1f) is not a sub-
+ expression of the expression in the conclusion of that rule.",NA
+P A R T III,NA,NA
+Total Functions,NA,NA
+8,NA,NA
+Function Definitions and Values,"In the language
+  E
+ , we may perform calculations such as the doubling of a given 
+ expression, but we cannot express doubling as a concept in itself. To capture the 
+ pattern of doubling a number, we abstract away from the particular number being 
+ doubled using a
+  variable 
+ to stand for a fixed, but unspecified, number, to express the 
+ doubling of an arbitrary number. Any particular instance of doubling may then be 
+ obtained by substituting a numeric expression for that variable. In general, an 
+ expression may involve many distinct variables, necessitating that we specify which 
+ of several possible variables is varying in a particular context, giving rise to a
+  
+ function
+  of that variable.
+  
+ In this chapter, we will consider two extensions of
+  E
+  with functions. The first, and 
+ perhaps most obvious, extension is by adding
+  function definitions
+  to the language. A 
+ function is defined by binding a name to an abt with a bound variable that serves as 
+ the argument of that function. A function is
+  applied
+  by substituting a particular 
+ expression (of suitable type) for the bound variable, obtaining an expression.
+  
+ The domain and range of defined functions are limited to the types nat and str, 
+ because these are the only types of expression. Such functions are called
+  first-order
+  
+ functions, in contrast to
+  higher-order functions
+ , which permit functions as 
+ arguments and results of other functions. Because the domain and range of a 
+ function are types, this requires that we introduce
+  function types
+  whose elements 
+ are functions. Consequently, we may form functions of
+  higher type
+ , those whose 
+ domain and range may themselves be function types.
+  
+ 8.1 First-Order Functions
+  
+ The language
+  ED
+  extends
+  E
+  with function definitions and function applications as 
+ described by the following grammar:
+  
+ Exp 
+ e 
+  
+ ::= apply{
+ f
+  }(
+ e
+ ) 
+  
+ f
+  (
+ e
+ ) 
+  
+  
+ application 
+  
+  
+ fun{
+ τ
+ 1
+ ;
+  
+ τ
+ 2
+ }(
+ x
+ 1
+ .e
+ 2
+ ;
+  f.e
+ ) 
+  
+ fun
+  f
+  (
+ x
+ 1
+  :
+  τ
+ 1
+ ) :
+  τ
+ 2
+  =
+  e
+ 2
+  in
+  e 
+  
+ definition
+  
+ The expression fun{
+ τ
+ 1
+ ;
+  τ
+ 2
+ }(
+ x
+ 1
+ .e
+ 2
+ ;
+  f.e
+ ) binds the function name
+  f
+  within
+  e
+  to the pattern 
+ x
+ 1
+ .e
+ 2
+ , which has argument
+  x
+ 1
+  and definition
+  e
+ 2
+ . The domain and range of the function 
+ are, respectively, the types
+  τ
+ 1
+  and
+  τ
+ 2
+ . The expression apply{
+ f
+  }(
+ e
+ ) instantiates the 
+ binding of
+  f 
+ with the argument
+  e
+ .",NA
+9,NA,NA
+System T of Higher-Order Recursion,"System
+  T
+ , well-known as
+  G¨odel’s T
+ , is the combination of function types with the 
+ type of natural numbers. In contrast to
+  E
+ , which equips the naturals with some 
+ arbitrarily chosen arithmetic operations, the language
+  T
+  provides a general 
+ mechanism, called
+  primitive recursion
+ , from which these primitives may be defined. 
+ Primitive recursion captures the essential inductive character of the natural 
+ numbers, and hence may be seen as an intrinsic termination proof for each program 
+ in the language. Consequently, we may only define
+  total 
+ functions in the language, 
+ those that always return a value for each argument. In essence, every program in
+  T
+  
+ “comes equipped” with a proof of its termination. Although this may seem like a 
+ shield against infinite loops, it is also a weapon that can be used to show that some 
+ programs cannot be written in
+  T
+ . To do so would demand a master termination 
+ proof for every possible program in the language, something that we shall prove 
+ does not exist.
+  
+ 9.1 Statics
+  
+ The syntax of
+  T
+  is given by the following grammar:
+  
+ Typ
+  
+ τ
+  
+ ::=
+  
+ nat
+  
+ nat
+  
+ naturals
+  
+ Exp
+  
+ e
+  
+ arr(
+ τ
+ 1
+ ;
+  τ
+ 2
+ )
+  
+ τ
+ 1
+  →
+  τ
+ 2 
+ x
+  
+ function
+  
+ ::=
+  
+ x
+  
+ variable
+  
+ z
+  
+ z
+  
+ zero
+  
+ s(
+ e
+ )
+  
+ s(
+ e
+ )
+  
+ successor
+  
+  
+ rec{
+ e
+ 0
+ ;
+  x.y.e
+ 1
+ }(
+ e
+ )
+  
+ rec
+  e
+  {z→
+  e
+ 0
+  | s(
+ x
+ ) with
+  y 
+ →
+  e
+ 1
+ } recursion
+  
+ lam{
+ τ
+ }(
+ x.e
+ ) 
+  
+ ap(
+ e
+ 1
+ ;
+  e
+ 2
+ )
+  
+ λ
+  (
+ x
+  :
+  τ
+ )
+  e
+  
+ abstraction
+  
+ e
+ 1
+ (
+ e
+ 2
+ )
+  
+ application
+  
+ We write
+  n
+  for the expression s(
+ . . .
+  s(z)), in which the successor is applied
+  n
+  ≥ 0 
+ times to zero. The expression rec{
+ e
+ 0
+ ;
+  x.y.e
+ 1
+ }(
+ e
+ ) is called the
+  recursor
+ . It represents 
+ the
+  e
+ -fold iteration of the transformation
+  x.y.e
+ 1
+  starting from
+  e
+ 0
+ . The bound variable
+  
+ x
+  represents
+  
+ the predecessor and the bound variable
+  y
+  represents the result of the
+  x
+ -fold iteration. 
+ The
+  
+ “with” clause in the concrete syntax for the recursor binds the variable
+  y
+  to the result 
+ of",NA
+P A R T IV,NA,NA
+Finite Data Types,NA,NA
+10,NA,NA
+Product Types,"The
+  binary product
+  of two types consists of
+  ordered pairs
+  of values, one from each 
+ type in the order specified. The associated elimination forms are
+  projections
+ , which 
+ select the first and second component of a pair. The
+  nullary product
+ , or
+  unit
+ , type 
+ consists solely of the unique “null tuple” of no values and has no associated 
+ elimination form. The product type admits both a
+  lazy
+  and an
+  eager
+  dynamics. 
+ According to the lazy dynamics, a pair is a value without regard to whether its 
+ components are values; they are not evaluated until (if ever) they are accessed and 
+ used in another computation. According to the eager dynamics, a pair is a value only 
+ if its components are values; they are evaluated when the pair is created. 
+  
+ More 
+ generally, we may consider the
+  finite product
+ , ⟨
+ τ
+ i
+ ⟩
+ i
+ ∈
+ I
+ , indexed by a finite set of 
+ indices 
+ I
+ . The elements of the finite product type are
+  I-indexed tuples
+  whose
+  i
+ th component is 
+ an element of the type
+  τ
+ i
+ , for each
+  i
+  ∈
+  I
+ . The components are accessed by
+  I-indexed 
+ projection
+  operations, generalizing the binary case. Special cases of the finite product 
+ include
+  n-tuples
+ , indexed by sets of the form
+  I
+  = { 0
+ , . . . , n
+  − 1 }, and
+  labeled tuples
+ , or 
+ records
+ , indexed by finite sets of symbols. Similarly to binary products, finite 
+ products admit both an eager and a lazy interpretation.
+  
+ 10.1 Nullary and Binary Products
+  
+ The abstract syntax of products is given by the following grammar:
+  
+ Typ
+  
+ τ
+  
+ ::=
+  
+ unit
+  
+ unit
+  
+ nullary product
+  
+ Exp
+  
+ e
+  
+ prod(
+ τ
+ 1
+ ;
+  τ
+ 2
+ )
+  
+ τ
+ 1
+  ×
+  
+ τ
+ 2
+ ⟨⟩
+  
+ ⟨
+ e
+ 1
+ , e
+ 2
+ ⟩
+ e
+  
+ · l 
+  
+ e
+  · r
+  
+ binary product
+  
+ ::=
+  
+ triv
+  
+ null tuple
+  
+ pair(
+ e
+ 1
+ ;
+  e
+ 2
+ )
+  
+ ordered pair
+  
+ pr[l](
+ e
+ )
+  
+ left projection
+  
+ pr[r](
+ e
+ )
+  
+ right projection
+  
+ There is no elimination form for the unit type, there being nothing to extract from the 
+ null tuple.
+  
+ The statics of product types is given by the following rules.
+  
+  ⊢ ⟨⟩ : unit
+  
+ (10.1a)",NA
+11,NA,NA
+Sum Types,"Most data structures involve alternatives such as the distinction between a leaf and 
+ an interior node in a tree, or a choice in the outermost form of a piece of abstract 
+ syntax. Importantly, the choice determines the structure of the value. For example, 
+ nodes have children, but leaves do not, and so forth. These concepts are expressed 
+ by
+  sum types
+ , specifically the
+  binary sum
+ , which offers a choice of two things, and the
+  
+ nullary sum
+ , which offers a choice of no things.
+  Finite sums
+  generalize nullary and 
+ binary sums to allow an arbitrary number of cases indexed by a finite index set. As 
+ with products, sums come in both eager and lazy variants, differing in how values of 
+ sum type are defined.
+  
+ 11.1 Nullary and Binary Sums
+  
+ The abstract syntax of sums is given by the following grammar:
+  
+ Typ
+  
+ τ
+ ::= 
+  
+ void 
+  
+ void 
+  
+ nullary sum
+  
+ Exp 
+  
+ e 
+  
+ ::= 
+   
+  
+ sum(
+ τ
+ 1
+ ;
+  τ
+ 2
+ ) 
+  
+  
+  
+ abort{
+ τ
+ }(
+ e
+ )
+  
+   
+  
+ τ
+ 1
+  +
+  τ
+ 2 
+ abort(
+ e
+ ) 
+   
+  
+   
+  
+ binary 
+ sum 
+   
+  
+  
+   
+ abort 
+  
+  
+  
+ in[l]{
+ τ
+ 1
+ ;
+  τ
+ 2
+ }(
+ e
+ ) 
+  
+  
+ l ·
+  e 
+  
+ left injection 
+  
+  
+  
+ in[r]{
+ τ
+ 1
+ ;
+  τ
+ 2
+ }(
+ e
+ ) 
+  
+  
+ r ·
+  e 
+  
+ right injection 
+  
+  
+  
+ case(
+ e
+ ;
+  x
+ 1
+ .e
+ 1
+ ;
+  x
+ 2
+ .e
+ 2
+ ) 
+  
+ case
+  e
+  {l ·
+  x
+ 1
+ →
+  e
+ 1
+  | r ·
+  x
+ 2
+ →
+  e
+ 2
+ } 
+  
+ case analysis
+  
+ The nullary sum represents a choice of zero alternatives, and hence admits no 
+ introduction form. The elimination form, abort(
+ e
+ ), aborts the computation in the 
+ event that
+  e
+  evaluates to a value, which it cannot do. The elements of the binary sum 
+ type are labeled to show whether they are drawn from the left or the right 
+ summand, either l ·
+  e
+  or r ·
+  e
+ . A value of the sum type is eliminated by case analysis.
+  
+ The statics of sum types is given by the following rules.",NA
+P A R T V,NA,NA
+Types and Propositions,NA,NA
+12,NA,NA
+Constructive Logic,"Constructive logic codifies the principles of mathematical reasoning as it is actually 
+ prac-ticed. In mathematics a proposition is judged true exactly when it has a proof, 
+ and is judged false exactly when it has a refutation. Because there are, and always 
+ will be, unsolved problems, we cannot expect in general that a proposition is either 
+ true or false, for in most cases, we have neither a proof nor a refutation of it. 
+ Constructive logic can be described as
+  logic as if people matter
+ , as distinct from 
+ classical logic, which can be described as
+  the logic of the mind of god
+ .
+  
+ From a constructive viewpoint, a proposition is true when it has a proof. What is 
+ a proof is a social construct, an agreement among people as to what is a valid 
+ argument. The rules of logic codify a set of principles of reasoning that may be used 
+ in a valid proof. The valid forms of proof are determined by the outermost structure 
+ of the proposition whose truth is asserted. For example, a proof of a conjunction 
+ consists of a proof of each conjunct, and a proof of an implication transforms a proof 
+ of its antecedent to a proof of its consequent. When spelled out in full, the forms of 
+ proof are seen to correspond exactly to the forms of expression of a programming 
+ language. To each proposition is associated the type of its proofs; a proof is then an 
+ expression of the associated type. This association between programs and proofs 
+ induces a dynamics on proofs. In this way, proofs in constructive logic have
+  
+ computational content
+ , which is to say that they are interpreted as executable 
+ programs of the associated type. Conversely, programs have
+  mathematical content
+  
+ as proofs of the proposition associated to their type.
+  
+ The unification of logic and programming is called the
+  propositions as types
+  
+ principle. It is a central organizing principle of the theory of programming 
+ languages. Propositions are identified with types, and proofs are identified with 
+ programs. A programming technique corresponds to a method of proof; a proof 
+ technique corresponds to a method of program-ming. Viewing types as behavioral 
+ specifications of programs, propositions are problem statements whose proofs are 
+ solutions that implement the specification.
+  
+ 12.1 Constructive Semantics
+  
+ Constructive logic is concerned with two judgments, namely
+  φ
+  prop, stating that
+  φ
+  
+ expresses a proposition, and
+  φ
+  true, stating that
+  φ
+  is a true proposition. What 
+ distinguishes constructive from non-constructive logic is that a proposition is not",NA
+13,NA,NA
+Classical Logic,"In constructive logic, a proposition is true exactly when it has a proof, a derivation 
+ of it from axioms and assumptions, and is false exactly when it has a refutation, a 
+ derivation of a contradiction from the assumption that it is true. Constructive logic 
+ is a logic of positive evidence. To affirm or deny a proposition requires a proof, 
+ either of the proposition itself, or of a contradiction, under the assumption that it 
+ has a proof. We are not always able to affirm or deny a proposition. An open 
+ problem is one for which we have neither a proof nor a refutation—constructively 
+ speaking, it is neither true nor false.
+  
+ In contrast, classical logic (the one we learned in school) is a logic of perfect 
+ information where every proposition is either true or false. We may say that 
+ classical logic corresponds to “god’s view” of the world—there are no open 
+ problems, rather all propositions are either true or false. Put another way, to assert 
+ that every proposition is either true or false is to weaken the notion of truth to 
+ encompass all that is not false, dually to the constructively (and classically) valid 
+ interpretation of falsity as all that is not true. The symmetry between truth and 
+ falsity is appealing, but there is a price to pay for this: the meanings of the logical 
+ connectives are weaker in the classical case than in the constructive.
+  
+ The law of the excluded middle provides a prime example. Constructively, this 
+ principle is not universally valid, as we have seen in Exercise
+  12.1
+ . Classically, 
+ however, it is valid, because every proposition is either false or not false, and being 
+ not false is the same as being true. Nevertheless, classical logic is consistent with 
+ constructive logic in that constructive logic does not refute classical logic. As we 
+ have seen, constructive logic proves that the law of the excluded middle is positively 
+ not refuted (its double negation is constructively true). Consequently, constructive 
+ logic is stronger (more expressive) than classical logic, because it can express more 
+ distinctions (namely, between affirmation and irrefutability), and because it is 
+ consistent with classical logic.
+  
+ Proofs in constructive logic have computational content: they can be executed as 
+ pro-grams, and their behavior is described by their type. Proofs in classical logic 
+ also have computational content, but in a weaker sense than in constructive logic. 
+ Rather than posi-tively affirm a proposition, a proof in classical logic is a 
+ computation that cannot be refuted. Computationally, a refutation consists of a 
+ continuation, or control stack, that takes a proof of a proposition and derives a 
+ contradiction from it. So a proof of a proposition in classical logic is a computation 
+ that, when given a refutation of that proposition derives a contra-diction,",NA
+P A R T VI,NA,NA
+Infinite Data Types,NA,NA
+14,NA,NA
+Generic Programming,"14.1 Introduction
+  
+ Many programs are instances of a pattern in a particular situation. Sometimes types 
+ de-termine the pattern by a technique called
+  (type) generic
+  programming. For 
+ example, in Chapter 9, recursion over the natural numbers is introduced in an
+  ad hoc
+  
+ way. As we shall see, the pattern of recursion on values of an inductive type is 
+ expressed as a generic program. 
+  
+ To get a flavor of the concept, consider a function
+  f
+  
+ of type
+  ρ
+  →
+  ρ
+ ′
+ , which transforms values of type
+  ρ
+  into values of type
+  ρ
+ ′
+ . For example,
+  f
+  
+ might be the doubling function on natural numbers. We wish to extend
+  f
+  to a 
+ transformation from type [
+ ρ/t
+ ]
+ τ
+  to type [
+ ρ
+ ′
+ /t
+ ]
+ τ
+ by applying
+  f
+  to various spots in the 
+ input, where a value of type
+  ρ
+  occurs to obtain a value of type
+  ρ
+ ′
+ , leaving the rest of 
+ the data structure alone. For example,
+  τ
+  might be bool ×
+  t
+ , in which case
+  f
+  could be 
+ extended to a function of type bool ×
+  ρ
+  → bool ×
+  ρ
+ ′
+ that sends the pairs ⟨
+ a, b
+ ⟩ to the 
+ pair ⟨
+ a, f
+  (
+ b
+ )⟩.
+  
+ The foregoing example glosses over an ambiguity arising from the many-one 
+ nature of substitution. A type can have the form [
+ ρ/t
+ ]
+ τ
+  in many different ways, 
+ according to how many occurrences of
+  t
+  there are within
+  τ
+ . Given
+  f
+  as above, it is not 
+ clear how to extend it to a function from [
+ ρ/t
+ ]
+ τ
+  to [
+ ρ
+ ′
+ /t
+ ]
+ τ
+ . To resolve the ambiguity, 
+ we must be given a template that marks the occurrences of
+  t
+  in
+  τ
+  at which
+  f
+  is 
+ applied. Such a template is known as a 
+ type operator
+ ,
+  t.τ
+ , which is an abstractor 
+ binding a type variable
+  t
+  within a type
+  τ
+ . Given such an abstractor, we may 
+ unambiguously extend
+  f
+  to instances of
+  τ
+  given by substitution for
+  t
+  in
+  τ
+ .
+  
+ The power of generic programming depends on the type operators that are 
+ allowed. The simplest case is that of a
+  polynomial
+  type operator, one constructed 
+ from sum and product of types, including their nullary forms. These are extended to
+  
+ positive
+  type operators, which also allow certain forms of function types.
+  
+ 14.2 Polynomial Type Operators
+  
+ A
+  type operator
+  is a type equipped with a designated variable whose occurrences 
+ mark the spots in the type where a transformation is applied. A type operator is an 
+ abstractor
+  t.τ
+ such that
+  t
+  type ⊢
+  τ
+  type. An example of a type operator is the 
+ abstractor",NA
+15,NA,NA
+Inductive and Coinductive Types,"The
+  inductive
+  and the
+  coinductive
+  types are two important forms of recursive type. 
+ Inductive types correspond to
+  least
+ , or
+  initial
+ , solutions of certain type equations, 
+ and coin-ductive types correspond to their
+  greatest
+ , or
+  final
+ , solutions. Intuitively, 
+ the elements of an inductive type are those that are given by a finite composition of 
+ its introduction forms. Consequently, if we specify the behavior of a function on 
+ each of the introduction forms of an inductive type, then its behavior is defined for 
+ all values of that type. Such a function is a 
+ recursor
+ , or
+  catamorphism
+ . Dually, the 
+ elements of a coinductive type are those that behave properly in response to a finite 
+ composition of its elimination forms. Consequently, if we specify the behavior of an 
+ element on each elimination form, then we have fully specified a value of that type. 
+ Such an element is a
+  generator
+ , or
+  anamorphism
+ .
+  
+ 15.1 Motivating Examples
+  
+ The most important example of an inductive type is the type of natural numbers as 
+ formalized in Chapter 9. The type nat is the
+  least
+  type containing z and closed under 
+ s(−). The minimality condition is expressed by the existence of the iterator, iter
+  e
+  
+ {z→
+  e
+ 0
+  | s(
+ x
+ )→
+  e
+ 1
+ }, which transforms a natural number into a value of type
+ τ
+ , given 
+ its value for zero, and a transformation from its value on a number to its value on 
+ the successor of that number. This operation is well-defined precisely because there 
+ are no other natural numbers.
+  
+ With a view towards deriving the type nat as a special case of an inductive type, it 
+ is useful to combine zero and successor into a single introduction form, and to 
+ correspondingly combine the basis and inductive step of the iterator. The following 
+ rules specify the statics
+  
+ of this reformulation:
+  
+  ⊢
+  e
+  : unit + nat
+  
+  ⊢ foldnat(
+ e
+ ) : nat
+  
+ (15.1a)
+  
+ , x
+  : unit +
+  τ
+  ⊢
+  e
+ 1
+  :
+  τ
+  
+  ⊢
+  e
+ 2
+  : nat
+  
+  ⊢ recnat(
+ x.e
+ 1
+ ;
+  e
+ 2
+ ) :
+  τ
+  
+ (15.1b)",NA
+P A R T VII,NA,NA
+Variable Types,NA,NA
+16,NA,NA
+System F of Polymorphic Types,"The languages we have considered so far are all
+  monomorphic
+  in that every 
+ expression has a unique type, given the types of its free variables, if it has a type at 
+ all. Yet it is often the case that essentially the same behavior is required, albeit at 
+ several different types. For example, in
+  T
+  there is a
+  distinct
+  identity function for 
+ each type
+  τ
+ , namely
+  λ
+  (
+ x
+  :
+  τ
+ )
+  x
+ , even though the behavior is the same for each choice 
+ of
+  τ
+ . Similarly, there is a distinct composition operator for each triple of types, 
+ namely
+  
+ ◦
+ τ
+ 1
+ ,τ
+ 2
+ ,τ
+ 3
+  =
+  λ
+  (
+ f
+  :
+  τ
+ 2
+  →
+  τ
+ 3
+ )
+  λ
+  (
+ g
+  :
+  τ
+ 1
+  →
+  τ
+ 2
+ )
+  λ
+  (
+ x
+  :
+  τ
+ 1
+ )
+  f
+  (
+ g
+ (
+ x
+ ))
+ .
+  
+ Each choice of the three types requires a
+  different
+  program, even though they all have 
+ the same behavior when executed.
+  
+ Obviously, it would be useful to capture the pattern once and for all, and to 
+ instantiate this pattern each time we need it. The expression patterns codify generic 
+ (type-independent) behaviors that are shared by all instances of the pattern. Such 
+ generic expressions are 
+ polymorphic
+ . In this chapter, we will study the language
+  F
+ , 
+ which was introduced by Girard under the name
+  System F
+  and by Reynolds under 
+ the name
+  polymorphic typed λ-calculus
+ . Although motivated by a simple practical 
+ problem (how to avoid writing redundant code), the concept of polymorphism is 
+ central to an impressive variety of seemingly disparate concepts, including the 
+ concept of data abstraction (the subject of Chapter 17), and the definability of 
+ product, sum, inductive, and coinductive types considered in the preceding 
+ chapters. (Only general recursive types extend the expressive power of the 
+ language.)
+  
+ 16.1 Polymorphic Abstraction
+  
+ The language
+  F
+  is a variant of
+  T
+  in which we eliminate the type of natural numbers, 
+ but add, in compensation, polymorphic types:
+ 1
+  
+ Typ
+  
+ τ
+  
+ ::=
+  
+ t
+  
+ t
+  
+ variable
+  
+ Exp
+  
+ e
+  
+ arr(
+ τ
+ 1
+ ;
+  τ
+ 2
+ )
+  
+ τ
+ 1
+  →
+  
+ τ
+ 2
+ ∀(
+ t.τ
+ )
+  
+ x
+  
+ function
+  
+ all(
+ t.τ
+ )
+  
+ polymorphic
+  
+ ::=
+  
+ x
+  
+ lam{
+ τ
+ }(
+ x.e
+ ) 
+ ap(
+ e
+ 1
+ ;
+  e
+ 2
+ )
+  
+ λ
+  (
+ x
+  :
+  τ
+ )
+  e
+  
+ abstraction
+  
+ e
+ 1
+ (
+ e
+ 2
+ )
+  
+ application
+  
+ Lam(
+ t.e
+ )
+  
+ (
+ t
+ )
+  e
+  
+ type abstraction",NA
+17,NA,NA
+Abstract Types,"Data abstraction is perhaps the most important technique for structuring programs. 
+ The main idea is to introduce an
+  interface
+  that serves as a contract between the
+  client
+  
+ and the
+  implementor
+  of an abstract type. The interface specifies what the client may 
+ rely on for its own work, and, simultaneously, what the implementor must provide to 
+ satisfy the contract. The interface serves to isolate the client from the implementor 
+ so that each may be developed in isolation from the other. In particular, one 
+ implementation can be replaced by another without affecting the behavior of the 
+ client, provided that the two implementations meet the same interface and that each 
+ simulates the other with respect to the operations of the interface. This property is 
+ called
+  representation independence
+  for an abstract type. 
+  
+ Data abstraction is 
+ formalized by extending the language
+  F
+  with
+  existential types
+ . Inter-faces are 
+ existential types that provide a collection of operations acting on an unspecified, or 
+ abstract, type. Implementations are packages, the introduction form for existential 
+ types, and clients are uses of the corresponding elimination form. It is remarkable 
+ that the pro-gramming concept of data abstraction is captured so naturally and 
+ directly by the logical concept of existential type quantification. Existential types are 
+ closely connected with uni-versal types, and hence are often treated together. The 
+ superficial reason is that both are forms of type quantification, and hence both 
+ require the machinery of type variables. The deeper reason is that existential types 
+ are
+  definable
+  from universals—surprisingly, data abstraction is actually just a form of 
+ polymorphism! Consequently, representation indepen-dence is an application of the 
+ parametricity properties of polymorphic functions discussed in Chapter 16.
+  
+ 17.1 Existential Types
+  
+ The syntax of
+  FE
+  extends
+  F
+  with the following constructs:
+  
+ Typ
+  
+ τ
+  
+ ::= ::=
+  
+ some(
+ t.τ
+ )
+  
+ ∃(
+ t.τ
+ ) 
+  
+ pack
+  ρ
+  with
+  e
+  as ∃(
+ t.τ
+ ) 
+  
+ open
+  e
+ 1
+  as
+  t
+  with
+  x
+ :
+ τ
+  in
+  e
+ 2
+  
+ interface
+  
+ Exp
+  
+ e
+  
+ pack{
+ t.τ
+ }{
+ ρ
+ }(
+ e
+ ) 
+  
+ open{
+ t.τ
+ }{
+ ρ
+ }(
+ e
+ 1
+ ;
+  t, x.e
+ 2
+ )
+  
+ implementation
+  
+ client
+  
+ The introduction form ∃(
+ t.τ
+ ) is a
+  package
+  of the form pack
+  ρ
+  with
+  e
+  as ∃(
+ t.τ
+ ), where
+  ρ
+  
+ is a type and
+  e
+  is an expression of type [
+ ρ/t
+ ]
+ τ
+ . The type
+  ρ
+  is the
+  representation type
+  of 
+ the",NA
+18,NA,NA
+Higher Kinds,"The concept of type quantification naturally leads to the consideration of 
+ quantification over
+  type constructors
+ , such as list, which are functions mapping 
+ types to types. For example, the abstract type of queues of natural numbers 
+ considered in Section 17.4 could be generalized to an abstract
+  type constructor
+  of 
+ queues that does not fix the element type. In the notation that we shall develop in 
+ this chapter, such an abstraction is expressed by the existential type ∃
+  q
+  :: T → T
+ .σ
+ , 
+ where
+  σ
+  is the labeled tuple type
+  
+ ⟨emp→ ∀
+  t
+  :: T
+ .t,
+  ins→ ∀
+  t
+  :: T
+ .t
+  ×
+  q
+ [
+ t
+ ] →
+  q
+ [
+ t
+ ]
+ ,
+  rem→ ∀
+  t
+  :: T
+ .q
+ [
+ t
+ ] → (
+ t
+  ×
+  q
+ [
+ t
+ ]) opt⟩
+ .
+  
+ The existential type quantifies over the
+  kind
+  T → T of type constructors, which map 
+ types to types. The operations are polymorphic, or
+  generic
+ , in the type of the 
+ elements of the queue. Their types involve instances of the abstract queue 
+ constructor
+  q
+ [
+ t
+ ] representing the abstract type of queues whose elements are of 
+ type
+  t
+ . The client instantiates the polymorphic quantifier to specify the element 
+ type; the implementations are parametric in this choice (in that their behavior is the 
+ same in any case). A package of the existential type given above consists of a 
+ representation type constructor and an implementation of the operations in terms 
+ of this choice. Possible representations include the constructor
+  λ
+  (
+ u
+  :: T)
+  u
+  list and 
+ the constructor
+  λ
+  (
+ u
+  :: T)
+  u
+  list ×
+  u
+  list, both of which have kind T → T. It is easy to 
+ check that the implementations of the queue operations given in Section 17.4 carry 
+ over to the more general case, almost without change, because they do not rely on 
+ the type of the elements of the queue.
+  
+ The language
+  F
+ ω
+  enriches the language
+  F
+  with universal and existential 
+ quantification over kinds, such as T → T, used in the queues example. The extension 
+ accounts for definitional equality of constructors. For example, an implementation 
+ of the existential given in the preceding paragraph have to give implementations for 
+ the operations in terms of the choice of representation for
+  q
+ . If, say,
+  q
+  is the 
+ constructor
+  λ
+  (
+ u
+  :: T)
+  u
+  list, then the ins operation takes a type argument specifying 
+ the element type
+  t
+  and a queue of type (
+ λ
+  (
+ u
+  :: T)
+  u
+  list)[
+ t
+ ], which should simplify to
+  t
+  
+ list by substitution of
+  t
+  for
+  u
+  in the body of the
+  λ
+ -abstraction. Definitional equality of 
+ constructors defines the permissible rules of simplification and thereby defines 
+ when two types are equal. Equal types should be interchangeable as classifiers, 
+ meaning that if
+  e
+  is of type
+  τ
+  and
+  τ
+  is definitionally equal to
+  τ
+ ′
+ , then
+  e
+  should also 
+ have type
+  τ
+ ′
+ . In the queues example, any expression of type
+  t
+  list should also be of 
+ the unsimplified type to which it is definitionally equal.",NA
+P A R T VIII,NA,NA
+Partiality and Recursive ,NA,NA
+Types,NA,NA
+19,NA,NA
+System PCF of Recursive Functions,"We introduced the language
+  T
+  as a basis for discussing total computations, those for 
+ which the type system guarantees termination. The language
+  M
+  generalizes
+  T
+  to 
+ admit inductive and coinductive types, while preserving totality. In this chapter, we 
+ introduce
+  PCF
+  as a basis for discussing partial computations, those that may not 
+ terminate when evaluated, even when they are well-typed. At first blush, this may 
+ seem like a disadvantage, but as we shall see in Chapter 20, it admits greater 
+ expressive power than is possible in
+  T
+ .
+  
+ The source of partiality in
+  PCF
+  is the concept of
+  general recursion
+ , which permits 
+ the solution of equations between expressions. The price for admitting solutions to 
+ all such equations is that computations may not terminate—the solution to some 
+ equations might be undefined (divergent). In
+  PCF
+ , the programmer must make sure 
+ that a computation terminates; the type system does not guarantee it. The 
+ advantage is that the termination proof need not be embedded into the code itself, 
+ resulting in shorter programs.
+  
+ For example, consider the equations
+  
+ f
+  (0) ≜ 1
+  
+ f
+  (
+ n
+  + 1) ≜ (
+ n
+  + 1) ×
+  f
+  (
+ n
+ )
+ .
+  
+ Intuitively, these equations define the factorial function. They form a system of 
+ simultaneous equations in the unknown
+  f
+  , which ranges over functions on the 
+ natural numbers. The function we seek is a
+  solution
+  to these equations—a specific 
+ function
+  f
+  : N → N such that the above conditions are satisfied.
+  
+  
+ A solution to such a system of equations is a fixed point of an associated 
+ functional (higher-order function). To see this, let us re-write these equations in 
+ another form:
+  
+ f
+  (
+ n
+ ) ≜
+  
+ 1
+  
+ if
+  n
+  = 0 
+  
+ if
+  n
+  =
+  n
+ ′
+ + 1
+ .
+  
+ n
+  ×
+  f
+  (
+ n
+ ′
+ )
+  
+ Re-writing yet again, we seek
+  f
+  given by
+  
+ n
+  →
+  
+ 1
+  
+ if
+  n
+  = 0 
+  
+ if
+  n
+  =
+  n
+ ′
+ + 1
+ .
+  
+ n
+  ×
+  f
+  (
+ n
+ ′
+ )
+  
+ Now define the
+  functional F
+  by the equation
+  F
+ (
+ f
+  ) =
+  f
+ ′
+ , where
+  f
+ ′
+ is given by
+  
+ n
+  →
+  
+ 1
+  
+ if
+  n
+  = 0",NA
+20,NA,NA
+System FPC of Recursive Types,"In this chapter, we study
+  FPC
+ , a language with products, sums, partial fucntions, and 
+ recursive types
+ . Recursive types are solutions to type equations
+  t
+ ∼=
+  τ
+  where there is 
+ no restriction on where
+  t
+  may occur in
+  τ
+ . Equivalently, a recursive type is a
+  fixed 
+ point
+  up to
+  
+ isomorphism of the associated unrestricted type operator
+  t.τ
+ . By removing the 
+ restrictions on the type operator, we may consider the solution of a type equation 
+ such as
+  t
+ ∼=
+  t ⇀ t
+ , which describes a type that is isomorphic to the type of partial 
+ functions defined on itself. If types were sets, such an equation could not be solved, 
+ because there are more partial functions on a set than there are elements of that set. 
+ But
+  types are not sets
+ : they classify 
+ computable
+  functions, not
+  arbitrary
+  functions. 
+ With types we may solve such “dubious”type equations, even though we cannot 
+ expect to do so with sets. The penalty is that we must admit non-termination. For 
+ one thing, type equations involving functions have solutions only if the functions 
+ involved are partial.
+  
+ A benefit of working in the setting of partial functions is that type equations have
+  
+ unique 
+ solutions (up to isomorphism). Therefore, it makes sense, as we shall do in 
+ this chapter, to speak of
+  the
+  solution to a type equation. But what about the
+  distinct
+  
+ solutions to a type equation given in Chapter 15? These turn out to coincide for any 
+ fixed dynamics but give rise to different solutions according to whether the 
+ dynamics is eager or lazy (as illustrated in Section 19.4 for the special case of the 
+ natural numbers). Under a lazy dynamics (where all constructs are evaluated 
+ lazily), recursive types have a coinductive flavor, and the inductive analogs are 
+ inaccessible. Under an eager dynamics (where all constructs are evaluated eagerly), 
+ recursive types have an inductive flavor. But the coinductive analogs are accessible 
+ as well, using function types to selectively impose laziness. It follows that the eager 
+ dynamics is
+  more expressive
+  than the lazy dynamics, because it is impossible to go 
+ the other way around (one cannot define inductive types in a lazy language).
+  
+ 20.1 Solving Type Equations
+  
+ The language
+  FPC
+  has products, sums, and partial functions inherited from the 
+ preceding development, extended with the new concept of recursive types. The 
+ syntax of recursive types is defined as follows:
+  
+ Typ
+  
+ τ
+  
+ ::=
+  
+ t
+  
+ t
+  
+ self-reference
+  
+ rec(
+ t.τ
+ )
+  
+ rec
+  t
+  is
+  τ
+  
+ recursive type
+  
+ Exp
+  
+ e
+  
+ ::=
+  
+ fold{
+ t.τ
+ }(
+ e
+ ) 
+ fold(
+ e
+ )
+  
+ fold",NA
+P A R T IX,NA,NA
+Dynamic Types,NA,NA
+21,NA,NA
+The Untyped,NA,NA
+ λ,NA,NA
+-Calculus,"In this chapter, we study the premier example of a uni-typed programming 
+ language, the 
+ (untyped) λ-calculus
+ . This formalism was introduced by Church in the 
+ 1930s as a universal language of computable functions. It is distinctive for its 
+ austere elegance. The
+  λ
+ -calculus has but one “feature,” the higher-order function. 
+ Everything is a function, hence every expression may be applied to an argument, 
+ which must itself be a function, with the result also being a function. To borrow a 
+ turn of phrase, in the
+  λ
+ -calculus it’s functions all the way down.
+  
+ 21.1 The
+  λ
+ -Calculus
+  
+ The abstract syntax of the untyped
+  λ
+ -calculus, called, is given by the following 
+ grammar:
+  
+ Exp
+  
+ u
+  
+ ::=
+  
+ x
+  
+ x
+  
+ variable
+  
+ λ
+ (
+ x.u
+ )
+  
+ λ
+  (
+ x
+ )
+  u
+  
+ λ
+ -abstraction
+  
+ ap(
+ u
+ 1
+ ;
+  u
+ 2
+ )
+  
+ u
+ 1
+ (
+ u
+ 2
+ )
+  
+ application
+  
+ The statics of is defined by general hypothetical judgments of the form 
+ x
+ 1
+  ok
+ , . . . , 
+ x
+ n
+  ok ⊢
+  u
+  ok, stating that
+  u
+  is a well-formed expression involving the vari-ables
+  x
+ 1
+ , . . . 
+ , x
+ n
+ . (As usual, we omit explicit mention of the variables when they can be 
+ determined from the form of the hypotheses.) This relation is inductively defined by 
+ the following rules:
+  
+ , x
+  ok ⊢
+  x
+  ok
+  
+ (21.1a)
+  
+  ⊢
+  u
+ 1
+  ok
+  
+  ⊢
+  u
+ 2
+  ok
+  
+  ⊢
+  u
+ 1
+ (
+ u
+ 2
+ ) ok
+  
+ (21.1b)
+  
+ , x
+  ok ⊢
+  u
+  ok 
+  
+ (21.1c
+ )
+  
+  ⊢
+  λ
+  (
+ x
+ )
+  u
+  ok
+  
+ The dynamics of is given equationally, rather than via a transition system. 
+ Definitional
+  
+ equality for is a judgment of the form ⊢
+  u
+  ≡
+  u
+ ′
+ , where =
+  x
+ 1
+  ok
+ , . . . , x
+ n
+  ok for some 
+ n
+  ≥ 
+ 0, and
+  u
+  and
+  u
+ ′
+ are terms having at most the variables
+  x
+ 1
+ , . . . , x
+ n
+  free. It is inductively 
+ defined by the following rules:
+  
+ , u
+  ok ⊢
+  u
+  ≡
+  u
+  
+ (21.2a)",NA
+22,NA,NA
+Dynamic Typing,"We saw in Chapter 21 that an untyped language is a uni-typed language in which 
+ “untyped”terms are just terms of single recursive type. Because all expressions of 
+ are well-typed, type safety ensures that no misinterpretation of a value is possible. 
+ When spelled out for , type safety follows from there being exactly one class of 
+ values, that of functions on values. No application can get stuck, because every value 
+ is a function that may be applied to an argument.
+  
+  
+ This safety property breaks down once more than one class of value is admitted. 
+ For example, if the natural numbers are added as a primitive to, then it is possible to 
+ incur a run-time error by attempting to apply a number to an argument. One way to 
+ manage this is to embrace the possibility, treating class mismatches as checked 
+ errors, and weakening the progress theorem as outlined in Chapter 6. Such languages 
+ are called
+  dynamic languages 
+ because an error such as the one described is 
+ postponed to run-time, rather than precluded at compile time by type checking. 
+ Languages of the latter sort are called
+  static languages
+ . 
+  
+ Dynamic languages are 
+ often considered in opposition to static languages, but the op-position is illusory. Just 
+ as the untyped
+  λ
+ -calculus is uni-typed, so dynamic languages are but special cases of 
+ static languages in which there is only one recursive type (albeit with multiple 
+ classes of value).
+  
+ 22.1 Dynamically Typed PCF
+  
+ To illustrate dynamic typing, we formulate a dynamically typed version of
+  PCF
+ , called 
+ DPCF
+ . The abstract syntax of
+  DPCF
+  is given by the following grammar:
+  
+ Exp
+  
+ d
+  
+ ::=
+  
+ x
+  
+ x
+  
+ variable
+  
+ num[
+ n
+ ]
+  
+ n
+  
+ numeral
+  
+ zero
+  
+ zero
+  
+ zero
+  
+ succ(
+ d
+ )
+  
+ succ(
+ d
+ )
+  
+ successor
+  
+  
+ ifz{
+ d
+ 0
+ ;
+  x.d
+ 1
+ }(
+ d
+ )
+  
+ ifz
+  d
+  {zero→
+  d
+ 0
+  | succ(
+ x
+ )→
+  d
+ 1
+ } zero test
+  
+ fun(
+ x.d
+ )
+  
+ λ
+  (
+ x
+ )
+  d
+  
+ abstraction
+  
+ ap(
+ d
+ 1
+ ;
+  d
+ 2
+ )
+  
+ d
+ 1
+ (
+ d
+ 2
+ )
+  
+ application
+  
+ fix(
+ x.d
+ )
+  
+ fix
+  x
+  is
+  d
+  
+ recursion",NA
+23,NA,NA
+Hybrid Typing,"A
+  hybrid
+  language is one that combines static and dynamic typing by enriching a 
+ statically typed language with a distinguished type dyn of dynamic values. The 
+ dynamically typed language considered in Chapter 22 can be embedded into the 
+ hybrid language by viewing a dynamically typed program as a statically typed 
+ program of type dyn. Static and dynamic types are not opposed to one another, but 
+ may coexist harmoniously. The
+  ad hoc
+  device of adding the type dyn to a static 
+ language is unnecessary in a language with recursive types, wherein it is definable 
+ as a particular recursive type. Thus, one may say that
+  dynamic typing is a mode of 
+ use of static typing
+ , reconciling an apparent opposition between them.
+  
+ 23.1 A Hybrid Language
+  
+ Consider the language
+  HPCF
+ , which extends
+  PCF
+  with the following constructs:
+  
+ Typ
+  
+ τ
+  
+ ::= ::=
+  
+ dyn
+  
+ dyn
+  
+ dynamic
+  
+ Exp
+  
+ e
+  
+ new[
+ l
+ ](
+ e
+ )
+  
+ l
+  !
+  e
+  
+ construct
+  
+ cast[
+ l
+ ](
+ e
+ )
+  
+ e
+  @
+  l
+  
+ destruct
+  
+ Cls
+  
+ l
+  
+ ::=
+  
+ inst[
+ l
+ ](
+ e
+ )
+  
+ l
+  ?
+  e
+  
+ discriminate
+  
+ num
+  
+ num
+  
+ number
+  
+ fun
+  
+ fun
+  
+ function
+  
+ The type dyn is the type of dynamically classified values. The constructor attaches a 
+ classifier to a value of a type associated to that classifer, the destructor recovers the 
+ value classified with the given classifier, and the discriminator tests the class of a 
+ classified value.
+  
+ The statics of
+  HPCF
+  extends that of
+  PCF
+  with the following rules:
+  
+  ⊢
+  e
+  : nat
+  
+  ⊢ new[num](
+ e
+ ) : 
+ dyn
+  
+  ⊢
+  e
+  : dyn
+  ⇀
+  dyn
+  
+  ⊢ new[fun](
+ e
+ ) : dyn
+  
+  ⊢
+  e
+  : dyn
+  
+  ⊢ cast[num](
+ e
+ ) : nat
+  
+  ⊢
+  e
+  : dyn
+  
+  ⊢ cast[fun](
+ e
+ ) : dyn
+  ⇀
+  dyn
+  
+ (23.1a)
+  
+ (23.1b)
+  
+ (23.1c)
+  
+ (23.1d)",NA
+P A R T X,NA,NA
+Subtyping,NA,NA
+24,NA,NA
+Structural Subtyping,"A
+  subtype
+  relation is a pre-order (reflexive and transitive relation) on types that 
+ validates the
+  subsumption principle
+ :
+  
+ if τ
+ ′
+ is a subtype of τ, then a value of type τ
+ ′
+ may be provided when a value of type τ is 
+ required.
+  
+ The subsumption principle relaxes the strictures of a type system to allow values of 
+ one type to be treated as values of another.
+  
+ Experience shows that the subsumption principle, although useful as a general 
+ guide, can be tricky to apply correctly in practice. The key to getting it right is the 
+ principle of introduction and elimination. To see whether a candidate subtyping 
+ relationship is sensible, it suffices to consider whether every
+  introduction
+  form of 
+ the subtype can be safely manipulated by every
+  elimination
+  form of the supertype. A 
+ subtyping principle makes sense only if it passes this test; the proof of the type 
+ safety theorem for a given subtyping relation ensures that this is the case.
+  
+ A good way to get a subtyping principle wrong is to think of a type merely as a set 
+ of values (generated by introduction forms) and to consider whether every value of 
+ the subtype can also be considered to be a value of the supertype. The intuition 
+ behind this approach is to think of subtyping as akin to the subset relation in 
+ ordinary mathematics. But, as we shall see, this can lead to serious errors, because it 
+ fails to take account of the elimination forms that are applicable to the supertype. It 
+ is not enough to think only of the introduction forms; subtyping is a matter of
+  
+ behavior
+ , not
+  containment
+ .
+  
+ 24.1 Subsumption
+  
+ A
+  subtyping judgment
+  has the form
+  τ
+ ′
+ <
+ :
+  τ
+ , and states that
+  τ
+ ′
+ is a subtype of
+  τ
+ . At the 
+ least we demand that the following
+  structural rules
+  of subtyping be admissible:
+  
+ τ <
+ :
+  τ
+  
+ (24.1a) 
+  
+ (24.1b)
+  
+ τ
+ ′′
+ <
+ :
+  τ
+ ′
+  
+ τ
+ ′
+ <
+ :
+  τ
+  
+ τ
+ ′′
+ <
+ :
+  τ
+  
+  
+ In practice, we either tacitly include these rules as primitive or prove that they are 
+ admissible for a given set of subtyping rules.",NA
+25,NA,NA
+Behavioral Typing,"In Chapter 23, we demonstrated that dynamic typing is but a mode of use of static 
+ typing, one in which dynamically typed values are of type dyn, a particular recursive 
+ sum type. A value of type dyn is always of the form new[
+ c
+ ](
+ e
+ ), where
+  c
+  is its
+  class
+  
+ and
+  e
+  is its underlying value. Importantly, the class
+  c
+  determines the type of the 
+ underlying value of a dynamic value. The type system of the hybrid language is 
+ rather weak in that every dynamically classified value has the same type, and there 
+ is no mention of the class in its type. To correct this shortcoming it is common to 
+ enrich the type system of the hybrid language to capture such information, for 
+ example, as described in Section 24.2.
+  
+ In such a situation, subtyping is used to resolve a fundamental tension between
+  
+ structure 
+ and
+  behavior
+  in the design of type systems. On the one hand, types 
+ determine the structure of a programming language and, on the other, serve a 
+ behavioral specifications of expressions written in that language. Subtyping 
+ attempts to resolve this tension, unsuccessfully, by allowing certain forms of 
+ retyping. Although subtyping works reasonably well for small examples, things get 
+ far more complicated when we wish to specify the deep structure of a value, say, 
+ that it is of a class
+  c
+  and its underlying value is of another class
+  d
+  whose underlying 
+ value is a natural number. There is no limit to the degree of specificity one may wish 
+ in such descriptions, which gives rise to endless variations on type systems to 
+ accommodate various special situations.
+  
+ Another resolution of the tension between structure and behavior in typing is to 
+ separate these aspects by distinguishing
+  types
+  from
+  type refinements
+ . Type 
+ refinements specify the execution behavior of an expression of a particular type 
+ using specifications that capture whatever properties are of interest, limited only by 
+ the difficulty of proving that a program satisfies the specification given by a 
+ refinement.
+  
+ Certain limited forms of behavioral specifications can express many useful 
+ properties of programs while remaining mechanically checkable. These include the 
+ fundamental behavioral properties determined by the type itself but can be 
+ extended to include sharper conditions than just these structural properties. In this 
+ chapter, we will consider a particular notion of refinement tailored to the hybrid 
+ language of Chapter 23. It is based on two basic principles:
+  
+ 1. Type constructors, such as product, sum, and function space, act on refinements 
+ of their component types to induce a refinement on the compound type formed 
+ by those constructors.",NA
+P A R T XI,NA,NA
+Dynamic Dispatch,NA,NA
+26,NA,NA
+Classes and Methods,"It often arises that the values of a type are partitioned into a variety of
+  classes
+ , each 
+ classifying data with distinct internal structure. A simple example is provided by the 
+ type of points in the plane, which are classified according to whether they are 
+ represented in cartesian or polar form. Both are represented by a pair of real 
+ numbers, but in the cartesian case, these are the
+  x
+  and
+  y
+  coordinates of the point, 
+ whereas in the polar case, these are its distance
+  r
+  from the origin and its angle
+  θ
+  
+ with the polar axis. A classified value is an
+  object
+ , or
+  instance
+ , of its class. The class 
+ determines the type of the classified data, the
+  instance type
+  of the class; the 
+ classified data itself is the
+  instance data
+  of the object.
+  
+  
+ Methods
+  are functions that act on classified values. The behavior of a method is 
+ deter-mined by the class of its argument. The method
+  dispatches
+  on the class of the 
+ argument.
+ 1 
+ Because the selection is made at run-time, it is called
+  dynamic dispatch
+ . 
+ For example, the squared distance of a point from the origin is calculated differently 
+ according to whether the point is represented in cartesian or polar form. In the 
+ former case, the required distance is
+  x
+ 2
+ +
+  y
+ 2
+ , whereas in the latter it is simply
+  r
+ 2
+ . 
+ Similarly, the quadrant of a cartesian point can be determined by examining the sign 
+ of its
+  x
+  and
+  y
+  coordinates, and the quadrant of a polar point can be calculated by 
+ taking the integral part of the angle
+  θ
+  divided by
+  π/
+ 2. 
+  
+ Dynamic dispatch is often 
+ described in terms of a particular implementation strategy, which we will call the
+  
+ class-based
+  organization. In this organization, each object is repre-sented by a vector 
+ of methods specialized to the class of that object. We may equivalently use a
+  method-
+ based
+  organization in which each method branches on the class of an ob-ject to 
+ determine its behavior. Regardless of the organization used, the fundamental idea is 
+ that (a) objects are classified and (b) methods dispatch on the class of an object. The 
+ class-based and method-based organizations are interchangeable and, in fact, related 
+ by a natural duality between sum and product types. We explain this symmetry by 
+ focusing first on the behavior of each method on each object, which is given by a
+  
+ dispatch matrix
+ . From this, we derive both a class-based and a method-based 
+ organization in such a way that their equivalence is obvious.
+  
+ 26.1 The Dispatch Matrix
+  
+ Because each method acts by dispatch on the class of its argument, we may envision 
+ the entire system of classes and methods as a
+  dispatch matrix e
+ dm
+  whose rows are",NA
+27,NA,NA
+Inheritance,"In this chapter, we build on Chapter 26 and consider the process of defining the 
+ dispatch matrix that determines the behavior of each method on each class. A 
+ common strategy is to build the dispatch matrix incrementally by adding new 
+ classes or methods to an existing dispatch matrix. To add a class requires that we 
+ define the behavior of each method on objects of that class, and to define a method 
+ requires that we define the behavior of that method on objects of the classes. The 
+ definition of these behaviors can be given by any means available in the language. 
+ However, it is often suggested that a useful means of defining a new class is to
+  
+ inherit
+  the behavior of another class on some methods, and to 
+ override
+  its behavior 
+ on others, resulting in an amalgam of the old and new behaviors. The new class is 
+ often called a
+  subclass
+  of the old class, which is then called the
+  superclass
+ . Similarly, 
+ a new method can be defined by inheriting the behavior of another method on some 
+ classes, and overriding the behavior on others. By analogy, we may call the new 
+ method a
+  sub-method
+  of a given
+  super-method
+ . For the sake of clarity, we restrict 
+ attention to the non-self-referential case in the following development.
+  
+ 27.1 Class and Method Extension
+  
+ We begin by extending a given dispatch matrix,
+  e
+ dm
+ , of type
+  
+ c
+ ∈
+ C
+  
+ d
+ ∈
+ D
+  
+ (
+ τ
+ c
+ →
+  ρ
+ d
+ )
+  
+ with a new class
+  c
+ ∗
+ /
+ ∈
+  C
+  and a new method
+  d
+ ∗
+ /
+ ∈
+  D
+  to obtain a new dispatch matrix
+  
+ e
+ ∗dm
+ of type
+  
+  
+  
+ (
+ τ
+ c
+ →
+  ρ
+ d
+ )
+ , 
+  
+ c
+ ∈
+ C
+ ∗
+ d
+ ∈
+ D
+ ∗
+  
+ where
+  C
+ ∗
+ =
+  C
+  ∪ {
+  c
+ ∗
+ } and
+  D
+ ∗
+ =
+  D
+  ∪ {
+  d
+ ∗
+ }. To add a new class
+  c
+ ∗
+ to the dispatch matrix, we 
+ must specify the following information:
+ 1
+  
+ 1. The instance type
+  τ
+ c
+ ∗
+ of the new class
+  c
+ ∗
+ .",NA
+P A R T XII,NA,NA
+Control Flow,NA,NA
+28,NA,NA
+Control Stacks,"Structural dynamics is convenient for proving properties of languages, such as a 
+ type safety theorem, but is less convenient as a guide for implementation. A 
+ structural dynamics defines a transition relation using rules that determine where 
+ to apply the next instruction without spelling out how to find where the instruction 
+ lies within an expression. To make this process explicit, we introduce a mechanism, 
+ called a
+  control stack
+ , that records the work that remains to be done after an 
+ instruction is executed. Using a stack eliminates the need for premises on the 
+ transition rules so that the transition system defines an
+  abstract machine
+  whose 
+ steps are determined by information explicit in its state, much as a concrete 
+ computer does.
+  
+ In this chapter, we develop an abstract machine
+  K
+  for evaluating expressions in
+  
+ PCF
+ . The machine makes explicit the context in which primitive instruction steps 
+ are executed, and the process by which the results are propagated to determine the 
+ next step of execution. We prove that
+  K
+  and
+  PCF
+  are equivalent in the sense that 
+ both achieve the same outcomes for the same expressions.
+  
+ 28.1 Machine Definition
+  
+ A state
+  s
+  of the stack machine
+  K
+  for
+  PCF
+  consists of a
+  control stack k
+  and a closed 
+ expression
+  e
+ . States take one of two forms:
+  
+ 1. An
+  evaluation
+  state of the form
+  k
+  ▷
+  e
+  corresponds to the evaluation of a closed 
+ expression 
+  
+ e
+  on a control stack
+  k
+ .
+  
+ 2. A
+  return
+  state of the form
+  k
+  ◁
+  e
+ , where
+  e
+  val, corresponds to the evaluation of a 
+ stack
+  k 
+  
+ on a closed value
+  e
+ .
+  
+ As an aid to memory, note that the separator “points to” the focal entity of the state, 
+ the expression in an evaluation state and the stack in a return state.
+  
+ The control stack represents the context of evaluation. It records the “current 
+ location” of evaluation, the context into which the value of the current expression is 
+ returned. Formally, a control stack is a list of
+  frames
+ :
+  
+ ϵ
+  stack
+  
+ (28.1a) 
+  
+ (28.1b)
+  
+ f
+  frame
+  
+ k
+  stack
+  
+ k
+ ;
+ f
+  stack",NA
+29,NA,NA
+Exceptions,"Exceptions effect a non-local transfer of control from the point at which the 
+ exception is 
+ raised
+  to an enclosing
+  handler
+  for that exception. This transfer 
+ interrupts the normal flow of control in a program in response to unusual 
+ conditions. For example, exceptions can be used to signal an error condition, or to 
+ signal the need for special handling in unusual circumstances. We could use 
+ conditionals to check for and process errors or unusual conditions, but using 
+ exceptions is often more convenient, particularly because the transfer to the 
+ handler is conceptually direct and immediate, rather than indirect via explicit 
+ checks. In this chapter, we will consider two extensions of
+  PCF
+  with exceptions. The 
+ first,
+  FPCF
+ , enriches
+  PCF
+  with the simplest form of exception, called a
+  failure
+ , with 
+ no associated data. A failure can be intercepted and turned into a success (or 
+ another failure!) by transferring control to another expression. The second,
+  XPCF
+ , 
+ enriches
+  PCF
+  with
+  exceptions
+ , with associated data that is passed to an exception 
+ handler that intercepts it. The handler may analyze the associated data to determine 
+ how to recover from the exceptional condition. A key choice is to decide on the type 
+ of the data associated to an exception.
+  
+ 29.1 Failures
+  
+ The syntax of
+  FPCF
+  is defined by the following extension of the grammar of
+  PCF
+ :
+  
+ Exp
+  
+ e
+  
+ ::=
+  
+ fail
+  
+ fail
+  
+ signal a failure
+  
+ catch(
+ e
+ 1
+ ;
+  e
+ 2
+ )
+  
+ catch
+  e
+ 1
+  ow
+  e
+ 2
+  
+ catch a failure
+  
+ The expression fail aborts the current evaluation, and the expression catch(
+ e
+ 1
+ ;
+  e
+ 2
+ ) 
+ catches any failure in
+  e
+ 1
+  by evaluating
+  e
+ 2
+  instead. Either
+  e
+ 1
+  or
+  e
+ 2
+  may themselves 
+ abort, or they may diverge or return a value as usual in
+  PCF
+ .
+  
+ The statics of
+  FPCF
+  is given by these rules:
+  
+  
+   
+  
+  
+  
+ (29.1a)
+  
+  
+  
+  ⊢ fail :
+  
+ τ
+  
+  
+  ⊢
+  e
+ 1
+  :
+  τ
+  
+  ⊢
+  e
+ 2
+  :
+  τ
+  
+ (29.1b)
+  
+  ⊢ catch(
+ e
+ 1
+ ;
+  e
+ 2
+ ) :
+  τ
+  
+ A failure can have any type, because it never returns. The two expressions in a catch
+  
+ expression must have the same type, because either might determine the value of 
+ that expression.",NA
+30,NA,NA
+Continuations,"The semantics of many control constructs (such as exceptions and coroutines) can 
+ be expressed in terms of
+  reified
+  control stacks, a representation of a control stack as 
+ a value that can be reactivated at any time,
+  even if
+  control has long since returned 
+ past the point of reification. Reified control stacks of this kind are called
+  
+ continuations
+ ; they are values that can be passed and returned at will in a 
+ computation. Continuations never “expire”, and it is always sensible to reinstate a 
+ continuation without compromising safety. Thus continuations support unlimited 
+ “time travel” — we can go back to a previous step of the computation, then return to 
+ some point in its future.
+  
+ Why are continuations useful? Fundamentally, they are representations of the 
+ control state of a computation at a given time. Using continuations we can 
+ “checkpoint” the control state of a program, save it in a data structure, and return to 
+ it later. In fact this is precisely what is necessary to implement
+  threads
+  
+ (concurrently executing programs) — the thread scheduler suspends a program for 
+ later execution from where it left off.
+  
+ 30.1 Overview
+  
+ We will consider the extension
+  KPCF
+  of
+  PCF
+  with the type cont(
+ τ
+ ) of continuations 
+ accepting values of type
+  τ
+ . The introduction form for cont(
+ τ
+ ) is letcc{
+ τ
+ }(
+ x.e
+ ), which 
+ binds the
+  current continuation
+  (that is, the current control stack) to the variable
+  x
+ , 
+ and evaluates the expression
+  e
+ . The corresponding elimination form is throw{
+ τ
+ }(
+ e
+ 1
+ ;
+  
+ e
+ 2
+ ), which restores the value given by
+  e
+ 1
+  to the control stack given by
+  e
+ 2
+ .
+  
+ To illustrate the use of these primitives, consider the problem of multiplying the 
+ first
+  n 
+ elements of an infinite sequence
+  q
+  of natural numbers, where
+  q
+  is 
+ represented by a function of type nat
+  ⇀
+  nat. If zero occurs among the first
+  n
+  
+ elements, we would like to effect an “early return” with the value zero, without 
+ further multiplication. This problem can be solved using exceptions, but we will 
+ solve it with continuations to show how they are used.
+  
+ Here is the solution in
+  PCF
+ , without short-cutting:
+  
+ fix ms is
+  
+ λ
+  q : nat
+  ⇀
+  nat.
+  
+ λ
+  n : nat.
+  
+ case n
+  { 
+  
+  
+ z
+ →
+  s(z)",NA
+P A R T XIII,NA,NA
+Symbolic Data,NA,NA
+31,NA,NA
+Symbols,"A
+  symbol
+  is an atomic datum with no internal structure. Whereas a variable is given 
+ meaning by substitution, a symbol is given meaning by a family of operations 
+ indexed by symbols. A symbol is just a name, or index, for a family of operations. 
+ Many different interpretations may be given to symbols according to the operations 
+ we choose to consider, giving rise to concepts such as fluid binding, dynamic 
+ classification, mutable storage, and communication channels. A type is associated to 
+ each symbol whose interpretation depends on the particular application. For 
+ example, in the case of mutable storage, the type of a symbol constrains the contents 
+ of the cell named by that symbol to values of that type. 
+  
+ In this chapter, we 
+ consider two constructs for computing with symbols. The first is a means of
+  declaring
+  
+ new symbols for use within a specified
+  scope
+ . The expression new
+  a
+  ∼
+ ρ
+  in
+  e
+  
+ introduces a “new” symbol
+  a
+  with associated type
+  ρ
+  for use within
+  e
+ . The declared 
+ symbol
+  a
+  is “new” in the sense that it is bound by the declaration within
+  e
+  and so may 
+ be renamed at will to ensure that it differs from any finite set of active symbols. 
+ Whereas the statics determines the scope of a declared symbol, its range of 
+ significance, or
+  extent
+ , is determined by the dynamics. There are two different 
+ dynamic interpretations of symbols, the
+  scoped
+  and the
+  free
+  (short for
+  scope-free
+ ) 
+ dynamics. The scoped dynamics limits the extent of the symbol to its scope; the 
+ lifetime of the symbol is restricted to the evaluation of its scope. Alternatively, under 
+ the free dynamics the extent of a symbol exceeds its scope, extending to the entire 
+ computation of which it is a part. We may say that in the free dynamics a symbol 
+ “escapes its scope,” but it is more accurate to say that its scope widens to encompass 
+ the rest of the computation.
+  
+ The second construct associated with symbols is the concept of a
+  symbol 
+ reference
+ , an expression whose purpose is to refer to a particular symbol. Symbol 
+ references are values of a type
+  ρ
+  sym and are written ’
+ a
+  for some symbol
+  a
+  with 
+ associated type
+  ρ
+ . The elimination form for the type
+  ρ
+  sym is a conditional branch 
+ that determines whether a symbol reference refers to a statically specified symbol. 
+ The statics of the elimination form ensures that, in the positive case, the type 
+ associated to the referenced symbol is manifested, whereas in the negative case, no 
+ type information can be gleaned from the test.
+  
+ 31.1 Symbol Declaration",NA
+32,NA,NA
+Fluid Binding,"In this chapter, we return to the concept of dynamic scoping of variables that was 
+ criticized in Chapter 8. There it was observed that dynamic scoping is problematic 
+ for at least two reasons. One is that renaming of bound variables is not respected; 
+ another is that dynamic scope is not type safe. These violations of the expected 
+ behavior of variables is intolerable, because they are at variance with mathematical 
+ practice and because they compromise modularity.
+  
+ It is possible, however, to recover a type-safe analog of dynamic scoping by 
+ divorcing it from the concept of a variable, and instead introducing a new 
+ mechanism, called
+  fluid binding
+ . Fluid binding associates to a symbol (and not a 
+ variable) a value of a specified type within a specified scope. The identification 
+ principle for bound variables is retained, type safety is not compromised, yet some 
+ of the benefits of dynamic scoping are preserved.
+  
+ 32.1 Statics
+  
+ To account for fluid binding, we enrich
+  SPCF
+  defined in Chapter 31 with these 
+ constructs to obtain
+  FSPCF
+ :
+  
+ Exp
+  
+ e
+  
+ ::=
+  
+ put[
+ a
+ ](
+ e
+ 1
+ ;
+  e
+ 2
+ )
+  
+ put
+  e
+ 1
+  for
+  a
+  in
+  e
+ 2
+  
+ binding
+  
+ get[
+ a
+ ]
+  
+ get
+  a
+  
+ retrieval
+  
+ The expression get[
+ a
+ ] evaluates to the value of the current binding of
+  a
+ , if it has one, 
+ and is stuck otherwise. The expression put[
+ a
+ ](
+ e
+ 1
+ ;
+  e
+ 2
+ ) binds the symbol
+  a
+  to the value
+  
+ e
+ 1
+  for the duration of the evaluation of
+  e
+ 2
+ , at which point the binding of
+  a
+  reverts to 
+ what it was prior to the execution. The symbol
+  a
+  is not bound by the put expression 
+ but is instead a parameter of it.
+  
+ The statics of
+  FSPCF
+  is defined by judgments of the form
+  
+  ⊢
+  e
+  :
+  τ, 
+  
+ much as in Chapter 31, except that here the signature associates a type to each 
+ symbol, instead of just declaring the symbol to be in scope. Thus, is here defined to 
+ be a finite set of declarations of the form
+  a
+  ∼
+  τ
+  such that no symbol is declared more 
+ than once in the same signature. Note that the association of a type to a symbol is
+  not
+  
+ a typing assumption. In particular, the signature enjoys no structural properties and 
+ cannot be considered as a form of hypothesis as defined in Chapter 3.",NA
+33,NA,NA
+Dynamic Classification,"In Chapters 11 and 26, we investigated the use of sums for classifying values of 
+ disparate type. Every value of a classified type is labeled with a symbol that 
+ determines the type of the instance data. A classified value is decomposed by 
+ pattern matching against a known class, which reveals the type of the instance data. 
+ Under this representation, the possible classes of an object are determined
+  statically
+  
+ by its type. However, it is sometimes useful to allow the possible classes of data 
+ value to be determined
+  dynamically
+ .
+  
+ Dynamic generation of classes has many applications, most of which derive from 
+ the guarantee that a newly allocated class is distinct from all others that have been 
+ or ever will be generated. In this regard a dynamic class is a “secret” whose 
+ disclosure can be used to limit the flow of information in a program. In particular, a 
+ dynamically classified value is opaque unless its identity has been disclosed by its 
+ creator. Thus, dynamic classification can be used to ensure that an exception 
+ reaches only its intended handler, or that a message on a communication channel 
+ reaches only the intended recipient.
+  
+ 33.1 Dynamic Classes
+  
+ A dynamic class is a symbol is generated at run-time. A classified value consists of a 
+ symbol of type
+  τ
+  together with a value of that type. To compute with a classified 
+ value, it is compared with a known class. If the value is of this class, the underlying 
+ instance data are passed to the positive branch; otherwise, the negative branch is 
+ taken, where it is matched against other known classes.
+  
+ 33.1.1 Statics 
+ The syntax of dynamic classification is given by the following grammar:
+  
+ Typ
+  
+ τ
+  
+ ::= 
+  
+ clsfd 
+  
+ clsfd 
+  
+ classified
+  
+ Exp 
+  
+ e 
+  
+ ::= 
+  
+ in[
+ a
+ ](
+ e
+ ) 
+  
+ a
+  ·
+  e 
+  
+ instance 
+  
+  
+  
+ isin[
+ a
+ ](
+ e
+ ;
+  x.e
+ 1
+ ;
+  e
+ 2
+ ) 
+  
+ match
+  e
+  as
+  a
+  ·
+  x 
+ →
+  e
+ 1
+  ow→
+  e
+ 2 
+  
+ comparison",NA
+P A R T XIV,NA,NA
+Mutable State,NA,NA
+34,NA,NA
+Modernized Algol,"Modernized Algol
+ , or
+  MA
+ , is an imperative, block-structured programming language 
+ based on the classic language Algol.
+  MA
+  extends
+  PCF
+  with a new syntactic sort of
+  
+ commands 
+ that act on
+  assignables
+  by retrieving and altering their contents. 
+ Assignables are introduced by
+  declaring
+  them for use within a specified scope; this 
+ is the essence of block structure. Commands are combined by sequencing and are 
+ iterated using recursion.
+  
+ MA
+  maintains a careful separation between
+  pure
+  expressions, whose meaning 
+ does not depend on any assignables, and
+  impure
+  commands, whose meaning is 
+ given in terms of assignables. The segregation of pure from impure ensures that the 
+ evaluation order for expressions is not constrained by the presence of assignables 
+ in the language, so that they can be manipulated just as in
+  PCF
+ . Commands, on the 
+ other hand, have a constrained execution order, because the execution of one may 
+ affect the meaning of another.
+  
+ A distinctive feature of
+  MA
+  is that it adheres to the
+  stack discipline
+ , which means 
+ that assignables are allocated on entry to the scope of their declaration, and 
+ deallocated on exit, using a conventional stack discipline. Stack allocation avoids the 
+ need for more complex forms of storage management, at the cost of reducing the 
+ expressive power of the language.
+  
+ 34.1 Basic Commands
+  
+ The syntax of the language
+  MA
+  of modernized Algol distinguishes pure
+  expressions
+  
+ from impure
+  commands
+ . The expressions include those of
+  PCF
+  (as described in 
+ Chapter 19), augmented with one construct, and the commands are those of a 
+ simple imperative program-ming language based on assignment. The language 
+ maintains a sharp distinction between 
+ variables
+  and
+  assignables
+ . Variables are 
+ introduced by
+  λ
+ -abstraction and are given mean-ing by substitution. Assignables are 
+ introduced by a declaration and are given meaning by assignment and retrieval of 
+ their
+  contents
+ , which is, for the time being, restricted to natural numbers. 
+ Expressions evaluate to values, and have no effect on assignables. Com-mands are 
+ executed for their effect on assignables, and return a value. Composition of 
+ commands not only sequences their execution order, but also passes the value 
+ returned by the first to the second before it is executed. The returned value of a",NA
+35,NA,NA
+Assignable References,"A
+  reference
+  to an assignable
+  a
+  is a value, written &
+ a
+ , of
+  reference type
+  that 
+ determines the assignable
+  a
+ . A reference to an assignable provides the
+  capability
+  to 
+ get or set the contents of that assignable, even if the assignable itself is not in scope 
+ when it is used. Two references can be compared for equality to test whether they 
+ govern the same underlying assignable. If two references are equal, then setting one 
+ will affect the result of getting the other; if they are not equal, then setting one 
+ cannot influence the result of getting from the other. Two references that govern 
+ the same underlying assignable are
+  aliases
+ . Aliasing complicates reasoning about 
+ programs that use references, because any two references may refer to the 
+ assignable.
+  
+ Reference types are compatible with both a scoped and a scope-free allocation of 
+ assignables. When assignables are scoped, the range of significance of a reference 
+ type is limited to the scope of the assignable to which it refers. Reference types are 
+ therefore immobile, so that they cannot be returned from the body of a declaration, 
+ nor stored in an assignable. Although ensuring adherence to the stack discipline, 
+ this restriction precludes using references to create mutable data structures, those 
+ whose structure can be altered during execution. Mutable data structures have a 
+ number of applications in programming, including improving efficiency (often at 
+ the expense of expressiveness) and allowing cyclic (self-referential) structures to be 
+ created. Supporting mutability requires that assignables be given a scope-free 
+ dynamics, so that their lifetime persists beyond the scope of their declaration. 
+ Consequently, all types are mobile, so that a value of any type may be stored in an 
+ assignable or returned from a command.
+  
+ 35.1 Capabilities
+  
+ The commands get[
+ a
+ ] and set[
+ a
+ ](
+ e
+ ) in
+  MA
+  operate on statically specified assignable 
+ a
+ . Even to write these commands requires that the assignable
+  a
+  be in scope where 
+ the command occurs. But suppose that we wish to define a procedure that, say, 
+ updates an assignable to double its previous value, and returns the previous value. 
+ We can write such a procedure for any given assignable,
+  a
+ , but what if we wish to 
+ write a generic procedure that works for any given assignable?
+  
+ One way to do this is give the procedure the
+  capability
+  to get and set the contents 
+ of some caller-specified assignable. Such a capability is a pair consisting of a
+  getter",NA
+36,NA,NA
+Lazy Evaluation,"Lazy evaluation
+  comprises a variety of methods to
+  defer
+  evaluation of an expression 
+ until it is required, and to
+  share
+  the results of any such evaluation among all uses of 
+ a deferred computation. Laziness is not merely an implementation device, but it 
+ also affects the 
+ meaning
+  of a program.
+  
+ One form of laziness is the
+  by-need
+  evaluation strategy for function application. 
+ Recall from Chapter 8 that the by-name evaluation order passes the argument to a 
+ function in unevaluated form so that it is only evaluated if it is actually used. But 
+ because the argument is replicated by substitution, it might be evaluated more than 
+ once. By-need evaluation ensures that the argument to a function is evaluated at 
+ most once, by ensuring that all copies of an argument share the result of evaluating 
+ any one copy.
+  
+ Another form of laziness is the concept of a
+  lazy data structure
+ . As we have seen 
+ in Chapters 10, 11, and 20, we may choose to defer evaluation of the components of 
+ a data structure until they are actually required, and not when the data structure is 
+ created. But if a component is required more than once, then the same computation 
+ will, without further provision, be repeated on each use. To avoid this, the deferred 
+ portions of a data structure are shared so an access to one will propagate its result 
+ to all occurrences of the same computation.
+  
+ Yet another form of laziness arises from the concept of general recursion 
+ considered in Chapter 19. Recall that the dynamics of general recursion is given by 
+ unrolling, which replicates the recursive computation on each use. It would be 
+ preferable to share the results of such computation across unrollings. A lazy 
+ implementation of recursion avoids such replications by sharing those results.
+  
+ Traditionally, languages are biased towards either eager or lazy evaluation. Eager 
+ lan-guages use a by-value dynamics for function applications, and evaluate the 
+ components of data structures when they are created. Lazy languages adopt the 
+ opposite strategy, pre-ferring a by-name dynamics for functions, and a lazy 
+ dynamics for data structures. The overhead of laziness is reduced by managing 
+ sharing to avoid redundancy. Experience has shown, however, that the distinction is 
+ better drawn at the level of types. It is important to have both lazy and eager types, 
+ so that the programmer controls the use of laziness, rather than having it enforced 
+ by the language dynamics.
+  
+ 36.1 PCF By-Need",NA
+P A R T XV,NA,NA
+Parallelism,NA,NA
+37,NA,NA
+Nested Parallelism,"Parallel computation seeks to reduce the running times of programs by allowing 
+ many com-putations to be carried out simultaneously. For example, if we wish to 
+ add two numbers, each given by a complex computation, we may consider 
+ evaluating the addends simul-taneously, then computing their sum. The ability to 
+ exploit parallelism is limited by the dependencies among parts of a program. 
+ Obviously, if one computation depends on the result of another, then we have no 
+ choice but to execute them sequentially so that we may propagate the result of the 
+ first to the second. Consequently, the fewer dependencies among sub-computations, 
+ the greater the opportunities for parallelism.
+  
+ In this chapter, we discuss the language
+  PPCF
+ , which is the extension of
+  PCF
+  with 
+ nested parallelism
+ . Nested parallelism has a hierarchical structure arising from
+  
+ forking
+  two (or more) parallel computations, then
+  joining
+  these computations to 
+ combine their results before proceeding. Nested parallelism is also known as
+  fork-
+ join parallelism
+ . We will consider two forms of dynamics for nested parallelism. The 
+ first is a structural dynamics in which a single transition on a compound expression 
+ may involve multiple transitions on its constituent expressions. The second is a cost 
+ dynamics (introduced in Chapter 7) that focuses attention on the sequential and 
+ parallel complexity (also known as the
+  work
+  and the
+  depth
+ , or
+  span
+ ) of a parallel 
+ program by associating a
+  series-parallel graph
+  with each computation.
+  
+ 37.1 Binary Fork-Join
+  
+ The syntax of
+  PPCF
+  extends that of
+  PCF
+  with the following construct:
+  
+ Exp
+  
+ e
+  
+ ::=
+  
+ par(
+ e
+ 1
+ ;
+  e
+ 2
+ ;
+  x
+ 1
+ .x
+ 2
+ .e
+ )
+  
+ par
+  x
+ 1
+  =
+  e
+ 1
+  and
+  x
+ 2
+  =
+  e
+ 2
+  in
+  e
+  
+ parallel let
+  
+ The variables
+  x
+ 1
+  and
+  x
+ 2
+  are bound only within
+  e
+ , and not within
+  e
+ 1
+  or
+  e
+ 2
+ , which 
+ ensures that they are not mutually dependent and hence can be evaluated 
+ simultaneously. The variable bindings represent a fork of two parallel computations
+  
+ e
+ 1
+  and
+  e
+ 2
+ , and the body
+  e
+  represents their join.
+  
+ The static of
+  PPCF
+  enriches that of
+  PCF
+  with the following rule for parallel let:
+  
+  ⊢
+  e
+ 1
+  :
+  τ
+ 1
+  
+  ⊢
+  e
+ 2
+  :
+  τ
+ 2 
+  
+ , x
+ 1
+  :
+  τ
+ 1
+ , x
+ 2
+  :
+  τ
+ 2
+  ⊢
+  e
+  :
+  τ
+  
+  ⊢ par(
+ e
+ 1
+ ;
+  e
+ 2
+ ;
+  x
+ 1
+ .x
+ 2
+ .e
+ ) :
+  τ
+  
+ (37.1)",NA
+38,NA,NA
+Futures and Speculations,"A
+  future
+  is a computation that is performed before it is value is needed. Like a 
+ suspension, a future represents a value that is to be determined later. Unlike a 
+ suspension, a future is always evaluated, regardless of whether its value is required. 
+ In a sequential setting, futures are of little interest; a future of type
+  τ
+  is just an 
+ expression of type
+  τ
+ . In a parallel setting, however, futures are of interest because 
+ they provide a means of initiating a parallel computation whose result is not needed 
+ until later, by which time it will have been completed.
+  
+ The prototypical example of the use of futures is to implementing
+  pipelining
+ , a 
+ method for overlapping the stages of a multistage computation to the fullest extent 
+ possible. Pipelining minimizes the latency caused by one stage waiting for a 
+ previous stage to complete by allowing the two stages to execute in parallel until an 
+ explicit dependency arises. Ideally, the computation of the result of an earlier stage 
+ is finished by the time a later stage needs it. At worst, the later stage is delayed until 
+ the earlier stage completes, incurring what is known as a
+  pipeline stall
+ .
+  
+ A
+  speculation
+  is a delayed computation whose result might be needed for the 
+ overall computation to finish. The dynamics for speculations executes suspended 
+ computations in parallel with the main thread of computation, without regard to 
+ whether the value of the speculation is needed by the main thread. If the value of 
+ the speculation is needed, then such a dynamics pays off, but if not, the effort to 
+ compute it is wasted.
+  
+ Futures are
+  work efficient
+  in that the overall work done by a computation 
+ involving futures is no more than the work done by a sequential execution. 
+ Speculations, in contrast, are
+  work inefficient
+  in that speculative execution might be 
+ in vain—the overall computation may involve more steps than the work needed to 
+ compute the result. For this reason, speculation is a risky strategy for exploiting 
+ parallelism. It can make use of available resources, but perhaps only at the expense 
+ of doing more work than necessary!
+  
+ 38.1 Futures
+  
+ The syntax of futures is given by the following grammar:
+  
+ Typ
+  
+ τ
+  
+ ::= ::=
+  
+ fut(
+ τ
+ )
+  
+ τ
+  fut
+  
+ future
+  
+ Exp
+  
+ e
+  
+ fut(
+ e
+ )
+  
+ fut(
+ e
+ )
+  
+ future
+  
+ fsyn(
+ e
+ )
+  
+ fsyn(
+ e
+ )
+  
+ synchronize",NA
+P A R T XVI,NA,NA
+Concurrency and ,NA,NA
+Distribution,NA,NA
+39,NA,NA
+Process Calculus,"So far we have studied the statics and dynamics of programs in isolation, without 
+ regard to their interaction with each other or the world. But to extend this analysis 
+ to even the most rudimentary forms of input and output requires that we consider 
+ external agents that interact with the program. After all, the purpose of a computer 
+ is, ultimately, to interact with a person!
+  
+ To extend our investigations to interactive systems, we develop a small language, 
+ called 
+ PiC
+ , which is derived from a variety of similar formalisms, called
+  process 
+ calculi
+ , that give an abstract formulation of interaction among independent agents. 
+ The development will be carried out in stages, starting with simple action models, 
+ then extending to interacting concurrent processes, and finally to synchronous and 
+ asynchronous communication. The calculus consists of two main syntactic 
+ categories,
+  processes
+  and
+  events
+ . The basic form of process is one that awaits the 
+ arrival of an event. Processes are formed by concurrent composition, replication, 
+ and declaration of a channel. The basic forms of event are signaling on a channel 
+ and querying a channel; these are later generalized to sending and receiving data on 
+ a channel. Events are formed from send and receive events by finite non-
+ deterministic choice.
+  
+ 39.1 Actions and Events
+  
+ Concurrent interaction is based on
+  events
+ , which specify the
+  actions
+  that a process 
+ can take. Two processes interact by taking two complementary actions, a
+  signal
+  and 
+ a
+  query 
+ on a
+  channel
+ . The processes synchronize when one signals on a channel that 
+ the other is querying, after which they continue to interact with other processes.
+  
+  
+ To begin with, we will focus on
+  sequential processes
+ , which simply await the arrival 
+ of one of several possible actions, known as an event.
+  
+ Proc
+  
+ P
+  
+ ::= 
+ ::=
+  
+ await(
+ E
+ )
+  
+ $
+  E
+  
+ synchronize
+  
+ Evt
+  
+ E
+  
+ null
+  
+ 0
+  
+ null
+  
+ or(
+ E
+ 1
+ ;
+  E
+ 2
+ )
+  
+ ?
+ a
+ ;
+ P E
+ 1
+  +
+  
+ E
+ 2
+  
+ choice
+  
+ que[
+ a
+ ](
+ P
+ )
+  
+ query
+  
+ sig[
+ a
+ ](
+ P
+ )
+  
+ !
+ a
+ ;
+ P
+  
+ signal
+  
+ The variable
+  a
+  ranges over symbols serving as
+  channels
+  that mediate communication 
+ among the processes.",NA
+40,NA,NA
+Concurrent Algol,"In this chapter, we integrate concurrency into the framework of Modernized Algol 
+ described in Chapter 34. The resulting language, called Concurrent Algol, or
+  CA
+ , 
+ illustrates the integration of the mechanisms of the process calculus described in 
+ Chapter 39 into a practical programming language. To avoid distracting 
+ complications, we drop assignables from Modernized Algol entirely. (There is no loss 
+ of generality, however, because free assignables are definable in Concurrent Algol 
+ using processes as cells.) 
+  
+  
+ The process calculus described in Chapter 39 is intended as a self-standing model 
+ of concurrent computation. When viewed in the context of a programming language, 
+ however, it is possible to streamline the machinery to take full advantage of types 
+ that are in any case required for other purposes. In particular the concept of a
+  
+ channel
+ , which features prominently in Chapter 39, is identified with the concept of a
+  
+ dynamic class
+  as described in Chapter 33. More precisely, we take
+  broadcast 
+ communication
+  of dynamically classified values as the basic synchronization 
+ mechanism of the language. Being dynamically classi-fied, messages consist of a
+  
+ payload
+  tagged with a
+  class
+ , or
+  channel
+ . The type of the channel determines the type 
+ of the payload. Importantly, only those processes that have access to the channel may 
+ decode the message; all others must treat it as inscrutable data that can be passed 
+ around but not examined. In this way, we can model not only the mechanisms 
+ described in Chapter 39 but also formulate an abstract account of encryption and 
+ decryption in a network using the methods described in Chapter 39.
+  
+ Concurrent Algol features a modal separation between commands and 
+ expressions like in Modernized Algol. It is also possible to combine these two levels 
+ (so as to allow benign concurrency effects), but we do not develop this approach in 
+ detail here.
+  
+ 40.1 Concurrent Algol
+  
+ The syntax of
+  CA
+  is obtained by removing assignables from
+  MA
+ , and adding a 
+ syntactic level of
+  processes
+  to represent the global state of a program:
+  
+ Typ
+  
+ τ
+  
+ ::= 
+ ::= 
+ ::=
+  
+ cmd(
+ τ
+ )
+  
+ τ
+  cmd
+  
+ commands
+  
+ Exp
+  
+ e
+  
+ cmd(
+ m
+ )
+  
+ cmd
+  m
+  
+ command
+  
+ Cmd
+  
+ m
+  
+ ret
+  e
+  
+ ret
+  e
+  
+ return
+  
+ Proc
+  
+ p
+  
+ bnd(
+ e
+ ;
+  x.m
+ )
+  
+ bnd
+  x
+  ←
+  e
+  ;
+  m 
+ 1
+  
+ sequence
+  
+ ::=
+  
+ stop
+  
+ idle
+  
+ run(
+ m
+ )
+  
+ run(
+ m
+ )
+  
+ atomic",NA
+41,NA,NA
+Distributed Algol,"A
+  distributed
+  computation is one that takes place at many
+  sites
+ , each of which 
+ controls some
+  resources
+  at that site. For example, the sites might be nodes on a 
+ network, and a resource might be a device or sensor at that site, or a database 
+ controlled by that site. Only programs that execute at a particular site may access 
+ the resources situated at that site. Consequently, command execution always takes 
+ place at a particular site, called the
+  locus of execution
+ . Access to resources at a 
+ remote site from a local site is achieved by moving the locus of execution to the 
+ remote site, running code to access the local resource, and returning a value to the 
+ local site.
+  
+ In this chapter, we consider the language
+  DA
+ , which extends Concurrent Algol 
+ with a 
+ spatial
+  type system that mediates access to resources on a network. The type 
+ safety theorem ensures that all accesses to a resource controlled by a site are 
+ through a program executing at that site, even though references to local resources 
+ can be freely passed around to other sites on the network. The main idea is that 
+ channels and events are
+  located
+  at a particular site, and that synchronization on an 
+ event can only occur at the proper site for that event. Issues of concurrency, which 
+ are temporal, are thereby separated from those of distribution, which are spatial.
+  
+ The concept of location in
+  DA
+  is sufficiently abstract that it admits another useful 
+ inter-pretation that can be useful in computer security settings. The “location” of a 
+ computation can be considered to be the
+  principal
+  on whose behalf the computation 
+ is executing. From this point of view, a local resource is one that is accessible to a 
+ particular principal, and a mobile computation is one that can be executed by any 
+ principal. Movement from one location to another may then be interpreted as 
+ executing a piece of code on behalf of another principal, returning its result to the 
+ principal that initiated the transfer.
+  
+ 41.1 Statics
+  
+ The statics of
+  DA
+  is inspired by the
+  possible worlds
+  interpretation of modal logic. 
+ Under that interpretation the truth of a proposition is considered relative to a
+  
+ world
+ , which determines the state of affairs described by that proposition. A 
+ proposition may be true in one world, and false in another. For example, one may 
+ use possible worlds to model counter-factual reasoning, where one postulates that",NA
+P A R T XVII,NA,NA
+Modularity,NA,NA
+42,NA,NA
+Modularity and Linking,"Modularity
+  is the most important technique for controlling the complexity of 
+ programs. Programs are decomposed into separate
+  components
+  with precisely 
+ specified, and tightly controlled, interactions. The pathways for interaction among 
+ components determine de-pendencies that constrain the process by which the 
+ components are integrated, or
+  linked
+ , to form a complete system. Different systems 
+ may use the same components, and a single system may use multiple instances of a 
+ single component. Sharing of components amor-tizes the cost of their development 
+ across systems and helps limit errors by limiting coding effort.
+  
+  
+ Modularity is not limited to programming languages. In mathematics, the proof of 
+ a theorem is decomposed into a collection of definitions and lemmas. References 
+ among the lemmas determine a dependency relation that constrains their integration 
+ to form a complete proof of the main theorem. Of course, one person’s theorem is 
+ another person’s lemma; there is no intrinsic limit on the depth and complexity of 
+ the hierarchies of results in mathematics. Mathematical structures are themselves 
+ composed of separable parts, for example, a ring comprises a group and a monoid 
+ structure on the same underlying set. 
+  
+ Modularity arises from the structural 
+ properties of the hypothetical and general judg-ments. Dependencies among 
+ components are expressed by free variables whose typing assumptions state the 
+ presumed properties of the component. Linking amounts to substitu-tion to 
+ discharge the hypothesis.
+  
+ 42.1 Simple Units and Linking
+  
+ Decomposing a program into units amounts to exploiting the transitivity of the 
+ hypothetical judgment (see Chapter 3). The decomposition may be described as an 
+ interaction between two parties, the
+  client
+  and the
+  implementor
+ , mediated by an 
+ agreed-upon contract, an
+  inter-face
+ . The client
+  assumes
+  that the implementor 
+ upholds the contract, and the implementor 
+ guarantees
+  that the contract will be 
+ upheld. The assumption made by the client amounts to a declaration of its 
+ dependence on the implementor discharged by
+  linking
+  the two parties accordng to 
+ their agreed-upon contract.
+  
+ The interface that mediates the interaction between a client and an implementor is 
+ a
+  type
+ . Linking is the implementation of the composite structural rules of substitution",NA
+43,NA,NA
+Singleton Kinds and Subkinding,"The expression let
+  e
+ 1
+  :
+ τ
+  be
+  x
+  in
+  e
+ 2
+  is a form of abbreviation mechanism by which we 
+ may bind
+  e
+ 1
+  to the variable
+  x
+  for use within
+  e
+ 2
+ . In the presence of function types, this 
+ expression is definable as the application (
+ λ
+  (
+ x
+  :
+  τ
+ )
+  e
+ 2
+ )(
+ e
+ 1
+ ), which accomplishes the 
+ same thing. It is natural to consider an analogous form of let expression, which 
+ binds a type to a type variable within a scope. Using def
+  t
+  is
+  τ
+  in
+  e
+  to bind the type 
+ variable
+  t
+  to
+  τ
+  within the expression
+  e
+ , we may write expressions such as
+  
+ def
+  t
+  is nat × nat in
+  λ
+  (
+ x
+  :
+  t
+ ) s(
+ x
+  · l)
+ , 
+  
+ which introduces a
+  type abbreviation
+  within an expression. To ensure that this 
+ expression is well-typed, the type variable
+  t
+  is to be
+  synonymous
+  with the type nat × 
+ nat, for otherwise the body of the
+  λ
+ -abstraction is not type correct.
+  
+ Following the pattern of the expression-level let, we might guess that def
+  t
+  is
+  τ
+  in
+  
+ e 
+ abbreviates the polymorphic instantiation(
+ t
+ )
+  e
+ [
+ τ
+ ], which binds
+  t
+  to
+  τ
+  within
+  e
+ . 
+ Doing so captures the dynamics of type abbreviation, but it fails to adhere to the 
+ intended statics. The difficulty is that, according to this interpretation of type 
+ definitions, the expression 
+ e
+  is type-checked in the absence of any knowledge of the 
+ binding of
+  t
+ , rather than in the knowledge that
+  t
+  is synonymous with
+  τ
+ . Thus, in the 
+ above example, the expression s(
+ x
+  · l) would fail to type check, unless the binding of
+  
+ t
+  were exposed.
+  
+ Interpreting type definition in terms of type abstraction and type application fails. 
+ One solution is to consider type abbreviation to be a primitive notion with the 
+ following statics:
+  
+  ⊢ [
+ τ/t
+ ]
+ e
+  :
+  τ
+ ′
+  
+ (43.1
+ )
+  
+  ⊢ def
+  t
+  is
+  τ
+  in
+  e
+  :
+  τ
+ ′
+  
+ This formulation would solve the problem of type abbreviation, but in an
+  ad hoc
+  
+ way. Is
+  
+ there a more general solution?
+  
+ There is, by introducing
+  singleton kinds
+ , which classify type constructors by 
+ revealing their identity. Singletons
+  n
+  the type definition problem but play a crucial 
+ role in the design of module systems (as described in Chapters 44 and 45.)
+  
+ 43.1 Overview",NA
+44,NA,NA
+Type Abstractions and Type Classes,"An interface is a contract that specifies the rights of a client and the responsibilities 
+ of an implementor. Being a specification of behavior, an interface is a type. In 
+ principle, any type may serve as an interface, but in practice it is usual to structure 
+ code into
+  modules 
+ consisting of separable and reusable components. An interface 
+ specifies the behavior of a module expected by a client and imposed on the 
+ implementor. It is the fulcrum balancing the tension between separation and 
+ integration. As a rule, a module ought to have a well-defined behavior that can be 
+ understood separately, but it is equally important that it be easy to combine 
+ modules to form an integrated whole.
+  
+ A fundamental question is, what is the type of a module? That is, what form 
+ should an interface take? One long-standing idea is that an interface is a labeled 
+ tuple of functions and procedures with specified types. The types of the fields of the 
+ tuple are often called 
+ function headers
+ , because they summarize the call and return 
+ types of each function. Using interfaces of this form is called
+  procedural abstraction
+ , 
+ because it limits the dependencies between modules to a specified set of 
+ procedures. We may think of the fields of the tuple as being the instruction set of a 
+ virtual machine. The client makes use of these instructions in its code, and the 
+ implementor agrees to provide their implementations.
+  
+ The problem with procedural abstraction is that it does not provide as much 
+ insulation as one might like. For example, a module that implements a dictionary 
+ must expose in the types of its operations the exact representation of the tree as, 
+ say, a recursive type (or, in more rudimentary languages, a pointer to a structure 
+ that itself may contain such pointers). Yet the client ought not depend on this 
+ representation: the purpose of abstraction is to get rid of pointers. The solution, as 
+ discussed in Chapter 17, is to extend the abstract machine metaphor to allow the 
+ internal state of the machine to be hidden from the client. In the case of a dictionary, 
+ the representation of the dictionary as a binary search tree is hidden by existential 
+ quantification. This concept is called
+  type abstraction
+ , because the type of the 
+ underlying data (state of the abstract machine) is hidden.
+  
+ Type abstraction is a powerful method for limiting the dependencies among the 
+ modules that constitute a program. It is very useful in many circumstances but is 
+ not universally applicable. It is often useful to expose, rather than to obscure, type 
+ information across a module boundary. A typical example is the implementation of 
+ a dictionary, which is a mapping from keys to values. To use, say, a binary search 
+ tree to implement a dictionary, we require that the key type admit a total ordering 
+ with which keys can be compared. The dictionary abstraction does not depend on",NA
+45,NA,NA
+Hierarchy and Parameterization,"To be adequately expressive, it is essential that a module system support module
+  
+ hierarchies
+ . Hierarchical structure arises naturally in programming, both as an 
+ organizational device for partitioning of a large program into manageable pieces, 
+ and as a localization device that allows one type abstraction or type class to be 
+ layered on top of another. In such a scenario, the lower layer plays an auxiliary role 
+ relative to the upper layer, and we may think of the upper layer as being abstracted 
+ over the lower in the sense that any implementation of the lower layer induces an 
+ instance of the upper layer corresponding to that instance. The pattern of 
+ dependency of one abstraction on another is captured by an
+  abstraction 
+ mechanism 
+ that allows the implementation of one abstraction to be considered a function of the 
+ implementation of another. Hierarchies and abstraction work in tandem to offer an 
+ expressive language for organizing programs.
+  
+ 45.1 Hierarchy
+  
+ It is common in modular programming to layer a type class or a type abstraction on 
+ top of a type class. For example, the class of
+  equality types
+ , which are those that 
+ admit a boolean equivalence test, is described by the signature
+  σ
+ eq
+  defined as 
+ follows:
+  
+ t
+  :: T ; ⟨eq→ (
+ t
+  ×
+  t
+ ) → bool⟩
+  .
+  
+ Instances of this class consist of a type together with a binary equality operation 
+ defined on it. Such instances are modules with a subsignature of
+  σ
+ eq
+ ; the signature
+  
+ σ
+ nateq
+  given by
+  
+  
+ t
+  :: S(nat) ; ⟨eq→ (
+ t
+  ×
+  t
+ ) → bool⟩is 
+ one example. A module value of this signature has the form
+  
+ nat ; ⟨eq→
+  . . .
+ ⟩
+  , 
+  
+ where the elided expression implements an equivalence relation on the natural 
+ numbers. All other instance values of the class
+  σ
+ eq
+  have a similar form, differing in the 
+ choice of type, and/or the choice of comparison operation.
+  
+ The class of
+  ordered types
+  are an extension of the class of equality types with a 
+ binary operation for the (strict) comparison of two elements of that type. One way 
+ to formulate this is as the signature",NA
+P A R T XVIII,NA,NA
+Equational Reasoning,NA,NA
+46,NA,NA
+Equality for System T,"The beauty of functional programming is that equality of expressions in a functional 
+ language corresponds follows the familiar patterns of mathematical reasoning. For 
+ example, in the language
+  T
+  of Chapter 9 in which we can express addition as the 
+ function plus, the expressions
+  
+ λ
+  (
+ x
+  : nat)
+  λ
+  (
+ y
+  : nat) plus(
+ x
+ )(
+ y
+ )
+  
+ and
+  
+ λ
+  (
+ x
+  : nat)
+  λ
+  (
+ y
+  : nat) plus(
+ y
+ )(
+ x
+ )
+  
+ are equal. In other words, the addition function
+  as programmed in
+  T
+  is commutative. 
+  
+ Commutativity of addition may seem self-evident, but
+  why
+  is it true? What does it 
+ mean for two expressions to be equal? These two expressions are not
+  definitionally
+  
+ equal; their equality requires proof and is not merely a matter of calculation. Yet the 
+ two expressions are interchangeable because they given the same result when 
+ applied to the same number. In general, two functions are
+  logically equivalent
+  if they 
+ give equal results for equal arguments. Because this is all that matters about a 
+ function, we may expect that logically equivalent functions are interchangeable in 
+ any program. Thinking of the programs in which these functions occur as
+  
+ observations
+  of their behavior, these functions are said to be 
+ observationally 
+ equivalent
+ . The main result of this chapter is that observational and logical 
+ equivalence coincide for a variant of
+  T
+  in which the successor is evaluated eagerly, so 
+ that a value of type nat is a numeral.
+  
+ 46.1 Observational Equivalence
+  
+ When are two expressions equal? Whenever we cannot tell them apart! It may seem 
+ tautological to say so, but it is not, because it all depends on what we consider to be 
+ a means of telling expressions apart. What “experiment” are we permitted to 
+ perform on expressions in order to distinguish them? What counts as an 
+ observation that, if different for two expressions, is a sure sign that they are 
+ different?
+  
+ If we permit ourselves to consider the syntactic details of the expressions, then 
+ very few expressions could be considered equal. For example, if it is significant that",NA
+47,NA,NA
+Equality for System PCF,"In this chapter, we develop the theory of observational equivalence for
+  PCF
+ , with an 
+ eager interpretation of the type of natural numbers. The development proceeds 
+ along lines similar to those in Chapter 46 but is complicated by the presence of 
+ general recursion. The proof depends on the concept of an
+  admissible relation
+ , one 
+ that admits the principle of
+  proof by fixed point induction
+ .
+  
+ 47.1 Observational Equivalence
+  
+ The definition of observational equivalence, along with the auxiliary notion of 
+ Kleene equivalence, are defined similarly to Chapter 46 but modified to account for 
+ the possibility of non-termination.
+  
+ The collection of well-formed
+  PCF
+  contexts is inductively defined in a manner 
+ directly analogous to that in Chapter 46. Specifically, we define the judgment
+  C
+  : ( ▷
+  
+ τ
+ ) ⇝ (
+ ′
+ ▷
+  τ
+ ′
+ ) by rules similar to rules (46.1), modified for
+  PCF
+ . (We leave the precise 
+ definition as an exercise for the reader.) When and
+ ′
+ are empty, we write just
+  C
+  :
+  τ
+  ⇝
+  
+ τ
+ ′
+ .
+  
+ A
+  complete program
+  is a closed expression of type nat.
+  
+ Definition 47.1.
+  We say that two complete programs, e and e
+ ′
+ , are
+  Kleene equal
+ , 
+ written e
+  ≃
+  e
+ ′
+ , iff for every n
+  ≥ 0
+ , e
+  −→
+ ∗
+ n iff e
+ ′
+ −→
+ ∗
+ n.
+  
+  
+ Kleene equality is clearly an equivalence relation and is closed under converse 
+ evaluation. Moreover, 0 ̸≃ 1 and, if
+  e
+  and
+  e
+ ′
+ are both divergent, then
+  e
+  ≃
+  e
+ ′
+ . 
+  
+  
+ Observational equivalence is defined just as it is in Chapter 46.
+  
+ Definition 47.2.
+  We say that
+  ⊢
+  e
+  :
+  τ and
+  ⊢
+  e
+ ′
+ :
+  τ are
+  observationally
+ , or
+  contextually
+ , 
+ equivalent
+  iff for every program context C
+  : ( ▷
+  τ
+ ) ⇝ (∅ ▷
+  nat
+ )
+ , C
+ {
+ e
+ } ≃
+  C
+ {
+ e
+ ′
+ }
+ .
+  
+ Theorem 47.3.
+  Observational equivalence is the coarsest consistent congruence.
+  
+ Proof
+  
+ See the proof of Theorem 46.6.
+  
+  
+  
+  
+ Lemma 47.4
+  (Substitution and Functionality)
+ .
+  If
+  ⊢
+  e
+ ∼=
+  e
+ ′
+ :
+  τ and γ
+  :
+ , then
+  ˆ
+ γ
+  (
+ e
+ )∼=
+ τ
+ ˆ
+ γ
+  
+ (
+ e
+ ′
+ )
+ . Moreover, if γ
+ ∼=
+  γ
+ ′
+ , then
+  ˆ
+ γ
+  (
+ e
+ )∼=
+ τ
+ ˆ
+ γ
+ ′
+ (
+ e
+ )
+  and
+  ˆ
+ γ
+  (
+ e
+ ′
+ )∼=
+ τ
+ ˆ
+ γ
+ ′
+ (
+ e
+ ′
+ )
+ .",NA
+48,NA,NA
+Parametricity,"The main motivation for polymorphism is to enable more programs to be written—
+ those that are “generic” in one or more types, such as the composition function 
+ given in Chapter 16. If a program
+  does not
+  depend on the choice of types, we can 
+ code it using polymorphism. Moreover, if we wish to insist that a program
+  cannot
+  
+ depend on a choice of types, we demand that it be polymorphic. Thus, 
+ polymorphism can be used both to expand the collection of programs we may write 
+ and to limit the collection of programs that are permissible in a given context.
+  
+ The restrictions imposed by polymorphic typing give rise to the experience that 
+ in a polymorphic functional language, if the types are correct, then the program is 
+ correct. Roughly speaking, if a function has a polymorphic type, then the strictures 
+ of type genericity cut down the set of programs with that type. Thus, if you have 
+ written a program with this type, it is more likely to be the one you intended!
+  
+  
+ The technical foundation for these remarks is called
+  parametricity
+ . The goal of this 
+ chapter is to give an account of parametricity for
+  F
+  under a call-by-name 
+ interpretation.
+  
+ 48.1 Overview
+  
+ We will begin with an informal discussion of parametricity based on a “seat of the 
+ pants”understanding of the set of well-formed programs of a type.
+  
+ Suppose that a function value
+  f
+  has the type ∀(
+ t.t
+  →
+  t
+ ). What function could it be? 
+ When instantiated at a type
+  τ
+  it should evaluate to a function
+  g
+  of type
+  τ
+  →
+  τ
+  that, 
+ when further applied to a value
+  v
+  of type
+  τ
+  returns a value
+  v
+ ′
+ of type
+  τ
+ . Because
+  f
+  is 
+ polymorphic, 
+ g
+  cannot depend on
+  v
+ , so
+  v
+ ′
+ must be
+  v
+ . In other words,
+  g
+  must be the 
+ identity function at type
+  τ
+ , and
+  f
+  must therefore be the
+  polymorphic identity
+ .
+  
+ Suppose that
+  f
+  is a function of type ∀(
+ t.t
+ ). What function could it be? A moment’s 
+ thought reveals that it cannot exist at all. For it must, when instantiated at a type
+  τ
+ , 
+ return a value of that type. But not every type has a value (including this one), so 
+ this is an impossible assignment. The only conclusion is that ∀(
+ t.t
+ ) is an
+  empty
+  type.
+  
+  
+ Let
+  N
+  be the type of polymorphic Church numerals introduced in Chapter 16, 
+ namely∀(
+ t.t
+  → (
+ t
+  →
+  t
+ ) →
+  t
+ ). What are the values of this type? Given any type
+  τ
+ , and 
+ values
+  z
+  :
+  τ
+ and
+  s
+  :
+  τ
+  →
+  τ
+ , the expression 
+  
+   
+ f
+  [
+ τ
+ ](
+ z
+ )(
+ s
+ )",NA
+49,NA,NA
+Process Equivalence,"As the name implies, a process is an ongoing computation that may interact with 
+ other processes by sending and receiving messages. From this point of view, a 
+ concurrent com-putation has no definite “final outcome” but rather affords an 
+ opportunity for interaction that may well continue indefinitely. The notion of 
+ equivalence of processes must therefore be based on their potential for interaction, 
+ rather than on the “answer” that they may compute. Let
+  P
+  and
+  Q
+  be such that ⊢
+  P
+  
+ proc and ⊢
+  Q
+  proc. We say that
+  P
+  and
+  Q
+  are
+  equivalent
+ , written
+  P
+  ≈
+  Q
+ , iff there is a 
+ bisimulation
+  R
+  such that
+  P R Q
+ . A family of relations 
+ R
+  = {
+  R
+  } is a
+  bisimulation
+  iff 
+ whenever
+  P
+  may evolve to
+  P
+ ′
+ taking the action
+  α
+ , then 
+ Q
+  may also evolve to some 
+ process
+  Q
+ ′
+ taking the same action such that
+  P
+ ′
+ R Q
+ ′
+ , and, conversely, if
+  Q
+  may evolve to
+  
+ Q
+ ′
+ taking action
+  α
+ , then
+  P
+  may evolve to
+  P
+ ′
+ taking the same action, and
+  P
+ ′
+ R Q
+ ′
+ . This 
+ correspondence captures the idea that the two processes afford the same 
+ opportunities for interaction in that they each simulate each other’s behavior with 
+ respect to their ability to interact with their environment.
+  
+ 49.1 Process Calculus
+  
+ We will consider a process calculus that consolidates the main ideas explored in 
+ Chapters 39 and 40. We assume as given an ambient language of expressions that 
+ includes the type clsfd of classified values (see Chapter 33). Channels are treated as 
+ dynamically generated classes with which to build messages, as described in 
+ Chapter 40.
+  
+ The syntax of the process calculus is given by the following grammar:
+  
+ Proc
+  
+ P
+  
+ ::=
+  
+ stop
+  
+ 1
+  
+ inert
+  
+ conc(
+ P
+ 1
+ ;
+  P
+ 2
+ )
+  
+ P
+ 1
+  ⊗
+  P
+ 2 
+ $
+  
+ E
+  
+ composition
+  
+ await(
+ E
+ )
+  
+ synchronize
+  
+ Evt
+  
+ E
+  
+ ::=
+  
+ new[
+ τ
+ ](
+ a.P
+  )
+  
+ ν a
+  ∼
+  τ.P 
+ !
+  
+ e
+  
+ allocation
+  
+ emit(
+ e
+ )
+  
+ broadcast
+  
+ null
+  
+ 0
+  
+ null
+  
+ or(
+ E
+ 1
+ ;
+  E
+ 2
+ )
+  
+ choice
+  
+ E
+ 1
+  +
+  E
+ 2 
+ ? 
+ (
+ x.P
+  )
+  
+ acc(
+ x.P
+  )
+  
+ acceptance",NA
+P A R T XIX,NA,NA
+Appendices,NA,NA
+A,NA,NA
+Background on Finite Sets,"We make frequent use of the concepts of a
+  finite set
+  of
+  discrete objects
+  and of
+  finite
+  
+ functions
+  between them. A set
+  X
+  is
+  discrete
+  iff equality of its elements is decidable: 
+ for
+  
+ every
+  x, y
+  ∈
+  X
+ , either
+  x
+  =
+  y
+  ∈
+  X
+  or
+  x
+  ̸=
+  y
+  ∈
+  X
+ . This condition is to be understood 
+ constructively as stating that we may effectively determine whether any two 
+ elements of
+  
+ the set
+  X
+  are equal. Perhaps the most basic example of a discrete set is the set N of 
+ natural
+  
+ numbers. A set
+  X
+  is
+  countable
+  iff there is a bijection
+  f
+  :
+  X
+ ∼= N between
+  X
+  and the set 
+ of natural numbers, and it is
+  finite
+  iff there is a bijection,
+  f
+  :
+  X
+ ∼= { 0
+ , . . . , n
+  − 1 }, 
+ where 
+ n
+  ∈ N, between it and some inital segment of the natural numbers. This 
+ condition is again to be understood constructively in terms of computable 
+ mappings, so that countable and
+  
+ finite sets are computably enumerable and, in the finite case, have a computable 
+ size.
+  
+ Given countable sets,
+  U
+  and
+  V
+  , a
+  finite function
+  is a computable partial function
+  φ
+  :
+  
+ U
+  →
+  V
+  between them. The
+  domain dom
+ (
+ φ
+ ) of
+  φ
+  is the set {
+  u
+  ∈
+  U
+  |
+  φ
+ (
+ u
+ ) ↓ }, of objects 
+ u
+  ∈
+  U
+  such that
+  φ
+ (
+ u
+ ) =
+  v
+  for some
+  v
+  ∈
+  V
+  . Two finite functions,
+  φ
+  and
+  ψ
+ , between
+  U
+  
+ and 
+ V
+  are
+  disjoint
+  iff
+  dom
+ (
+ φ
+ ) ∩
+  dom
+ (
+ ψ
+ ) = ∅. The
+  empty
+  finite function, ∅, between
+  U
+  
+ and
+  V 
+ is the totally undefined partial function between them. If
+  u
+  ∈
+  U
+  and
+  v
+  ∈
+  V
+  , then 
+ the finite function,
+  u 
+ →
+  v
+ , between
+  U
+  and
+  V
+  sends
+  u
+  to
+  v
+ , and is undefined otherwise; 
+ its domain is therefore the singleton set {
+  u
+  }. In some situations, we write
+  u
+  ∼
+  v
+  for 
+ the finite function 
+ u 
+ →
+  v
+ .
+  
+  
+ If
+  φ
+  and
+  ψ
+  are two disjoint finite functions from
+  U
+  to
+  V
+  , then
+  φ
+  ⊗
+ ψ
+  is the finite 
+ function from
+  U
+  to
+  V
+  defined by the equation
+  
+ (
+ φ
+  ⊗
+  ψ
+ )(
+ u
+ ) =⎧⎪⎪⎨
+ φ
+ (
+ u
+ )
+  
+ ψ
+ (
+ v
+ )
+  
+ undefined 
+  
+  
+ if
+  u
+  ∈
+  dom
+ (
+ φ
+ )
+  
+ if
+  v
+  ∈
+  dom
+ (
+ ψ
+ )
+  
+ otherwise",NA
+Bibliography,"Mart´ın Abadi and Luca Cardelli.
+  A Theory of Objects
+ . Springer-Verlag, 1996.
+  
+ Peter Aczel. An introduction to inductive definitions. In Jon Barwise, editor,
+  
+ Handbook of 
+  
+ Mathematical Logic
+ , chapter C.7, pages 783–818. North-Holland, 
+ 1977.
+  
+ John Allen.
+  Anatomy of LISP
+ . Computer Science Series. McGraw-Hill, 1978.
+  
+ S. F. Allen, M. Bickford, R. L. Constable, R. Eaton, C. Kreitz, L. Lorigo, and E. Moran.
+  
+ Innovations in computational type theory using Nuprl.
+  Journal of Applied Logic
+ , 
+ 4(4):428–469, 2006. ISSN 1570-8683. doi: 10.1016/j.jal.2005.10.005.
+  
+ Stuart Allen. A non-type-theoretic definition of Martin-L¨of’s types. In
+  LICS
+ , pages 
+ 215–
+  
+ 221, 1987.
+  
+ Zena M. Ariola and Matthias Felleisen. The call-by-need lambda calculus.
+  J. Funct. 
+  
+ Program.
+ , 7(3):265–301, 1997.
+  
+ Arvind, Rishiyur S. Nikhil, and Keshav Pingali. I-structures: Data structures for 
+ parallel 
+  
+ computing. 
+  
+ In Joseph H. Fasel and Robert M. Keller, editors,
+  
+ Graph Reduction
+ , 
+  
+ volume 279 of
+  Lecture Notes in Computer Science
+ , pages 
+ 336–369. Springer, 1986. 
+  
+ ISBN 3-540-18420-1.
+  
+ Arnon Avron. Simple consequence relations.
+  Information and Computation
+ , 92:105–
+ 139, 
+  
+ 1991.
+  
+ Henk Barendregt.
+  The Lambda Calculus, Its Syntax and Semantics
+ , volume 103 of
+  
+ Studies 
+  
+ in Logic and the Foundations of Mathematics
+ . North-Holland, 1984.
+  
+ Henk Barendregt. Lambda calculi with types. In S. Abramsky, D. M. Gabbay, and T. S. 
+ E.
+  
+ Maibaum, editors,
+  Handbook of Logic in Computer Science
+ , volume 2,
+  
+ Computational Structures
+ . Oxford University Press, 1992.
+  
+ Yves Bertot, G´erard Huet, Jean-Jacques L´evy, and Gordon Plotkin, editors.
+  From 
+ Semantics to Computer Science: Essays in Honor of Gilles Kahn
+ . Cambridge 
+ University Press, 2009.
+  
+ Guy E. Blelloch.
+  Vector Models for Data-Parallel Computing
+ . MIT Press, 1990. ISBN 
+  
+ 0-262-02313-X.
+  
+ Guy E. Blelloch and John Greiner. Parallelism in sequential functional languages. In 
+  
+ FPCA
+ , pages 226–237, 1995.
+  
+ Guy E. Blelloch and John Greiner. A provable time and space efficient 
+ implementation of 
+  
+ NESL. In
+  ICFP
+ , pages 213–225, 1996.
+  
+ Manuel Blum. On the size of machines.
+  Information and Control
+ , 11(3):257–265, 
+ Septem-
+  
+ ber 1967.",NA
+Index,"FPC
+ ,
+  see
+  recursive types
+  
+ call-by-need,
+  see
+  laziness
+  
+  
+ M
+ ,
+  see
+  inductive types, coinductive 
+ types 
+  
+ ,
+  see
+  untyped
+  λ
+ -calculus 
+  
+ F
+ ,
+  see
+  universal types 
+  
+ F
+ ω
+ ,
+  see
+  higher kinds 
+  
+ MA
+ ,
+  see
+  Modernized Algol 
+  
+ PCF
+ ,
+  see
+  Plotkin’s
+  PCF 
+  
+ PPCF
+ ,
+  see
+  parallelism 
+  
+ T
+ ,
+  see
+  G¨odel’s
+  T
+  
+ capabilities, 313 
+  
+ channel types,
+  see
+  Concurrent Algol 
+ class types, 293 
+  
+  
+ definability, 294 
+  
+  
+ dynamics, 293 
+  
+  
+ statics, 293 
+  
+ classes,
+  see
+  dynamic dispatch 
+  
+ classical logic, 104
+  
+ classical laws, 114
+  
+ abstract binding tree, 3, 6 
+  
+ contradiction, 105, 106, 107
+  
+ abstractor, 7 
+  
+ derivability of elimination forms,
+  
+ valence, 7 
+  
+ 109
+  
+ α
+ -equivalence, 9 
+  
+ double-negation translation, 113, 115
+  
+ bound variable, 8 
+  
+ dynamics, 110
+  
+ capture, 9 
+  
+ excluded middle, 111
+  
+ free variable, 8 
+  
+ judgments, 105
+  
+ graph representation, 11 
+  
+ proof, 106
+  
+ operator, 7 
+  
+ conjunction, 108
+  
+ arity, 7 
+  
+ disjunction, 108
+  
+ parameter, 10 
+  
+ implication, 108
+  
+ structural induction, 8 
+  
+ negation, 108
+  
+ substitution, 9 
+  
+ truth, 107
+  
+ weakening, 11 
+  
+ variable, 107
+  
+ abstract binding trees 
+  
+ provability, 105
+  
+ closed, 30 
+  
+ conjunction, 106
+  
+ abstract syntax tree, 3, 5 
+  
+ disjunction, 106
+  
+ operator, 3 
+  
+ hypothesis, 105
+  
+ arity, 3 
+  
+ implication, 106
+  
+ index, 10 
+  
+ negation, 106
+  
+ parameter, 10 
+  
+ truth, 106
+  
+ structural induction, 5 
+  
+ refutability, 105
+  
+ substitution, 6 
+  
+ conjunction, 106
+  
+ variable, 3 
+  
+ disjunction, 106
+  
+ weakening, 11 
+  
+ falsehood, 106
+  
+ abstract types,
+  see
+  existential types,
+  see also
+  signatures 
+  
+ hypothesis, 105
+  
+ abstracted modules,
+  see
+  signatures 
+  
+ implication, 106
+  
+ abt,
+  see
+  abstract binding tree 
+  
+ negation, 106
+  
+ assignables,
+  see
+  Modernized Algol 
+  
+ refutation, 106
+  
+ ast,
+  see
+  abstract syntax tree 
+  
+ conjunction, 108
+  
+ disjunction, 108
+  
+ back-patching,
+  see
+  references 
+  
+ falsehood, 108
+  
+ benign effects,
+  see
+  references 
+  
+ implication, 108
+  
+ bidirectional typing, 37 
+  
+ negation, 108
+  
+ boolean blindness,
+  see
+  type refinements 
+  
+ variable, 107
+  
+ boolean type, 88 
+  
+ safety, 111",NA

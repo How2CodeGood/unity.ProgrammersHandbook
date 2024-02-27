@@ -1,0 +1,2771 @@
+Larger Text,Smaller Text,Symbol
+About the Authors,"Two authors collaborated on this book: Jayson Falkner and Kevin Jones. Both Jayson and 
+ Kevin are well-known developers in the JavaServer Pages (JSP) and Servlets communities, 
+ and both authors have worked extensively with the technologies. 
+ Servlets and JavaServer 
+ Pages
+ TM
+ : The J2EE
+ TM
+  Technology Web Tier
+  originally started as Jayson's project; however, 
+ during the JavaOne 2002 conference the two authors met. It turns out Kevin was thinking of 
+ working on a similar title, and the two decided to collaborate.
+  
+ Publisher: Addison Wesley",NA
+Jayson Falkner ,"Pub 
+ Date: September 19, 2003
+  
+ ISBN: 0-321-13649-7
+  
+ Jayson is a J2EE developer from the United States. He started developing with J2EE just 
+ before JSP 1.1 and Servlets 2.2 were released and has been focusing on the technologies 
+ since. Jayson is best known as the Webmaster of JSP Insider, 
+ http://www.jspinsider.com
+ , 
+ and for asking far too many questions in the popular Servlet and JSP forums. Jayson has 
+ worked on numerous JSP titles and is constantly present at the popular Java conferences.
+  
+ Jayson participated on the JSR 152 expert group, JSP 2.0, and helped with the Tomcat 5 
+ Servlets and JavaServer Pages
+  is the first complete guide to building dynamic Java-based 
+ Web applications using the new JavaServer Pages 2.0 and Servlets 2.4. Servlets and 
+ reference implementation.
+  
+ JavaServer Pages (JSP) provide a robust solution to developing large, complex Web Jayson 
+ prefers to think of himself as a tax-dodging student, who is currently working on a 
+ applications, including multiserver projects. In addition to built-in security, portability, and a 
+ Ph.D. in bioinformatics at the University of Michigan; however, he also works professionally 
+ Web server, they offer developers the freedom to work with any operating system that as a 
+ J2EE consult with Amberjack Software LLC. Open-source software and free Java supports 
+ Java—be it Linux, Windows, OSX, or Solaris. development are Jayson's specialties. You can 
+ thank (or complain) to Jayson for dictating the use of Mozilla and Tomcat with this book. This 
+ authoritative book begins by explaining how to set up a Servlet and JSP development 
+ environment, including a discussion of containers, Java support, and installing and You can get 
+ in touch with Jayson by sending an email to 
+ jayson@jspinsider.com
+ . configuring Tomcat. The 
+ authors then thoroughly explore servlets and JSP, including significant coverage of custom tag 
+ libraries, newly available filters, and popular servlet and JSP design patterns. Readers can 
+ then test-drive the knowledge gained by constructing a",NA
+Kevin Jones ,"book-support Web 
+ site.
+  
+ Among the topics covered in-depth are: Kevin is a longtime Java developer and educator, and 
+ has been involved in the training industry for the last twelve years. For the last eight years 
+ Kevin has been involved in writing and delivering Java training and consulting on various Java 
+ projects, and for the last four years has concentrated on J2EE and specifically Web 
+ technologies. Exception handling
+  
+ JavaBeans and the new JSP Expression Language (JSP EL) 
+  
+ Kevin spoke at JavaOne in 2000 and was invited to become a member of JSR 53, the ""Java 
+ Servlet 2.3 and JavaServer Pages 1.2 Specifications"" and also JSR 52 ""A Standard Tag The 
+ JavaServer Pages Standard Tag Library (JSTL) and coding custom tag libraries Library for 
+ JavaServer Pages"". Since then Kevin has successfully spoken at JavaOne in 2001 and 2002 
+ as well as participating in JSR 154 (Servlets 2.4) and, like Jayson, in JSR 152. Filters
+  
+ Kevin is responsible for the Java curriculum at DevelopMentor, where he teaches the Error 
+ handling 
+  
+ Essential Java Web Development class that covers much of the material in this book, as well 
+ You can reach Kevin at 
+ kevinj@develop.com
+  or through his Web site at 
+ http://kevinj.develop.com 
+  
+  
+ Design patterns, including Struts
+  
+ Internationalization
+  
+ Multiclient support
+  
+ Database connectivity
+  
+ The actual book-support site (www.jspbook.com) features frequently asked questions, 
+ working code examples, and references.",NA
+Containers,"Servlet performance can be attributed directly to a Servlet 
+ container
+ . A Servlet container, also 
+ called ""container"" or ""JSP container"", is the piece of software that manages the Servlet life 
+ cycle. Container software is responsible for interacting with a Web server to process a
+ • 
+ request and passing it to a Servlet for a response. The official definition of a container is 
+ Table 
+ of Contents
+  
+ described fully by both the JSP and Servlet specifications. Unlike most proprietary 
+  
+ technologies, the JSP and Servlet specifications only define a standard for the functionality a 
+ container must implement. There is not one but many different implementations of Servlet 
+ and JSP containers from different vendors with different prices, performance, and features. 
+ Publisher: Addison Wesley 
+  
+ This leaves a Servlet and JSP developer with many options for development software. 
+ Pub Date: 
+ September 19, 2003
+  
+ With containers in mind, the previous diagram of Servlets is better drawn using a container 
+ ISBN: 0-321-13649-
+ 7
+  
+ to represent the single process that creates, manages, and destroys threads running Servlets 
+ on a Web server. Note that this may or may not be a separate physical process. 
+ Figure 1-4 
+ shows a Web server using a Servlet container.
+  
+ Servlets and JavaServer Pages
+  is the first complete guide to building dynamic Java-based 
+ Web applications using the new JavaServer Pages 2.0 and Servlets 2.4. Servlets and 
+ Figure 
+ 1-4. Container Process 
+  
+ JavaServer Pages (JSP) provide a robust solution to developing large, complex Web 
+ applications, including multiserver projects. In addition to built-in security, portability, and a 
+ Web server, they offer developers the freedom to work with any operating system that 
+ supports Java—be it Linux, Windows, OSX, or Solaris.
+  
+ This authoritative book begins by explaining how to set up a Servlet and JSP development 
+ environment, including a discussion of containers, Java support, and installing and 
+ configuring Tomcat. The authors then thoroughly explore servlets and JSP, including 
+ significant coverage of custom tag libraries, newly available filters, and popular servlet and 
+ JSP design patterns. Readers can then test-drive the knowledge gained by constructing a 
+ book-support Web site.
+  
+ Among the topics covered in-depth are:
+  
+ Exception handling
+  
+ JavaBeans and the new JSP Expression Language (JSP EL)",NA
+Tomcat,"Tomcat, the reference implementation of Servlets and JSP, is part of the open source Apache
+  
+ http://jakarta.apache.org/tomcat
+ [3]
+ . Tomcat can be run on Windows, Linux, Macintosh,
+  
+ Solaris, and most any of the other Unix distributions. You can use Tomcat both commercially
+  
+ and non-commercially as specified by the Apache Software Foundation License.
+  
+ The next few sections provide a walk-through for installing Tomcat on Windows, Linux
+  
+ distributions, and Macintosh OS X. If needed, follow the appropriate section to get Tomcat
+  
+ The Tomcat installation for Windows greatly resembles installing any other piece of Windows
+  
+ The actual book-support site (www.jspbook.com) features frequently asked questions, software. The 
+ process involves downloading the Tomcat installation executable file and
+  
+ running it to launch the Windows installation wizard. After a few simple clicks, the wizard will",NA
+Book Support Site ,"By 
+ Jayson Falkner
+ , 
+ Kevin Jones
+  
+ For the most current information and updates guides, use the book support 
+ site, 
+ http://www 
+ versions of the walk-through guides, this site 
+ Pub Date: September 
+ 19, 2003 
+  
+ Question (FAQ) section for questions relating 
+ ISBN: 0-321-13649-7 
+  
+ questions answer problems relating to Tomca 
+ Pages: 784 
+  
+ software environments. Additionally, the book a place that can deal with any 
+ unexpected iss
+  
+ y Web Tier
+  
+  of this chapter's walk-throu
+ .jspbook.com
+ . Along with th
+ also contains a Frequently A
+ this book. Many of these 
+  
+ t configuration issues for va
+ support site is intended to p
+ occurring after publication.",NA
+Java Classes and Source Files ,"ISBN: 0-321-13649-7
+  
+ Throughout the book examples will be taking advantage of existing Java APIs as well as 
+ creating new Java classes. One of the most common mistakes new Servlet and JSP 
+  
+ developers make is where they place Java source code and compiled Java classes. The 
+ intuitive approach is to place these files in the same directory as that in which static content is 
+ placed for the Web Application. While it may seem logical at first, this approach has two 
+ problems. The first is that any individual browsing to your Web site will, by default, be able 
+ Servlets and JavaServer Pages
+  is the first complete guide to building dynamic Java-based to 
+ access any files not in the 
+ /WEB-INF
+  directory. This means your code is freely available for 
+ Web applications using the new JavaServer Pages 2.0 and Servlets 2.4. Servlets and people to 
+ download and use or possibly abuse. The second problem is that the container will JavaServer 
+ Pages (JSP) provide a robust solution to developing large, complex Web 
+  
+ ignore the code when it is loading the Web Application. The second issue is more problematic 
+ applications, including multiserver projects. In addition to built-in security, portability, and a 
+ because the Web Application's Servlets and JSP will not be able to import and use the custom 
+ Web server, they offer developers the freedom to work with any operating system that code. 
+ supports Java—be it Linux, Windows, OSX, or Solaris.
+  
+ The correct place to put custom code is in the 
+ /WEB-INF/classes
+  directory of a Web This 
+ authoritative book begins by explaining how to set up a Servlet and JSP development 
+ Application. Code that is placed in this directory is loaded by the container when needed and 
+ environment, including a discussion of containers, Java support, and installing and 
+  
+ can be imported for use by Servlets and JSP in the same Web Application. Should the code be 
+ configuring Tomcat. The authors then thoroughly explore servlets and JSP, including 
+  
+ part of a package, create a directory structure that matches the package names. An example 
+ significant coverage of custom tag libraries, newly available filters, and popular servlet and of 
+ this would be if a class were created for the 
+ com.foo.example
+  package. The appropriate JSP 
+ design patterns. Readers can then test-drive the knowledge gained by constructing a place to 
+ put the compiled Java class is the 
+ /WEB-INF/classes/com/foo/example
+  directory of book-
+ support Web site.
+  
+ a Web Application. For now, create the 
+ /WEB-INF/classes
+  directory so that it is ready for 
+ Among the topics covered in-depth are:",NA
+Java Archive (JAR) Files ,"Exception handling
+  
+ JavaBeans and the new JSP Expression Language (JSP EL) 
+  
+ A Java Archive file is a convenient method for consolidating a set, usually a package, of Java 
+ class files into one compressed, portable file. The Java specifications define the exact rules of 
+ The JavaServer Pages Standard Tag Library (JSTL) and coding custom tag libraries
+  
+ a JAR file, but an easy way to think of them is nothing more than a set of Java classes ZIP-
+ compressed together. JAR files are a very popular method of distributing Java code and are 
+ Filters
+  
+ commonly used by Web Applications. As defined in the Servlet specification, any JAR file 
+ placed in the 
+ /WEB-INF/lib
+  directory of a Web Application is made available for use by code 
+ Error handling
+  
+ in the same Web Application. Later examples in this book will give some concrete examples 
+ Session and state management 
+  
+ of using this functionality. The complete specifications for creating and using a basic JAR are 
+ not in the scope of this book. You can find a complete guide to creating JAR files in the J2SE",NA
+Using Ant,"Ant is designed to be simple to use. The 
+ /bin
+  directory of the Ant distribution contains an 
+ executable file named 
+ ant
+  that runs Ant. You can execute Ant at any time by running 
+ $ANT_HOME/bin/ant
+ ; replace 
+ $ANT_HOME
+  with the appropriate directory of the Ant 
+  
+ distribution. By default, Ant looks to the current directory and tries to use a file named 
+ build.xml
+  as its build file. 
+ Listing 1-5
+ , which is included in the example WAR, is a build file
+  
+ Listing 1-5. Ant Build File for Use with This Book
+  
+ <project name=""jspbook"" default=""build"" basedir=""."">
+  
+ The actual book-support site (www.jspbook.com) features frequently asked questions,",NA
+What Servlets Are and Why You Would Want to Use ,NA,NA
+Them,"Java Servlets are an efficient and powerful solution for creating dynamic content for the Web. 
+ Over the past few years Servlets have become the fundamental building block of mainstream 
+ server-side Java. The power behind Servlets comes from the use of Java as a platform and 
+ from interaction with a Servlet container. The Java platform provides a Servlet developer 
+ By 
+ Jayson Falkner
+ , 
+ Kevin Jones 
+  
+ with a robust API, object-orientated programming, platform neutrality, strict types, garbage 
+ collection, and all the security features of the JVM. Complimenting this, a Servlet container 
+ Publisher: Addison Wesley 
+  
+ provides life cycle management, a single process to share and manage application-wide 
+ resources, and interaction with a Web server. Together this functionality makes Servlets a 
+ Pub 
+ Date: September 19, 2003
+  
+ desirable technology for server-side Java developers. 
+ ISBN: 0-321-13649-7
+  
+ Pages: 784
+  
+ Java Servlets is currently in version 2.4 and a part of the Java 2 Enterprise Edition (J2EE).
+  
+ Downloads of the J2SE do not include the Servlet API, but the official Servlet API can be found 
+ on Sun Microsystems' Servlet product page, 
+ http://java.sun.com/products/servlets
+ , or bundled 
+ with the Java 2 Enterprise Edition. Servlet API development is done through the Java 
+ Community Process, 
+ http://www.jcp.org
+ , but the official reference implementation of the 
+ Servlets and JavaServer Pages
+  is the first complete guide to building dynamic Java-based 
+ Servlet API is open source and available for public access through the Tomcat project, Web 
+ applications using the new JavaServer Pages 2.0 and Servlets 2.4. Servlets and 
+ http://jakarta.apache.org/tomcat
+ . 
+  
+ JavaServer Pages (JSP) provide a robust solution to developing large, complex Web 
+ applications, including multiserver projects. In addition to built-in security, portability, and a 
+ The Servlet 2.4 API includes many features that are officially defined by the Servlet 2.4 Web 
+ server, they offer developers the freedom to work with any operating system that specification, 
+ http://java.sun.com/products/servlets
+ , and can be broken down as follows. supports Java—be 
+ it Linux, Windows, OSX, or Solaris.
+  
+ This authoritative book begins by explaining how to set up a Servlet and JSP development",NA
+Web Applications ,"environment, including a discussion of containers, Java support, and 
+ installing and 
+  
+ configuring Tomcat. The authors then thoroughly explore servlets and JSP, including significant 
+ coverage of custom tag libraries, newly available filters, and popular servlet and Servlets are 
+ always part of a larger project called a Web Application. A Web Application is a JSP design 
+ patterns. Readers can then test-drive the knowledge gained by constructing a complete 
+ collection of resources for a Web site. Nothing stops a Web Application from book-support Web 
+ site. consisting of zero, one, or multiple Servlets, but a Servlet container manages Servlets on 
+ a per Web Application basis. Web Applications and the configuration files for them are specified 
+ Among the topics covered in-depth are: by the Servlet specification.
+  
+  
+ Exception handling",NA
+Servlets and HTTP Servlets ,JavaBeans and the new JSP Expression Language (JSP EL),NA
+Filters ,"Session and state 
+ management
+  
+ Filters were officially introduced in the Servlet 2.3 specification. A 
+ filter
+  provides an Security 
+  
+ abstracted method of manipulating a client's request and/or response before it actually 
+ reaches the endpoint of the request. Filters greatly complement Servlets and are commonly 
+ used for things such as authentication, content compression, and logging.
+  
+ Internationalization",NA
+Security ,"Multiclient support
+  
+ Database connectivity 
+  
+ Servlets already use the security features provided by the Java Virtual Machine, but the The 
+ actual book-support site (www.jspbook.com) features frequently asked questions, Servlet 
+ specification also defines a mechanism for controlling access to resources in a Web working 
+ code examples, and references. Application.",NA
+Servlet Life Cycle,"The key to understanding the low-level functionality of Servlets is to understand the simple life 
+ cycle they follow. This life cycle governs the multi-threaded environment that Servlets run in 
+ and provides an insight to some of the mechanisms available to a developer for sharing
+ • 
+ server-side resources. Understanding the Servlet life cycle is also the start of this book's 
+ Table 
+ of Contents
+  
+ descent to a lower level of discussion, one the majority of this book follows. Functional code 
+ examples appear often to illustrate an idea or point. Compiling and running these examples is 
+ encouraged to fully understand concepts and to familiarize yourself with Servlets for the later 
+ chapters. 
+ Publisher: Addison Wesley
+  
+ The Servlet life cycle (see 
+ Figure 2-1
+ ) is the primary reason Servlets and also JSP outperform 
+ Pub Date: September 19, 2003
+  
+ traditional CGI. Opposed to the single-use CGI life cycle, Servlets follow a three-phase life: 
+ ISBN: 0-321-13649-
+ 7
+  
+ initialization, service
+ , and 
+ destruction
+ , with initialization and destruction typically performed 
+ once, and service performed many times.
+  
+ Servlets and JavaServer Pages
+  is the first complete guide to building dynamic Java-based 
+ Figure 2-1. Diagram of the Servlet Life Cycle 
+  
+ Web applications using the new JavaServer Pages 2.0 and Servlets 2.4. Servlets and 
+ JavaServer Pages (JSP) provide a robust solution to developing large, complex Web 
+ applications, including multiserver projects. In addition to built-in security, portability, and a 
+ Web server, they offer developers the freedom to work with any operating system that 
+ supports Java—be it Linux, Windows, OSX, or Solaris.
+  
+ This authoritative book begins by explaining how to set up a Servlet and JSP development 
+ environment, including a discussion of containers, Java support, and installing and 
+ configuring Tomcat. The authors then thoroughly explore servlets and JSP, including 
+ significant coverage of custom tag libraries, newly available filters, and popular servlet and 
+ JSP design patterns. Readers can then test-drive the knowledge gained by constructing a 
+ book-support Web site.
+  
+ Among the topics covered in-depth are:
+  
+ Exception handling
+  
+ JavaBeans and the new JSP Expression Language (JSP EL) 
+  
+ Initialization is the first phase of the Servlet life cycle and represents the creation and 
+ initialization of resources the Servlet may need to service requests. All Servlets must The 
+ JavaServer Pages Standard Tag Library (JSTL) and coding custom tag libraries implement the 
+ javax.servlet.Servlet
+  interface. This interface defines the 
+ init()
+  method to match the 
+ initialization phase of a Servlet life cycle. When a container loads a Servlet, it invokes the 
+ init()
+  method before servicing any requests.
+  
+ Error handling 
+  
+ The service phase of the Servlet life cycle represents all interactions with requests until the 
+ Servlet is destroyed. The 
+ Servlet
+  interface matches the service phase of the Servlet life cycle 
+ to the 
+ service()
+  method. The 
+ service()
+  method of a Servlet is invoked once per a request 
+ and is responsible for generating the response to that request. The Servlet specification 
+ Security
+  
+ defines the 
+ service()
+  method to take two parameters: a 
+ javax.servlet.ServletRequest 
+ and a 
+ javax.servlet.ServletResponse
+  object. These two objects represent a client's 
+ Design patterns, including Struts
+  
+ request for the dynamic resource and the Servlet's response to the client. By default a Servlet 
+ is multi-threaded, meaning that typically only one instance of a Servlet
+ [1]
+  is loaded by a JSP 
+ Internationalization
+  
+ container at any given time. Initialization is done once, and each request after that is handled 
+ concurrently
+ [2]
+  by threads executing the Servlet's 
+ service()
+  method. Multiclient support
+  
+ Database connectivity 
+ [1]
+  This description of Servlets is slightly misleading. There are many",NA
+HTTP Response Codes,"• 
+ In practice, you usually do not need to unders 
+ Table of Contents
+  
+ Servlets and JavaServer Pages™: The J2EE™ Technolog 
+ response codes. JSP, Servlets, 
+ and Web serve automatically, but nothing stops you from sen Later on we will 
+ see examples of doing this wi complete list of HTTP response codes along wi 
+ available in the current HTTP specification, 
+ htt 
+ Pub Date: September 19, 2003
+  
+ tand all of the specific HTTP
+ y Web Tier 
+ rs usually take ca
+ codes ding specific HTTP res
+ codes.
+  
+ th both Servlets and JSP. A
+ th other HTTP information i
+ p://www.ietf.org/rfc/rfc261",NA
+Limitations of Configuration: web.xml Additions ,"Web server, they offer 
+ developers the freedom to work with any operating system that supports Java—be it Linux, 
+ Windows, OSX, or Solaris.
+  
+ Initial parameters are a good method of providing simple one-string values that Servlets can use 
+ This authoritative book begins by explaining how to set up a Servlet and JSP development to 
+ configure themselves. This approach is simple and effective, but is a limited method of 
+ environment, including a discussion of containers, Java support, and installing and configuring a 
+ Servlet. For more complex Servlets it is not uncommon to see a completely configuring Tomcat. 
+ The authors then thoroughly explore servlets and JSP, including separate configuration file created 
+ to accompany 
+ web.xml
+ . When developing Servlets, keep in significant coverage of custom tag 
+ libraries, newly available filters, and popular servlet and mind that nothing stops you from doing 
+ this. If the parameter name and parameter values JSP design patterns. Readers can then test-
+ drive the knowledge gained by constructing a mappings are not adequate, do not use them! It is 
+ perfectly OK to create a custom configuration book-support Web site. file and package it in a WAR 
+ with the rest of a Web Application. A great example of doing this is shown by the Jakarta Struts 
+ framework appearing in 
+ Chapter 11
+ . The Struts framework relies on Among the topics covered in-
+ depth are: a control Servlet that is configured via a custom and usually lengthy XML file.
+  
+  
+ Exception handling",NA
+Client/Server Servlet Programming ,JavaBeans and the new JSP Expression Language (JSP EL),NA
+The Difference Between Servlets and JSP,"A clear and important distinction to make about JSP is that coding one is nothing like coding a Servlet. 
+ From what this chapter has explained, it might appear that JSP is just a simple version of Servlets. In 
+ many respects JSP is in fact a simple method of creating a text-producing Servlet; however, do not be
+ • 
+ fooled into thinking this mindset is always true. As the chapter progresses, it will be clear that JSP and 
+ Table of Contents
+  
+ Servlets are two very distinct technologies. Later, after custom tags are introduced, the degree of 
+ separation between the two will seem even larger. The use of JSP for easily making a Servlet really only 
+ applies in the simplest of cases.
+  
+ Publisher: Addison Wesley 
+  
+ To show how vastly different the code for a JSP can be from a Servlet, 
+ Listing 3-1
+  displays the code for 
+ the JSP equivalent of the HelloWorld Servlet (
+ Listing 2-1
+  that appeared in 
+ Chapter 2
+ ). 
+ Pub Date: September 
+ 19, 2003
+  
+ ISBN: 0-321-13649-7
+  
+ Pages: 784
+  
+ Listing 3-1. HelloWorld.jsp
+  
+ Servlets and JavaServer Pages
+  is the first complete guide to building dynamic Java-based 
+ <html> 
+  
+ Web applications using the new JavaServer Pages 2.0 and Servlets 2.4. Servlets and 
+ JavaServer Pages (JSP) provide a robust solution to developing large, complex Web 
+ <head> 
+  
+ applications, including multiserver projects. In addition to built-in security, portability, and a 
+ Web server, they offer developers the freedom to work with any operating system that 
+ <title>Hello World!</title> 
+  
+ supports Java—be it Linux, Windows, OSX, or Solaris.
+  
+ </head> 
+  
+ This authoritative book begins by explaining how to set up a Servlet and JSP development 
+ environment, including a discussion of containers, Java support, and installing and 
+ <body> 
+  
+ configuring Tomcat. The authors then thoroughly explore servlets and JSP, including 
+ significant coverage of custom tag libraries, newly available filters, and popular servlet and 
+ <h1>Hello World!</h1> 
+  
+ JSP design patterns. Readers can then test-drive the knowledge gained by constructing a 
+ book-support Web site. 
+ </body>
+  
+ Among the topics covered in-depth are: 
+ </html>
+  
+ Exception handling
+  
+ JavaBeans and the new JSP Expression Language (JSP EL) 
+  
+ They are quite different! You'll recall the code for 
+ HelloWorld.java
+  and notice the two look nothing 
+ alike. The code for the JSP is actually identical to the text generated by the HelloWorld Servlet, not the 
+ source code. Authoring an HTML-generating JSP is as easy as just authoring the HTML. Compared to 
+ using 
+ print()
+  and 
+ println()
+  methods in Servlets, the JSP approach is obviously easier. This is why 
+ simple JSP are usually considered a quick method of creating text-producing Servlets.
+  
+ Error handling 
+  
+ Deploying a JSP is also simpler; a Web Application automatically deploys any JSP to a URL extension that 
+ matches the name of the JSP. Test out 
+ HelloWorld.jsp
+  by saving it in the base directory of the Session 
+ and state management 
+  
+ jspbook Web Application then browsing to 
+ http://127.0.0.1/jspbook/HelloWorld.jsp
+ . 
+ Figure 3-2 
+ shows the output of 
+ HelloWorld.jsp
+  as rendered by a Web browser, identical to the HTML generated by 
+ Security
+  
+ the HelloWorld Servlet, 
+ Figure 2-6
+ . Design patterns, including Struts
+  
+ Internationalization
+  
+ Multiclient support 
+ Figure 3-2. Browser Rendering of HelloWorld.jsp
+  
+ Database connectivity
+  
+ The actual book-support site (www.jspbook.com) features frequently asked questions, 
+ working code examples, and references.",NA
+Translation-Time Includes,"Translation time occurs when a JSP is being tr 
+ not know or care about what files were used t
+  
+ • 
+ tell when a change has occurred in included fi 
+ Table of Contents
+  
+ Servlets and JavaServer Pages™: The J2EE™ 
+ Technolog 
+ mechanism for solving this problem, 
+ but JSP c the problem.
+  
+ By 
+ Jayson Falkner
+ , 
+ Kevin Jones
+  
+ In cases where an entire site relies on transla 
+ does exist for having changes in translation-ti 
+ relies on having the translated code of a JSP t 
+ When lacking the code, a container must re-tr 
+ ISBN: 0-321-13649-7 
+  
+ corresponding Servlet. By forcing a container 
+ Pages: 784 
+  
+ translation-time includes are properly reflecte
+  
+ With Tomcat, JSP translated to Servlet source 
+ directory. Simply delete the contents of this d
+  
+ anslated into a Servlet. The resulting Servlet does 
+ o generate it. As a result the Servlet is unable to 
+ les. The JSP specifications do not specify a
+  
+ y Web Tier 
+ ontainer vendors are free to implement 
+ solutions to
+  
+ tion-time includes for efficiency, a simple solution 
+ me includes reflected on the entire site. A container 
+ o compile and deploy a corresponding Servlet.
+  
+ anslate a JSP and compile and deploy the to 
+ re-translate all JSP, it can be ensured that d 
+ by JSP that use them.
+  
+  code can be found in the 
+ TOMCAT_HOME/work 
+ irectory to have Tomcat re-translate all JSP.
+  
+ Servlets and JavaServer Pages
+  is the first comp 
+  
+ Web applications using the new JavaServer Pa 
+  
+ For non-translation-time includes JSP also defi 
+ JavaServer Pages (JSP) provide a robust soluti 
+  
+ used to include resources with the output of a 
+ J applications, including multiserver projects. 
+ In 
+  
+ efficient, the include action automatically ensur 
+ Web server, they offer developers the freedom 
+  
+ the 
+ <jsp:include />
+  section of this chapter fo 
+ supports Java—be it Linux, Windows, OSX, or 
+ Solaris.
+  
+ This authoritative book begins by explaining ho 
+ <%@ taglib %> 
+ environment, including a 
+ discussion of containe configuring Tomcat. The 
+ authors then thorough significant coverage of 
+ custom tag libraries, ne 
+ Custom actions
+  were 
+ previously mentioned in t JSP design patterns. 
+ Readers can then test-dri actions, also called 
+ custom tag libraries, allow book-support Web 
+ site. The 
+ taglib
+  directive informs a container 
+ what and what code the markup links to. The 
+ tagli 
+ Among the topics covered in-depth are: 
+ uri=""uri"" prefix=""prefixOfTag"" %>
+ , where 
+ understands and the prefix attribute informs a 
+  
+ Further explanation and examples of using the 
+ Exception handling
+  
+ JavaBeans and the new JSP Expression 
+ La",NA
+JSP Configuration ,"The JavaServer 
+ Pages Standard Tag Libra
+  
+ Filters 
+  
+ Directives are in the simplest sense configurati 
+ for configuration is that they must be specified 
+ Error handling 
+  
+ edit at least 20 directives. To simplify the task 
+ available for use in 
+ web.xml
+ . There are two su 
+ Session and state management 
+  
+ The taglib element can be used to configure a 
+ group
+  element allows for configuration that is 
+  
+ lete guide to building dynamic Java-based 
+  
+ ges 2.0 and Servlets 2.4. Servlets and 
+  
+ nes the include action. Like the include directive, this 
+ on to developing large, complex Web 
+  
+ addition to built-in security, portability, and a SP, 
+ but the include action takes place at runtime. W
+  
+ Solaris. to work with any operating system that r 
+ more information about the include action. es that 
+ the most recent output of the included file is 
+  
+ w to set up a Servlet and JSP development 
+  
+ rs, Java support, and installing and 
+  
+ ly explore servlets and JSP, including 
+  
+ wly available filters, and popular servlet and his 
+ chapter, but are not fully covered until 
+ Chapter 7 
+ ve 
+ the knowledge gained by constructing a a JSP 
+ developer to link bits of markup to customized bits 
+ of markup on the page should be considered cust 
+ b
+  
+ directive always follows the same syntax, 
+ <%@ tagl
+  
+ the 
+ uri
+  attribute value resolves to a location the co 
+ container what bits of markup are custom actions.
+  
+  
+ taglib
+  directive can be found in 
+ Chapter 7
+ .
+  
+ nguage (JSP EL)
+  
+ ry (JSTL) and coding custom tag libraries
+  
+ on information for a JSP. The only problem with usin 
+ on a per-JSP basis. If you have 20 pages, then you 
+ of doing mass JSP configuration, the 
+ jsp-config
+  ele 
+ b-elements of 
+ jsp-config
+ : 
+ taglib
+  and 
+ jsp-propert 
+ custom JSP tag library for use with a JSP. The 
+ jsp-p 
+ similar to the directives but can be applied to a 
+ group
+  
+ ered here and referenced in the later pertinent chap 
+ ment is straightforward; first specify a taglib-uri chil 
+ ; next specify a 
+ taglib-location
+  element, which d: 
+  
+ m) features frequently asked questions,",NA
+session,"The 
+ session
+  implicit object is an instance of a 
+ javax.servlet.http.HttpSession
+  object. By 
+ default JSP creates a keep session context with all clients. The session implicit object is a 
+ convenience object for use in scripting elements and is the equivalent of calling the
+  
+ The 
+ application
+  implicit object is an instance of a 
+ javax.servlet.ServletContext
+  object. 
+ The application implicit object represents a Servlet's view of a Web Application and is 
+ equivalent to calling the 
+ ServletConfig getServletContext()
+  method.
+  
+ Using any of the JSP implicit objects is as easy as assuming they already exist within a 
+ scripting element. With the objects listed previously, all of the Servlet examples in previous 
+ chapters can be replicated in JSP. Take, for example, the ShowHeaders Servlet (
+ Listing 2-8
+  in 
+ Chapter 2
+ ). The ShowHeaders Servlet displayed a small HTML page listing all the HTTP request 
+ headers sent by a client. The Servlet relied on the 
+ HttpServletRequest 
+  
+ getHeaderNames()
+  and 
+ getHeader()
+  methods. After translating this Servlet into a JSP, the 
+ The actual book-support site (www.jspbook.com) features frequently asked questions,",NA
+out ,"Table of Contents
+  
+ Servlets and JavaServer Pages™: The J2EE™ Technology Web Tier
+  
+ The 
+ out
+  implicit object is an instance of a 
+ javax.servlet.jsp.JspWriter
+  object and is used 
+ to send content in a response. The 
+ JspWriter
+  object emulates some of the functionality 
+ found in the 
+ java.io.PrintWriter
+  and 
+ java.io.BufferedWriter
+  objects to provide a 
+ Publisher: Addison Wesley 
+  
+ convenient method of writing text in a buffered fashion. The 
+ out
+  implicit object can be 
+ Pub 
+ Date: September 19, 2003 
+  
+ configured on a per JSP basis by the 
+ page
+  directive.
+  
+ ISBN: 0-321-13649-7
+  
+ Pages: 784
+  
+ Buffering
+  
+ The initial 
+ JspWriter
+  object is associated with the 
+ PrintWriter
+  object of the 
+  
+ ServletResponse
+  in a way that depends on whether the page is or is not buffered. If the 
+ Servlets and JavaServer Pages
+  is the first complete guide to building dynamic Java-based page 
+ is not buffered, output written to this 
+ JspWriter
+  object will be written through to the Web 
+ applications using the new JavaServer Pages 2.0 and Servlets 2.4. Servlets and 
+ PrintWriter
+  
+ directly. But if the page is buffered, the 
+ PrintWriter
+  object will not be created JavaServer 
+ Pages (JSP) provide a robust solution to developing large, complex Web until the buffer is 
+ flushed, meaning operations like 
+ setContentType()
+  are legal until the applications, including 
+ multiserver projects. In addition to built-in security, portability, and a buffer gets flushed. 
+ Since this flexibility simplifies programming substantially, buffering is the Web server, they 
+ offer developers the freedom to work with any operating system that default for JSP pages. 
+ JavaBeans and the new JSP Expression Language (JSP EL)
+  
+ Throw an Exception 
+ The JavaServer Pages Standard Tag Library (JSTL) and coding custom tag 
+ libraries
+  
+ Flushing the buffer is not a good approach when strict control needs to be kept over when Filters
+  
+ content is sent to a client. In cases like this, exceeding the buffer is a fatal error. Doing so
+  
+ causes an exception to be thrown. Error handling
+  
+ Both approaches are valid, and thus both are supported by JSP. The behavior of a page is Session 
+ and state management
+  
+ controlled by the 
+ autoFlush
+  attribute, which defaults to 
+ true
+ . In general, JSP that need to be
+  
+ sure correct and complete data has been sent to their client may want to set 
+ autoFlush
+  to Security
+  
+ false
+ . On the other hand, JSP that do not need strict control can leave the 
+ autoFlush 
+ Design 
+ patterns, including Struts
+  
+ attribute as 
+ true
+ , which is commonly the case when sending HTML to a browser. The two
+  
+ types of buffer uses are best suited for different needs and should be considered on a per use 
+ Internationalization
+  
+ basis.
+  
+ Multiclient support
+  
+ JspWriter and Response Committed Exceptions
+  
+ The actual book-support site (www.jspbook.com) features frequently asked questions, A far 
+ too common and misunderstood error when using JSP is the 
+ IllegalStateException 
+ working code examples, and references.
+  
+ exception with ""response already committed"" given as the exception's message. This error",NA
+config,"The normal JSP deployment scheme automatically done by a container works, but nothing 
+ stops a JSP developer from declaring and mapping a JSP via the Web Application Deployment 
+ Descriptor, 
+ web.xml
+ . A JSP can be manually deployed in the same fashion as a Servlet by 
+ creating a Servlet declaration in 
+ web.xml
+  and replacing the 
+ servlet-class
+  element with the 
+ jsp-page
+  element. After being declared, the JSP can be mapped to a single or set of URLs
+  
+ As an example, if it was necessary to remove the ShowHeaders Servlet and map 
+ ShowHeaders.jsp
+  to the
+ /ShowHeaders
+  path in addition to the automatically defined 
+ /ShowHeaders.jsp
+  path, the task could be accomplished with the following entries in 
+ web.xml
+ .",NA
+page,"The 
+ page
+  implicit object represents the current class implementation of the page being 
+ evaluated. If the scripting language of the page is 
+ java
+ , which by default it is, the page
+  
+ The actual book-support site (www.jspbook.com) features frequently asked questions,",NA
+Errors and Exceptions,"All Java errors are subclasses of the 
+ java.lang.Throwable
+  class. When an error occurs 
+ within a running program, an appropriate instance of this class is created and said to be 
+ thrown
+ . The same code can then 
+ catch
+  the exception and handle it or let the JVM handle the
+ • 
+ problem, which usually results in terminating the current program. In some cases Java 
+ Table 
+ of Contents
+  
+ enforces code to try and handle exceptions, and in others the exceptions are left to freely 
+ pass to a JVM. 
+ By 
+ Jayson Falkner
+ , 
+ Kevin Jones
+  
+ There are three main subclasses of the 
+ Throwable
+  class that divide all errors into three main 
+ Publisher: Addison Wesley 
+  
+ categories. As shown in 
+ Figure 4-1
+ , errors in Java are grouped as either instances of the 
+ Error
+ , 
+ Exception
+ , or 
+ RuntimeException
+  class. 
+ Pub Date: September 19, 2003
+  
+ ISBN: 0-321-13649-7
+  
+ Pages: 784
+  
+ Figure 4-1. Throwable Subclass Tree
+  
+ Servlets and JavaServer Pages
+  is the first complete guide to building dynamic Java-based 
+ Web applications using the new JavaServer Pages 2.0 and Servlets 2.4. Servlets and 
+ JavaServer Pages (JSP) provide a robust solution to developing large, complex Web 
+ applications, including multiserver projects. In addition to built-in security, portability, and a 
+ Web server, they offer developers the freedom to work with any operating system that 
+ supports Java—be it Linux, Windows, OSX, or Solaris.
+  
+ This authoritative book begins by explaining how to set up a Servlet and JSP development 
+ environment, including a discussion of containers, Java support, and installing and 
+ configuring Tomcat. The authors then thoroughly explore servlets and JSP, including 
+ significant coverage of custom tag libraries, newly available filters, and popular servlet and 
+ JSP design patterns. Readers can then test-drive the knowledge gained by constructing a 
+ book-support Web site.
+  
+ Among the topics covered in-depth are: 
+  
+ Of the three primary 
+ Throwable
+  subclasses, the most well-known branch is instances of 
+ Exception
+ . The 
+ Exception
+  object represents a problem that a program must be able to 
+ catch. If code neglects to properly catch all instances of 
+ Exception
+  objects, a Java compiler 
+ Exception handling
+  
+ will refuse to compile the delinquent code. Complementing 
+ Exception
+  classes, instances of 
+ the 
+ RuntimeException
+  class represent a runtime error that does not need to be caught by 
+ JavaBeans and the new JSP Expression Language (JSP EL)
+  
+ code. However, just because the error does not need to be caught does not mean it is not a serious 
+ problem. Instances of 
+ RuntimeException
+  objects are used when an error should not The JavaServer 
+ Pages Standard Tag Library (JSTL) and coding custom tag libraries
+  
+ be handled by local code and would only clutter things up if declared as an 
+ Exception
+ . While 
+ Filters 
+  
+ helpful, 
+ RuntimeException
+ s are inherently dangerous since they do not require code to 
+ account for them. 
+ RuntimeException
+  objects are not as commonly used as 
+ Exception 
+ Error 
+ handling 
+  
+ objects because of this risk. The third branch of 
+ Throwable
+  objects is subclasses of 
+ Error
+ . An 
+ instance of the Error class represents something abnormally wrong that applications should 
+ not try to catch. If an instance of an 
+ Error
+  object is thrown, it is almost always catastrophic to 
+ the executing program.
+  
+ When programming a Web Application, it is common to use code that throws 
+ Exception 
+ objects, and in many cases, it is also helpful to design code for throwing and catching 
+ RuntimeException
+  objects. Both 
+ Exception
+  and 
+ RuntimeException
+  objects are further 
+ Internationalization
+  
+ covered by this chapter. Instances of the 
+ Error
+  class are assumed to never occur and are 
+ considered outside the scope of this book. Multiclient support
+  
+ Database connectivity",NA
+Throwing Exceptions ,"The actual book-support site (www.jspbook.com) 
+ features frequently asked questions, working code examples, and references.",NA
+Logging,"Logging
+  is the act of keeping a record of important information in some serialized form. Some 
+ simple examples of logs include a text file with lines of error messages or information printed 
+ to 
+ System.err
+  or 
+ System.out
+ . Sometimes logged information is designed to be kept for long
+ • 
+ periods of time. Other times logged information is meant for short-term use to quickly debug 
+ Table of Contents
+  
+ a running application. How long to persist, where information is sent, and what information is 
+ sent are all important issues to logging. Planning ahead and utilizing a robust logging 
+ mechanism helps solve these issues and keeps a project, especially a Web Application, running 
+ smoothly. 
+ Publisher: Addison Wesley
+  
+ The Servlet API by default provides a limited and ambiguous method of logging information. 
+ Pub Date: 
+ September 19, 2003
+  
+ The 
+ ServletContext
+  object provides two 
+ log()
+  methods that log information in a method left 
+ implemented by individual container vendors. For application-wide logging, this device is 
+ inadequate. With the two log methods, either a 
+ String
+  or 
+ String
+  with a 
+ Throwable
+  object's 
+ stack trace can be logged. No attempt is given at distinguishing between different types of 
+ information to log, and all logging relies on access to a 
+ ServletContext
+  object.
+  
+ For the purpose of building a practical Web Application, a full-blown logging API is introduced 
+ Servlets and JavaServer Pages
+  is the first complete guide to building dynamic Java-based and 
+ demonstrated in this section. The logging API is not specifically defined by Servlets or Web 
+ applications using the new JavaServer Pages 2.0 and Servlets 2.4. Servlets and JSP; however, 
+ it is a valuable tool for any project including a Web Application. JavaServer Pages (JSP) 
+ provide a robust solution to developing large, complex Web 
+  
+ applications, including multiserver projects. In addition to built-in security, portability, and a 
+ Web server, they offer developers the freedom to work with any operating system that",NA
+The ,NA,NA
+Problem with System.out.println(),"This authoritative book begins by explaining how to set up a Servlet and JSP development The far too 
+ common mindset is to build a Java application and get by with a rudimentary set environment, including a 
+ discussion of containers, Java support, and installing and of debugging calls. Most commonly, this set of 
+ calls consists of using the 
+ PrintStream 
+ configuring Tomcat. The authors then thoroughly explore servlets 
+ and JSP, including objects 
+ System.out
+  or 
+ System.err
+  to send temporary information to a terminal. This 
+ method significant coverage of custom tag libraries, newly available filters, and popular servlet and of 
+ application debugging is simple and works for small projects, but it quickly falls apart in JSP design 
+ patterns. Readers can then test-drive the knowledge gained by constructing a most any real-world 
+ situation. book-support Web site.
+  
+ System.out.println()
+  debugging, which is analogous to 
+ System.err.println() 
+ Among the 
+ topics covered in-depth are: debugging, is instant gratification. If code does not work, most 
+ every Java developer knows inserting a few simple 
+ System.out.println()
+  method calls 
+ makes something appear somewhere obvious. Given enough 
+ System.out.println()
+  calls, it is 
+ easy to find a code Exception handling 
+  
+ flaw and get a program in working shape. For this purpose, 
+ System.out.println()
+  works 
+ perfectly fine; however, a problem occurs when an application needs to constantly log 
+ JavaBeans and the new JSP Expression Language (JSP EL) information and will need to log 
+ information for the foreseeable future. This information might be trivial statements, such as 
+ ""made it here"", or important information such as runtime listings of system workloads. Far too 
+ many times, calls to 
+ System.out.println()
+  are used in these cases when they really should 
+ not. Filters
+  
+ The issue to think about is, What will the debugging code do in the future? Inserting Error 
+ handling 
+  
+ System.out.println()
+  calls only works until the calls are no longer needed. Going back and 
+ commenting the calls out for performance is not terribly helpful, especially when a bug Session 
+ and state management",NA
+Loggers,"A 
+ Logger
+  object is used to log messages for a specific system of application components. 
+ Loggers are designed to be flexible and include features such as local-specific logging and 
+ logging information according to levels of importance. Logger objects are managed by a 
+ LogManager
+  object that is responsible for keeping and configuring a collection of loggers.
+  
+ The actual book-support site (www.jspbook.com) features frequently asked questions, 
+ Not all of the features of 
+ Logger
+  and 
+ LogManager
+  classes are covered in this book. The 
+ flexibility of these classes is extensive and not commonly needed. What is covered in this",NA
+"Fine, Finer, ",NA,NA
+"Finest, and All","Web server, they offer developers the freedom to work with any operating system that 
+ supports Java—be it Linux, Windows, OSX, or Solaris. One of the most criticized features of 
+ the 
+ java.util.logging
+  package is the 
+  
+ inclusion of the fine, finer, finest and all levels. These levels are commonly 
+  
+ This authoritative book begins by explaining how to set up a Servlet and JSP development 
+ environment, including a discussion of containers, Java support, and installing and 
+ configuring Tomcat. The authors then thoroughly explore servlets and JSP, including 
+ significant coverage of custom tag libraries, newly available filters, and popular servlet and 
+ JSP design patterns. Readers can then test-drive the knowledge gained by constructing a 
+ book-support Web site.
+  
+ Custom Web Application Logging 
+  
+ Among the topics covered in-depth are:
+  
+ A nice feature of the 
+ java.util.logging
+  package is that it can be used to log information by 
+ any class. Compared to the 
+ ServletContext log()
+  methods, this functionality is quite nice, 
+ but it does not mean it is beneficial to completely abstract logging away from Servlets and 
+ Exception handling
+  
+ JSP. A logging mechanism designed to work with a Web Application should take full JavaBeans 
+ and the new JSP Expression Language (JSP EL) 
+  
+ advantage of that Web Application. Remember the reasons leading to the introduction of the 
+ java.util.logging
+  package. Normal logging schemes are usually inadequate; using The 
+ JavaServer Pages Standard Tag Library (JSTL) and coding custom tag libraries 
+ System.out.println()
+  method calls becomes inefficient as a project grows and is not easily 
+ maintained in the future. Using 
+ ServletContext
+  object's 
+ log()
+  methods is very limiting and 
+ Filters 
+  
+ ambiguous. A robust logging API such as the 
+ java.util.logging
+  package solves these 
+ problems. However, the 
+ java.util.logging
+  package is not designed to be the final solution 
+ to an application's logging needs. The framework is extensible and much can be gained from 
+ using the package to most effectively suit individual needs. Session and state management
+  
+ In the case of a Web Application the 
+ java.util.logging
+  package can be combined with the 
+ functionality of JSP and Servlets. From this combination a site can have a robust logging 
+ mechanism that easily ports and is configurable by the same methods as the rest of the Web 
+ Design patterns, including Struts
+  
+ Application. A great use of combining these two APIs is a custom logging 
+  
+ Database connectivity
+  
+ Listing 4-24. SiteLogger.java 
+ The actual book-support site 
+ (www.jspbook.com) features frequently asked questions, working code examples, and 
+ references.",NA
+Why Get and Set Methods?,"So why are get and set methods required by a 
+  
+ ExampleBean.java
+  it might appear using a get 
+  
+ declaring a variable public. However, get and s 
+  
+ practical uses. The variable being used by the 
+  
+ known outside the class. Any bit of code can 
+ be
+ • 
+  
+ Table of Contents 
+  
+ value returned by the method does not have to 
+  
+ Servlets and JavaServer Pages™: The J2EE™ 
+ Technology Web Tier 
+ Instead, it might be derived 
+ from other variabl 
+  
+ By 
+ Jayson Falkner
+ , 
+ Kevin Jones 
+ completely 
+ unrelated to the JavaBean. This lev 
+  
+ get and set methods.
+  
+ Publisher: Addison Wesley 
+  
+ Another helpful feature of JavaBeans is that ot 
+ Pub Date: September 19, 2003 
+  
+ them. The use of methods to abstract member 
+ ISBN: 0-321-13649-7 
+  
+ programming, but it can be done in many diffe 
+ method of supplying the functionality. This is v 
+ Pages: 784
+  
+ provides a set of standard actions designed to 
+ can be very helpful and are commonly used in 
+ 11
+  of this book covers MVC along with how Jav 
+ Right now it is only important to have a good u 
+ Servlets and JavaServer Pages
+  is the first comp 
+ relation to JSP and Servlets.
+  
+ Web applications using the new JavaServer Pa 
+  
+ JavaServer Pages (JSP) provide a robust soluti 
+  
+ applications, including multiserver projects. In 
+  
+ Web server, they offer developers the freedom 
+  
+ supports Java—be it Linux, Windows, OSX, or 
+ Solaris.",NA
+JavaBeans in More Detail ,"This authoritative book begins by explaining ho 
+ environment, including a discussion of containe 
+ JavaBeans are defined in the JavaBeans speci 
+ Sun's Java Web site (
+ http://java.sun.com/pro 
+ configuring Tomcat. The authors then thorough 
+ significant coverage of custom tag libraries, ne 
+ here talks about the full scope and use of Java 
+ JSP design patterns. Readers can then test-dri 
+ designed for use in UI development and as su 
+ book-support Web site. for Swing UI design 
+ tools. This support includ handling, none of 
+ which is needed for JSP and Among the topics 
+ covered in-depth are:
+  
+ The JavaBeans specification also appeared aft 
+ meant that originally there were many classes 
+ considered as JavaBeans but did not follow th 
+ Exception handling
+  
+ previously. To allow these classes to be ""brou 
+ specification defines a set of helper classes in 
+ JavaBeans and the new JSP Expression La
+  
+ bean developer to define the properties the cl 
+ The JavaServer Pages Standard Tag Libra 
+ properties. These are classes such as 
+ java.be 
+ java.beans.PropertyDescriptor
+ . Again, th 
+ Filters 
+  
+ further in this book as most, if not all, beans 
+ d conventions. Error handling
+  
+ JavaBean? In a word, encapsulation.  
+ and set method is a more tedious wa 
+ et methods do have some very helpfu 
+ get and set methods does not have 
+ to included with the get and set 
+ metho
+  
+ y Web Tier 
+  be an actual variable 
+ located in the c es or even created on 
+ the fly from so el of abstraction is the 
+ most helpful fe
+  
+ her software can be built to take 
+ adva access is nothing new in the 
+ world of rent ways. Get and set 
+ methods are a ery apparent in 
+ Servlets and JSP, as J manipulate 
+ JavaBeans. These standar popular 
+ design patterns such as MVC. aBeans 
+ are used as part of that desig 
+ nderstanding of what JavaBeans are i 
+ lete guide to building dynamic Java-b 
+ ges 2.0 and Servlets 2.4. Servlets 
+ and on to developing large, complex 
+ Web addition to built-in security, 
+ portabilit to work with any operating 
+ system th Solaris.
+  
+ w to set up a Servlet and JSP 
+ develop
+  
+ fication that you can download from 
+ rs, Java support, and installing and
+  
+ ducts/javabeans/
+ ). The specification 
+ ly explore servlets and JSP, including 
+ wly available filters, and popular serv 
+ Beans. JavaBeans were originally 
+  
+ ve the knowledge gained by 
+ constructi ch come with a great deal 
+ of support es property listeners and 
+ event
+  
+  Servlet development.
+  
+ er Java itself was released. This
+  
+  in the JDK that wanted to be 
+  
+ e naming conventions mentioned ght 
+ into the fold"", the JavaBeans the 
+ java.beans package that allow a 
+ nguage (JSP EL)
+  
+ ass wanted exposed as bean ry 
+ (JSTL) and coding custom tag libra 
+ ans.BeanInfo
+ , and 
+  
+ ese classes will not be discussed 
+  
+ o not follow the get and set naming
+  
+ spector"" class 
+  
+ ed to discover the names of the 
+  
+ n bean property. The introspector 
+ mentioned previously to discover 
+ mentioned because when a JSP uses 
+ vaBeans, the generated Servlet will 
+ Database connectivity 
+  
+ The actual book-support site (www.jspbook.co 
+ working code examples, and references.
+  
+ m) features frequently asked 
+ question",NA
+Good Use of JavaBeans,"JavaBeans are not something meant to blow a developer away. The functionality provided by a 
+ JavaBean can be helpful but is not grandiose. What JavaBeans and the associated custom 
+ actions provide a developer with are two things: a simple, clean syntax and elimination of
+ • 
+ scripting elements. The simple, clean syntax is helpful because of its inherent properties. 
+ Table 
+ of Contents
+  
+ Keeping a JSP legible is a key factor to making it easy to maintain. The simple syntax is also 
+ helpful when cooperating with a mixed group of developers because it is easy to teach any 
+ level of programmer the 
+ useBean
+ , 
+ getProperty
+ , and 
+ setProperty
+  actions. The equivalent 
+ scripting elements are also easy to use, but a few simple tags are always much more familiar 
+ Publisher: Addison Wesley 
+  
+ to an HTML savvy developer. JavaBeans are also helpful because they help remove the need 
+ Pub Date: September 19, 2003 
+  
+ for scripting elements. By enforcing the use of the 
+ useBean
+ , 
+ getProperty
+ , and 
+ setProperty 
+ actions, a code stays clean and is done in a more object-orientated approach. There is never 
+ ISBN: 0-321-13649-7
+  
+ a need to embed lengthy bits of code in a scripting element. The better approach is to 
+ Pages: 784
+  
+ encapsulate the code in a Java object such as a bean.",NA
+Design Patterns and JavaBeans ,"Servlets and JavaServer Pages
+  is the first 
+ complete guide to building dynamic Java-based Web applications using the new JavaServer 
+ Pages 2.0 and Servlets 2.4. Servlets and The concept of what the 
+ useBean
+ , 
+ getProperty
+ , and 
+ setProperty
+  actions are doing is JavaServer Pages (JSP) provide a robust solution to 
+ developing large, complex Web helpful to understand. If an alternative to the standard actions 
+ is being used, it is usually a applications, including multiserver projects. In addition to built-in 
+ security, portability, and a custom action mimicking the functionality of the standard actions 
+ but with a special 
+  
+ Web server, they offer developers the freedom to work with any operating system that 
+ enhancement for a particular framework or project. supports Java—be it Linux, Windows, OSX, 
+ or Solaris.
+  
+ The important thing to remember is the elimination of scripting element logic in a JSP. Logic 
+ This authoritative book begins by explaining how to set up a Servlet and JSP development 
+ encapsulated by scripting elements is almost always best placed elsewhere, usually in a Java 
+ environment, including a discussion of containers, Java support, and installing and 
+  
+ class. JSP is powerful because it is as simple as authoring a static HTML or XML document. 
+ configuring Tomcat. The authors then thoroughly explore servlets and JSP, including JSP can 
+ provide all of the functionality other dynamic server-side technologies can, but JSP is 
+ significant coverage of custom tag libraries, newly available filters, and popular servlet and 
+ also easy to use for any, non-Java included, server-side developer. Building around this JSP 
+ design patterns. Readers can then test-drive the knowledge gained by constructing a strong 
+ point is one of the best design patterns you can use, and it is one that JavaBeans book-support 
+ Web site.
+  
+ happen to fit in nicely.
+  
+ Among the topics covered in-depth are: 
+  
+ One thing to take into account when writing JavaBeans for use in JSP is that JavaBeans should 
+ be ""environment agnostic"". Good design will often separate the application into layers such as 
+ the business logic layer and the user interface layer. JavaBeans will be used for two Exception 
+ handling 
+  
+ things: executing business logic and/or carrying data between these layers. Beans that carry 
+ data are used to communicate between the business logic and the user interface layer. These 
+ beans typically have simple properties that are set in the business logic layer and accessed in 
+ the UI layer. Beans also execute business logic. The business logic is often independent of the 
+ The JavaServer Pages Standard Tag Library (JSTL) and coding custom tag libraries
+  
+ environment in which it is executed—that is, the same business logic could be executed in a 
+ Servlet, JSP, or any other Java class. Filters
+  
+ To ensure that all beans are maximally reusable, a bean's functionality should not rely on Error 
+ handling
+  
+ data types from a particular environment. What this means in practice is that, for example, if a 
+  
+ Design patterns, including Struts 
+  
+  
+ Internationalization 
+  
+  
+ Multiclient support 
+  
+  
+ Database connectivity 
+  
+ The actual book-support site (www.jspbook.com) features frequently asked questions, 
+ working code examples, and references.",NA
+Good ,NA,NA
+Uses of the JSP EL ,"JSP design patterns. Readers can then test-drive the knowledge 
+ gained by constructing a book-support Web site.
+  
+ There are several use cases where you can accomplish the same task using either traditional 
+ Among the topics covered in-depth are: JSP expressions, the JSP EL, the JavaBean actions, or 
+ a combination of the three. In the one obvious case, putting XML-friendly expression in a JSP 
+ authored in XML syntax, always use the JSP EL; there is no reason not to. In most of the other 
+ cases, also consider using the JSP Exception handling 
+  
+ EL as a preferred choice. Compared to regular JSP expressions, the JSP EL provides a simpler, 
+ non-Java method of accomplishing the same job. Additionally, with JSP EL functions JavaBeans 
+ and the new JSP Expression Language (JSP EL) you can literally do anything that a regular JSP 
+ expression can do.
+  
+  
+ The JavaServer Pages Standard Tag Library (JSTL) and coding custom tag libraries 
+ The most common use case of JSP expressions, JSP EL expressions, and JavaBeans is to 
+ access a scoped Java object and display it as a string. In this case the JSP EL does a great 
+ Filters 
+  
+ job, and for many practical purposes is all you will ever need the JSP EL to do. A simple 
+ ${foo}
+  and a scoped variable, in any scope, will be displayed as a string. The syntax is 
+ natural, simple, and most importantly adequate. For these reasons you will notice that 
+ almost every single example in the later chapters uses the JSP EL. In general, this book 
+ Session and state management
+  
+ suggests you always prefer the JSP EL over the JavaBean actions and regular JSP expressions",NA
+Iteration,"The core JSTL iteration tags exist to iterate over collections of objects. The tags exist as a 
+ good alternative to embedding a Java 
+ for
+ , 
+ while
+ , or 
+ do-while
+  loop via a scriptlet. There are 
+ two core iteration tags: 
+ forEach
+  and 
+ forTokens
+ . The 
+ forEach
+  tag is the more commonly used 
+ tag because it iterates over a collection of objects. The 
+ forTokens
+  tag is used to break a
+  
+ There are good reasons why it would be better to eliminate iterating scriptlets in favor of the 
+ JSTL iteration tags. The first and obvious reason is to make it easier to understand what a JSP 
+ is doing. Eliminating scriptlets in favor of custom tags increases the amount of markup on a 
+ page and reduces the amount of Java code. The end result is a JSP that is easier to read. 
+ Consider the JSP in 
+ Listing 6-2
+ , which uses an 
+ Iterator
+  object and a 
+ while
+  loop.
+  
+ <html>
+  
+ <head>
+  
+ The actual book-support site (www.jspbook.com) features frequently asked questions,",NA
+Justification for Skipping the SQL Tags,"In this book there are many programming practices that are promoted but have a good 
+ chance of being misinterpreted. It is clearly stated in countless places, including the 
+ introduction and back of the book, that this book takes a Java skill set and applies it to
+ • 
+ Servlets and JSP to create good Web Applications. By ""good"", potentially complex is meant. 
+ Table of Contents
+  
+ You bought a book because you wanted direction and advice on doing things with Servlets 
+ and JSP—not just simple, figure-it-out-in-five-minute things, but also the hardest of tasks. 
+ Purposely discouraging use of select JSTL tags might appear to go against this, but it is the 
+ goal of this book that justifies skipping these tags. 
+ Publisher: Addison Wesley
+  
+ All of the JSTL tags are designed to be simple to learn. They provide the same functionality 
+ Pub Date: 
+ September 19, 2003
+  
+ an experienced Java developer has available but through a non-programming interface. In 
+ ISBN: 0-321-
+ 13649-7
+  
+ other words, Java allows a developer to do anything but requires learning a lot more before 
+ being able to start doing a little. The JSTL requires someone to learn very little but be able to 
+ do a lot, not as much as pure Java, but enough for building simple Web Applications. The JSTL 
+ SQL tags are intended for the cases where understanding or using as little Java as possible is 
+ desired. These types of cases do not merit a full book! You can figure this out in a matter of 
+ minutes, do an adequate job of building a Web Application, and save yourself $50 
+ Servlets and 
+ JavaServer Pages
+  is the first complete guide to building dynamic Java-based Web applications 
+ using the new JavaServer Pages 2.0 and Servlets 2.4. Servlets and and some shelf space. You 
+ are encouraged to do this should the situation arise. However, in cases where you need to 
+ build something complex and build it right, a solid understanding of JavaServer Pages (JSP) 
+ provide a robust solution to developing large, complex Web 
+  
+ Java, Servlets, and JSP are what you need. That is what merits buying this book, and that is 
+ applications, including multiserver projects. In addition to built-in security, portability, and a 
+ what this book is about. Web server, they offer developers the freedom to work with any 
+ operating system that supports Java—be it Linux, Windows, OSX, or Solaris.
+  
+ Any Java developer will agree the larger a project gets, the more critical a good design pattern 
+ is to ensure the project is successful. Good design patterns do not pop into your head This 
+ authoritative book begins by explaining how to set up a Servlet and JSP development after five 
+ minutes of wishing you did not have to learn Java. Good design patterns evolve environment, 
+ including a discussion of containers, Java support, and installing and 
+  
+ from the use of a technology and experience of other developers who previously did the same 
+ configuring Tomcat. The authors then thoroughly explore servlets and JSP, including significant 
+ coverage of custom tag libraries, newly available filters, and popular servlet and type of 
+ project. Should it be obvious or not, this book is preparing you for a sound understanding of 
+ good, proved JSP and Servlet design patterns, specifically the Model 2, or JSP design patterns. 
+ Readers can then test-drive the knowledge gained by constructing a MVC design pattern, with 
+ an emphasis on how this allows for good internationalization book-support Web site.
+  
+ support, multi-client support, and future project maintenance. The JSTL SQL tags do not fit 
+ into this overall goal. They promote a limited Model 2-conflicting use of the functionality JSP 
+ and Servlets provide and that is why they are skipped. The authors would say to never use 
+ these tags, so why are they in the JSTL? There are two arguments given for their inclusion: 
+ first, prototyping. If you are prototyping, you often need a ""quick and dirty"" solution; the 
+ Exception handling
+  
+ JSTL SQL tags are a quick and dirty SQL solution. Second, if you are writing a small Web 
+ Application (maybe a page or two), in which case you may feel that using MVC is overkill. 
+ JavaBeans and the new JSP Expression Language (JSP EL)
+  
+ However, you should remember that small applications quickly grow to be large applications, 
+ and using these tags may lead to all sorts of maintenance headaches. The JavaServer Pages 
+ Standard Tag Library (JSTL) and coding custom tag libraries
+  
+ On a slight tangent, if you truly desire to be a J2EE expert, it is wise to understand all of the Filters
+  
+ options available to a Java, JSP, and Servlet developer. This allows you to make an informed 
+ Error handling 
+  
+ and appropriate decision on a case-by-case basis when developing Web Applications.
+  
+ Understanding when JSP and Servlets are an overkill is helpful to save time and effort. A 
+ Session and state management 
+  
+ good understanding of the full JSTL is helpful in this regard as it nicely complements simple 
+  
+ Internationalization 
+  
+  
+ Multiclient support 
+  
+  
+ Database connectivity 
+  
+ The actual book-support site (www.jspbook.com) features frequently asked questions, 
+ working code examples, and references.",NA
+How Are Tags Being Used?,"Custom tags are commonly used for all the dynamic aspects of JSP. Tag libraries are not the 
+ best solution for everything, but they are the preferred method for embedding dynamic 
+ functionality in a JSP. Many simple and illustrative uses of custom tags appear throughout
+ • 
+ this chapter. Do not let this fool you into thinking this is a limitation of the technology. 
+ Table of 
+ Contents
+  
+ Custom tags have many practical uses that are covered in depth by the later chapters. As 
+ both a preview of the later chapters and as background information, here are some of the 
+ more helpful uses of custom tags.
+  
+ Publisher: Addison Wesley
+  
+  
+ Pub Date: September 19, 2003",NA
+MVC ,"ISBN: 0-321-13649-7
+  
+ Pages: 784 
+  
+ Model View Control, also called Model 2, is currently the most commonly used design pattern 
+ for developing Web Applications. The MVC design pattern is popular because it focuses on 
+ breaking down a Web Application into logical partitions and encourages developers to abide by 
+ the divisions. The View partition corresponds to the part of the Web Application that is 
+ responsible for rendering data into a format the client is expecting. This division is commonly 
+ Servlets and JavaServer Pages
+  is the first complete guide to building dynamic Java-based Web 
+ applications using the new JavaServer Pages 2.0 and Servlets 2.4. Servlets and left to a JSP 
+ that can easily display information via the standard JSP actions or custom ones.
+  
+ JavaServer Pages (JSP) provide a robust solution to developing large, complex Web 
+ applications, including multiserver projects. In addition to built-in security, portability, and a",NA
+Internationalization ,"Web server, they offer developers the freedom to work with any 
+ operating system that supports Java—be it Linux, Windows, OSX, or Solaris.
+  
+ Internationalization is a very important issue with Web site development. Creating a This 
+ authoritative book begins by explaining how to set up a Servlet and JSP development 
+ multilingual site can be a daunting task. One very practical method of providing this sort of 
+ environment, including a discussion of containers, Java support, and installing and 
+ functionality via JSP is to encapsulate all text-producing elements as custom tags. Each tag 
+ configuring Tomcat. The authors then thoroughly explore servlets and JSP, including would be 
+ responsible for determining the correct text to produce based on the locality of the significant 
+ coverage of custom tag libraries, newly available filters, and popular servlet and client. This 
+ might be done as the following: JSP design patterns. Readers can then test-drive the 
+ knowledge gained by constructing a book-support Web site.
+  
+ Among the topics covered in-depth are:
+  
+ Exception handling
+  
+ JavaBeans and the new JSP Expression Language (JSP EL)
+  
+ <%@taglib prefix=""in"" uri=""/WEB-INF/i18n.tld"" %> 
+ The JavaServer Pages Standard Tag 
+ Library (JSTL) and coding custom tag libraries
+  
+ <html> 
+ Filters
+  
+ <head> 
+ Error handling
+  
+ <in:title id=""groups""/> 
+ Session and state management
+  
+  
+ Security 
+  
+ </head>
+  
+ ...
+  
+ Design patterns, including Struts
+  
+ Internationalization
+  
+ Multiclient support",NA
+"Conditionals, Iterations, and Simple, Needed Tasks","There are countless cases that always seem to appear on a JSP. Some good examples of 
+ these cases are conditionals and iterations. A simple scriptlet suffices as does a simple 
+ custom tag, but the tag is almost always preferred to keep the code clean. Currently, JSP 
+ does not provide a set of standard actions that solve the most common cases, but there has 
+ been a move to integrate such tags into the set of standard actions. As you read in the 
+ previous chapter, the current version of the JavaServer Pages Standard Tag Library (JSTL)
+  
+ The actual book-support site (www.jspbook.com) features frequently asked questions,
+  
+ Despite conventional wisdom, and in the author's opinion, there are countless custom tags",NA
+Attributes ,"Exception handling
+  
+ JavaBeans and the new JSP Expression Language (JSP EL) 
+  
+ In just about every SGML
+ [6]
+ -based language, attributes are relied upon to expand and 
+ customize the functionality of a tag. The markup linked to custom tags is no different. 
+ Attributes can be used with custom tags, and they are very helpful for expanding the 
+ functionality provided by a tag handler. Filters
+  
+ Error handling 
+ [6]
+  Standard Generalized Markup Language (SGML) is a standard that describes what 
+ markup languages, such as HTML, should use as syntax in order to be more easily understood.
+  
+  
+ Session and state management 
+  
+ Attributes for a custom tag can either be 
+ static
+  or 
+ dynamic
+ . Static attributes are formally 
+ declared in the TLD. Dynamic attributes are freely declared during a specific use of the tag. 
+ Security 
+  
+ The two different types of attributes are helpful for different reasons. Static attributes can be 
+ fully described in a TLD and have a limited but automatic set of validation logic associated with 
+ them. For instance, a static attribute can be declared in a TLD to have the name ""value"" and 
+ be required whenever the tag is used. This is helpful because it means a JSP developer 
+ Internationalization
+  
+ will always be forced to use the ""value"" attribute when using the tag. In contrast, dynamic 
+ attributes need not be declared in the TLD. Dynamic attributes are more flexible because any 
+ Multiclient support
+  
+ attribute can be defined during a given use of the tag; however, the drawback is that 
+ The actual book-support site (www.jspbook.com) features frequently asked questions, 
+ working code examples, and references. 
+  
+ Static Attributes and TLD Declaration",NA
+Cooperating Tags ,"The JavaServer Pages Standard Tag Library (JSTL) and coding custom tag 
+ libraries
+  
+ Filters 
+  
+ Simple tags collaborate with children tags by being passed the 
+ JspFragment
+  object that 
+ represents the tag's body. However, simple tags can also collaborate with parent tags by Error 
+ handling 
+  
+ using the 
+ getParent()
+  method. The 
+ getParent()
+  method returns an 
+ Object
+  that represents 
+ the tag handler class, which wraps the current tag (null if no parent tags exist). The object 
+ Session and state management 
+  
+ can appropriately be typecast into either an instance of 
+ Tag
+  or 
+ SimpleTag
+  and be further 
+ manipulated.
+  
+ Design patterns, including Struts
+  
+ Internationalization
+  
+ Multiclient support
+  
+ Database connectivity
+  
+ The actual book-support site (www.jspbook.com) features frequently asked questions, 
+ working code examples, and references.",NA
+Using an ID to Identify Clients ,"JavaBeans and the new JSP Expression Language (JSP EL)
+  
+ Given the preceding, you should be curious as to how a server identifies a client. Essentially, the The 
+ JavaServer Pages Standard Tag Library (JSTL) and coding custom tag libraries
+  
+ client and server code need to exchange some identifier that uniquely identifies this client to this 
+ Filters 
+  
+ server. Note that this identifier does not uniquely identify this client on the Internet; it is a value 
+ that only means something to the server that creates it. This identifier can be exchanged either 
+ Error handling 
+  
+ with or without the client's cooperation.
+  
+  
+ Session and state management 
+  
+ There are typically three ways that this ID will be exchanged: as an HTTP header (cookies), as 
+ extra data attached to a URL (URL rewriting), or by having each page contain a form and then 
+ Security 
+  
+ send the ID as part of the form data (hidden fields). The first two of these mechanisms are 
+ supported as part of the Servlet specification, but the third is not. The third option is an application-
+ level way of managing state and will not be discussed further here. Depending on the type of 
+ application you are building, there might be an inherent ID mechanism, and not all Web 
+ Internationalization
+  
+ Applications are designed to produce HTML. 
+  
+  
+ Multiclient support
+  
+ Database connectivity",NA
+javax.servlet.http.HttpSession ,"The actual book-support site (www.jspbook.com) features frequently asked questions, 
+  
+ working code examples, and references. The Servlet specification defines a class, HttpSession, 
+ and several APIs that allow an application",NA
+Cookies,"Cookies were originally developed by Netscape Communications to solve the problem of keeping 
+ session context using HTTP. Cookies consist of a server sending some information, a ""cookie"", for 
+ a client to store locally, and on future requests to that server, the client sends back the cookie 
+ information via HTTP headers. Assuming the client's software supports cookies, the whole process 
+ requires no user interactions and is an ideal tool for keeping session context.
+  
+ Cookies are currently standardized by the Internet Engineering Task Force (IETF), 
+  
+ http://www.ietf.org/rfc/rfc2109.txt
+ , but this does not mean that cookies have absolute support 
+ on all Web-savvy software. Due to the nature of cookies they can be used to snoop, to a limited 
+ extent
+ [6]
+ , on a client's browsing habits. For the most part cookie abuse is not a problem, but 
+ because of the issue, most browsers allow cookies to be disabled.
+  
+ Cookies are name/value pairs that in HTTP are exchanged via two headers: 
+ Set-Cookie
+  and 
+ Cookie
+ . 
+ Set-Cookie
+  goes from the server to the client, and 
+ Cookie
+  from client to server. The 
+ Set-Cookie
+  header is sent once, when the session is first established. Cookies have a time-out, 
+ and a client keeps a copy of the cookie's value until that time-out expires.
+  
+ The headers can be seen by spoofing an HTTP request using the same method that was shown in 
+ The actual book-support site (www.jspbook.com) features frequently asked questions, 
+ Chapter 2
+ . 
+ For example, a spoofed request to Tomcat results in the following content. The 
+ Set-",NA
+Persistent State,"So far this chapter has only discussed the concrete use of sessions and the session API. There 
+ is another aspect of session management that has to be discussed: how to manage state in a 
+ multi-server(or multi-JVM) environment. Sessions hold user state, and the model that has
+ • 
+ been discussed up until now is one where the user state is held in memory on a Web server. 
+ Table of Contents
+  
+ This leads to a problem when more than one server is being used to handle requests. Either 
+ the system will have to ensure that all requests from the same user always go to the same 
+ request-processing server or that all of the servers in the system will need to share session 
+ information. 
+ Publisher: Addison Wesley
+  
+ The first solution, sending all requests from the same user to the same server, may not be 
+ Pub Date: September 
+ 19, 2003
+  
+ desirable for two main reasons: load balancing and session backup. 
+ Load balancing
+  is the act 
+ ISBN: 0-321-13649-7
+  
+ where a set of servers handle one large task that an individual server would be unable to 
+ cope with by itself—for example, too many HTTP requests to a Web Application. Ideally, load 
+ balancing for a Web Application can be done on a per-request basis, each time a request is 
+ made to the application; the server that is least burdened handles the request. 
+ Figure 9-6 
+ illustrates the concept.
+  
+ Servlets and JavaServer Pages
+  is the first complete guide to building dynamic Java-based 
+ Web applications using the new JavaServer Pages 2.0 and Servlets 2.4. Servlets and 
+ JavaServer Pages (JSP) provide a robust solution to developing large, complex Web 
+ applications, including multiserver projects. In addition to built-in security, portability, and a 
+ Figure 9-6. Per-Request Load Balancing Using a Server Farm 
+ Web 
+ server, they offer developers the freedom to work with any operating system that supports 
+ Java—be it Linux, Windows, OSX, or Solaris.
+  
+ This authoritative book begins by explaining how to set up a Servlet and JSP development 
+ environment, including a discussion of containers, Java support, and installing and 
+ configuring Tomcat. The authors then thoroughly explore servlets and JSP, including 
+ significant coverage of custom tag libraries, newly available filters, and popular servlet and 
+ JSP design patterns. Readers can then test-drive the knowledge gained by constructing a 
+ book-support Web site.
+  
+ Among the topics covered in-depth are:
+  
+ Exception handling
+  
+ However, keeping session information on one server and forcing all requests to that server 
+ JavaBeans and the new JSP Expression Language (JSP EL)
+  
+ ruins this practice. Instead of per-request load balancing, the servers would have to do per-
+ session load balancing. The solution can work, but is usually not favored because it loses the 
+ The JavaServer Pages Standard Tag Library (JSTL) and coding custom tag libraries
+  
+ performance benefits of a per-request system. The second problem is, What happens when a 
+ Filters 
+  
+ server crashes? If state information is only saved in memory on one server and that server 
+ crashes, the information is lost. Clearly an unacceptable situation to be in. Error handling
+  
+ The second solution, sharing state information, is the preferred approach. Sharing state 
+ Session and state management 
+  
+ information is making session information available to all servers that may need it. Usually, 
+ this is accomplished by either one of two ways: session smearing or using a dedicated Security 
+  
+ session database. 
+ Session smearing
+  is the act of ""smearing"" a session's state across multiple 
+ servers. A dedicated session database is just that—a dedicated server that keeps track of 
+ sessions and shares the information as needed with other servers. Both session smearing and 
+ using a session database are discussed further in the following sections.
+  
+ Multiclient support",NA
+Session Smearing ,"Database connectivity
+  
+ The actual book-support site (www.jspbook.com) features frequently asked questions, Session smearing is 
+ generally a vendor-specific solution. Most containers, especially full J2EE
+  
+ working code examples, and references. servers, provide some method of seamlessly clustering 
+ together many computers to run one",NA
+Configuring Realms ,"Session and state management
+  
+ A fair warning: This section is Tomcat-specific. ""Realms"" are something conceptually similar 
+ Security 
+  
+ in just about every container; however, the actual implementation will be slightly different. 
+ You cannot apply this specific section to all containers, but you can apply all of the other 
+ Design patterns, including Struts 
+  
+ declarative security that is defined by the Servlet specification. Internationalization 
+  
+ As just mentioned, Tomcat user definitions are stored as ""realms"", and Tomcat comes with 
+ Multiclient support three realm implementations: a memory realm (the 
+ tomcat-users.xml
+  file 
+ you have just seen), a JDBC realm, and a JNDI realm (see 
+ Chapter 15
+  for more on JDBC and 
+ JNDI). Under Database connectivity 
+  
+ Tomcat, realms are configured as part of Tomcat's 
+ server.xml
+  file. A realm can have various 
+ scopes: it can be made available for all applications this instance of Tomcat is running, for all",NA
+Configuring Basic or Digest Authentication ,"Publisher: Addison Wesley
+  
+ In the original example of the declarative 
+ web.xml
+  entries, basic authentication was used. 
+ Pub Date: September 
+ 19, 2003
+  
+ This is because basic authentication is the default authentication a Web Application will use. 
+ To change the authentication scheme, the 
+ login-config
+  element must be used:
+  
+ Servlets and JavaServer Pages
+  is the first complete guide to building dynamic Java-based 
+ Web applications using the new JavaServer Pages 2.0 and Servlets 2.4. Servlets and 
+ JavaServer Pages (JSP) provide a robust solution to developing large, complex Web 
+ applications, including multiserver projects. In addition to built-in security, portability, and a 
+ Web server, they offer developers the freedom to work with any operating system that 
+ <login-config> 
+ supports Java—be it Linux, Windows, OSX, or Solaris.
+  
+ This authoritative book begins by explaining how to set up a Servlet and JSP development 
+ environment, including a discussion of containers, Java support, and installing and 
+ configuring Tomcat. The authors then thoroughly explore servlets and JSP, including 
+ significant coverage of custom tag libraries, newly available filters, and popular servlet and 
+ JSP design patterns. Readers can then test-drive the knowledge gained by constructing a 
+ book-support Web site.
+  
+ Among the topics covered in-depth are:
+  
+ This code is an example of the 
+ login-config
+  element as it was previously used in the chapter. 
+ Authentication schemes are configured by setting the 
+ auth-method
+  child element to Exception 
+ handling
+  
+ be the desired scheme. So far we have seen both basic and digest authentication. These 
+ schemes are defined by the 
+ BASIC
+  and 
+ DIGEST
+  values, respectively. In the code given, basic 
+ JavaBeans and the new JSP Expression Language (JSP EL)
+  
+ authentication is specified. The 
+ realm-name
+  element provides the name of the security realm. The 
+ JavaServer Pages Standard Tag Library (JSTL) and coding custom tag libraries
+  
+  
+ Filters",NA
+Custom Form-Based Authentication ,"Error handling
+  
+ Before progressing to HTTPS there is a slight tangent that is well worth discussing. The 
+ Session and state management 
+  
+ default authentication box, 
+ Figure 10-1
+ , is not mandated. You can build a custom form that 
+ will be presented to a user in a much more stylish fashion. The Servlet specification defines 
+ Security 
+  
+ this functionality as ""Form"" authentication.
+  
+ Design patterns, including Struts 
+  
+ With HTTP authentication the client application is in control of the user interface that the log in 
+ mechanism uses—that is, it is the browser that pops up the dialog box that the user fills in. 
+ Internationalization 
+  
+ Giving the 
+ auth-method
+  setting a value of 
+ FORM
+  allows the Web Application to define its own 
+ login pages so it has control over the look and feel of the login procedure. 
+ Listing 10-8
+  shows 
+ how to configure this in the application deployment descriptor.
+  
+ Database connectivity
+  
+ The actual book-support site (www.jspbook.com) features frequently asked questions, 
+ Listing 
+ 10-8. Form-Based Authentication Configuration 
+ working code examples, and 
+ references.",NA
+Secure Encrypted Communication,"The preceding discussion talked about using security to perform authentication, 
+  
+ authorization, and data integrity. However, there are other things that must be done to 
+ provide a fully secure conversation between Alice and Bob. The first is encryption. If Bob
+ • 
+ wants to send private data to Alice—for example, credit card numbers—it had better be 
+ Table of Contents
+  
+ encrypted. However, there is no point in encrypting the data if the endpoint Bob is sending 
+ the data to is itself not trusted. In other words, before Bob sends private data to Alice, Bob 
+ should know that he is talking to Alice; Bob has to authenticate Alice. This is the opposite 
+ authentication that was talked about previously where Alice (the server) authenticated Bob 
+ Publisher: Addison Wesley 
+  
+ (the client). Now, the client has to authenticate the server before sending the data. Modern 
+ Pub Date: September 19, 2003 
+  
+ cryptography allows for both these things to happen.
+  
+ ISBN: 0-321-13649-7
+  
+ Cryptography allows data to be encrypted with a key so that it can only be decrypted with a 
+ ""matching"" key. There are two types of key encryption, symmetric key encryption and 
+ asymmetric key encryption.
+  
+ A 
+ symmetric key
+  represents a shared secret, and the same key is used to both encrypt and 
+ decrypt the data. The problem with symmetric key encryption is ""key exchange"". How do two 
+ Servlets and JavaServer Pages
+  is the first complete guide to building dynamic Java-based 
+ parties securely exchange a symmetric key? Alice cannot simply send it to Bob because Web 
+ applications using the new JavaServer Pages 2.0 and Servlets 2.4. Servlets and 
+  
+ Mallory can see it. JavaServer Pages (JSP) provide a robust solution to developing large, 
+ complex Web 
+  
+ applications, including multiserver projects. In addition to built-in security, portability, and a 
+ An 
+ asymmetric key
+  is a key that is split into two parts: the private key and the public key. Web 
+ server, they offer developers the freedom to work with any operating system that Either can 
+ decrypt data encrypted by the other—that is, data encrypted by the public key only supports 
+ Java—be it Linux, Windows, OSX, or Solaris.
+  
+ can be decrypted by the private and vice versa. Note that data encrypted by one key can 
+ only 
+ be decrypted with the other key. The private key is truly private. It is only known by a single 
+ This authoritative book begins by explaining how to set up a Servlet and JSP development 
+ environment, including a discussion of containers, Java support, and installing and entity. The 
+ public key is truly public and can be known by everyone.
+  
+ configuring Tomcat. The authors then thoroughly explore servlets and JSP, including 
+  
+ Encrypting data with the public key is useful, as that data can only be decrypted with the 
+ significant coverage of custom tag libraries, newly available filters, and popular servlet and 
+ private key. That means that no one can read that data except the private key owner. That is, 
+ JSP design patterns. Readers can then test-drive the knowledge gained by constructing a if 
+ Bob encrypts data using Alice's public key, only Alice can decrypt that data. book-support Web 
+ site.
+  
+ What about encrypting data using a private key? If Alice encrypts data using her private key, 
+ Among the topics covered in-depth are: 
+  
+ anybody can decrypt it with Alice's public key (the key is public and so is available to 
+ anybody). This is also extremely useful as it can be used to prove identity. If Alice sends Bob 
+ some plain text, and also encrypts that plaintext with her private key and sends the Exception 
+ handling 
+  
+ encrypted data, Bob can take the encrypted data and decrypt it with Alice's public key. He can 
+ then compare the decrypted data with the plaintext and compare them. If the 
+  
+ comparison is equal, then the plain text must have come from the person whose public key 
+ Bob has, so Bob ""proves"" the data has come from Alice. In this case, Alice is said to have 
+ ""signed"" her data, and typically a hash of the data, rather than the data itself, is signed. A 
+ question you should be asking at this point is ""How does Bob know that he has Alice's key 
+ Filters
+  
+ and not somebody else's?"" This is where something called 
+ certificates
+  come in, but we will 
+ postpone discussion of certificates for now. Error handling",NA
+Jakarta Struts,"The Struts Framework is often called ""The Framework"" for developing Model 2 Web Applications with 
+ Servlets and JSP. The Struts framework originated from the Apache Jakarta project, 
+  
+ http://jakarta.apache.org
+ , alongside Tomcat. Thanks to the dedication and support of many Jakarta
+ • 
+ developers, Struts quickly became a good framework for developing Model 2 Web Applications. 
+ Table of 
+ Contents
+  
+ Servlets and JavaServer Pages™: The J2EE™ Technology Web Tier
+  
+ Struts is still a good framework to use for building Model 2 Web Applications. The Struts framework 
+ By 
+ Jayson Falkner
+ , 
+ Kevin Jones 
+  
+ provides a project with a generic Control Servlet, a supporting tag library for creating forms, and 
+ other features such as internationalization support. The Struts framework comes with a full set of 
+ Publisher: Addison Wesley 
+  
+ user and developer documentation, and Struts has one of the most active user communities around.
+  
+ For all of these reasons Struts is an excellent framework to both understand and use as a Servlet 
+ Pub Date: 
+ September 19, 2003
+  
+ and JSP developer. To finish our discussion on design patterns, we will take a look at the Struts 
+ ISBN: 0-321-
+ 13649-7
+  
+ framework and some tips for using the framework to get a project off to a quick start.",NA
+Installing Struts,"Servlets and JavaServer Pages
+  is the first complete guide to building dynamic Java-based The Struts 
+ framework is available in both binary and source code distributions under the Apache Web applications 
+ using the new JavaServer Pages 2.0 and Servlets 2.4. Servlets and Software Foundation license. The 
+ project can be used free for both commercial and non-commercial JavaServer Pages (JSP) provide a 
+ robust solution to developing large, complex Web projects, but if you are unfamiliar with the Apache 
+ license, be sure to take the time to read and applications, including multiserver projects. In addition to 
+ built-in security, portability, and a understand it. The Apache group has supported the development of 
+ some fantastic software, and the Web server, they offer developers the freedom to work with any 
+ operating system that least you can do is spend the time to properly understand the page-long license. 
+ supports Java—be it Linux, Windows, OSX, or Solaris.
+  
+ Struts is being covered in this chapter because it is a helpful framework for developing Model 2 Web This 
+ authoritative book begins by explaining how to set up a Servlet and JSP development Applications. 
+ Leaving off discussion with a few simple Model 2 examples is no way to get you started environment, 
+ including a discussion of containers, Java support, and installing and on a real-world project. For the 
+ Struts discussion you will need to download the latest release of configuring Tomcat. The authors then 
+ thoroughly explore servlets and JSP, including Struts. The specific version used by this book is the binary 
+ release of Struts 1.0.2. The release can be significant coverage of custom tag libraries, newly available 
+ filters, and popular servlet and downloaded at 
+ http://jakarta.apache.org/struts
+ . If you do not have this 
+ code, download it now. JSP design patterns. Readers can then test-drive the knowledge gained by 
+ constructing a
+  
+ book-support Web site.
+  
+ What Is in Struts 1.0.2? 
+ Among the topics covered in-depth are:
+  
+ Included with Struts 1.0.2 are quite a few things including: Struts, documentation, examples, and a
+  
+ quick start Web Application. The Struts download explains all of this in its included documentation Exception 
+ handling
+  
+ and the online version of the same. There is no point in this book providing a rehash of all of this
+  
+ excellent documentation, especially when the material covered here has the potential to be outdated 
+ JavaBeans and the new JSP Expression Language (JSP EL)
+  
+ by new releases of Struts. Instead, this chapter provides only a quick overview of Struts in an The 
+ JavaServer Pages Standard Tag Library (JSTL) and coding custom tag libraries
+  
+ Decompress the binary installation of Struts into a convenient directory. The following files are 
+ present: 
+  
+  
+ Internationalization
+  
+ lib/struts.jar:
+  This JAR file contains all of the Java classes included in Struts. It is available so 
+ existing Web Applications can take advantage of Struts.
+  
+  
+ Database connectivity 
+  
+  
+ lib/struts*.tld:
+  All of the 
+ .tld
+  files in the 
+ /lib
+  directory are the Tag Library Descriptor files 
+ The actual book-support site (www.jspbook.com) features frequently asked questions, for the 
+ Struts custom tag libraries. When installing Struts for use with an existing Web working code 
+ examples, and references. Application, these files are needed to describe the Struts tag libraries.",NA
+Struts Control Servlet ,"The JavaServer Pages Standard Tag Library (JSTL) and coding custom tag 
+ libraries
+  
+ The core of the Struts framework is the pre-built Control Servlet. The Control Servlet is a Filters
+  
+ configurable Model 2 Control component that allows for pluggable Model components and easy 
+ interaction with forms. We can take advantage of the Struts Control Servlet to provide a robust 
+ Error handling
+  
+ mechanism for the Model components of our Model 2 application. Recall this was the largest caveat 
+ Session and state management 
+  
+ of the previous Model 2 example. Struts provides a more appealing alternative to hard coding Model 
+ logic into 
+ ControlFilter.java
+ . Security
+  
+ Struts was built around the JSP 1.1 and Servlet 2.2 specifications. What this means is Struts does 
+ Design patterns, including Struts 
+  
+ not currently take advantage of Filter functionality. Instead, the Struts framework relies on all 
+ requests ending with a fictitious extension, usually 
+ .do
+ [3]
+ . The control Servlet intercepts all requests 
+ Internationalization 
+  
+ with the fictitious extension and forwards them to the appropriate JSP or Servlet. The specific 
+ configuration for the Struts Control Servlet is an entry in 
+ web.xml
+ , the same as any other Servlet. 
+ Multiclient support 
+  
+ The 
+ struts-blank.war
+  file automatically has the Servlet deployed. If you look in 
+ web.xml
+  of the
+  
+ struts-blank Web Application, you should find the code in 
+ Listing 11-18
+ .
+  
+ The actual book-support site (www.jspbook.com) features frequently asked questions, 
+ [3]
+  The 
+ .do
+  
+ extension is commonly used because it is what the Struts examples use, but any extension can be 
+ working code",NA
+Using Struts,"The Jakarta Struts framework is designed to do many things, but the most helpful thing the
+ • 
+ framework provides is a pre-built Control component and a method to encapsulate business logic. 
+ Table of Contents
+  
+ Servlets and JavaServer Pages™: The J2EE™ Technology Web Tier 
+ With the about, index, and add-news pages 
+ we have seen how Struts can be used to create a Model 2 Web Application. 
+ By 
+ Jayson Falkner
+ , 
+ Kevin Jones
+  
+ Actions are the only Struts functionality we are going to cover in this chapter, but any experienced 
+ Publisher: Addison Wesley 
+  
+ Struts user will be quick to point out that Actions are not the only things Struts provides. Struts does 
+  
+  
+ Pub Date: September 19, 2003 
+  
+ in fact have much more functionality, including a few tag libraries and an enhanced version of 
+ JavaBeans for working with HTML forms. These extra features of Struts are not covered for a few 
+ ISBN: 0-321-13649-7
+  
+ reasons. First, they are not relevant to this chapter. The reason Struts was introduced was to show a 
+ good implementation of a system that allowed for modular Model components to complement View 
+ components. That is exactly what was covered in this chapter. The second reason the extra Struts 
+ functionalities are not fully covered is because they are quickly becoming dated. Many of the most 
+ helpful features of Struts such as logic and iteration tags have been officially implemented in the 
+ JSTL. Both solutions work, but this book recommends learning the standardized JSTL. Finally, the 
+ Servlets and JavaServer Pages
+  is the first complete guide to building dynamic Java-based 
+  
+ Web applications using the new JavaServer Pages 2.0 and Servlets 2.4. Servlets and 
+  
+ framework is nice, but there are many ways to implement what some of the ""helpful"" features are 
+ trying to do. Apply the concepts presented in this book and your good judgment to find the best 
+ JavaServer Pages (JSP) provide a robust solution to developing large, complex Web 
+  
+ solution for you. applications, including multiserver projects. In addition to built-in security, 
+ portability, and a Web server, they offer developers the freedom to work with any operating system 
+ that 
+  
+ Struts is a great choice for cleanly modularizing Model, View, and Control components. When 
+ supports Java—be it Linux, Windows, OSX, or Solaris.
+  
+ building a Model 2 Web Application for production use, keep Struts in mind. It is a good way to get a 
+ quick start implementing a Model 2 design pattern. This authoritative book begins by explaining how 
+ to set up a Servlet and JSP development 
+  
+ environment, including a discussion of containers, Java support, and installing and 
+  
+ configuring Tomcat. The authors then thoroughly explore servlets and JSP, including",NA
+Model 1½,"significant coverage of custom tag libraries, newly available filters, and popular servlet 
+ and JSP design patterns. Readers can then test-drive the knowledge gained by constructing a 
+  
+ book-support Web site.
+  
+ So far two design patterns have been presented: Model 1 and Model 2. We would strongly 
+  
+ recommend that you use the Model 2 design pattern when possible, but as you will quickly find, the 
+ Among the topics covered in-depth are: 
+  
+ Model 2 design pattern initially takes a while to become familiar with. Building various different 
+ components and then assembling them together can be tedious. It can also slow down the time it takes 
+ to test changes. In other words, if you change a JSP, it is recompiled and redeployed 
+  
+ automatically; if you change a Java class, you need to compile and deploy it manually. If you are used 
+ to building lots of JSP and few Java classes, you will likely agree that JSP is much quicker to develop 
+ with. However, if you are used to developing Java classes and have a nice build tool, such as Ant, you 
+ will be able to build Model 2 applications just as quickly as Model 1. The JavaServer Pages Standard 
+ Tag Library (JSTL) and coding custom tag libraries
+  
+ Why Model 1½ is brought up in this chapter is because it is a very practical technique for rapidly Filters
+  
+ develop Model 2(ish) code. If you dislike using a build tool, or are in a situation where no build tool 
+ is available, Model 1½ is a great way to rapidly develop a Model 2–like page, only using JSP. Then 
+ Error handling
+  
+ later on the Model 2–like code can easily be changed to be a clean JSP and business logic encapsulated 
+ by a Java class. Another tangential reason that Model 1½ is introduced is that it is how Session and state 
+ management
+  
+ the majority of this book's JSP examples are demonstrated. If an example used earlier in the book is 
+ Security 
+  
+ helpful, it should be easy for you to port into a Model 2 application.
+  
+ Design patterns, including Struts 
+  
+ Multiclient support
+  
+ Database connectivity
+  
+ The actual book-support site (www.jspbook.com) features frequently asked questions, 
+ working code examples, and references.",NA
+ISO-8859-1 ,"This authoritative book begins by explaining how to set up a Servlet and JSP development 
+ environment, including a discussion of containers, Java support, and installing and As a Web 
+ developer you need to be familiar with ISO-8859-1. Not just the keys on your configuring 
+ Tomcat. The authors then thoroughly explore servlets and JSP, including keyboard, but all of the 
+ characters HTTP supports by default. Should you be building a Web site significant coverage of 
+ custom tag libraries, newly available filters, and popular servlet and that only needs languages 
+ supported by ISO-8859-1, then it makes sense to use the standard.
+  
+ JSP design patterns. Readers can then test-drive the knowledge gained by constructing a 
+ English, Spanish, Danish, Dutch, French, Italian, German, and other ISO-8859-1 book-
+ support Web site. language–supporting Web sites have this luxury.
+  
+ Among the topics covered in-depth are: The only problem that occurs when developing using 
+ ISO-8859-1 is that most keyboards are specialized for a particular language. As an English 
+ developer it is easy to to create most of a Spanish Web site, but the common English 
+ keyboard does not include certain Spanish Exception handling 
+  
+ characters such as the tilde (ñ). In order to create this character, there are two good options.
+  
+ The first is to use a text editor capable of inserting particular characters not found on your 
+ JavaBeans and the new JSP Expression Language (JSP EL) 
+  
+ keyboard. As long as the document is encoded as ISO-8859-1, there is no issue displaying the 
+ text in a browser. The second option is to use a character entity. HTML 2.0 introduced this 
+ functionality. Considering HTML is in version 4 now, it is fairly safe to assume the vast majority 
+ of HTML clients support character entities.
+  
+ An HTML character entity allows any ISO-8859-1 character to be typed using a series of ASCII 
+ characters. The series starts with an ampersand, 
+ &
+ , ends with a semi-colon, 
+ ;
+ , and includes a 
+ unique set of characters between. Usually the characters are an abbreviated form of the desired 
+ Session and state management
+  
+ character's proper name. For example, ampersand can only be properly authored using one of 
+ these sequences. The sequence for ampersand is 
+ &amp;
+ . When rendered by a Web browser, the 
+ Security
+  
+ characters 
+ &amp;
+  are not directly shown; instead, only the 
+ &
+  character is. 
+  
+ Design patterns, including Struts
+  
+ The actual book-support site (www.jspbook.com) features frequently asked questions, 
+ working code examples, and references.",NA
+Unicode,"The actual book-support site (www.jspbook.com) features frequently asked questions, A 
+ universal character set does exist. The trouble with ISO-8859-1 is that it cannot be easily 
+ extended because it uses only 8 bits, meaning 2
+ 8
+ , or 256 possible characters. Many languages,",NA
+Working with Non-ISO-8859-1 Encoding,NA,NA
+Content Abstraction ,"Multiclient support
+  
+ Implementing an i18n Web application that can grow and change involves abstracting content. Following th 
+ Database connectivity
+  
+ Model 2 design pattern, the process is easy to implement. With previous examples it was assumed content 
+  
+ The actual book-support site (www.jspbook.com) features frequently asked questions, only needed in one 
+ language. Only the dynamic parts of the page were generated on the fly; the static cont
+  
+ working code examples, and references. was coded in along with formatting code. In a multi-lingual Web 
+ Application, content needs to be abstracte",NA
+Separating Format from Content,"A multi-client design relies on separating formatting logic from the content generation. By separating out 
+ formatting logic it is possible to abstract that logic behind a common interface. The common interface can 
+ then be used freely while the formatting it produces is specialized as needed. As applied to Servlets and
+ • 
+ JSP, separating format from content and then abstracting formatting can be a very easy process, especially 
+ Table of Contents
+  
+ Servlets and JavaServer Pages™: The J2EE™ Technology Web Tier 
+ when following a Model 2 design.
+  
+ By 
+ Jayson Falkner
+ , 
+ Kevin Jones 
+  
+ Recall with Model 2 the emphasis is on removing all business logic from presentation logic. In practice this 
+ means breaking a Web Application into two parts. One part handles all business logic, such as querying a 
+ Publisher: Addison Wesley 
+  
+ database, logging, or validating information, and creates the dynamic content required for a presentation 
+ component. The presentation component is then the second part of the Web Application; it takes the 
+ Pub 
+ Date: September 19, 2003
+  
+ dynamic content, formats it along with static content, and produces a response for a client. When 
+ ISBN: 0-
+ 321-13649-7
+  
+ implemented as suggested, the business logic is coded in either a Servlet or Filter, and the presentation 
+ logic is a JSP. Communicating between the two components is a custom Java object, usually a JavaBean.
+  
+ The Model 2 design pattern is important for multi-client design because it eliminates any redundancy of 
+ business logic. Presentation logic is completely handled by a JSP—for example, the HTML formatting applie 
+ to dynamic content. Separating out formatting logic is then trivial and can be done in a few different ways, 
+ Servlets and JavaServer Pages
+  is the first complete guide to building dynamic Java-based 
+  
+ specifically, either templates or transformation. The point is illustrated in 
+ Listing 13-1
+ . Web applications 
+ using the new JavaServer Pages 2.0 and Servlets 2.4. Servlets and 
+  
+ JavaServer Pages (JSP) provide a robust solution to developing large, complex Web 
+  
+ applications, including multiserver projects. In addition to built-in security, portability, and a 
+  
+ Listing 13-1. A Model 2 Presentation JSP 
+ Web server, they offer developers the freedom to 
+ work with any operating system that 
+  
+ supports Java—be it Linux, Windows, OSX, or Solaris.
+  
+ This authoritative book begins by explaining how to set up a Servlet and JSP development 
+ environment, including a discussion of containers, Java support, and installing and 
+ <html> 
+  
+ configuring Tomcat. The authors then thoroughly explore servlets and JSP, including 
+ significant coverage of custom tag libraries, newly available filters, and popular servlet and 
+ <head> 
+  
+ JSP design patterns. Readers can then test-drive the knowledge gained by constructing a 
+ book-support Web site. 
+ <title>Model 2 Multi-Client Example</title>
+  
+ Among the topics covered in-depth are: 
+ </head>
+  
+ <body> 
+ Exception handling
+  
+ <image src=""logo.png""> 
+ JavaBeans and the new JSP Expression Language (JSP EL)
+  
+ <h1>Welcome ${user.name} to the example!</h1> 
+ The JavaServer Pages Standard Tag Library (JSTL) 
+ and coding custom tag libraries
+  
+ <p>This webpage is an example of the type of page you'd see from a Model 2 Web Applicatio 
+ Filters
+  
+ . No business logic on the page! 
+ Error handling
+  
+ </body> 
+ Session and state management
+  
+ </html> 
+ Security
+  
+ Design patterns, including Struts 
+  
+ Internationalization
+  
+ Highlighted in 
+ Listing 13-1
+  is the formatting. The important point is that all of this formatting is the 
+ Multiclient support 
+  
+ responsibility of the JSP. Dynamic information generated by the business logic is not assuming anything
+  
+ about the formatting: it is only providing the correct user name for the JSP to display. The JSP is 
+ Database connectivity 
+  
+ responsible for taking all content, both static and dynamic, and formatting it correctly for a client to see.
+  
+ The actual book-support site (www.jspbook.com) features frequently asked questions, 
+  
+ This is helpful because it means a different format can be applied with minimal effort. For example, imagin 
+ working code examples, and references.
+  
+ the Web site is current with technology trends and provides content in both HTML and XHTML formats.",NA
+SQL,"The language used to manage and manipulate data in a relational database is Structured Query 
+ Language, better known as SQL. SQL is simple to learn but difficult to master. We will spend a 
+ little time using SQL to help learn the basics, but full coverage is deferred to the previously 
+ suggested text. To learn SQL it helps to have a relational database. There are many, many 
+ databases available from all sorts of vendors such as Oracle, IBM, and Microsoft. There are even a 
+ few excellent, free open-source databases such as MySQL and PostgreSQL. For the examples in 
+ the book we are going to use hsqldb (formerly Hypersonic SQL). This is an open source, pure Java 
+ database that is ideal for this book's use because it is free, coded in Java, and simple to The 
+ actual book-support site (www.jspbook.com) features frequently asked questions, download and 
+ install. While hsqldb is fantastic for learning and testing SQL, it is not good for most real-world 
+ situations. The simplicity of the DB comes at the cost of performance and lack of",NA
+Database Administrators Are Expected to Know a Lot,"Tech books can be expensive and tedious to read. This is exactly why this chapter was added 
+ to this book, and it is why you have yet to be directed to pick up a good JDBC book. In 
+ practice, what you have learned in this chapter should be more than enough to avoid needing 
+ a learn-JDBC book. You should be able to get by just fine working with a database and 
+ incorporating JDBC with your Servlets and JSPs. However, should you be a developer who for 
+ whatever reason is also the acting database administrator, seriously consider finding extra 
+ help. The SQL book suggested earlier in this chapter is a fantastic start, but it also helps to 
+ know a lot about the database that you will be using. If the database you choose to use comes 
+ with excellent documentation, then the issue is solved. If it does not, or you are using a very 
+ robust (likely also extra-complex) database, such as the pricey Microsoft, Oracle, or IBM line 
+ of products, look into a good book that covers JDBC and that database.
+  
+ The actual book-support site (www.jspbook.com) features frequently asked questions,",NA
+Practical Use of Web Application Labor Division,"For practical use the division of labor described by this chapter works well, primarily because 
+ of its strict interfaces. The bane of maintaining a project is having to deal with what is 
+ considered 
+ spaghetti code
+ , sloppy code that tends to work but appears as gibberish—hence, 
+ not even the original coder can easily edit it, let alone someone inheriting the code. Scripts 
+ that mix database calls, Java, and HTML are almost always spaghetti code. It is the same issue 
+ that was discussed in length in the design pattern chapter. However, eliminating spaghetti 
+ code is not the only benefit of dividing labor as described. Keeping a strict interface means you 
+ can easily determine what exactly needs to be fixed. In our case the fix can be narrowed down 
+ to either a database table, a Java class, or a JSP—all of which are relatively
+  
+ It should be easy to realize why the method of dividing a Web Application's labor as 
+  
+ described by this chapter works; the method is exactly what has been preached by the last 
+ few chapters. The design pattern chapter discussed the Model 2 design pattern, including JSP 
+ and logic components, and the database chapter discussed both simple SQL and using JDBC.
+  
+ However, examples are surely the best method of bringing everything together, which is",NA
+Creating the Other Presentation Pages,"With 
+ index.jsp
+  we have finished the tedious part of building a presentation page: creating Exception 
+ handling
+  
+ the headers, footers, and styles. For the other presentation pages we need only author a 
+ JavaBeans and the new JSP Expression Language (JSP EL) 
+  
+ document that accurately describes the page. For static pages, such as the about page, there 
+ will be nothing but a few paragraphs of text. For dynamic pages, such as the FAQ, feedback, 
+ The JavaServer Pages Standard Tag Library (JSTL) and coding custom tag libraries and errata 
+ pages, there will be paragraphs of static text and some code that displays request-scoped 
+ variables—much like 
+ index.jsp
+ . Filters
+  
+ For completeness two more examples are provided of JSP view pages: one more dynamic page 
+ Error handling 
+  
+ and one static page. However, given the code for index.jsp it should be obvious how these pages 
+ are to be created. Nothing new or interesting is introduced by the code; static pages are nothing 
+ more than HTML markup and some content. Dynamic pages are similar to 
+ index.jsp
+  
+ but with different static text.
+  
+ Design patterns, including Struts
+  
+ Coding the About the Book Page 
+ Internationalization
+  
+ The about page is nothing more than a description of the book 
+ Servlets and JSP: The J2EE Web 
+ Tier
+ . In many ways it is a summarized version of this book's preface; as 
+ Listing 15-23
+  shows, 
+ there is nothing suspect about this page at all. Do not worry about spending time reading 
+ through all the markup; the text is easier to read when rendered as HTML.
+  
+ The actual book-support site (www.jspbook.com) features frequently asked questions, 
+ working code examples, and references.",NA

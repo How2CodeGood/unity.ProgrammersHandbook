@@ -1,0 +1,3947 @@
+Larger Text,Smaller Text,Symbol
+Node: Up and Running,NA,NA
+Tom Hughes-Croucher and Mike Wilson,"Beijing
+  •
+  Cambridge
+  •
+  Farnham
+  •
+  Köln
+  •
+  Sebastopol
+  •
+  Tokyo",NA
+Table of Contents,"Foreword by Ryan Dahl . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . . . . . . . . . . . . .  vii
+  
+ Foreword by Brendan Eich . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . . . . . . . . . . . . . .  ix
+  
+ Preface . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . . . . . . . . . . .  xi",NA
+Part I. Up and Running ,"1. A Very Brief Introduction to Node.js . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . . . . . . . . . . . . . .  3
+  
+ Installing Node.js 
+  
+ 4
+  
+ First Steps in Code 
+  
+ 7
+  
+ Node REPL 
+  
+ 7
+  
+ A First Server 
+  
+ 9
+  
+ Why Node? 
+  
+ 11
+  
+ High-Performance Web Servers 
+  
+ 11
+  
+ Professionalism in JavaScript 
+  
+ 12
+  
+ Browser Wars 2.0 
+  
+ 13
+  
+ 2. Doing Interesting Things . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . . . . . . . . . . .  15
+  
+ Building a Chat Server 
+  
+ 15
+  
+ Let’s Build Twitter 
+  
+ 23
+  
+ 3. Building Robust Node Applications . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . . . . . . . . . . . . .  33",NA
+Part II. Deep Dive and API Reference ,"4. Core APIs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . . . . . . . . .  55 
+  
+ Events 
+  
+ 55 
+  
+  
+ EventEmitter 
+  
+ 56 
+  
+  
+ Callback Syntax 
+  
+ 57 
+  
+ HTTP 
+  
+  
+ 59 
+  
+  
+ HTTP Servers 
+  
+ 59 
+  
+  
+ HTTP Clients 
+  
+ 61 
+  
+  
+ URL 
+  
+ 65 
+  
+  
+ querystring 
+  
+  
+ 67 
+  
+ I/O 
+  
+ 68 
+  
+  
+ Streams 
+  
+ 68 
+  
+  
+ Filesystem 
+  
+ 69 
+  
+  
+ Buffers 
+  
+  
+ 70 
+  
+  
+ console.log 
+  
+ 76
+  
+ 5. Helper APIs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . . . . . . . . .  77 
+  
+ DNS 
+  
+  
+ 77 
+  
+ Crypto 
+  
+  
+ 79 
+  
+  
+ Hashing 
+  
+  
+ 79 
+  
+  
+ HMAC 
+  
+  
+  
+ 81 
+  
+  
+ Public Key Cryptography 
+  
+  
+ 82 
+  
+ Processes 
+  
+  
+ 86 
+  
+  
+ process Module 
+  
+  
+ 86 
+  
+  
+ Child Process 
+  
+  
+  
+ 94 
+  
+ Testing Through assert 
+  
+ 101 
+  
+ VM 
+  
+ 104
+  
+ 6. Data Access . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+ . . . . . . . .  107",NA
+Foreword by Ryan Dahl,"In 2008 I was searching for a new programming platform for making websites. This 
+ was more than wanting a new language; indeed, the details of the language 
+ mattered very little to me. Rather, I was concerned about the ability to program 
+ advanced push features into the website like I had seen in Gmail—the ability for the 
+ server to push data to the user instead of having to constantly poll. The existing 
+ platforms were tightly coupled to the idea of the server as something that receives 
+ a request and issues a response sequentially. To push events to the browser, the 
+ platform needed to be able to constantly handle a number of open and mostly idle 
+ connections.
+  
+ I knew how to make this work at the system call layer, in C. If I used only 
+ nonblocking sockets, the overhead per connection was very small. In small tests, I 
+ could demonstrate a server that could handle thousands of idle connections or 
+ pretty massive throughput. I knew that this was the optimal way for a user-space 
+ Unix server to be implemented. However, I didn’t want to work in C; I wanted the 
+ beautiful fluidness of a dynamic language. Although it was possible to issue the 
+ exact system calls I wanted in every programming language, it was very ugly and 
+ was always the “alternative” method of socket programming. My theory was that 
+ nonblocking sockets were not actually diffi-cult at all, as long as everything was 
+ nonblocking.
+  
+ Google announced Chrome and its new JavaScript engine V8 in late 2008. A faster 
+ JavaScript engine made for a faster Web—and V8 made the Web 
+ a lot
+  faster. 
+ Suddenly there was this idea of a JavaScript arms race between Google, Apple, 
+ Mozilla, and Microsoft. This, combined with Doug Crockford’s book 
+ JavaScript: The 
+ Good Parts 
+ (O’Reilly), shifted JavaScript from the language everyone despised to an 
+ important language.
+  
+ I had an idea: nonblocking sockets in JavaScript! Because JavaScript has no existing 
+ socket libraries, I could be the first to introduce this new and hopefully better 
+ interface. Just take V8 and glue it to my nonblocking C code, and I should be done. I 
+ quit my contracting job and began working on this idea full time. Once I made the 
+ very first version available, I immediately had users who reported bugs; I started 
+ fixing those bugs, and then three years passed.",NA
+Foreword by Brendan Eich,"In April 1995 I joined Netscape in order to “add Scheme to the browser.” That 
+ recruit-ing bait from a month or two earlier immediately morphed into “do a 
+ scripting language that looks like Java.” Worse, because the negotiation to put Java 
+ in Netscape was un-derway, some at Netscape doubted that a “second language” 
+ was necessary. Others wanted to build something like PHP, an HTML templating 
+ language for a planned server-side offering called LiveWire.
+  
+ So in 10 days in May 1995, I prototyped “Mocha,” the code name Marc Andreessen 
+ had chosen. Marc, Rick Schell (vice president of engineering at Netscape), and Bill 
+ Joy of Sun were the upper-management sponsors who supported my work against 
+ doubts about a “second language” after Java. (This is ironic since Java has all but 
+ disappeared in browsers, while JavaScript is dominant on the client side.)
+  
+ To overcome all doubts, I needed a demo in 10 days. I worked day and night, and 
+ consequently made a few language-design mistakes (some recapitulating bad 
+ design paths in the evolution of LISP), but I met the deadline and did the demo.
+  
+ People were amazed that I’d created a language compiler and runtime in less than 
+ two weeks, but I’d had a lot of practice over the decade since switching from a 
+ physics major in my third year to math/computer science. I had always loved 
+ formal language and automata theory. I’d built my own parsers and parser 
+ generators for fun. At Silicon Graphics, I built network-monitoring tools that 
+ included packet-header matching and protocol description languages and 
+ compilers. I was a huge fan of C and Unix. So knocking out “Mocha” was really a 
+ matter of sustained application and concentration.
+  
+ Sometime in the fall of 1995, Netscape marketing renamed Mocha “LiveScript,” to 
+ match the LiveWire server-side product name. Finally, in early December 1995, 
+ Net-scape and Sun concluded a trademark license, signed by “Bill Joy, Founder” on 
+ behalf of Sun, and LiveScript was renamed JavaScript (JS).
+  
+ Because of the LiveWire server plans, in the first 10 days I implemented a bytecode 
+ compiler and interpreter as well as a decompiler and runtime (the built-in JS 
+ objects and functions we know today: Object, Array, Function, etc.). For small 
+ client-side scripts, bytecode was overkill, but the LiveWire product included the 
+ feature of saving compiled bytecode for faster server-app startup.
+  
+ ix",NA
+Preface,NA,NA
+Introduction,"Node.js is quickly becoming one of the most influential technologies in the Web de-
+ velopment community. This book aims to give programmers the information they 
+ need to effectively learn how to get started with Node.
+  
+ This book expects you to have some understanding of JavaScript and programming 
+ in general, but we take the time to introduce you to the concepts that are important 
+ in event-driven programming on the server, rather than just focusing on the APIs 
+ that Node provides.
+  
+ By reading this book you'll learn not just about Node, the platform, but also about 
+ some of the most important modules for Node that will let you quickly and 
+ effectively build highly scalable websites and services.",NA
+Conventions Used in This Book,"The following typographical conventions are used in this book:
+  
+ Italic 
+  
+  
+ Indicates new terms, URLs, email addresses, filenames, and file extensions.
+  
+ Constant width 
+  
+ Used for program listings, as well as within paragraphs to refer to program 
+ elements such as variable or function names, databases, data types, 
+ environment variables, statements, and keywords.
+  
+ Constant width bold 
+  
+  
+ Shows commands or other text that should be typed literally by the 
+ user.
+  
+ Constant width italic 
+  
+ Shows text that should be replaced with user-supplied values or by values 
+ deter-mined by context.
+  
+ xi",NA
+Using Code Examples,"This book is here to help you get your job done. In general, you may use the code in 
+ this book in your programs and documentation. You do not need to contact us for 
+ permission unless you’re reproducing a significant portion of the code. For 
+ example, writing a program that uses several chunks of code from this book does 
+ not require permission. Selling or distributing a CD-ROM of examples from O’Reilly 
+ books does require permission. Answering a question by citing this book and 
+ quoting example code does not require permission. Incorporating a significant 
+ amount of example code from this book into your product’s documentation does 
+ require permission.
+  
+ We appreciate, but do not require, attribution. An attribution usually includes the 
+ title, author, publisher, and ISBN. For example: “
+ Node: Up and Running
+  by Tom 
+ Hughes-Croucher and Mike Wilson (O’Reilly). Copyright 2012 Tom Hughes-
+ Croucher and Mike Wilson, 978-1-449-39858-3.”
+  
+ If you feel your use of code examples falls outside fair use or the permission given 
+ above, feel free to contact us at 
+ permissions@oreilly.com
+ .",NA
+Safari® Books Online,"Safari Books Online (
+ www.safaribooksonline.com
+ ) is an on-demand 
+ digital library that delivers expert 
+ content
+  in both book and video form 
+ from the
+  
+ world’s leading authors in technology and business.
+  
+ Technology professionals, software developers, web designers, and business and 
+ cre-ative professionals use Safari Books Online as their primary resource for 
+ research, problem solving, learning, and certification training.
+  
+ Safari Books Online offers a range of 
+ product mixes
+  and pricing programs for 
+ organi-zations
+ , 
+ government agencies
+ , and 
+ individuals
+ . Subscribers have access to 
+ thousands of books, training videos, and prepublication manuscripts in one fully 
+ searchable da-tabase from publishers like O’Reilly Media, Prentice Hall 
+ Professional, Addison-Wesley Professional, Microsoft Press, Sams, Que, Peachpit 
+ Press, Focal Press, Cisco Press, John Wiley & Sons, Syngress, Morgan Kaufmann, 
+ IBM Redbooks, Packt, Adobe Press, FT Press, Apress, Manning, New Riders, 
+ McGraw-Hill, Jones & Bartlett, Course",NA
+How to Contact Us,"Please address comments and questions concerning this book to the publisher:
+  
+ O’Reilly Media, Inc.
+  
+ 1005 Gravenstein Highway North 
+  
+ Sebastopol, CA 95472 
+  
+ 800-998-9938 (in the United States or 
+ Canada) 707-829-0515 (international or 
+ local) 
+  
+ 707-829-0104 (fax)
+  
+ We have a web page for this book, where we list errata, examples, and any 
+ additional information. You can access this page at:
+  
+ http://oreil.ly/node_upandrunning
+  
+ To comment or ask technical questions about this book, send email to:
+  
+ bookquestions@oreilly.com
+  
+ For more information about our books, courses, conferences, and news, see our 
+ website at 
+ http://www.oreilly.com
+ .
+  
+ Find us on Facebook: 
+ http://facebook.com/oreilly
+  
+ Follow us on Twitter: 
+ http://twitter.com/oreillymedia
+  
+ Watch us on YouTube: 
+ http://www.youtube.com/oreillymedia",NA
+Acknowledgments,NA,NA
+Tom’s Thanks,"To my editors. Simon, it has been a long project, but you’ve been with me week after 
+ week. Andy, your eye for detail never fails to impress.
+  
+ To Carlos. Your drive and talent make you the writer I would like to be. You are an 
+ inspiration.
+  
+ To Nicole and Sean, for keeping me on track.
+  
+ To Ryan and Isaac, who have put up with my endless stupid questions with the 
+ quiet patience of someone teaching a child.
+  
+ To Rosemarie. Without you, I would never be where I am today.
+  
+ Preface | xiii",NA
+PAR,NA,NA
+T I ,NA,NA
+Up and ,NA,NA
+Running,NA,NA
+CHAPTER 1,NA,NA
+A Very Brief Introduction ,NA,NA
+to Node.js,"Node.js is many things, but mostly it’s a way of running JavaScript outside the web 
+ browser. This book will cover why that’s important and the benefits that Node.js 
+ pro-vides. This introduction attempts to sum up that explanation in a few 
+ paragraphs, rather than a few hundred pages.
+  
+ Many people use the JavaScript programming language extensively for 
+ programming the interfaces of websites. Node.js allows this popular programming 
+ language to be applied in many more contexts, in particular on web servers. There 
+ are several notable features about Node.js that make it worthy of interest.
+  
+ Node is a wrapper around the high-performance V8 JavaScript runtime from the 
+ Google Chrome browser. Node tunes V8 to work better in contexts other than the 
+ browser, mostly by providing additional APIs that are optimized for specific use 
+ cases. For ex-ample, in a server context, manipulation of binary data is often 
+ necessary. This is poorly supported by the JavaScript language and, as a result, V8. 
+ Node’s 
+ Buffer
+  class provides easy manipulation of binary data. Thus, Node doesn’t 
+ just provide direct access to the V8 JavaScript runtime. It also makes JavaScript 
+ more useful for the contexts in which people use Node.
+  
+ V8 itself uses some of the newest techniques in compiler technology. This often 
+ allows code written in a high-level language such as JavaScript to perform similarly 
+ to code written in a lower-level language, such as C, with a fraction of the 
+ development cost. This focus on performance is a key aspect of Node.
+  
+ JavaScript is an event-driven language, and Node uses this to its advantage to 
+ produce highly scalable servers. Using an architecture called an 
+ event loop
+ , Node 
+ makes pro-gramming highly scalable servers both easy and safe. There are various 
+ strategies that are used to make servers performant. Node has chosen an 
+ architecture that performs very well but also reduces the complexity for the 
+ application developer. This is an extremely important feature. Programming 
+ concurrency is hard and fraught with dan-ger. Node sidesteps this challenge while 
+ still offering impressive performance. As al-ways, any approach still has trade-offs, 
+ and these are discussed in detail later in the book.",NA
+Installing Node.js,"Installing Node.js is extremely simple. Node runs on Windows, Linux, Mac, and 
+ other POSIX OSes (such as Solaris and BSD). Node.js is available from two primary 
+ locations: the 
+ project’s website
+  or the 
+ GitHub repository
+ . You’re probably better off 
+ with the Node website because it contains the stable releases. The latest cutting-
+ edge features are hosted on GitHub for the core development team and anyone else 
+ who wants a copy. Although these features are new and often intriguing, they are 
+ also less reliable than those in a stable release.
+  
+ 4 | Chapter 1:A Very Brief Introduction to Node.js",NA
+First Steps in Code,"This section will take you through a basic Node program before we move on to 
+ more in-depth programs.",NA
+Node REPL,"One of the things that’s often hard to understand about Node.js is that, in addition 
+ to being a server, it’s also a runtime environment in the same way that Perl, Python, 
+ and Ruby are. So, even though we often refer to Node.js as “server-side JavaScript,” 
+ that doesn’t really accurately describe what Node.js does. One of the best ways to 
+ come to grips with Node.js is to use Node REPL (“Read-Evaluate-Print-Loop”), an 
+ interactive Node.js programming environment. It’s great for testing out and 
+ learning about Node.js. You can try out any of the snippets in this book using Node 
+ REPL. In addition, because Node is a wrapper around V8, Node REPL is an ideal 
+ place to easily try out JavaScript. However, when you want to run a Node program, 
+ you can use your favorite
+  
+ First Steps in Code | 7",NA
+A First Server,"REPL gives us a great tool for learning and experimentation, but the main 
+ application of Node.js is as a server. One of the specific design goals of Node.js is to 
+ provide a highly scalable server environment. This is an area where Node differs 
+ from V8, which was described at the beginning of this chapter. Although the V8 
+ runtime is used in Node.js to interpret the JavaScript, Node.js also uses a number of 
+ highly optimized libraries to make the server efficient. In particular, the HTTP 
+ module was written from scratch in C to provide a very fast nonblocking 
+ implementation of HTTP. Let’s take a look at the canonical Node “Hello World” 
+ example using an HTTP server (
+ Exam-ple 1-9
+ ).
+  
+ Example 1-9. A Hello World Node.js web server
+  
+ var http = require('http'); 
+  
+ http.createServer(function (req, res) { 
+  
+  
+  res.writeHead(200, {'Content-Type': 'text/plain'}); 
+  
+  
+ res.end('Hello World\n'); 
+  
+ }).listen(8124, ""127.0.0.1""); 
+  
+ console.log('Server running at http://127.0.0.1:8124/');
+  
+ The first thing that this code does is use 
+ require
+  to include the HTTP library into the 
+ program. This concept is used in many languages, but Node uses the CommonJS 
+ mod-ule format, which we’ll talk about more in 
+ Chapter 8
+ . The main thing to know 
+ at this point is that the functionality in the HTTP library is now assigned to the 
+ http
+  
+ object.
+  
+ Next, we need an HTTP server. Unlike some languages, such as PHP, that run inside 
+ a server such as Apache, Node itself acts as the web server. However, that also 
+ means we have to create it. The next line calls a factory method from the HTTP 
+ module that creates new HTTP servers. The new HTTP server isn’t assigned to a 
+ variable; it’s simply going to be an anonymous object in the global scope. Instead, 
+ we use chaining to ini-tialize the server and tell it to listen on port 
+ 8124
+ .
+  
+ When calling 
+ createServer
+ , we passed an anonymous function as an argument. This 
+ function is attached to the new server’s event listener for the 
+ request
+  event. Events 
+ are
+  
+ First Steps in Code | 9",NA
+Why Node?,"In writing this book, we’ve been acutely aware of how new Node.js is. Many 
+ platforms take years to find adoption, and yet there’s a level of excitement around 
+ Node.js that we’ve never seen before in such a young platform. We hope that by 
+ looking at the reasons other people are getting so excited about Node.js, you will 
+ find features that also resonate with you. By looking at Node.js’s strengths, we can 
+ find the places where it is most applicable. This section looks at the factors that 
+ have come together to create a space for Node.js and discusses the reasons why it’s 
+ become so popular in such a short time.",NA
+High-Performance Web Servers,"When we first started writing web applications more than 10 years ago, the Web 
+ was much smaller. Sure, we had the dot-com bubble, but the sheer volume of 
+ people on the Internet was considerably lower, and the sites we made were much 
+ less ambitious. Fast-forward to today, and we have the advent of Web 2.0 and 
+ widely available Internet connections on cell phones. So much more is expected of 
+ us as developers. Not only are the features we need to deliver more complex, more 
+ interactive, and more real, but there are also many more people using them more 
+ often and from more devices than ever before. This is a pretty steep challenge. 
+ While hardware continues to improve, we also need to make improvements to our 
+ software development practices to support such demands. If we kept just buying 
+ hardware to support ever-increasing features or users, it wouldn’t be very cost-
+ effective.
+  
+ Node is an attempt to solve this problem by introducing the architecture called 
+ event-driven computing
+  to the programming space for web servers. As it turns out, 
+ Node isn’t the first platform to do this, but it is by far the most successful, and we 
+ would argue that it is the easiest to use. We are going to talk about event-driven 
+ programming in a lot more detail later in this book, but let’s go through a quick 
+ intro here. Imagine you connect to a web server to get a web page. The time to 
+ reach that web server is probably 100ms or so over a reasonable DSL connection. 
+ When you connect to a typical web server, it creates a new instance of a program 
+ on the server that represents your request. That program runs from the top to the 
+ bottom (following all of the function calls) to",NA
+Professionalism in JavaScript,"Another reason people like Node is JavaScript. JavaScript was created by Brendan 
+ Eich in 1995 to be a simple scripting language for use in web pages on the Netscape 
+ browser platform. Surprisingly, almost since its inception JavaScript has been used 
+ in non-browser settings. Some of the early Netscape server products supported 
+ JavaScript (known then as LiveScript) as a server-side scripting language. Although 
+ server-side JavaScript didn’t really catch on then, that certainly wasn’t true for the 
+ exploding browser market. On the Web, JavaScript competed with Microsoft’s 
+ VBScript to pro-vide programming functionality in web pages. It’s hard to say why 
+ JavaScript won, but perhaps Microsoft allowing JavaScript in Internet Explorer did 
+ it,
+ 1
+  or perhaps it was the JavaScript language itself, but win it did. This meant by the 
+ early 2000s, JavaScript had emerged as 
+ the
+  web language—not just the first choice, 
+ but the 
+ only
+  choice for programming with HTML in browsers.
+  
+ What does this have to do with Node.js? Well, the important thing to remember is 
+ that when the AJAX revolution happened and the Web became big business (think 
+ Yahoo!, Amazon, Google, etc.), the only choice for the “J” in AJAX was JavaScript. 
+ There simply wasn’t an alternative. As a result, a whole industry needed an awful 
+ lot of JavaScript programmers, and really good ones at that, rather fast. The 
+ emergence of the Web as a serious platform and JavaScript as its programming 
+ language meant that we, as Java-Script programmers, needed to shape up. We can 
+ equate the change in JavaScript as the second or third programming language of a 
+ programmer to the change in perception of its importance. We started to get 
+ emerging experts who led the charge in making JavaScript respectable.
+  
+ Arguably at the head of this movement was Douglas Crockford. His popular articles 
+ and videos on JavaScript have helped many programmers discover that inside this 
+ much-maligned language there is a lot of beauty. Most programmers working with 
+ JavaScript spent the majority of their time working with the browser 
+ implementation
+  
+ 1. Internet Explorer doesn’t actually support JavaScript or ECMAScript; it supports a language variety 
+ called JScript. In recent years, JScript has fully supported the ECMAScript 3 standard and has some 
+ ECMAScript 5 support. However, JScript also implements proprietary extensions in the same way 
+ that Mozilla JavaScript does and has features that ECMAScript does not.
+  
+ 12 | Chapter 1:A Very Brief Introduction to Node.js",NA
+Browser Wars 2.0,"Fairly early in the days of the Web, we had the infamous 
+ browser wars
+ . Internet 
+ Explorer and Netscape competed viciously on web features, adding various 
+ incompatible pro-grammatic features to their own browser and not supporting the 
+ features in the other browser. For those of us who programmed for the Web, this 
+ was the cause of much anguish because it made web programming really tiresome. 
+ Internet Explorer more or less emerged as the winner of that round and became 
+ the dominant browser. Fast-forward a few years, and Internet Explorer has been 
+ languishing at version 6, and a new contender, Firefox, emerges from the remnants 
+ of Netscape. Firefox kicks off a resur-gence in browsers, followed by WebKit 
+ (Safari) and then Chrome. Most interesting about this current trend is the 
+ resurgence of competition in the browser market.
+  
+ Unlike the first iteration of the browser wars, today’s browsers compete on two 
+ fronts: adhering to the standards that emerged after the previous browser war, and 
+ perfor-mance. As websites have become more complex, users want the fastest 
+ experience possible. This has meant that browsers not only need to support the 
+ web standards",NA
+CHAPTER 2,NA,NA
+Doing Interesting Things,"The programming trends of the last few years have made it progressively easier to 
+ write more complex applications with ease. It’s important that we don’t lose that, 
+ but Node is specifically focused on solving the problem of building 
+ network
+  
+ applications—that is, applications that do a lot of input/output (I/O). Let’s build a 
+ few I/O-type apps and see how easy it is to do this with Node in a way that really 
+ scales.",NA
+Building a Chat Server,"In a world that’s increasingly real-time, what is more real-time than chat? So where 
+ should we begin? Let’s start with a TCP-based chat server we can connect to with 
+ Telnet. Not only is it a simple place to start, but it’s also something we can write 
+ 100% in Node.
+  
+ The first thing we need to do is include the TCP libraries from Node and create a 
+ new TCP server (see 
+ Example 2-1
+ ).
+  
+ Example 2-1. Creating a new TCP server
+  
+ var net = require('net')
+  
+ var chatServer = net.createServer()
+  
+ chatServer.on('connection', function(client) { 
+ client.write('Hi!\n');
+  
+  client.write('Bye!\n');
+  
+  client.end() 
+  
+ })
+  
+ chatServer.listen(9000)
+  
+ 15",NA
+Let’s Build Twitter,"The previous example shows how easy it is to write something extremely real-time 
+ with Node, but often you just want to write a web application. Let’s try to create 
+ something similar to Twitter with Node so we can see what it’s like to make a web 
+ application. The first thing we should do is install the Express module (
+ Example 2-
+ 13
+ ). This web framework for Node makes it much easier to create web applications 
+ by adding support for common tasks, such as MVC, to the existing 
+ http
+  server.
+  
+ Let’s Build Twitter | 23",NA
+CHAPTER 3,NA,NA
+Building Robust Node ,NA,NA
+Applications,"To make the most of the server-side JavaScript environment, it’s important to 
+ under-stand some core concepts behind the design choices that were made for 
+ Node.js and JavaScript in general. Understanding the decisions and trade-offs will 
+ make it easier for you to write great code and architect your systems. It will also 
+ help you explain to other people why Node.js is different from other systems 
+ they’ve used and where the per-formance gains come from. No engineer likes 
+ unknowns in her system. “Magic” is not an acceptable answer, so it helps to be able 
+ to explain why a particular architecture is beneficial and under what 
+ circumstances.
+  
+ This chapter will cover the coding styles, design patterns, and production know-
+ how you need to write good, robust Node code.",NA
+The Event Loop,"A fundamental part of Node is the 
+ event loop
+ , a concept underlying the behavior of 
+ JavaScript as well as most other interactive systems. In many languages, event 
+ models are bolted onto the side, but JavaScript events have always been a core part 
+ of the language. This is because JavaScript has always dealt with user interaction. 
+ Anyone who has used a modern web browser is accustomed to web pages that do 
+ things “on-click,” “onmouseover,” etc. These events are so common that we hardly 
+ think about them when writing web page interaction, but having this event support 
+ in the language is incredibly powerful. On the server, instead of the limited set of 
+ events based on the user-driven interaction with the web page’s DOM, we have an 
+ infinite variety of events based on what’s happening in the server software we use. 
+ For example, the HTTP server module provides an event called “request,” emitted 
+ when a user sends the web server a request.
+  
+ The event loop is the system that JavaScript uses to deal with these incoming 
+ requests from various parts of the system in a sane manner. There are a number of 
+ ways people deal with “real-time” or “parallel” issues in computing. Most of them 
+ are fairly complex and, frankly, make our brains hurt. JavaScript takes a simple 
+ approach that makes the",NA
+Patterns,"Event-driven programming is different from procedural programming. The easiest 
+ way to learn it is to practice routine patterns that have been discovered by previous 
+ gener-ations of programmers. That is the purpose of this section.
+  
+ Before we launch into patterns, we’ll take a look at what is really happening behind 
+ various programming styles to give the patterns some context. Most of this section 
+ will focus on I/O, because, as discussed in the previous section, event-driven 
+ programming is focused on solving problems with I/O. When it is working with 
+ data in memory that doesn’t require I/O, Node can be completely procedural.",NA
+The I/O Problem Space,"We’ll start by looking at the types of I/O required in efficient systems. These will be 
+ the basis of our patterns.
+  
+ The first obvious distinction to look at is serial versus parallel I/O. Serial is obvious: 
+ do 
+ this
+  I/O, and after it is finished, do 
+ that
+  I/O. Parallel is more complicated to 
+ implement but also easy to understand: do 
+ this
+  I/O and 
+ that
+  I/O at the same time. 
+ The important point here is that ordering is normally considered implicit in serial 
+ tasks, but parallel tasks could return in any order.
+  
+ 40 | Chapter 3:Building Robust Node Applications",NA
+Writing Code for Production,"One of the challenges of writing a book is trying to explain things in the simplest 
+ way possible. That runs counter to showing techniques and functional code that 
+ you’d want to deploy. Although we should always strive to have the simplest, most 
+ understandable code possible, sometimes you need to do things that make code 
+ more robust or faster at the cost of making it less simple. This section provides 
+ guidance about how to harden the applications you deploy, which you can take 
+ with you as you explore upcoming chapters. This section is about writing code with 
+ maturity that will keep your applica-tion running long into the future. It’s not 
+ exhaustive, but if you write robust code, you won’t have to deal with so many 
+ maintenance issues. One of the trade-offs of Node’s single-threaded approach is a 
+ tendency to be brittle. These techniques help mitigate this risk.
+  
+ Deploying a production application is not the same as running test programs on 
+ your laptop. Servers can have a wide variety of resource constraints, but they tend 
+ to have a lot more resources than the typical machine you would develop on. 
+ Typically, frontend servers have many more cores (CPUs) than laptop or desktop 
+ machines, but less hard drive space. They also have a lot of RAM. Node currently 
+ has some constraints, such
+  
+ Writing Code for Production | 45",NA
+Error Handling,"As we saw earlier in this chapter, you can split I/O activities from other things in 
+ Node, and error handling is one of those things. JavaScript includes try/catch 
+ functionality, but it’s appropriate only for errors that happen inline. When you do 
+ nonblocking I/O in Node, you pass a callback to the function. This means the 
+ callback is going to run when the event happens outside of the try/catch block. We 
+ need to be able to provide error handling that works in asynchronous situations. 
+ Consider the code in 
+ Exam-ple 3-9
+ .
+  
+ Example 3-9. Trying to catch an error in a callback and failing
+  
+ var http = require('http')
+  
+ var opts = {
+  
+  host: 'sfnsdkfjdsnk.com',
+  
+  port: 80,
+  
+  path: '/' 
+  
+ }
+  
+ try {
+  
+  http.get(opts, function(res) {
+  
+   
+  console.log('Will this get called?')
+  
+  }) 
+  
+ } 
+  
+ catch (e) {
+  
+  console.log('Will we catch an error?') 
+  
+ }
+  
+ When you call 
+ http.get()
+ , what is actually happening? We pass some parameters 
+ specifying the I/O we want to happen and a callback function. When the I/O 
+ completes, the callback function will be fired. However, the 
+ http.get()
+  call will 
+ succeed simply by issuing the callback. An error during the GET cannot be caught 
+ by a try/catch block.
+  
+ The disconnect from I/O errors is even more obvious in Node REPL. Because the 
+ REPL shell prints out any return values that are not assigned, we can see that the 
+ return value of calling 
+ http.get()
+  is the 
+ http.ClientRequest
+  object that is created. This 
+ means that the try/catch did its job by making sure the specified code returned 
+ without errors. However, because the hostname is nonsense, a problem will occur 
+ within this I/O request. This means the callback can’t be completed successfully. A 
+ try/catch can’t help with this, because the error has happened outside the 
+ JavaScript, and when Node is ready to report it, we are not in that call stack any 
+ more. We’ve moved on to dealing with another event.
+  
+ 46 | Chapter 3:Building Robust Node Applications",NA
+Using Multiple Processors,"As we’ve mentioned, Node is single-threaded. This means Node is using only one 
+ pro-cessor to do its work. However, most servers have several “multicore” 
+ processors, and a single multicore processor has many processors. A server with 
+ two physical CPU sockets might have “24 logical cores”—that is, 24 processors 
+ exposed to the operating system. To make the best use of Node, we should use 
+ those too. So if we don’t have threads, how do we do that?
+  
+ Node provides a module called 
+ cluster
+  that allows you to delegate work to child pro-
+ cesses. This means that Node creates a copy of its current program in another 
+ process (on Windows, it is actually another thread). Each child process has some 
+ special abil-ities, such as the ability to share a socket with other children. This 
+ allows us to write Node programs that start many other Node programs and then 
+ delegate work to them.
+  
+ It is important to understand that when you use 
+ cluster
+  to share work between a 
+ number of copies of a Node program, the master process isn’t involved in every 
+ trans-action. The master process manages the child processes, but when the 
+ children interact",NA
+PART ,NA,NA
+II ,NA,NA
+Deep Dive and API ,NA,NA
+Reference,NA,NA
+CHAPTER 4,NA,NA
+Core APIs,"There are a lot of APIs in Node, but some of them are more important than others. 
+ These core APIs will form the backbone of any Node app, and you’ll find yourself 
+ using them again and again.",NA
+Events,"The first API we are going to look at is the 
+ Events
+  API. This is because, while 
+ abstract, it is a fundamental piece of making every other API work. By having a 
+ good grip on this API, you’ll be able to use all the other APIs effectively.
+  
+ If you’ve ever programmed JavaScript in the browser, you’ll have used events 
+ before. However, the event model used in the browser comes from the DOM rather 
+ than Java-Script itself, and a lot of the concepts in the DOM don’t necessarily make 
+ sense out of that context. Let’s look at the DOM model of events and compare it to 
+ the implemen-tation in Node.
+  
+ The DOM has a user-driven event model based on user interaction, with a set of in-
+ terface elements arranged in a tree structure (HTML, XML, etc.). This means that 
+ when a user interacts with a particular part of the interface, there is an event and a 
+ context, which is the HTML/XML element on which the click or other activity took 
+ place. That context has a parent and potentially children. Because the context is 
+ within a tree, the model includes the concepts of bubbling and capturing, which 
+ allow elements either up or down the tree to receive the event that was called.
+  
+ For example, in an HTML list, a click event on an 
+ <li>
+  can be captured by a listener 
+ on the 
+ <ul>
+  that is its parent. Conversely, a click on the 
+ <ul>
+  can be bubbled down to 
+ a listener on the 
+ <li>
+ . Because JavaScript objects don’t have this kind of tree 
+ structure, the model in Node is much simpler.
+  
+ 55",NA
+EventEmitter,"Because the event model is tied to the DOM in browsers, Node created the 
+ Event 
+ Emitter
+  class to provide some basic event functionality. All event functionality in 
+ Node revolves around 
+ EventEmitter
+  because it is also designed to be an interface 
+ class for other classes to extend. It would be unusual to call an 
+ EventEmitter
+  instance 
+ directly.
+  
+ EventEmitter
+  has a handful of methods, the main two being 
+ on
+  and 
+ emit
+ . The class 
+ provides these methods for use by other classes. The 
+ on
+  method creates an event 
+ listener for an event, as shown in 
+ Example 4-1
+ .
+  
+ Example 4-1. Listening for an event with the on method
+  
+ server.on('event', function(a, b, c) {
+  
+  //do things 
+  
+ });
+  
+ The 
+ on
+  method takes two parameters: the name of the event to listen for and the 
+ function to call when that event is emitted. Because 
+ EventEmitter
+  is an interface 
+ pseudoclass, the class that inherits from 
+ EventEmitter
+  is expected to be invoked with 
+ the 
+ new
+  key-word. Let’s look at 
+ Example 4-2
+  to see how we create a new class as a 
+ listener.
+  
+ Example 4-2. Creating a new class that supports events with EventEmitter
+  
+ var utils = require('utils'),
+  
+  
+  EventEmitter = require('events').EventEmitter;
+  
+ var Server = function() {
+  
+  console.log('init'); 
+  
+ };
+  
+ utils.inherits(Server, EventEmitter);
+  
+ var s = new Server();
+  
+ s.on('abc', function() {
+  
+  console.log('abc'); 
+  
+ });
+  
+ We begin this example by including the 
+ utils
+  module so we can use the 
+ inherits 
+ method. 
+ inherits
+  provides a way for the 
+ EventEmitter
+  class to add its methods to the 
+ Server
+  class we created. This means all new instances of 
+ Server
+  can be used as 
+ Event 
+ Emitter
+ s.
+  
+ We then include the 
+ events
+  module. However, we want to access just the specific 
+ EventEmitter
+  class inside that module. Note how 
+ EventEmitter
+  is capitalized to show 
+ it is a class. We didn’t use a 
+ createEventEmitter
+  method, because we aren’t planning 
+ to use an 
+ EventEmitter
+  directly. We simply want to attach its methods to the 
+ Server 
+ class we are going to make.",NA
+Callback Syntax,"An important part of using events is dealing with callbacks. Chapter 3 looks at best 
+ practices in much more depth, but we’ll look here at the mechanics of callbacks in 
+ Node. They use a few standard patterns, but first let’s discuss what is possible.
+  
+ When calling 
+ emit
+ , in addition to the event name, you can also pass an arbitrary list 
+ of parameters. 
+ Example 4-4
+  includes three such parameters. These will be passed 
+ to the function listening to the event. When you receive a 
+ request
+  event from the 
+ http
+  server, for example, you receive two parameters: 
+ req
+  and 
+ res
+ . When the 
+ request
+  
+ event was emitted, those parameters were passed as the second and third 
+ arguments to the 
+ emit
+ .
+  
+ Example 4-4. Passing parameters when emitting an event
+  
+ s.emit('abc', a, b, c);
+  
+ It is important to understand how Node calls the event listeners because it will 
+ affect your programming style. When 
+ emit()
+  is called with arguments, the code in 
+ Exam-ple 4-5
+  is used to call each event listener.
+  
+ Example 4-5. Calling event listeners from emit
+  
+ if (arguments.length <= 3) {
+  
+  // fast case",NA
+HTTP,"One of the core tasks of Node.js is to act as a web server. This is such a key part of 
+ the system that when Ryan Dahl started the project, he rewrote the HTTP stack for 
+ V8 to make it nonblocking. Although both the API and the internals for the original 
+ HTTP implementation have morphed a lot since it was created, the core activities 
+ are still the same. The Node implementation of HTTP is nonblocking and fast. Much 
+ of the code has moved from C into JavaScript.
+  
+ HTTP uses a pattern that is common in Node. Pseudoclass factories provide an easy 
+ way to create a new server.
+ 1
+  The 
+ http.createServer()
+  method provides us with a new 
+ instance of the HTTP 
+ Server
+  class, which is the class we use to define the actions 
+ taken when Node receives incoming HTTP requests. There are a few other main 
+ pieces of the HTTP module and other Node modules in general. These are the 
+ events the 
+ Server 
+ class fires and the data structures that are passed to the callbacks. 
+ Knowing about these three types of class allows you to use the HTTP module well.",NA
+HTTP Servers,"Acting as an HTTP server is probably the most common current use case for Node. 
+ In 
+ Chapter 1
+ , we set up an HTTP server and used it to serve a very simple request. 
+ How-ever, HTTP is a lot more multifaceted than that. The server component of the 
+ HTTP module provides the raw tools to build complex and comprehensive web 
+ servers. In this chapter, we are going to explore the mechanics of dealing with 
+ requests and issuing responses. Even if you end up using a higher-level server such 
+ as Express, many of the concepts it uses are extensions of those defined here.
+  
+ As we’ve already seen, the first step in using HTTP servers is to create a new server 
+ using the 
+ http.createServer()
+  method. This returns a new instance of the 
+ Server
+  class, 
+ which has only a few methods because most of the functionality is going to be 
+ provided through using events. The 
+ http
+  server class has six events and three 
+ methods. The other thing to notice is how most of the methods are used to initialize 
+ the server, whereas events are used during its operation.
+  
+ 1. When we talk about a 
+ pseudoclass,
+  we are referring to the definition found in Douglas Crockford’s 
+ JavaScript: The Good Parts
+  (O’Reilly). From now on, we will use “class” to refer to a “pseudoclass.”
+  
+ HTTP | 59",NA
+HTTP Clients,"Node is also great when you want to make outgoing HTTP connections. This is 
+ useful in many contexts, such as using web services, connecting to document store 
+ databases, or just scraping websites. You can use the same 
+ http
+  module when doing 
+ HTTP re-quests, but should use the 
+ http.ClientRequest
+  class. There are two factory 
+ methods for this class: a general-purpose one and a convenience method. Let’s take 
+ a look at the general-purpose case in 
+ Example 4-9
+ .
+  
+ HTTP | 61",NA
+URL,"The 
+ URL
+  module provides tools for easily parsing and dealing with URL strings. It’s 
+ extremely useful when you have to deal with URLs. The module offers three 
+ methods: 
+ parse
+ , 
+ format
+ , and 
+ resolve
+ . Let’s start by looking at 
+ Example 4-13
+ , which 
+ demonstrates 
+ parse
+  using Node REPL.
+  
+ Example 4-13. Parsing a URL using the URL module
+  
+ > var URL = require('url'); 
+  
+ > var myUrl = ""http://www.nodejs.org/some/url/?with=query&param=that&are=awesome 
+ #alsoahash""; 
+  
+ > myUrl 
+  
+ 'http://www.nodejs.org/some/url/?with=query&param=that&are=awesome#alsoahash' > 
+ parsedUrl = URL.parse(myUrl); 
+  
+ { href: 'http://www.nodejs.org/some/url/?with=query&param=that&are=awesome#alsoahash' , 
+ protocol: 'http:' 
+  
+ , slashes: true 
+  
+ , host: 'www.nodejs.org' 
+  
+ , hostname: 'www.nodejs.org' 
+  
+ , hash: '#alsoahash' 
+  
+ , search: '?with=query&param=that&are=awesome' 
+  
+ , query: 'with=query&param=that&are=awesome' 
+  
+ , pathname: '/some/url/' 
+  
+ } 
+  
+ > parsedUrl = URL.parse(myUrl, true); 
+  
+ { href: 'http://www.nodejs.org/some/url/?with=query&param=that&are=awesome#alsoahash' , 
+ protocol: 'http:' 
+  
+ , slashes: true 
+  
+ , host: 'www.nodejs.org' 
+  
+ , hostname: 'www.nodejs.org' 
+  
+ , hash: '#alsoahash' 
+  
+ , search: '?with=query&param=that&are=awesome' 
+  
+ , query:
+  
+  
+  { with: 'query'
+  
+  
+  , param: 'that'
+  
+  
+  , are: 'awesome'
+  
+  
+  }
+  
+ HTTP | 65",NA
+querystring,"The 
+ querystring
+  module is a very simple helper module to deal with query strings. 
+ As discussed in the previous section, query strings are the parameters encoded at 
+ the end of a URL. However, when reported back as just a JavaScript string, the 
+ parameters are fiddly to deal with. The 
+ querystring
+  module provides an easy way to 
+ create objects from the query strings. The main methods it offers are 
+ parse
+  and 
+ decode
+ , but some internal helper functions, —such as 
+ escape
+ , 
+ unescape
+ , 
+ unescapeBuffer
+ , 
+ encode
+ , and 
+ stringify
+ , are also exposed. If you have a query string, you 
+ can use 
+ parse
+  to turn it into an object, as shown in 
+ Example 4-14
+ .
+  
+ Example 4-14. Parsing a query string with the querystring module in Node REPL
+  
+ > var qs = require('querystring'); 
+  
+ > qs.parse('a=1&b=2&c=d'); 
+  
+ { a: '1', b: '2', c: 'd' } 
+  
+ >
+  
+ Here, the class’s 
+ parse
+  function turns the query string into an object in which the 
+ prop-erties are the keys and the values correspond to the ones in the query string. 
+ You should notice a few things, though. First, the numbers are returned as strings, 
+ not numbers. Because JavaScript is loosely typed and will coerce a string into a 
+ number in a numerical operation, this works pretty well. However, it’s worth 
+ bearing in mind for those times when that coercion doesn’t work.
+  
+ Additionally, it’s important to note that you must pass the query string without the 
+ leading 
+ ?
+  that demarks it in the URL. A typical URL might look like 
+ http://www.bobs 
+ discount.com/?item=304&location=san+francisco
+ . The query string starts with a 
+ ?
+  to 
+ indicate where the filepath ends, but if you include the 
+ ?
+  in the string you pass to 
+ parse
+ , the first key will start with a 
+ ?
+ , which is almost certainly not what you want.
+  
+ HTTP | 67",NA
+I/O,"I/O is one of the core pieces that makes Node different from other frameworks. This 
+ section explores the APIs that provide nonblocking I/O in Node.",NA
+Streams,"Many components in Node provide continuous output or can process continuous 
+ in-put. To make these components act in a consistent way, the 
+ stream
+  API provides 
+ an abstract interface for them. This API provides common methods and properties 
+ that are available in specific implementations of streams. Streams can be readable, 
+ writable, or both. All streams are 
+ EventEmitter
+  instances, allowing them to emit 
+ events.
+  
+ Readable streams
+  
+ The readable stream API is a set of methods and events that provides access to 
+ chunks of data as they are sent by an underlying data source. Fundamentally, 
+ readable streams are about emitting 
+ data
+  events. These events represent the stream 
+ of data as a stream",NA
+Filesystem,"The filesystem module is obviously very helpful because you need it in order to 
+ access files on disk. It closely mimics the POSIX style of file I/O. It is a somewhat 
+ unique module in that all of the methods have both asynchronous and synchronous 
+ versions. However, we strongly recommend that you use the asynchronous 
+ methods, unless you are building command-line scripts with Node. Even then, it is 
+ often much better to use the async versions, even though doing so adds a little extra 
+ code, so that you can access multiple files in parallel and reduce the running time of 
+ your script.
+  
+ The main issue that people face while dealing with asynchronous calls is ordering, 
+ and this is especially true with file I/O. It’s common to want to do a number of 
+ moves, renames, copies, reads, or writes at one time. However, if one of the 
+ operations depends",NA
+Buffers,"Although Node is JavaScript, it is JavaScript out of its usual environment. For 
+ instance, the browser requires JavaScript to perform many functions, but 
+ manipulating binary data is rarely one of them. Although JavaScript does support 
+ bitwise operations, it doesn’t have a native representation of binary data. This is 
+ especially troublesome when you also consider the limitations of the number type 
+ system in JavaScript, which might otherwise lend itself to binary representation. 
+ Node introduces the 
+ Buffer
+  class to make up for this shortfall when you’re working 
+ with binary data.",NA
+console.log,"Borrowed from the Firebug debugger in Firefox, the simple 
+ console.log
+  command 
+ allows you to easily output to stdout without using any modules (
+ Example 4-27
+ ). It 
+ also offers some pretty-printing functionality to help enumerate objects.
+  
+ Example 4-27. Outputting with console.log
+  
+ > foo = {}; 
+  
+ {} 
+  
+ > foo.bar = function() {1+1}; 
+  
+ [Function] 
+  
+ > console.log(foo); 
+  
+ { bar: [Function] } 
+  
+ >
+  
+ 5. This generally just means a binary 0.
+  
+ 76 | Chapter 4:Core APIs",NA
+CHAPTER 5,NA,NA
+Helper APIs,"This chapter covers a number of APIs that you’ll almost certainly use regularly but 
+ aren’t used as much as those discussed in 
+ Chapter 4
+ .",NA
+DNS,"Programmers, like end users, normally want to refer to things by their domain 
+ names instead of their IP addresses. The DNS module provides this lookup facility 
+ to you, but it is also used under the hood whenever you are able to use a domain 
+ name—for ex-ample, in 
+ HTTP
+  clients.
+  
+ The 
+ dns
+  module consists of two main methods and a number of convenience 
+ methods. The two main methods are 
+ resolve()
+ , which turns a domain name into a 
+ DNS record, and 
+ reverse()
+ , which turns an IP address into a domain. All of the other 
+ methods in the 
+ dns
+  module are more specialized forms of these methods.
+  
+ dns.resolve()
+  takes three arguments:
+  
+ A string containing the domain to be resolved 
+  
+ This can include subdomains, such as 
+ www.yahoo.com
+ . The 
+ www
+  is technically a 
+ host-name, but the system will resolve it for you.
+  
+ A string containing the types of records being requested 
+  
+ This requires a little more understanding of DNS. Most people are familiar with 
+ the “address” or A record type. This type of record maps an IPv4 domain to a 
+ domain name (as defined in the previous item). The “canonical name,” or 
+ CNAME, records allow you to create an alias of an A record or another CNAME. 
+ For ex-ample, 
+ www.example.com
+  might be a CNAME of the A record at 
+ example.com
+ . MX records point to the mail server for a domain for the use of 
+ SMTP. When you email 
+ person@domain.com
+ , the MX record for 
+ domain.com
+  tells 
+ your email server where to send their mail. Text records, or TXT, are notes 
+ attached to a domain. They have been used for all kinds of functions. The final 
+ type supported by this library is
+  
+ 77",NA
+Crypto,"Cryptography is used in lots of places for a variety of tasks. Node uses the OpenSSL 
+ library as the basis of its cryptography. This is because OpenSSL is already a well-
+ tested, hardened implementation of cryptographic algorithms. But you have to 
+ compile Node with OpenSSL support in order to use the methods in this section.
+  
+ The cryptograph module enables a number of different tasks. First, it powers the 
+ SSL/ TLS parts of Node. Second, it contains hashing algorithms such as MD5 or 
+ SHA-1 that you might want to use in your application. Third, it allows you to use 
+ HMAC.
+ 1
+  There are some encryption methods to cipher the data with to ensure it is 
+ encrypted. Finally, HMAC contains other public key cryptographic functions to sign 
+ data and verify signatures.
+  
+ Each of the functions that cryptography does is contained within a class (or 
+ classes), which we’ll look at in the following sections.",NA
+Hashing,"Hashes are used for a few important functions, such as obfuscating data in a way 
+ that allows it to be validated or providing a small checksum for a much larger piece 
+ of data. To use hashes in Node, you should create a 
+ Hash
+  object using the factory 
+ method 
+ crypto.createHash()
+ . This returns a new 
+ Hash
+  instance using a specified 
+ hashing algo-rithm. Most popular algorithms are available. The exact ones depend 
+ on your version of OpenSSL, but common ones are:
+  
+ •
+  md5
+  
+ •
+  sha1
+  
+ •
+  sha256
+  
+ •
+  sha512
+  
+ •
+  ripemd160
+  
+ 1. Hash-based Message Authentication Code (HMAC) is a crytographic way of verifying data. It is often 
+ used like hashing algorithms to verify that two pieces of data match, but it also verifies that the data 
+ hasn’t been tampered with.
+  
+ Crypto | 79",NA
+HMAC,"HMAC combines the hashing algorithms with a cryptographic key in order to stop a 
+ number of attacks on the integrity of the signature. This means that HMAC uses 
+ both a hashing algorithm (such as the ones discussed in the previous section) and 
+ an en-cryption key. The HMAC API in Node is virtually identical to the 
+ Hash
+  API. The 
+ only difference is that the creation of an 
+ hmac
+  object requires a key as well as a hash 
+ algorithm.
+  
+ crypto.createHmac()
+  returns an instance of 
+ Hmac
+ , which offers 
+ update()
+  and 
+ digest() 
+ methods that work identically to the 
+ Hash
+  methods we saw in the previous section.
+  
+ The key required to create an 
+ Hmac
+  object is a PEM-encoded key, passed as a string. 
+ As shown in 
+ Example 5-7
+ , it is easy to create a key on the command line using 
+ OpenSSL.",NA
+Public Key Cryptography,"The public key cryptography functions are split into four classes: 
+ Cipher
+ , 
+ Decipher
+ , 
+ Sign
+ , and 
+ Verify
+ . Like all the other classes in 
+ crypto
+ , they have factory methods. 
+ Cipher 
+ encrypts data, 
+ Decipher
+  decrypts data, 
+ Sign
+  creates a cryptographic signature for 
+ data, and 
+ Verify
+  validates cryptographic signatures.
+  
+ For the HMAC operations, we used a private key. For the operations in this section, 
+ we are going to use both the public and private keys. Public key cryptography has 
+ matched sets of keys. One, the private key, is kept by the owner and is used to 
+ decrypt and sign data. The other, the public key, is made available to other parties. 
+ The public
+  
+ 82 | Chapter 5:Helper APIs",NA
+Processes,"Although Node abstracts a lot of things from the operating system, you are still 
+ running in an operating system and may want to interact more directly with it. 
+ Node allows you to interact with system processes that already exist, as well as 
+ create new child processes to do work of various kinds. Although Node itself is 
+ generally a “fat” thread with a single event loop, you are free to start other 
+ processes (threads) to do work outside of the event loop.",NA
+process Module,"The 
+ process
+  module enables you to get information about and change the settings of 
+ the current Node process. Unlike most modules, the 
+ process
+  module is global and is 
+ always available as the variable 
+ process
+ .
+  
+ 86 | Chapter 5:Helper APIs",NA
+Child Process,"The 
+ child_process
+  module allows you to create child processes of your main Node 
+ process. Because Node has only one event loop in a single process, sometimes it is 
+ helpful to create child processes. For example, you might do this to make use of 
+ more cores of your CPU, because a single Node process can use only one of the 
+ cores. Or, you could use 
+ child_process
+  to launch other programs and let Node 
+ interact with them. This is extremely helpful when you’re writing command-line 
+ scripts.
+  
+ There are two main methods in 
+ child_process
+ . 
+ spawn()
+  creates a child process with 
+ its own stdin, stdout, and stderr file descriptors. 
+ exec()
+  creates a child process and 
+ returns the result as a callback when the process is complete. This is an extremely 
+ versatile way to create child processes, a way that is still nonblocking but doesn’t 
+ require you to write extra code in order to steam forward.
+  
+ 94 | Chapter 5:Helper APIs",NA
+Testing Through assert,"assert
+  is a core library that provides the basis for testing code. Node’s assertions 
+ works pretty much like the same feature in other languages and environments: 
+ they allow you to make claims about objects and function calls and send out 
+ messages when the as-sertions are violated. These methods are really easy to get 
+ started with and provide a great way to unit test your code’s features. Node’s own 
+ tests are written with 
+ assert
+ .
+  
+ Most 
+ assert
+  methods come in pairs: one method providing the positive test and the 
+ other providing the negative one. For instance, 
+ Example 5-37
+  shows 
+ equal()
+  and 
+ not 
+ Equal()
+ . The methods take two arguments: the first is the expected value, and the 
+ second is the actual value.
+  
+ Example 5-37. Basic assertions
+  
+ > var assert = require('assert'); 
+  
+ > assert.equal(1, true, 'Truthy'); 
+  
+ > assert.notEqual(1, true, 'Truthy'); 
+  
+ AssertionError: Truthy
+  
+  
+  at [object Context]:1:8
+  
+  
+  at Interface.<anonymous> (repl.js:171:22)
+  
+  at 
+ Interface.emit (events.js:64:17)
+  
+  
+  at Interface._onLine (readline.js:153:10)
+  
+  at 
+ Interface._line (readline.js:408:8)
+  
+  
+  at Interface._ttyWrite (readline.js:585:14)
+  
+  at 
+ ReadStream.<anonymous> (readline.js:73:12)
+  
+  at 
+ ReadStream.emit (events.js:81:20)
+  
+  
+  at ReadStream._emitKey (tty_posix.js:307:10)
+  
+  at 
+ ReadStream.onData (tty_posix.js:70:12) >
+  
+ The most obvious thing here is that when an 
+ assert
+  method doesn’t pass, it throws 
+ an exception. This is a fundamental principle in the test suites. When a test suite 
+ runs, it should just run, without throwing an exception. If that is the case, the test is 
+ successful.
+  
+ There are just a few assertions. 
+ equal()
+  and 
+ notEqual()
+  check for the 
+ ==
+  equality and 
+ !=
+  inequality operators. This means they test weakly for 
+ truthy
+  and 
+ falsy
+  values, as 
+ Crockford termed them. In brief, when tested as a Boolean, falsy values consist of 
+ false
+ , 0, empty strings (i.e., 
+ """"
+ ), 
+ null
+ , 
+ undefined
+ , and 
+ NaN
+ . All other values are truthy. A 
+ string such as 
+ ""false""
+  is truthy. A string containing 
+ ""0""
+  is also truthy. As such, 
+ equal()
+  
+ and 
+ notEqual()
+  are fine to compare simple values (strings, numbers, etc.) with
+  
+ Testing Through assert | 101",NA
+VM,"The 
+ vm
+ , or Virtual Machine, module allows you to run arbitrary chunks of code and 
+ get a result back. It has a number of features that allow you to change the context in 
+ which the code runs. This can be useful to act as a kind of faux sandbox. However, 
+ the code is still running in the same Node process, so you should be cautious. 
+ vm
+  is 
+ similar to 
+ eval()
+ , but offers some more features and a better API for managing code. 
+ It doesn’t have the ability to interact with the local scope in the way that 
+ eval()
+  does, 
+ however.
+  
+ There are two ways to run code with 
+ vm
+ . Running the code “inline” is similar to 
+ using 
+ eval()
+ . The second way is to precompile the code into a 
+ vm.Script
+  object. Let’s 
+ have a look at 
+ Example 5-40
+ , which demonstrates running code inline using 
+ vm
+ .
+  
+ Example 5-40. Using vm to run code
+  
+ > var vm = require('vm'); 
+  
+ > vm.runInThisContext(""1+1""); 
+  
+ 2
+  
+ So far, 
+ vm
+  looks a lot like 
+ eval()
+ . We pass some code to it, and we get a result back. 
+ However, 
+ vm
+  doesn’t interact with local scope in the same way that 
+ eval()
+  does. 
+ Code run with 
+ eval()
+  will behave as if it were truly inline and replaces the 
+ eval()
+  
+ method call. But calls to 
+ vm
+  methods will not interact with the local scope. So 
+ eval()
+  
+ can change the surrounding context, whereas 
+ vm
+  cannot, as shown in 
+ Example 5-
+ 41
+ .
+  
+ Example 5-41. Accessing the local scope to show the differences between vm and eval( )
+  
+ > var vm = require('vm'), 
+  
+ ... e = 0, 
+  
+ ... v = 0; 
+  
+ > eval(e=e+1); 
+  
+ 1 
+  
+ > e 
+  
+ 1 
+  
+ > vm.runInThisContext('v=v+1'); 
+  
+ ReferenceError: v is not defined
+  
+  
+  at evalmachine.<anonymous>:1:1
+  
+  
+  at [object Context]:1:4
+  
+  
+  at Interface.<anonymous> (repl.js:171:22)
+  
+  
+  at Interface.emit (events.js:64:17)
+  
+  
+  at Interface._onLine (readline.js:153:10)
+  
+  
+  at Interface._line (readline.js:408:8)",NA
+CHAPTER 6,NA,NA
+Data Access,"Like any web server, Node needs access to data stores for persistent storage; 
+ without persistence, all you have is a brochure website, which would make using 
+ Node point-less. In this chapter, we’ll run through the basic ways to connect to 
+ common open source database choices and to store and retrieve data.",NA
+NoSQL and Document Stores,"The following NoSQL and document stores are increasingly popular for web-facing 
+ applications and are easy to use with Node.",NA
+CouchDB,"CouchDB provides MVCC-based
+ 1
+  document storage in a JavaScript environment. 
+ When documents (records) are added or updated in CouchDB, the entire dataset is 
+ saved to storage and older versions of that data marked obsolete. Older versions of 
+ the record can still be merged into the newest version, but in every case a whole 
+ new version is created and written to contiguous memory for faster read times. 
+ CouchDB is said to be “eventually consistent.” In a large, scalable deployment, 
+ multiple instances can sometimes serve older, unsynced versions of records to 
+ clients with the expectation that any changes to those records will eventually be 
+ merged into the master.
+  
+ Installation
+  
+ Specific CouchDB libraries are not required to access the database, but they are 
+ useful for providing a high level of abstraction and making code easier to work 
+ with. A CouchDB server is needed to test any examples, but it does not require a lot 
+ of work to get it running.
+  
+ 1. MVCC stands for multi-version concurrency control.
+  
+ 107",NA
+Redis,"Redis is a memory-centric key-value store with persistence that will feel very 
+ familiar if you have experience with key-value caches such as Memcache. Redis is 
+ used when performance and scaling are important; in many cases, developers 
+ choose to use it as a cache for data retrieved from a relational database such as 
+ MySQL, although it is capable of much more.
+  
+ Beyond its key-value storage capabilities, Redis provides network-accessible 
+ shared memory, is a nonblocking event bus, and exposes subscription and 
+ publishing capabilities.
+  
+ Installation
+  
+ As with many of the rest of the database engines, using Redis requires installing the 
+ database application as well as the Node drivers to communicate with it.
+  
+ Installing Redis. 
+  
+ Redis is available in 
+ source form
+ . There isn’t anything to 
+ do in the way of configuration; just download and compile per the instructions on 
+ the website.
+  
+ If you are using Windows, you are on your own at the time of this writing because 
+ Redis is not supported on Windows. Fortunately, there is a passionate community 
+ behind Redis development, and several ports have been made available for both 
+ Cygwin and native compilation. The port at 
+ https://github.com/dmajkic/redis
+  
+ compiles to a native Windows binary using MinGW.
+  
+ Installing Redis’s Node module. 
+  
+ The 
+ redis
+  module is available from 
+ GitHub
+ , but can be in-stalled using 
+ npm
+ :
+  
+ npm install redis
+  
+ Optionally, you may install the mimimalist 
+ hiredis
+  library along with Node’s 
+ redis 
+ module.
+  
+ Basic usage
+  
+ Example 6-10
+  demonstrates a basic set and get operation against Redis by Node.
+  
+ NoSQL and Document Stores | 115",NA
+MongoDB,"Because Mongo supplies a JavaScript environment with BSON object storage (a 
+ binary adaption of JSON), reading and writing data from Node is extremely 
+ efficient. Mongo stores incoming records in memory, so it is ideal in high-write 
+ situations. Each new version adds improved clustering, replication, and sharding.
+  
+ Because incoming records are stored in memory, inserting data into Mongo is non-
+ blocking, making it ideal for logging operations and telemetry data. Mongo 
+ supports JavaScript functions inside queries, making it very powerful in read 
+ situations, includ-ing MapReduce queries.
+  
+ Using MongoDB’s document-based storage allows you to store child records inside 
+ parent records. For example, a blog article and all of its associated comments can 
+ be stored inside a single record, allowing for incredibly fast retrieval.
+  
+ MongoDB native driver
+  
+ The 
+ native MongoDB driver
+  by Christian Kvaleim provides nonblocking access to 
+ MongoDB. Previous 
+ versions 
+ of the 
+ module 
+ included a C/C++ BSON 
+ parser/serializer, which has been deprecated due to improvements in the 
+ JavaScript parser/serializer.
+  
+ The native MongoDB driver is a good choice when you need precise control over 
+ your MongoDB connection.
+  
+ Installation. 
+  
+ To install the driver, run the following command:
+  
+ npm install mongodb
+  
+ “mongodb” is not to be confused with “mongo,” discussed later in this
+  
+ chapter.
+  
+ Data types. 
+  
+ Node’s MongoDB driver supports the data types listed in 
+ Table 6-1
+ .
+  
+ Table 6-1. Data types supported for MongoDB
+  
+ Type
+  
+ Description
+  
+ Example
+  
+ Array
+  
+ A list of items
+  
+ cardsInHand: [9,4,3]
+  
+ Boolean
+  
+ A true/false condition
+  
+ hasBeenRead: false",NA
+Relational Databases,"There are still many good reasons to use a traditional database with SQL, and Node 
+ interfaces with popular open source choices.",NA
+MySQL,"MySQL has become the workhorse of the open source world for good reason: it pro-
+ vides many of the same capabilities as larger commercial databases for free. In its 
+ current form, MySQL is performant and feature-rich.
+  
+ Using NodeDB
+  
+ The node-db module provides a native code interface to popular database systems, 
+ including MySQL, using a common API that the module exposes to Node. Although 
+ node-db supports more than just MySQL, this section focuses on using MySQL in 
+ your application code. Since Oracle’s purchase of Sun Microsystems, the future of 
+ MySQL and its community has come under much speculation. Some groups 
+ advocate moving to a drop-in replacement such as MariaDB or switching to a 
+ different relational database management system (RDBMS) entirely. Although 
+ MySQL isn’t going away anytime soon, you need to decide for yourself whether it 
+ will be the right choice of software for your work.
+  
+ Installation. 
+  
+ The MySQL client development libraries are a prerequisite for the 
+ Node database module. On Ubuntu, you can install the libraries using 
+ apt
+ :
+  
+ sudo apt-get install libmysqlclient-dev
+  
+ Using 
+ npm
+ , install a package named 
+ db-mysql
+ :
+  
+ npm install -g db-mysql
+  
+ Relational Databases | 127",NA
+PostgreSQL,"PostgreSQL is an object-oriented RDBMS originating from the University of 
+ California, Berkeley. The project was started by professor and project leader 
+ Michael Stone-braker as a successor to his earlier Ingres database system, and from 
+ 1985 to 1993 the Postgres team released four versions of the software. By the end 
+ of the project, the team was overwhelmed by support and feature requests from its 
+ growing number of users. After the Berkeley run, open source developers took over 
+ the project, replacing the original QUEL language interpreter with an SQL language 
+ interpreter and renaming the project to PostgreSQL. Since the first release of 
+ PostgreSQL 6.0 in 1997, the data-base system has gained a reputation as a feature-
+ rich distribution that is especially friendly to users coming from an Oracle 
+ background.
+  
+ Installation
+  
+ A production-ready client for PostgreSQL, used by large sites such as Yammer.com, 
+ can be downloaded from the 
+ npm
+  repository, as shown here:
+  
+ npm install pg
+  
+ pg_config
+  is required. It can be found in the 
+ libpq-dev
+  package.
+  
+ 134 | Chapter 6:Data Access",NA
+Connection Pooling,"Production environments are often composed of multiple resources: web servers, 
+ cach-ing servers, and database servers. The database is typically hosted on a 
+ separate machine from the web server, allowing horizontal growth of the public-
+ facing website without the need for setting up and configuring complex database 
+ clusters. Application devel-opers must therefore be aware of the performance 
+ implications in accessing resources and how those access costs affect their site’s 
+ performance.
+  
+ Connection pooling
+  is an important concept in web development because the 
+ perfor-mance cost of establishing a database connection is relatively high; creating 
+ one or more new connections for every request creates an unnecessary burden on 
+ a heavily trafficked site and will contribute to weaker performance. The solution is 
+ to maintain database connections inside a cache pool after they are no longer 
+ needed, so they can be used immediately by the next incoming request.
+  
+ Many database drivers provide pooling functionality, but that pattern goes against 
+ Node’s “one module, one purpose” philosophy. Instead, Node developers should use 
+ the 
+ generic-pool
+  module in front of their data layer to serve new database 
+ connections (see 
+ Example 6-34
+ ). 
+ generic-pool
+  will reuse connections where possible 
+ to prevent the overhead of creating new database connections, and the module can 
+ be used with any data library.
+  
+ Example 6-34. Using the connection pool with node-db
+  
+ var mysql = require( 'db-mysql' ); 
+  
+ var poolModule = require('generic-pool');
+  
+ Connection Pooling | 137",NA
+MQ Protocols,"We used a mailman analogy earlier to describe Node’s event loop. If the mailman 
+ were to arrive at a closed gate, he would be unable to deliver his message; but 
+ imagine an elderly and kind groundskeeper was in the process of opening the gate 
+ so the mailman could pass through. Being elderly and somewhat frail from his 
+ years of service, it takes the groundskeeper some time to clear the way—time 
+ during which the mailman is unable to deliver any messages.
+  
+ This situation is a blocking process, but it is not a permanent state. Evenually the 
+ groundskeeper will manage to get the gate open, and the mailman will go about his 
+ business. Every house the mailman reaches with a similar gate-opening process 
+ will slow down the overall route. In the context of a Node application, this type of 
+ block will seriously degrade performance.
+  
+ In the computer realm, similar situations may be caused by sending a user email 
+ during a registration process, by lots of math that needs to be done as a result of 
+ user input, or by any situation in which the time it takes to complete a task exceeds 
+ a user’s nor-mally expected wait times. Node’s event-driven design handles the 
+ majority of these situations for you by using asynchronous functions and callbacks, 
+ but when an event is particularly “heavy” to process, it doesn’t make sense to 
+ process it inside Node. Node should only take care of handling results and fast 
+ operations.
+  
+ By way of example, consider a generic user registration process. When a user 
+ registers herself, the application saves a new record in the database, sends an email 
+ to that user, and perhaps records some statistics about the registration process, 
+ such as the number of steps completed or amount of time taken. It probably doesn’t 
+ make sense to perform all of those actions right away when the user hits the 
+ Submit button on your web page. For one thing, the email process could take 
+ several seconds (or if you’re unlucky, mi-nutes) to complete, the database call may 
+ not need to finish before the user is welcomed, and the statistics are probably 
+ separate from your main application flow. In this case, you might choose to 
+ generate a message that notifies other parts of your application instead—perhaps 
+ running on a different machine entirely—that a user has registered. This is known 
+ as a 
+ publish-subscribe pattern
+ .
+  
+ Another example: suppose you have a cluster of machines running Node.js. When a 
+ new machine is added to the cluster, it issues a message requesting configuration 
+ in-formation. A configuration server responds to the message with a list of 
+ configuration information the new machine needs to integrate into the cluster. This 
+ is known as a 
+ request-reply pattern
+ .",NA
+RabbitMQ,"RabbitMQ is a message broker that supports the advanced message queueing 
+ protocol (AMQP). It is useful in situations where data needs to be communicated 
+ between dif-ferent servers, or between different processes on the same server. 
+ Written in Erlang, RabbitMQ is capable of clustering for high availability, and is 
+ fairly straightforward to install and begin using.
+  
+ Installing RabbitMQ
+  
+ If you’re using Linux, RabbitMQ is available in package form for most distributions. 
+ Anyone can download the software from 
+ http://www.rabbitmq.com
+  and compile it 
+ from source.
+  
+ Once RabbitMQ has been installed and is running, use 
+ npm
+  to retrieve Node’s AMQP 
+ drivers:
+  
+ npm install amqp
+  
+ Publish and subscribe
+  
+ RabbitMQ communicates using the standardized protocol AMQP. AMQP comes 
+ from the financial services industry, where reliable messaging is a matter of life or 
+ death. It provides a vendor-neutral and abstract specification for generic (not just 
+ financial) middleware messaging and is intended to solve the problem of 
+ communicating between different types of systems. AMQP is conceptually similar 
+ to email: email messages have specifications for headers and format, but their 
+ contents can be anything from text to photos and video. Just as two companies 
+ don’t need to run the same email server soft-ware to communicate, AMQP allows 
+ messaging between different platforms. For ex-ample, a publisher written in PHP 
+ can send a message to a consumer written in JavaScript.
+  
+ Example 6-35
+  shows the most basic elements of RabbitMQ programming.
+  
+ Example 6-35. AMQP/RabbitMQ usage
+  
+ var connection = require('amqp').createConnection();
+  
+ connection.on('ready', function() {
+  
+  console.log('Connected to ' + connection.serverProperties.product); var e = 
+ connection.exchange('up-and-running');
+  
+  var q = connection.queue('up-and-running-queue');
+  
+ 140 | Chapter 6:Data Access",NA
+CHAPTER 7,NA,NA
+Important External Modules,"Although the Node core is extremely useful, many of its abstractions are very low-
+ level. So a lot of development in Node is done using higher abstraction libraries 
+ built by the community, similar to how Ruby-based websites use Rails or Sinatra 
+ rather than custom-written Ruby code. Although these modules aren’t technically 
+ Node itself, they are extremely important for getting things done, and many of them 
+ are mature projects in themselves. This chapter explores some of the most popular 
+ and useful community modules for Node.",NA
+Express,"Express, an MVC framework for Node, is probably the most widely used Node 
+ module. It was inspired by the Sinatra framework for Ruby and enables a lot of 
+ features that make it very easy to throw together a website with Node.",NA
+A Basic Express App,"Express works by defining page handlers for 
+ routes
+ . The routes can be as simple as 
+ a path, or much more complex. The handlers could be as simple as emitting “Hello, 
+ world” or as complex as a whole page-rendering system that interacts with a 
+ database. You’ll need to install Express using 
+ npm install express
+  before you can start 
+ using it. 
+ Example 7-1
+  shows how to create a simple application with Express.
+  
+ Example 7-1. Creating a simple Express app
+  
+ var express = require('express');
+  
+ var app = express.createServer();
+  
+ app.get('/', function(req, res) {
+  
+  res.send('hello world'); 
+  
+ });
+  
+ app.listen(9001);
+  
+ 145",NA
+Setting Up Routes in Express,"Routes are one of the core concepts in Express, and one of the things that make it 
+ really useful. As mentioned in the previous section, routes are applied to an HTTP 
+ verb via a method with the same name, such as 
+ get()
+  or 
+ post()
+ . The routes consist of 
+ a simple string or a regex and can contain variable declarations, wildcards, and 
+ optional key flags. Let’s take a look at some examples, starting with 
+ Example 7-2
+ .
+  
+ Example 7-2. Route with variable and optional flag
+  
+ var express = require('express'); 
+  
+ var app = express.createServer();
+  
+ app.get('/:id?', function(req, res) {
+  
+  if(req.params.id) {
+  
+   
+  res.send(req.params.id);
+  
+  } else {
+  
+   
+  res.send('oh hai');
+  
+  } 
+  
+ });
+  
+ app.listen(9001);
+  
+ 146 | Chapter 7:Important External Modules",NA
+Handling Form Data,"Most examples have demonstrated the GET verb, but Express is built to support 
+ RESTful architecture in the style of Ruby on Rails. Using hidden fields inside web 
+ forms, you can indicate whether a form’s intention is to PUT (replace data), POST 
+ (create data), DELETE (remove data) or GET (retrieve data). See 
+ Example 7-9
+ .
+  
+ Example 7-9. Handling forms using Express
+  
+ var express = require('express'); 
+  
+ var app = express.createServer();
+  
+ app.use(express.limit('1mb')); 
+  
+ app.use(express.bodyParser()); 
+  
+ app.use(express.methodOverride());
+  
+ app.get('/', function(req, res) {
+  
+  res.send('<form method=""post"" action=""/"">' +
+  
+   
+  '<input type=""hidden"" name=""_method"" value=""put"" />' +
+  
+  
+  'Your Name: <input type=""text"" name=""username"" />' +
+  
+  
+  
+ '<input type=""submit"" />' +
+  
+   
+  '</form>'); 
+  
+ });
+  
+ app.put('/', function(req, res) {
+  
+  res.send('Welcome, ' + req.body.username); 
+  
+ });
+  
+ app.listen(8080);
+  
+ Express | 151",NA
+Template Engines,"Clearly, it isn’t practical to continue writing HTML directly in application code. For 
+ starters, it is unreadable and unmaintainable; but more importantly, it is bad form 
+ to mix application logic with presentation markup. Template engines allow 
+ developers space to focus on how to present information to the user—often in 
+ different formats, such as screen or mobile—and inject specific data separately 
+ from processing.
+  
+ Express is minimalist and does not come with built-in template engines, opting 
+ instead for community-supported modules. Some of the more popular engines are 
+ Haml, Jade, Embedded Javascript (EJ), CoffeeKup (a CoffeeScript-based engine), and 
+ jQuery templates.
+  
+ In 
+ Example 7-10
+ , an application is set up to render a simple Jade template.
+  
+ Example 7-10. Using a basic Jade template in Express
+  
+ var express = require('express'); 
+  
+ var app = express.createServer();
+  
+ app.get('/', function(req, res) {
+  
+  res.render('index.jade', { pageTitle: 'Jade Example', layout: false }); });
+  
+ app.listen(8080);
+  
+ To run this example, you will need to install the Jade template engine:
+  
+ npm install jade
+  
+ 152 | Chapter 7:Important External Modules",NA
+Middleware,"Some of the examples up to this point have included a rather innocuous-looking 
+ func-tion: 
+ app.use()
+ . This function invokes the Connect library and exposes many 
+ powerful tools that make it simple to add functionality. Now it's time to take a step 
+ back and examine what all this glue—known as middleware—is, and why it is so 
+ important to developing with Express.
+  
+ Although it might sound like one of those obscure buzzwords that programmers 
+ like to use when they want to appear “in the know,” middleware—as we’ve 
+ mentioned in previous chapters—refers to a piece of software that acts as a link 
+ between two other programs, typically between a higher-level application and a 
+ wider network. In the real world, middleware is analogous to the telephone lines 
+ you might find in your home or office building. All telephones (applications) 
+ connect to the same telephone lines",NA
+Socket.IO,"Socket.IO is a simple little library that’s a lot like Node’s core 
+ net
+  library. Socket.IO 
+ allows you to send messages back and forth with browser clients that connect with 
+ your Node server, using an efficient, low-level socket mechanism. One of the nice 
+ things about the module is that it provides a shared interface between the browser 
+ and the server. That is, you can write the same JavaScript on both in order to do 
+ messaging work once you have a connection established.
+  
+ Socket.IO is so named because it supports the HTML5 WebSockets standard on 
+ browsers that support it (and have it enabled). Fortunately, the library also 
+ supports a number of fallbacks:
+  
+ • WebSocket
+  
+ • WebSocket over Flash
+  
+ • XHR Polling
+  
+ • XHR Multipart Streaming
+  
+ • Forever Iframe
+  
+ • JSONP Polling
+  
+ These options ensure that you’ll be able to have some kind of persistent connection 
+ to the browser in almost any environment. The Socket.IO module includes the code 
+ to power these connection paths on both the browser and the server side with the 
+ same API.
+  
+ Instantiating Socket.IO is as simple as including the module and creating a server. 
+ One of the things that’s a little different about Socket.IO is that it requires an HTTP 
+ server as well; see 
+ Example 7-16
+ .
+  
+ Example 7-16. Creating a Socket.IO server
+  
+  var http = require('http'), 
+  
+  io = require('socket.io');
+  
+ server = http.createServer(); 
+  
+ server.on('request', function(req, res){
+  
+  //Typical HTTP server stuff
+  
+  res.writeHead(200, {'Content-Type': 'text/plain'}); 
+ res.end('Hello World'); 
+  
+ });
+  
+ server.listen(80);
+  
+ var socket = io.listen(server);
+  
+ Socket.IO | 159",NA
+Namespaces,"Creating websockets as shown is fine when you are in full control of your 
+ application and architecture, but this will quickly lead to conflicts when you are 
+ attaching them to an existing application that uses sockets or when you are writing 
+ a service to be plugged into someone else’s project. 
+ Example 7-19
+  demonstrates 
+ how namespaces avoid this problem by effectively dividing Socket.IO’s listeners 
+ into channels.
+  
+ Example 7-19. A modified web page to interact with Socket.IO namespaces
+  
+ <!DOCTYPE html> 
+  
+ <html>
+  
+  <body>
+  
+   
+  <script src=""/socket.io/socket.io.js""></script>",NA
+Using Socket.IO with Express,"There are many cases where you would want to use Socket.IO by itself within Node 
+ as its own application or as a component of a larger website architecture that 
+ includes non-Node components. However, when it’s used as part of a full Node 
+ application using Express, you can gain an enormous amount of efficiency by 
+ writing the entire software stack—including the client-facing views—in the same 
+ language (JavaScript).
+  
+ Save 
+ Example 7-21
+  as 
+ socket_express.html
+ .
+  
+ Example 7-21. Attaching Socket.IO to an Express application: client code
+  
+ <script src=""/socket.io/socket.io.js""></script> 
+  
+ <script> 
+  
+ var socket = io.connect('http://localhost:8080'); 
+  
+ socket.on('news', function(data) {
+  
+  document.write('<h1>' + data.title + '</h1>' );
+  
+  document.write('<p>' + data.contents + '</p>' );
+  
+  if ( data.allowResponse ) {
+  
+   
+  socket.emit('scoop', { contents: 'News data received by client.' }); } 
+  
+ }); 
+  
+ </script>
+  
+ This example starts by connecting to the Socket.IO on port 8080. Whenever the 
+ Socket.IO server sends a “news” event, the client writes the new item’s title and 
+ contents to the browser page. If the news item allows a response, the client socket 
+ emits a “scoop”event. The scoop wouldn’t be very interesting to a real reporter; it 
+ only contains an acknowledgment that the client received the original news.
+  
+ This being an example press, the news server responds to the “scoop” event by 
+ emitting another news story. The client will receive this new story and print it to 
+ the screen also. To prevent this cycle from continuing out of control, an 
+ allowResponse
+  parameter is sent with the news story. If it is false or not present at 
+ all (see 
+ Example 7-22
+ ), the client will not send a scoop.
+  
+ Example 7-22
+  shows the Express server.
+  
+ Example 7-22. Attaching Socket.IO to an Express application: server code
+  
+ var app = require('express').createServer(),
+  
+  
+  io = require('socket.io').listen(app);
+  
+ app.listen(8080);
+  
+ app.get('/', function(req,res) {
+  
+  res.sendfile(__dirname + '/socket_express.html'); });
+  
+ io.sockets.on('connection', function(socket) { 
+ socket.emit('news', {
+  
+   
+  title: 'Welcome to World News',
+  
+ Socket.IO | 163",NA
+CHAPTER 8,NA,NA
+Extending Node,NA,NA
+Modules,"The module system in Node makes it easy to create extensions to the platform. It is 
+ simple to learn and enables us to easily share reusable library code. The Node 
+ module system is based on the commonJS module specification. We’ve already used 
+ lots of modules in the previous chapters, but here we’ll study how to create our 
+ own modules. 
+ Example 8-1
+  shows one simple implementation.
+  
+ Example 8-1. A simple module
+  
+ exports.myMethod = function() { console.log('Method output') }; 
+ exports.property = ""blue"";
+  
+ As you can see, writing a module is as simple as attaching properties to the 
+ exports 
+ global variable. Any script that is included with 
+ require()
+  will return its 
+ exports
+  
+ object. This means that everything returned from 
+ require()
+  is in a closure, so you 
+ can use private variables in a module that are not exposed to the main scope of the 
+ program.
+  
+ Node developers have created a few conventions around modules. First, it’s typical 
+ to create factory methods for a class. Although you might also expose the class 
+ itself, factory methods give us a clean way to instantiate objects. For I/O-related 
+ classes, one of the arguments is normally a callback for either the I/O being done or 
+ one of its most common aspects. For example, 
+ http.Server
+  has a factory method 
+ called 
+ http.create Server()
+  that takes a callback function for the 
+ request
+  event, the 
+ most commonly used 
+ http.Server
+  event.",NA
+Package Manager,"Being able to make modules is great, but ultimately having a good way to distribute 
+ them and share them with the rest of your team or the community is essential. The 
+ package manager for Node, 
+ npm
+ , provides a way of distributing code, either locally 
+ or via a global repository of Node modules. 
+ npm
+  helps you manage code 
+ dependencies,",NA
+Searching Packages,"The 
+ search
+  command lists all packages in the global 
+ npm
+  registry and filters for a 
+ package name:
+  
+ npm search 
+ packagename
+  
+ If you don’t supply a package name, all of the available packages will be displayed.
+  
+ If the package list is out of date (because you added or removed a package, or you 
+ know the package you want should be available but it isn’t), you can instruct 
+ npm
+  to 
+ clean the cache using the following command:
+  
+ npm cache clean
+  
+ The next time you ask 
+ npm
+  for a list of packages, the command will take longer 
+ because it will need to rebuild its cache.",NA
+Creating Packages,"Although most of the packages you get using the 
+ npm install
+  command are available 
+ to anyone who uses Node, writing a package does not require publishing it to the 
+ world. Consolidating your own code into module packages makes it easy to reuse 
+ your work across multiple projects, share it with other developers, or make it 
+ available to staging or production servers running your application.
+  
+ Packages do not have to be limited to modules or extensions; in many cases, 
+ packages contain full applications intended for deployment. Package files make 
+ deployment easy by declaring dependencies, eliminating the library-labyrinth 
+ guesswork that was tra-ditionally required when moving from development to 
+ production environments.
+  
+ Creating a package doesn’t require much more work than creating a 
+ package.json
+  
+ file with some basic definitions about your module—its name and version number 
+ being the most critical components. To quickly generate a valid package file, run 
+ the",NA
+Publishing Packages,"If your module is useful to a broader audience and ready for prime time, you can 
+ release it to the world using 
+ npm
+ ’s 
+ publish
+  command. To publish the contents of 
+ your package:
+  
+ 1. Create a user with the 
+ adduser
+  command:
+  
+ npm adduser
+  
+ Follow the instructions that appear. You will be prompted for a username, pass-
+ word, and email address.
+  
+ 2. Publish your package with the 
+ publish
+  command:
+  
+ npm publish
+  
+ That’s all there is to the process. At present, no registration or validation is needed.
+  
+  
+ This raises an interesting point about 
+ npm
+ : because anyone can 
+ publish a package without any prefiltering or oversight, the quality 
+ of the libra-ries you install using 
+ npm
+  is uncertain. So “buyer 
+ beware.”
+  
+ If you decide later to unpublish your package, you may do so with the 
+ npm unpublish 
+ command. Note that you will need to clear your package list cache.",NA
+Linking,"Although 
+ npm
+  excels at publishing and deploying, it was designed primarily as a 
+ tool for managing dependencies during development. The 
+ npm link
+  command 
+ creates a symbolic link between your project and its dependencies, so any changes 
+ in the de-pendencies are available to you as you work on your project.
+  
+ There are two major reasons you would want to do this:
+  
+ • You want to use 
+ requires()
+  to access one of your projects from another one of 
+ your 
+  
+ projects.
+  
+ • You want to use the same package in multiple projects, without needing to main-
+  
+ tain its version in each of your projects.
+  
+ Package Manager | 171",NA
+Add-ons,"Whereas modules are the JavaScript extensions for Node, 
+ add-ons
+  are the C/C++ ex-
+ tensions. Add-ons frequently wrap existing system libraries and expose their 
+ function-ality to Node. They can, of course, create new functionality too, although 
+ most people choose to do that in JavaScript for obvious reasons. Add-ons are 
+ dynamically linked shared objects.
+  
+ To create an add-on, you’ll need at least two sets of files: the add-on code and the 
+ build files. Node uses the 
+ waf
+  build system written in Python. Let’s start with a 
+ “Hello World”example. 
+ Example 8-2
+  is equivalent to 
+ exports.hello = ""world"";
+  in 
+ JavaScript.
+  
+ Example 8-2. A simple add-on for Node
+  
+ #include <v8.h>
+  
+ using namespace v8;
+  
+ extern ""C"" void init (Handle<Object> target) {
+  
+  HandleScope scope;
+  
+  target->Set(String::New(""hello""), String::New(""world"")); }
+  
+ The first thing this code needs to do is include the 
+ v8
+  header file because Node is 
+ built on top of V8. This provides a lot of standard objects that we will use. Next, we 
+ declare the namespace. Then we create the 
+ wrapper
+ , which is required by all add-
+ ons. The wrapper functions like the 
+ exports
+  global variable for JavaScript modules. 
+ We’ll hang everything we expose from the add-on off a function with the signature 
+ extern 'C' void init (Handle<Object> target)
+ .
+  
+ 172 | Chapter 8:Extending Node",NA
+Glossary,"Blocking operation 
+  
+ Nonblocking operation
+  
+ A blocking operation requires the program 
+  
+ A nonblocking operation is one that does
+  
+ to halt while it is waiting for a slow resource. 
+  
+ not block.
+  
+ Typically, this is either a hardware 
+ resource (such as a disk drive), or a 
+ network resource (such as an HTTP 
+ request). Because the re-quest cannot 
+ require a result from a slow resource, it 
+ blocks subsequent operation until it is 
+ complete, even if the computer or 
+ program still has available resources such 
+ as CPU or memory available.
+  
+ Callback 
+  
+ A callback is a function that is “called 
+ back”to after a blocking operation. 
+ Typically, this is an I/O operation such as 
+ disk access. Call-backs can take 
+ parameters.
+  
+ Class 
+  
+  
+ See 
+ Pseudoclass.
+  
+ Function 
+  
+ A unit of code that can be invoked with a 
+ set of variable parameters. It may pass a 
+ single return. In JavaScript, functions also 
+ have a 
+ context
+ , which defines the value of 
+ the re-served 
+ this
+  variable. Functions in 
+ JavaScript are considered 
+ first class
+  in that 
+ they can also be treated as variables or 
+ properties of objects.
+  
+ Method 
+  
+  
+ A function that is a property of an object.
+  
+ See also Function.
+  
+ See also Blocking operation.
+  
+ Pseudoclass 
+  
+ A pseudoclass is a way of creating an 
+ abtract object in JavaScript that is 
+ intended to be initialized into an object. 
+ Pseudoclasses should be turned into 
+ objects using the 
+ new 
+ keyword. 
+ Pseudoclass names start with a leading 
+ capital by convention to differenti-ate 
+ them from other kinds of objects. For 
+ example, 
+ Server
+  would be a pseudoclass, 
+ and 
+ server
+  might be an instance of that 
+ pseudoclass.
+  
+ 173",NA
+Index,NA,NA
+Symbol,NA,NA
+s ,". (period), 8
+  
+ asynchronous communications 
+  
+ callbacks and modified objects, 
+ 44 error handling in, 46",NA
+A ,"A (address) records, 77 
+ accept HTTP header, 31
+  
+  
+ fs module and, 69 
+  
+  
+ I/O activities and, 41 
+  
+ auth command (Redis), 122 
+  
+ authentication, password (Redis), 
+ 122
+  
+ add-ons, 172
+  
+ address (A) records, 77 
+  
+ advanced message queueing protocol (AMQP), 
+  
+  
+ 140–143 
+  
+ aes192 algorithm, 83 
+  
+ Almaer, Dion, 13 
+  
+ AMQP (advanced message queueing protocol), 
+  
+  
+ 140–143 
+  
+ APIs, 55 
+  
+  
+ (see also specific APIs) 
+  
+  
+ adding, 25 
+  
+  
+ core, 55–76 
+  
+  
+ helper, 77–106 
+  
+  
+ testing, 26 
+  
+ applications (see web applications) 
+  
+ apt command, 127 
+  
+ ASCII encoding format, 73, 74 
+  
+ assert module 
+  
+  
+ about, 27, 101–104 
+  
+  
+ deepEqual() method, 102 
+  
+  
+ doesNotThrow() method, 102 
+  
+  
+ equal() method, 101 
+  
+  
+ notDeepEqual() method, 102 
+  
+  
+ notEqual() method, 101 
+  
+  
+ notStringEqual() method, 102 
+  
+  
+ strictEqual() method, 28 
+  
+  
+ stringEqual() method, 102 
+  
+  
+ throws() method, 102",NA
+B ,"basicAuth middleware, 156 
+  
+ binary data 
+  
+  
+ about, 71–73 
+  
+  
+ strings and, 73 
+  
+ block ciphers, 83 
+  
+ blocking operations, 173 
+  
+ blowfish algorithm, 83 
+  
+ bodyParser middleware, 26, 152, 
+ 156 browsers (see web browsers) 
+  
+ BSON object storage, 123 
+  
+ Buffer class 
+  
+  
+ about, 3, 17, 63, 70 
+  
+  
+ binary data and, 71–73 
+  
+  
+ binary data and strings, 73 
+  
+  
+ byteLength() method, 75 
+  
+  
+ size considerations, 71, 74 
+  
+  
+ toString() method, 17 
+  
+  
+ usage considerations, 73–75 
+  
+  
+ working with strings, 75–76 
+  
+  
+ write() method, 75",NA
+C ,"callbacks 
+  
+  
+ dealing with events, 57–
+ 59 defined, 10, 173
+  
+ We’d like to hear your suggestions for improving our indexes. Send email to 
+ index@oreilly.com
+ .
+  
+ 175",NA
+D ,"Dahl, Ryan, 59 
+  
+ data access 
+  
+  
+ about, 107 
+  
+  
+ connection pooling, 137–139 
+  
+  
+ CouchDB database, 107–115 
+  
+  
+ MongoDB database, 123–127 
+  
+  
+ MQ protocols, 139–143 
+  
+  
+ MySQL database system, 127–133 
+  
+ PostgreSQL database system, 134–136 
+  
+ Redis key-value store, 115–122 
+  
+ data event, 69 
+  
+ db-mysql package, 127 
+  
+ Decipher class 
+  
+  
+ about, 82, 84 
+  
+  
+ update() method, 84 
+  
+ .delete command (MySQL), 131 
+  
+ DELETE verb (HTTP), 109, 151 
+  
+ deleting 
+  
+  
+ data in MySQL, 130 
+  
+  
+ data in PostgreSQL, 136 
+  
+  
+ documents from CouchDB, 114 
+  
+  
+ files, 70 
+  
+ denial-of-service (DoS) attack, 152 
+  
+ die event, 38 
+  
+ directory middleware, 156 
+  
+ distributing work example, 48–52 
+  
+ dns module 
+  
+  
+ about, 77 
+  
+  
+ lookup() method, 78 
+  
+  
+ resolve() method, 77–79 
+  
+  
+ resolve4() method, 78 
+  
+  
+ resolve6() method, 78 
+  
+  
+ resolveMX() method, 78 
+  
+  
+ reverse() method, 77 
+  
+ DNS requests, 72",NA
+E ,"EADDRINUSE exception, 48 
+  
+ Eich, Brendan, 12 
+  
+ EJ (Embedded JavaScript) template engine, 
+  
+  
+ 152 
+  
+ EJS layout file, 29 
+  
+ emailchanged event, 165 
+  
+ emailupdate event, 165 
+  
+ Embedded JavaScript (EJ) template engine, 
+  
+  
+ 152 
+  
+ encoding formats, 72, 74 
+  
+ end event, 91 
+  
+ error event, 23, 47 
+  
+ error handling, 46 
+  
+ errorHandler middleware, 156 
+  
+ eval() method call, 104 
+  
+ event listeners 
+  
+  
+ about, 88 
+  
+  
+ calling, 57 
+  
+  
+ creating for events, 56 
+  
+  
+ firing, 57 
+  
+ event loop 
+  
+  
+ about, 33–40 
+  
+  
+ callbacks and, 34–40 
+  
+  
+ patterns and, 34 
+  
+  
+ process module and, 93–94 
+  
+  
+ single-threaded concept, 35 
+  
+ event-driven programming 
+  
+  
+ about, 34 
+  
+  
+ callbacks and, 34–40 
+  
+  
+ nonblocking operations and, 38 
+  
+  
+ patterns and, 40–44 
+  
+  
+ single-threaded concept, 35 
+  
+ EventEmitter class 
+  
+  
+ about, 56 
+  
+  
+ emit() method, 56, 57 
+  
+  
+ on() method, 56 
+  
+  
+ process module and, 87 
+  
+  
+ stream support, 68 
+  
+ events, 56 
+  
+  
+ (see also specific events) 
+  
+  
+ callback syntax, 57–59 
+  
+  
+ creating event listeners for, 56
+  
+ Index | 177",NA
+F ,"factory pattern, 157–159 
+  
+ favicon middleware, 156 
+  
+ FIFO (first-in-first-out) queue, 118 
+ file descriptors, 98 
+  
+ files 
+  
+  
+ deleting, 70 
+  
+  
+ reading, 70 
+  
+ filesystem module (see fs module) 
+ first-in-first-out (FIFO) queue, 118 
+ fs module 
+  
+  
+ about, 69 
+  
+  
+ readFile() method, 70 
+  
+  
+ readFileSync() method, 82, 161 
+  
+ unlink() method, 70 
+  
+ Fuchs, Thomas, 13 
+  
+ functional scope in JavaScript, 43 
+ functions 
+  
+  
+ defined, 173 
+  
+  
+ functional scope and, 43 
+  
+  
+ hashing and, 79",NA
+G ,"generic-pool module, 137 
+  
+ get command (Redis), 116 
+  
+ GET verb (HTTP), 62–64, 146, 151 
+ getDoc command, 113 
+  
+ GZIP algorithm, 5",NA
+H ,"Haml template engine, 152 
+  
+ Hash class 
+  
+  
+ digest() method, 80–81 
+  
+  
+ update() method, 80–81 
+  
+ Hash-based Message Authentication Code 
+  
+  
+ (HMAC), 79, 81–82 
+  
+ hashes and hashing algorithms 
+  
+  
+ about, 79–81 
+  
+  
+ HMAC and, 79, 81–82 
+  
+  
+ native MongoDB driver support, 124 
+  
+  
+ Redis key-value store and, 116–118
+  
+ “Hello World” example, 9 
+  
+ .help meta-command, 8 
+  
+ hexadecimal notation, 71 
+  
+ HMAC (Hash-based Message Authentication 
+  
+  
+ Code), 79, 81–82 
+  
+ Hmac class 
+  
+  
+ creating object, 82 
+  
+  
+ digest() method, 81 
+  
+  
+ update() method, 81 
+  
+ hmset command (Redis), 118 
+  
+ hset command (Redis), 116, 118 
+  
+ HTML5 WebSockets standard, 159 
+  
+ HTTP clients, 27, 61–65 
+  
+ http module 
+  
+  
+ about, 27, 59 
+  
+  
+ ClientRequest class, 61–65 
+  
+  
+ ClientResponse class, 27, 64, 65 
+  
+  
+ Connect library and, 156 
+  
+  
+ createServer() method, 9, 39, 59, 109 
+  
+  
+ Express module and, 146 
+  
+  
+ get() method, 46, 62–64 
+  
+  
+ HTTP clients, 27, 61–65 
+  
+  
+ HTTP servers, 39, 59–61, 160 
+  
+  
+ including in code, 9 
+  
+  
+ request() method, 9, 27, 62 
+  
+  
+ Server class, 59, 60
+  
+ 178 | Index",NA
+I ,"I/O activities, 41 
+  
+  
+ (see also nonblocking operations) 
+  
+  
+ API support, 68–76 
+  
+  
+ Node approach, 34, 40 
+  
+  
+ ordered serial I/O, 42–44 
+  
+  
+ splitting out, 46 
+  
+  
+ unbounded latency, 41 
+  
+  
+ unordered parallel I/O, 41 
+  
+ Ingres database system, 134 
+  
+  
+ (see also PostgreSQL database 
+ system) .insert command (MySQL), 129 
+  
+ installing 
+  
+  
+ CouchDB database, 107 
+  
+  
+ CouchDB Node module, 108 
+  
+  
+ db-mysql package, 127 
+  
+  
+ Express module, 23, 24, 145 
+  
+  
+ Mongoose library, 125 
+  
+  
+ native MongoDB driver, 123 
+  
+  
+ node-db module, 127 
+  
+  
+ Node.js, 4–7 
+  
+  
+ PostgreSQL database system, 134 
+  
+  
+ RabbitMQ message broker, 140 
+  
+  
+ Redis key-value store, 115 
+  
+  
+ Redis Node module, 115 
+  
+ IPv4 address records, 78 
+  
+ IPv6 address records, 78",NA
+J ,"Jade template engine, 152–154 
+  
+ JavaScript 
+  
+  
+ about, 3–4, 12 
+  
+  
+ browser support, 12 
+  
+  
+ functional scope, 43 
+  
+  
+ hexadecimal notation and, 72 
+  
+  
+ maximum heap size, 46 
+  
+  
+ trycatch functionality, 46 
+  
+  
+ weird and amusing things about, 8 
+ jQuery template engine, 152",NA
+K ,"keys 
+  
+  
+ PEM-encoded, 81, 83 
+  
+  
+ private, 82 
+  
+  
+ public, 82–86 
+  
+  
+ setting, 117 
+  
+ kill command, 97 
+  
+ Koch, Peter Paul, 13 
+  
+ Kvaleim, Christian, 123",NA
+L ,"layouts and partial views, 154–
+ 155 .less files, 156 
+  
+ libpq-dev package, 134 
+  
+ limit middleware, 157 
+  
+ list commands in Redis, 118 
+  
+ Listener class, 160 
+  
+ logger middleware, 157 
+  
+ lpush command (Redis), 118",NA
+M ,"mail exchanger (MX) records, 77 
+  
+ make command, 6 
+  
+ master processes, 47–52 
+  
+ MD5 hashing algorithm, 79, 80 
+  
+ methodOverride middleware, 152, 157 
+ methods (term), 173 
+  
+ middleware 
+  
+  
+ about, 26, 155–157 
+  
+  
+ Connect library and, 44, 155 
+  
+  
+ factory pattern, 157–159 
+  
+  
+ route, 149 
+  
+ MongoDB database 
+  
+  
+ about, 123 
+  
+  
+ defining schemas, 125 
+  
+  
+ Mongoose library, 125–127 
+  
+  
+ native MongoDB driver, 123 
+  
+  
+ writing records, 124 
+  
+ Mongoose library 
+  
+  
+ about, 125 
+  
+  
+ defining schemas, 125 
+  
+  
+ installing, 125 
+  
+  
+ manipulating collections, 126 
+  
+  
+ performance considerations, 127 
+ MQ protocols 
+  
+  
+ about, 139 
+  
+  
+ RabbitMQ, 140–143
+  
+ multicore processors, 47–52
+  
+ Index | 179",NA
+N ,"namespaces, Socket.IO library, 161–162 
+ nesting callbacks, 42, 70 
+  
+ net module 
+  
+  
+ about, 16 
+  
+  
+ createServer() method, 16 
+  
+  
+ Server class, 16 
+  
+  
+ Socket class, 16, 20, 23 
+  
+ new keyword, 56 
+  
+ Node module 
+  
+  
+ CouchDB database, 108, 111 
+  
+  
+ Redis key-value store, 115 
+  
+ Node Package Manager (see npm) 
+  
+ Node REPL, 7–8 
+  
+ node-couchdb package 
+  
+  
+ about, 111 
+  
+  
+ creating documents, 112 
+  
+  
+ deleting documents, 114 
+  
+  
+ reading documents, 113 
+  
+  
+ updating documents, 113 
+  
+  
+ working with databases, 112 
+  
+ node-db module 
+  
+  
+ about, 127 
+  
+  
+ connection pooling and, 137 
+  
+  
+ deleting data, 130 
+  
+  
+ inserting data, 129 
+  
+  
+ installing, 127 
+  
+  
+ selecting data, 128 
+  
+  
+ updating data, 129 
+  
+ Node.js 
+  
+  
+ about, 3–4 
+  
+  
+ building chat server, 15–23 
+  
+  
+ building robust applications, 33–52 
+  
+  
+ building Twitter-like application, 23–32 
+  
+ core APIs, 55–76 
+  
+  
+ extending, 169–172 
+  
+  
+ installing, 4–7 
+  
+  
+ as runtime environment, 7–8 
+  
+  
+ strengths of, 11–14 
+  
+  
+ version numbers, 5 
+  
+  
+ as web servers, 9–10, 11
+  
+  
+ MongoDB database, 123–127 
+  
+ Redis key-value store, 115–122 
+ npm (Node Package Manager) 
+  
+  
+ about, 169 
+  
+  
+ adduser command, 171 
+  
+  
+ creating packages, 170 
+  
+  
+ init command, 171 
+  
+  
+ install command, 170 
+  
+  
+ installing db-mysql package, 127 
+  
+ installing Express module, 24 
+  
+ installing Mongoose library, 125 
+  
+ link command, 171 
+  
+  
+ linking dependencies, 171 
+  
+  
+ publish command, 171 
+  
+  
+ publishing packages, 171 
+  
+  
+ search command, 170 
+  
+  
+ searching packages, 170 
+  
+  
+ unpublish command, 171",NA
+O ,"object relational mapper (ORM), 131–
+ 134 objects 
+  
+  
+ passing by reference, 44 
+  
+  
+ setting and enumerating, 8 
+  
+  
+ setting multiple hash values, 117 
+  
+ onclick event, 4 
+  
+ OpenSSL 
+  
+  
+ cryptography and, 5, 79 
+  
+  
+ PEM-encoded keys, 81, 83 
+  
+ ordered serial I/O, 42–44 
+  
+ ORM (object relational mapper), 131–
+ 134 os module, 48",NA
+P ,"parallel I/O 
+  
+  
+ combining work groups, 41 
+  
+  
+ unordered, 41 
+  
+ passing objects by reference, 44 
+  
+ password authentication (Redis), 122 
+ patterns
+  
+ 180 | Index",NA
+Q ,"q.shift() command, 143 
+  
+ query middleware, 157 
+  
+ querystring module 
+  
+  
+ about, 67–68 
+  
+  
+ decode() method, 67 
+  
+  
+ encode() method, 67, 68 
+  
+  
+ escape() method, 67 
+  
+  
+ parse() method, 67–68 
+  
+  
+ stringify() method, 67 
+  
+  
+ unescape() method, 67 
+  
+  
+ unescapeBuffer() method, 67 
+  
+ queues, RabbitMQ message broker and, 142–
+  
+  
+ 143",NA
+R ,"RabbitMQ message broker 
+  
+  
+ about, 140 
+  
+  
+ createConnection command, 141 
+  
+ installing, 140 
+  
+  
+ publishing and subscribing, 140–
+ 142 
+  
+ subscribe command, 142 
+  
+  
+ work queues, 142–143 
+  
+ Read-Evaluate-Print-Loop (REPL), 7–8 
+ ReadableStream class 
+  
+  
+ about, 68 
+  
+  
+ pipe() method, 91 
+  
+ Redis key-value store 
+  
+  
+ about, 115 
+  
+  
+ auth command, 122 
+  
+  
+ basic usage, 115 
+  
+  
+ get command, 116 
+  
+  
+ hashes and, 116–118 
+  
+  
+ hmset command, 118 
+  
+  
+ hset command, 116, 118 
+  
+  
+ installing, 115 
+  
+  
+ list commands, 118 
+  
+  
+ lpush command, 118 
+  
+  
+ password authentication, 122 
+  
+  
+ rpop command, 118
+  
+ Index | 181",NA
+S ,"sadd command (Redis), 119 
+  
+ .sass files, 156 
+  
+ saveDoc command, 113 
+  
+ schemas 
+  
+  
+ MongoDB and, 125 
+  
+  
+ Sequelize and, 132 
+  
+ Script class 
+  
+  
+ about, 104, 105 
+  
+  
+ runInNewContext() method, 106 
+  
+ Separation of Concerns (SoC) paradigm, 
+ 166 Sequelize object relational mapper, 
+ 131–134 serial I/O 
+  
+  
+ combining work groups, 41
+  
+ smembers command (Redis), 119 
+  
+ SoC (Separation of Concerns) paradigm, 166 
+ Socket class 
+  
+  
+ accept() method, 167 
+  
+  
+ connect() method, 160 
+  
+  
+ destroy() method, 23 
+  
+  
+ end() method, 16 
+  
+  
+ handshake property, 167 
+  
+  
+ listen() method, 160 
+  
+  
+ remoteAddress property, 20 
+  
+  
+ remotePort property, 20 
+  
+  
+ write() method, 16 
+  
+ Socket.IO library 
+  
+  
+ about, 159–161
+  
+ 182 | Index",NA
+T ,"tables, creating in CouchDB, 112 
+  
+ tar command 
+  
+  
+ f flag, 5 
+  
+  
+ x flag, 5 
+  
+  
+ z flag, 5 
+  
+ TCP servers 
+  
+  
+ causing failure by disconnecting clients, 20 
+  
+ checking writing status of sockets, 22 
+  
+  
+ communicating between clients, 18 
+  
+  
+ connecting to, 16 
+  
+  
+ creating, 15 
+  
+  
+ improving message sending, 19 
+  
+  
+ listening to connections, 16 
+  
+  
+ logging errors, 23 
+  
+  
+ making more robust, 22 
+  
+  
+ running improved, 20",NA
+U ,"uncaughtException event, 87, 88, 94 
+ unordered parallel I/O, 41 
+  
+ .update command (MySQL), 130, 131 
+ upgrade event, 61 
+  
+ URL module 
+  
+  
+ about, 65 
+  
+  
+ format() method, 65 
+  
+  
+ parse() method, 65–67 
+  
+  
+ querystring module and, 68 
+  
+  
+ resolve() method, 65 
+  
+ UTF-8 encoding format, 72, 74 
+  
+ util module 
+  
+  
+ about, 56 
+  
+  
+ inherits() method, 56",NA
+V ,"V8 JavaScript runtime 
+  
+  
+ about, 3, 9 
+  
+  
+ Node REPL and, 7 
+  
+ Verify class
+  
+ Index | 183",NA
+W ,"web applications 
+  
+  
+ building chat server, 15–23 
+  
+  
+ building Twitter-like app, 23–32 
+  
+  
+ event loop, 33–40 
+  
+  
+ patterns, 40–44 
+  
+  
+ writing code for production, 45–
+ 52 
+  
+ web browsers 
+  
+  
+ browser wars, 13 
+  
+  
+ HTML5 WebSockets standard, 159 
+  
+  
+ JavaScript support, 12 
+  
+  
+ redirecting from endpoint, 32 
+  
+ web servers 
+  
+  
+ about, 9–10, 59 
+  
+  
+ Express module support, 24 
+  
+  
+ high-performance, 11 
+  
+ .where command (MySQL), 130 
+  
+ wildcard in routes, 147 
+  
+ work distribution example, 48–52 
+  
+ work queues, RabbitMQ, 142–143 
+  
+ WritableStream.write() method, 92 
+  
+ writing code for production 
+  
+  
+ about, 45 
+  
+  
+ error handling, 46 
+  
+  
+ multiple processor usage, 47–52",NA
+X ,"X-Response-Time header, 157",NA
+Z ,"zadd command (Redis), 119 
+  
+ zcard command (Redis), 
+ 119 
+  
+ zombie workers, killing, 50
+  
+ 184 | Index",NA
+About the Authors,"Tom Hughes-Croucher
+  is a developer and technology evangelist. He’s worked for 
+ and with numerous well-known brands, including Yahoo!, NASA, Tesco, Walmart, 
+ MySpace, Three Telecom, and UK Channel 4. Tom has contributed to a number of 
+ web standards for the World Wide Web Consortium (W3C) and the British 
+ Standards Institute (BSI).
+  
+ Mike Wilson
+  has had the privilege of working with some of the largest and most 
+ in-fluential brands in the world, including Disney, Microsoft, and McDonald’s. He 
+ has years of web development experience, designing and building everything from 
+ small-business sites to large MMO server clusters hosting millions of players. In his 
+ free time, Mike maintains 
+ his personal blog
+ , contributes to forums, and experiments 
+ with emerg-ing frameworks and software. Mike lives in Vancouver with his wife 
+ and their three children.",NA
+Colophon,"The animal on the cover of 
+ Node: Up and Running
+  is a common tree shrew (
+ Tupaia 
+ glis
+ ). These arboreal mammals are found in the southern parts of Southeast Asia. 
+ Com-mon tree shrews live in forests, though they are also found in orchards and 
+ gardens. They are good climbers and can jump up to two feet between trees. They 
+ are active during the day, feeding on plants, seeds, and fruit, as well as ants, spiders, 
+ and small lizards.
+  
+ Common tree shrews are 6–8 inches long, with a thick bushy tail as long as their 
+ bodies. They have pointed snouts and five-toed clawed feet. Their fur is black, gray, 
+ or reddish, with white on the belly. The genus name 
+ Tupaia
+  comes from the Malay 
+ for “squirrel,”which the creatures somewhat resemble. Tree shrews were also 
+ thought for some time to be closely related to the primates, but they now have their 
+ own order, Scandentia.
+  
+ Common tree shrews are sexually mature at a few months old, and they mate 
+ monog-amously. The male constructs two separate nests—one for the parents and 
+ one for the young. Parental care is scant; the female visits the offspring to nurse 
+ them for a few minutes every two days.
+  
+ The cover image is from 
+ Lydekker’s Natural History
+ . The cover font is Adobe ITC 
+ Garamond. The text font is Linotype Birka; the heading font is Adobe Myriad Con-
+ densed; and the code font is LucasFont’s TheSansMonoCondensed.",NA

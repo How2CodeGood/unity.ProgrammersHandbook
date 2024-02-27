@@ -1,0 +1,1607 @@
+Larger Text,Smaller Text,Symbol
+Contents,"Foreword xi 
+  
+ Preface xiii 
+  
+ About the Authors xv 
+  
+ About the Annotators xvii
+  
+ Hello, World 3 
+  
+ Program Structure 4 
+  
+ Types and Variables 6 
+  
+ Expressions 13 
+  
+ Statements 16 
+  
+ Classes and Objects 21 
+  
+ Structs 50 
+  
+ Arrays 53 
+  
+ Interfaces 56 
+  
+ Enums 58 
+  
+ Delegates 60 
+  
+ Attributes 61
+  
+ Programs 65 
+  
+ Grammars 65 
+  
+ Lexical Analysis 67 
+  
+ Tokens 71 
+  
+ Preprocessing Directives 85
+  
+ Download at www.wowebook.com",NA
+Foreword,"It’s been ten years since the launch of .NET in the summer of 2000. For me, the significance of 
+ .NET was the one-two combination of managed code for local execution and XML mes-saging 
+ for program-to-program communication. What wasn’t obvious to me at the time was how 
+ important C# would become.
+  
+ From the inception of .NET, C# has provided the primary lens used by developers for 
+ understanding and interacting with .NET. Ask the average .NET developer the difference 
+ between a value type and a reference type, and he or she will quickly say, “Struct versus 
+ class,” not “Types that derive from 
+ System.ValueType
+  versus those that don’t.” Why? Because 
+ people use languages—not APIs—to communicate their ideas and intention to the runtime 
+ and, more importantly, to each other. 
+  
+ It’s hard to overstate how important having a great language has been to the success of the 
+ platform at large. C# was initially important to establish the baseline for how people think 
+ about .NET. It’s been even more important as .NET has evolved, as features such as itera-tors 
+ and true closures (also known as anonymous methods) were introduced to developers as 
+ purely language features implemented by the C# compiler, not as features native to the 
+ platform. The fact that C# is a vital center of innovation for .NET became even more appar-ent 
+ with C# 3.0, with the introduction of standardized query operators, compact lambda 
+ expressions, extension methods, and runtime access to expression trees—again, all driven by 
+ development of the language and compiler. The most significant feature in C# 4.0, dynamic 
+ invocation, is also largely a feature of the language and compiler rather than changes to the 
+ CLR itself.
+  
+ It’s difficult to talk about C# without also talking about its inventor and constant shepherd, 
+ Anders Hejlsberg. I had the distinct pleasure of participating in the recurring C# design 
+ meetings for a few months during the C# 3.0 design cycle, and it was enlightening watch-ing 
+ Anders at work. His instinct for knowing what developers will and will not like is truly 
+  
+ Download at www.wowebook.com",NA
+Preface,"The C# project started more than 12 years ago, in December 1998, with the goal to create a 
+ simple, modern, object-oriented, and type-safe programming language for the new and yet-
+ to-be-named .NET platform. Since then, C# has come a long way. The language is now in use 
+ by more than a million programmers and has been released in four versions, each with 
+ several major new features added.
+  
+ This book, too, is in its fourth edition. It provides a complete technical specification of the C# 
+ programming language. This latest edition includes two kinds of new material not found in 
+ previous versions. Most notably, of course, it has been updated to cover the new features of 
+ C# 4.0, including dynamic binding, named and optional parameters, and cova-riant and 
+ contravariant generic types. The overarching theme for this revision has been to open up C# 
+ more to interaction with objects outside of the .NET environment. Just as LINQ in C# 3.0 gave 
+ a language-integrated feel to code used to access external data sources, so the dynamic 
+ binding of C# 4.0 makes the interaction with objects from, for example, dynamic 
+ programming languages such as Python, Ruby, and JavaScript feel native to C#.
+  
+ The previous edition of this book introduced the notion of annotations by well-known C# 
+ experts. We have received consistently enthusiastic feedback about this feature, and we are 
+ extremely pleased to be able to offer a new round of deep and entertaining insights, guide-
+ lines, background, and perspective from both old and new annotators throughout the book. 
+ We are very happy to see the annotations continue to complement the core material and help 
+ the C# features spring to life.
+  
+ Many people have been involved in the creation of the C# language. The language design 
+ team for C# 1.0 consisted of Anders Hejlsberg, Scott Wiltamuth, Peter Golde, Peter Sollich, 
+ and Eric Gunnerson. For C# 2.0, the language design team consisted of Anders Hejlsberg, 
+ Peter Golde, Peter Hallam, Shon Katzenberger, Todd Proebsting, and Anson Horton. 
+  
+ Download at www.wowebook.com",NA
+About the Authors,"Anders Hejlsberg
+  is a programming legend. He is the architect of the C# language and a 
+ Microsoft Technical Fellow. He joined Microsoft Corporation in 1996, following a 13-year 
+ career at Borland, where he was the chief architect of Delphi and Turbo Pascal.
+  
+ Mads Torgersen
+  is the program manager for the C# language at Microsoft Corporation, 
+ where he runs the day-to-day language design process and maintains the language 
+ specification.
+  
+ Scott Wiltamuth
+  is director of program management for the Visual Studio Professional team 
+ at Microsoft Corporation. At Microsoft, he has worked on a wide range of develop-ment tools, 
+ including OLE Automation, Visual Basic, Visual Basic for Applications, VBScript, JScript, Visual 
+ J++, and Visual C#.
+  
+ Peter Golde
+  was the lead developer of the original Microsoft C# compiler. As the primary 
+ Microsoft representative on the ECMA committee that standardized C#, he led the imple-
+ mentation of the compiler and worked on the language design. He is currently an architect at 
+ Microsoft Corporation working on compilers.
+  
+ Download at www.wowebook.com",NA
+About the Annotators,"Brad Abrams 
+ was a founding member of both the Common Language Runtime and the .NET 
+ Framework teams at Microsoft Corporation, where he was most recently the director of 
+ program management for WCF and WF. Brad has been designing parts of the .NET 
+ Framework since 1998, when he started his framework design career building the BCL (Base 
+ Class Library) that ships as a core part of the .NET Framework. Brad graduated from North 
+ Carolina State University in 1997 with a BS in computer science. Brad’s publications include: 
+ Framework Design Guidelines, Second Edition 
+ (Addison-Wesley, 2009), and 
+ .NET Framework 
+ Standard Library Annotated Reference 
+ (Volumes 1 and 2) (Addison-Wesley, 2006).
+  
+ Joseph Albahari
+  is coauthor of 
+ C# 4.0 in a Nutshell
+  (O’Reilly, 2007), the 
+ C# 3.0 Pocket Refer-
+ ence
+  (O’Reilly, 2008), and the 
+ LINQ Pocket Reference 
+ (O’Reilly, 2008). He has 17 years of expe-
+ rience as a senior developer and software architect in the health, education, and 
+ telecommunication industries, and is the author of LINQPad, the utility for interactively 
+ querying databases in LINQ.
+  
+ Krzysztof Cwalina
+  is a principal architect on the .NET Framework team at Microsoft. He 
+ started his career at Microsoft designing APIs for the first release of the Framework. Cur-
+ rently, he is leading the effort to develop, promote, and apply design and architectural 
+ standards to the development of the .NET Framework. He is a coauthor of 
+ Framework Design 
+ Guidelines 
+ (Addison-Wesley, 2005). Reach him at his blog at http://blogs.msdn.com/ 
+ kcwalina.
+  
+ Jesse Liberty
+  (“Silverlight Geek”) is a senior program manager at Microsoft and the author of 
+ numerous best-selling programming books and dozens of popular articles. He’s also a 
+ frequent speaker at events world-wide. His blog, http://JesseLiberty.com, is required read-
+ ing for Silverlight, WPF, and Windows Phone 7 developers. Jesse has more than two decades 
+ of real-world programming experience, including stints as a vice president at Citi and as a 
+ distinguished software engineer at AT&T. He can be reached through his blog and followed at 
+ @JesseLiberty. 
+  
+ Download at www.wowebook.com",NA
+Introduction,"C# (pronounced “See Sharp”) is a simple, modern, object-oriented, and type-safe program-
+ ming language. C# has its roots in the C family of languages and will be immediately familiar 
+ to C, C++, and Java programmers. C# is standardized by ECMA International as the 
+ ECMA-334 
+ standard and by ISO/IEC as the 
+ ISO/IEC 23270 
+ standard. Microsoft’s C# compiler for the 
+ .NET Framework is a conforming implementation of both of these standards.
+  
+ C# is an object-oriented language, but C# further includes support for 
+ component-oriented 
+ programming. Contemporary software design increasingly relies on software components in 
+ the form of self-contained and self-describing packages of functionality. Key to such 
+ components is that they present a programming model with properties, methods, and events; 
+ they have attributes that provide declarative information about the component; and they 
+ incorporate their own documentation. C# provides language constructs to directly support 
+ these concepts, making C# a very natural language in which to create and use software 
+ components.
+  
+ Several C# features aid in the construction of robust and durable applications: 
+ Garbage 
+ collection
+  automatically reclaims memory occupied by unused objects; 
+ exception handling 
+ provides a structured and extensible approach to error detection and recovery; and the 
+ type-
+ safe
+  design of the language makes it impossible to read from uninitialized variables, to index 
+ arrays beyond their bounds, or to perform unchecked type casts.
+  
+ C# has a 
+ unified type system
+ . All C# types, including primitive types such as 
+ int
+  and 
+ double
+ , 
+ inherit from a single root 
+ object
+  type. Thus all types share a set of common opera-tions, and 
+ values of any type can be stored, transported, and operated upon in a consistent manner. 
+ Furthermore, C# supports both user-defined reference types and value types, allowing 
+ dynamic allocation of objects as well as in-line storage of lightweight structures.
+  
+ To ensure that C# programs and libraries can evolve over time in a compatible manner, much 
+ emphasis has been placed on 
+ versioning
+  in C#’s design. Many programming lan-guages pay 
+ little attention to this issue. As a result, programs written in those languages break more 
+ often than necessary when newer versions of dependent libraries are intro-duced. Aspects of 
+ C#’s design that were directly influenced by versioning considerations include the separate 
+ virtual
+  and 
+ override
+  modifiers, the rules for method overload reso-lution, and support for 
+ explicit interface member declarations.
+  
+ Download at www.wowebook.com",NA
+Lexical Structure,"A C# 
+ program
+  consists of one or more 
+ source files
+ , known formally as 
+ compilation units 
+ (§9.1). A source file is an ordered sequence of Unicode characters. Source files typically have 
+ a one-to-one correspondence with files in a file system, but this correspondence is not 
+ required. For maximal portability, it is recommended that files in a file system be encoded 
+ with the UTF-8 encoding.
+  
+ Conceptually speaking, a program is compiled using three steps:
+  
+ 1. Transformation, which converts a file from a particular character repertoire and encod-
+  
+ ing scheme into a sequence of Unicode characters.
+  
+ 2. Lexical analysis, which translates a stream of Unicode input characters into a stream of 
+  
+ tokens. 
+  
+ 3. Syntactic analysis, which translates the stream of tokens into executable code.
+  
+ This specification presents the syntax of the C# programming language using two gram-mars. 
+ The 
+ lexical grammar
+  (§2.2.2) defines how Unicode characters are combined to form line 
+ terminators, white space, comments, tokens, and preprocessing directives. The 
+ syntac-tic 
+ grammar
+  (§2.2.3) defines how the tokens resulting from the lexical grammar are com-bined 
+ to form C# programs.
+  
+ The lexical and syntactic grammars are presented using 
+ grammar productions
+ . Each gram-
+ mar production defines a nonterminal symbol and the possible expansions of that nonter-
+ minal symbol into sequences of nonterminal or terminal symbols. In grammar productions, 
+ nonterminal
+  symbols are shown in italic type, and 
+ terminal
+  symbols are shown in a fixed-
+ width font. 
+  
+ Download at www.wowebook.com",NA
+Basic Concepts,"An assembly that has an 
+ entry point
+  is called an 
+ application
+ . When an application is run, a 
+ new 
+ application domain
+  is created. Several different instantiations of an application may 
+ exist on the same machine at the same time, and each has its own application domain.
+  
+ An application domain enables application isolation by acting as a container for applica-tion 
+ state. An application domain acts as a container and boundary for the types defined in the 
+ application and the class libraries it uses. Types loaded into one application domain are 
+ distinct from the same type loaded into another application domain, and instances of objects 
+ are not directly shared between application domains. For instance, each application domain 
+ has its own copy of static variables for these types, and a static constructor for a type is run at 
+ most once per application domain. Implementations are free to provide implementation-
+ specific policy or mechanisms for the creation and destruction of applica-tion domains.
+  
+ Application start-up
+  occurs when the execution environment calls a designated method, 
+ which is referred to as the application’s entry point. This entry point method is always 
+ named 
+ Main
+ , and can have one of the following signatures:
+  
+ staticvoidMain()  
+   
+   
+ {...}
+  
+ static  
+   
+   
+ void  
+   
+   
+ Main(string[]  
+   
+   
+ args)  
+   
+   
+ {...  
+   
+   
+ }
+  
+ static  
+   
+   
+ int  
+   
+   
+ Main()  
+   
+   
+ {...}
+  
+ static  
+   
+   
+ int  
+   
+   
+ Main(string  
+   
+   
+ []  
+   
+   
+ args)  
+   
+   
+ {...}
+  
+ As shown, the entry point may optionally return an 
+ int
+  value. This return value is used in 
+ application termination (§3.2).
+  
+ The entry point may optionally have one formal parameter. The parameter may have any 
+ name, but the type of the parameter must be 
+ string[]
+ . If the formal parameter is present, the 
+ execution environment creates and passes a 
+ string[]
+  argument containing the com-mand-line 
+ arguments that were specified when the application was started. The 
+ string[] 
+ argument is 
+ never null, but it may have a length of zero if no command-line arguments were specified.",NA
+ Types,"The types of the C# language are divided into two main categories: 
+ value types 
+ and 
+ refer-
+ ence types
+ . Both value types and reference types may be 
+ generic types
+ , which take one or 
+ more 
+ type parameters
+ . Type parameters can designate both value types and reference types.
+  
+ type: 
+  
+ value-type 
+  
+ reference-type 
+  
+ type-
+ parameter
+  
+ A third category of types, pointers, is available only in unsafe code. This issue is discussed 
+ further in §18.2.
+  
+ Value types differ from reference types in that variables of the value types directly contain 
+ their data, whereas variables of the reference types store 
+ references
+  to their data, the latter 
+ being known as 
+ objects
+ . With reference types, it is possible for two variables to reference the 
+ same object, and thus possible for operations on one variable to affect the object refer-enced 
+ by the other variable. With value types, the variables each have their own copy of the data, so 
+ it is not possible for operations on one to affect the other.
+  
+ C#’s type system is unified such that 
+ a value of any type can be treated as an object
+ . Every type 
+ in C# directly or indirectly derives from the 
+ object
+  class type, and 
+ object
+  is the ultimate base 
+ class of all types. Values of reference types are treated as objects simply by viewing the 
+ values as type 
+ object
+ . Values of value types are treated as objects by performing boxing and 
+ unboxing operations (§4.3).
+  
+ We normally do not think of interface types or the types associ-ated 
+ with type parameters as having a “base class” per se. What this discussion is getting at is 
+ that every concrete object—no matter how you are treating it at compile time—may be 
+ treated as an instance of 
+ object
+  at runtime.
+  
+ Download at www.wowebook.com",NA
+Variables,"Variables represent storage locations. Every variable has a type that determines what val-ues 
+ can be stored in the variable. C# is a type-safe language, and the C# compiler guaran-tees that 
+ values stored in variables are always of the appropriate type. The value of a variable can be 
+ changed through assignment or through use of the 
+ ++
+  and 
+ -­­-­­
+  operators.
+  
+ A variable must be 
+ definitely assigned
+  (§5.3) before its value can be obtained.
+  
+ As described in the following sections, variables are either 
+ initially assigned
+  or 
+ initially 
+ unassigned
+ . An initially assigned variable has a well-defined initial value and is always 
+ considered definitely assigned. An initially unassigned variable has no initial value. For an 
+ initially unassigned variable to be considered definitely assigned at a certain location, an 
+ assignment to the variable must occur in every possible execution path leading to that 
+ location.
+  
+ C# defines seven categories of variables: static variables, instance variables, array elements, 
+ value parameters, reference parameters, output parameters, and local variables. The sec-
+ tions that follow describe each of these categories.
+  
+ In the example
+  
+ class  
+   
+   
+ A  
+   
+   
+  
+ {
+  
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+ public  
+   
+   
+ static  
+   
+   
+ int  
+   
+   
+ x;
+  
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+ int  
+   
+   
+ y;
+  
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+ void  
+   
+   
+ F(int[]  
+   
+   
+ v,  
+   
+   
+ int  
+   
+   
+ a,  
+   
+   
+ ref  
+   
+   
+ int",NA
+Conversions,"A 
+ conversion
+  enables an expression to be treated as being of a particular type. A conversion 
+ may cause an expression of a given type to be treated as having a different type, or it may 
+ cause an expression without a type to get a type. Conversions can be 
+ implicit
+  or 
+ explicit
+ , and 
+ this determines whether an explicit cast is required. For instance, the conversion from type 
+ int
+  to type 
+ long
+  is implicit, so expressions of type 
+ int
+  can implicitly be treated as type 
+ long
+ . The 
+ opposite conversion, from type 
+ long
+  to type 
+ int
+ , is explicit and so an explicit cast is required.
+  
+ int  
+   
+   
+ a  
+   
+   
+ =  
+   
+   
+ 123;  
+   
+   
+  
+ long  
+   
+   
+ b  
+   
+   
+ =  
+   
+   
+ a;  
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+ //  
+   
+   
+ Implicit  
+   
+   
+ conversion  
+   
+   
+ from  
+   
+   
+ int  
+   
+   
+ to  
+   
+   
+ long  
+   
+   
+  
+ int  
+   
+   
+ c  
+   
+   
+ =  
+   
+   
+ (int)  
+   
+   
+ b;  
+   
+   
+   
+   
+   
+ //  
+   
+   
+ Explicit  
+   
+   
+ conversion  
+   
+   
+ from  
+   
+   
+ long  
+   
+   
+ to  
+   
+   
+ int
+  
+ Some conversions are defined by the language. Programs may also define their own con-
+ versions (§6.4).",NA
+Expressions,"An expression is a sequence of operators and operands. This chapter defines the syntax, 
+ order of evaluation of operands and operators, and meaning of expressions.
+  
+ An expression is classified as one of the following:
+  
+ A value. Every value has an associated type.
+  
+ A variable. Every variable has an associated type—namely, the declared type of the 
+ variable.
+  
+ Types of local variables and lambda expression 
+ parameters can be inferred by the compiler in many cases, and do not always need to be 
+ explicitly specified in declarations.
+  
+ A namespace. An expression with this classification can only appear as the left-hand side 
+ of a 
+ member-access
+  (§7.6.4). In any other context, an expression classified as a namespace 
+ causes a compile-time error.
+  
+ A type. An expression with this classification can only appear as the left-hand side of a 
+ member-access
+  (§7.6.4), or as an operand for the 
+ as
+  operator (§7.10.11), the 
+ is
+  operator 
+ (§7.10.10), or the 
+ typeof
+  operator (§7.6.11). In any other context, an expression classified 
+ as a type causes a compile-time error.
+  
+ If an expression is classified as a type and appears as 
+ the left-hand side of a 
+ member-access
+ , it never denotes an array or pointer type. If the 
+ expression denotes a type parameter, it always leads to a compile-time error later.
+  
+ Download at www.wowebook.com",NA
+Statements,"C# provides a variety of statements. Most of these statements will be familiar to developers 
+ who have programmed in C and C++.
+  
+ statement: 
+  
+ labeled-statement 
+  
+ declaration-
+ statement 
+  
+ embedded-statement
+  
+ embedded-statement: 
+  
+ block 
+  
+ empty-statement 
+  
+ expression-statement 
+  
+ selection-statement 
+  
+ iteration-statement 
+  
+ jump-statement 
+  
+ try-statement 
+  
+ checked-statement 
+  
+ unchecked-statement 
+  
+ lock-statement 
+  
+ using-statement 
+  
+ yield-statement
+  
+ The 
+ embedded-statement
+  nonterminal is used for statements that appear within other state-
+ ments. The use of 
+ embedded-statement
+  rather than 
+ statement
+  excludes the use of declaration 
+ statements and labeled statements in these contexts. The example
+  
+ void  
+   
+   
+ F(bool  
+   
+   
+ b)  
+   
+   
+ {
+  
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+ if  
+   
+   
+ (b)
+  
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+ int",NA
+Namespaces,"C# programs are organized using namespaces. Namespaces are used both as an “internal” 
+ organization system for a program and as an “external” organization system—a way of 
+ presenting program elements that are exposed to other programs.
+  
+ Using directives (§9.4) are provided to facilitate the use of namespaces.
+  
+ As you read this, remember that namespaces are a logical organi-
+ zation: Multiple namespaces can, and often do, occur in one assembly, and a single 
+ namespace may be declared in many different assemblies.
+  
+ A 
+ compilation-unit
+  defines the overall structure of a source file. A compilation unit consists of 
+ zero or more 
+ using-directive
+ s followed by zero or more 
+ global-attributes
+  followed by zero or 
+ more 
+ namespace-member-declaration
+ s.
+  
+ compilation-unit: 
+  
+  
+ extern-alias-directives
+ opt
+    using-directives
+ opt
+    global-
+ attributes
+ opt
+  
+  
+  
+  namespace-member-declarations
+ opt
+  
+ A C# program consists of one or more compilation units, each contained in a separate source 
+ file. When a C# program is compiled, all of the compilation units are processed together. 
+ Thus compilation units can depend on each other, possibly in a circular fashion.
+  
+  
+ This feature alone makes C# about ten times easier to work with 
+ than either C or C++.
+  
+ The 
+ using-directives
+  of a compilation unit affect the 
+ global-attributes
+  and 
+ namespace-member-
+ declarations
+  of that compilation unit, but have no effect on other compilation units.
+  
+ Download at www.wowebook.com",NA
+Classes,"A class is a data structure that may contain data members (constants and fields), function 
+ members (methods, properties, events, indexers, operators, instance constructors, destruc-
+ tors, and static constructors), and nested types. Class types support inheritance, a mecha-
+ nism whereby a derived class can extend and specialize a base class.
+  
+ A 
+ class-declaration
+  is a 
+ type-declaration
+  (§9.6) that declares a new class.
+  
+ class-declaration: 
+  
+  
+ attributes
+ opt
+    class-modifiers
+ opt
+ partial
+ opt
+ class  
+   
+   
+   identifier   type-parameter-list
+ opt
+   
+  class-base
+ opt
+    type-parameter-
+ constraints-clauses
+ opt
+    class-body  
+   
+   
+   
+ ;
+ opt
+  
+ A 
+ class-declaration
+  consists of an optional set of 
+ attributes
+  (§17), followed by an optional set 
+ of 
+ class-modifiers
+  (§10.1.1), followed by an optional 
+ partial
+  modifier, followed by the key-word 
+ class
+  and an 
+ identifier
+  that names the class, followed by an optional 
+ type-parameter-list 
+ (§10.1.3), followed by an optional 
+ class-base
+  specification (§10.1.4), followed by an optional 
+ set of
+ type-parameter-constraints-clauses 
+ (§10.1.5), followed by a 
+ class-body
+  (§10.1.6), 
+ optionally followed by a semicolon.
+  
+ A class declaration cannot supply 
+ type-parameter-constraints-clauses
+  unless it also supplies a 
+ type-parameter-list
+ . 
+  
+ A class declaration that supplies a 
+ type-parameter-list
+  is a 
+ generic class declaration
+ . Addi-
+ tionally, any class nested inside a generic class declaration or a generic struct declaration is 
+ itself a generic class declaration, since type parameters for the containing type must be 
+ supplied to create a constructed type.
+  
+ A 
+ class-declaration
+  may optionally include a sequence of class modifiers:
+  
+ class-modifiers: 
+  
+ class-modifier 
+  
+ class-modifiers   class-
+ modifier",NA
+Structs,"Structs are similar to classes in that they represent data structures that can contain data 
+ members and function members. However, unlike classes, structs are value types and do not 
+ require heap allocation. A variable of a struct type directly contains the data of the struct, 
+ whereas a variable of a class type contains a reference to the data, the latter known as an 
+ object.
+  
+ The statement that “structs do not require heap allocation” is not the 
+ statement “all instances of all structs are always allocated on the stack.” First, the second 
+ statement is not true: The memory for a 
+ DateTime
+  field of a 
+ Customer
+  class will be 
+ allocated on the heap along with the rest of the memory of the 
+ Customer
+  class. Sec-ond, 
+ whether a local variable of value type is allocated by changing the stack register in the 
+ CPU is an implementation detail of a particular version of the framework. The 
+ specification is pointing out the opportunity for an optimization here, not stating that a 
+ particular allocation pattern is required.
+  
+ Structs are particularly useful for small data structures that have value semantics. Complex 
+ numbers, points in a coordinate system, or key–value pairs in a dictionary are all good 
+ examples of structs. Key to these data structures is that they have few data members, that 
+ they do not require use of inheritance or referential identity, and that they can be conve-
+ niently implemented using value semantics where assignment copies the value instead of the 
+ reference.
+  
+ As described in §4.1.4, the simple types provided by C#, such as 
+ int
+ , 
+ double
+ , and 
+ bool
+ , are, in 
+ fact, all struct types. Just as these predefined types are structs, so it is also possible to use 
+ structs and operator overloading to implement new “primitive” types in the C# language. 
+ Two examples of such types are given at the end of this chapter (§11.4).
+  
+  
+ All simple types are immutable. Any structs you create should also 
+ be immutable.
+  
+ Download at www.wowebook.com",NA
+Arrays,"An array is a data structure that contains a number of variables that are accessed through 
+ computed indices. The variables contained in an array, also called the elements of the array, 
+ are all of the same type, and this type is called the element type of the array.
+  
+ An array has a rank that determines the number of indices associated with each array ele-
+ ment. The rank of an array is also referred to as the dimensions of the array. An array with a 
+ rank of 1 is called a 
+ single-dimensional array
+ . An array with a rank greater than 1 is called a 
+ multi-dimensional array
+ . Specific-sized multi-dimensional arrays are often referred to as 
+ two-dimensional arrays, three-dimensional arrays, and so on.
+  
+ Each dimension of an array has an associated length that is an integral number greater than 
+ or equal to zero. The dimension lengths are not part of the type of the array, but rather are 
+ established when an instance of the array type is created at runtime. The length of a 
+ dimension determines the valid range of indices for that dimension: For a dimension of 
+ length 
+ N
+ , indices can range from 
+ 0
+  to 
+ N–1
+  inclusive. The total number of elements in an array 
+ is the product of the lengths of each dimension in the array. If one or more of the dimensions 
+ of an array have a length of zero, the array is said to be empty.
+  
+ The element type of an array can be any type, including an array type.
+  
+ An array type is written as a 
+ non-array-type
+  followed by one or more 
+ rank-specifier
+ s:
+  
+ array-type: 
+  
+  
+ non-array-type   rank-specifiers
+  
+ non-array-type: 
+  
+  
+ type
+  
+ rank-specifiers: 
+  
+ rank-specifier 
+  
+ rank-specifiers   rank-
+ specifier
+  
+ Download at www.wowebook.com",NA
+Interfaces,"An interface defines a contract. A class or struct that implements an interface must adhere to 
+ its contract. An interface may inherit from multiple base interfaces, and a class or struct may 
+ implement multiple interfaces.
+  
+ Interfaces work best when they are small in scope and few in 
+ number. Larger interfaces create more work for implementers. Larger numbers of 
+ interfaces provide more opportunities for ambiguity and collisions. 
+  
+  
+ The trope that interfaces are contracts is undoubtedly both useful 
+ and frequently stated. It’s worth pointing out an interface is actually a pretty weak way to 
+ represent a contract. All an interface tells you is which methods are available, what their 
+ names are, which types they take, and which types they return. Nothing whatsoever 
+ about the semantics of the operation is represented in the contract: that an object 
+ complying with this contract must be disposed aggressively, that 
+ Drive() 
+ throws an 
+ exception if not called after 
+ StartEngine()
+ , that the first parameter must be 
+ null
+  and the 
+ second parameter must be non-zero, and so on. All that stuff goes in the documentation, 
+ not somewhere that an analysis tool can dig into. The new code contract system that 
+ ships with version 4.0 of the CLR enables you both to specify contracts in more detail 
+ than interfaces do alone and to do interesting analysis on these contracts at compile time. 
+  
+ Interfaces can contain methods, properties, events, and indexers. The interface itself does not 
+ provide implementations for the members that it defines. The interface merely speci-fies the 
+ members that must be supplied by classes or structs that implement the interface.
+  
+ An 
+ interface-declaration
+  is a 
+ type-declaration
+  (§9.6) that declares a new interface type.
+  
+ Download at www.wowebook.com",NA
+Enums,"An 
+ enum type
+  is a distinct value type (§4.1) that declares a set of named constants.
+  
+ Notably, these “named constants” are effectively just numbers. They 
+ cannot express behavior, contrary to almost everything else in C#. This is one of the 
+ very
+  
+ few areas where Java is more expressive than C#. In Java, enums have a lot more power: 
+ An enum can declare methods and then override them for specific values, for example. 
+ While it’s possible to emulate some of the features of Java enums within C#, language 
+ (and framework) support in a future version would be extremely welcome.
+  
+ The example
+  
+ enum  
+   
+   
+ Color  
+   
+   
+  
+ {
+  
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+ Red,
+  
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+ Green,
+  
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+ Blue  
+   
+   
+  
+ }
+  
+ declares an enum type named 
+ Color
+  with members 
+ Red
+ , 
+ Green
+ , and 
+ Blue
+ .
+  
+ An enum declaration declares a new enum type. An enum declaration begins with the 
+ keyword 
+ enum
+ , and defines the name, accessibility, underlying type, and members of the 
+ enum.
+  
+ enum-declaration: 
+  
+  
+ attributes
+ opt
+  enum-modifiers
+ opt
+ enum",NA
+Delegates,"Delegates enable scenarios that other languages—such as C++, Pascal, and Modula—have 
+ addressed with function pointers. Unlike C++ function pointers, however, delegates are fully 
+ object oriented. Also, unlike C++ pointers to member functions, delegates encapsu-late both 
+ an object instance and a method.
+  
+ I experience a strange sense of amazement upon reading this small 
+ chapter in the language specification. Delegates have been part of C# since the 1.0 
+ release. At that time, most of the C# community (including me) saw delegates as a little 
+ extra ceremony around events. Ten years later, I can’t imagine the C# language without 
+ delegates. They are something most of us use every day in LINQ queries, function 
+ composition, closures, and more. Delegates and the concept of treating code as data are 
+ an integral part of so much of the modern .NET ecosystem that I can’t imagine 
+ programming in a language that does not allow me to express the concept of functions 
+ (and actions) as data. 
+  
+ A delegate declaration defines a class that is derived from the class 
+ System.Delegate
+ . A delegate 
+ instance encapsulates an invocation list, which is a list of one or more methods, each of which 
+ is referred to as a callable entity. For instance methods, a callable entity con-sists of an 
+ instance and a method on that instance. For static methods, a callable entity consists of just a 
+ method. Invoking a delegate instance with an appropriate set of argu-ments causes each of 
+ the delegate’s callable entities to be invoked with the given set of arguments.
+  
+ An interesting and useful property of a delegate instance is that it does not know or care 
+ about the classes of the methods it encapsulates; all that matters is that those methods be 
+ compatible (§15.1) with the delegate’s type. This makes delegates perfectly suited for 
+ “anonymous” invocation.
+  
+ Download at www.wowebook.com",NA
+Exceptions,"Exceptions in C# provide a structured, uniform, and type-safe way of handling both system-
+ level and application-level error conditions. The exception mechanism in C# is quite similar 
+ to that of C++, with a few important differences.
+  
+ The guidance on system-level and application-level exceptions used 
+ to be that all application exceptions should be derived from 
+ Application-­­Exception
+ . This 
+ turned out to be a bad idea, and we no longer recommend this approach: Whether an 
+ exception comes from an application or the framework class library is almost always 
+ irrelevant.
+  
+ In C#, all exceptions must be represented by an instance of a class type derived from 
+ System.Exception
+ . In C++, any value of any type can be used to represent an exception.
+  
+ In the first version of the CLR, it was possible to throw a non-
+ exception and catch it in C# using the empty 
+ catch
+  clause. This made for some confus-ing 
+ exception-handling code in C# programs that needed to catch non-exception exceptions. 
+ In newer versions of the CLR, a thrown object that is not an exception is automatically 
+ wrapped in an exception object that can be caught normally.
+  
+  
+ In C#, a 
+  
+ finally
+  block (§8.10) can be used to write termination code that executes in 
+  
+ both normal execution and exceptional conditions. Such code is difficult to write in C++ 
+ without duplicating code.
+  
+ Download at www.wowebook.com",NA
+Attributes,"Much of the C# language enables the programmer to specify declarative information about 
+ the entities defined in the program. For example, the accessibility of a method in a class is 
+ specified by decorating it with the 
+ method-modifiers
+ public
+ , 
+ protected
+ , 
+ internal
+ , and 
+ private
+ .
+  
+ C# enables programmers to invent new kinds of declarative information, called 
+ attributes
+ . 
+ Programmers can then attach attributes to various program entities, and retrieve attribute 
+ information in a runtime environment. For instance, a framework might define a 
+ HelpAttribute
+  attribute that can be placed on certain program elements (such as classes and 
+ methods) to provide a mapping from those program elements to their documentation.
+  
+ A common and powerful use of attributes can be seen through-out 
+ Silverlight and WPF, where attributes are used to indicate the available view states 
+ associated with a class. 
+  
+ Similarly, Test Libraries use attributes to differentiate test methods from supporting 
+ methods. Web services use attributes to designate which methods are exposed to clients.
+  
+ Attributes are defined through the declaration of attribute classes (§17.1), which may have 
+ positional and named parameters (§17.1.2). Attributes are attached to entities in a C# pro-
+ gram using attribute specifications (§17.2), and can be retrieved at runtime as attribute 
+ instances (§17.3).
+  
+ Try to use attributes only to talk about 
+ the type itself
+  rather than 
+ representing details about the 
+ semantics
+  of that type. For example, suppose you have a 
+ class 
+ Book
+  with a property 
+ Author
+ . That is part of the semantics of the class: The class 
+ represents books, and books have authors. If you put an 
+ AuthorAttribute
+  on the class 
+ Book
+ , that doesn’t represent the author of the 
+ book,
+  but rather the author of the
+  class.
+  A 
+ class 
+ Television
+  might have a property 
+ Obsolete
+  that indicates whether a particular model 
+ is out of production. If you put an 
+ ObsoleteAttribute
+  on the class, it means that 
+ the class 
+ itself
+  is obsolete, not that it 
+ represents an obsolete product. 
+  
+ Download at www.wowebook.com",NA
+Unsafe Code,"The core C# language, as defined in the preceding chapters, differs notably from C and C++ in 
+ its omission of pointers as a data type. Instead, C# provides references and the abil-ity to 
+ create objects that are managed by a garbage collector. This design, coupled with other 
+ features, makes C# a much safer language than C or C++. In the core C# language, it is simply 
+ not possible to have an uninitialized variable, a “dangling” pointer, or an expres-sion that 
+ indexes an array beyond its bounds. Whole categories of bugs that routinely plague C and C++ 
+ programs are thus eliminated.
+  
+ While practically every pointer type construct in C or C++ has a reference type counter-part 
+ in C#, there are still some situations in which access to pointer types becomes a necessity. For 
+ example, interfacing with the underlying operating system, accessing a memory-mapped 
+ device, or implementing a time-critical algorithm may not be possible or practical without 
+ access to pointers. To address this need, C# provides the ability to write 
+ unsafe code
+ .
+  
+  
+ In all the time since I’ve been programming .NET (starting before the 
+ RTM of 1.0), I’ve never once found a need to write unsafe code. Not once.
+  
+ In unsafe code, it is possible to declare and operate on pointers, to perform conversions 
+ between pointers and integral types, to take the address of variables, and so forth. In a sense, 
+ writing unsafe code is much like writing C code within a C# program.
+  
+ Unsafe code is, in fact, a “safe” feature from the perspective of both developers and users. 
+ Unsafe code must be clearly marked with the modifier 
+ unsafe
+ , so developers cannot pos-sibly 
+ use unsafe features accidentally, and the execution engine works to ensure that unsafe code 
+ cannot be executed in an untrusted environment.
+  
+ Download at www.wowebook.com",NA
+Documentation Comments,"C# provides a mechanism for programmers to document their code using a special com-ment 
+ syntax that contains XML text. In source code files, comments having a certain form can be 
+ used to direct a tool to produce XML from those comments and the source code ele-ments, 
+ which they precede. Comments using such syntax are called 
+ documentation com-ments
+ . 
+ They must immediately precede a user-defined type (such as a class, delegate, or interface) or 
+ a member (such as a field, event, property, or method). The XML generation tool is called the 
+ documentation generator
+ . (This generator could be, but need not be, the C# compiler itself.) 
+ The output produced by the documentation generator is called the 
+ documentation file
+ . A 
+ documentation file is used as input to a 
+ documentation viewer
+ —a tool intended to produce 
+ some sort of visual display of type information and its associated documentation.
+  
+ This specification suggests a set of tags to be used in documentation comments. Use of these 
+ tags is not required, and other tags may be used if desired, as long the rules of well-formed 
+ XML are followed.
+  
+ Comments having a special form can be used to direct a tool to produce XML from those 
+ comments and the source code elements, which they precede. Such comments are single-line 
+ comments that start with three slashes (
+ ///
+ ), or delimited comments that start with a slash 
+ and two stars (
+ /**
+ ). They must immediately precede a user-defined type (such as a class, 
+ delegate, or interface) or a member (such as a field, event, property, or method) that they 
+ annotate. Attribute sections (§17.2) are considered part of declarations, so documenta-tion 
+ comments must precede attributes applied to a type or member.
+  
+ Syntax:
+  
+ single-line-doc-comment: 
+  
+  
+ ///  
+   
+   
+   input-characters
+ opt
+  
+ delimited-doc-comment: 
+  
+  
+ /**
+    delimited-comment-text
+ opt
+ */
+  
+ Download at www.wowebook.com",NA
+Grammar,"This appendix contains summaries of the lexical and syntactic grammars found in the main 
+ document, and of the grammar extensions for unsafe code. Grammar productions appear 
+ here in the same order that they appear in the main document.
+  
+ input: 
+  
+  
+ input-
+ section
+ opt
+  
+ input-section: 
+  
+ input-section-part 
+  
+ input-section   input-section-part
+  
+ input-section-part: 
+  
+ input-elements
+ opt
+    new-line 
+  
+ pp-directive
+  
+ input-elements: 
+  
+ input-element 
+  
+ input-elements   input-
+ element
+  
+ input-element: 
+  
+ whitespace 
+  
+ comment 
+  
+ token
+  
+ new-line: 
+  
+ Carriage return character (
+ U+000D
+ ) 
+  
+ Line feed character (
+ U+000A
+ ) 
+  
+ Carriage return character (
+ U+000D
+ ) followed by line feed character (
+ U+000A
+ ) 
+ Next line character (
+ U+0085
+ ) 
+  
+ Line separator character (
+ U+2028
+ ) 
+  
+ Paragraph separator character (
+ U+2029
+ )
+  
+ Download at www.wowebook.com",NA
+References,"IEEE. 
+ IEEE Standard for Binary Floating-Point Arithmetic
+ . ANSI/IEEE Standard 754-1985. 
+ Available from http://www.ieee.org.
+  
+ ISO/IEC. 
+ C++
+ . ANSI/ISO/IEC 14882:1998.
+  
+ Unicode Consortium. 
+ The Unicode Standard, Version 3.0
+ . Addison-Wesley, Reading, 
+ Massachusetts, 2000, ISBN 0-201-616335-5.
+  
+ Download at www.wowebook.com",NA
+Index,"event, 564–565
+  
+ \a escape sequence, 81 
+  
+ Abstract accessors, 46, 557–558 
+  
+ Abstract classes 
+  
+  
+ and interfaces, 661 
+  
+  
+ overview, 468–469 
+  
+ Abstract events, 566 
+  
+ Abstract indexers, 567 
+  
+ Abstract methods, 35, 539–540 
+  
+ Access and accessibility 
+  
+  
+ array elements, 628 
+  
+  
+ containing types, 502–503 
+  
+  
+ events, 253 
+  
+  
+ indexers, 253, 300–301 
+  
+  
+ members, 23–24, 107, 496 
+  
+  
+ accessibility domains, 110–113 
+  
+  
+ constraints, 116–117 
+  
+  
+ declared accessibility, 107–109 
+  
+  
+ interface, 642–644 
+  
+  
+ pointer, 721–722 
+  
+  
+ in primary expressions, 283–288 
+  
+ protected, 113–116 
+  
+  
+ nested types, 499–503 
+  
+  
+ pointer elements, 723 
+  
+  
+ primary expression elements, 298–301 
+  
+ properties, 252, 555–556 
+  
+ Accessors 
+  
+  
+ abstract, 46, 557–558 
+  
+  
+ attribute, 695
+  
+ property, 43, 46, 547–553 
+  
+ Acquire semantics, 514 
+  
+ Acquisition in using statement, 445–446 
+ add accessors 
+  
+ attributes, 695 
+  
+ events, 49, 564 
+  
+ Add method 
+  
+ IEnumerable, 311 
+  
+ List, 42 
+  
+ AddEventHandler method, 565 
+  
+ Addition operator 
+  
+ described, 15 
+  
+ uses, 337–340 
+  
+ Address-of operator, 724–725 
+  
+ Addresses 
+  
+ fixed variables, 728–733 
+  
+ pointers for, 714, 724–725 
+  
+ after state for enumerator objects, 593–596 
+ Alert escape sequence, 81 
+  
+ Aliases 
+  
+ for namespaces and types, 456–461 
+ qualifiers, 464–466 
+  
+ uniqueness, 466 
+  
+ Alignment enumeration, 58–59 
+  
+ Alloc method, 738 
+  
+ Allocation, stack, 736–738 
+  
+ AllowMultiple parameter, 688
+  
+ Download at www.wowebook.com",NA

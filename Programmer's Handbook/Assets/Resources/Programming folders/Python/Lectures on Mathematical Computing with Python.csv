@@ -1,0 +1,4358 @@
+Larger Text,Smaller Text,Symbol
+Lectures on ,NA,NA
+Mathematical Computing ,NA,NA
+with Python,NA,NA
+Jay Gopalakrishnan,Portland State University,NA
+Preface,"These lectures were prepared for a class of (mostly) second year mathematics and statis-
+ tics undergraduate students at Portland State University during Spring 2020. The term was 
+ unlike any other. The onslaught of COVID-19 moved the course meetings online, an 
+ emergency transition that few of us were prepared for. Many lectures reflect our preoccu-
+ pations with the damage inflicted by the virus. I have not attempted to edit these out since I 
+ felt that a utilitarian course on computing need not be divested from the real world. 
+ These materials offer class activities for studying basics of mathematical computing using 
+ the python programming language, with glimpses into modern topics in scientific com-
+ putation and data science. The lectures attempt to illustrate computational thinking by 
+ examples. They do not attempt to introduce programming from the ground up, although 
+ students, by necessity, will learn programming skills from external materials. In my expe-
+ rience, students are able and eager to learn programming by themselves using the abun-
+ dant free online resources that introduce python programming. In particular, my students 
+ and I found the two (free and online) books of Jake VanderPlas invaluable. Many sec-tions of 
+ these two books, hyperlinked throughout these lectures, were assigned as required 
+ preparatory reading materials during the course (see
+  List of Preparatory Materials
+ ). 
+ Materials usually covered in a first undergraduate linear algebra course and in a one-
+ variable differential calculus course form mathematical prerequisites for some lectures. 
+ Concepts like convergence may not be covered rigorously in such prerequisites, but I have 
+ not shied away from talking about them: I feel it is entirely appropriate that a first en-
+ counter with such concepts is via computation. 
+ Each lecture has a date of preparation. It may help the reader understand the context in 
+ relation to current events and news headlines. The timestamp also serves as an indicator of 
+ the state of the modules in the ever-changing python ecosystem of modules for scientific 
+ computation. The specific version numbers of the modules used are listed overleaf. The 
+ codes may need tinkering with to ensure compatibility with future versions. The materials 
+ are best viewed as offering a starting point for your own adaptation. 
+ If you are an instructor declaring these materials as a resource in your course syllabus, I 
+ would be happy to provide any needed solutions to exercises or datafiles. If you find errors 
+ please alert me. If you wish to contribute by updating or adding materials, please fork the 
+ public
+  GitHub Repository
+  where these materials reside and send me a pull request. 
+ Jay Gopalakrishnan 
+ (gjay@pdx.edu) 
+ 3",NA
+Table of Contents,"Lecture Notebooks
+  
+ •
+  01 Overview of some tools
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  10
+ •
+  
+ 02 Interacting with python
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+ 20
+ •
+  03 
+ Working with git
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+ 24
+ •
+  04 
+ Conversion table
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+ 29
+ •
+  05 
+ Approximating derivatives
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  35
+ •
+  06 
+ Genome of SARS-CoV-2 virus
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+ 40
+ •
+  07 
+ Fibonacci primes
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+ 48
+ •
+  08 
+ Numpy blitz
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  58
+ •
+  09 
+ The SEIR model of infectious diseases
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+ 71
+ •
+  10 
+ Singular value decomposition
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+ 83
+ •
+  11 
+ Bikes on Tilikum Crossing
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  95
+ •
+  12 
+ Visualizing geospatial data
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  109
+ •
+  13 
+ Gambler’s ruin
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  120
+ •
+  14 
+ Google’s PageRank
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  138
+ •
+  15 
+ Supervised learning by regression
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  154
+ •
+  16 
+ Unsupervised learning by PCA
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  166
+ •
+  17 
+ Latent semantic analysis
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  185
+  
+ Exercises
+  
+ •
+  Power sum
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  198
+ •
+  
+ Graph functions
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  198
+ •
+  
+ Argument passing
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+ 199
+ •
+  
+ Piecewise functions
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+ 199
+ •
+  
+ Row swap
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  200
+ •
+  
+ Averaging matrix
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+ 200
+ •
+  
+ Differentiation matrix
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  200
+ •
+  
+ Pairwise differences
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  201
+ •
+  
+ Hausdorff distance
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  201
+ •
+  k
+ -
+ nearest neighbors
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  202
+ •
+  
+ Predator-prey model
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  202
+ •
+  
+ Column space
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  203
+ •
+  
+ Null space
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+ 203
+ •
+  
+ Pandas from dictionaries
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  204
+ •
+  
+ Iris flowers
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  204
+ •
+  
+ Stock prices
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  205
+ •
+  
+ Passengers on the Titanic
+  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  206
+ •
+  
+ Animate functions
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+ 207
+  
+ 5",NA
+List of Preparatory Materials for Each Activity,"The activities in the table of contents are enumerated again below in a linear ordering with 
+ hyperlinks to external online preparatory materials for each. 
+ Required Preparation 
+ Activity 
+  
+ Watch the first few of
+  the 44 Microsoft 
+ videos
+  on python. Watch a 2014 video by 
+ SIAM:
+  What is data science?
+  Browse basic 
+ language facilities either from the official 
+ Python tutorial
+  or from
+  [JV-W]
+ . 
+ Read about the iPython shell facilities 
+ from the first chapter of
+  [JV-H]
+ . 
+ Browse
+  Git Handbook
+  
+ Using the
+  Python tutorial
+  or
+  [JV-W]
+  work 
+ with
+  if
+ ,
+  while
+ ,
+  for,range
+ ,
+  print
+ , lists [], 
+ tuples (), and
+  list comprehension
+ . 
+ Using
+  Python tutorial
+  or
+  [JV-W]
+ , learn 
+ about functions,
+  def
+ , and
+  lambda
+ . 
+ Using
+  Python tutorial
+  or
+  [JV-W]
+ , learn 
+ about
+  dictionaries {}, strings
+  and file 
+ operations
+  open, readlines
+  
+ Learn about
+  pytest
+ ,
+  generator 
+  
+ expressions, yield
+ , line and cell
+  magics
+  
+ Learn
+  numpy basics from [JV-H]
+ ,
+  ufuncs
+ , 
+ broadcasting indexing
+ ,
+  masking
+  
+ 7",NA
+I,NA,NA
+Overview of some tools,"March 31, 2020 
+ This lecture is an introductory overview to give you a sense of the broad utility of a few 
+ python tools you will encounter in later lectures. Each lecture or class activity is guided by a
+  
+ Jupyter Notebook
+  (like this document), which combines executable code, mathematical 
+ formulae, and text notes. This overview notebook also serves to check and verify that you 
+ have a working installation of some of the python modules we will need to use later. We 
+ shall delve into basic programming using python (after this overview and a few further 
+ start-up notes) starting from a
+  later lecture
+ . 
+ The ability to program, analyze and compute with data are life skills. They are useful well 
+ beyond your mathematics curriculum. To illustrate this claim, let us begin by considering 
+ the most pressing current issue in our minds as we begin these lectures: the progression of 
+ COVID-19 disease worldwide. The skills you will learn in depth later can be applied to 
+ understand many types of data, including the data on COVID-19 disease progression. In this 
+ overview, we shall use a few python tools to quickly obtain and visualize data on COVID-19 
+ disease worldwide. The live data on COVID-19 (which is changing in as yet unknown ways) 
+ will also be used in several later activities. 
+ Specifically, this notebook contains all the code needed to perform these tasks: 
+ • download today’s data on COVID-19 from a cloud repository,• 
+ make a data frame object out of the data, 
+ • use a geospatial module to put the data on a world map,• 
+ download county maps from US Census Bureau, and 
+ • visualize the COVID-19 data restricted to Oregon. 
+ The material here is intended just to give you an overview of the various tools we will learn 
+ in depth later. There is no expectation that you can immediately digest the code here. The 
+ goal of this overview is merely to whet your appetite and motivate you to allocate time to 
+ learn the materials yet to come. 
+ I.1 
+  
+ The modules you need
+  
+ These are the python modules we shall use below. 
+ • matplotlib (for various plotting & visualization tools in python)• 
+ descartes (for specialized visualization of maps using matplotlib)• 
+ gitpython (to work in python with Git repositories) 
+ • pandas (to make data frame structures out of raw data) 
+ • geopandas (for analysis of geospatial data) 
+ • urllib (for fetching resources at an internet url) 
+ 10",NA
+II,NA,NA
+Interacting with Python,"March 31, 2020 
+ Python
+  is a modern, general-purpose, object-oriented, high-level programming language 
+ with a clean and expressive syntax. The following features make for easy code develop-
+ ment and debugging in python: 
+ •
+  Python code is interpreted:
+  There is no need to compile the code. Your code is read by a 
+ python interpreter and made into executable instructions for your computer in real 
+ time. 
+ •
+  Python is dynamically typed:
+  There is no need to declare the type of a variable or the 
+  
+ type of an input to a function. 
+ •
+  Python has automatic garbage collection or memory management:
+  There is no need to 
+ explicitly allocate memory for variables before you use them or deallocate them after 
+ use. 
+ However, keep in mind that these features also make pure python code slower (than, say C) 
+ in repetitious loops because of repeated checking for the type of objects. Therefore many 
+ python modules (such as numpy, which we shall see in detail soon), have C or other 
+ compiled code, which is then wrapped in python to take advantage of python’s usability 
+ without losing speed. 
+ There are at least four ways to interact with your Python 3 installation. 
+ 1. Use a python shell  
+ 2. Use an iPython shell  
+ 3. Put code in a python file ending in .py  
+ 4. Write code + text in Jupyter notebook 
+ II.1 
+  
+ Python shell
+  
+ Type the python command you use in
+  your
+  system (python or python3) to get this shell. I 
+ will use python3 since that is what my system requires, but please do make sure to replace 
+ it by python if that’s what is needed on your system. Here is an image of the interactive 
+ python shell within a terminal. 
+ 20",NA
+III,NA,NA
+Working with git,"April 2, 2020 
+ Git
+  a distributed version control system (and is a program often used independently of 
+ python). A version control system tracks the history of changes in projects with many files, 
+ including data files, and codes, which many people access simultaneously. Git facilitates 
+ identification of changes made, fetching revisions from a cloud repository in git format, and 
+ pushing revisions to the cloud. 
+ GitHub
+  is a cloud server that specializes in serving data in the form of git repositories. Many 
+ other such cloud services exists, such as Atlassian’s
+  BitBucket
+ . 
+ The notebooks that form these lectures are in a git repository served from GitHub. In this 
+ notebook, we describe how to access materials from this remote git repository. We will also 
+ use this opportunity to introduce some
+  object-oriented terminology
+  like classes, objects, 
+ constructor, data members, and methods, which are pervasive in python. Those already 
+ familiar with this terminology and GitHub may skip to the
+  next activity
+ . 
+ III.1 
+  
+ Our materials in GitHub
+  
+ Lecture notes, exercises, codes, and all accompanying materials can be found in the GitHub 
+ repository at https://github.com/jayggg/mth271content 
+ One of the reasons we use git is that many continuously updated datasets, like the COVID-19 
+ dataset, are served in git format. Another reason is that we may want to use current news 
+ and fresh data in our activities. Such activities may be prepared with very little lead time, so 
+ cloud git repositories are ideal for pushing in new materials as they get devel-oped: once 
+ they are in the cloud, you have immediate access to them. After a lecture, the materials may 
+ be revised and updated per your feedback and these revisions will also be available for you 
+ from GitHub. Therefore, it is useful to be conversant with GitHub. 
+ Let us spend a few minutes today on how to fetch materials from the git repository. In 
+ particular, executing this notebook will pull the updated data from GitHub and place it in a 
+ location you specify (below). 
+ If you want to know more about git, there are many resources online, such as the
+  Git 
+ Handbook
+ . The most common way to fetch materials from a remote repository is using git’s 
+ command line tools, but for our purposes, the python code in this notebook will suffice. 
+ 24",NA
+IV,NA,NA
+Conversion table,"April 2, 2020 
+ This elementary activity is intended to check and consolidate your understanding of very 
+ basic python language features. It is modeled after a similar activity in
+  [HPL]
+  and involves a 
+ simple temperature conversion formula. You may have seen kitchen cheat sheets (or have 
+ one yourself) like the following: 
+  
+ Fahrenheit 
+ Celsius 
+ cool oven 
+ 200 F 
+ 90 C 
+ very slow oven 
+ 250 F 
+ 120 C 
+ slow oven 
+ 300-325 F 
+ 150-160 
+ C 
+ moderately slow oven 
+ 325-350 F 
+ 160-180 
+ C 
+ moderate oven 
+ 350-375 F 
+ 180-190 
+ C 
+ moderately hot oven 
+ 375-400 F 
+ 190-200 
+ C 
+ hot oven 
+ 400-450 F 
+ 200-230 
+ C 
+ very hot oven 
+ 450-500 F 
+ 230-260 
+ C 
+ This is modeled after a conversion table at the website
+  Cooking Conversions for Old Time 
+ Recipes
+ , which many found particularly useful for translating old recipes from Europe. Of 
+ course, the “old continent” has already moved on to the newer, more rational, metric 
+ system, so all European recipes, old and new, are bound to have temperatures in Celsius (C). 
+ Even if recipes don’t peak your interest, do know that every scientist must learn to work 
+ with the metric system. 
+ Celsius values can be converted to the Fahrenheit system by the formula 
+ F
+  =
+ 9 5
+ C
+  +
+  32. 
+ The task in this activity is to print a table of F and C values per this formula. While ac-
+ complishing this task, you will recall basic python language features, like while loop, for 
+ loop, range, print, list and tuples, zip, and list comprehension. 
+ IV.1 
+  
+ Using the
+  while
+  loop
+  
+ We start by making a table of F and C values, starting from 0 C to 250 C, using the while 
+ loop. 
+ [1]:
+  print
+ (
+ 'F
+  
+  
+ C'
+ ) 
+  
+ 29",NA
+V,NA,NA
+Approximating the derivative,"April 7, 2020 
+ In calculus, you learnt about the derivative and its central role in modeling processes where 
+ a rate of change is important. How do we compute the derivate on a computer? 
+ Recall what you did in your first calculus course to compute the derivative. You memo-rized 
+ derivatives of simple functions like cos
+  x
+ , sin
+  x
+ , exp
+  x
+ ,
+  x
+ n
+ etc. Then you learnt rules like 
+ product rule, quotient rule, chain rule etc. In the end you could systematically com-pute 
+ derivatives of complicated functions by reducing it to simpler components and ap-plying 
+ the rules. We could teach the computer the same rules and come up with an algo-rithm for 
+ computing derivatives. This is the idea behind automatic differentiation. Python modules 
+ like sympy can compute derivatives symbolically in this fashion. However, this approach 
+ has its limits. 
+ In the real world, we often encounter complicated functions, such as functions that cannot 
+ be represented in terms of simple component functions, or functions whose values you can 
+ only query from some proprietary company code, or functions whose values are based off a 
+ table, like for instance this function. 
+ Price of TSLA stock
+  
+ 900
+  
+ Daily Closing 
+  
+ Weekly Mean
+  
+ 800
+  
+ 700
+  
+ 600
+  
+ 500
+  
+ 400
+  
+ Date
+  
+ This function represents Tesla’s stock prices this year until yesterday (which I got, in case 
+ you are curious, using just
+  a few lines of python code
+ ). The function is complicated (not 
+ 35",NA
+VI,NA,NA
+Genome of SARS-CoV-2,"April 7, 2020 
+ Since most data come in files and streams, a data scientist must be able to effectively work 
+ with them. Python provides many facilities to make this easy. In this class activity, we will 
+ review some of python’s file, string, and dictionary facilities by examining a file con-taining 
+ the genetic code of the virus that has been disrupting our lives this term. Here is a 
+ transmission electron micrograph showing the virus (a public domain
+  image from the CDC
+ , 
+ credited to H. A. Bullock and A. Tamin). 
+  
+ The genetic code of each living organism is a long sequence of simple molecules called
+  nu-
+ cleotides
+  or
+  bases
+ . Although many nucleotides exist in nature, only 4 nucleotides, labeled 
+ A, C, G, and T, have been found in DNA. They are abbreviations of Adenine, Cytosine, 
+ Guanine, and Thymine. Although it is
+  difficult to put viruses in the category of living 
+ organisms, they also have genetic codes made up of nucleotides. 
+ VI.1 
+  
+ Get the genome
+  
+ The NCBI (National Center for Biotechnology Information) has recently started maintain-
+ ing a
+  data hub
+  for genetic sequences related to the virus causing COVID-19. Recall that the 
+ 40",NA
+VII,NA,NA
+Fibonacci primes,"April 9, 2020 
+ Fibonacci numbers appear in so many unexpected places that I am sure you have already 
+ seen them. They are elements of the Fibonacci sequence
+  F
+ n
+  defined by 
+ F
+ 0
+  =
+  0,  
+ F
+ 1
+  =
+  1, 
+ F
+ n
+  =
+  F
+ n
+ −
+ 1
+  +
+  F
+ n
+ −
+ 2
+ , for
+  n
+  >
+  1. 
+ Obviously, this recursive formula gives infinitely many Fibonacci numbers. We also know 
+ that there are infinitely many prime numbers: the ancient Greeks knew it (actually proved 
+ it) in 300 BC! 
+ But, to this day, we still do not know
+  if there are infinitely many prime numbers in the 
+ Fibonacci sequence.
+  These numbers form the set of
+  Fibonacci primes.
+  Its (in)finiteness is 
+ one of the still
+  unsolved problems in mathematics
+ . 
+ In this activity, you will compute a few initial Fibonacci primes, while reviewing some 
+ python features along the way, such as generator expressions, yield, next, all, line mag-ics, 
+ modules, and test functions. Packages we shall come across include memory_profiler, 
+ primesieve, and pytest. 
+ VII.1 
+  
+ Generator expressions
+  
+ Representing sequences is one of the elementary tasks any programming language should 
+ be able to do well. Python lists can certainly be used for this. For example, the following list 
+ comprehension gives elements of the sequence 
+ n
+ i
+ ,  
+ n
+  =
+  0, 1, 2, . . . ,
+  N
+  −
+  1 
+ succinctly: 
+ [1]:
+  i
+ =2
+ ; N
+ =10
+  
+ L
+  =
+  [n
+ **
+ i
+  for
+  n
+  in
+  range
+ (
+ 1
+ , N)] 
+ If you
+  change the brackets to parentheses
+ , then instead of a list comprehension, you get a 
+ different object called
+  generator expression
+ . 
+ [2]:
+  G
+  =
+  (n
+ **
+ i
+  for
+  n
+  in
+  range
+ (
+ 1
+ , N)) 
+ Both L and G are examples of
+  iterators
+ , an abstraction of a sequence of things with the 
+ ability to tell, given an element, what is the
+  next
+  element of the sequence. Since both L and 
+ 48",NA
+∑,"n
+ =
+ 1
+  
+ 1  
+ n
+ 20
+  , 
+ would you use the following list comprehension? 
+ sum([n
+ **
+ i
+  for
+  n
+  in
+  range(
+ 1
+ , N)]) 
+ If you do, you would need to store the created list in memory.  
+ If you install the 
+ memory_profiler and use it as described in the prerequisite reading material from
+  [JV-H]
+ , 
+ then you can see memory usage easily. If you don’t have a GB of RAM free, be warned that 
+ running this list comprehension (mentioned above, and in the cell after next) might crash 
+ your computer. 
+ [11]:
+  %
+ load_ext
+  memory_profiler 
+ [12]:
+  %
+ memit
+  sum([n**i for n in range(1, N)]) 
+ peak memory: 3884.82 MiB, increment: 3842.59 MiB
+  
+ 50",NA
+VIII,NA,NA
+Numpy blitz,"April 14, 2020 
+ Numpy arrays are more efficient than lists because all elements of numpy arrays are of the 
+ same pre-determined type. Numpy also provides efficient ufuncs (universal functions) 
+ which are vectorized functions that loop over array elements with loops pre-compiled in C. 
+ Numpy also exhibits some syntactic features that a mathematician may consider a nui-
+ sance, but knowing how to work with numpy is key for almost all scientific computation in 
+ python. It takes some practice to be comfortable with numpy and practice is what we are 
+ aiming for in this activity. This activity is structured as a list of questions. You will be in a 
+ position to appreciate these questions (and their answers) after going through this lecture’s 
+ prerequistes on numpy yourself. 
+ [1]:
+  import
+  numpy
+  as
+  np
+  
+ import
+  math
+  
+ VIII.0.1
+  
+ Are lists and numpy arrays different?
+  
+ [2]:
+  A
+  =
+  [
+ 0.1
+ ,
+  1.3
+ ,
+  0.4
+ ,
+  0.5
+ ] 
+ # list
+  
+ a
+  =
+  np
+ .
+ array(A) 
+ # numpy array
+  
+  
+ type
+ (a),
+  type
+ (A) 
+ [2]:
+  (numpy.ndarray, list) 
+ Here is how you find out the common data type of elements of a numpy array (and there is 
+ no such analogue for list, since list elements can be of different types). 
+ [3]:
+  a
+ .
+ dtype 
+  
+ # a's common element type (A.dtype is undefined!)
+  
+  
+ [3]:
+  dtype('float64') 
+ VIII.0.2
+  
+ What is the difference between
+  2*a
+  and
+  2*A
+ ?
+  
+ [4]:
+  2*
+ a 
+ [4]:
+  array([0.2, 2.6, 0.8, 1. ]) 
+ [5]:
+  2*
+ A 
+ 58",NA
+IX,NA,NA
+The SEIR model of infectious diseases,"April 22, 2020 
+ Recent news of COVID-19 has brought to our attention the stories of the many earlier 
+ pandemics the world has seen. A classic case is a strain of influenza that invaded New York 
+ City during 1968-1969, then dubbed the Hong Kong flu. The following data (from 
+ [DM]
+ ) 
+ shows the number of deaths that winter in New York City believed to be due to this flu. 
+ [1]:
+  import
+  matplotlib.pyplot
+  as
+  plt
+  
+ %
+ matplotlib
+  inline 
+  
+ import
+  seaborn
+ ; seaborn
+ .
+ set(); 
+  
+ plt
+ .
+ bar(
+ range
+ (
+ 1
+ ,
+ 14
+ ), [
+ 14
+ ,
+ 28
+ ,
+ 50
+ ,
+ 66
+ ,
+ 156
+ ,
+ 190
+ ,
+ 156
+ ,
+ 108
+ ,
+ 68
+ ,
+ 77
+ ,
+ 33
+ ,
+ 65
+ ,
+ 24
+ ]) 
+  
+ plt
+ .
+ xlabel(
+ 'Week'
+ ); plt
+ .
+ ylabel(
+ 'Excess deaths'
+ ); 
+  
+ plt
+ .
+ xticks(
+ range
+ (
+ 1
+ ,
+ 14
+ )); plt
+ .
+ title(
+ '1968-69 Influenza in New York City'
+ ); 
+  
+ Notice how the data from Week 1 to Week 13 roughly fits into a bell-shaped curve. You 
+ have, by now, no doubt heard enough times that we all must do our part to
+  flatten the curve. 
+ The bell-shaped curve, which has been identified in many disease progressions, is the curve 
+ we want to flatten. Some
+  mathematical models
+  of epidemic evolution, for instance the 
+ well-known “SIR model” discussed in
+  [DM]
+ , produces such bell curves. Flattening the curve 
+ can then be interpreted as bringing relevant model parameters into a range that produces a 
+ shallow bell. 
+ Mathematical models are often used as tools for prediction. However, we should be wary 
+ that models only approximate a few features of reality, and only when realistic parameter 
+ values (which are often missing) are supplied. Yet, as the saying goes,
+  “All models are",NA
+X,NA,NA
+The Singular Value Decomposition,"April 27, 2020 
+ One of the early and natural ideas in software development for scientific computation was 
+ the idea of packaging linear algebra software around robust implementations of matrix 
+ factorizations, divested from specific applications. This enabled durable linear algebra tools 
+ like
+  LAPACK
+  to be developed with a stable interface, usable across numerous appli-cation 
+ domains. Commercial software like Matlab™, as well as open-source software like octave, 
+ numpy and scipy, all take full advantage of these developments. What does this mean for 
+ you as an aspiring data scientist? When you are faced with a specific computa-tional task, if 
+ you are able to reformulate your task using off-the-shelf implementations of matrix 
+ factorizations, then you might already be half-way to finishing your task. 
+ You already know about some matrix factorizations. In your introductory linear algebra 
+ prerequisites, you learnt about eigenvalues and eigenvectors. The computation of eigen-
+ values and eigenvectors is indeed the computation of a matrix factorization. This factor-
+ ization is called a
+  diagonalization
+  or an
+  eigenvalue decomposition
+  of an
+  n
+  ×
+  n
+  matrix
+  A 
+ and it takes the form  
+  
+ A
+  =
+  XDX
+ −
+ 1
+  
+ where
+  D
+  is a diagonal matrix and
+  X
+  is an invertible matrix, both of the same size as
+  A
+ . The 
+ eigenvalues of
+  A
+  are found in the diagonal entries of
+  D
+  and the eigenvectors are columns of
+  
+ X
+ , as can be see by rewriting the factorization as 
+ AX
+  =
+  XD
+ . 
+ The importance of eigenvalues in varied applications is usually highlighted well in a first 
+ linear algebra course. 
+ Another important factorization is the SVD, or the
+  singular value decomposition
+ , which 
+ often does not get the emphasis it deserves in lower division courses. In some ways the SVD 
+ is even more important that a diagonalization. This is because not all matrices have a 
+ diagonalization. In contrast, using basic real analysis results, one can prove that any matrix 
+ has an SVD. We shall see that from an SVD, one can read off the important properties of a 
+ matrix and easily construct compressed approximations of the matrix. The two theorems 
+ stated below without proof are usually proved in a linear algebra course and can be found 
+ in many texts (see e.g.,
+  [TB]
+ ). 
+ X.1 
+  
+ Definition of SVD
+  
+ The SVD is a factorization of an
+  m
+  ×
+  n
+  matrix
+  A
+  of the form 
+ A
+  =
+  U
+ Σ
+ V
+ ↪",NA
+∑,"σ
+ l
+  u
+ l
+ v
+ ↪
+ l
+ . 
+  
+  
+ ⎥⎦
+  [
+ v
+ 1
+ , . . . ,
+  v
+ n
+ ]
+ ↪
+  = 
+  
+ l
+ =
+ 1
+ ⎢⎣ 
+ ... 
+ Thus the SVD can be viewed as a sum of unit rank outer products. Each summand in-creases 
+ rank (if the corresponding singular value is nonzero) until the rank of
+  A
+  is reached. Let’s see 
+ this in action for a small matrix. 
+ [6]:
+  a
+  =
+  np
+ .
+ random
+ .
+ rand(
+ 4
+ ,
+  5
+ ) 
+ u, s, vh
+  =
+  svd(a) 
+ Numpy’s broadcasting rules do not make it easy to make the outer product
+  u
+ l
+ v
+ ↪
+ l
+ simply. 
+ Yet, once you follow the broadcasting rules carefully, you will see that all that is needed is 
+ a placement of a newaxis in the right places. 
+ [7]:
+  u[
+ 0
+ , :, np
+ .
+ newaxis]
+  @
+  vh[np
+ .
+ newaxis,
+  0
+ , :] 
+ [7]:
+  array([[ 0.249, 
+ 0.213, 
+ 0.163, 
+ 0.211, 
+ 0.214], 
+  
+ [-0.205, -0.176, -0.134, -0.174, -0.177], 
+ [ 0.196, 
+ 0.168, 
+ 0.128, 
+ 0.167, 
+ 0.169], 
+ [ 0.365, 
+ 0.313, 
+ 0.238, 
+ 0.31 , 
+ 0.314]]) 
+ Alternately, you can use the facility that numpy itself provides specifically for the outer 
+ product, namely np.outer. 
+ [8]:
+  np
+ .
+ outer(u[
+ 0
+ , :], vh[
+ 0
+ , :]) 
+ [8]:
+  array([[ 0.249, 
+ 0.213, 
+ 0.163, 
+ 0.211, 
+ 0.214], 
+  
+ [-0.205, -0.176, -0.134, -0.174, -0.177], 
+ [ 0.196, 
+ 0.168, 
+ 0.128, 
+ 0.167, 
+ 0.169], 
+ [ 0.365, 
+ 0.313, 
+ 0.238, 
+ 0.31 , 
+ 0.314]]) 
+ Executing the sum ∑
+ l
+  σ
+ l
+ (
+ u
+ l
+ v
+ ↪
+ l
+ )
+ , we find that it is equal to a: 
+ [9]:
+  ar
+  =
+  np
+ .
+ zeros_like(a) 
+ for
+  i
+  in
+  range
+ (
+ 4
+ ): 
+  
+ ar
+  +=
+  np
+ .
+ outer(u[:, i], s[i]
+  *
+  vh[i, :]) 
+ [10]:
+  a
+  -
+  ar 
+  
+ # a and ar are identical
+  
+  
+ [10]:
+  array([[-0., 
+ 0., -0., -0., -0.], 
+  
+ [-0., -0., -0., -0., -0.], 
+ 85",NA
+∑,"i
+ ,
+ j
+  
+ |
+ A
+ ij
+ |
+ 2
+  )
+ 1/2
+  . 
+ The theorem answers the following question: how close can we get to
+  A
+  using matrices 
+ whose rank is much lower than the rank of
+  A
+ ? 
+ Theorem 2
+ . Suppose
+  A
+  be an
+  m
+  ×
+  n
+  matrix (complex or real). For any 0
+  ≤ ℓ ≤
+  r
+  =
+  rank
+ (
+ A
+ )
+ , 
+ define the matrix 
+  
+  
+   
+ ℓ
+  
+ A
+ ℓ
+  =",NA
+∑,"σ
+ j
+ u
+ j
+ v
+ ↪
+ j
+ ,  
+  
+  
+ j
+ =
+ 1
+  
+ 89",NA
+∑,"j
+ =
+ 1
+  
+ σ
+ j
+ u
+ j
+ v
+ ↪
+  
+ are adding much less to
+  A
+  than the first few summands. Therefore, we should be able to 
+ represent the same
+  A
+  using the first few outer products. 
+ [23]:
+  # Rank 20 approximation of the cats:
+  
+ l
+  = 20
+ ; 
+ cl
+  =
+  u[:, :l]
+  @
+  np
+ .
+ diag(s[:l])
+  @
+  vh[:l, :] 
+  
+ plt
+ .
+ imshow(cl, cmap
+ =
+ 'gray'
+ ); 
+ 91",NA
+XI,NA,NA
+Bikes on Tilikum Crossing,"May 1, 2020 
+ A car-free bridge is still considered a ridiculous idea in many parts of our country. Port-
+ landers beg to differ. Portland’s newest bridge, the
+  Tilikum Crossing,
+  opened in 2015, and is 
+ highly multimodal, allowing travel for pedestrians, bikes, electric scooters, trains, street-
+ cars, and buses (but the modality of travel by personal car is missing). Bike lanes were not 
+ an afterthought, but rather an integral part of the bridge design. One therefore expects to 
+ see a good amount of bike traffic on Tilikum. 
+ In this activity, we examine the data collected by the bicycle counters on the Tilikum. Port-
+ land is divided into east side and west side by the north-flowing Willamette river and the 
+ Tilikum connects the two sides with both eastbound and westbound lanes. Here is a photo 
+ of the bike counter (the black display, located in between the streetcar and the bike lane) on 
+ the bridge. 
+  
+ Portlanders use the numbers displayed live on this little device to boast about Portland’s 
+ bike scene in comparison to other cities. The data from the device can also be used in more 
+ 95",NA
+XII,NA,NA
+Visualizing geospatial data,"May 6, 2020 
+ Geospatial data refers to data which has a geographic component in it. Usually this means 
+ that the data entries are associated to some point on the surface of the earth. Therefore, 
+ geospatial data are usually visualized on maps. 
+ Because the earth is round, in order to make a flat map, one must transform the earth’s 
+ surface to a flat surface. Such transformations are called
+  projections
+  by cartographers (not 
+ to be confused with linear projections from linear algebra). Mathematicians know that a 
+ transformation between topologically different regions must be discontinous somewhere. 
+ So these projections, while very useful, cannot be perfect replicas of reality. It is useful to 
+ know this and a bit more about python modules for projections while attempting to 
+ visualize geospatial data on the globe. 
+ Many references, including
+  Geographic Data with Basemap
+  of
+  [JV-H]
+ , use the python mod-
+ ule basemap. However in recent years, the module basemap has been deprecated in favor of 
+ the new python mapping project called
+  Cartopy
+ . Therefore, this activity aims at tak-ing a 
+ quick look at cartopy. Cartopy, together with
+  geopandas
+ , a package built on top of pandas, 
+ shows promise in easing geospatial visualization. They are nonetheless relatively new 
+ efforts. You will notice that their documentation, while constantly improving, is not as 
+ mature as, say numpy. There will likely be a number of changes in the provided facili-ties as 
+ these efforts take hold. Our goal in this activity is to get acquainted with these new 
+ developments for visualizing geospatial data. 
+ [1]:
+  import
+  numpy
+  as
+  np
+  
+ import
+  matplotlib.pyplot
+  as
+  plt
+  
+  
+ %
+ matplotlib
+  inline 
+  
+ import
+  pandas
+  as
+  pd
+  
+  
+ import
+  geopandas
+  as
+  gpd
+  
+  
+ from
+  cartopy
+  import
+  crs 
+ XII.1
+  
+ Geometry representation
+  
+ The GeoDataFrame class of geopandas is a pandas data frame with a special column repre-
+ senting geometry. This column is a GeoSeries object, which may be viewed as a pandas 
+ series where each entry is a set of shapes. The shapes are geometric objects like a a set of 
+ points, lines, a single polygon, or many polygons. These shapes are objects made using the
+  
+ shapely
+  package. Together they allow easy interaction with matplotlib for plotting 
+ geospatial data. 
+ 109",NA
+XIII,NA,NA
+Gambler’s Ruin,"May 11, 2020 
+ A gambler
+  G
+  starts with two chips at a table game in a casino, pledging to quit once 8 more 
+ chips are won.
+  G
+  can either win a chip or lose a chip in each game, with probabilities
+  p 
+ and 1
+  
+ −
+  p
+ , respectively (independent of past game history). What is the probability that
+  G 
+ accumulates a total of 10 chips playing the game repeatedly, without being ruined while 
+ trying? The ruining state is one where
+  G
+  has no chips and can no longer play. What is the 
+ probability that G is ruined while trying to get to 10 chips? 
+ The goal of this activity is to introduce you to the rich subject of Markov chains, and in the 
+ process also get you acquainted with graphs, random walks, and stochastic matrices, with 
+ the gambler
+  G
+  as an entry point example. Since a probability course is not a prerequisite for 
+ this course, I will try to present the results colloquially and without proofs, with my advance 
+ apologies to the probabilists among you. The two theorems you will find stated below are 
+ proved using probabilistic tools (see, for example,
+  [S]
+ ) and is material one might usually 
+ find in a statistics program. In the next activity, I will connect this to material from other 
+ fields. 
+ XIII.1 
+  
+ Markov chains
+  
+ A Markov chain is an abstraction used to model systems that transition from a current state 
+ to the next state according to some given probability. It has proven itself to be a powerful 
+ construct in statistics due to its wide applicability. Specifically, given 
+  
+ • a set of
+  states
+  S
+  =
+  {
+ S
+ 0
+ ,
+  S
+ 1
+ , . . .
+ }
+ , 
+  
+ • and a set of numbers 0
+  ≤
+  p
+ ij
+  ≤
+  1,  
+ a
+  Markov chain
+  is a sequence whose elements are taken from
+  S
+  in such a way that 
+ probability to go from state
+  S
+ i
+  to
+  S
+ j
+  is
+  p
+ ij
+ . The number
+  p
+ ij
+  is called the
+  transition probability.
+  
+ The states and transition probabilities are often represented in diagrams like this: 
+ p
+ 00
+  
+ S
+ 0
+  
+ p
+ 01
+  
+ S
+ 1
+  
+ p
+ 12
+  
+ p
+ 13
+  
+ p
+ 32
+  
+ p
+ 33
+  
+ p
+ 34
+  
+ S
+ 4
+  
+ S
+ 2
+  
+ S
+ 3
+  
+ p
+ 43
+  
+ p
+ 20
+  
+ The assumptions when considering a Markov chain are that the system is required to move 
+ from state to state (the next state can be the same as the current state), and that the next",NA
+∑,"j
+  
+ p
+ ij
+  =
+  1. 
+ Note that the sum above may be finite or infinite: if the set of states is a finite set, say 
+ S
+  =
+  {
+ S
+ 0
+ ,
+  
+ S
+ 1
+ , . . . ,
+  S
+ N
+ }
+ , then the above sum runs from
+  j
+  =
+  0, 1, through
+  N
+ ; otherwise the sum should be 
+ treated as an infinite sum. Irrespective of the finiteness of the set of states
+  S
+ , the Markov 
+ chain itself is thought of as an infinite sequence. 
+ (Optional note: Here is a formal definition using the conditional probability notation, 
+ Pr
+ (
+ A
+ |
+ B
+ )
+ . A stochastic sequence
+  X
+ n
+  taking values from a set of states
+  S
+  =
+  {
+ S
+ 0
+ ,
+  S
+ 1
+ , . . .
+ }
+  is called a 
+ Markov chain if for any subset of states
+  S
+ i
+ ,
+  S
+ j
+ ,
+  S
+ k
+ 0
+ ,
+  S
+ k
+ 1
+ , . . . ,
+  S
+ k
+ n−
+ 1
+  ↪
+  S
+ ,  
+  
+ Pr
+ (
+ X
+ n
+ +
+ 1
+  =
+  S
+ j
+ |
+ X
+ n
+  =
+  S
+ i
+ ) 
+  
+  
+ =
+  Pr
+ (
+ X
+ n
+ +
+ 1
+  =
+  S
+ j
+ |
+ X
+ n
+  =
+  S
+ i
+ ,
+  X
+ n
+ −
+ 1
+  =
+  S
+ k
+ n−
+ 1
+ ,
+  X
+ n
+ −
+ 2
+  =
+  S
+ k
+ n−
+ 2
+ , . . . ,
+  X
+ 0
+  =
+  S
+ k
+ 0
+ ) 
+  
+  
+ =
+  p
+ ij
+ . 
+ Throughout, we only consider what are known as
+  time-homogeneous
+  Markov chains, where 
+ the probabilities
+  p
+ ij
+  are independent of the “time” step
+  n
+ .) 
+ To connect this to the concept of random walks, let us first introduce graphs. 
+ XIII.2 
+  
+ Graphs
+  
+ In mathematics, we often use the word graph in a sense completely different from the graph 
+ or plot of a function. 
+ A
+  graph
+  (
+ V
+ ,
+  E
+ )
+  is a set
+  V
+  of
+  n vertices
+ , together with a set
+  E
+  of
+  m edges
+  between (some) 
+ vertices. Although vertices are often pictorially represented as points, technically they can 
+ be whatever things lumpable into a set
+  V
+ , e.g., - people, labels, companies, power stations, 
+ cities, etc. 
+ Edges are often pictorially represented as line segments (or curves) connecting two points 
+ representing two vertices, but technically, they are just a “
+ choice of two vertices
+ ” (not nec-
+ essarily distinct) from
+  V
+ , e.g., corresponding to the above-listed vertex examples, an edge 
+ can represent - friendship, similarities, spinoffs, wires, roads, etc. 
+ When the above-mentioned “choice of two vertices” is changed to an ordered tuple, then the 
+ ordering of the two vertex choices that form an edge is significant, i.e., the edge has a 
+ direction. Thus a directed edge from vertex
+  v
+ i
+  to vertex
+  v
+ j
+  is the tuple
+  (
+ v
+ i
+ ,
+  v
+ j
+ )
+ . If all edges in
+  E
+  
+ are directed, the graph is called a
+  directed graph
+  or a
+  digraph
+ . If a non-negative number, a
+  
+ weight
+ , is associated to each edge of a digraph, then we call the graph a
+  weighted digraph
+ . 
+ Python does not come with a graph data structure built in. Before you begin to think this 
+ somehow runs counter to the “batteries-included” philosophy of python, let me interrupt. 
+ Python’s built-in dictionary data structure encapsulates a graph quite cleanly. Here is an 
+ example of a graph with vertices a, b, c, d: 
+ 121",NA
+∑,"p
+ ij
+  =
+  1 
+  
+ j
+  
+ for any
+  i
+ . 
+ A
+  random walk
+  on such a directed graph is a sequence of vertices in
+  V
+  generated stochasti-
+ cally in the following sense. Suppose the
+  n
+ th element of the sequence is the
+  i
+ th vertex
+  v
+ i
+  in 
+ V
+ . 
+ Then one of its outgoing edges
+  (
+ v
+ i
+ ,
+  v
+ j
+ )
+  is selected with probability
+  p
+ ij
+ , and the
+  (
+ n
+  +
+  1
+ )
+ th 
+ element of the random walk sequence is set to
+  v
+ j
+ . This process is repeated to get the full 
+ random walk, once a starting vertex is selected. 
+ XIII.4 
+  
+ Conceptual equivalences
+  
+ There are three equivalent ways of viewing what is essentially the same concept: 
+ • a probabilistic transition of states, 
+ • a vertex-to-vertex probabilistic movement in digraphs, or• a 
+ non-negative matrix of unit row sums. 
+ Given a random walk on a weighted digraph, the sequence it generates is a Markov chain. 
+ Indeed, the digraph’s edge weights give the transition probabilities. The graph vertices form 
+ the Markov chain states. Conversely, given a Markov chain, there is a corresponding random 
+ walk. We first generate a digraph using the Markov chain states as the graph vertices. 
+ Positive transition probabilities indicate which directed edges should exist in the graph and 
+ what their edge weight should be. The sequence of states of the Markov chain is now 
+ identifiable as the sequence of vertices generated by a random walk on this digraph. This 
+ equivalence is betrayed even by our very first figure above, where we illustrated a Markov 
+ chain using a graph. 
+ To understand why the third concept is equivalent, it is sufficient to note that all infor-
+ mation to specify either a Markov chain, or a random walk is encapsulated in a single 
+ 123",NA
+ ∑,"j
+  
+ p
+ ij
+ h
+ j
+  
+ for all
+  i
+  with
+  i
+  ↪
+  B
+ , and
+  h
+ i
+  =
+  1 if
+  i
+  ↪
+  A
+ . Here minimality means that if
+  x
+  is another solution, 
+ then
+  x
+ i
+  ≥
+  h
+ i
+  for all
+  i
+ . 
+ The reasoning that leads to the system of equations in the theorem is as follows: if the 
+ Markov chain starts from state
+  S
+ i
+ , then in the next step, it can be in any of the states
+  S
+ j
+  with 
+ probability
+  p
+ ij
+ , from where the hitting probability is
+  h
+ j
+ , so the hitting probability
+  h
+ i
+  from
+  S
+ i
+  
+ must be the sum of all
+  p
+ ij
+  ×
+  h
+ j
+  over all states
+  S
+ j
+ . This idea can be formalized into a proof of 
+ Theorem 1. Let me highlight a few more things to note about Theorem 1: 
+ •
+  First trivial solution:
+  From the definition of Markov chain, recall that",NA
+∑,"j
+  
+ p
+ ij
+  =
+  1. 
+ Hence an obvious solution to the system of equations in Theorem 1 is 
+ h
+ i
+  =
+  1 
+ for all
+  i
+ . However, this solution need not be the
+  minimal
+  one mentioned in the theo- 
+ rem. 
+ •
+  Second trivial solution:
+  One case where the minimal nonnegative solution is obvious 
+ is when
+  A
+  is such that
+  p
+ ij
+  =
+  0 for all
+  i
+  ↪
+  B
+  and
+  j
+  ↪
+  A
+ , i.e., when it is not possible to go from
+  B
+  
+ to
+  A
+ . Then 
+ h
+ i
+  = 
+ {︃1, 
+ 0,  
+ i
+  ↪
+  A
+ , 
+ i
+  ↪
+  B
+ , 
+ obviously satisfies the system of equations in Theorem 1. Since the
+  h
+ i
+  values for
+  i
+  ↪
+  B 
+ cannot be reduced any further, this is the minimal solution. 
+ • Collecting
+  h
+ i
+  into a vector
+  h
+ , the system of equations in Theorem 1 can
+  almost
+  be 
+ written as the eigenvalue equation for eigenvalue 1, 
+ h
+  =
+  Ph
+ ,",NA
+ ∑,"p
+ 10,
+ j
+ h
+ j 
+  
+  
+  
+ j
+  
+ holds. Therefore in
+  G
+ ’s case,
+  h
+  is a solution of the system in Theorem 1 if and only if
+  h
+  is a 
+ non-negative eigenvector of
+  P
+  corresponding to eigenvalue 1 and scaled to satisfy
+  h
+ 10
+  =
+  1. 
+ (Be warned again that this may or may not happen for other Markov chains: see exercises.) 
+ What gives us further hope in the example of
+  G
+  is that we have a key piece of additional 
+ information:  
+  
+ h
+ 0
+  =
+  0, 
+ i.e., if
+  G
+  starts with no chips, then
+  G
+  cannot play, so
+  G
+  will stay in state
+  S
+ 0
+  forever. We might 
+ guess that this condition will help us filter out the irrelevant first trivial solution with
+  h
+ i
+  =
+  1 
+ for all
+  i
+ . 
+ Let me make one more remark before we start computing. The system of equations of 
+ Theorem 1 in the case of
+  G
+  reduces to 
+ h
+ i
+  =
+  ph
+ i
+ +
+ 1
+  + (
+ 1
+  −
+  p
+ )
+ h
+ i
+ −
+ 1
+  
+ for 1
+  ≤
+  i
+  ≤
+  9 together with
+  h
+ 0
+  =
+  0 and
+  h
+ 10
+  =
+  1. You can make intuitive sense of this outside the 
+ general framework of the theorem. If
+  G
+  starts with
+  i
+  chips (1
+  ≤
+  i
+  ≤
+  9) so that the probability 
+ of hitting
+  A
+  is
+  h
+ i
+ , then in the next step there are two cases:
+  (
+ a
+ )
+  G
+  has
+  i
+  +
+  1 
+ chips with probability
+  p
+ , or
+  (
+ b
+ )
+  G
+  has
+  i
+  −
+  1 chips with probability 1
+  −
+  p
+ . The probability of 
+ hitting
+  A
+  in case
+  (
+ a
+ )
+  is
+  p
+  ×
+  h
+ i
+ +
+ 1
+ , and the probability of hitting
+  A
+  in case
+  (
+ b
+ )
+  is
+  q
+  ×
+  h
+ i
+ −
+ 1
+ . Hence
+  h
+ i
+  
+ must be equal to the sum of these two, thus explaining the theorem’s equation 
+ h
+ i
+  =
+  ph
+ i
+ +
+ 1
+  + (
+ 1
+  −
+  p
+ )
+ h
+ i
+ −
+ 1
+ . 
+ Let us now compute
+  h
+ i
+  using the knowledge that in
+  G
+ ’s case,
+  h
+  is a non-negative eigenvec- 
+ tor of
+  P
+  corresponding to eigenvalue 1, scaled to satisfy
+  h
+ 10
+  =
+  1. 
+  
+ [12]:
+  from
+  numpy.linalg
+  import
+  eig, inv, det P
+  =
+  
+ PforG(p
+ =0.4
+ ) 
+  
+ ew, ev
+  =
+  eig(P) 
+  
+ ew 
+  
+ [12]:
+  array([-0.93184127, -0.79267153, -0.57590958, -0.30277358, -0. 
+ ,  
+ , 
+ 0.93184127, 
+ 0.79267153, 
+ 0.30277358, 
+ 0.57590958, 
+ 1. 
+ 1. 
+ ]) 
+ The computed set of eigenvalues of
+  P
+  include 1
+  twice.
+  Since the diagonalization (the factor-
+ ization produced by eig) was successful, we know that the eigenspace of
+  P
+  corresponding to 
+ eigenvalue 1 is two-dimensional.
+  If
+  there are vectors
+  h
+  in this eigenspace satisfying 
+ h
+ 0
+  =
+  0, 
+ h
+ 10
+  =
+  1,",NA
+XIV,NA,NA
+Google’s PageRank,"May 13, 2020 
+ In the history of the internet, a collection of papers proposing
+  PageRank
+  has been influen-
+ tial, in particular, a 1998 paper by Sergey Brin and Lawrence Page, two graduate students, 
+ now better known as Google co-founders. They proposed an objective metric to order the 
+ results of a user’s internet search. For those who don’t remember, there was indeed a time 
+ when “junk results often wash[︃ed]︃ out any results that a user is interested in,” to quote the 
+ paper. Of course, search engines now operate in a competitive business world, and the 
+ algorithms that Google and other companies use to rank their search results currently are 
+ not public knowledge. But the concept of PageRank is now routinely applied beyond Google, 
+ not just to the internet, but to general data on graphs and networks. It serves as an 
+ automatic tool to rank the relative importance of parts of any internet-like giant network. 
+ We shall view the web (internet) as a directed graph. Each internet location (a webpage) is 
+ a vertex of the graph. A hyperlink from one webpage to another is a directed edge of the 
+ graph. From this viewpoint, the central idea of Brin & Page was to exploit the “link structure 
+ of the web to calculate a quality ranking for each web page.” 
+ To introduce PageRank, we shall build on our previous discussion of Markov chains (from 
+ Gambler’s Ruin
+ ), which was entirely from the
+  statistical
+  or probabilistic perspective. Below, 
+ we will connect to theorems of Perron and Frobenius, which are results that one might 
+ usually learn in a
+  mathematics
+  program. Of course, all of this helps us understand the 
+ effectiveness of PageRank, a topic that has entered the
+  computer science
+  curricula in recent 
+ decades. Taken together, we then have an example of propitious convergence of ideas from 
+ the distinct fields of
+  computer science, mathematics, and statistics.
+  
+ XIV.1 
+  
+ Probability distributions on graphs
+  
+ Throughout this discussion, we have in mind a directed graph with vertices
+  V
+ 1
+ , . . . ,
+  V
+ N
+ , 
+ associated to a Markov chain with an
+  N
+  ×
+  N
+  stochastic matrix
+  P
+  = (
+ p
+ ij
+ )
+ . We consider a 
+ random walker on this digraph, who we name
+  W
+ . The random walker
+  W
+  is a “stochastic 
+ being”. We cannot know
+  W
+ ’s precise location on the graph; we only know that
+  W
+ ’s location 
+ is determined by a probability distribution on the graph. 
+ A
+  probability vector
+  is a vector
+  x
+  ↪
+  R
+ N
+ whose entries
+  x
+ i
+  satisfy 
+  
+  
+   
+ N 
+  
+  
+ 0
+  ≤
+  x
+ i
+  ≤
+  1,  
+ i
+ =
+ 1",NA
+∑,"x
+ i
+  =
+  1. 
+ Such a vector represents a probability distribution on the vertices of the graph. We may 
+ think of
+  x
+ i
+  as the probability that the system is in state
+  V
+ i
+ . Alternatively, we may think of 
+ x
+ i
+  as 
+ the probability of finding the random walker
+  W
+  at the digraph vertex
+  V
+ i
+ .",NA
+∑,"p
+ kj
+ x
+ k
+ ,  
+ k
+ =
+ 1
+  
+ which is the
+  j
+ th component of
+  P
+ t
+ x
+ . This argument can be formalized to obtain the following 
+ basic result. 
+ Theorem 1
+ .  The probability distribution of a random walk on a directed graph with 
+ stochastic matrix
+  P
+  changes from
+  x
+  to
+  P
+ t
+ x
+  in each step (where
+  P
+ t
+ denotes the transpose of
+  P
+ ). 
+ Note that if
+  x
+  is a probability vector and
+  P
+  is a transition matrix, then
+  P
+ t
+ x
+  is guaranteed 
+ (exercise!) to come out as a probability vector. 
+ XIV.2 
+  
+ Stationary distributions
+  
+ We have just seen that as the random walk progresses, an initial probability distribution
+  x 
+ changes as follows:  
+  
+ x
+ ,  
+ P
+ t
+ x
+ ,  
+ (
+ P
+ t
+ )
+ 2
+ x
+ , 
+ (
+ P
+ t
+ )
+ 3
+ x
+ ,  
+ . . . . 
+ Suppose this sequence converges to a limiting vector
+  s
+ . Then that limit should obviously not 
+ change if one more
+  P
+ t
+ is applied to it, i.e., it should satisfy 
+ P
+ t
+ s
+  =
+  s
+ . 
+ Any probability vector
+  s
+  satisfying
+  P
+ t
+ s
+  =
+  s
+  is called a
+  stationary distribution
+ , (or a
+  stationary 
+ probability vector
+  or an
+  equilibrium
+ ) of the random walk. Notice that the stationary proba-
+ bility vector is always an eigenvector of
+  P
+ t
+ associated to eigenvalue 1. Notice also that the 
+ limit, if it exists, is
+  independent of the initial distribution x
+ . 
+ For the random walker
+  W
+ , if the limit of the above sequence exists, then the stationary 
+ distribution can be used to identify the vertices of the graph with a high probability of 
+ finding
+  W
+  in the long run. 
+ [1]:
+  import
+  numpy
+  as
+  np
+  
+ from
+  numpy.linalg
+  import
+  eig, matrix_power, norm 
+ Example A
+  
+ [2]:
+  PA
+  =
+  np
+ .
+ array([[
+ 1/2
+ , [
+ 1/3
+ , 
+ [
+ 1/3
+ , 
+  
+ 1/4
+ ,
+  
+ 1/4
+ ],  
+ 1/3
+ ,
+  
+ 1/3
+ ],  
+ 1/3
+ ,
+  1/3
+ ]]) 
+ Does the sequence of probability distributions
+  x
+ ,
+  P
+ t
+ x
+ ,
+  (
+ P
+ t
+ )
+ 2
+ x
+ ,
+  (
+ P
+ t
+ )
+ 3
+ x
+ , . . . , converge for this 
+ Markov chain? To answer this, let’s take the matrix powers
+  (
+ P
+ t
+ )
+ n
+ and compute the 
+ 139",NA
+∑,"p
+ ij
+ v
+ j
+  =
+  µv
+ i
+  =
+  µ
+ .  
+ j
+ =
+ 1
+  
+ We also have  
+ N 
+  
+ N
+  
+ j
+ =
+ 1",NA
+∑,"p
+ ij
+ v
+ j
+  ≤
+ j
+ =
+ 1",NA
+∑,"p
+ ij
+  =
+  1. 
+ 147",NA
+∑,"p
+ ij
+  =
+  1  
+  
+ j
+ =
+ 1
+  
+ can be rewritten in matrix terms as 
+ P
+ ⎡...⎤⎡...⎤ 
+      
+ 1  
+ 1⎢⎣1⎥⎦
+  =
+ ⎢⎣1⎥⎦ . 
+ Therefore
+  µ
+  must be 1. Let’s highlight this conclusion: 
+ •
+  µ
+  =
+  1
+  is the dominant eigenvalue of any positive transition matrix P and the 
+ corresponding 
+  
+ eigenvector is the vector whose entries are all ones.
+  
+ Of course, Perron’s theorem applies to both
+  P
+  and
+  P
+ t
+ , since both are positive matrices. Since 
+ the eigenvalues of
+  P
+  and
+  P
+ t
+ are the same, we can further say this: 
+ •
+  µ
+  =
+  1
+  is also the dominant eigenvalue of P
+ t
+ (but the eigenvector corresponding to eigen-
+  
+ value 1 may be different for
+  P
+ t
+ and
+  P
+ ). 
+ The theorem also tells us that the limit of
+  (
+ P
+ t
+ )
+ n
+ exists. Relating to our discussion of station-
+ ary distributions, we conclude: 
+ •
+  The sequence of probability distributions of a random walk
+  
+ x
+ , 
+ P
+ t
+ x
+ , 
+ (
+ P
+ t
+ )
+ 2
+ x
+ , 
+ (
+ P
+ t
+ )
+ 3
+ x
+ , 
+ . . . 
+ always converges for Markov chains with p
+ ij
+  >
+  0
+  and the limit s is independent of the 
+ initial distribution x.
+  
+ The theorem also tells us that the limit of
+  P
+ n
+ exists, and moreover, the limit matrix must have 
+ columns that are scalar multiples of the eigenvector of the dominant eigenvalue: in other 
+ words, the columns of lim
+ n
+ →
+ ∞
+  P
+ n
+ must be scalar multiples of the vector of ones. On the other 
+ hand, the limit of
+  (
+ P
+ t
+ )
+ n
+ = (
+ P
+ n
+ )
+ t
+ must have columns that are multiples of the eigenvector
+  s
+  
+ satisfying
+  P
+ t
+ s
+  =
+  s
+ , which we previously called the stationary distribution. Thus, having 
+ pinned down the rows and the columns, we make the following conclusion: 
+ •
+  The limit of P
+ n
+ as n
+  →
+  ∞
+  takes the following form
+  
+  
+  
+ ⎡
+ s
+ 1 
+  
+   
+ s
+ 1 
+  
+    
+  
+ s
+ 2 
+  
+    
+  
+ s
+ 2 
+   
+    
+  
+  
+ . . .  
+   
+  
+    . . 
+ .  
+  
+    
+   
+  
+ s
+ N 
+   
+  
+  
+    
+  
+ s
+ N
+ ⎤ 
+ n
+ →
+ ∞
+ P
+ n
+  
+ [21]:
+  matrix_power(PA,
+  1000
+ ) 
+  
+ # P^1000 for Example A
+  
+  
+ 148",NA
+∑,"k
+ =
+ 1
+  
+ a
+ ik
+ . 
+ If
+  m
+ i
+  is 0, then the
+  i
+ th vertex is a
+  dangling node
+  (which has no outgoing edges). Define 
+ These may be thought of as weights on a directed edge from
+  v
+ i
+  to
+  v
+ j
+  if the edge exists 
+ w
+ ij
+  
+ =
+ ⎧⎪ 
+ ⎩ 
+ m
+ i
+  
+ N
+  
+ 1 
+ if
+  m
+ i
+  >
+  0, 
+ if
+  m
+ i
+  =
+  0. 
+ a
+ ij
+  
+ (if not, the weight is zero). The weight
+  w
+ ij
+  may also be viewed as providing equal 
+ probabilities to all outgoing edges from
+  v
+ i
+ . 
+ 3. Now that we have a weighted directed graph, we may associate it to a Markov chain, 
+ setting transition probabilities to
+  w
+ ij
+ , but hold on: if we do so, a random walker
+  W 
+ on 
+ the graph can get stuck in vertices with no outgoing edges or in cycles within the 
+ graph. (This is certain to happen on graphs as complex as the internet.) To avoid this 
+ situation, one sets a
+  restart probability
+  0
+  <
+  r
+  ↪
+  1 with which
+  W
+  is allowed to jump from 
+ one vertex to any other vertex in the graph. (Page called 1
+  −
+  r
+  the
+  damping 
+ factor.) 
+ 4. Finally, set the Markov chain transition probabilities by 
+ p
+ ij
+  =
+ r N
+ + (
+ 1
+  −
+  r
+ )
+ w
+ ij
+ . 
+ The PageRank of a vertex is defined to be the value of the stationary probability distribution at 
+ that vertex obtained using the above p
+ ij
+  as the transition probabilities.
+  
+ Note that the transition matrix
+  (
+ p
+ ij
+ )
+  defined above is a positive matrix. Hence, due to 
+ Perron’s theorem, and our prior discussion on its application to stochastic matrices, the 
+ 149",NA
+∑,"n
+ =
+ 0
+  
+ 1 
+ µ
+ n
+  A
+ n
+  exists and equals a matrix whose columns are all scalar 
+ k
+  
+ Note the main differences in Theorem 3 in comparison to Theorem 2: 
+ • Unlike positive matrices, now there might be more than one eigenvalue whose abso-
+  
+ lute value is
+  µ
+ . 
+ • Unlike positive matrices, we can no longer assert that limit
+  A
+ n
+ /
+ µ
+ n
+ exists, only that  the 
+ limit of averages of
+  A
+ n
+ /
+ µ
+ n
+ exists.",NA
+XV,NA,NA
+Supervised learning by regression,"May 21, 2020 
+ Machine learning
+  refers to mathematical and statistical techniques to build
+  models of data.
+  A 
+ program is said to
+  learn
+  from data when it chooses a model or adapts tunable model pa-
+ rameters to observed data. In broad strokes, machine learning techniques may be divided 
+ as follows: 
+ •
+  Supervised learning
+ : Models that can predict labels based on labeled training data 
+ –
+  Classification
+ : Models that predict labels as two or more discrete categories
+ –
+  
+ Regression
+ : Models that predict continuous labels 
+ •
+  Unsupervised learning
+ : Models that identify structure in unlabeled data 
+ –
+  Clustering
+ : Models that detect and identify distinct groups in the data 
+ –
+  Dimensionality reduction
+ : Models that identify lower-dimensional structure in 
+  higher-dimensional data 
+ In this activity, we focus on supervised learning. Note the two further subdivisions men-
+ tioned above within the category of supervised learning, and here are two examples within 
+ each for further orientation: 
+ • Classification example: identify an email as spam or not (discrete label) based on 
+  
+ counts of trigger words. 
+ • Regression example: predict the arrival time (continuous label) of a streetcar at a 
+  
+ station based on past data. 
+ We shall further focus on
+  regression
+  in this activity. Regression addresses an age-old fitting 
+ problem: given a set of data, find a line (or a curve, or a surface, or a hypersurface in higher 
+ dimensions) that approximately fits the data. The equation of the line, in the machine 
+ learning language, is the
+  model
+  of the data that has been “learnt.” The model can 
+ then“predict” the values, i.e., “labels” at points not covered by the original data set. Finding 
+ equations of curves that pass through a given set of points is the problem of
+  interpolation
+ , 
+ which goes at least as far back as Newton (1675). The fitting problem in regression, also 
+ known at least as far back as Gauss (1809), is a relaxed version of the interpolation problem 
+ in that it does not require the curves to pass through the given data, and is generally more 
+ suitable to handle noisy data. These days, when machine learning comes at you with the 
+ brashness of an overachieving new kid on the block, it is not fashionable to view the subject 
+ from the perspective of established mathematical techniques with rich histories. Instead, it 
+ has somehow become more fashionable to view machine learning as some sort of new AI 
+ miracle. Please do not expect any miracles here. 
+ 154",NA
+∑,"i
+ =
+ 0
+  
+ |
+  f
+  (
+ x
+ i
+ )
+  −
+  f
+ i
+ |
+ 2
+  
+ is minimized. Since the quantity on the right is a sum of squares, this is called the
+  least-
+ squares
+  error. It is easy to solve this minimization problem. Writing 
+ the error
+  e
+  can also be expressed as
+  e
+  =
+  ↪
+ Y
+ fit
+ −
+  Y
+ data
+ ↪
+ 2
+ =
+  ↪
+ Xa
+  −
+  Y
+ data
+ ↪
+ 2
+ = (
+ Xa
+  −
+  
+ Y
+ data
+ =
+ ⎡ 
+  
+ ⎢⎣
+ f
+ N 
+  
+    
+ f
+ 0
+  
+  
+ ...⎤⎥⎦ ,  
+ Y
+ fit
+ =
+ ⎡  ⎢⎣
+ f
+  
+ (
+ x
+ N
+ ) 
+  
+  
+    
+ f
+  
+ (
+ x
+ 0
+ )
+  
+  
+ ... ⎤ 
+ ⎥⎦
+  
+ =
+  ⎡ 
+  
+ ⎢⎣ 
+ ⏞ 
+ 1 
+ 1  
+ ... 
+ ⏟⏟ 
+  
+ x
+ N 
+  
+   
+ x
+ 0
+  
+ a
+  = (
+ X
+ t
+ X
+ )
+ −
+ 1
+ X
+ t
+ Y
+ data
+ . 
+ This is the
+  least-squares solution to the linear regression problem.
+  
+ In the machine learning language, -
+  f
+ i
+  are (continuous) “labels”, - the “model” is the linear 
+ formula
+  a
+ 0
+  +
+  a
+ 1
+ x
+ , - the “labeled training data” is
+  (
+ x
+ i
+ ,
+  f
+ i
+ )
+ , and - the “predictions” are values of
+  f
+  
+ (
+ x
+ )
+  at various
+  x
+ -values. 
+ Here is an example. 
+ [1]:
+  import
+  numpy
+  as
+  np
+  
+ from
+  numpy.linalg
+  import
+  inv 
+  
+ %
+ matplotlib
+  inline 
+  
+ import
+  matplotlib.pyplot
+  as
+  plt
+  
+  
+ rng
+  =
+  np
+ .
+ random
+ .
+ default_rng(
+ 123
+ ) 
+ [2]:
+  x
+  = 5 *
+  rng
+ .
+ random(
+ 20
+ ) 
+ f
+  = 3 *
+  x
+  + 5 *
+  rng
+ .
+ random(
+ 20
+ ) 
+  
+ plt
+ .
+ scatter(x, f); plt
+ .
+ xlabel(
+ 'x'
+ ); plt
+ .
+ ylabel(
+ 'Continuous labels (f)'
+ ); 
+ 155",NA
+∑,"i
+ =
+ 0
+  
+ |
+  f
+  (
+ x
+ ↪
+  i
+ )
+  −
+  f
+ i
+ |
+ 2
+ . 
+ The only difference now is that 
+ a
+  =
+ ⎡ ⎢⎣
+ a
+ m 
+  
+  
+  
+ a
+ 0 
+   
+   
+ ...⎤ 
+   
+  
+  
+ ⎥⎦ ,  
+  
+     
+ X
+  =
+ ⎡ 
+  
+    
+  
+  ⎢⎢⎢⎣
+ ϕ
+ 0
+ (
+ x
+ ↪
+  N
+ )
+  
+  
+  
+  
+  
+     
+ ϕ
+ 0
+ (
+ x
+ ↪
+  0
+ )
+   
+    
+  
+   
+  
+ ϕ
+ 0
+ (
+ x
+ ↪
+  1
+ ) 
+   
+  
+  
+  
+      
+ ... 
+    
+  
+   
+  
+   
+  
+ ϕ
+ 1
+ (
+ x
+ ↪
+  N
+ )
+  
+  
+      
+  
+    
+  
+ ϕ
+ 1
+ (
+ x
+ ↪
+  0
+ )
+    
+  
+  
+  
+  
+      
+ ϕ
+ 1
+ (
+ x
+ ↪
+  1
+ ) 
+   
+   
+  
+   
+  
+  
+  
+  
+   ...  
+  
+    
+  
+   
+  
+   
+  
+  
+ · · ·
+  
+  
+      
+  
+    
+  
+   
+ · · ·
+  
+ · · ·
+ ϕ
+ m
+ (
+ x
+ ↪
+  N
+ )
+ ⎥⎥⎥⎦ . 
+  
+  
+ ϕ
+ m
+ (
+ x
+ ↪
+  0
+ )
+  
+  
+ ϕ
+ m
+ (
+ x
+ ↪
+  
+ 1
+ )
+ ⎤ 
+ Here is an example where we fit a quadratic curve to a simple one-dimensional data set, i.e., 
+ here  
+  
+ f
+  (
+ x
+ ) =
+  a
+ 0
+  +
+  a
+ 1
+ x
+  +
+  a
+ 2
+ x
+ 2
+  
+ and the
+  a
+ ’s are found by the above formula.",NA
+XVI,NA,NA
+Unsupervised learning by PCA,"May 27, 2020 
+ Recall from the
+  previous lecture
+  that
+  unsupervised learning
+  refers to machine learning mod-
+ els that identify structure in unlabeled data. In this activity, we study
+  Principal Compo-
+ nent Analysis (PCA)
+  which is a commonly used technique in unsupervised learning, often 
+ used for discovering structure in high-dimensional data, and for dimensionality reduction. 
+ In this activity, I will extensively draw upon what you studied in some earlier activities. In 
+ particular, I will try to detail the connections between PCA and
+  SVD
+ , the differences in the 
+ jargon, highlight the distinctions between PCA and
+  regression
+ , and illustrate how 
+ unsupervised machine learning is different from supervised machine learning. 
+ [1]:
+  import
+  numpy
+  as
+  np
+  
+ import
+  matplotlib.pyplot
+  as
+  plt
+  
+  
+ %
+ matplotlib
+  inline 
+  
+ import
+  matplotlib.colors
+  as
+  colors
+  
+  
+ from
+  matplotlib.collections
+  import
+  LineCollection 
+  
+ import
+  matplotlib.cm
+  as
+  cm
+  
+  
+ from
+  sklearn.decomposition
+  import
+  PCA 
+  
+ from
+  scipy.linalg
+  import
+  svd 
+  
+ from
+  numpy.linalg
+  import
+  norm 
+  
+ rng
+  =
+  np
+ .
+ random
+ .
+ default_rng(
+ 13
+ ) 
+ XVI.1
+  
+ Definitions
+  
+ • Given a
+  one
+ -dimensional data vector
+  x
+  = [
+ x
+ 1
+ ,
+  x
+ 2
+ , . . . ,
+  x
+ m
+ ]
+ t
+ , its
+  mean
+ , or
+  sample mean
+  
+ is 
+ x
+ ¯
+  =
+ 1  
+ m
+  
+ m",NA
+∑,"i
+ =
+ 1
+  
+ x
+ i
+ . 
+ • Consider a
+  multi
+ -dimensional
+  m
+  ×
+  n
+  data array
+  X
+  representing 
+ m
+  samples/observations/rows 
+ for 
+ n
+  variables/features/columns. 
+ The
+  j
+ th column of
+  X
+ , denoted by
+  X
+ j
+ , represents a number of samples of a single 
+ variable. We say that such an
+  X
+  represents
+  centered data
+  if the sample mean of
+  X
+ j
+  is 
+ zero for every column
+  j
+ . Let
+  R
+ i
+  denote the
+  i
+ th row of the data matrix
+  X
+ . We use
+  R
+ i
+  to 
+ define the principal components of any centered data, as follows.",NA
+∑,"(
+ v
+ 1
+  ·
+  R
+ i
+ )
+ 2
+ . 
+ • The
+  second principal component
+  of any centered data
+  X
+  (defined when
+  n
+  ≥
+  2) is  a 
+ unit vector
+  v
+ 2
+  ↪
+  R
+ n
+ that is orthogonal to the first principal component
+  v
+ 1
+  and maximizes  
+  
+  
+ m
+  
+ i
+ =
+ 1",NA
+∑,"(
+ v
+ 2
+  ·
+  R
+ i
+ )
+ 2
+ ,  subject to
+  v
+ 1
+  ·
+  v
+ 2
+  =
+  0. 
+ • The third principal component of
+  X
+  (defined when
+  n
+  ≥
+  3) is a unit vector
+  v
+ 3
+  ↪
+  R
+ n 
+ that is 
+ orthogonal to both
+  v
+ 1
+  and
+  v
+ 2
+  while maximizing ∑
+ m i
+ =
+ 1
+ (
+ v
+ 3
+  ·
+  R
+ i
+ )
+ 2
+ . 
+ You should now see the pattern to define any number of further principal components. Note 
+ that if
+  v
+  is a principal component vector, then
+  −
+ v
+  is also one. Note also that principal 
+ components are also often referred to as
+  principal axes
+  or
+  principal directions.
+  
+ To understand why these principal components reveal structure in the data, first recall that 
+ the dot product of two vectors
+  a
+  and
+  b
+  is maximal when the vectors are collinear: remember 
+ that
+  |
+ a
+  ·
+  b
+ |
+  =
+  ↪
+ a
+ ↪↪
+ b
+ ↪|
+  cos
+ (
+ θ
+ )
+ |
+  where
+  θ
+  is the angle between
+  a
+  and
+  b
+ , and
+  |
+  cos
+ (
+ θ
+ )
+ |
+  is maxi-
+ mal when
+  θ
+  is 0 or integer multiples of
+  π
+ . Hence the first principal component
+  v
+ 1
+  may be 
+ interpreted as the vector that is “most collinear” with all the rows/observations/samples 
+ R
+ i
+ . 
+ A dependency between multiple variables/features/columns hidden inside the many 
+ samples/observations in
+  X
+  can thus be brought out using
+  v
+ 1
+ . While
+  v
+ 1
+  gives the dominant 
+ dependency, the later principal components reveal further dependencies in spaces orthog-
+ onal to the previous principal components. You should now begin to see why PCA might be 
+ able to automatically discover hidden structures in data, one of the primary objectives in
+  
+ unsupervised machine learning.
+  
+ XVI.2 
+  
+ Two-dimensional example
+  
+ Let’s consider a small two-dimensional example where we can graphically visualize all 
+ aspects. 
+ [2]:
+  x
+  = 3 *
+  rng
+ .
+ random(
+ 20
+ ) 
+ y
+  =
+  x
+  + 0.75*
+  rng
+ .
+ random(
+ 20
+ ) 
+  
+ fig
+  =
+  plt
+ .
+ figure(); ax
+  =
+  plt
+ .
+ gca() 
+  
+ ax
+ .
+ scatter(x, y, color
+ =
+ 'b'
+ )  
+ ax
+ .
+ scatter(x
+ .
+ mean(), y
+ .
+ mean(), 
+ color
+ =
+ 'r'
+ , marker
+ =
+ '*'
+ , s
+ =150
+ , alpha
+ =0.6
+ );
+ ␣
+  
+  
+ ↪→
+ ax
+ .
+ axis(
+ 'equal'
+ );",NA
+∑,"i
+ =
+ 1
+  
+ (
+ v
+  ·
+  R
+ i
+ )
+ 2
+ . 
+ From the figure, there is no doubt that the vectors
+  v
+  for which this function takes the largest 
+ values indicate the “dominant” direction of the data points. Once we find the first maximal 
+ vector, then we can restrict to the orthogonal complement of that vector and repeat the 
+ same maximization to compute further principal components. (In two dimensions, this 
+ becomes trivial, so we proceed ignoring further components.) 
+ 169",NA
+∑,"i
+ =
+ 1
+  
+ (
+ v
+  ·
+  R
+ i
+ )
+ 2
+  
+ m
+  −
+  1 
+ instead of the above
+  f
+ . Of course, the maximizers of
+  f
+  and
+  g
+  are the same. The function
+  g 
+ represents the
+  variance
+  of the data
+  R
+ i
+  projected onto
+  v
+ , which is the statistical quantity that 
+ the first principal component maximizes. 
+ How do we solve the maximization problem? The answer is given in the next theorem. 
+ XVI.3 
+  
+ PCA and SVD
+  
+ The key mathematical device for PCA is a tool we have studied in a
+  prior lecture, the SVD
+ . 
+ Theorem 1
+ . Let
+  X
+  =
+  U
+ Σ
+ V
+ t
+ be an SVD of
+  X
+  ↪
+  R
+ m
+ ×
+ n
+ and let
+  V
+  = [
+ v
+ 1
+ ,
+  v
+ 2
+ , . . . ,
+  v
+ n
+ ]
+ . If
+  X 
+ represents 
+ centered data, then its
+  i
+ th principal component vector equals (up to a sign) the 
+ i
+ th right 
+ singular vector
+  v
+ i
+  of the SVD of
+  X
+ . 
+ For an example, we return to the previous two-dimensional centered dataset X and com-
+ pute its SVD. 
+ [7]:
+  u, s, vt
+  =
+  svd(X) 
+ Plotting the first right singular vector as an arrow through the centered data immediately 
+ illustrates the theorem’s claim. We find that the first right singular vector is in one of the 
+ two directions where we expected the maximizer of
+  f
+ , in view of the previous figure. 
+ [8]:
+  fig
+  =
+  plt
+ .
+ figure(); ax
+  =
+  plt
+ .
+ gca() 
+ ax
+ .
+ arrow(
+ 0
+ ,
+  0
+ , vt[
+ 0
+ ,
+  0
+ ], vt[
+ 0
+ ,
+  1
+ ], width
+ =0.025
+ , color
+ =
+ 'brown'
+ , alpha
+ =0.6
+ ) 
+  
+ plotX(X, ax) 
+  
+ The second singular vector is of course orthogonal to the one shown. (Recall that the 
+ columns of a unitary matrix are orthonormal.) 
+ You might now be thinking that this figure is beginning to look like the linear regression 
+ figure of the previous lecture, especially if one draws a line through that arrow, and com-
+ pare it with the regression line. Let me check that thinking right away.",NA
+∑,"(
+ v
+  ·
+  R
+ i
+ )
+ 2
+  
+ is also the same vector whose
+  v
+ ↪
+ minimizes 
+ m",NA
+∑,"i
+ =
+ 1
+  
+ (
+ v
+ ↪
+ ·
+  R
+ i
+ )
+ 2
+ . 
+ Below is the graphical illustration of this minimization behind the PCA (left plot). We 
+ draw little orange line segments from each data point
+  R
+ i
+  in the direction
+  v
+ ↪
+ such that its 
+ length equals
+  (
+ v
+ ↪
+ ·
+  R
+ i
+ )
+ 2
+ . Please compare it with the previous figure for linear regression, also 
+ reproduced aside below (right plot). 
+  
+ [10]:
+  def
+  plot_pca
+ (X, ax):  
+ u, s, vt
+  =
+  svd(X) 
+  
+ t
+  =
+  np
+ .
+ linspace(
+ -3
+ ,
+  3
+ ,
+  100
+ ); v1
+  =
+  vt[
+ 0
+ , :]",NA
+∑,"j
+ =
+ 1
+  
+ σ
+ j
+ u
+ j
+ v
+ ↪
+ j
+  
+ from which the best rank
+  ℓ
+  approximation to
+  X
+ , denoted by
+  X
+ ℓ
+ , can be extracted simply by 
+ throwing away the later summands: 
+ X
+ ℓ
+  =
+  
+ ℓ",NA
+∑,"j
+ =
+ 1
+  
+ σ
+ j
+ u
+ j
+ v
+ ↪
+ j
+ . 
+ Before showing how this is done in scikit-learn, let us compute
+  X
+ ℓ
+ , say for
+  ℓ
+  =
+  5, using the 
+ SVD. We implement the above formula, and add the means to compensate for the fact that 
+ the SVD was taken on centered data. 
+ [26]:
+  l
+  = 5
+  
+ Xl_svd
+  =
+  u[:, :l]
+  @
+  np
+ .
+ diag(s[:l])
+  @
+  vt[:l, :]
+  +
+  XX
+ .
+ mean(axis
+ =0
+ ) 
+ There is a corresponding facility in scikit-learn. 
+ First, note that we may give the 
+ n_components argument to PCA, which tells PCA how many principal components to 
+ compute. 
+ [27]:
+  # The rank l approximation needs only l principal components
+  
+  
+ pcal
+  =
+  PCA(n_components
+ =
+ l, svd_solver
+ =
+ 'full'
+ )
+ .
+ fit(XX) 
+ Now, to get the best rank
+  ℓ
+  approximation from PCA, we use the transform method, which 
+ gives the components of the data projected onto the principal axes (and there are 5 prin-
+ cipal axes now). Then, we can use the inverse_transform method to lift the projected 
+ components into the original data space of 64 pixels. 
+ [28]:
+  projX
+  =
+  pcal
+ .
+ transform(XX) 
+ projX
+ .
+ shape 
+ # the shape reflects projected data sizes
+  
+ 176",NA
+ ∑,"k
+  
+ σ
+ k
+ u
+ k
+ v
+ t k
+ , 
+ we may read off the the
+  i
+ th row
+  R
+ i
+ , which represents the
+  i
+ th image in this dataset, as follows:  
+  
+ [
+ R
+ i
+ ]
+ j
+  =
+  X
+ ij
+  =",NA
+ ∑,"σ
+ k
+ [
+ u
+ k
+ ]
+ i
+ [
+ v
+ k
+ ]
+ j
+ . 
+ k
+  
+ 182",NA
+XVII,NA,NA
+Latent Semantic Analysis,"June 1, 2020 
+ In the study of information retrieval systems, a fundamental question is how to extract 
+ documents from a large collection in response to a user query. A simplistic way is to pick 
+ out all documents which contain the query words. Is there a more “intelligent” way? Doc-
+ uments usually have interrelated
+  concepts
+  and if a query could be matched to a concept, 
+ perhaps the results extracted would look more intelligent. Documents are written in natu-
+ ral language, using copious amounts of
+  words
+ , yet the number of topics that people write 
+ about are usually much smaller than the number of words they use. Latent Semantic Anal-
+ ysis (LSA) is a technique to associate
+  concepts
+  in a space of much lower dimension than a 
+ space of
+  words
+  in order to help with the complex task of information retrieval. 
+ Of course, a number of details have to be worked out. How can one associate words to a 
+ vector space? How can one identify topics in this space? How can one represent queries? It 
+ should therefore not be surprising that this is a whole field of study in itself: see e.g.,
+  [MRS]
+ . 
+ Yet, we are able to take a peek into this machinery because the essential mathematical tool 
+ used in LSA is something you already know, namely the
+  SVD
+ . 
+ I’m sure yesterday’s news is very much on your mind, with the best and the worst of hu-
+ manity on display. Shocking police violence and a successful astronaut launch dominated 
+ the news headlines. Having failed to get the news out of my mind, I am going to use 
+ sentences from current news for introducing LSA. 
+ The next graph, obtained from LSA’s interpretation of
+  four news headlines
+  on a two-
+ dimensional space made in this lecture, may well be a representation of the country’s 
+ current state. Today’s lecture will show you how to analyze text and graphically display 
+ words and their apparent connections like those displayed below. 
+ 185",NA
+A,NA,NA
+Exercises,"A.1
+  
+ Exercise: Sum up integer powers
+  
+ Task:
+  Write a code to compute the value of 
+ N",NA
+∑,"n
+ =
+ 1
+  
+ n
+ i
+  
+ for any integers
+  i
+  and
+  N
+ . (Solution codes will be ranked in terms of correctness, readability, 
+ and brevity.) 
+ How do you know your answer is correct? When writing code it is important to check for 
+ correctness. Llementary mathematics tells us that 
+ N",NA
+∑,"n
+ =
+ 1
+  
+ n
+ 2
+ =
+ N 
+ 6
+ (
+ N
+  +
+  1
+ )(
+ 2
+ N
+  +
+  1
+ )
+ . 
+ (If you don’t know this prove it!) So you can easily check that your code gives the correct 
+ answer, at least for
+  i
+  =
+  2. In fact, even for a general power
+  i
+ , power sums have been studied 
+ very well and expressions connecting them to the Riemann zeta function are
+  well known
+ , so 
+ for this task, there are indeed many sources to double check our code results. 
+ Python has many styling guidelines for writing good code. You may want to peruse
+  PEP 8 
+ at 
+ your leisure. And take time to behold an easter egg (one of several) within the language: 
+ [1]:
+  import
+  this
+  
+ The Zen of Python, by Tim Peters
+  
+ Beautiful is better than ugly.
+  
+ Explicit is better than implicit.
+  
+ Simple is better than complex.
+  
+ Complex is better than complicated.
+  
+ Flat is better than nested.
+  
+ Sparse is better than dense.
+  
+ Readability counts.
+  
+ Special cases aren't special enough to break the rules.
+  
+ Although practicality beats purity.
+  
+ Errors should never pass silently.
+  
+ Unless explicitly silenced.
+  
+ In the face of ambiguity, refuse the temptation to guess.
+  
+ There should be one-- and preferably only one --obvious way to do it.
+  
+ Although that way may not be obvious at first unless you're Dutch. Now is better 
+ than never.
+  
+ Although never is often better than *right* now.
+  
+ If the implementation is hard to explain, it's a bad idea.
+  
+ If the implementation is easy to explain, it may be a good idea.
+  
+ Namespaces are one honking great idea -- let's do more of those!
+  
+ 198",NA
+B,NA,NA
+Projects,"B.1
+  
+ Assignment: Bisection Method
+  
+ Your task is to implement the
+  bisection method
+  for finding a solution
+  x
+  of the equation 
+ f
+  (
+ x
+ ) =
+  0. 
+ Here
+  f
+  is a real-valued function of a single real variable
+  x
+  and the solution of the above 
+ equation is called a
+  root
+  of
+  f
+ . 
+ Many nonlinear algebraic equations, such as
+  x
+  =
+  1
+  +
+  cos
+  x
+  do not admit a closed form 
+ solution. But a numerical method can find an approximate solution by finding the root of 
+ f
+  
+ (
+ x
+ ) =
+  x
+  −
+  1
+  −
+  cos
+  x
+ . 
+ Bisection is a numerical method to solve for a root of a function
+  f
+  (
+ x
+ )
+  of a single real variable 
+ x
+ . Here is its description:  
+ The Bisection method 
+  
+  
+ 1. Start with an interval
+  [
+ a
+ ,
+  b
+ ]
+  in which
+  f
+  (
+ x
+ )
+  changes sign. 
+ 2. Then there must be (at least) one root in
+  [
+ a
+ ,
+  b
+ ]
+ . 
+ 3. Halve the interval and set the midpoint
+  m
+  = (
+ a
+  +
+  b
+ )
+ /2. 
+ • Does
+  f
+  change sign in left half
+  [
+ a
+ ,
+  m
+ ]
+ ? 
+  
+   • If Yes: Repeat with the left interval
+  [
+ a
+ ,
+  m
+ ]
+  (set
+  b
+  =
+  m
+ ) 
+  
+   • If No: Repeat with the right interval
+  [
+ m
+ ,
+  b
+ ]
+  (set
+  a
+  =
+  m
+ )  
+ 4. At the
+  n
+ th step, the initial interval
+  [
+ a
+ ,
+  b
+ ]
+  has been halved
+  n
+  times and we know that 
+  
+  
+ f
+  (
+ x
+ )
+  must have a root inside a small subinterval of length 2
+ −
+ n
+ (
+ b
+  −
+  a
+ )
+ . Since the root 
+  
+ is contained in this subinterval, error
+  ≤
+  2
+ −
+ n
+ (
+ b
+  −
+  a
+ )
+ . 
+ 5. Hence we may stop the subdivisions when
+  n
+  is such that 
+  
+ 2
+ −
+ n
+ (
+ b
+  −
+  a
+ )
+  ≤
+  ϵ
+ . 
+ for some user specified error tolerance
+  ϵ
+ , and take the midpoint
+  m
+  as the root. 
+ Hints and suggestions 
+  
+  
+ 1. Write down your steps as a precise algorithm (before you code) in terms of  
+  
+ for/while, if, else, etc. Use this to map out how you will write your code. 
+ 2. Write a first version of the code and make sure it is working on a test problem. Your 
+  
+ code should be in the form of a function 
+ def
+  bisection(f, a, b, eps, niters):  
+ # Code goes here.
+  
+ 216",NA

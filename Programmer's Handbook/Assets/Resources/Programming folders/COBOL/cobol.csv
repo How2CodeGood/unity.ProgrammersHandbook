@@ -1,0 +1,2931 @@
+Larger Text,Smaller Text,Symbol
+cobol,NA,NA
+#cobol,NA,NA
+Table of Contents,"About 
+  
+ Chapter 1: Getting started with cobol 
+  
+ Remarks 
+  
+  
+ Standard Specification 
+  
+  
+ Principal field of use 
+  
+  
+ Category 
+  
+   
+ Decimal Math 
+  
+  
+ History 
+  
+  
+ Structure 
+  
+  
+ Data Descriptions 
+  
+  
+ Procedural statements 
+  
+  
+ Examples 
+  
+   
+ Hello, world 
+  
+   
+ Install gnu-cobol on Mac OS X 
+  
+ Chapter 2: ACCEPT statement 
+  
+  
+ Remarks 
+  
+  
+ Examples 
+  
+   
+ ACCEPT statement 
+  
+ Chapter 3: ADD statement 
+  
+  
+ Remarks 
+  
+  
+ Examples 
+  
+   
+ ADD statement 
+  
+ Chapter 4: ALLOCATE statement 
+  
+ Remarks 
+  
+  
+ Examples 
+  
+   
+ ALLOCATE statement 
+  
+ Chapter 5: ALTER statement 
+  
+  
+ Remarks 
+  
+  
+ Examples 
+  
+   
+ A contrived example using ALTER
+  
+ 1 
+  
+ 2 
+  
+ 2 
+  
+ 2 
+  
+ 2 
+  
+ 2 
+  
+ 3 
+  
+ 3 
+  
+ 3 
+  
+ 3 
+  
+ 4 
+  
+ 4 
+  
+ 4 
+  
+ 5 
+  
+ 7 
+  
+ 7 
+  
+ 8 
+  
+ 8 
+  
+ 10 
+  
+ 10 
+  
+ 10 
+  
+ 10 
+  
+ 12 
+  
+ 12 
+  
+ 12 
+  
+ 12 
+  
+ 13 
+  
+ 13 
+  
+ 13 
+  
+ 13",NA
+About,"You can share this PDF with anyone you feel could benefit from it, downloaded the latest version 
+ from: 
+ cobol
+  
+ It is an unofficial and free cobol ebook created for educational purposes. All the content is extracted 
+ from 
+ Stack Overflow Documentation
+ , which is written by many hardworking individuals at Stack 
+ Overflow. It is neither affiliated with Stack Overflow nor official cobol.
+  
+ The content is released under Creative Commons BY-SA, and the list of contributors to each 
+ chapter are provided in the credits section at the end of this book. Images may be copyright of 
+ their respective owners unless otherwise specified. All trademarks and registered trademarks are 
+ the property of their respective company owners.
+  
+ Use the content presented in this book at your own risk; it is not guaranteed to be correct nor 
+ accurate, please send your feedback and corrections to 
+ info@zzzprojects.com
+  
+ https://riptutorial.com/
+  
+ 1",NA
+Chapter 1: Getting started with cobol,NA,NA
+Remarks,"COBOL is the 
+ CO
+ mmon 
+ B
+ usiness 
+ O
+ riented programming 
+ L
+ anguage.
+  
+ Even though it has become a pronounceable name, COBOL is still treated as an acronym by the 
+ standards committee, and COBOL is the preferred spelling by the ISO and INCITS standards 
+ bodies.",NA
+Standard Specification,"The current specification is
+  
+ ISO/IEC 1989:2014 Information technology – Programming languages, their environments and 
+ system software interfaces – Programming language COBOL
+  
+ That document was published in May of 2014 and can be purchased from various branches of 
+ standard bodies, officially homed at
+  
+ http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=51416",NA
+Principal field of use,"Business oriented. That usually means transaction processing. Banking, government agencies, 
+ and the insurance industry are major areas of COBOL application deployments. IBM mainframe 
+ systems usually have a COBOL compiler installed. There are upwards of 300 COBOL dialects in 
+ existence, with perhaps 10 or so versions taking the lion's share of deployments. Most of these 
+ compilers are proprietary systems, but free software COBOL is also available.",NA
+Category,"COBOL is a procedural, imperative, compiled programming language. As of the COBOL 2002 
+ spec, Object Oriented features were added to the standard.
+  
+ By design intent, COBOL is a very verbose programming language. Although algebraic form is 
+ allowed:
+  
+ COMPUTE I = R * B
+  
+ the initial intent was to use full words for computational descriptions and data manipulation:
+  
+ MULTIPLY INTEREST-RATE BY BALANCE GIVING CURRENT-INTEREST ROUNDED MODE IS NEAREST-EVEN
+  
+ This design decision has both champions and detractors. Some feel it is too verbose, while others 
+  
+ https://riptutorial.com/
+  
+ 2",NA
+Decimal Math,"COBOL is designed around decimal arithmetic, unlike most languages that use a binary internal 
+ representation. The COBOL spec calls for very precise fixed point decimal calculations, an aspect 
+ of the language that has been well regarded in financial sectors. 
+ COBOL also allows for USAGE 
+ BINARY, but leans towards decimal (base-10) representations.",NA
+History,"COBOL dates back to the late 1950s, with initial implementations published in 1960.
+  
+ U.S. Navy Rear Admiral Grace Hopper is often associated with COBOL, and championed on 
+ behalf of the language during the early stages of development. She was not the only person 
+ involved in the design and development of COBOL, by any means, but is often referred to as the 
+ Mother of COBOL.
+  
+ Due to early backing by governments and large corporations, COBOL has been in wide use for 
+ many decades. It remains a point of pride for some, and a thorn for others, who see it as outdated. 
+  
+ The truth likely lies somewhere in between these extreme views. When applied to transaction 
+ processing, COBOL is at home. When applied to modern web screens and networking 
+ applications it may not feel as comfortable.",NA
+Structure,"COBOL programs are written in four separate divisions.
+  
+ •
+  
+ •
+  
+ •
+  
+ •
+  
+ IDENTIFICATION DIVISION 
+  
+ ENVIRONMENT DIVISION 
+  
+ DATA DIVISION 
+  
+ PROCEDURE DIVISION",NA
+Data Descriptions,"Being designed to handle decimal data, COBOL allows for PICTURE based data descriptions, in 
+ grouped hierarchies.
+  
+ 01 record-group. 
+  
+  
+  05 balance        pic s9(8)v99. 
+  
+  
+  05 rate           pic 999v999. 
+  
+  
+  05 show-balance   pic $Z(7)9.99.
+  
+ That defines 
+ balance
+  as a signed eight digit value with two digits assumed after the decimal point. 
+  
+ rate
+  is three digits before and three digits after an assumed decimal point. 
+ show-balance
+  is a numeric-
+ edit field that will have a leading dollar sign, seven digits (zero suppressed) with at least one digit 
+ shown preceding two digits after a decimal point.",NA
+Procedural statements,"COBOL is a reserved keyword heavy language. MOVE, COMPUTE, MULTIPLY, PERFORM style 
+ long form words make up most of the standard specification. Over 300 keywords and 47 
+ operational statements in the COBOL 2014 spec. Many compiler implementations add even more 
+ to the reserved word list.",NA
+Examples,NA,NA
+"Hello, world","HELLO * HISTORIC EXAMPLE OF HELLO WORLD IN COBOL 
+  
+  
+  IDENTIFICATION DIVISION. 
+  
+  
+  PROGRAM-ID. HELLO. 
+  
+  
+  PROCEDURE DIVISION. 
+  
+  
+  DISPLAY ""HELLO, WORLD"". 
+  
+  
+  STOP RUN.
+  
+ The days of punch card layout and uppercase only inputs are far behind. Yet most COBOL 
+ implementations still handle the same code layout. Even current implementations follow the same 
+ (often even in uppercase,) compiled and in production.
+  
+ A well-formatted modern implementation might look like:
+  
+ *> Hello, world 
+  
+  
+ identification division. 
+  
+  
+ program-id. hello. 
+  
+  
+ procedure division. 
+  
+  
+ display ""Hello, world"" 
+  
+  
+ goback. 
+  
+  
+ end program hello.
+  
+ With some implementations of COBOL, this can be shortened to:
+  
+ display ""Hello, world"".
+  
+ This format usually requires compile time switches to put a COBOL compiler into a relaxed syntax 
+ mode, as some of the normally mandatory 
+ DIVISION
+  statements are missing.
+  
+ COBOL assumes FIXED format sources by default, even in the current specification.
+  
+ Pre-2002 COBOL",NA
+Install gnu-cobol on Mac OS X,"gnu-cobol is available via the homebrew system.
+  
+ Open a terminal window from 
+ /Applications/Utilities/Terminal
+  or use the keypress 
+ Command+Space 
+ and type 
+ ""Terminal""
+ .
+  
+ If you do not have the homebrew system installed, add it by typing, or copying and pasting into 
+ your terminal:
+  
+ https://riptutorial.com/
+  
+ 5",NA
+Chapter 2: ACCEPT statement ,NA,NA
+Remarks ,"The COBOL ACCEPT statement is used to retrieve data from the system.
+  
+ https://riptutorial.com/
+  
+ 7",NA
+Examples,NA,NA
+ACCEPT statement,"https://riptutorial.com/
+  
+ 8",NA
+Chapter 3: ADD statement ,NA,NA
+Remarks,Where rounded-phase is,NA
+Examples ,NA,NA
+ADD statement,"ADD 1 TO cobol
+  
+  
+  
+ https://riptutorial.com/
+  
+ 10",NA
+Chapter 4: ALLOCATE statement,NA,NA
+Remarks,"Allocate working storage for a BASED item, or allocate a give size of heap storage.
+  
+ See also: FREE statement",NA
+Examples,NA,NA
+ALLOCATE statement,"01 pointer-var         usage POINTER. 
+  
+  
+ 01 character-field     pic x(80) BASED value ""Sample"". 
+  
+  
+ ALLOCATE 1024 characters returning pointer-var 
+  
+  
+ ALLOCATE character-field 
+  
+  
+ ALLOCATE character-field INITIALIZED RETURNING pointer-var
+  
+ See 
+ http://open-cobol.sourceforge.net/faq/index.html#allocate
+  for more details.
+  
+ Read ALLOCATE statement online: 
+ https://riptutorial.com/cobol/topic/5556/allocate-statement
+  
+ https://riptutorial.com/
+  
+ 12",NA
+Chapter 5: ALTER statement,NA,NA
+Remarks,"The much beloved ALTER statement. Changes the target of a GO TO paragraph.
+  
+ No longer part of the COBOL standard, still supported by many compilers for reasons of backward 
+ compatibility. 
+ (The syntax diagram is dimmed to show that this is no longer standard COBOL).",NA
+Examples,NA,NA
+A contrived example using ALTER,"identification division. 
+  
+  program-id. altering. 
+  
+  date-written. 2015-10-28/06:36-0400. 
+  
+  remarks. Demonstrate ALTER. 
+  
+  procedure division. 
+  
+  main section. 
+  
+ *> And now for some altering. 
+  
+  contrived. 
+  
+  ALTER story TO PROCEED TO beginning 
+  
+  GO TO story 
+  
+  . 
+  
+ *> Jump to a part of the story 
+  
+  story. 
+  
+  GO. 
+  
+  . 
+  
+ *> the first part 
+  
+  beginning. 
+  
+  ALTER story TO PROCEED to middle 
+  
+  DISPLAY ""This is the start of a changing story"" 
+  
+  GO TO story 
+  
+  . 
+  
+ *> the middle bit 
+  
+  middle. 
+  
+  ALTER story TO PROCEED to ending 
+  
+  DISPLAY ""The story progresses"" 
+  
+  GO TO story 
+  
+  . 
+  
+ *> the climatic finish 
+  
+  ending. 
+  
+  DISPLAY ""The story ends, happily ever after"" 
+  
+  
+ https://riptutorial.com/
+  
+ 13",NA
+Chapter 6: CALL statement ,NA,NA
+Remarks ,"The COBOL CALL statement provides access to compiled library routines.
+  
+ https://riptutorial.com/
+  
+ 15",NA
+Examples,NA,NA
+CALL statement ,"COBOL can use static linkage for the following statement. GnuCOBOL uses dynamic linkage by 
+ default for all external symbols known at compile time, even when the symbol is a literal:
+  
+ https://riptutorial.com/
+  
+ 16",NA
+SLEEPY TIME,"CALL is also a way to extend COBOL functionality, and also to allow the reusability of code. It can 
+ also give access to ""system"" functionality.
+  
+ This example illustrates ways to provide ""sleep"" functionality to IBM Mainframe COBOLs. Bear in 
+ mind that the requirement to do so is rare to the extent that usually when someone thinks they 
+ need to ""sleep"" for some reason, it is the wrong thing to do.
+  
+ ILBOWAT0 is from the old COBOL-specific runtime era on Mainframes. BXP1SLP and BXP4SLP 
+ are Unix System Services (USS) routines which can be used by any language. Effectively they are 
+ Unix ""sleep"" requests.
+  
+ The current IBM Mainframe Runtime (Language Environment (LE)) provides for inter-language 
+ communication, and the CEE3DLY LE services is shown in another example, 
+ Using z/OS 
+ Language Environment thread delay service
+ .
+  
+ ILBOWAT0 has been around for a very long time (perhaps more than 40 years), and you may still 
+ come across it. It's use should be replaced by CEE3DLY or BXP1SLP, whichever is the more 
+ appropriate for the particular requirement.
+  
+ Sometimes you need to cause a program to sleep, or cause a Job to sleep for a while (after an 
+ FTP or NDM step), which are usually run as separate jobs, and you would need to sleep/loop 
+ looking for the resulting datasets.
+  
+ https://riptutorial.com/
+  
+ 17",NA
+microfocus way,"For Microfocus, it uses the ""SleepEx"" API. As an example;
+  
+ environment division. 
+  
+  
+ special-names. 
+  
+  
+  call-convention 74 is winAPI. 
+  
+  
+  : 
+  
+  
+  : 
+  
+  
+ 01  wSleep-time              pic 9(8) comp-5. 
+  
+  
+ 01  wSleep-ok                pic 9(8) comp-5. 
+  
+  
+  : 
+  
+  
+  : 
+  
+  
+ move 10000 to wSleep-time  *>10seconds 
+  
+  
+ call winAPI ""SleepEx"" using by value wSleep-time 
+  
+  by value 0 size 4 
+  
+  returning wSleep-ok 
+  
+ end-call.",NA
+Using z/OS Language Environment thread delay service,"You can call the CEE3DLY service in 24- 31- or 64- bit mode to delay a task to the nearest 
+ second. It is CICS save and will only delay the thread.
+  
+ An example:
+  
+  IDENTIFICATION DIVISION. 
+  
+  
+  PROGRAM-ID.  SLEEPYTM. 
+  
+  
+  ENVIRONMENT DIVISION. 
+  
+  
+  DATA DIVISION. 
+  
+  
+  WORKING-STORAGE SECTION.",NA
+Chapter 7: CANCEL statement,NA,NA
+Remarks,"The CANCEL statement ensures that a referenced program will be in an initial state the next time 
+ it is called, and to unload any resources for the module.",NA
+Examples,NA,NA
+CANCEL statement,"CALL ""submodule"" 
+  
+  
+ CALL ""submodule"" 
+  
+  
+ CANCEL ""submodule"" 
+  
+  
+ CALL ""submodule""
+  
+ Any static data in the working set of 
+ submodule
+  will be in an initial state on the last 
+ CALL
+  statement 
+ above. The second 
+ CALL
+  will have any initial values set as left overs from the first 
+ CALL
+ .
+  
+ COBOL compilers can support physical cancel (object unloaded from memory) and/or virtual 
+ cancel (ensure an initial state, but leave the object available to the host operating environment). 
+ This is an implementation detail.
+  
+ See 
+ http://open-cobol.sourceforge.net/faq/index.html#cancel
+  for more details.
+  
+ Read CANCEL statement online: 
+ https://riptutorial.com/cobol/topic/5600/cancel-statement
+  
+ https://riptutorial.com/
+  
+ 20",NA
+Chapter 8: COMMIT statement ,NA,NA
+Remarks,"Flushes ALL current locks, synching file I/O buffers.
+  
+ This is a non standard extension, available with some COBOL implementations that support 
+ ROLLBACK
+  features.",NA
+Examples ,NA,NA
+COMMIT statement,"WRITE record 
+  
+  
+ COMMIT
+  
+ Read COMMIT statement online: 
+ https://riptutorial.com/cobol/topic/6357/commit-statement
+  
+ https://riptutorial.com/
+  
+ 21",NA
+Chapter 9: COMPUTE statement ,NA,NA
+Remarks ,"The COMPUTE statement allows for algebraic calculation expressions.
+  
+ Rounded phrase is",NA
+Examples ,NA,NA
+Advice: Use spaces around all components,"COMPUTE answer = 3*var-1
+  
+ That is a reference to the variable 
+ var-1
+ , and not 
+ var - 1
+ .
+  
+ COMPUTE answer = 3 * var - 1
+  
+  
+  
+ https://riptutorial.com/
+  
+ 22",NA
+Chapter 10: CONTINUE statement,NA,NA
+Remarks,"The CONTINUE statement causes the flow of control to continue at the next statement. Not quite a 
+ no-op, as it can influence control flow when inside compound statement sequences, in particular 
+ IF/THEN/ELSE.
+  
+  
+ A handy? example is during early development and building with and without debugging aids.
+  
+ CALL ""CBL_OC_DUMP"" USING structure ON EXCEPTION CONTINUE END-CALL
+  
+ That code, while expensive, will allow for formatted memory dumps when the module 
+ CBL_OC_DUMP 
+ is linked into the executable, but will harmlessly fail when it is not. *That trick is only applicable 
+ during early stages of development. The expense of a dynamic lookup failure is not something to 
+ leave in active code, and those lines should be removed from the source as soon as any initial 
+ concerns are satisfied in alpha testing. On first day coding, it can be a handy aid. By second day 
+ coding ON EXCEPTION CONTINUE occurrences should be wiped clean.",NA
+Examples,NA,NA
+Placeholder,"This is contrived; but some COBOL programmers may prefer the positive clarity, versus using 
+ NOT 
+ in conditional expressions (especially with the logic error prone 
+ var NOT = value OR other-value
+ ).
+  
+  if action-flag = ""C"" or ""R"" or ""U"" or ""D"" 
+  
+  
+  continue 
+  
+  
+  else 
+  
+  
+  display ""invalid action-code"" upon syserr 
+  
+  
+  perform report-exception 
+  
+  
+  exit section 
+  
+  
+  end-if
+  
+ Read CONTINUE statement online: 
+ https://riptutorial.com/cobol/topic/6981/continue-statement
+  
+ https://riptutorial.com/
+  
+ 24",NA
+Chapter 11: COPY directive,NA,NA
+Remarks,"The COBOL version of the C 
+ #include
+  preprocessor directive. 
+ Or, more historically accurate, 
+ COBOL came first, developed some 10 years earlier.
+  
+ Due to some of the design decisions in COBOL (no arguments for 
+ PERFORM
+  as the primary reason), 
+ many data structure access sequences need to break the 
+ DRY principle
+ . Names of structure 
+ components need to be repeated in the ENVIRONMENT DIVISION, the DATA DIVISION and 
+ possibly many times in the PROCEDURE DIVISION. This is usually handled by adding 
+  
+ copybooks. Record declarations and access code are tucked away in separate files and the COPY 
+ statement is the only repeated source. A change to the copybook keeps all uses of name spelling 
+ and data layout in synch, instead of requiring multiple edits to multiple files when a change occurs.",NA
+Examples,NA,NA
+COPY record-layout.,"program-one.
+  
+ FD important-file. 
+  
+  
+ 01 file-record. 
+  
+  
+  COPY record-layout. 
+  
+  
+ DATA DIVISION. 
+  
+  
+ 01 memory-record. 
+  
+  
+ https://riptutorial.com/
+  
+ 25",NA
+Chapter 12: Data division,NA,NA
+Introduction,"DATA DIVISION is one of the four parts that make up a COBOL program. It contains statements 
+ describing the data used by the program. It consists of four sections: FILE SECTION, WORKING-
+ STORAGE SECTION, LOCAL-STORAGE SECTION and LINKAGE SECTION.",NA
+Examples,NA,NA
+Sections in Data Division,"SECTIONs in COBOL can be required or optional, depending on which DIVISION they are in.
+  
+ DATA DIVISION. 
+  
+  
+ FILE SECTION. 
+  
+  
+ FD SAMPLE-FILE 
+  
+  
+ 01 FILE-NAME PIC X(20). 
+  
+  
+ WORKING-STORAGE SECTION. 
+  
+  
+ 01 WS-STUDENT PIC A(10). 
+  
+  
+ 01 WS-ID PIC 9(5). 
+  
+  
+ LOCAL-STORAGE SECTION. 
+  
+  
+ 01 LS-CLASS PIC 9(3). 
+  
+  
+ LINKAGE SECTION. 
+  
+  
+ 01 LS-ID PIC 9(5).
+  
+ In the above example, 01's are level numbers.",NA
+Level Number,"Level number is used to specify the level of data in a record. They are used to differentiate 
+ between elementary items and group items. Elementary items can be grouped together to create 
+ group items.
+  
+ •
+  
+ 01: Record description entry. Group level number is always 01.
+  
+  
+ DATA DIVISION. 
+  
+  
+ WORKING-STORAGE SECTION. 
+  
+  
+ 01 WS-NAME               PIC X(25).   ---> ELEMENTARY ITEM 
+  
+  
+ 01 WS-SURNAME            PIC X(25).   ---> ELEMENTARY ITEM 
+  
+  
+ 01 WS-ADDRESS.                        ---> GROUP ITEM 
+  
+  
+  05 WS-HOUSE-NUMBER    PIC 9(3).    ---> ELEMENTARY ITEM 
+  
+  
+  05 WS-STREET          PIC X(15).   ---> ELEMENTARY ITEM 
+  
+  
+ •
+  
+ 02 to 49: Elementary items
+  
+ •
+  
+ 66: Rename Clause items",NA
+Picture Clause,"The PICTURE CLAUSE defines two things about a variable: the size of the variable (the number 
+ of bytes used in memory for the value) and the type of data that can be stored in the variable.
+  
+ Read Data division online: 
+ https://riptutorial.com/cobol/topic/10859/data-division",NA
+Chapter 13: DELETE statement,NA,NA
+Remarks,"The 
+ DELETE
+  statement deletes records from mass storage. Some compilers allow the 
+ DELETE 
+ statement to be used with a 
+ FILE
+  clause, to delete 
+ FD
+  names (along with any associated indexing 
+ structures that may be required by the database management engine in use).",NA
+Examples,NA,NA
+"Delete a record, key in primary key field","identification division. 
+  
+  program-id. deleting. 
+  
+  environment division. 
+  
+  configuration section. 
+  
+  input-output section. 
+  
+  file-control. 
+  
+  select optional indexed-file 
+  
+  assign to ""indexed-file.dat"" 
+  
+  status is indexing-status 
+  
+  organization is indexed 
+  
+  access mode is dynamic 
+  
+  record key is keyfield 
+  
+  alternate record key is altkey with duplicates 
+  
+  . 
+  
+  ... 
+  
+  
+  procedure division. 
+  
+  
+  move ""abcdef"" to keyfield 
+  
+  *> Delete a record by index 
+  
+  delete indexed-file record 
+  
+  
+  invalid key 
+  
+  
+  
+  display ""No delete of "" keyfield end-display 
+  
+  not invalid key 
+  
+  
+ https://riptutorial.com/
+  
+ 29",NA
+Chapter 14: DISPLAY statement,NA,NA
+Remarks,"The 
+ DISPLAY
+  statement causes data to be transferred to hardware or software of the operating 
+ environment. 
+ DISPLAY
+  comes in two forms, 
+ UPON device
+  or for display of 
+ SCREEN
+  data. Environment 
+ variables can also be set with 
+ DISPLAY UPON
+  in some implementations of COBOL, along with other 
+ extensions for data transfer of graphics or other device specific needs.",NA
+Examples,NA,NA
+DISPLAY UPON,"DISPLAY ""An error occurred with "" tracked-resource UPON SYSERR 
+  
+  
+ DISPLAY A, B, C UPON CONSOLE 
+  
+  
+ DISPLAY group-data UPON user-device 
+  
+  
+  ON EXCEPTION 
+  
+  
+  WRITE device-exception-notice 
+  
+  
+  NOT ON EXCEPTION 
+  
+  
+ https://riptutorial.com/
+  
+ 31",NA
+Chapter 15: DIVIDE statement,NA,NA
+Remarks,"The COBOL 
+ DIVIDE
+  statement divides one numeric item into others setting data items to the 
+ quotient and, optionally, the remainder.
+  
+ ROUNDED
+  phrase:
+  
+ Default is 
+ TRUNCATION
+  if no rounded phrase specified. Default 
+ ROUNDED
+  mode is 
+ NEAREST-TOWARD-
+ ZERO 
+ (rounding down) unless other specified. So called 
+ Banker's rounding
+  is 
+ NEAREST-EVEN
+ .
+  
+ https://riptutorial.com/
+  
+ 33",NA
+Examples,NA,NA
+DIVIDE statement formats,"DIVIDE a INTO b c d
+  
+ Data item 
+ b
+ , 
+ c
+ , and 
+ d
+  are changed as 
+ b/a
+ , 
+ c/a
+  and 
+ d/a
+ .
+  
+ DIVIDE a INTO b GIVING c
+  
+ Data item 
+ c
+  is changed as 
+ b/a
+ .
+  
+ DIVIDE a BY b GIVING c
+  
+ Data item 
+ c
+  is changed as 
+ a/b
+ .
+  
+ DIVIDE a INTO b GIVING q REMAINDER r
+  
+ Data items 
+ q
+  and 
+ r
+  are set with results of 
+ b/a
+  
+ DIVIDE a BY b GIVING q REMAINDER r
+  
+ Data items 
+ q
+  and 
+ r
+  are set with results of 
+ b/a 
+  
+ All 
+ DIVIDE
+  result fields may have 
+ ROUNDED MODE IS
+  clauses.
+  
+ All 
+ DIVIDE
+  statements may have 
+ ON SIZE ERROR
+  and 
+ NOT ON SIZE ERROR
+  declarative statements 
+ included to catch invalid results given the type and size of the result fields.
+  
+ Read DIVIDE statement online: 
+ https://riptutorial.com/cobol/topic/7081/divide-statement
+  
+ https://riptutorial.com/
+  
+ 34",NA
+Chapter 16: EVALUATE statement,NA,NA
+Remarks,"The 
+ EVALUATE
+  statement is a multiple branch, multiple join, conditional test and selection structure.",NA
+Examples,NA,NA
+A three condition EVALUATE,"EVALUATE a ALSO b ALSO TRUE 
+  
+  
+  WHEN 1 ALSO 1 THRU 9 ALSO c EQUAL 1 PERFORM all-life 
+  
+  
+  WHEN 2 ALSO 1 THRU 9 ALSO c EQUAL 2 PERFORM life 
+  
+  
+  WHEN 3 THRU 9 ALSO 1 ALSO c EQUAL 9 PERFORM disability 
+  
+  
+  WHEN OTHER PERFORM invalid 
+  
+  
+ END-EVALUATE
+  
+ Read EVALUATE statement online: 
+ https://riptutorial.com/cobol/topic/7083/evaluate-statement
+  
+ https://riptutorial.com/
+  
+ 35",NA
+Chapter 17: EXIT statement,NA,NA
+Remarks,"The COBOL 
+ EXIT
+  statement is a terminating flow control verb.
+  
+ EXIT
+  comes is a few flavours:
+  
+ •
+  
+ •
+  
+ •
+  
+ •
+  
+ •
+  
+ bare 
+ EXIT
+  is a common end point for a series of procedures.
+  
+ EXIT PARAGRAPH
+ , 
+ EXIT SECTION
+  provides a means of exiting a structured procedure without 
+ executing any of the subsequent statements.
+  
+ EXIT FUNCTION
+ , 
+ EXIT METHOD
+ , 
+ EXIT PROGRAM
+  marks the logical end of a module of code. 
+ EXIT PERFORM
+  breaks out of a inline perform loop.
+  
+ EXIT PERFORM CYCLE
+  causes an inline perform loop to begin the next iteration.",NA
+Examples,NA,NA
+EXIT statement,"PERFORM VARYING counter FROM 1 BY 1 UNTIL counter > 10 
+  
+  
+  IF debug-override THEN EXIT PERFORM 
+  
+  
+  IF counter = 5 THEN EXIT PERFORM CYCLE 
+  
+  
+  PERFORM some-miracle 
+  
+  
+ END-PERFORM
+  
+ Read EXIT statement online: 
+ https://riptutorial.com/cobol/topic/7084/exit-statement
+  
+ https://riptutorial.com/
+  
+ 36",NA
+Chapter 18: FREE statement,NA,NA
+Remarks,"The 
+ FREE
+  statement frees allocated memory for one or more identifiers, either by POINTER or from 
+ a BASED working storage identifier. Use after FREE is illegal.",NA
+Examples,NA,NA
+FREE an allocation,"01 field-1 PIC X(80) BASED. 
+  
+  
+ ALLOCATE field-1 
+  
+  
+ *> use field-1 
+  
+  
+ FREE field-1 
+  
+  
+ *> further use of field-1 will cause memory corruption
+  
+ Read FREE statement online: 
+ https://riptutorial.com/cobol/topic/7162/free-statement
+  
+ https://riptutorial.com/
+  
+ 37",NA
+Chapter 19: GENERATE statement ,NA,NA
+Remarks ,"The COBOL 
+ GENERATE
+  statement is an optional statement supported if the compiler includes the 
+ Report Writer feature.",NA
+Examples ,NA,NA
+GENERATE a detail line,"GENERATE detail-line
+  
+ Read GENERATE statement online: 
+ https://riptutorial.com/cobol/topic/7161/generate-statement
+  
+ https://riptutorial.com/
+  
+ 38",NA
+Chapter 20: GnuCOBOL installation with ,NA,NA
+GNU/Linux,NA,NA
+Examples,NA,NA
+GNU/Linux install,"For most GNU/Linux distributions, a version of 
+ GnuCOBOL
+  is available in the repositories. 
+ GnuCOBOL 
+ was originally 
+ OpenCOBOL
+ , rebranded when the project became an official GNU project. Many 
+ repositories are still using 
+ open-cobol
+  as the package name (as of August 2016).
+  
+ For Fedora, and other RPM based package managers
+  
+ sudo yum install open-cobol
+  
+ For Debian, Ubuntu and APT based packages
+  
+ sudo apt install open-cobol
+  
+ This is usually version 1.1 of the compiler suite, and will deal with the compile time and runtime 
+ dependencies required when using GnuCOBOL.
+  
+ From source, (hosted on SourceForge at 
+ https://sourceforge.net/projects/open-cobol/)
+  you will 
+ need.
+  
+ •
+  
+ •
+  
+ •
+  
+ •
+  
+ •
+  
+ •
+  
+ A C compiler suite; 
+ build-essential
+  (or similar) 
+  
+ BerkeleyDB and BerkelyDB development headers; 
+ libdb
+ , 
+ libdb-dev
+  (or similar names) 
+ GNU Multi-Precision numeric library; 
+ libgmp
+ , 
+ libgmp-dev 
+  
+ A version of 
+ curses
+ ; 
+ ncurses
+ , 
+ ncurses-dev 
+  
+ The source kit, 
+ gnucobol-1.1.tar.gz
+  (or better, 
+ gnucobol-2.0.tar.gz
+ ) 
+  
+ (For changing the compiler sources, 
+ GNU Autoconf
+  tools are also required).
+  
+ From a working directory, of your choice:
+  
+ prompt$ tar xvf gnucobol.tar.gz 
+  
+  
+ prompt$ cd gnucobol
+  
+ To see the possible configuration options, use:
+  
+ prompt$ ./configure --help
+  
+ Then
+  
+ prompt$ ./configure 
+  
+  
+ prompt$ make
+  
+  
+ https://riptutorial.com/
+  
+ 39",NA
+Chapter 21: GO TO statement,NA,NA
+Remarks,"The much beloved 
+ GO TO
+ . COBOL includes named paragraphs and sections, along with other 
+ labels, and any of them can be the target of a 
+ GO
+  statement.",NA
+Examples,NA,NA
+GO statement,"GO TO label 
+  
+  
+ GO TO label-1 label-2 label-3 DEPENDING ON identifier-1 
+  
+  
+ GO TO label OF section 
+  
+  
+ GO.
+  
+ The last line example indicates that an 
+ ALTER
+  statement is in play, and another part of the code will 
+ specify which actual 
+ label
+  is the target of the jump.
+  
+ Read GO TO statement online: 
+ https://riptutorial.com/cobol/topic/7163/go-to-statement
+  
+ https://riptutorial.com/
+  
+ 41",NA
+Chapter 22: GOBACK statement,NA,NA
+Remarks,"The COBOL 
+ GOBACK
+  statement is a return. Unlike 
+ EXIT PROGRAM
+ , or 
+ STOP RUN
+ , 
+ GOBACK
+  always returns 
+ one level. If the current module is ""main"", 
+ GOBACK
+  will return to the operating system. If the current 
+ module is a subprogram, 
+ GOBACK
+  will return to the statement after a call.",NA
+Examples,NA,NA
+GOBACK,"identification division. 
+  
+  
+ program-id. subprog. 
+  
+  
+ procedure division. 
+  
+  
+ display ""in subprog"" 
+  
+  
+ goback. 
+  
+  
+ ... 
+  
+  
+ call ""subprog"" 
+  
+  
+ goback.
+  
+ The first 
+ GOBACK
+  above will return from subprog. Assuming the second is inside the main procedure, 
+ GOBACK
+  will return to the operating system.
+  
+ Read GOBACK statement online: 
+ https://riptutorial.com/cobol/topic/7173/goback-statement
+  
+ https://riptutorial.com/
+  
+ 42",NA
+Chapter 23: How does the computational ,NA,NA
+work in cobol?,NA,NA
+Introduction,"Computational clause is used to describe type of storage used in COBOL. It is used for 3 ways: 
+ COMP-1, COMP-2 and COMP-3. The most common form of computational is COMP-3. It 
+ frequently is just called ""COMP"" by programmers.",NA
+Examples,NA,NA
+COMP-3,"Data item is stored in packed decimal format in COMP-3. Packed-decimal format means that each 
+ byte of storage (except for the low order byte) can contain two decimal numbers. The low-order 
+ byte contains one digit in the leftmost portion and the sign (positive or negative) in the rightmost 
+ portion.
+  
+ ""Zoned decimal format"" in the image below is the default storage for a number in COBOL.
+  
+  
+ 01 WS-NUM PIC 9(5) USAGE IS COMP-3 VALUE 21544.
+  
+ Computational storage is frequently used to reduce the size of a file.",NA
+Common implementations,"https://riptutorial.com/
+  
+ 43",NA
+Chapter 24: IF statement,NA,NA
+Remarks,"The conditional expression and selection statement. Use of explicit scope terminators is 
+  
+ recommended. COBOL conditional expressions allow shortforms, where the current identifier (and 
+ conditional) is assumed through multiple condition tests, unless explicitly given.
+  
+ IF A = 1 OR 2 ...
+  
+ is equivalent to
+  
+ IF A = 1 OR A = 2 ...",NA
+Examples,NA,NA
+IF with shortform conditionals,"IF A = 1 OR 2 THEN 
+  
+  
+  perform miracles 
+  
+  
+ END-IF 
+  
+  
+ IF A = 1 OR 2 AND B = 1 THEN 
+  
+  
+  perform rites-of-passage 
+  
+  
+ ELSE 
+  
+  
+  perform song-and-dance 
+  
+  
+ END-IF
+  
+ IF
+  statements can be terminated with full stop or explicit scope terminator 
+ END-IF
+ . 
+ Use of periods 
+ for scope termination is no longer recommended.
+  Full stops mean just that in the case of nested 
+ IF, all nesting is terminated at the first full stop 
+ .
+ , and any subsequent code will be outside the IF 
+ block.
+  
+ Read IF statement online: 
+ https://riptutorial.com/cobol/topic/7174/if-statement
+  
+ https://riptutorial.com/
+  
+ 45",NA
+Chapter 25: INITIALIZE statement,NA,NA
+Remarks,"The 
+ INITIALIZE
+  statement sets selected data to specified values.
+  
+ Where 
+ category-name
+  is:",NA
+Examples,NA,NA
+Various INITIALIZE clauses,"https://riptutorial.com/
+  
+ 46",NA
+Chapter 26: INITIATE statement ,NA,NA
+Remarks ,"The 
+ INITIATE
+  statement initializes internal 
+ Report Writer
+  control fields. Most of a report writer setup 
+ occurs in the 
+ DATA DIVISION
+  with very brief 
+ PROCEDURE DIVISION
+  statements. Once initialized, 
+ GENERATE 
+ does all the hard work of control break and paging of reports.",NA
+Examples ,NA,NA
+INITIATE reporting control variables,"INITIATE report-1 report-2
+  
+ Read INITIATE statement online: 
+ https://riptutorial.com/cobol/topic/7180/initiate-statement
+  
+ https://riptutorial.com/
+  
+ 48",NA
+Chapter 27: INSPECT statement,NA,NA
+Remarks,"The 
+ INSPECT
+  statement is a scan and replace verb in COBOL.
+  
+ Where 
+ tallying-phrase
+  is:
+  
+ replacing-phrase
+  is:
+  
+ missing image
+  
+ before-after-phrase
+  is:",NA
+Examples,"https://riptutorial.com/
+  
+ 49",NA
+INSPECT reformatting a date line,"GCobol identification division. 
+  
+  program-id. inspecting. 
+  
+  
+  data division. 
+  
+  working-storage section. 
+  
+  01  ORIGINAL            pic XXXX/XX/XXBXX/XX/XXXXXXX/XX. 
+  
+  01  DATEREC             pic XXXX/XX/XXBXX/XX/XXXXXXX/XX. 
+  
+  
+  procedure division. 
+  
+  
+  move function when-compiled to DATEREC ORIGINAL 
+  
+  
+  INSPECT DATEREC REPLACING ALL ""/"" BY "":"" AFTER INITIAL SPACE 
+  
+  
+  display ""Formatted function WHEN-COMPILED "" ORIGINAL 
+  
+  
+  display "" after INSPECT REPLACING         "" DATEREC 
+  
+  
+  goback. 
+  
+  end program inspecting.
+  
+ Giving:
+  
+ Formatted function WHEN-COMPILED 2010/03/25 23/05/0900-04/00 
+  
+  
+  after INSPECT REPLACING         2010/03/25 23:05:0900-04:00
+  
+ Read INSPECT statement online: 
+ https://riptutorial.com/cobol/topic/7182/inspect-statement
+  
+ https://riptutorial.com/
+  
+ 50",NA
+Chapter 28: Intrinsic Functions,NA,NA
+Introduction,"Intrinsic Functions are included in the COBOL standard as a set of functions that return values 
+ from a specific algorithm, given zero or more arguments. These intrinsic functions are provided as 
+ a facility of the compiler and runtime system. The return items are temporary COBOL fields, and 
+ can be character data, bit fields, or numeric values.
+  
+ Examples include trigonometric functions, date time routines, data type conversions, standard 
+ deviation, and other support algorithms.",NA
+Remarks,"COBOL 2014 lists the following standard Intrinsic Functions:
+  
+ ======================================== ========== 
+ Intrinsic Function                       Parameters 
+ ======================================== ========== 
+ FUNCTION ABS                             1 
+  
+ FUNCTION ACOS                            1 
+  
+ FUNCTION ANNUITY                         2 
+  
+ FUNCTION ASIN                            1 
+  
+ FUNCTION ATAN                            1 
+  
+ FUNCTION BOOLEAN-OF-INTEGER              2 
+  
+ FUNCTION BYTE-LENGTH                     1 
+  
+ FUNCTION CHAR                            1 
+  
+ FUNCTION CHAR-NATIONAL                   1 
+  
+ FUNCTION COMBINED-DATETIME               2 
+  
+ FUNCTION COS                             1 
+  
+ FUNCTION CURRENCY-SYMBOL                 0 
+  
+ FUNCTION CURRENT-DATE                    0 
+  
+ FUNCTION DATE-OF-INTEGER                 1 
+  
+ FUNCTION DATE-TO-YYYYMMDD                Variable FUNCTION DAY-OF-
+ INTEGER                  1 
+  
+ FUNCTION DAY-TO-YYYYDDD                  Variable FUNCTION DISPLAY-OF                      
+ Variable FUNCTION E                               0 
+  
+ FUNCTION EXCEPTION-FILE                  0 
+  
+ FUNCTION EXCEPTION-FILE-N                0 
+  
+ FUNCTION EXCEPTION-LOCATION              0 
+  
+ FUNCTION EXCEPTION-LOCATION-N            0 
+  
+ FUNCTION EXCEPTION-STATEMENT             0 
+  
+ FUNCTION EXCEPTION-STATUS                0 
+  
+ FUNCTION EXP                             1 
+  
+ FUNCTION EXP10                           1 
+  
+ FUNCTION FACTORIAL                       1 
+  
+ FUNCTION FORMATTED-CURRENT-DATE          1 
+  
+ FUNCTION FORMATTED-DATE                  2 
+  
+ FUNCTION FORMATTED-DATETIME              Variable FUNCTION 
+ FORMATTED-TIME                  Variable FUNCTION FRACTION-PART                   
+ 1 
+  
+ FUNCTION HIGHEST-ALGEBRAIC               1 
+  
+ FUNCTION INTEGER                         1 
+  
+  
+ https://riptutorial.com/
+  
+ 51",NA
+Examples,NA,NA
+FUNCTION TRIM example,"01 some-string PIC X(32). 
+  
+  
+ ... 
+  
+  
+ MOVE ""    a string literal"" TO some-string 
+  
+  
+ DISPLAY "":"" some-string "":"" 
+  
+  
+ DISPLAY "":"" FUNCTION TRIM(some-string) "":"" 
+  
+  
+ DISPLAY "":"" FUNCTION TRIM(some-string LEADING) "":"" 
+  
+  
+ DISPLAY "":"" FUNCTION TRIM(some-string TRAILING) "":""
+  
+ Showing
+  
+ :    a string literal            : 
+  
+  
+ :a string literal: 
+  
+  
+ :a string literal            : 
+  
+  
+ :    a string literal:",NA
+UPPER-CASE,"MOVE FUNCTION UPPER-CASE(""Hello World!"") TO SOME-FIELD 
+  
+  
+ DISPLAY SOME-FIELD
+  
+ Output
+  
+ HELLO WORLD!",NA
+LOWER-CASE function,"MOVE FUNCTION LOWER-CASE(""HELLO WORLD!"") TO SOME-FIELD 
+  
+  
+ DISPLAY SOME-FIELD
+  
+ Output
+  
+ hello world!
+  
+ Read Intrinsic Functions online: 
+ https://riptutorial.com/cobol/topic/7580/intrinsic-functions
+  
+ https://riptutorial.com/
+  
+ 54",NA
+Chapter 29: MERGE statement,NA,NA
+Remarks,"The MERGE statement will merge one or more like formatted COBOL data files into a single 
+ output file. The programmer can assume control over the
+ OUTPUT PROCEDURE
+ , which uses the 
+ RELEASE 
+ statement, or use internal COBOL runtime mechanisms with the 
+ GIVING
+  clause.",NA
+Examples,NA,NA
+MERGE regional data into master,"GCobol >>SOURCE FORMAT IS FIXED 
+  
+  
+  *> *************************************************************** 
+  
+  
+  *> Purpose:   Demonstrate a merge pass 
+  
+  
+  *> Tectonics: cobc -x gnucobol-merge-sample.cob 
+  
+  
+  *> *************************************************************** 
+  
+  
+  identification division. 
+  
+  
+  program-id. gnucobol-merge-sample. 
+  
+  
+  environment division. 
+  
+  
+ https://riptutorial.com/
+  
+ 55",NA
+Chapter 30: MOVE statement,NA,NA
+Remarks,"MOVE
+  is the workhorse of COBOL. Data is moved from literal or identifier to one or more identifiers. 
+  
+ COBOL has a distinction between 
+ elementary
+  and 
+ group
+  MOVE. Elementary data is type 
+ converted from source to destination. Group data is moved as a byte array, without regard to field 
+ types with a structure. Numeric fields are moved from right to left, high order digit truncation with 
+ zero fill (normally). Alphanumeric character data is moved left to right, right end character 
+ truncation with space fill. There are quite a few rules on how 
+ MOVE
+  goes about its business, with 
+ both BINARY and PICTURE DISPLAY data forms, and group hierarchies all accounted for.",NA
+Examples,NA,NA
+"Some MOVE details, there are many","01 a PIC 9. 
+  
+ 01 b PIC 99. 
+  
+ 01 c PIC 999. 
+  
+ 01 s PIC X(4). 
+  
+ 01 record-group. 
+  
+  05 field-a PIC 9. 
+  
+  05 field-b PIC 99. 
+  
+  05 field-c PIC 999. 
+  
+ 01 display-record. 
+  
+  05 field-a PIC Z. 
+  
+  05 field-b PIC ZZ. 
+  
+  05 field-c PIC $Z9. 
+  
+ *> numeric fields are moved left to right 
+  
+ *> a set to 3, b set to 23, c set to 123 
+  
+ MOVE 123 TO a b c 
+  
+ *> moves can also be by matching names within groups MOVE a TO field-a 
+ OF record-group 
+  
+ MOVE b TO field-b OF record-group 
+  
+ MOVE c TO field-c OF record-group 
+  
+ MOVE CORRESPONDING record-group TO display-record 
+  
+ *> character data is moved right to left 
+  
+ *> s will be set to xyzz 
+  
+ MOVE ""xyzzy"" TO s
+  
+  
+ https://riptutorial.com/
+  
+ 58",NA
+Chapter 31: MULTIPLY statement ,NA,NA
+Remarks ,"The 
+ MULTIPLY
+  statement multiplies numeric data setting the result to one or more identifiers of 
+ numeric type.
+  
+ Where 
+ rounded-phrase
+  is",NA
+Examples ,NA,NA
+Some MULTIPLY formats,"MULTIPLY 5 BY a 
+  
+  
+  
+ https://riptutorial.com/
+  
+ 60",NA
+Chapter 32: OPEN statement,NA,NA
+Remarks,"The COBOL 
+ OPEN
+  statement initiates file processing. File resources in COBOL are defined in the 
+ ENVIRONMENT DIVISION
+ , named in 
+ FD
+  (File Descriptor) paragraphs. These fd names are used to access 
+ physical disk files and various options are specified in a 
+ SELECT
+  clauses in the 
+ FILE-CONTROL 
+ paragraph 
+ of the 
+ INPUT-OUTPUT SECTION
+ . A programmer is expected to test a 
+ FILE STATUS
+  identifier for status and 
+ error codes.
+  
+ Modes include 
+ INPUT
+ , 
+ OUTPUT
+ , 
+ I-O
+  and 
+ EXTEND
+ .",NA
+Examples,NA,NA
+"OPEN sample, with LINAGE mini report","COBOL ***************************************************************** 
+  
+  * Example of LINAGE File 
+ Descriptor 
+  
+  
+  * Tectonics: $ cocb -x linage.cob 
+  
+  
+  *            $ ./linage <filename [""linage.cob""]> 
+  
+  
+  *            $ cat -n mini-report 
+  
+  
+  ***************************************************************** 
+   
+  IDENTIFICATION 
+ DIVISION. 
+  
+  PROGRAM-ID. linage-demo. 
+  
+  ENVIRONMENT DIVISION. 
+  
+  INPUT-OUTPUT SECTION. 
+  
+  FILE-CONTROL. 
+  
+  select optional data-file assign to file-name 
+  
+  organization is line sequential 
+  
+  file status is data-file-status. 
+  
+  select mini-report assign to ""mini-report"". 
+  
+  DATA DIVISION. 
+  
+  FILE SECTION. 
+  
+  FD  data-file. 
+  
+  01  data-record. 
+  
+  88 endofdata        value high-values. 
+  
+  02 data-line        pic x(80). 
+  
+  FD  mini-report 
+  
+  linage is 16 lines 
+  
+  
+ https://riptutorial.com/
+  
+ 62",NA
+Chapter 33: PERFORM statement,NA,NA
+Remarks,"The PERFORM statement transfers control to one or more procedures and returns control 
+ implicitly when the sequence completes. PERFORM can also be used for inline loops withing the 
+ scope of the PERFORM.
+  
+ The 
+ VARYING
+  phrase allows for nesting with one or more 
+ AFTER
+  clauses, and the conditional test can 
+ be 
+ BEFORE
+  (default) or 
+ AFTER
+  each loop.
+  
+ The 
+ THRU
+  clause of a procedural perform assumes sequential top down control flow from 
+ procedure-1
+  
+ through the end of 
+ procedure-2
+ . 
+ THRU
+  is a contentious issue, and many programmers prefer 
+ PERFORM
+  
+ by 
+ SECTION
+  rather than using 
+ THRU
+  paragraphs. Some shops may mandate 
+ PERFORM THRU
+  with an 
+ explicit exit point paragraph, others may ban the use of 
+ THRU
+  finding it more difficult to debug.
+  
+ Procedural perform:
+  
+ Inline perform:
+  
+ Where 
+ varying-phrase
+  is:
+  
+ https://riptutorial.com/
+  
+ 65",NA
+Examples,NA,NA
+Inline PERFORM VARYING,"PERFORM VARYING TALLY FROM 1 BY 1 UNTIL TALLY > 5 
+  
+  
+  DISPLAY TALLY 
+  
+  
+ END-PERFORM",NA
+Procedural PERFORM,"PERFORM some-paragraph
+  
+ Read PERFORM statement online: 
+ https://riptutorial.com/cobol/topic/7334/perform-statement
+  
+ https://riptutorial.com/
+  
+ 66",NA
+Chapter 34: READ statement,NA,NA
+Remarks,"The 
+ READ
+  statement is a staple of COBOL transaction processing programming. Reads data from 
+ external storage into working store. With or without locks or sharing, sequentially, by random 
+ access, or by key. Declarative clauses for 
+ AT END
+  may also be specified, but some programmers 
+ prefer explicit 
+ FILE STATUS
+  testing.
+  
+ As each file resource may contain any type of record in any given slot, COBOL is a ""read a file"", 
+ ""write a record"" language, 
+ READ
+  takes a filename (FD) and it is up to the programmer to place the 
+ record in an appropriate structure if heterogeneous data is saved in the file.",NA
+Examples,NA,NA
+Simple READ from FD,"READ data-file
+  
+ Read READ statement online: 
+ https://riptutorial.com/cobol/topic/7336/read-statement
+  
+ https://riptutorial.com/
+  
+ 67",NA
+Chapter 35: RELEASE statement,NA,NA
+Remarks,"The 
+ RELEASE
+  statement is used to give records to the COBOL 
+ SORT
+  algorithm under programmer 
+ controlled conditions.",NA
+Examples,NA,NA
+RELEASE a record to a SORT INPUT PROCEDURE,"This is a contrived sample. It sorts records based on an 
+ ALPHABET
+  that has upper and lower case 
+ characters together, with 
+ A
+  and 
+ a
+  swapped compared to the other letters. This was done on 
+ purpose to demonstrate the possibilities. The SORT algorithm reader retrieves records using 
+ RELEASE
+  in the 
+ INPUT PROCEDURE
+ . The 
+ OUTPUT PROCEDURE
+  uses 
+ RETURN
+  for the 
+ SORT
+  algorithm writer.
+  
+ GCobol >>SOURCE FORMAT IS FIXED 
+  
+  
+  ****************************************************************** 
+  
+  * Purpose:   A 
+ GnuCOBOL SORT verb example 
+  
+  
+  * Tectonics: cobc -x sorting.cob 
+  
+  
+  *     ./sorting <input >output 
+  
+  
+  *   or simply 
+  
+  
+  *     ./sorting 
+  
+  
+  *   for keyboard and screen demos 
+  
+  
+  ****************************************************************** 
+  
+  
+  
+ identification division. 
+  
+  program-id. sorting. 
+  
+  environment division. 
+  
+  configuration section. 
+  
+  * This sets up a sort order lower/upper except for ""A"" and ""a"" 
+  
+  special-names. 
+  
+  
+  alphabet mixed is "" AabBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTu  -
+ ""UvVwWxXyYzZ0123456789"". 
+  
+  input-output section. 
+  
+  file-control. 
+  
+  select sort-in 
+  
+  assign keyboard 
+  
+  organization is line sequential. 
+  
+  select sort-out 
+  
+  assign display 
+  
+  organization is line sequential. 
+  
+  select sort-work 
+  
+  assign ""sortwork"". 
+  
+  data division. 
+  
+  
+ https://riptutorial.com/
+  
+ 68",NA
+Chapter 36: REPLACE directive ,NA,NA
+Remarks ,"The 
+ REPLACE
+  directive is part of the COBOL standard preprocessor. Replacements are made before 
+ compilation begins.",NA
+Examples ,NA,NA
+REPLACE text manipulation sample,"REPLACE ==magic-number== BY ==65535==.
+  
+ Read REPLACE directive online: 
+ https://riptutorial.com/cobol/topic/7459/replace-directive
+  
+ https://riptutorial.com/
+  
+ 70",NA
+Chapter 37: RETURN statement,NA,NA
+Remarks,"The 
+ RETURN
+  statement controls when data is sent to the internal COBOL sort algorithm writer, as 
+ part of an 
+ OUTPUT PROCEDURE
+ . Post sort data can be transformed under programmer control before 
+ being returned and written to the output file by the sort algorithm.",NA
+Examples,NA,NA
+RETURN a record to SORT OUTPUT PROCEDURE,"This is a seedwork sample. The 
+ SORTOUTPUT PROCEDURE
+  could manipulate the sorted records before 
+ they are returned to the write portion of the internal COBOL sort algorithm. In this case, no 
+ transformation is done, 
+ work-rec
+  is directly moved to 
+ out-rec
+ .
+  
+ GCobol >>SOURCE FORMAT IS FIXED 
+  
+  
+  ****************************************************************** 
+  
+  * Purpose:   A 
+ GnuCOBOL SORT verb example 
+  
+  
+  * Tectonics: cobc -x sorting.cob 
+  
+  
+  *     ./sorting <input >output 
+  
+  
+  *   or simply 
+  
+  
+  *     ./sorting 
+  
+  
+  *   for keyboard and screen demos 
+  
+  
+  ****************************************************************** 
+  
+  
+  
+ identification division. 
+  
+  program-id. sorting. 
+  
+  
+  environment division. 
+  
+  configuration section. 
+  
+  * Set up a sort order where lower and upper case stay together 
+  
+  special-names. 
+  
+  alphabet mixed is "" aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTu 
+  
+  -""UvVwWxXyYzZ0123456789"". 
+  
+  
+  input-output section. 
+  
+  
+  file-control. 
+  
+  
+ https://riptutorial.com/
+  
+ 71",NA
+Chapter 38: REWRITE statement,NA,NA
+Remarks,The REWRITE statement logically replaces existing records on mass storage.,NA
+Examples,NA,NA
+REWRITE of records in a RELATIVE access file,"GCobol >>SOURCE FORMAT IS FIXED 
+  
+  
+  *> *************************************************************** 
+  
+  *> Purpose:   
+ RELATIVE file organization  REWRITE example 
+  
+  
+  *> Tectonics: cobc -g -debug -W -x relatives.cob 
+  
+  
+  *> *************************************************************** 
+  
+  
+  
+ identification division. 
+  
+  program-id. relatives. 
+  
+  
+  environment division. 
+  
+  configuration section. 
+  
+  repository. 
+  
+  function all intrinsic. 
+  
+  
+  input-output section. 
+  
+  file-control. 
+  
+  select optional relatives 
+  
+  assign to ""relatives.dat"" 
+  
+  file status is filestatus 
+  
+  organization is relative 
+  
+  access mode is dynamic 
+  
+  relative key is nicknum. 
+  
+  
+ https://riptutorial.com/
+  
+ 74",NA
+Chapter 39: SEARCH statement ,NA,NA
+Remarks ,"The COBOL 
+ SEARCH
+  statement comes in two forms. Linear top to bottom 
+ SEARCH
+  and a binary 
+ SEARCH 
+ ALL
+  algorithm. Binary SEARCH ALL assumes a sorted table suitable for a binary search with no 
+ elements out of order.
+  
+ SEARCH statement
+  
+  
+ Linear SEARCH
+  
+  
+ Binary SEARCH ALL
+  
+ https://riptutorial.com/
+  
+ 78",NA
+Examples,NA,NA
+Linear SEARCH,"GCobol >>SOURCE FORMAT IS FIXED 
+  
+  *> ***************************************************************  *> Purpose:   
+ Demonstration of the SEARCH verb 
+  
+  *> Tectonics: cobc -x searchlinear.cob 
+  
+  *> *************************************************************** 
+  
+  identification 
+ division. 
+  
+  program-id. searchlinear. 
+  
+  
+  data division. 
+  
+  
+  working-storage section. 
+  
+  01 taxinfo. 
+  
+  05 tax-table occurs 4 times indexed by tt-index. 
+  
+  
+  10 province       pic x(2). 
+  
+  10 taxrate        pic 999v9999. 
+  
+  10 federal        pic 999v9999. 
+  
+  
+ https://riptutorial.com/
+  
+ 79",NA
+Binary SEARCH ALL,"GCobol >>SOURCE FORMAT IS FIXED 
+  
+  
+  *> *************************************************************** 
+  
+  
+ https://riptutorial.com/
+  
+ 80",NA
+Chapter 40: SET statement ,NA,NA
+Remarks ,"The COBOL 
+ SET
+  statement sets values, and operating environment data. It can be argued that 
+ SET 
+ was overused by the committee, as it has over a dozen documented syntax formats.
+  
+ https://riptutorial.com/
+  
+ 83",NA
+Examples,NA,NA
+SET pointer example,"SET handle TO returned-pointer 
+  
+  
+  
+ https://riptutorial.com/
+  
+ 84",NA
+Chapter 41: SORT statement ,NA,NA
+Remarks ,"The COBOL 
+ SORT
+  statement can be used to sort files and tables in working storage.
+  
+ SORT file
+  
+ SORT table
+  
+ https://riptutorial.com/
+  
+ 86",NA
+Examples,NA,NA
+Sorting standard in to standard out,"GCobol* GnuCOBOL SORT verb example using standard in and standard out  identification division. 
+  
+  program-id. sorting. 
+  
+  environment division. 
+  
+  input-output section. 
+  
+  file-control. 
+  
+  select sort-in 
+  
+  assign keyboard 
+  
+  organization line sequential. 
+  
+  select sort-out 
+  
+  assign display 
+  
+  organization line sequential. 
+  
+  select sort-work 
+  
+  assign ""sortwork"". 
+  
+  data division. 
+  
+  file section. 
+  
+  fd sort-in. 
+  
+  01 in-rec        pic x(255). 
+  
+  fd sort-out. 
+  
+  01 out-rec       pic x(255). 
+  
+  sd sort-work. 
+  
+  01 work-rec      pic x(255). 
+  
+  procedure division. 
+  
+  sort sort-work 
+  
+  ascending key work-rec 
+  
+  using  sort-in 
+  
+  giving sort-out. 
+  
+  goback. 
+  
+  exit program. 
+  
+  end program sorting.
+  
+  
+ https://riptutorial.com/
+  
+ 87",NA
+Chapter 42: START statement ,NA,NA
+Remarks ,"The 
+ START
+  statement provides a way to position a read in a file for subsequent sequential retrieval 
+ (by key).
+  
+ The key relational can include (but is not limited to):
+  
+ •
+  
+ KEY IS GREATER THAN
+  
+  
+ •
+  
+ KEY IS >
+  
+ •
+  
+ KEY IS LESS THAN
+  
+ •
+  
+ KEY IS <
+  
+ •
+  
+ KEY IS EQUAL TO
+  
+ •
+  
+ KEY IS =
+  
+ •
+  
+ KEY IS NOT GREATER THAN
+  
+ •
+  
+ KEY IS NOT >
+  
+ •
+  
+ KEY IS NOT LESS THAN
+  
+ •
+  
+ KEY IS NOT <
+  
+ •
+  
+ KEY IS NOT EQUAL TO
+  
+ •
+  
+ KEY IS NOT =
+  
+ https://riptutorial.com/
+  
+ 89",NA
+Examples,NA,NA
+START example,"start indexing 
+  
+  
+  key is less than 
+  
+  
+  keyfield of indexing-record 
+  
+  
+  invalid key 
+  
+  
+  display ""bad start: "" keyfield of indexing-record 
+  
+  
+  set no-more-records to true 
+  
+  
+  not invalid key 
+  
+  
+  read indexing previous record 
+  
+  
+  at end set no-more-records to true 
+  
+  
+  end-read 
+  
+  
+ end-start
+  
+ Read START statement online: 
+ https://riptutorial.com/cobol/topic/7464/start-statement",NA
+Chapter 43: STOP statement,NA,NA
+Remarks,"The 
+ STOP
+  statement terminates the current run unit.
+  
+ A now deemed obsolete extension to 
+ STOP RUN
+  is 
+ STOP literal
+ , which will pause a program until a 
+ response from the console is given, at which point execution will resume. This could be handy for 
+ things like, ""go get the big box of paper and load up the special printer"".
+  
+ STOP
+  is a hard program end, 
+ GOBACK
+  is a slightly nicer way of returning to the operating system or 
+ caller module, especially in subroutines that may have no business terminating a run.",NA
+Examples,NA,NA
+STOP RUN,"STOP RUN
+  
+ Read STOP statement online: 
+ https://riptutorial.com/cobol/topic/7466/stop-statement
+  
+ https://riptutorial.com/
+  
+ 91",NA
+Chapter 44: String,NA,NA
+Examples,NA,NA
+STRINGVAL... Move -versus- STRING,"IDENTIFICATION DIVISION. 
+  
+  PROGRAM-ID.  STRINGVAL. 
+  
+  ENVIRONMENT DIVISION. 
+  
+  DATA DIVISION. 
+  
+  WORKING-STORAGE SECTION. 
+  
+  01  WORK-AREAS. 
+  
+  05 I-STRING        PIC X(08) VALUE   'STRNGVAL'. 
+  
+  05 O-STRING        PIC XBXBXBXBXBXBXBX. 
+  
+  88  O-STRING-IS-EMPTY     VALUE   SPACES. 
+  
+  PROCEDURE DIVISION. 
+  
+  GENESIS. 
+  
+  PERFORM MAINLINE 
+  
+  PERFORM FINALIZATION 
+  
+  GOBACK 
+  
+  . 
+  
+  MAINLINE. 
+  
+  DISPLAY 'STRINGVAL EXAMPLE IS STARTING !!!!!!!!!!!!!!' 
+  
+  DISPLAY '=== USING MOVE STATEMENT ===' 
+  
+  MOVE I-STRING TO O-STRING 
+  
+  DISPLAY 'O STRING= ' O-STRING 
+  
+  DISPLAY '=== USING STRING STATEMENT ===' 
+  
+  SET O-STRING-IS-EMPTY    TO  TRUE 
+  
+  STRING I-STRING ( 1 : 1 ) DELIMITED BY SIZE 
+  
+  ' ' DELIMITED BY SIZE 
+  
+  I-STRING ( 2 : 1 ) DELIMITED BY SIZE 
+  
+  ' ' DELIMITED BY SIZE 
+  
+  I-STRING ( 3 : 1 ) DELIMITED BY SIZE 
+  
+  ' ' DELIMITED BY SIZE 
+  
+  I-STRING ( 4 : 1 ) DELIMITED BY SIZE 
+  
+  ' ' DELIMITED BY SIZE 
+  
+  I-STRING ( 5 : 1 ) DELIMITED BY SIZE 
+  
+  ' ' DELIMITED BY SIZE 
+  
+  I-STRING ( 6 : 1 ) DELIMITED BY SIZE 
+  
+  ' ' DELIMITED BY SIZE 
+  
+  I-STRING ( 7 : 1 ) DELIMITED BY SIZE 
+  
+  ' ' DELIMITED BY SIZE 
+  
+  I-STRING ( 8 : 1 ) DELIMITED BY SIZE 
+  
+  ' ' DELIMITED BY SIZE 
+  
+  INTO O-STRING 
+  
+  
+ https://riptutorial.com/
+  
+ 92",NA
+"Not an example, but ....","seemed the only way to add a comment. One thing that's easy to forget is that if you string some 
+ variables like the example above, and the resulting length is SHORTER than what was originally in 
+ the receiving variable (o- string above) then""trailing""characters are left in place.
+  
+ For example, if o- string contained ""the string contains this data"" and you string together ""fred & 
+ Bert"", then o- string will contain ""fred & Bertontains this data"" (if I counted right).
+  
+ Summa summary, get into the habit of ALWAYS moving spaces into your receiving variable before 
+ you start stringing.
+  
+ Read String online: 
+ https://riptutorial.com/cobol/topic/7039/string
+  
+ https://riptutorial.com/
+  
+ 93",NA
+Chapter 45: STRING statement ,NA,NA
+Remarks ,"The 
+ STRING
+  statement concatenates the partial or complete contents of multiple fields into a single 
+ result.",NA
+Examples ,NA,NA
+STRING example for C strings,"*> Strip off trailing zero bytes 
+  
+  
+ STRING c-string DELIMITED BY LOW-VALUE INTO working-store
+  
+ Read STRING statement online: 
+ https://riptutorial.com/cobol/topic/7468/string-statement
+  
+ https://riptutorial.com/
+  
+ 94",NA
+Chapter 46: SUBTRACT statement ,NA,NA
+Remarks ,"The 
+ SUBTRACT
+  statement is used to subtract one, or the sum of two or more, numeric data items 
+ from one or more items, and set the values of one or more identifiers to the result.
+  
+ rounded-phrase",NA
+Examples,"https://riptutorial.com/
+  
+ 95",NA
+SUBTRACT example,"SUBTRACT item-a item-b item-c FROM account-z ROUNDED MODE IS NEAREST-EVEN 
+  
+  
+  ON SIZE ERROR 
+  
+  
+  DISPLAY ""CALL THE BOSS, Account `Z` is OUT OF MONEY"" END-DISPLAY 
+  
+  
+  PERFORM promisary-processing 
+  
+  
+  NOT ON SIZE ERROR 
+  
+  
+  PERFORM normal-processing 
+  
+  
+ END-SUBTRACT
+  
+ Read SUBTRACT statement online: 
+ https://riptutorial.com/cobol/topic/7465/subtract-statement
+  
+ https://riptutorial.com/
+  
+ 96",NA
+Chapter 47: SUPPRESS statement ,NA,NA
+Remarks ,"The 
+ SUPPRESS
+  statement inhibits the printing of a report group. COBOL Report Writer feature.",NA
+Examples ,NA,NA
+SUPPRESS example,"SUPPRESS PRINTING
+  
+ Read SUPPRESS statement online: 
+ https://riptutorial.com/cobol/topic/7470/suppress-statement
+  
+ https://riptutorial.com/
+  
+ 97",NA
+Chapter 48: TERMINATE statement ,NA,NA
+Remarks ,"The 
+ TERMINATE
+  statement is a COBOL Report Writer feature. Terminates the processing on the 
+ given report names.",NA
+Examples ,NA,NA
+TERMINATE example,"TERMINATE report-1 report-2 report-summary
+  
+ Read TERMINATE statement online: 
+ https://riptutorial.com/cobol/topic/7467/terminate-statement
+  
+ https://riptutorial.com/
+  
+ 98",NA
+Chapter 49: UNLOCK statement ,NA,NA
+Remarks ,"The 
+ UNLOCK
+  statement explicitly releases any record locks associated with a file connector.",NA
+Examples ,NA,NA
+UNLOCK record from a file connector,"UNLOCK filename-1 RECORDS
+  
+ Read UNLOCK statement online: 
+ https://riptutorial.com/cobol/topic/7471/unlock-statement
+  
+ https://riptutorial.com/
+  
+ 99",NA
+Chapter 50: UNSTRING statement,NA,NA
+Remarks,"The 
+ UNSTRING
+  statement separates a sending field and places results in multiple receiving fields.",NA
+Examples,NA,NA
+UNSTRING example,"UNSTRING Input-Address 
+  
+  
+  DELIMITED BY "","" OR ""/"" 
+  
+  
+  INTO 
+  
+  
+  Street-Address DELIMITER D1 COUNT C1 
+  
+  
+  Apt-Number DELIMITER D2 COUNT C2 
+  
+  
+  City DELIMITER D3 COUNT C3 
+  
+  
+  State DELIMITER D4 COUNT C4 
+  
+  
+ https://riptutorial.com/
+  
+ 100",NA
+Chapter 51: USE statement,NA,NA
+Remarks,"The 
+ USE
+  statement specifies procedures to be used
+  
+ •
+  
+ •
+  
+ •
+  
+ for error and exception handling in addition to those provided by other facilities 
+ before printing of a designated report group 
+  
+ after detection of designated exception conditions
+  
+ Obsolete usage includes specifying procedures to be used during 
+ DEBUGGING
+ , and extensions 
+ include adding interstitial procedures for program start and end.",NA
+Examples,NA,NA
+USE statement with Report Writer DECLARATIVES,"https://riptutorial.com/
+  
+ 102",NA
+Chapter 52: WRITE statement ,NA,NA
+Remarks ,"The 
+ WRITE
+  statement releases logical records to an 
+ output
+  or 
+ input-output
+  storage resource, and for 
+ logical positioning of lines within a logical page.
+  
+ WRITE sequential
+  
+ WRITE random
+  
+ https://riptutorial.com/
+  
+ 105",NA
+Examples,NA,NA
+WRITE examples,"WRITE record-buff 
+  
+  
+ WRITE indexed-record 
+  
+  
+  WITH LOCK 
+  
+  
+  ON INVALID KEY 
+  
+  
+  
+  DISPLAY ""Key exists, REWRITING..."" END-DISPLAY 
+  
+  
+  
+  PERFORM rewrite-key 
+  
+ END-WRITE 
+  
+ IF indexed-file-status NOT EQUAL ZERO THEN 
+  
+  
+  DISPLAY ""Write problem: "" indexed-file-status UPON SYSERR 
+  
+  END-
+ DISPLAY 
+  
+  
+  PERFORM evasive-manoeuvres 
+  
+ END-IF 
+  
+  
+ WRITE record-name-1 AFTER ADVANCING PAGE 
+  
+  
+ WRITE record-name-1 FROM header-record-1 
+  
+  
+  AFTER ADVANCING 2 LINES 
+  
+  
+  AT END-OF-PAGE 
+  
+  
+  
+  PERFORM write-page-header 
+  
+  
+  
+  PERFORM write-last-detail-reminder 
+  
+ END-WRITE
+  
+ Read WRITE statement online: 
+ https://riptutorial.com/cobol/topic/7583/write-statement
+  
+ https://riptutorial.com/
+  
+ 106",NA
+Credits,"S. 
+  
+ No
+  
+ Chapters
+  
+ Contributors
+  
+ 1
+  
+ Getting started with 
+ cobol
+  
+ 4444
+ , 
+ Abhishek Jain
+ , 
+ Bharat Anand
+ , 
+ Brian Tiffin
+ , 
+ Community
+ , 
+ Joe Zitzelberger
+ , 
+ ncmathsadist
+  
+ 2
+  
+ ACCEPT statement
+  
+ Brian Tiffin
+  
+ 3
+  
+ ADD statement
+  
+ Brian Tiffin
+  
+ 4
+  
+ ALLOCATE 
+ statement
+  
+ Brian Tiffin
+  
+ 5
+  
+ ALTER statement
+  
+ Brian Tiffin
+  
+ 6
+  
+ CALL statement
+  
+ 4444
+ , 
+ Bill Woodger
+ , 
+ Brian Tiffin
+ , 
+ infoRene
+ , 
+ Jeffrey Ranney
+ , 
+ Joe 
+ Zitzelberger
+ , 
+ Simon Sobisch
+  
+ 7
+  
+ CANCEL statement
+  
+ Brian Tiffin
+  
+ 8
+  
+ COMMIT statement
+  
+ Brian Tiffin
+  
+ 9
+  
+ COMPUTE 
+ statement
+  
+ Brian Tiffin
+  
+ 10
+  
+ CONTINUE 
+ statement
+  
+ Brian Tiffin
+  
+ 11
+  
+ COPY directive
+  
+ Brian Tiffin
+  
+ 12
+  
+ Data division
+  
+ Bulut Colak
+  
+ 13
+  
+ DELETE statement
+  
+ Brian Tiffin
+  
+ 14
+  
+ DISPLAY statement
+  
+ Brian Tiffin
+  
+ 15
+  
+ DIVIDE statement
+  
+ Brian Tiffin
+  
+ 16
+  
+ EVALUATE 
+ statement
+  
+ Brian Tiffin
+  
+ 17
+  
+ EXIT statement
+  
+ Brian Tiffin
+  
+ 18
+  
+ FREE statement
+  
+ Brian Tiffin
+  
+ 19
+  
+ GENERATE 
+ statement
+  
+ Brian Tiffin
+  
+  
+ https://riptutorial.com/
+  
+ 107",NA

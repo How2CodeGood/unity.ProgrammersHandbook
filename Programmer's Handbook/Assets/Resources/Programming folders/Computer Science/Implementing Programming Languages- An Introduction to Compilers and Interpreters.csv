@@ -1,0 +1,5543 @@
+Larger Text,Smaller Text,Symbol
+Computing Texts in ,NA,NA
+16,"Implementing 
+ a 
+ programming 
+ language 
+ means 
+ bridging 
+  
+ the 
+ gap 
+ from 
+ the 
+ programmer’s 
+ high-level 
+ thinking 
+ to 
+ the 
+  
+ machine’s 
+ zeros 
+ and 
+ ones. 
+  
+ If 
+ this 
+ is 
+ done 
+ in 
+ an 
+ effi 
+ cient 
+  
+ and 
+ reliable 
+ way, 
+ programmers 
+ can 
+ concentrate 
+ on 
+ the 
+  
+ actual 
+ problems 
+ they 
+ have 
+ to 
+ solve, 
+ rather 
+ than 
+ on 
+ the 
+  
+ details 
+ of 
+ machines. 
+ But 
+ understanding 
+ the 
+ whole 
+ chain 
+  
+ from 
+ languages 
+ to 
+ machines 
+ is 
+ still 
+ an 
+ essential 
+ part 
+ of 
+  
+ the 
+ training 
+ of 
+ any 
+ serious 
+ programmer. 
+ It 
+ will 
+ result 
+ in 
+  
+ a 
+ more 
+ competent 
+ programmer, 
+ who 
+ will 
+ moreover 
+ be 
+  
+ able 
+ to 
+ develop 
+ new 
+ languages. 
+ A 
+ new 
+ language 
+ is 
+ often 
+  
+ the 
+ best 
+ way 
+ to 
+ solve 
+ a 
+ problem, 
+ and 
+ less 
+ diffi 
+ cult 
+ than 
+  
+ it may sound.
+  
+ This book follows a theory-based practical approach, 
+  
+ where theoretical models serve as blueprint for actual 
+  
+ coding. The reader is guided to build compilers and 
+  
+ interpreters in a well-understood and scalable way. 
+  
+ The 
+  
+ solutions are 
+  
+ moreover 
+  
+ portable 
+  
+ to 
+  
+ different 
+  
+ implementation languages.  Much of the actual code 
+  
+ is automatically generated from a grammar of the 
+  
+ language, by using the BNF Converter tool. The 
+  
+ rest can be written in Haskell or Java, for which the 
+  
+ book gives detailed guidance, but with some adaptation 
+  
+ also in C, C++, C#, or OCaml, which are supported by the 
+  
+ BNF Converter.
+  
+ The 
+ main 
+ focus 
+ of 
+ the 
+ book 
+ is 
+ on 
+ standard 
+ imperative 
+  
+ and 
+ functional 
+ languages: 
+ a 
+ subset 
+ of 
+ C++ 
+ and 
+ a 
+ subset 
+  
+ of 
+ Haskell 
+ are 
+ the 
+ source 
+ languages, 
+ and 
+ Java 
+ Virtual 
+  
+ Machine 
+ is 
+ the 
+ main 
+ target. 
+ Simple 
+ Intel 
+ x86 
+ native 
+ code 
+  
+ compilation 
+ is 
+ shown 
+ to 
+ complete 
+ the 
+ chain 
+ from 
+ language 
+  
+ to 
+ machine. 
+ The 
+ last 
+ chapter 
+ leaves 
+ the 
+ standard 
+ paths 
+  
+ and 
+ explores 
+ the 
+ space 
+ of 
+ language 
+ design 
+ ranging 
+ from 
+  
+ minimal 
+ Turing-complete 
+ languages 
+ to 
+ human-computer 
+  
+ interaction in natural language.",NA
+Implementing ,NA,NA
+Programming ,NA,NA
+Languages,NA,NA
+An Introduction to Compilers ,NA,NA
+and Interpreters,NA,NA
+Aarne Ranta,NA,NA
+Computing Texts in ,NA,NA
+16,NA,NA
+Implementing ,NA,NA
+Programming ,NA,NA
+Languages,NA,NA
+An Introduction to Compilers ,NA,NA
+and Interpreters,"The 
+  
+ solutions 
+  
+ are 
+  
+ moreover 
+  
+ portable 
+  
+ to 
+  
+ different 
+  
+ implementation languages.  Much of the actual code is automatically generated from a 
+ grammar of the language, by using the BNF Converter tool. The rest can be written in 
+ Haskell or Java, for which the book gives detailed guidance, but with some adaptation 
+ also in C, C++, C#, or OCaml, which are supported by the BNF Converter.
+  
+ T
+ h
+ e
+  
+ m
+ a
+ i
+ n
+  
+ f
+ o
+ c
+ u
+ s
+  
+ o
+ f
+  
+ t
+ he 
+ book 
+ is 
+ on 
+ standard 
+ imperative 
+  
+ and 
+ functional 
+ languages: 
+ a 
+ subset 
+ of 
+ C++ 
+ and 
+ a 
+ subset 
+  
+ of 
+ Haskell 
+ are 
+ the 
+ source 
+ languages, 
+ and 
+ Java 
+ Virtual 
+  
+ Machine 
+ is 
+ the 
+ main 
+ target. 
+ Simple 
+ Intel 
+ x86 
+ native 
+ code 
+  
+ compilation 
+ is 
+ shown 
+ to 
+ complete 
+ the 
+ chain 
+ from 
+ language 
+  
+ to 
+ machine. 
+ The 
+ last 
+ chapter 
+ leaves 
+ the 
+ standard 
+ paths 
+  
+ and 
+ explores 
+ the 
+ space 
+ of 
+ language 
+ design 
+ ranging 
+ from 
+  
+ minimal 
+ Turing-complete 
+ languages 
+ to 
+ human-computer 
+  
+ interaction in natural language.",NA
+Texts in Computing ,NA,NA
+Volume 16 ,NA,NA
+Implementing ,NA,NA
+Programming ,NA,NA
+Languages ,NA,NA
+An Introduction to ,NA,NA
+Compilers and Interpreters ,NA,NA
+Implementing ,NA,NA
+Programming ,NA,NA
+Languages ,NA,NA
+An Introduction to ,NA,NA
+Compilers and Interpreters ,NA,NA
+Aarne Ranta ,NA,NA
+with an appendix coauthored by ,NA,NA
+Markus Forsberg ,"Aarne Ranta
+  is Professor of Computer Science at the University of Gothenburg, Sweden. He has 
+ lectured on programming language technology since 2002 and been the leader or supervisor of 
+ several language implementation projects. The most important ones are the GF formalism for 
+ natural language processing and the BNFC tool for compiler construction. 
+  
+ Markus Forsberg
+  is a Researcher in Language Technology at the University of Gothenburg. 
+ Together with Ranta, he wrote the first implementation of BNFC.",NA
+Contents,"Preface
+  
+ ix
+  
+ 1 
+  
+ 1 
+  
+ 5 
+  
+ 6 
+  
+ 8 
+  
+ 10 
+  
+ 12 
+  
+ 13 
+  
+ 14
+  
+ 1
+ 5 
+  
+ 1
+ 5 
+  
+ 1
+ 6 
+  
+ 2
+ 0 
+  
+ 2
+ 1 
+  
+ 2
+ 2 
+  
+ 2
+ 4 
+  
+ 2
+ 6 
+  
+ 2
+ 9 
+  
+ 3
+ 0 
+  
+ 3
+ 2
+  
+ 3
+ 7 
+  
+ 3
+ 7 
+  
+ 3
+ 8 
+  
+ 4
+ 0 
+  
+ 4
+ 4 
+  
+ 1
+  
+ Compilation Phases
+  
+ 1.1
+  
+ From language to binary . . . . . . . . . . . . . . . . . . . . . .
+  
+ 1.2
+  
+ Levels of languages . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 1.3
+  
+ Compilation and interpretation . . . . . . . . . . . . . . . . . .
+  
+ 1.4
+  
+ Compilation phases . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 1.5
+  
+ Compilation errors . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 1.6
+  
+ More compilation phases . . . . . . . . . . . . . . . . . . . . . .
+  
+ 1.7
+  
+ Theory and practice
+  
+ . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 1.8
+  
+ The scope of the techniques . . . . . . . . . . . . . . . . . . . .
+  
+ 2
+  
+ Grammars
+  
+ 2.1
+  
+ Defining a language
+  
+ . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 2.2
+  
+ Using BNFC
+  
+ . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 2.3
+  
+ Rules, categories, and trees
+  
+ . . . . . . . . . . . . . . . . . . . .
+  
+ 2.4
+  
+ Precedence levels . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 2.5
+  
+ Abstract and concrete syntax . . . . . . . . . . . . . . . . . . .
+  
+ 2.6
+  
+ Abstract syntax in Haskell . . . . . . . . . . . . . . . . . . . . .
+  
+ 2.7
+  
+ Abstract syntax in Java . . . . . . . . . . . . . . . . . . . . . .
+  
+ 2.8
+  
+ List categories . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 2.9
+  
+ Specifying the lexer . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ 2.10 Working out a grammar . . . . . . . . . . . . . . . . . . . . . .
+  
+ 3
+  
+ Lexing and Parsing*
+  
+ 3.1
+  
+ The theory of formal languages . . . . . . . . . . . . . . . . . .
+  
+ 3.2
+  
+ Regular languages and finite automata . . . . . . . . . . . . . .
+  
+ 3.3
+  
+ The compilation of regular expressions . . . . . . . . . . . . . .
+  
+ 3.4
+  
+ Properties of regular languages . . . . . . . . . . . . . . . . . .
+  
+ 3.5
+  
+ Context-free grammars and parsing . . . . . . . . . . . . . . . .
+  
+ 3.6
+  
+ LL(
+ k
+ ) parsing . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  
+ v",NA
+Preface,"This book is an introduction to programming language technology and compiler 
+ construction. It is different from traditional compiler books in several ways:
+  
+ •
+  It is much thinner, yet covers all the techniques needed for typical tasks.
+ •
+  It 
+ has more pure theory (semantics, inference rules) but also a fair amount of 
+ actual practice (how to write code).
+  
+ •
+  It leaves low-level details to standard tools whenever available.
+  
+ If you can invest full-time work to this book, you should be able to learn the 
+ material in a couple of weeks, which includes completing the programming 
+ assignments. This covers the complete chain from source code to machine code: 
+ lexing, parsing, type checking, code generators, and interpreters. With the 
+ knowledge gained, you can later build your own languages as a matter of days, 
+ sometimes even hours.
+  
+ The book follows a
+  theory-based practical approach
+ . This means that the 
+ ultimate goal is to write programs that work, but the best way to achieve this is 
+ via theoretical thinking. Thus we will specify each compiler component first by 
+ theoretical concepts such as grammars and inference rules. Then we will show 
+ how the theory is converted to practice, often by mechanically translating the 
+ description into program code. Theory thus works as blueprint for the code.
+  
+ The goal is to get you quickly into the business of actually implementing a 
+ language and running programs written in it. This exercise serves two purposes:
+  
+ 1. You will understand better than before how existing languages work.
+  
+ 2. You will learn skills needed for creating new languages,
+  
+ To further support these goals, there are a few theory chapters and sections, 
+ which are marked with an asterisk (*). These parts can perhaps be left out if 
+ you are only interested in the latter goal. But of course, to talk with any 
+ authority about compilers, the knowledge of the underlying theory is essential. 
+ The theory sections try to make this interesting and relevant, by giving answers 
+ to questions that are likely to arise even in practice, such as:
+  
+ ix",NA
+How to use this book,"The text runs in parallel with practical programming work, which is divided to 
+ six assignments. You cannot claim really to have read this book unless you have 
+ yourself completed these assignments:
+  
+ 1. A grammar and parser for a fragment of C++.
+  
+ 2. A type checker for a smaller fragment of C++, to be called CPP.
+  
+ 3. An interpreter for CPP.
+  
+ 4. A compiler from CPP to Java Virtual Machine (JVM).
+  
+ 5. An interpreter for a functional language: a fragment of Haskell, to be 
+  
+ called Fun.
+  
+ 6. The design and implementation of a domain-specific language.
+  
+ The language CPP is a small part of the immense language C++; we could almost 
+ as well say C or Java. However, the parser (Assignment 1) also contains many of 
+ the tricky special features of C++ such as templates. The purpose of this is to 
+ throw you into cold water and show that you can actually swim.",NA
+Web resources,"This book has a web page,
+  
+ http://digitalgrammars.com/ipl-book/
+  
+ This web page contains
+  
+ •
+  the complete specifications of the six assignments
+  
+ •
+  associated code templates and test suites
+  
+ •
+  slides for teaching from this book
+  
+ •
+  solutions to some exercises
+  
+ •
+  links to useful software
+  
+ •
+  links to on-line reference publications
+  
+ •
+  errata",NA
+Teaching from this book,"This book is based on ten years of lecturing on programming language tech-
+ nology and compiler construction at Chalmers University of Technology and the 
+ University of Gothenburg. I have covered most of the material in a quarter 
+ year’s course at half pace, which corresponds to four weeks of full-time study 
+ or 7.5 European credit points. The students have been partly from an 
+ engineering track (about two thirds), partly from a science curriculum (about a 
+ third). The",NA
+Acknowledgements,"Since I first lectured on compiler construction in 2002, more than a thousand 
+ students have followed the courses and contributed to the evolution of this 
+ material. I am grateful to all the students for useful feedback and for a confir-
+ mation that the chosen approach makes sense.
+  
+ I also want to thank my course assistants throughout these years: Gr´egoire 
+ D´etrez, Arnar Birgisson, Ramona Enache, Krasimir Angelov, Michal Palka, Jean-
+ Philippe Bernardy, Kristoffer Hedberg, Anders M¨ortberg, Daniel Hedin,",NA
+Chapter 1,NA,NA
+Compilation Phases,"This chapter introduces the concepts and terminology for most of the later 
+ discussion. It explains the difference between compilers and interpreters, the 
+ division into low and high level languages, and the data structures and algo-
+ rithms 
+ involved 
+ in 
+ each 
+ component 
+ of 
+ a 
+ programming 
+ language 
+ implementation. Many of these components are known as the
+  compilation 
+ phases
+ , that is, the phases through which a compiler goes on its way from 
+ source code to machine code.",NA
+1.1 ,NA,NA
+From language to binary,"As everyone knows, computers manipulate 0’s and 1’s. This is done by the help 
+ of electric circuits, where 0 means no current goes through and 1 means that it 
+ does. 
+  
+ The reason why this is useful is that so many things can be 
+ expressed by using just 0’s and 1’s—by
+  bit sequences
+ , also known as
+  binary 
+ encoding
+ . In the mathematical theory of information, one goes as far as to say 
+ that
+  information
+  is the same thing as bit sequences. One way to make sense of 
+ this is to think about information in terms of yes/no questions. A sequence of 
+ answers to enough many questions can specify any object. For instance, a 
+ popular game in my childhood was one in which one player thought about a 
+ person and the other tried to guess who it was by asking maximally 20 yes/no 
+ questions.
+  
+ The first thing to encode in binary are the integers:
+  
+ 0 = 0
+  
+ 1 = 1
+  
+ 2 = 10
+  
+ 3 = 11
+  
+ 4 = 100
+  
+ 1",NA
+1.2 ,NA,NA
+Levels of languages,"The task of a compiler may be more or less demanding. This depends on the 
+ distance of the languages it translates between. 
+  
+ The situation is related to 
+ translation between human languages: it is easier to translate from English to 
+ French than from English to Japanese, because French is closer to English than 
+ Japanese is, both in the family tree of languages and because of cultural 
+ influences.
+  
+  
+ But the meaning of “closer” is clearer in the case of computer languages. 
+ Often it is directly related to the
+  level
+  of the language. The binary machine 
+ language is usually defined as the
+  lowest
+  level, whereas the highest level might 
+ be human language such as English. Usual programming languages are between 
+ these levels, as shown by the diagram in Figure 1.1. 
+  
+ The diagram is very 
+ sketchy. C++, for instance, is a language that reaches both the low level of C (with 
+ its memory management, cf. Section 5.8) and the high level of Lisp (with higher 
+ order functions, cf. Section 7.2).
+  
+ Because of their distance to the machine,
+  high-level languages
+  are more 
+ difficult to compile than
+  low-level languages
+ . Notice that “high” and “low”don’t 
+ imply any value judgements here; the idea is simply that higher levels are 
+ closer to human thought, whereas lower levels are closer to the operation of 
+ machines. Both humans and machines are needed to make computers work in 
+ the way we are used to. Some people might claim that only the lowest level of 
+ binary code is necessary, because humans can be trained to write it. But to this 
+ one can object that programmers could never write very sophisticated 
+ programs by using machine code only—they could just not keep the millions of 
+ bytes needed in their heads. Therefore, it is usually much more productive to 
+ write high-level code and let a compiler produce the binary.",NA
+1.3 ,NA,NA
+Compilation and interpretation,"In a way, a compiler reverses the history of programming languages. What we 
+ saw before goes from a “1960’s” source language:
+  
+ 5 + 6 * 7
+  
+ to a “1950’s” assembly language
+  
+ bipush 5 bipush 6 bipush 7 imul iadd
+  
+ and further to a “1940’s” machine language
+  
+ 0001 0000 0000 0101 
+  
+ 0001 0000 
+  
+ 0000 0110
+  
+ 0001 0000 0000 0111 
+  
+ 0110 1000 
+  
+ 0110 0000
+  
+ The second step is very easy: you just look up the binary codes for each symbol 
+ in the assembly language and put them together in the same order. 
+  
+ It is 
+ sometimes not regarded as a part of compilation proper, but as a separate level",NA
+1.4 ,NA,NA
+Compilation phases,"A compiler even for a simple language easily becomes a complex program, 
+ which is best attacked by dividing it to smaller components. These components 
+ typically address different
+  compilation phases
+ . Each phase is a part of a 
+ pipeline, which transforms the code from one format to another. These formats 
+ are typically encoded in different data structures: each phase returns a data 
+ structure that is easy for the next phase to manipulate.
+  
+ The diagram in Figure 1.2 shows the main compiler phases and how a piece 
+ of source code travels through them. The code is on the left, the down-going 
+ arrows are annotated by the names of the phases, and the data structure is on 
+ the right. Here are some more words of explanation:
+  
+ •
+  The
+  lexer
+  reads a string of
+  characters
+  and chops it into
+  tokens
+ , i.e. to 
+ “meaningful words”; the figure represents the token string by putting 
+  
+ spaces between tokens.
+  
+ •
+  The
+  parser
+  reads a string of tokens and groups it into a
+  syntax tree
+ , i.e. to a 
+ structure indicating which parts belong together and how; the 
+  
+ figure 
+ represents the syntax tree by using parentheses.
+  
+ •
+  The
+  type checker
+  finds out the
+  type
+  of each part of the syntax tree that 
+ might have alternative types, and returns an
+  annotated syntax tree
+ ; the 
+ figure represents the annotations by the letter i (“integer”) in square 
+ brackets.",NA
+1.5 ,NA,NA
+Compilation errors,"Each compiler phases has both a positive and a negative side, so to say. The 
+ positive side is that it converts the code to something that is more useful for the 
+ next phase, for instance, a token string into a syntax tree. The negative side is 
+ that it may fail, in which case it might report an error to the user.
+  
+ Each compiler phase has its characteristic errors. Here are some examples:
+  
+ •
+  Lexer errors
+ , e.g. unclosed quote,
+  
+ ""hello
+  
+ •
+  Parse errors
+ , e.g. mismatched parentheses,
+  
+ (4 * (y + 5) - 12))
+  
+ •
+  Type errors
+ , e.g. the application of a function to an argument of wrong kind,
+  
+ sort(45)
+  
+ Errors on later phases than type checking are usually not supported. 
+  
+ One 
+ reason is the principle (by Robin Milner, the creator of ML), that “well-typed",NA
+1.6 ,NA,NA
+More compilation phases,"The compiler phases discussed above are the main phases. There can be many 
+ more—here are a couple of examples: 
+  
+  
+ Desugaring
+ /
+ normalization
+ : remove
+  syntactic sugar
+ , i.e. language con-
+ structs that are there to make the language more convenient for programmers, 
+ without adding to the expressive power. Such constructs can be removed early 
+ in compilation, so that the later phases don’t need to deal with them. 
+  
+ An 
+ example is multiple declarations, which can be reduced to sequences of single 
+ declarations:
+  
+ int i, j ; =
+ ⇒
+  int i ; int j ;
+  
+ Desugaring is normally done at the syntax tree level, and it can be inserted as a 
+ phase between parsing and type checking. A disadvantage can be, however, that 
+ errors arising in type checking then refer to code that the programmer has 
+ never written herself, but that has been created by desugaring.",NA
+1.7 ,NA,NA
+Theory and practice,"The complex task of compiler writing is greatly helped by the division into 
+ phases. Each phase is simple enough to be understood properly; and imple-
+ mentations of different phases can be recombined to new compilers. But there 
+ is yet another aspect: many of the phases have a clean mathematical
+  theory
+ , 
+ which applies to that phase. The following table summarizes those theories:
+  
+ phase
+  
+ theory
+  
+ lexer
+  
+ finite automata
+  
+ parser
+  
+ context-free grammars
+  
+ type checker
+  
+ type systems
+  
+ interpreter
+  
+ operational semantics
+  
+ code generator
+  
+ compilation schemes
+  
+  
+ The theories provide
+  declarative notations
+  for each of the phases, so that 
+ they can be specified in clean ways, independently of implementation and 
+ usually much more concisely. They will also enable
+  reasoning
+  about the 
+ compiler components. 
+  
+ For instance, the way parsers are written by means of 
+ context-free grammars can be used for guaranteeing that the language is 
+ unambiguous
+ , that is, that each program can be compiled in a unique way.
+  
+ Syntax-directed translation
+  is a common name for the techniques used in 
+ type checkers, interpreters, and code generators alike. We will see that these 
+ techniques have so much in common that, once you learn how to implement a 
+ type checker, the other components are easy variants of this.",NA
+1.8 ,NA,NA
+The scope of the techniques,"The techniques of compiler construction are by no means restricted to the 
+ traditional task of translating programming language to machine language. The 
+ target of the translation can also be another programming language—for 
+ instance, the Google Web Toolkit is a compiler from Java into JavaScript, 
+ enabling the construction of web applications in a higher-level and type-
+ checked language.
+  
+ Actually, the modular way in which modern compilers are built implies that 
+ it is seldom necessary to go all the way to the machine code (or assembler), 
+ even if this is the target. A popular way of building native code compilers is via 
+ a translation to C. As soon as C code is reached, the compiler for the new 
+ language is complete.
+  
+ The modularity of compilers also enables the use of compiler components to 
+ other tasks, such as debuggers, documentation systems, and code analysis of 
+ different kinds. But there is still a reason to learn the whole chain from source 
+ language to machine language: it will help you to decide which phases your task 
+ resembles the most, and thereby which techniques are the most useful ones to 
+ apply.",NA
+Chapter 2,NA,NA
+Grammars,"This chapter is a hands-on introduction to BNFC, the BNF Converter. 
+  
+ It 
+ explains step by step how to write a grammar, how to convert it into a lexer and 
+ a parser, how to test it, and how to solve some problems that are likely to arise 
+ with BNFC.
+  
+  
+ This chapter provides all the concepts and tools needed for solving Assign-
+ ment 1, which is a parser for a fragment of C++.",NA
+2.1 ,NA,NA
+Defining a language,"In school teaching,
+  grammars
+  are systems of rules used for teaching languages. 
+ They specify how words are formed (e.g. 
+  
+ that the plural of the noun
+  baby 
+ is
+  
+ babies
+ ) and how words are combined to sentences (e.g. 
+  
+ that in English 
+ the subject usually appears before the verb). Grammars can be more or less 
+ complete, and people who actually speak a language may follow the grammar 
+ more or less strictly. In
+  linguistics
+ , where grammars are studied in a scientific 
+ way, a widely held belief is that
+  all grammars leak
+ —that it is not possible to 
+ specify a language completely by grammar rules.
+  
+ In compiler construction, grammars have a similar role: they give rules for 
+ forming “words”, such as integer constants, identifiers, and keywords. And they 
+ also give rules for combining words into expressions, statements, and 
+ programs. But the usefulness of grammars is much less controversial than in 
+ linguistics: grammars of programming languages don’t leak, because the 
+ languages are 
+ defined
+  by their grammars. This is possible because 
+ programming languages are artificial products, rather than results of natural 
+ evolution.
+  
+ Defining a programming language is so easy that we can directly jump into 
+ doing it. Let us start with the grammar in Figure 2.1. It defines a language of
+  
+ expressions
+  built by using the four arithmetic operations (addition, sub-
+  
+ 15",NA
+2.2 ,NA,NA
+Using BNFC,"The first thing you have to do is to check that the BNFC tool is available. 
+ Assuming you are working in a Unix-style shell, type
+  
+ bnfc
+  
+ and you should get a message specifying the authors and license of BNFC and its 
+ usage options. If the command bnfc does not work, you can install the software 
+ from the BNFC homepage, which is linked from the book’s web page. BNFC is 
+ available for Linux, Mac OS, and Windows, and there are several installation 
+ methods (such as Debian packages), from which you can choose the one most 
+ suitable for your platform and taste. 
+  
+ Each platform also has 
+ Unix-style shells: Cygwin in Windows and Terminal in Mac OS.",NA
+2.3 ,NA,NA
+"Rules, categories, and trees","A BNFC source file is a sequence of
+  rules
+ , where most rules have the format
+  
+ Label
+  .
+  Category
+  ::=
+  Production
+  ;
+  
+ The
+  Label
+  and
+  Category
+  are
+  identifiers
+  (without quotes). The
+  Production
+  is a 
+ sequence of two kinds of items:
+  
+  
+ •
+  identifiers, called
+  nonterminals
+  
+  
+ •
+  string literals
+  (strings in double quotes), called
+  terminals 
+ The 
+ rule has the following semantics:
+  
+ •
+  A
+  tree
+  of type
+  Category
+  can be built with
+  Label
+  as the topmost node, from 
+ any sequence specified by the production, whose nonterminals give 
+  
+ the subtrees of the tree built.
+  
+ Types of trees are the
+  categories
+  of the grammar, that is, the different kinds of 
+ objects that can be built (expressions, statements, programs,. . . ). Tree labels 
+ are the
+  constructors
+  of those categories. The constructors appear as nodes of 
+ abstract syntax trees. Thus we saw above that the string
+  
+ 5 + 6 * 7
+  
+ was compiled into a tree displayed as follows:
+  
+ EAdd (EInt 5) (EMul (EInt 6) (EInt 7))
+  
+ You may also notice that it is
+  exactly
+  the notation Haskell programmers use for 
+ specifying a certain kind of trees: expressions built by function applications.
+  
+ But it is also a handy (machine-readable!) notation for the “real” tree",NA
+2.4 ,NA,NA
+Precedence levels,"How does BNFC know that multiplication is performed before addition, that is, 
+ why the EMul node is below the EAdd node? Another way for analysing the 
+ expression 5 + 6 * 7 could be
+  
+ EMul (EAdd (EInt 5) (EInt 6)) (EInt 7)
+  
+ The reason we don’t give this analysis is that multiplication expressions have a
+  
+ higher precedence
+ . In BNFC,
+  precedence levels
+  are the digits attached to 
+ category symbols. Thus Exp1 has precedence level 1, Exp2 has precedence level 
+ 2, etc. The nonterminal Exp without a digit is defined to mean the same as Exp0.
+  
+ The rule
+  
+ EAdd. Exp
+  
+ ::= Exp
+  
+ ""+"" Exp1 ;
+  
+ can be read as saying:
+  
+ EAdd forms an expression of level 0 from an expression of level 0 on 
+ the left of + and of level 1 on the right.
+  
+ Likewise, the rule
+  
+ EMul. Exp1 ::= Exp1 ""*"" Exp2 ;
+  
+ says: EMul form an expression of level 1 from an expression of level 1 on the left 
+ of * and of level 2 on the right.
+  
+ The semantics of precedence levels consists of three principles:
+  
+ 1. All precedence variants of a nonterminal denote the same type in the 
+  
+ abstract syntax. Thus 2, 2 + 2, and 2 * 2 are all of type Exp.
+  
+ 2. An expression of higher level can always be used on lower levels as well. 
+ This is what makes 2 + 3 correct: integer literals have level 2 (Figure 2.1), 
+ but are here used on level 0 on the left and on level 1 on the right.
+  
+ 3. An expression of any level can be lifted to the highest level by putting it 
+  
+ in parentheses. Thus (5 + 6) is an expression of level 2
+  
+ What is the highest level? This is specified in the grammar by using a coercions 
+ statement. For instance, coercions Exp 2 says that 2 is the highest level for Exp. It 
+ is actually a shorthand for the following “ordinary” BNF rules:
+  
+ _. Exp0 ::= Exp1 ;
+  
+ _. Exp1 ::= Exp2 ;
+  
+ _. Exp2 ::= ""("" Exp0 "")"" ;",NA
+2.5,NA,NA
+Abstract and concrete syntax,"Abstract syntax trees are the hub of a modern compiler: they are the target of 
+ the parser and the place where most compilation phases happen, including type 
+ checking and code generation.
+  
+ Abstract syntax is purely about the structure of expressions: what are their 
+ immediate parts and the parts of those parts? Abstract syntax thus ignore 
+ questions like what the parts look like, or even what order they appear in. From 
+ an abstract syntax point of view, all of the following expressions are the same:
+  
+ 2 + 3 
+  
+ (+ 2 3) 
+  
+ (2 3 +) 
+  
+ bipush 2
+  
+ Java, C (infix) 
+  
+ Lisp (prefix) 
+  
+ postfix 
+  
+ JVM (postfix)
+  
+ bipush 3
+  
+ iadd 
+  
+ the sum of 2 and 3 
+  
+ 2:n ja 3:n summa
+  
+ English (prefix/mixfix) 
+  
+ Finnish (postfix/mixfix)
+  
+ In fact, the simplest way to build a compiler is the following:
+  
+ 1. Parse the source language expression, e.g. 2 + 3.
+  
+ 2. Obtain an abstract syntax tree, EAdd (EInt 2) (EInt 3).
+  
+ 3. Linearize the tree to another format, bipush 2 bipush 3 iadd.
+  
+ In practice, compilers don’t quite work in this simple way. The main reason is 
+ that the tree obtained in parsing may have to be converted to another tree 
+ before code generation. For instance, type annotations may have to be added to 
+ an arithmetic expression tree in order to select the proper JVM instructions.
+  
+  
+ The BNF grammar specifies the abstract syntax of a language. 
+  
+ But it 
+ simultaneously specifies its
+  concrete syntax
+  as well. The concrete syntax gives 
+ more detail than the abstract syntax: it says what the expression parts look like 
+ and in what order they appear. One way to spell out the distinction is by trying 
+ to separate these aspects in a BNF rule. Take, for instance, the rule for addition 
+ expressions:",NA
+2.6 ,NA,NA
+Abstract syntax in Haskell,"The purpose of abstract syntax is to provide a suitable platform for further 
+ processing in a compiler. 
+  
+ Concrete syntax details such as precedences and the 
+ shapes of the terminals are then irrelevant: it would just complicate the matters, 
+ and also weaken the portability of compiler back-end components to other 
+ languages.
+  
+ Haskell is the language with the most straightforward representations of 
+ abstract syntax, so let us start with it. Java will be covered in the next section. 
+ And we will return to the details of abstract syntax programming later, when 
+ discussing later compiler phases. We hope the Haskell code we show is 
+ readable by non-Haskellers as well—it is much simpler than the Java code for 
+ the same purpose.
+  
+ When generating Haskell code, BNFC represents the abstract syntax by 
+ algebraic datatypes
+ . For every category in the grammar, a data definition is 
+ thus produced. The Exp category of Calc generates the following definition:",NA
+2.7 ,NA,NA
+Abstract syntax in Java,"Java has no notation for algebraic datatypes. But such types can be encoded by 
+ using the class system of Java:
+  
+ •
+  For each category in the grammar, an abstract base class.
+  
+ •
+  For each constructor of the category, a class extending the base class.
+  
+ This means quite a few files, which are for the sake of clarity put to a separate 
+ directory Absyn. In the case of Calc.cf, we have the files
+  
+ Calc/Absyn/EAdd.java 
+  
+ Calc/Absyn/EDiv.java 
+  
+ Calc/Absyn/EInt.java 
+  
+ Calc/Absyn/EMul.java 
+  
+ Calc/Absyn/ESub.java 
+  
+ Calc/Absyn/Exp.java
+  
+ This is what the classes look like; we ignore some of the code in them now and 
+ only show the parts crucial for abstract syntax representation:",NA
+2.8 ,NA,NA
+List categories,"Lists
+  of various kinds are used everywhere in grammars. Standard BNF defines 
+ list categories with pairs of rules. For instance, to define a list of function 
+ definitions, one can write
+  
+ NilDef. ListDef ::= ;
+  
+ ConsDef. ListDef ::= Def ListDef ;
+  
+ The first rule states that a list of definitions can be empty (“nil”). The second rule 
+ states that a list can be formed by prepending a definition to a list (“cons”).
+  
+ Lists often have
+  terminators
+ , i.e. tokens that appear after every item of a list. 
+ For instance, function definitions might have semicolons (;) as terminators.
+  
+ This is expressed as follows:
+  
+ NilDef. ListDef ::= ;
+  
+ ConsDef. ListDef ::= Def "";"" ListDef ;
+  
+ The pattern of list rules is so common that BNFC has some special notations for 
+ it. Thus lists of a category
+  C
+  can be denoted as [
+ C
+ ]. Instead of pairs of rules, one 
+ can use the shorthand terminator. Thus the latter pair of rules for lists of 
+ definitions can be written concisely
+  
+ terminator Def "";"" ;
+  
+ The former pair, where no terminator is used, is written with an “empty ter-
+ minator”,
+  
+ terminator Def """" ;
+  
+ It is important to know that the terminator rule expands to a pair of ordinary 
+ BNF rules when BNFC is run. Thus there is nothing special with it, and it could be 
+ avoided. But it is easier for both the grammar writer and reader to use the 
+ concise terminator format. This is analogous with the coercions shorthand, 
+ which BNFC expands to a list of rules relating the precedence levels to each 
+ other.",NA
+2.9 ,NA,NA
+Specifying the lexer,"We have defined lexing and parsing as the first two compiler phases. BNF 
+ grammars are traditionally used for specifying parsers. So where do we get the 
+ lexer from?
+  
+ In BNFC, the lexer is often implicit. It is based on the use of
+  predefined 
+ token types
+ , which can be used in BNF rules but only on the right-hand-sides 
+ of the rules. Thus it is not legal to write rules that produce these types. There 
+ are five such types in BNFC:",NA
+2.10 ,NA,NA
+Working out a grammar,"We conclude this section by working out a grammar for a small C-like program-
+ ming language. This language is the same as targeted by the Assignments 2 to 4 
+ at the end of this book, called
+  CPP
+ . Assignment 1 targets a larger language, for 
+ which this smaller language is a good starting point. The discussion below goes 
+ through the language constructs top-down, i.e. from the largest to the smallest, 
+ and builds the appropriate rules at each stage.",NA
+Chapter 3,NA,NA
+Lexing and Parsing*,"This is an optional theory chapter, which gives deeper understanding of the 
+ things worked through in the previous chapter. 
+  
+ It explains the concepts of 
+ regular expressions and finite automata, context-free grammars and parsing 
+ algorithms, and the limits of each of these methods. For instance, we will show 
+ why automata may explode in size, why parentheses cannot be matched by finite 
+ automata, and why context-free grammars cannot alone specify the well-
+ formedness of programs. We will also look at how the usual parsing algorithms 
+ work, to understand what
+  conflicts
+  are and how to avoid them.",NA
+3.1 ,NA,NA
+The theory of formal languages,"BNFC saves a lot of work in compiler writing by generating the code needed for 
+ the lexer and the parser. The saving is by an order of magnitude, compared 
+ with hand-written code in the targeted tools (see Section 8.7). The code 
+ generated by BNFC is processed by other tools, which in turn generate code in 
+ some host language—Haskell, Java, or C. Let us call the lexer tool (Alex, JLex, 
+ Flex) just 
+ Lex
+  and the parser tool (Happy, Cup, Bison) just
+  Yacc
+ , by references 
+ to the first such tools created for C in the 1970’s. These tools stand for another 
+ order of magnitude of saving, compared to writing host language code by hand.
+  
+ The generation of Lex and Yacc from a BNFC file is rather straightforward.
+  
+ The next step is much more involved. In a nutshell,
+  
+ •
+  Lex
+  code is
+  regular expressions
+ , converted to
+  finite automata
+ .
+  
+ •
+  Yacc
+  code is
+  context-free grammars
+ , converted to
+  LALR(1) parsers
+ . 
+ Regular expressions and context-free grammars, as well as their compilation to 
+ automata and parsers, originate in the mathematical theory of
+  formal lan-
+ guages
+ . A formal language is, mathematically, just any set of
+  sequences of
+  
+ 37",NA
+3.2 ,NA,NA
+Regular languages and finite automata,"A
+  regular language
+  is, like any formal language, a set of
+  strings
+ , i.e. se-quences 
+ of
+  symbols
+ , from a finite set of symbols called the
+  alphabet
+ . Only some formal 
+ languages are regular; in fact, regular languages are exactly those that can be 
+ defined by
+  regular expressions
+ , which we already saw in Sec-tion 2.9. We 
+ don’t even need all the expressions, but just five of them; the other ones are 
+ convenient shorthands. They are shown in the following table, together with 
+ the corresponding regular language in set-theoretic notation:
+  
+  
+ expression
+  
+ language
+  
+ ’a’
+  
+ {
+ a
+ }
+  
+ AB
+  
+ {ab|a ⇒
+  [[
+ A
+ ]]
+ , b ⇒
+  [[
+ B
+ ]]
+ }
+  
+ A | B
+  
+ [[
+ A
+ ]]
+  ⇒
+  [[
+ B
+ ]]
+  
+ A
+ *
+  
+ {a
+ 1
+ a
+ 2
+  . . . a
+ n
+ |a
+ i
+  ⇒
+  [[
+ A
+ ]]
+ , n ≥
+  0
+ }
+  
+ eps
+  
+  
+ {ϵ}
+  (empty string)
+  
+ The table uses the notation [[
+ A
+ ]] for the set corresponding to the expression
+  A
+ . 
+ This notation is common in computer science to specify the
+  semantics
+  of a 
+ language, in terms of the
+  denotations
+  of expressions.
+  
+ When does a string belong to a regular language? A straightforward answer 
+ would be to write a program that
+  interprets
+  the sets, e.g. in Haskell by using list 
+ comprehensions instead of the set brackets. This implementation, however, 
+ would be very inefficient. The usual way to go is to
+  compile
+  regular expres-sions 
+ to
+  finite automata
+ . Finite automata are graphs that allow traversing their 
+ input strings symbol by symbol. For example, the following automaton 
+ recognizes a string that is either an integer literal or an identifier or a string 
+ literal.",NA
+3.3 ,NA,NA
+The compilation of regular expressions,"The standard compilation of regular expressions has the following steps:
+  
+ 1.
+  NFA generation
+ : convert the expression into a
+  non-deterministic 
+  
+ finite automaton
+ ,
+  NFA
+ .
+  
+ 2.
+  Determination
+ : convert the NFA into a
+  deterministic finite au-
+  
+ tomaton
+ ,
+  DFA
+ .",NA
+3.4 ,NA,NA
+Properties of regular languages,"There is a whole branch of discrete mathematics dealing with regular languages 
+ and finite automata. A part of the research has to do with
+  closure properties
+ . 
+ For instance, regular languages are closed under
+  complement
+ , i.e. if
+  L
+  is a 
+ regular language, then also
+  −L
+ , is one: the set of all those strings of the alphabet 
+ that do not belong to
+  L
+ .
+  
+ We said that the five operators compiled in the previous section were suffi-
+ cient to define all regular languages. Other operators can be defined in terms of 
+ them; for instance, the non-empty closure
+  A
+ +
+ is simply
+  AA
+ ⇒
+ . The negation 
+ operator
+  −A
+  is more complicated to define; in fact, the simplest way to see that 
+ it exists is to recall that regular languages are closed under negation.
+  
+ But how do we
+  know
+  that regular languages are closed under negation? The 
+ simplest way to do this is to construct an automaton: assume that we have a 
+ DFA corresponding to
+  A
+ . Then the automaton for
+  −A
+  is obtained by inverting 
+ the status of each accepting state to non-accepting and vice-versa! This requires 
+ a version of the DFA where all symbols have transitions from",NA
+3.5 ,NA,NA
+Context-free grammars and parsing,"A
+  context-free grammar
+  is the same as a
+  BNF grammar
+ , consisting of rules of 
+ the form 
+  
+  
+ C
+  ::=
+  t
+ 1
+  . . . t
+ n
+  
+ where each
+  t
+ i
+  is a terminal or a nonterminal. We used this format extensively in 
+ Chapter 2 together with labels for building abstract syntax trees. But for most 
+ discussion of parsing properties we can ignore the labels.
+  
+  
+ All regular languages can in fact also be defined by context-free grammars. 
+ The inverse does not hold, as proved by matching parentheses. The extra 
+ expressive power comes with a price: context-free parsing can be more complex 
+ than recognition with automata. It is easy to see that recognition with a finite 
+ automaton is
+  linear
+  in the length of the string (O(
+ n
+ )). But for context-free 
+ grammars the worst-case complexity is
+  cubic
+  (O(
+ n
+ 3
+ )). However, programming 
+ languages are usually designed in such a way that their parsing is linear. This 
+ means that they use a restricted subset of context-free grammars, but still large 
+ enough to deal with matching parentheses and other common programming 
+ language features.
+  
+ We will return to the parsing problem of full context-free grammars later. 
+ We first look at the parsing techniques used in compilers, which work for some 
+ grammars only. In general, these techniques work for grammars that don’t have
+  
+ ambiguity
+ . That is, every string has at most one tree. This is not true for 
+ context-free grammars in general, but it is guaranteed for most program-ming 
+ languages by design. For parsing, the lack of ambiguity means that the 
+ algorithm can stop looking for alternative analyses as soon as it has found one, 
+ which is one ingredient of efficiency.",NA
+LL(,NA,NA
+k,NA,NA
+) parsing,CHAPTER 3. LEXING AND PARSING*,NA
+3.6,"The simplest practical way to parse programming languages is
+  LL(
+ k
+ )
+ , i.e.
+  left-to-
+ right parsing, leftmost derivations, lookahead k
+ . It is also called
+  recursive 
+ descent parsing
+  and has sometimes been used for implementing parsers by 
+ hand, that is, without the need of parser generators. The
+  parser combinators 
+ of Haskell are related to this method. We will take a look at them in Section 8.6.
+  
+ The idea of recursive descent parsing is the following: for each category, 
+ write a function that inspects the first token and tries to construct a tree. 
+ Inspecting one token means that the
+  lookahead
+  is one; LL(2) parsers inspect 
+ two tokens, and so on.
+  
+ Here is an example grammar:
+  
+ SIf. 
+  
+ Stm ::= ""if"" ""("" Exp "")"" Stm ;
+  
+ SWhile. Stm ::= ""while"" ""("" Exp "")"" Stm ;
+  
+ SExp. 
+  
+ Stm ::= Exp ;
+  
+ EInt. 
+  
+ Exp ::= Integer ;
+  
+ We need to build two functions, which look as follows in pseudocode. They read 
+ the input token by token, and use the variable
+  next
+  to point to the next token:
+  
+ Stm pStm
+ () : 
+  
+ if
+  (
+ next
+  = ""if"")
+  . . .
+  //
+  try to build tree with SIf 
+  
+ if
+  (
+ next
+  = ""while"")
+  . . .
+  //
+  try to build tree with SWhile 
+ if
+  
+ (
+ next is integer
+ )
+  . . .
+  //
+  try to build tree with SExp
+  
+ Exp pExp
+ () : 
+  
+  
+ if
+  (
+ next is integer k
+ )
+  return
+  SExp k
+  
+ To fill the three dots in this pseudocode, we proceed item by item in each 
+ production. If the item is a nonterminal
+  C
+ , we call the parser
+  pC
+ . If it is a 
+ terminal, we just check that this terminal is the next input token, but don’t save 
+ it (since we are constructing an
+  abstract
+  syntax tree!). For this, the helper 
+ function
+  ignore
+  is used. Then, for instance, the first branch in the statement 
+ parser is the following:
+  
+ Stm pStm
+ () : 
+  
+  
+ if
+  (
+ next
+  = ""if"") 
+  
+  
+ ignore
+ (""if"") 
+  
+  
+ ignore
+ (""("") 
+  
+  
+ Exp e
+  :=
+  pExp
+ () 
+  
+  
+ ignore
+ ("")"") 
+  
+  
+ Stm s
+  :=
+  pStm
+ () 
+  
+  
+ return
+  SIf
+  (
+ e, s
+ )",NA
+3.7 ,NA,NA
+LR(,NA,NA
+k,NA,NA
+) parsing,"Instead of LL(1), the standard Yacc-like parser tools use
+  LR(
+ k
+ )
+ , i.e.
+  left-to-right 
+ parsing, rightmost derivations, lookahead k
+ . Both algorithms thus read their 
+ input left to right. But LL builds the trees from left to right, LR from right to left. 
+ The mention of
+  derivations
+  refers to the way in which a string can be built by 
+ expanding the grammar rules. Thus the
+  leftmost derivation 
+ of while(1) if (0) 6 
+ ; always fills in the leftmost nonterminal first.
+  
+ Stm --> while ( Exp ) Stm
+  
+ --> while ( 1 ) Stm
+  
+ --> while ( 1 ) if ( Exp ) Stm
+  
+ --> while ( 1 ) if ( 0 ) Stm",NA
+3.8 ,NA,NA
+Finding and resolving conflicts,"In a parsing table (LL, LR, LALR), a
+  conflict
+  means that there are several items in 
+ a cell. In LR and LALR, two kinds of conflicts may occur:
+  
+ •
+  shift-reduce conflict
+ : between shift and reduce actions.
+ •
+  reduce-
+ reduce conflict
+  between two (or more) reduce actions.
+  
+ The latter are more harmful, but also easier to eliminate. The clearest case is 
+ plain ambiguities. Assume, for instance, that a grammar tries to distinguish 
+ between variables and constants:
+  
+ EVar. 
+  
+ Exp ::= Ident ;
+  
+ ECons. 
+  
+ Exp ::= Ident ;
+  
+ Any Ident parsed as an Exp can be reduced with both of the rules. The solution 
+ to this conflict is to remove one of the rules and leave it to the type checker to 
+ distinguish constants from variables.
+  
+ A more tricky case is implicit ambiguities. The following grammar tries to 
+ cover a fragment of C++, where a declaration (in a function definition) can be 
+ just a type (DTyp), and a type can be just an identifier (TId). At the same time, a 
+ statement can be a declaration (SDecl), but also an expression (SExp), and an 
+ expression can be an identifier (EId).
+  
+ SExp. 
+  
+ Stm 
+  
+ ::= Exp ;
+  
+ SDecl. 
+  
+ Stm 
+  
+ ::= Decl ;
+  
+ DTyp. 
+  
+ Decl ::= Typ ;
+  
+ EId. 
+  
+ Exp 
+  
+ ::= Ident ;
+  
+ TId. 
+  
+ Typ 
+  
+ ::= Ident ;
+  
+ Now the reduce-reduce conflict can be detected by tracing down a chain of rules:
+  
+ Stm -> Exp -> Ident
+  
+ Stm -> Decl -> Typ -> Ident
+  
+ In other words, an identifier can be used as a statement in two different ways. 
+ The solution to this conflict is to redesign the language: DTyp should only be 
+ valid in function parameter lists, and not as statements! This is actually the case 
+ in C++.
+  
+  
+ As for shift-reduce conflicts, the classical example is the
+  dangling else
+ , 
+ created by the two versions of if statements:
+  
+ SIf. Stm ::= ""if"" ""("" Exp "")"" Stm
+  
+ SIfElse. Stm ::= ""if"" ""("" Exp "")"" Stm ""else"" Stm",NA
+3.9 ,NA,NA
+The limits of context-free grammars,"Parsing with context-free grammars is decidable, with cubic worst-case com-
+ plexity. However, exponential algorithms are often used because of their sim-
+ plicity. For instance, the Prolog programming language has a built-in parser 
+ with this property. Haskell’s
+  parser combinators
+  are a kind of embedded 
+ language, working in a way similar to Prolog. The method uses recursive de-
+ scent, just like LL(
+ k
+ ) parsers. But this is combined with
+  backtracking
+ , so that 
+ the parser need not make deterministic choices. Parser combinators can 
+ therefore also cope with ambiguity. We will return to them in Section 8.6.
+  
+ One problem with Prolog and parser combinators—well known in 
+ practice—is their unpredictability. Backtracking may lead to exponential 
+ behaviour and very slow parsing. Left recursion may lead to non-termination, 
+ and it can be hard to detect if implicit. Using parser generators is therefore a 
+ more reliable, even though more restricted, way to implement parsers.
+  
+ But even the full class of context-free grammars is not the whole story of 
+ languages. There are some very simple formal languages that are
+  not
+  context-
+ free. One example is the
+  copy language
+ . Each sentence of this language is two 
+ copies of some word, and the word can be arbitrarily long. The simplest copy 
+ language has words consisting of just two symbols,
+  a
+  and
+  b
+ :
+  
+  
+ {ww|w ⇒
+  (
+ a|b
+ )
+ ⇒
+ } 
+  
+ Observe that this is
+  not
+  the same as the context-free language
+  
+ S ::= W W
+  
+ W ::= ""a"" W | ""b"" W
+  
+ W ::=
+  
+ In this grammar, there is no guarantee that the two W’s are the same.
+  
+ The copy language is not just a theoretical construct but has an important 
+ application in compilers. A common thing one wants to do is to check that every 
+ variable is declared before it is used. Language-theoretically, this can be seen as 
+ an instance of the copy language:
+  
+ Program ::= ... Var ... Var ...
+  
+ Consequently, checking that variables are declared before use is a thing that 
+ cannot be done in the parser but must be left to a later phase.
+  
+ Of course, being non-context-free is as such not a fatal property of lan-
+ guages. Even though context-sensitive grammars in general might have ex-
+ ponential parsing complexity, it is easy to see that the copy language can be 
+ parsed with a linear algorithm. In Chapter 8, we will introduce two grammar 
+ formats that can in fact parse the copy language: parser combinators (Section 
+ 8.6) and GF (Section 8.11).",NA
+Chapter 4,NA,NA
+Type Checking,"Type checking tries to find out if a program makes sense. This chapter defines 
+ the traditional notion of type checking as exemplified by C and Java. While most 
+ questions are straightforward, there are some tricky questions such as variable 
+ scopes. And while most things in type checking are trivial for a human to 
+ understand, Assignment 2 will soon show that it requires discipline and 
+ perseverance to make a machine check types automatically.
+  
+  
+ This chapter provides all the concepts and tools needed for solving Assign-
+ ment 2, which is a type checker for a fragment of C++.",NA
+4.1 ,NA,NA
+The purposes of type checking,"The first impression many programmers have of type checking is that it is 
+ annoying. You write a piece of code that makes complete sense to you, but you 
+ get a stupid type error. For this reason, untyped languages like Lisp, Python, 
+ and JavaScript attract many programmers. They trade type errors for run-time 
+ errors, which means they spend a larger proportion of time on debugging than 
+ on trying to compile, compared to Java or Haskell programmers. Of course, the 
+ latter kind of programmers learn to appreciate type checking, because it is a 
+ way in which the compiler can find bugs automatically.
+  
+ The development of programming languages shows a movement to more 
+ and more type checking. This was one of the main novelties of C++ over C. On 
+ the limit, a type checker could find
+  all
+  errors, that is, all violations of the 
+ specification. This is not the case with today’s languages, not even the strictest 
+ ones like ML and Haskell. In a functional language of today, a sorting function 
+ sort might have the type
+  
+ sort : List -> List
+  
+ 57",NA
+4.2 ,NA,NA
+Specifying a type checker,"There is no standard tool for type checkers, which means they have to be writ-
+ ten in a general-purpose programming language. However, there are standard 
+ notations that can be used for specifying the
+  type system
+  of a language and 
+ easily converted to code in any host language. The most common notation is 
+ inference rules
+ . An example of an inference rule for C or Java is
+  
+ a
+  :
+  bool b
+  :
+  bool
+  
+ a
+  &&
+  b
+  :
+  bool",NA
+4.3 ,NA,NA
+Type checking and type inference,"The first step from an inference rule to implementation is pseudo-code for 
+ syntax-directed translation
+ . Typing rules for expression forms in an ab-stract 
+ syntax are then treated as clauses in a recursive function definition that 
+ traverses expression trees. They are read upside down, that is,
+  
+ To check J, check J
+ 1
+ , . . . , J
+ n
+ .
+  
+ which is converted to program code of the format
+  
+ J
+  :
+  
+ J
+ 1
+  
+ . . .
+  
+ J
+ n
+  
+ There are two kinds of functions:
+  
+ •
+  Type checking
+ : given an expression
+  e
+  and a type
+  T
+ , decide if
+  e : T
+ .",NA
+4.4 ,NA,NA
+"Context, environment, and side conditions","How do we type-check variables? Variables symbols like x can have
+  any
+  of the 
+ types available in a programming language. The type it has in a particular 
+ program depends on the
+  context
+ . In C and Java, the context is determined by 
+ declarations of variables. It is a data structure where one can look up a variable 
+ and get its type. So we can think of the context as as
+  lookup table 
+ of 
+ (variable,type) pairs.
+  
+ In inference rules, the context is denoted by the Greek letter Γ, Gamma.
+  
+ The judgement form for typing is generalized to
+  
+ Γ
+  ⇒ e
+  :
+  T
+  
+ which is read,
+  expression e has type T in context
+  Γ. For example, the following 
+ judgement holds:
+  
+ It means:
+  
+ x
+  : int
+ , y
+  : int
+  ⇒ x
+ +
+ y
+ >
+ y
+  : bool",NA
+4.5 ,NA,NA
+Proofs in a type system,"Inference rules are designed for the construction of
+  proofs
+ , which are struc-
+ tured as
+  proof trees
+ . A proof tree can be seen as a trace of the steps that the 
+ type checker performs when checking or inferring a type.
+  
+ Here is a proof tree for the judgement
+  
+ x
+  : int
+ , y
+  : int
+  ⇒ x
+ +
+ y
+ >
+ y
+  : bool
+  
+ shown in the previous section.
+  
+ x
+  : int
+ , y
+  : int
+  ⇒ x
+  : int 
+  
+ x
+  : int
+ , y
+  : int
+  ⇒ y
+  : int 
+  
+  
+ x
+  : int
+ , y
+  : int
+  ⇒ x
+ +
+ y
+  : int 
+  
+ x
+  : int
+ , y
+  : int
+  ⇒ y
+  : int 
+  
+  
+  
+ x
+  : int
+ , y
+  : int
+  ⇒ x
+ +
+ y
+ >
+ y
+  : bool
+  
+ The tree can be made more explicit by adding explanations on which rules are 
+ applied at each inference:
+  
+ x
+  : int
+ , y
+  : int
+  ⇒ x
+  : int
+ x 
+  
+ x
+  : int
+ , y
+  : int
+  ⇒ y
+  : int
+ y
+  
+ x
+  : int
+ , y
+  : int
+  ⇒ x
+ +
+ y
+  : int 
+  
+ x
+  : int
+ , y
+  : int
+  ⇒ y
+  : int
+ y
+  
+ x
+  : int
+ , y
+  : int
+  ⇒ x
+ +
+ y
+ >
+ y
+  : bool",NA
+4.6 ,NA,NA
+Overloading and type conversions,"Variables are examples of expressions that can have different types in different 
+ contexts. Another example is
+  overloaded operators
+ . The binary arithmetic 
+ operations (+ - * /) and comparisons (== !=
+  < > <
+ =
+  >
+ =) are in many lan-guages 
+ usable for different types.
+  
+  
+ Let us assume that the possible types for addition and comparisons are int, 
+ double, and string. The typing rules then look as follows:
+  
+  
+ Γ
+  ⇒ a
+  :
+  t
+  Γ
+  ⇒ b
+  :
+  t 
+  
+ if
+  t
+  is int or double or string
+  
+  
+   
+ Γ
+  ⇒ a
+  +
+  b
+  :
+  t
+  
+  
+ Γ
+  ⇒ a
+  :
+  t
+  Γ
+  ⇒ b
+  :
+  t 
+  
+ if
+  t
+  is int or double or string
+  
+  
+  
+ Γ
+  ⇒ a
+  ==
+  b
+  :
+  bool 
+  
+ and similarly for the other operators. Notice that a + expression has the same 
+ type as its operands, whereas == always gives a boolean. In both cases, we can 
+ first infer the type of the first operand and then check the second operand with 
+ respect to this type:
+  
+ infer
+ (
+ a
+  +
+  b
+ ) : 
+  
+ t
+  :=
+  infer
+ (
+ a
+ ) 
+  
+ //
+  check that t ⇒ {
+ int
+ ,
+  double
+ ,
+  string
+ } 
+ check
+ (
+ b, t
+ )
+  
+ return t
+  
+ We have made string a possible type of +, following C++ and Java. For other 
+ arithmetic operations, only int and double are possible.
+  
+ Yet another case of expressions having different type is
+  type conversions
+ . 
+ For instance, an integer can be converted into a double. This may sound trivial 
+ from the ordinary mathematical point of view, because integers are a subset of 
+ reals. But for most machines this is not the case, because integers and doubles 
+ have totally different binary representations and different sets of instructions. 
+ Therefore, the compiler usually has to generate a special instruction for type 
+ conversions, both explicit and implicit ones.
+  
+ The general idea of type conversions involves an ordering between types. An 
+ object from a smaller type can be safely (i.e. without loss of information)",NA
+4.7 ,NA,NA
+The validity of statements and function def-,NA,NA
+initions,"Expressions have types, which can be checked and inferred. But what happens 
+ when we type-check a statement? Then we are not interested in a type, but just 
+ in whether the statement is
+  valid
+ . For the validity of a statement, we need a new 
+ judgement form,
+  
+ Γ
+  ⇒ s valid 
+  
+ which is read,
+  statement s is valid in environment
+  Γ.
+  
+  
+ Checking whether a statement is valid often requires type checking some 
+ expressions. For instance, in a while statement the condition expression has to 
+ be boolean:
+  
+  
+  
+ Γ
+  ⇒ e
+  :
+  bool
+  Γ
+  ⇒ s valid
+  
+  
+  
+  
+ Γ
+  ⇒
+  while (
+ e
+ )
+  s valid 
+  
+ What about expressions used as statements, for instance, assignments and some 
+ function calls? We don’t need to care about what the type of the expression is, 
+ just that it has one—which means that we are able to infer one. Hence the 
+ expression statement rule is
+  
+  
+  
+   
+ Γ
+  ⇒ e
+  :
+  t
+  
+  
+  
+   
+ Γ
+  ⇒ e
+ ;
+  valid",NA
+4.8 ,NA,NA
+Declarations and block structures,"Variables get their types in
+  declarations
+ . Each declaration has a
+  scope
+ , which 
+ is within a certain
+  block
+ . Blocks in C and Java correspond roughly to parts of 
+ code between curly brackets,
+  {
+  and
+  }
+ . Two principles regulate the use of 
+ variables:
+  
+ 1. A variable declared in a block has its scope till the end of that block.
+  
+ 2. A variable can be declared again in an inner block, but not otherwise.
+  
+ To give an example of these principles at work, let us look at a piece of code with 
+ some blocks, declarations, and assignments:",NA
+4.9 ,NA,NA
+Implementing a type checker,"Implementing a type checker is our first large-scale lesson in
+  syntax-directed 
+ translation
+ . As shown in Section 4.3, this is done by means of inference and 
+ checking functions, together with some auxiliary functions for dealing with 
+ contexts in the way shown in Section 4.4. The block structure (Section 4.8) 
+ creates the need for some more. Here is a summary of the functions we need:
+  
+ Type
+  
+ infer
+  
+ (
+ Env
+  Γ
+ , Exp e
+ )
+  
+ infer type of Exp
+  
+ Void
+  
+ check
+  
+ (
+ Env
+  Γ
+ , Exp e, Type t
+ )
+  
+ check type of Exp
+  
+ Void
+  
+ check
+  
+ (
+ Env
+  Γ
+ , Stms s
+ )
+  
+ check sequence of stms
+  
+ Void
+  
+ check
+  
+ (
+ Env
+  Γ
+ , Def d
+ )
+  
+ check function definition
+  
+ Void
+  
+ check
+  
+ (
+ Program p
+ )
+  
+ check a whole program
+  
+ Type
+  
+ lookup
+  
+ (
+ Ident x, Env
+  Γ)
+  
+ look up variable
+  
+ FunType
+  
+ lookup
+  
+ (
+ Ident f, Env
+  Γ)
+  
+ look up function
+  
+ Env
+  
+ extend
+  
+ (
+ Env
+  Γ
+ , Ident x, Type t
+ )
+  
+ extend Env with variable
+  
+ Env
+  
+ extend
+  
+ (
+ Env
+  Γ
+ , Def d
+ )
+  
+ extend Env with function
+  
+ Env
+  
+ newBlock
+  
+ (
+ Env
+  Γ)
+  
+ enter new block
+  
+ Env
+  
+ emptyEnv
+  
+ ()
+  
+ empty environment",NA
+4.10 ,NA,NA
+Annotating type checkers,"The type checker we have been defining just checks the validity of programs 
+ without changing them. But usually the type checker is expected to return a 
+ more informative syntax tree to the later phases, a tree with
+  type annota-
+ tions
+ . Then each checking function returns a syntax tree of the same type. For 
+ type inference, it is enough to return an expression, because this expression is 
+ type annotated, so that the type can be read from it.
+  
+ Here are the type signatures of an annotating type checker:
+  
+ Exp
+  
+ infer
+  
+ (
+ Env
+  Γ
+ , Exp e
+ )
+  
+ infer type of Exp
+  
+ Exp
+  
+ check
+  
+ (
+ Env
+  Γ
+ , Exp e, Type t
+ )
+  
+ check type of Exp
+  
+ Stms
+  
+ check
+  
+ (
+ Env
+  Γ
+ , Stms s
+ )
+  
+ check sequence of stms
+  
+ Def
+  
+ check
+  
+ (
+ Env
+  Γ
+ , Def d
+ )
+  
+ check function definition
+  
+ Program
+  
+ check
+  
+ (
+ Program p
+ )
+  
+ check a whole program
+  
+ The abstract syntax needs to be extended with a constructor for type-annotated 
+ expressions. We will denote them with [
+ e
+  :
+  t
+ ] in the pseudocode. Then, for in-
+ stance, the type inference rule for addition expression (without type 
+ conversions but just overloadings) becomes
+  
+ infer
+ (Γ
+ , a
+  +
+  b
+ ) : 
+  
+  
+ [
+ a
+ ′
+ :
+  t
+ ] :=
+  infer
+ (Γ
+ , a
+ )
+  
+ // here, check that t ⇒ {int, double, string} 
+ [
+ b
+ ′
+ :
+  
+ t
+ ] :=
+  check
+ (Γ
+ , b, t
+ ) 
+  
+ return
+  [
+ a
+ ′
+ +
+  b
+ ′
+ :
+  t
+ ]
+  
+ After running the type checker, syntax trees will have type annotations all over 
+ the place, because every recursive call returns an annotated subtree. 
+  
+  
+ An easy way to add type-annotated expressions in the abstract syntax is to 
+ use an
+  internal rule
+  in BNFC:
+  
+ internal ETyped. Exp ::= ""["" Exp "":"" Typ ""]"" ;",NA
+4.11 ,NA,NA
+Type checker in Haskell,"(Java programmers can safely skip this section and move to Section 4.12.)
+  
+ The compiler pipeline
+  
+ To implement the type checker in Haskell, we need three things:
+  
+ •
+  Define the appropriate auxiliary types and functions.
+ •
+  
+ Implement type checker and inference functions.
+ •
+  Put 
+ the type checker into the compiler pipeline.
+  
+ A suitable pipeline looks as follows. It calls the lexer within the parser, and 
+ reports a syntax error if the parser fails. Then it proceeds to type checking, 
+ showing an error message at failure and saying “OK” if the check succeeds. 
+ When more compiler phases are added, the next one takes over from the OK 
+ branch of type checking.",NA
+4.12 ,NA,NA
+Type checker in Java,"(Haskell programmers can safely skip this section.)
+  
+ The visitor pattern
+  
+ In Section 2.7, we showed a first example of syntax-directed translation in Java: 
+ a calculator defined by adding the eval() method to each abstract syn-tax class. 
+ This is the most straightforward way to implement pattern matching in Java. 
+ However, it is not very modular, because it requires us to go through and 
+ change every class whenever we add a new method. In a compiler, we need to 
+ write a type checker, a code generator, perhaps some optimizations, per-haps 
+ an interpreter—and none of these methods would come out as a separate 
+ component.
+  
+ To solve this problem, Java programmers are recommended to use the
+  vis-
+ itor pattern
+ . It is also supported by BNFC, which generates the
+  visitor in-
+ terface
+  and skeleton code to implement a visitor (see Section 2.2). With this 
+ method, you can put each compiler component into a separate class, which 
+ implements the visitor interface.
+  
+ This book is not about Java programming, but, in our experience, many Java 
+ programmers see the visitor pattern for the first time when implementing a 
+ programming language—in the same way as Haskell programmers encounter 
+ monads for the first time when they face the same task. Thus we will spend 
+ some time on the visitor concept, which we will moreover meet again in Chap-
+ ters 5 and 6.
+  
+ Before attacking the type checker itself, let us look at a simpler example of 
+ the visitor—the calculator. The abstract syntax class Exp generated by BNFC 
+ contains an interface called Visitor, which depends on two class parameters, A 
+ and R. It is these parameters that make the visitor applicable to different tasks. 
+ In type inference, for instance, A is a context and R is a type. Let us look at the 
+ code:
+  
+ public abstract class Exp {
+  
+ public abstract <R,A> R accept(Exp.Visitor<R,A> v, A arg);",NA
+Chapter 5,NA,NA
+Interpreters,"This chapter gives the missing pieces of a complete language implementation, 
+ enabling you to run your programs and see what they produce. The code for the 
+ interpreter turns out to be almost the same as the type checker, thanks to the 
+ power of syntax-directed translation. 
+  
+ Of course, it is not customary to 
+ interpret Java or C directly on source code; but languages like JavaScript are 
+ actually implemented in this way, and it is the quickest way to get your language 
+ running.
+  
+ This chapter will also show another kind of an interpreter, one for the Java 
+ Virtual Machine (JVM). It is included more for theoretical interest than as a 
+ central task in this book. But it will also help you in Chapter 6 to understand the 
+ task of generating code for the JVM—in the same way as it helps to know 
+ French if you want to write a program that translates English to French.
+  
+  
+ This chapter provides all the concepts and tools needed for solving Assign-
+ ment 3, which is an interpreter for a fragment of C++.",NA
+5.1 ,NA,NA
+Specifying an interpreter,"Just like type checkers, interpreters can be abstractly specified by means of 
+ inference rules. The rule system of an interpreter is called the
+  operational 
+ semantics
+  of the language. The rules tell how to
+  evaluate
+  expressions and how 
+ to
+  execute
+  statements and whole programs.
+  
+ The basic judgement form for expressions is
+  
+ γ ⇒ e ⇒ v
+  
+ which is read,
+  expression e evaluates to value v in environment γ
+ . It involves the 
+ new notion of
+  value
+ , which is what the evaluation returns, for instance, an 
+ integer or a double. Values can be seen as a special case of expressions, mostly
+  
+ 81",NA
+5.2 ,NA,NA
+Side effects,"Evaluation can have
+  side effects
+ , that is, do things other than just return a 
+ value. The most typical side effect is changing the environment. For instance, 
+ the assignment expression x = 3 on one hand returns the value 3, on the other 
+ changes the value of x to 3 in the environment.
+  
+  
+ Dealing with side effects needs a more general form of judgement: evaluating 
+ an expression returns, not only a value, but also a new environment
+  γ
+ ′
+ . We write
+  
+  
+ γ ⇒ e ⇒ ⇒v, γ
+ ′
+ ⇒
+  
+ which is read,
+  
+ in environment γ
+ ,
+  expression e evaluates to value v and to new 
+ environment γ
+ ′
+ .
+  
+ The original form without
+  γ
+ ′
+ could now be seen as a shorthand for the case where
+  
+ γ
+ ′
+ =
+  γ
+ .
+  
+ Now we can write the rule for assignment expressions:
+  
+ γ ⇒ e ⇒ ⇒v, γ
+ ′
+ ⇒
+  
+ γ ⇒ x
+  =
+  e ⇒ ⇒v, γ
+ ′
+ (
+ x
+  :=
+  v
+ )
+ ⇒
+  
+ The notation
+  γ
+ (
+ x
+  :=
+  v
+ ) means that we
+  update
+  the value of
+  x
+  in
+  γ
+  to
+  v
+ , which means 
+ that we
+  overwrite
+  any old value that
+  x
+  might have had.
+  
+ Operational semantics is an easy way to explain the difference between
+  pre-
+ increments
+  (++x) and
+  post-increments
+  (x++). In pre-increment, the value of 
+ the expression is
+  x
+  + 1. In post-increment, the value of the expression is
+  x
+ .
+  
+ In both cases,
+  x
+  is incremented in the environment. The rules are
+  
+  
+  
+ γ ⇒
+  ++
+ x ⇒ ⇒v
+  + 1
+ , γ
+ (
+ x
+  :=
+  v
+  + 1)
+ ⇒
+ if
+  x
+  :=
+  v
+  in
+  γ
+  
+  
+  
+  
+ γ ⇒ x
+ ++
+  ⇒ ⇒v, γ
+ (
+ x
+  :=
+  v
+  + 1)
+ ⇒
+ if
+  x
+  :=
+  v
+  in
+  γ
+  
+  
+ One might think that side effects only matter in expressions that have side 
+ effects themselves, such as assignments. But also other forms of expressions 
+ must be given all those side effects that occur in their parts. For instance,
+  
+ x++ - ++x
+  
+ is, even if perhaps bad style, an expression that can be interpreted easily with 
+ the given rules. The interpretation rule for subtraction just has to take into 
+ account the changing environment:
+  
+ γ ⇒ a ⇒ ⇒u, γ
+ ′
+ ⇒
+  
+ γ
+ ′
+ ⇒ b ⇒ ⇒v, γ
+ ′′
+ ⇒
+  
+ γ ⇒ a
+  -
+  b ⇒ ⇒u − v, γ
+ ′′
+ ⇒",NA
+5.3 ,NA,NA
+Statements,"Statements are executed for their side effects, not to receive values. 
+  
+ Lists 
+ of statements are executed in order, where each statement may change the 
+ environment for the next one. Therefore the judgement form is
+  
+ γ ⇒ s
+ 1
+  . . . s
+ n
+  ⇒ γ
+ ′
+  
+ This can, however, be reduced to the interpretation of single statements by the 
+ following two rules:
+  
+ γ ⇒ s
+ 1
+  ⇒ γ
+ ′
+ γ ⇒ s
+ 1
+  . . . s
+ n
+  ⇒ γ
+ ′′
+  
+ γ
+ ′
+ ⇒ s
+ 2
+  . . . s
+ n
+  ⇒ γ
+ ′′
+  
+ γ ⇒⇒ γ
+  
+ (empty 
+ sequence)
+  
+ Expression statements just ignore the value of the expression:
+  
+ γ ⇒ e ⇒ ⇒v, γ
+ ′
+ ⇒
+  
+  
+  
+ γ ⇒ e
+ ;
+  ⇒ γ
+ ′
+  
+ For if and while statements, the interpreter differs crucially from the type 
+ checker, because it has to consider the two possible values of the condition 
+ expression. Therefore, if statements have two rules: one where the condition is 
+ true (1), one where it is false (0). In both cases, just one of the statements in the 
+ body is executed. But recall that the condition can have side effects!
+  
+ γ ⇒ e ⇒ ⇒
+ 1
+ , γ
+ ′
+ ⇒
+  
+ γ
+ ′
+ ⇒ s ⇒ γ
+ ′′
+ γ ⇒ e ⇒ ⇒
+ 0
+ , γ
+ ′
+ ⇒
+  
+ γ
+ ′
+ ⇒ t ⇒ γ
+ ′′
+  
+ γ ⇒
+  if (
+ e
+ )
+  s
+  else
+  t ⇒ γ
+ ′′
+  
+ γ ⇒
+  if (
+ e
+ )
+  s
+  else
+  t ⇒ γ
+ ′′
+  
+ For while statements, the truth of the condition results in a loop where the
+  
+ body is executed and the condition tested again. Only if the condition becomes
+  
+ false (since the environment has changed) can the loop be terminated.
+  
+  
+ γ ⇒ e ⇒ ⇒
+ 1
+ , γ
+ ′
+ ⇒
+  
+ γ
+ ′
+ ⇒ s ⇒ γ
+ ′′
+  
+ γ
+ ′′
+ ⇒
+  while (
+ e
+ )
+  s ⇒ γ
+ ′′′
+  
+ γ ⇒
+  while (
+ e
+ )
+  s ⇒ γ
+ ′′′
+  
+  
+ γ ⇒ e ⇒ ⇒
+ 0
+ , γ
+ ′
+ ⇒
+  
+ γ ⇒
+  while (
+ e
+ )
+  s ⇒ γ
+ ′",NA
+5.4 ,NA,NA
+"Programs, function definitions, and func-",NA,NA
+tion calls,"How do we interpret whole programs and function definitions? We will assume 
+ the C convention that the entire program is executed by running its main func-
+ tion. This means the evaluation of an expression that calls the main function.",NA
+5.5 ,NA,NA
+Laziness,"The rule for interpreting function calls is an example of the
+  call by value 
+ evaluation strategy. This means that the arguments are evaluated
+  before
+  the 
+ function body is evaluated. 
+  
+ Its alternative is
+  call by name
+ , which means that 
+ the arguments are inserted into the function body as
+  expressions
+ , before 
+ evaluation. One advantage of call by name is that it doesn’t need to evaluate 
+ expressions that don’t actually occur in the function body. Therefore it is also 
+ known as
+  lazy evaluation
+ . A disadvantage is that, if the variable is used more 
+ than once, it has to be evaluated again and again. This, in turn, is avoided by a 
+ more refined technique of
+  call by need
+ , which is the one used in Haskell.
+  
+ We will return to evaluation strategies in Section 7.5. Most languages, in 
+ particular C and Java, use call by value, which is why we have used it here, too. 
+ But even these languages do have some exceptions: the boolean expressions a 
+ && b and a
+  ||
+  b are evaluated lazily. Thus in a && b, a is evaluated first. If the 
+ value is false (0), the whole expression comes out false, and b is not evaluated 
+ at all. This is actually important, because it allows the programmer to write
+  
+ x != 0 && 2/x > 1
+  
+ which would otherwise result in a division-by-zero error when x == 0.
+  
+  
+ The operational semantics resembles if and while statements in Section 5.3. 
+ Thus it is handled with two rules—one for the 0 case and one for the 1 case:
+  
+  
+  
+  
+ γ ⇒ a ⇒ ⇒
+ 0
+ , γ
+ ′
+ ⇒
+  
+ γ ⇒ a ⇒ ⇒
+ 1
+ , γ
+ ′
+ ⇒
+  
+ γ
+ ′
+ ⇒ b ⇒ ⇒v, γ
+ ′′
+ ⇒
+  
+  
+  
+   
+  
+ γ ⇒ a
+ &&
+ b ⇒ ⇒v, γ
+ ′′
+ ⇒γ ⇒ a
+ &&
+ b ⇒ ⇒
+ 0
+ , γ
+ ′
+ ⇒
+  
+ For a
+  ||
+  b, the evaluation stops if a == 1.",NA
+5.6,NA,NA
+Implementing the interpreter,"The code for the interpreter is mostly a straightforward variant of the type 
+ checker. The biggest difference is in the return types, and in the contents of the 
+ environment:
+  
+ ⇒Val, Env⇒Env
+  
+ eval
+  
+ (
+ Env γ, Exp e
+ )
+  
+ exec
+  
+ (
+ Env γ, Stm s
+ )
+  
+ Void
+  
+ exec
+  
+ (
+ Program p
+ )
+  
+ Val
+  
+ lookup
+  
+ (
+ Ident x, Env γ
+ )
+  
+ Def
+  
+ lookup
+  
+ (
+ Ident f, Env γ
+ )
+  
+ Env
+  
+ extend
+  
+ (
+ Env γ, Ident x, Val v
+ )
+  
+ Env
+  
+ extend
+  
+ (
+ Env γ, Def d
+ )
+  
+ Env
+  
+ newBlock
+  
+ (
+ Env γ
+ )
+  
+ Env
+  
+ exitBlock
+  
+ (
+ Env γ
+ )
+  
+ Env
+  
+ emptyEnv
+  
+ ()",NA
+5.7 ,NA,NA
+Interpreting Java bytecode*,"It is a common saying that “Java is an interpreted language”. We saw already in 
+ Chapter 1 that this is not quite true. The truth is that Java is compiled to 
+ another language,
+  JVM
+ ,
+  Java Virtual Machine
+  or
+  Java bytecode
+ , and JVM is 
+ then interpreted.
+  
+  
+ JVM is very different from Java, and its implementation is quite a bit simpler. 
+ In Chapter 1, we saw an example, the execution of the bytecode compiled from 
+ the expression 5 + (6 * 7):
+  
+ bipush 5 
+  
+ ; 5
+  
+ bipush 6 
+  
+ ; 5 6
+  
+ bipush 7 
+  
+ ; 5 6 7
+  
+ imul 
+  
+ ; 5 42
+  
+ iadd 
+  
+ ; 47
+  
+ After ; (the comment delimiter in JVM assembler), we see the
+  stack
+  as it evolves 
+ during execution. At the end, the value of the expression, 47, is found on the
+  top
+  
+ of the stack. In our representation, the “top” is the right-most element.
+  
+ Like most machine languages, JVM has neither expressions nor statements 
+ but just
+  instructions
+ . Here is a selections of instructions that we will use in the 
+ next chapter to compile into:",NA
+5.8 ,NA,NA
+Objects and memory management*,"The previous section explained a part of JVM in which integers are the only 
+ possible values. If doubles are added, we get a set of new instructions, which for 
+ the most part just duplicate the integer instructions: dadd for addition, dload 
+ for loading a variable; Section 6.4 and Appendix B give more details. The 
+ interpretation of these instructions is similar to the integer instructions, with 
+ an important modification: the
+  size
+  of double values is twice the size of int 
+ values. Thus when a double is pushed on the stack, or stored in the memory, it 
+ occupies two “slots” (32-bit memory words) instead of one. There’s also a 
+ danger of, for instance, by mistake treating a double as two integers and doing 
+ things like popping a half of a double from the stack. This never happens if the 
+ JVM code is generated by a type-checking compiler, but could happen in code 
+ created in some other way, and should then be captured by 
+ bytecode 
+ verification
+ . Bytecode verification can be seen as a light-weight type checking 
+ carried out by JVM before it executes a class file.
+  
+ The size of values depends on type, and it is not restricted to one or two 
+ memory words. In fact, there are types with
+  no
+  fixed size. The type string",NA
+Chapter 6,NA,NA
+Code Generation,"There is a
+  semantic gap
+  between the basic constructs of high-level and ma-
+ chine languages. This may make machine languages look frighteningly different 
+ from source languages. However, the syntax-directed translation method can 
+ be put into use once again, Assignment 4 will be painless for anyone who has 
+ completed the previous assignments. It uses JVM, Java Virtual Machine, as 
+ target code. For the really brave, we will also give an outline of compilation to 
+ native Intel x86 code. This is the last piece in understanding the whole chain 
+ from source code to bare silicon. We cannot give the full details, but focus on 
+ two features that don’t show in the JVM but are important in real machines: 
+ how to use registers and how to implement function calls by using stack frames.
+  
+  
+ This chapter provides all the concepts and tools needed for solving Assign-
+ ment 4, which is a compiler from a fragment of C++ to JVM.",NA
+6.1 ,NA,NA
+The semantic gap,"Java and JVM are based on different kinds of constructions. These differences 
+ create the
+  semantic gap
+ , which a compiler has to bridge. Here is a summary, 
+ which works for many other source and target languages as well:
+  
+ high-level code
+  
+ machine code
+  
+ statement
+  
+ instruction
+  
+ expression
+  
+ instruction
+  
+ variable
+  
+ memory address
+  
+ value
+  
+ bit vector
+  
+ type
+  
+ memory layout
+  
+ control structure
+  
+ jump
+  
+ function
+  
+ subroutine
+  
+ tree structure
+  
+ linear structure
+  
+ 97",NA
+6.2 ,NA,NA
+Specifying the code generator,"Just like type checkers and interpreters, we could specify a code generator by 
+ means of inference rules. The judgement form could be
+  
+ γ ⇒ e ↓ c
+  
+ which is read,
+  expression e generates code c in environment γ
+ . The rules for 
+ compiling * expressions could be
+  
+ γ ⇒ a ↓ cγ ⇒ b ↓ d
+  
+ γ ⇒
+  [
+ a
+  *
+  b
+ :int]
+  ↓ c d
+  imul
+  
+  
+ γ ⇒ a ↓ c
+  
+ γ ⇒ b ↓ d
+  
+ γ ⇒
+  [
+ a
+  *
+  b
+ :double]
+  ↓ c d
+  dmul
+  
+  
+ thus one rule for each type, and with type annotations assumed to be in place.
+  
+ However, we will here use only pseudocode rather than inference rules. One 
+ reason is that inference rules are not traditionally used for this task, so the 
+ notation would be a bit home-made. Another, more important reason is that the 
+ generated code is sometimes quite long, and the rules could become too wide to 
+ fit on the page. But as always, rules and pseudocode are just two concrete 
+ syntaxes for the same abstract ideas.
+  
+  
+ Following the above rules, the pseudocode for compiling * expressions be-
+ comes
+  
+ compile
+ (
+ γ,
+  [
+ a ⇒ b
+  :
+  t
+ ]) : 
+ c
+  :=
+  compile
+ (
+ γ, a
+ ) 
+  
+ d
+  :=
+  compile
+ (
+ γ, b
+ ) 
+  
+ if
+  t
+  =
+  int",NA
+6.3 ,NA,NA
+The compilation environment,"As in type checkers and interpreters, the environment stores information on 
+ functions and variables. As suggested in Section 5.7, we also need to generate 
+ fresh labels for jump instructions. Thus the environment contains
+  
+ •
+  for each function, its type in the JVM notation;
+  
+ •
+  for each variable, its address as an integer;
+  
+ •
+  a counter for variable addresses;
+  
+ •
+  a counter for jump labels
+  
+ The exact definition of the environment need not bother us in the pseudocode. 
+ We just need to know the utility functions that form its interface. Here are the 
+ pseudocode signatures for the compilation and helper functions:",NA
+6.4,NA,NA
+Simple expressions and statements,"The simplest
+  
+ The simplest expressions are the integer and double literals. 
+ instructions to compile them to are
+  
+ •
+  ldc
+  i
+ , for pushing an integer or a string
+  i",NA
+6.5 ,NA,NA
+Expressions and statements with jumps,"The expressions and statements of the previous section are “simple” in the 
+ sense that they are compiled into
+  straight code
+ , that is, code without
+  jumps
+ , 
+ executed in the order of instructions. Code that is not straight is needed for if 
+ and while statements but also, as we will see now, many expressions involving 
+ booleans.
+  
+ The basic way to compile while statements is as follows:
+  
+ compile
+ (while(
+ exp
+ )
+ stm
+ ) : 
+  
+ TEST
+  :=
+  newLabel
+ () 
+  
+ END
+  :=
+  newLabel
+ () 
+  
+ emit
+ (
+ TEST:
+ ) 
+  
+ compile
+ (
+ exp
+ ) 
+  
+ emit
+ (ifeq
+  END
+ ) 
+  
+ compile
+ (
+ stm
+ ) 
+  
+ emit
+ (goto
+  TEST
+ ) 
+  
+ emit
+ (
+ END:
+ )
+  
+ The generated code looks as follows, aligned with the source code statement:",NA
+6.6 ,NA,NA
+Compositionality,"A syntax-directed translation function
+  T
+  is
+  compositional
+ , if the value re-turned 
+ for a tree is a function of the values for its immediate subtrees:
+  
+ T
+ (
+ Ct
+ 1
+  . . . t
+ n
+ ) =
+  f
+ (
+ T
+ (
+ t
+ 1
+ )
+ , . . . , T
+ (
+ t
+ n
+ ))
+  
+ In the implementation, this means that,",NA
+6.7 ,NA,NA
+Function calls and definitions,"Function calls in JVM are best understood as a generalization of arithmetic 
+ operations:
+  
+ 1. Push the function arguments on the stack.
+  
+ 2. Evaluate the function (with the arguments on the top of the stack as 
+  
+ parameters).
+  
+ 3. Return the value on the stack, popping the arguments.
+  
+ For instance, in function call
+  f
+ (
+ a, b, c
+ ), the stack evolves as follows:
+  
+ S 
+ before the call 
+  
+ S.a.b.c 
+ entering
+  f 
+  
+ S. 
+ executing
+  f
+ , with
+  a,b,c
+  in variable storage 
+  
+ S.v 
+ returning from
+  f
+  
+  
+ The procedure is actually quite similar to what the interpreter did in Section 
+ 5.4. Entering a function f means that the JVM jumps to the code for f, with the 
+ arguments as the first available variables. 
+  
+ The evaluation doesn’t have 
+ access to old variables or to the stack of the calling code, but these become 
+ available again when the function returns.
+  
+ The compilation scheme looks as follows:
+  
+ compile
+ (
+ f
+ (
+ a
+ 1
+ , . . . , a
+ n
+ )) : 
+  
+ for
+  i
+  = 1
+ , . . . , n
+  :
+  compile
+ (
+ a
+ i
+ ) 
+  
+ typ
+  :=
+  lookup
+ (
+ f
+ ) 
+  
+ emit
+ (invokestatic
+  C/ftyp
+ )",NA
+6.8 ,NA,NA
+Putting together a class file,"Class files can be built with the following template:
+  
+ .class public Foo
+  
+ .super java/lang/Object
+  
+ .method public <init>()V
+  
+ aload_0
+  
+ invokenonvirtual java/lang/Object/&lt;init>()V
+  
+ return
+  
+ .end method
+  
+ ; user’s methods one by one",NA
+6.9 ,NA,NA
+Implementing code generation,"In Section 6.3, we took the approach in which compilation schemes left the 
+ environment implicit, and code generation was performed by side effects. Im-
+ plementing this in Java is simple as the environment can be managed by side 
+ effects, and recursive calls to the compiler in the visitor need not pass around 
+ the environment explicitly. In Haskell, however, the standard functional style 
+ would require each call to return a new environment. This was slightly awk-
+ ward in the interpreter but manageable. In the compiler, however, this would 
+ make the code very messy, because the environment is so complex and needs to 
+ be changed in so many different ways.
+  
+ Code generation in Haskell
+  
+ Java programmers can safely skip this section.
+  
+ The solution in Haskell is to use yet another monad: the
+  state monad
+ . It can 
+ be imported from the standard library Control.Monad.State. In the library, the 
+ type State s v is a monad that maintains a state of type s and returns a value of 
+ type v. Internally, it is a function of type
+  
+ s -> (s,v)
+  
+ which takes a state as its input and returns a value and a new state. The state can 
+ be inspected and modified by the library functions
+  
+ get :: State s s
+  
+ modify :: (s -> s) -> State s ()
+  
+ Following the use of
+  Void
+  in Section 6.3, we give the compilation functions a type 
+ whose return value doesn’t matter:
+  
+ compileStm :: Stm -> State Env ()
+  
+ compileExp :: Stm -> State Env ()
+  
+ Now, for instance, multiplication expressions are compiled by
+  
+ EMul a b -> do
+  
+ compileExp a
+  
+ compileExp b
+  
+ emit $ case typExp e of
+  
+ Type_int -> imul_Instr
+  
+ Type_double -> dmul_Instr",NA
+6.10 ,NA,NA
+Compiling to native code*,"Native code
+  means the machine language of a real processor, such as the 
+ Intel 
+ x86
+  series. 
+  
+ This series dates back to the 8086 processor from 1978. 
+ Later members of the family include 8088 (the
+  IBM PC
+ ), 80286, 80386, and the 
+ Pentium. These processors have remained backward compatible to a set of 
+ instructions, which has only been grown and not shrunken. These processors are 
+ used in almost all desktop and laptop computers of today, with Linux, Mac OS, 
+ and Windows alike. Therefore their machine language provides the easiest way 
+ to experiment with native code compilation.
+  
+ The main difference between x86 and JVM is that x86 has
+  registers
+ . Reg-
+ isters are places for data in the processor itself (as opposed to the memory), 
+ and they can be accessed immediately by for instance arithmetic operations.
+  
+ For example,
+  
+ add eax, ebx
+  
+ is an instruction to add the value of the register ebx to the value in eax. Thus it 
+ corresponds to an assignment",NA
+6.11 ,NA,NA
+Code optimization*,"Optimizations are an important part of modern compilers. A na¨ıve user might 
+ expect them to do some magic that turns badly written source code into effi-
+ cient machine code. However, this is not the usual purpose of optimizations. 
+ The main purpose is, actually, just to tidy up the mess that earlier compilation 
+ phases have created! This is a part of the modular way of thinking in mod-ern 
+ compiler construction. Each compilation phase (Section 1.4) should be as 
+ simple as possible, so that it can be understood clearly and reused in differ-ent 
+ combinations. If a phase threatens to become too complex, it gets split",NA
+Chapter 7,NA,NA
+Functional Programming,NA,NA
+Languages,"The previous chapters have mostly concerned the implementation of 
+ imperative languages. This chapter takes a look at a new, fascinating world, 
+ where the language is much simpler but in many ways more powerful. If the 
+ grammar for the C++ fragment treated before was 50 lines, a useful functional 
+ language can be defined on less than 15 lines. But the simplicity is more on the 
+ user’s side than the compiler writer’s: you are likely to bang your head against 
+ the wall a few times, until you get it right with recursion, call by name, and 
+ closures—not to mention polymorphic type checking, which is presented as 
+ optional material. The work is helped by a rigorous and simple rule system; 
+ more than ever before, you need your discipline and perseverance to render it 
+ correctly in implementation code.
+  
+  
+ This chapter provides all the concepts and tools needed for solving Assign-
+ ment 5, which is an interpreter for a fragment of Haskell.",NA
+7.1 ,NA,NA
+Programming paradigms,"There are thousands of programming languages, but they all fit into a few
+  pro-
+ gramming language paradigms
+ , that is, ways of thinking about program-
+ ming. In the
+  imperative paradigm
+ , also known as
+  procedural
+ , a program is a 
+ series of
+  statements
+  that affect a
+  state
+ . The state was called
+  environ-ment
+  in 
+ Chapter 5, and contains the values of variables. In the
+  functional paradigm
+ , 
+ executing a program is, simply, evaluating an expression; no state is needed.
+  
+ With this characterization, it sounds like imperative programming is more 
+ general than functional programming, because imperative programs also eval-
+  
+ 123",NA
+7.2 ,NA,NA
+Functions as values,"Evaluating expressions and defining functions is not unique to functional pro-
+ gramming. For instance, the doub function can be defined in C and Java as well:
+  
+ // doub x 
+  
+ = x + x
+  
+ int doub (int x)
+  
+ {
+  
+ return x + x ;
+  
+ }
+  
+ But this mechanism is restricted to what is called
+  first-order functions
+ : the 
+ arguments are objects like numbers and class objects—but not themselves 
+ func-tions.
+  
+  
+ In C++, it is also possible to write
+  second-order functions
+ , which take 
+ functions as arguments. This is what we need for the twice function:
+  
+ // twice f x = f (f x)
+  
+ int twice(int f (int n), int x)
+  
+ {
+  
+ return f(f(x)) ;
+  
+ }
+  
+ In a functional language, functions are
+  first-class citizens
+ . This means that 
+ a function has a value even if it is not applied. And this is why functions can 
+ return functions and take functions as arguments. As shown by twice, functions 
+ in C++ have the status of first-class citizens when used as arguments. But they 
+ are still not quite first-class, because we cannot
+  return
+  a function as a value. 
+ Thus we cannot define exactly as in Haskell:
+  
+ // quadruple = twice doub",NA
+7.3,NA,NA
+Anonymous functions,"In imperative languages, functions only exist when someone has defined them,
+  
+ and they can only be accessed by the names given in those definitions.
+  
+ In
+  
+ a functional language, you can also form
+  anonymous functions
+ , by taking 
+ apart a variable from an expression with an expression form called
+  lambda 
+ abstraction
+ :
+  
+ timesNine = twice (\x -> x + x + x)
+  
+ Syntactically, a
+  lambda abstract
+  is an expression
+  
+ λx.e
+  
+ formed from a variable
+  x
+  and an expression
+  e
+ . Following Haskell’s notation, the 
+ Greek letter
+  λ
+  is in programming language code replaced by the ASCII symbol 
+ \
+  
+ (backslash), and the dot (
+ .
+ ) by the ASCII arrow -
+ >
+ . A verbal expression for the 
+ lambda abstract is, “function which for
+  x
+  returns
+  e
+ ”. Thus, for instance, 
+ \
+ x -
+ >
+  x + 
+ x + x is a function that for the argument
+  x
+  returns
+  x
+  +
+  x
+  +
+  x
+ . The typing rule for 
+ lambda abstracts is the following:
+  
+  
+  
+ Γ
+ , x
+  :
+  A ⇒ e
+  :
+  B
+  
+  
+ Γ
+  ⇒ λx.e
+  :
+  A → B 
+  
+ Thus lambda abstraction is a way to build functions. Actually, it is the only way 
+ that is really needed, because a function definition
+  
+ f x
+ 1
+  . . . x
+ n
+  =
+  e",NA
+7.4 ,NA,NA
+Evaluating expressions,"A functional language can be very useful with an extremely small core. We start 
+ with a language with only four expression forms:
+  
+ Exp ::=
+  
+ Ident
+  
+ -- variables, constants
+  
+ | Integer-- integer literals
+  
+ | ""("" ""\"" Ident ""->"" Exp "")""-- abstractions
+  
+ | ""("" Exp Exp "")""-- applications
+  
+ The operational semantics uses judgements of the usual form,
+  
+ γ ⇒ e ⇒ v
+  
+ which is read, ”in the environment
+  γ
+ , the expression
+  e
+  evaluates to the value 
+ v
+ ”. 
+ Notice that evaluation cannot change the environment. This is because we are 
+ dealing with a
+  purely functional language
+ , a language without side effects.",NA
+7.5,NA,NA
+Call by value vs. call by name,"In Section 5.5, we noted that function application is usually implemented by the
+  
+ call by value
+  strategy. This was also used in the application rule shown in the 
+ previous section: the argument is evaluated first, before evaluating the",NA
+7.6 ,NA,NA
+Implementing an interpreter,"Let us now build an interpreter. We will work with a slightly extended 
+ language, to make it interesting to use in practice. The language has two more 
+ forms of expressions: infix operations and if-then-else. With usual precedences, 
+ we get the following BNF grammar:
+  
+ Exp3 ::= Ident
+  
+ Exp3 ::= Integer
+  
+ Exp2 ::= Exp2 Exp3
+  
+ Exp1 ::= Exp1 ""+"" Exp2
+  
+ Exp1 ::= Exp1 ""-"" Exp2
+  
+ Exp1 ::= Exp1 ""<"" Exp2
+  
+ Exp ::= ""if"" Exp1 ""then"" Exp1 ""else"" Exp
+  
+ Exp ::= ""\\"" Ident ""->"" Exp",NA
+7.7 ,NA,NA
+Type checking functional languages*,"The language we have worked with has a type system known as the
+  simply 
+ typed lambda calculus
+ . It has two kinds of types:
+  
+ •
+  basic types, such as int;
+  
+ •
+  function types
+  A → B
+ , where
+  A
+  and
+  B
+  are types.
+  
+ Simple as the system is, it is much more powerful than the type system we used 
+ for the imperative language in Chapter 4. The power comes from the 
+ unconstrained generation of function types from any other types, giving rise to 
+ functions of functions, and so on. For example,
+  
+ int -> int
+  
+ (int -> int) -> int
+  
+ int -> (int -> int)
+  
+ ((int -> int) -> int) -> int
+  
+ In Section 7.2, we gave rules for this type system and explained the method of 
+ currying, implying that we only need one-place functions.
+  
+ A type checker could be implemented in the usual way by converting the 
+ typing rules to type checking and inference code. Some care is thereby needed, 
+ though. Starting with the abstraction rule,
+  
+  
+ Γ
+ , x
+  :
+  A ⇒ b
+  :
+  B
+  
+  
+ Γ
+  ⇒ λx.b
+  :
+  A → B 
+  
+ it is easy to define type checking:
+  
+ check
+ (Γ
+ , λx.b, A → B
+ ) : 
+ check
+ (
+ extend
+ (Γ
+ , x, A
+ )
+ , b, B
+ )
+  
+ But what happens if we need type inference? Before even trying to formulate type 
+ inference for lambda abstracts, we can simply notice that the expression
+  
+ \x -> x
+  
+ has infinitely many types:
+  
+ int
+  
+ -> int
+  
+ (int -> int)
+  
+ -> (int -> int)
+  
+ (int -> int -> int) -> (int -> int -> int)
+  
+ In fact, it has all types of the form
+  
+ A -> A",NA
+7.8 ,NA,NA
+Polymorphism*,"The polymorphism idea was introduced in ML in the 1970’s and inherited by 
+ Haskell in the 1990’s. It also inspired the
+  template system
+  of C++. Taking the 
+ simplest possible example, the identity function of last section, we can write
+  
+ // id : A -> A
+  
+ template<class A> A id(A x)
+  
+ {
+  
+ return x ;
+  
+ }
+  
+ Two decades later, it was introduced in Java’s
+  generics
+  (Java 1.5):
+  
+ // id : A -> A
+  
+ public static <A> A id(A x)
+  
+ {
+  
+ return x ;
+  
+ }
+  
+ In both cases, polymorphism is expressed by using a
+  type variable
+ , A. As a 
+ matter of convention, C++ and Java use capital letters as type variables, 
+ whereas Haskell uses small letters; in Haskell, capital letters are reserved for 
+ constant types.
+  
+ In C++ and Java, calls to polymorphic functions must indicate the actual 
+ types. In ML and Haskell, this is not required. As one of the most remarkable 
+ results of programming language theory, type inference works even then! The 
+ idea is called
+  Hindley-Milner polymorphism
+ . It allows an algorithm which, for 
+ any expression of the functional language, returns its
+  most general type
+ .
+  
+ Here are some examples of such most general types:
+  
+ (\x -> x) 
+  
+ : a -> a
+  
+ (\x -> \y -> x) 
+  
+ : a -> b -> a",NA
+7.9 ,NA,NA
+Polymorphic type checking with unification*,"Polymorphic type inference
+  finds the most general type possible for a given 
+ expression. The inference function works in the usual way of syntax-directed 
+ translation, performing pattern matching on the expression. What it returns is 
+ not just the type of the expression, but also a
+  substitution
+ , which maps type 
+ variables to types (which can themselves contain variables). Just like the type 
+ checker of Chapter 4, we also need a
+  context
+  that stores the types of the 
+ variables in the expression. Notice the difference between these mappings: 
+ both of them store types as values, but the context gives the types of the 
+ variables in the source code expression, whereas the substitution gives the 
+ values of the type variables created by the type checker itself.
+  
+ In the type inference pseudocode, we will define the function
+  
+ ⇒Subst, Type⇒ infer
+ (
+ Exp e
+ ) 
+  
+ We thus keep the context implicit, like in the code generator of Section 6.3. But 
+ we can access the environment with
+  lookup
+ ,
+  extend
+ , and
+  free
+  functions; 
+ free
+  
+ means undoing the effect of
+  extend
+ :
+  
+ Type lookup
+  (
+ Ident x
+ )
+  
+ Void extend
+  (
+ Ident x, Type t
+ )
+  
+ Void free
+  (
+ Ident x
+ )
+  
+ The implicit environment also takes care of generating fresh type variables,",NA
+Chapter 8,NA,NA
+The Language Design Space,"The functional language shown in the previous chapter was very simple, but it 
+ can be made even simpler: the minimal language of lambda calculus has just 
+ three grammar rules. It needs no integers, no booleans—almost nothing, since 
+ everything can be defined by those three rules. This leads us to the notion of 
+ Turing Completeness, which defines what a general-purpose programming 
+ language must be able to do. In addition to lambda calculus, we will show 
+ another Turing complete language, which is an imperative language similar to 
+ C, but still definable on less than ten lines. Looking at these languages gives us 
+ tools to assess the popular thesis that “it doesn’t matter what language you use, 
+ since it’s the same old Turing machine anyway”.
+  
+  
+ If you work as a programmer, you are not likely to implement a general-
+ purpose programming language in your professional career. 
+  
+ You are much 
+ more likely to implement a
+  DSL
+ ,
+  domain-specific language
+ . However, the 
+ things you have learned by going through the assignments give you all the tools 
+ you need to create your own language. 
+  
+ You will feel confident to do 
+ this, and you also know the limits of what is realistic and what is not. The design 
+ space reaches from the simplest possible languages to ones that look like natural 
+ language. Such languages can be useful in, for instance, speech-based interfaces. 
+ But they also give you an idea of what is reasonable to expect from natural 
+ language processing and how it relates to compiler construction.
+  
+ This chapter provides the concepts and tools needed for solving Assignment 
+ 6 in a satisfactory way—creating a domain-specific query language. But it is 
+ your own imagination and willingness to learn more that set the limits of what 
+ you can achieve.
+  
+ 145",NA
+8.1 ,NA,NA
+How simple can a language be?,"In the 1930’s, before electronic computers were built, mathematicians devel-
+ oped
+  models of computation
+  trying to define what it means to be com-putable 
+ in principle. The background of this was in the foundation of math-ematics, 
+ where the question was whether all mathematical problems can be solved 
+ mechanically. To answer this question, one had to define what it means to solve 
+ a problem mechanically—in principle, rather than in practice.
+  
+ The research resulted in several models, of which the most well-known are
+  
+ •
+  Turing Machine
+  (Alan Turing), similar to imperative programming.
+  
+ •
+  Lambda Calculus
+  (Alonzo Church), similar to functional programming.
+  
+ •
+  Recursive Functions
+  (Stephen Kleene), also similar to functional pro-gramming.
+  
+ It was soon proved that these models are equivalent: although they express 
+ programs and computation in very different ways, they cover exactly the same 
+ programs. And the solvability of mathematical problems got a negative answer: 
+ it is not possible to construct a machine that can solve all problems. One of the 
+ counter-examples is the
+  halting problem
+ : it was proved by Turing that there 
+ cannot be any program (i.e. any Turing machine) which decides for any given 
+ program and input if the program terminates with that input.
+  
+ The models of computation also became prototypes for programming lan-
+ guages, corresponding to the different
+  programming language paradigms 
+ still in use today. Thus the Turing Machine itself was the prototypical imper-
+ ative language. Lambda Calculus was the prototypical functional language, but 
+ the way programs are usually written looks more like recursive functions. The 
+ term
+  Turing-completeness
+  is used for any programming language that is 
+ equivalent to any of these models, that is, equivalent to the Turing Machine.
+  
+ All general-purpose programming languages used today are Turing-
+ complete. But this doesn’t say very much: actually, a language can be
+  very
+  simple 
+ and still Turing-complete.",NA
+8.2 ,NA,NA
+Pure lambda calculus as a programming lan-,NA,NA
+guage*,"As the simplest model syntactically, let us look at lambda calculus. The min-
+ imal definition of the language needs just three constructs: variables, applica-
+ tions, and abstractions:
+  
+ Exp ::= Ident | Exp Exp | ""\"" Ident ""->"" Exp",NA
+8.3 ,NA,NA
+Another Turing-complete language*,"BF
+ ,
+  Brainfuck
+ , is a language designed by Urban M¨uller as a variant of the 
+ theoretical language
+  P”
+  by Corrado B¨ohm. The goal was to create a Turing-
+ complete language with the smallest possible compiler. M¨uller’s compiler was 
+ 240 bytes in size.",NA
+8.4 ,NA,NA
+Criteria for a good programming language,"Pure lambda calculus, BF, and the fragment of C corresponding to BF sug-gest 
+ that Turing completeness might not be enough for a good programming 
+ language. There are many other reasonable criteria:
+  
+ •
+  Orthogonality
+ : the set of language constructs should be small and non-overlapping.
+  
+ •
+  Succinctness
+ : the language should permit short expressions of ideas.
+  
+ •
+  Efficiency
+ : the language should permit writing code that runs fast and in small space.
+  
+ •
+  Clarity
+ : the language should permit writing programs that are easy to understand.
+  
+ •
+  Safety
+ : the language should guard against fatal errors.
+  
+ These criteria are obviously not always compatible, but there are trade-offs. For 
+ instance, pure lambda calculus and BF obviously satisfy orthogonality, but 
+ hardly any of the other criteria. Haskell and C++ are known for providing many 
+ ways to do the same things, and therefore blamed for lack of orthogonal-ity. But 
+ they are certainly good at many other counts.
+  
+  
+ In practice, different languages are good for different applications. 
+  
+ For 
+ instance, BF can be good for reasoning about computability. There may also be 
+ languages that aren’t good for any applications. And even good languages can be 
+ implemented in bad ways, let alone used in bad ways.
+  
+ We suggested in Chapter 1 that languages are evolving toward higher and 
+ higher levels, as a result of improved compiler technology and more powerful 
+ computers. This creates more work for machines (and for compiler writers!) 
+ but relieves the burden of language users. Here are some trends that can be 
+ observed in the history:",NA
+8.5 ,NA,NA
+Domain-specific languages,"As different languages are good for different purposes, why not turn the per-
+  
+ spective and create the best language for each purpose? Such languages are
+  
+ called
+  special-purpose languages
+ ,
+  minilanguages
+ , or
+  domain-specific
+  
+ languages
+ ,
+  DSL
+ ’s.
+  
+ Here are some examples of DSL’s:
+  
+ •
+  Lex for lexers, Yacc for parsers;
+  
+ •
+  BNFC for compiler front ends;
+  
+ •
+  XML for structuring documents;
+  
+ •
+  make for specifying compilation commands;
+  
+ •
+  bash (a Unix shell) for working on files and directories;
+  
+ •
+  PostScript for printing documents;
+  
+ •
+  JavaScript for dynamic web pages.
+  
+ DSL’s have their own design decisions:
+  
+ •
+  Imperative or declarative?
+  
+ •
+  Interpreted or compiled?
+  
+ •
+  Portable or platform-dependent?",NA
+8.6 ,NA,NA
+Embedded languages*,"An embedded language is a minilanguage that is a fragment of a larger
+  host 
+ language
+ . Implementing a DSL as an embedded language has several advan-
+ tages:
+  
+ •
+  It inherits the implementation of the host language.
+  
+ •
+  No extra training is needed for those who already know the host language.
+  
+ •
+  There is an unlimited access to “language extensions” via using the host language.
+  
+ There are also disadvantages:
+  
+ •
+  One cannot reason about the embedded language independently of the host language.
+  
+ •
+  Unlimited access to host language can compromise safety, efficiency, etc.
+  
+ •
+  An embedded language may be difficult to interface with other languages than the host 
+ language.
+  
+ •
+  Training programmers previously unfamiliar with the host language can have a large 
+ overhead.",NA
+8.7 ,NA,NA
+Case study: BNFC as a domain-specific lan-,NA,NA
+guage,"The first version of BNFC was released in 2002. It targeted Haskell with Happy 
+ and Alex. In 2003, it was ported to Java, C, and C++; in 2005, to Java 1.5; and in 
+ 2006, to OCaml and C#. In 2006, BNFC became a part of the “stable”Debian 
+ Linux distriburion. Since then, it has changed only minimally, mostly to 
+ preserve compatibility with the targeted tools, whenever these tools have had 
+ backward-incompatible changes.
+  
+ The goal of BNFC is to implement exactly the idea that a parser returns an 
+ abstract syntax tree built from the trees for the nonterminal items by using the 
+ rule label. If the parser is limited in this way, more general tools such as Yacc 
+ and Happy, let alone parser combinators in a general-purpose language, are 
+ unnecessarily powerful. Thus limiting the expressive power and specializing 
+ the purpose of the language, BNFC helps programmers to achieve the following 
+ goals:
+  
+ •
+  to save writing code,
+  
+ •
+  to keep the different compiler modules in sync,
+  
+ •
+  to use the grammar as reliable documentation,
+  
+ •
+  to guarantee the symmetry of parser and pretty printer (useful in e.g. 
+ source code optimizations),
+  
+ •
+  to be sure of the complexity of parsing,
+  
+ •
+  to be able to port the same grammar to different host languages.
+  
+ In practice, the first goal is often the most important one. Not only are pro-
+ grammers lazy, but they also know that short programs are more reliable. Eric 
+ S. Raymond, in
+  The Art of Unix Programming
+ , refers to surveys according to 
+ which",NA
+8.8 ,NA,NA
+Using BNFC for implementing languages,"The main advantage of BNFC is perhaps that it makes it easy to get started with 
+ a new language. A prototype with a dozen rules can be ready to run in five 
+ minutes.
+  
+ Usually, it is good to start with a set of code examples. If you are imple-
+ menting an already existing language, as in Assignments 1 to 5 of this book, 
+ such examples typically exist in abundance. But if you are designing your own 
+ language, a good way to start is to write some code in this language as if it 
+ already existed. When writing the code and seeing the code you just wrote, you 
+ will get ideas for how to make the language really nice—into a language of your 
+ dreams. You should write both small examples, focusing on individual features, 
+ and large examples, showing how real job is done with your language. You can 
+ then start writing your grammar with the goal of parsing your own examples, 
+ starting from the simplest ones—in the same way as in Assignment 1.
+  
+ As your language grows, you should always start by writing examples that 
+ cover the new features. Your set of examples will then be a means for
+  regres-
+ sion testing
+  of your grammar. Later, they will also guide you with the other 
+ components of your compiler or interpreter. The examples will also be an es-
+ sential part of the documentation of your language, making it easy for others to 
+ start coding in it by first modifying your examples. For this purpose, it is 
+ important that your examples are meaningful programs that make something 
+ useful with the tasks for which your language is designed.",NA
+8.9 ,NA,NA
+Compiling natural language*,"Natural language could be seen as the ultimate limit of bringing a language close 
+ to humans. When the first electronic computers were built in the late 1940’s, 
+ there was a lot of optimism about processing natural language. 
+  
+ It 
+ was encouraged by the success of cryptography during the Second World War. 
+ The idea arose that Russian was like encrypted English, and that it could be 
+ cracked with similar methods as Turing and his colleagues had cracked the 
+ Germans’ Enigma. Now, more than 60 years later and with billions of times more 
+ computing power, breaking the Russian “code” (or any other natural language) is 
+ still not possible: it is considered one of the hardest problems of computer 
+ science, as hard as Artificial Intelligence in general.
+  
+ Of course, some of the problems encountered 60 years ago have now been 
+ overcome, and systems like Google translate work for more than 50 languages. 
+ The need for automatic translation is constantly growing, as the internet 
+ reaches a majority of the seven billion people on the globe, who speak over 
+ 6000 differ-ent languages. It is impossible to translate even a small part of the 
+ information on the internet into even a small fraction of these languages 
+ manually, how ever desirable this might be.
+  
+ For instance, the Wikipedia encyclopedia is available in around 300 lan-
+ guages. A majority of articles are only available in English, and the occasional 
+ manually produced translations often differ in content and coverage. Google 
+ translate is not a solution, because its quality is not sufficient. One could say 
+ that Google translations are of
+  browsing quality
+ : they give an idea of what",NA
+8.10 ,NA,NA
+Case study: a query language*,"Let us conclude this chapter and this book with an example of using a fragment 
+ of natural language as a domain-specific language. The application is a
+  query 
+ language
+ , which allows its user to ask questions in English. Every question is 
+ parsed and sent to a question-answering program, which generates an answer.
+  
+ Here are two example queries and answers:
+  
+ Is any even number prime? 
+  
+ Yes.
+  
+ Which numbers greater than 100 and smaller than 150 are prime? 
+ 101, 103, 107, 109, 113, 127, 131, 137, 139, 149.
+  
+ The example system we will build is from mathematics. This is because the 
+ question-answering program is then easy to implement by using the computer’s 
+ standard arithmetic, and we can show a complete system in a small space. But 
+ the system is built in such a way that the subject matter would be easy to change, 
+ for instance, to cover database queries about films. 
+  
+ But even the 
+ mathematics system can be interesting, as shown by the popularity of Wolfram 
+ Alpha, “the computational knowledge engine”.
+  
+ Here is a BNF grammar for a simple query language:
+  
+ -- general part
+  
+ QWhich. 
+  
+ Query 
+  
+ ::= ""which"" Kind ""is"" Property ;
+  
+ QWhether. 
+  
+ Query 
+  
+ ::= ""is"" Term Property ;
+  
+ TAll. 
+  
+ Term 
+  
+ ::= ""every"" Kind ;
+  
+ TAny. 
+  
+ Term 
+  
+ ::= ""any"" Kind ;
+  
+ PAnd. 
+  
+ Property ::= Property ""and"" Property ;
+  
+ POr. 
+  
+ Property ::= Property ""or"" 
+  
+ Property ;
+  
+ PNot. 
+  
+ Property ::= ""not"" Property ;
+  
+ KProperty. 
+  
+ Kind 
+  
+ ::= Property Kind ;",NA
+8.11 ,NA,NA
+"Grammatical Framework, GF*","To get the expressive power needed for making the query language really nice, 
+ we use
+  GF
+ ,
+  Grammatical Framework
+ . 
+  
+ GF is inspired by compiler con-
+ struction but designed for natural language grammars. It has been applied to 
+ dozens of languages ranging from European languages like English and Dutch to 
+ Nepali, Swahili, and Thai. GF is moreover able to define translators by using just 
+ grammars. You can obtain GF from grammaticalframework.org.
+  
+ The following is a very simple example of a GF grammar:
+  
+ abstract Arithm = {
+  
+ cat Exp ;
+  
+ fun EInt : Int -> Exp ;
+  
+ fun EMul : Exp -> Exp -> Exp ;
+  
+ }
+  
+ concrete ArithmJava of Arithm = {
+  
+ lincat Exp = Str ;
+  
+ lin EInt i = i.s ;
+  
+ lin EMul x y = x ++ ""*"" ++ y ;
+  
+ }
+  
+ concrete ArithmJVM of Arithm = {
+  
+ lincat Exp = Str ;",NA
+8.12 ,NA,NA
+A GF grammar for queries*,"Let us now write a GF grammar for queries in English. We will use yet another 
+ feature of GF to make the solution modular and reusable: we use separate mod-
+ ules for basic queries (Query) and its application to mathematics (MathQuery). 
+ The MathQuery modules are extensions of Query, marked with the symbol ** 
+ which roughly corresponds to extends of classes in Java.
+  
+ Abstract syntax
+  
+ This is the basic query grammar, defining the type system and the forms of 
+ queries. Each function is followed by a comment that shows an example that 
+ has that structure. Notice the flag startcat setting the default start category. 
+ Also notice that the keywords cat and fun need not be repeated in groups of 
+ definitions of the same type.",NA
+8.13 ,NA,NA
+The answering engine*,"Denotational semantics
+  
+ To interpret the queries, we translate them to predicate logic. Kinds and the 
+ top-level
+  which
+  queries are interpreted as sets. Top-level
+  whether
+  queries are 
+ interpreted as formulas, and properties are interpreted as one-place predicates.
+  
+ The most intricate case is perhaps the interpretation of terms. Plain integer 
+ terms could of course be interpreted as integers. But this would not work for 
+ all
+  
+ and
+  any
+  terms, which are more like quantifiers in logic. To make this work, we 
+ interpret all terms as functions that take predicates as arguments! For
+  all 
+ and
+  
+ any
+ , this works in the natural way. For integer terms, this creates a rather 
+ indirect interpretation, which is a function that for any predicate
+  p
+  applies that 
+ predicate to the given integer
+  i
+ .
+  
+ The interpretation is an example of yet another kind of programming lan-
+ guage semantics, known as
+  denotational semantics
+ . It uses syntax-directed 
+ translation to define the operator * which specifies the
+  denotation
+  (the mean-
+ ing) of each syntax tree.
+  
+ (
+ QWhich kind prop
+ )
+ ⇒
+ =
+  {x|x ⇒ kind
+ ⇒
+ , prop
+ ⇒
+ (
+ x
+ )
+ } 
+  
+ (
+ QWhether term prop
+ )
+ ⇒
+ =
+  term
+ ⇒
+ (
+ prop
+ ⇒
+ )
+  
+ (
+ TAll kind
+ )
+ ⇒
+ =
+  λp.
+ (
+ ⇒x
+ )(
+ x ⇒ kind
+ ⇒
+ ⇒ p
+ (
+ x
+ )) 
+  
+ (
+ TAny kind
+ )
+ ⇒
+ =
+  λp.
+ (
+ ⇒x
+ )(
+ x ⇒ kind
+ ⇒
+ &
+ p
+ (
+ x
+ )) 
+  
+ (
+ TAnd p q
+ )
+ ⇒
+ =
+  λx.p
+ ⇒
+ (
+ x
+ )&
+ q
+ ⇒
+ (
+ x
+ )
+  
+ (
+ TOr p q
+ )
+ ⇒
+ =
+  λx.p
+ ⇒
+ (
+ x
+ )
+  ⇒ q
+ ⇒
+ (
+ x
+ ) 
+  
+ (
+ TNot p
+ )
+ ⇒
+ =
+  λx. ⇒ p
+ ⇒
+ (
+ x
+ ) 
+  
+ (
+ KProperty prop kind
+ )
+ ⇒
+ =
+  {x|x ⇒ kind
+ ⇒
+ , prop
+ ⇒
+ (
+ x
+ )
+ } 
+  
+ (
+ TInteger i
+ )
+ ⇒
+ =
+  λp.p
+ ⇒
+ (
+ i
+ )
+  
+ The predicates of MathQuery can easily be given some adequate interpretations.
+  
+ Denotational semantics is often a natural choice for interpreting declarative 
+ languages. In fact, we used a variant of it in Section 3.2, when interpreting reg-
+ ular expressions as formal languages. There we used a double bracket notation 
+ instead of the more compact asterisk.
+  
+ Compiling to Haskell
+  
+ The concrete syntax in GF is actually also an example of denotational seman-
+ tics! It is an interpretation of syntax trees as strings, records, and tables. We can 
+ use this idea to give an implementation of the query language as translation to 
+ Haskell code. In Haskell, we will use lists rather than sets as denotations of 
+ kinds. But otherwise the translation is very much the same as the denotational 
+ semantics.",NA
+8.14 ,NA,NA
+The limits of grammars*,"Even though GF is expressive enough for natural language grammars, they can 
+ require substantial work and expertise. To make this work easier, GF has a 
+ Resource Grammar Library, which implements low-level linguistic details of 
+ different languages, such as inflection and word order, and makes them acces-
+ sible by a high-level API. For example, kinds can be implemented as common 
+ nouns (CN), properties as adjectives (A), and KProperty with the funtion mkCN, 
+ which combines an adjective with a common noun:
+  
+ lincat Kind = CN ;
+  
+ lincat Property = A ;
+  
+ lin KProperty prop kind = mkCN prop kind ;
+  
+ The same definitions work for all of the currently 24 languages of the library, 
+ although for instance the order of the adjective and the noun can vary in 
+ concrete syntax (
+ even number
+  in English becomes
+  nombre pair
+  in French). 
+ Differences of course also appear on the level of words, where mkA in each 
+ language produces an adjective inflection table:
+  
+ PEven = mkA ""even""
+  
+ -- English
+  
+ PEven = mkA ""parillinen"" -- Finnish
+  
+ pEven = mkA ""pair""
+  
+ -- French
+  
+ PEven = mkA ""gerade""
+  
+ -- German
+  
+ English needs only one form of adjectives, but French has 4 and Finnish over 30.
+  
+ GF makes it possible to generate and parse natural languages, whenever the 
+ sentences involved are within the scope of a grammar. What is out of reach, 
+ however, is the parsing of the
+  whole
+  natural language. The problem is that, in 
+ natural language, the grammar is not something that can be given once and for 
+ all. This is in contrast to programming languages, which are
+  defined
+  by their",NA
+Appendix A,NA,NA
+BNFC Quick Reference,"by Markus Forsberg and Aarne Ranta
+  
+ This Appendix is based on the
+  LBNF Report
+  by Forsberg and Ranta, and some 
+ documentation by Ulf Norell. The sources are available on the BNFC web page,
+  
+ http://bnfc.digitalgrammars.com",NA
+A.1 ,NA,NA
+The BNFC tool,"BNFC is a single-source multi-target tool for compiler construction. It reads a 
+ single file, a grammar in
+  Labelled BNF
+  (
+ LBNF
+ ), and produces a set of modules 
+ in a chosen host language. The following diagram shows the available host 
+ languages and the components produced in all of them.
+  
+  
+ 175",NA
+A.2 ,NA,NA
+Overview of LBNF,"An LBNF grammar is a BNF grammar where every rule is given a label. The 
+ label is used for constructing a syntax tree whose subtrees are given by the 
+ nonterminals of the rule, in the same order. For example, the rule
+  
+ SWhile. Stm ::= ""while"" ""("" Exp "")"" Stm ;
+  
+ has the label SWhile and forms trees of the form (SWhile
+  e s
+ ), where
+  e
+  is a tree 
+ for Exp and
+  s
+  a tree for Stm.
+  
+ More formally, an LBNF grammar consists of a collection of rules, which 
+ have the following form (expressed by a regular expression; Section A.9 gives a 
+ complete BNF definition of the notation):
+  
+ Ident “.” Ident “::=” (Ident
+  |
+  String)* “;” ;
+  
+ The first identifier is the
+  rule label
+ , followed by the
+  value category
+ . On the 
+ right-hand side of the production arrow (::=) is the list of production items. An 
+ item is either a quoted string (
+ terminal
+ ) or a category symbol (
+ nonterminal
+ ). 
+ The right-hand side of a rule whose value category is
+  C
+  is called a
+  production 
+ for
+  C
+ .
+  
+ Identifiers, that is, rule names and category symbols, can be chosen
+  ad libi-
+ tum
+ , with the restrictions imposed by the target language. To satisfy Haskell, 
+ and C and Java as well, the following rule should be followed with rule labels 
+ and categories:
+  
+ An identifier is a nonempty sequence of letters, digits, and under-
+ scores, starting with a capital letter.
+  
+ Additional features
+  
+ Basic LBNF as defined above is clearly sufficient for defining any context-free 
+ language. However, it is not always convenient to define a programming 
+ language purely with BNF rules. Therefore, some additional features are added 
+ to LBNF: abstract syntax conventions, lexer rules, pragmas, and macros. These 
+ features are treated in the subsequent sections.
+  
+ Abstract syntax conventions
+ . Creating an abstract syntax by adding a node 
+ type for every BNF rule may sometimes become too detailed, or clut-tered with 
+ extra structural levels. To remedy this, we have identified the most",NA
+A.3 ,NA,NA
+Abstract syntax conventions,"Predefined basic types
+  
+ The first convention are predefined basic types. Basic types, such as integer and 
+ character, could of course be defined in a labelled BNF, for example:
+  
+ Char_a. Char ::= ""a"" ;
+  
+ Char_b. Char ::= ""b"" ;
+  
+ This is, however, cumbersome and inefficient. Instead, we have decided to 
+ extend our formalism with predefined basic types, and represent their grammar 
+ as a part of lexical structure. These types are the following, as defined by LBNF 
+ regular expressions (see below for the regular expression syntax):
+  
+ •
+  Integer of integers, defined
+  
+ digit+
+  
+ •
+  Double of floating point numbers, defined
+  
+ digit+ ’.’ digit+ (’e’ ’-’? digit+)?",NA
+A.4 ,NA,NA
+Lexer Definitions,"The
+  token
+  rule
+  
+ The token rule enables the LBNF programmer to define new lexical types using 
+ a simple regular expression notation. For instance, the following rule defines 
+ the type of identifiers beginning with upper-case letters.
+  
+ token UIdent (upper (letter | digit | ’_’)*) ;
+  
+ The type UIdent becomes usable as an LBNF nonterminal and as a type in the 
+ abstract syntax. Each token type is implemented by a newtype in Haskell, as a 
+ String in Java, and as a typedef to char* in C/C++.
+  
+  
+ The regular expression syntax of LBNF is specified in Section A.9. The 
+ abbreviations with strings in brackets need a word of explanation:
+  
+ [""abc7%""] denotes the union of the characters ’a’ ’b’ ’c’ ’7’ ’%’
+  
+ {
+ ""abc7%""
+ }
+  denotes the sequence of the characters ’a’ ’b’ ’c’ ’7’ ’%’
+  
+ The atomic expressions upper, lower, letter, and digit denote the character 
+ classes suggested by their names (letters are isolatin1). The expression char 
+ matches any character in the 8-bit ASCII range, and the “epsilon” expression",NA
+A.5 ,NA,NA
+Pragmas,"Internal pragmas
+  
+ Sometimes we want to include in the abstract syntax structures that are not 
+ part of the concrete syntax, and hence not parsable. They can be, for instance, 
+ syntax trees that are produced by a type-annotating type checker. Even though 
+ they are not parsable, we may want to pretty-print them, for instance, in the 
+ type checker’s error messages. To define such an internal constructor, we use a 
+ pragma
+  
+ ""internal"" Rule "";""
+  
+ 1
+  If we want to describe full Java or Haskell, we must extend the character set to Unicode.
+  
+ This is currently not supported by all lexer tools, however.",NA
+A.6 ,NA,NA
+Macros,"Terminators and separators
+  
+ The terminator macro defines a pair of list rules by what token terminates each 
+ element in the list. For instance,
+  
+ terminator Stm "";"" ;
+  
+ tells that each statement (Stm) in a list [Stm] is terminated with a semicolon (;). 
+ It is a shorthand for the pair of rules
+  
+ []. [Stm] ::= ;
+  
+ (:). [Stm] ::= Stm "";"" [Stm] ;
+  
+ The qualifier nonempty in the macro makes one-element list to be the base case. 
+ Thus
+  
+ terminator nonempty Stm "";"" ;
+  
+ is shorthand for
+  
+ (:[]). [Stm] ::= Stm "";"" ;
+  
+ (:). [Stm] ::= Stm "";"" [Stm] ;
+  
+ The terminator can be specified as empty """". No token is introduced then, but e.g.",NA
+A.7 ,NA,NA
+Semantic definitions,"(
+ Section based on BNFC documentation by Ulf Norell.
+ ) 
+  
+  
+ LBNF gives support for syntax tree constructors that are eliminated dur-ing 
+ parsing, by following
+  semantic definitions
+ . Here is an example: a core 
+ statement language, where we use capital initials to indicate that they will be 
+ preserved:
+  
+ Assign. Stm ::= Ident ""="" Exp ;
+  
+ Block. 
+  
+ Stm ::= ""{"" [Stm] ""}"" ;
+  
+ While. 
+  
+ Stm ::= ""while"" ""("" Exp "")"" Stm ;
+  
+ If. 
+  
+ Stm ::= ""if"" ""("" Exp "")"" Stm ""else"" Stm ;
+  
+ We now want to have some syntactic sugar. Note that the labels for these rules 
+ all start with a lowercase letter, indicating that they correspond to defined 
+ functions rather than nodes in the abstract syntax tree.
+  
+ if. 
+  
+ Stm ::= ""if"" ""("" Exp "")"" Stm ""endif"" ;
+  
+ for. 
+  
+ Stm ::= ""for"" ""("" Stm "";"" Exp "";"" Stm "")"" Stm ;
+  
+ inc. 
+  
+ Stm ::= Ident ""++"" ;",NA
+A.8 ,NA,NA
+Layout syntax,"Layout syntax is a means of using indentation to group program elements. It is 
+ used in some languages, e.g. Haskell. Those who do not know what layout 
+ syntax is or who do not like it can skip this section.
+  
+ The pragmas layout, layout stop, and layout toplevel define a
+  layout syntax
+  
+ for a language. Before these pragmas were added, layout syntax was not 
+ definable in BNFC. The layout pragmas are only available for the files generated 
+ for Haskell-related tools; if Java, C, or C++ programmers want",NA
+A.9 ,NA,NA
+The BNF grammar of LBNF,"This document is a slightly modified version of the language document automat-
+ ically generated by the BNF Converter. We have omitted some experimental and 
+ obsolete constructs and reformulated some explanations. But except for the 
+ omitted rules, the definitions of lexical and syntactic structure are retained as 
+ generated. 
+  
+ This guarantees that the BNFC-generated lexer, parser, and 
+ abstract syntax are in synchrony with this document.",NA
+Appendix B,NA,NA
+Some JVM Instructions,"These tables contain all instructions used in Chapters 5 and 6 and some other ones that 
+ can be useful as optimizations in Assignment 4. We use the dot (.) to separate values on 
+ the stack, and two-letter variables (
+ dd,ee
+ ) to represent double values. The asterisk (*) in 
+ an explanation indicates that there is a longer explanation after the tables.
+  
+ Jasmin
+  
+ args
+  
+ stack
+  
+ explanation
+  
+ HEX
+  
+ aload
+  
+ var
+  i
+  
+ . → .V
+  (
+ i
+ ) 
+  
+ . → .V
+  (
+ i
+ ) 
+  
+ .r →
+  
+ .r → .
+  
+ .r → .
+  
+ . → .i 
+  
+ .dd → .i 
+  
+ .dd.ee → .dd
+  +
+  ee 
+ .dd.ee → .i 
+  
+ .dd.ee → .i 
+  
+ . → .dd 
+  
+ .dd.ee → .dd/ee . → 
+ .V
+  (
+ i
+ ) 
+  
+ . → .V
+  (
+ i
+ ) 
+  
+ .dd.ee → .dd ⇒ ee .dd 
+ → . − dd 
+  
+ .dd →
+  
+ .dd → .
+  
+ .dd → .
+  
+ .dd.ee → .dd − ee .v 
+ → .v.v 
+  
+ .dd → .dd.dd
+  
+ load ref from var
+  i
+  
+ 19
+  
+ aload i (i=0..3)
+  
+ var
+  i
+  
+ return ref from method
+  
+ 2A..2D
+  
+ areturn
+  
+ B0
+  
+ astore
+  
+ store ref in var
+  i
+  
+ 3A
+  
+ astore i (i=0..3)
+  
+ byte
+  i
+  
+ store ref in var
+  i
+  
+ 4B..4E
+  
+ bipush
+  
+ push byte
+  i
+  as int
+  
+ 10
+  
+ d2i
+  
+ var
+  i
+  
+ convert double to int
+  
+ 8E
+  
+ dadd
+  
+ add double
+  
+ 63
+  
+ dcmpg
+  
+ compare if
+  >
+ *
+  
+ 98
+  
+ dcmpl
+  
+ compare if
+  <
+ *
+  
+ 97
+  
+ dconst dd (dd=0,1)
+  
+ push double
+  
+ 0E,0F
+  
+ ddiv
+  
+ divide double
+  
+ 6F
+  
+ dload
+  
+ load double from var
+  i
+  
+ 18
+  
+ dload i (i=0..3)
+  
+ byte
+  i
+  
+ load double from var
+  i
+  
+ 26..29
+  
+ dmul
+  
+ multiply double
+  
+ 6B
+  
+ dneg
+  
+ negate double
+  
+ 77
+  
+ dreturn
+  
+ return double from method
+  
+ AF
+  
+ dstore
+  
+ store double in var
+  i
+  
+ 39
+  
+ dstore i (i=0..3)
+  
+ store double in var
+  i
+  
+ 47..4A
+  
+ dsub
+  
+ subtract double
+  
+ 67
+  
+ dup
+  
+ duplicate top (for int)
+  
+ 59
+  
+ dup2
+  
+ duplicate top (for double)*
+  
+ 5C
+  
+ 193",NA
+Appendix C,NA,NA
+Summary of the,NA,NA
+Assignments,"The full specifications of the assignments can be found on the book web page, 
+ together with supporting material such as test suites and code templates.
+  
+ Assignment 1: Parser for C++
+  
+ Write a parser for a fragment of the C++ programming language. This frag-ment 
+ is defined by “real-world” code from the web page of the book
+  Accelerated C++
+  
+ by Koenig and Moo. The parser should return an abstract syntax tree at success 
+ and report an error with a line number at failure.
+  
+ The recommended implementation is via a BNF grammar processed by the 
+ BNF Converter (BNFC) tool. The approximate size of the grammar is 100 rules. 
+ With BNFC, no more files than the grammar have to be written.
+  
+ Assignment 2: Type Checker for CPP
+  
+ Write a type checker for a fragment of C++. The type checker should print 
+ an“OK” at success and report a type error at failure. The syntax of the language 
+ is specified in Section 2.10, and its type system is explained in Chapter 4.
+  
+  
+ The recommended implementation is via BNFC and some general-purpose 
+ language. 
+  
+ The syntax tree created by the parser is processed further by a 
+ program using the skeleton generated by BNFC. The approximate size of the 
+ grammar is 50 rules. The type checker code is around 150–300 lines, depending 
+ on the programming language used.
+  
+ Assignment 3: Interpreter for CPP
+  
+ Write an interpreter for a fragment of C++. The interpreter should run pro-grams 
+ and correctly perform all their input and output actions. The language
+  
+ 195",NA
+Appendix D,NA,NA
+Further Reading,"This is a highly personal reading list, presenting my favourites rather than a 
+ balanced literature survey. But it strongly reflects the sources that inspired this 
+ book. 
+  
+ The book web page http://digitalgrammars.com/ipl-book/ gives 
+ links to the material that is available on-line.
+  
+ Chapter 1
+ .
+  
+ A. Aho, R. Sethi, M. Lam, J. Ullman,
+  Compilers Principles, Tech-niques 
+ & Tools
+ , Second Edition, Pearson Education, 2007.
+  
+ also known as the
+  Dragon Book
+ , is the classic compiler book. Its nickname 
+ comes from the cover picture, where a knight is fighting a dragon 
+ entitled“Complexity of Compiler Design” with “LALR Parser Generation” as her 
+ (his?) sword and “Syntax-Directed Translation” as her shield. These concepts 
+ are central in the current book as well—but the 1009 pages of the Dragon Book 
+ also show how they work under the hood, and they cover advanced topics such 
+ as parallelism.
+  
+ A. Appel,
+  Modern Compiler Implementation in ML/C/Java
+ , Cam-
+ bridge University Press, 1998.
+  
+ also known as the
+  Tiger Book
+ , is another thorough book on compilers—actually a 
+ set of three books with a common theory part. 
+  
+ Its main impact on this 
+ book is the idea that the same theoretical ideas can be encoded in different 
+ programming languages. These books are indeed rich in theory, in particular 
+ about modern optimization techniques and dataflow analysis.
+  
+ R. Sebesta,
+  Concepts of Programming Languages
+ , Ninth Edition, 
+ Pearson Education, 2010.
+  
+ 197",NA
+Index,"abstract syntax, 22, 164 
+  
+ abstract syntax tree, 18, 23 
+  
+ abstraction (lambda), 127 
+  
+ abstraction (language property), 152 
+ accept (LR), 51 
+  
+ accepting state, 39 
+  
+ action (LR), 51 
+  
+ address, 94 
+  
+ Agda, 58, 188 
+  
+ Alfa, 188 
+  
+ algebraic datatype, 24 
+  
+ ALGOL, 6 
+  
+ alpha convertibility, 161 
+  
+ alphabet, 38, 42 
+  
+ ambiguity, 47, 156, 172 
+  
+ analysis, 11 
+  
+ annotated syntax tree, 8, 69 
+  
+ anonymous function, 127 
+  
+ ARM processor, 117 
+  
+ assembly, 7 
+  
+ assembly (Jasmin), 109 
+  
+ assembly (NASM), 114 
+  
+ assembly code, 3
+  
+ B, 6 
+  
+ back end, 11 
+  
+ back-end optimization, 106 
+ backtracking, 56, 156 
+  
+ Backus Naur Form, 16 
+  
+ BCPL, 6 
+  
+ BF, 149 
+  
+ big-step semantics, 92 
+  
+ binary encoding, 1, 2 
+  
+ binding analysis, 11
+  
+ bit sequence, 1 
+  
+ block, 65, 96 
+  
+ BNF, 16, 47 
+  
+ bound variable, 129 
+  
+ Brainfuck, 149 
+  
+ browsing quality, 161 
+  
+ byte, 2 
+  
+ bytecode verification, 93, 107
+  
+ C, 5–7, 11, 14, 37, 55, 57, 60, 65, 84, 87, 
+ 95, 109, 115, 124, 125, 160 
+  
+ C++, x, 5, 6, 57, 63, 67, 70, 95, 125, 128, 
+ 138, 151, 156, 158, 160, 161, 173 
+  
+ call by name, 87, 132 
+  
+ call by need, 87, 133, 136 
+  
+ call by value, 87, 131 
+  
+ calling convention, 115 
+  
+ category, 20 
+  
+ character, 8 
+  
+ character literal, 31, 190 
+  
+ Church booleans, 147 
+  
+ Church numerals, 147 
+  
+ CISC, 117 
+  
+ clarity, 151 
+  
+ class, 94, 107 
+  
+ class path, 19 
+  
+ closed expression, 129 
+  
+ closure (functional programming), 130 
+ closure (regular expression), 41 
+  
+ closure property, 44 
+  
+ COBOL, 6 
+  
+ code generator, 10
+  
+ 202",NA

@@ -1,0 +1,3988 @@
+Larger Text,Smaller Text,Symbol
+Algorithms and Data Structures,NA,NA
+© N. Wirth 1985 (Oberon version: August 2004).,"Translator's note.
+  This book was translated into Russian in 2009 for specific teaching purposes. Along the way, 
+ Pascal-to-Modula-2-to-Oberon conversion typos were corrected and some changes to programs were made. The 
+ changes (localized in sects. 1 and 3) were agreed upon with the author in April, 2009. their purpose was to facilitate 
+ verification of the program examples: they are now in perfect running order.
+  
+ Most notably, section 1.9 now uses the Dijkstra loop introduced in Oberon-07 (see Appendix C).
+  
+ The program examples and the updated versions of the book can be freely downloaded from the site that promulgates 
+ Oberons in education:
+  
+ http://www.inr.ac.ru/~info21/ADen/
+  
+ Direct link to the book file:
+  http://www.inr.ac.ru/~info21/ADen/AD2012.pdf
+  
+ Please send corresponding typos etc. to:
+  info21@inr.ac.ru
+  
+ —Fyodor Tkachov, Moscow, 2012-02-18 
+  
+ Last update 2012-02-22",NA
+Table of Contents,"Preface 
+  
+ Preface To The 1985 Edition 
+  
+ Notation 
+  
+ 1 Fundamental Data Structures 
+  
+  
+ 9 
+ 1.1 Introduction 
+  
+ 1.2 The Concept of Data Type 
+  
+ 1.3 Standard Primitive Types 
+  
+  
+ 1.3.1 The type
+  INTEGER 
+  
+  
+ 1.3.2 The type
+  REAL 
+  
+  
+ 1.3.3 The type
+  BOOLEAN 
+  
+  
+ 1.3.4 The type
+  CHAR 
+  
+  
+ 1.3.5 The type
+  SET 
+  
+ 1.4 The Array Structure 
+  
+ 1.5 The Record Structure 
+  
+ 1.6 Representation of Arrays, Records, and Sets 
+  
+  
+ 1.6.1 Representation of Arrays 
+  
+  
+ 1.6.2 Representation of Recors 
+  
+  
+ 1.6.3 Representation of Sets 
+  
+ 1.7 The File (Sequence) 
+  
+  
+ 1.7.1 Elementary File Operators 
+  
+  
+ 1.7.2 Buffering Sequences 
+  
+  
+ 1.7.3 Buffering between Concurrent Processes 
+  
+  
+ 1.7.4 Textual Input and Output 
+  
+ 1.8 Searching 
+  
+  
+ 1.8.1 Linear Search 
+  
+  
+ 1.8.2 Binary Search 
+  
+  
+ 1.8.3 Table Search 
+  
+ 1.9 String Search 
+  
+  
+ 1.9.1 Straight String Search 
+  
+  
+ 1.9.2 The Knuth-Morris-Pratt String Search 
+  
+  
+ 1.9.3 The Boyer-Moore String Search 
+  
+ Exercises 
+  
+ References 
+  
+ 2 Sorting 
+  
+ 49 
+ 2.1 Introduction 
+  
+ 2.2 Sorting Arrays 
+  
+  
+ 2.2.1 Sorting by Straight Insertion 
+  
+  
+ 2.2.2 Sorting by Straight Selection 
+  
+  
+ 2.2.3 Sorting by Straight Exchange 
+  
+ 2.3 Advanced Sorting Methods 
+  
+  
+ 2.3.1 Insertion Sort by Diminishing Increment 
+  
+  
+ 2.3.2 Tree Sort 
+  
+  
+ 2.3.3 Partition Sort 
+  
+  
+ 2.3.4 Finding the Median",NA
+Preface,"In recent years the subject of computer programming has been recognized as a discipline whose 
+ mastery is fundamental and crucial to the success of many engineering projects and which is 
+ amenable to scientific treatement and presentation. It has advanced from a craft to an academic 
+ discipline. The initial outstanding contributions toward this development were made by E.W. 
+ Dijkstra and C.A.R. Hoare. Dijkstra's
+  Notes on Structured Programming
+  [1] opened a new view of 
+ programming as a scientific subject and intellectual challenge, and it coined the title for a 
+ ""revolution"" in programming. Hoare's
+  Axiomatic Basis of Computer Programming
+  [2] showed in a 
+ lucid manner that programs are amenable to an exacting analysis based on mathematical reasoning. 
+ Both these papers argue convincingly that many programmming errors can be prevented by making 
+ programmers aware of the methods and techniques which they hitherto applied intuitively and often 
+ unconsciously. These papers focused their attention on the aspects of composition and analysis of 
+ programs, or more explicitly, on the structure of algorithms represented by program texts. Yet, it is 
+ abundantly clear that a systematic and scientific approach to program construction primarily has a 
+ bearing in the case of large, complex programs which involve complicated sets of data. Hence, a 
+ methodology of programming is also bound to include all aspects of data structuring. Programs, 
+ after all, are concrete formulations of abstract algorithms based on particular representations and 
+ structures of data. An outstanding contribution to bring order into the bewildering variety of 
+ terminology and concepts on data structures was made by Hoare through his
+  Notes on Data 
+ Structuring
+  [3]. It made clear that decisions about structuring data cannot be made without 
+ knowledge of the algorithms applied to the data and that, vice versa, the structure and choice of 
+ algorithms often depend strongly on the structure of the underlying data. In short, the subjects of 
+ program composition and data structures are inseparably interwined.
+  
+ Yet, this book starts with a chapter on data structure for two reasons. First, one has an intuitive 
+ feeling that data precede algorithms: you must have some objects before you can perform 
+ operations on them. Second, and this is the more immediate reason, this book assumes that the 
+ reader is familiar with the basic notions of computer programming. Traditionally and sensibly, 
+ however, introductory programming courses concentrate on algorithms operating on relatively 
+ simple structures of data. Hence, an introductory chapter on data structures seems appropriate.
+  
+ Throughout the book, and particularly in Chap. 1, we follow the theory and terminology 
+ expounded by Hoare and realized in the programming language
+  Pascal
+  [4]. The essence of this 
+ theory is that data in the first instance represent abstractions of real phenomena and are preferably 
+ formulated as abstract structures not necessarily realized in common programming languages. In the 
+ process of program construction the data representation is gradually refined in step with the 
+ refinement of the algorithm to comply more and more with the constraints imposed by an available 
+ programming system [5]. We therefore postulate a number of basic building principles of data 
+ structures, called the fundamental structures. It is most important that they are constructs that are 
+ known to be quite easily implementable on actual computers, for only in this case can they be 
+ considered the true elements of an actual data representation, as the molecules emerging from the 
+ final step of refinements of the data description. They are the record, the array (with fixed size), and 
+ the set. Not surprisingly, these basic building principles correspond to mathematical notions that are 
+ fundamental as well.
+  
+ A cornerstone of this theory of data structures is the distinction between fundamental and 
+ ""advanced"" structures. The former are the molecules themselves built out of atoms that are the 
+ components of the latter. Variables of a fundamental structure change only their value, but never",NA
+Preface To The 1985 Edition,"This new Edition incorporates many revisions of details and several changes of more significant 
+ nature. They were all motivated by experiences made in the ten years since the first Edition 
+ appeared. Most of the contents and the style of the text, however, have been retained. We briefly 
+ summarize the major alterations. The major change which pervades the entire text concerns the 
+ programming language used to express the algorithms. Pascal has been replaced by Modula-2. 
+ Although this change is of no fundamental influence to the presentation of the algorithms, the 
+ choice is justified by the simpler and more elegant syntactic structures of Modula-2, which often 
+ lead to a more lucid representation of an algorithm's structure. Apart from this, it appeared 
+ advisable to use a notation that is rapidly gaining acceptance by a wide community, because it is 
+ well-suited for the development of large programming systems. Nevertheless, the fact that Pascal is 
+ Modula's ancestor is very evident and eases the task of a transition. The syntax of Modula is 
+ summarized in the Appendix for easy reference.
+  
+ As a direct consequence of this change of programming language, Sect. 1.11 on the sequential 
+ file structure has been rewritten. Modula-2 does not offer a built-in file type. The revised Sect. 1.11 
+ presents the concept of a sequence as a data structure in a more general manner, and it introduces a 
+ set of program modules that incorporate the sequence concept in Modula-2 specifically.
+  
+ The last part of Chapter 1 is new. It is dedicated to the subject of searching and, starting out with 
+ linear and binary search, leads to some recently invented fast string searching algorithms. In this 
+ section in particular we use assertions and loop invariants to demonstrate the correctness of the 
+ presented algorithms.
+  
+ A new section on priority search trees rounds off the chapter on dynamic data structures. Also 
+ this species of trees was unknown when the first Edition appeared. They allow an economical 
+ representation and a fast search of point sets in a plane.
+  
+ The entire fifth chapter of the first Edition has been omitted. It was felt that the subject of 
+ compiler construction was somewhat isolated from the preceding chapters and would rather merit a 
+ more extensive treatment in its own volume.
+  
+ Finally, the appearance of the new Edition reflects a development that has profoundly influenced 
+ publications in the last ten years: the use of computers and sophisticated algorithms to prepare and 
+ automatically typeset documents. This book was edited and laid out by the author with the aid of a 
+ Lilith computer and its document editor Lara. Without these tools, not only would the book become 
+ more costly, but it would certainly not be finished yet.
+  
+ Palo Alto, March 1985 
+  
+ N. 
+ Wirth",NA
+Notation,"The following notations, adopted from publications of E.W. Dijkstra, are used in this book.
+  
+ In logical expressions, the character
+  &
+  denotes conjunction and is pronounced as and. The 
+ character
+  ~
+  
+ обозначает отрицание и читается как
+  «
+ не
+ ». denotes negation and is pronounced as not. 
+ Boldface
+  A
+  
+ and
+  E
+  are used to denote the universal and existential quantifiers. In the following formulas, the left 
+ part is
+  
+ the notation used and defined here in terms of the right part. Note that the left parts avoid the use of 
+ the
+  
+ symbol ""..."", which appeals to the readers intuition.
+  
+ Ai: m
+  
+  i
+  
+  n : P
+ i 
+  
+ P
+ m
+  & P
+ m+1
+  & ... & P
+ n-1
+  
+ The
+  P
+ i
+  are predicates, and the formula asserts that for all indices
+  i
+  ranging from a given value
+  m
+  to, 
+ but
+  
+ excluding a value
+  n P
+ i
+  holds.
+  
+ Ei: m
+  
+  i
+  
+  n : P
+ i 
+  
+ P
+ m
+  or P
+ m+1
+  or ... or P
+ n-1
+  
+ The
+  P
+ i
+  are predicates, and the formula asserts that for some indices
+  i
+  ranging from a given value
+  m
+  to, 
+ but
+  
+ excluding a value
+  n P
+ i
+  holds.
+  
+ Si: m
+  
+  i
+  
+  n : x
+ i
+  = 
+  
+ x
+ m
+  + x
+ m+1
+  + ... + x
+ n-1
+  
+ MIN i: m
+  
+  i
+  
+  n : x
+ i
+  = 
+  
+ minimum
+ (x
+ m
+  , ... , x
+ n-1
+ )
+  
+ MAX i: m
+  
+  i
+  
+  n : x
+ i
+  = 
+  
+ maximum
+ (x
+ m
+  , ... , x
+ n-1
+ )",NA
+1 Fundamental Data Structures,NA,NA
+1.1 Introduction,"The modern digital computer was invented and intended as a device that should facilitate and speed 
+ up complicated and time-consuming computations. In the majority of applications its capability to 
+ store and access large amounts of information plays the dominant part and is considered to be its 
+ primary characteristic, and its ability to compute, i.e., to calculate, to perform arithmetic, has in 
+ many cases become almost irrelevant.
+  
+ In all these cases, the large amount of information that is to be processed in some sense 
+ represents an abstraction of a part of reality. The information that is available to the computer 
+ consists of a selected set of data about the actual problem, namely that set that is considered 
+ relevant to the problem at hand, that set from which it is believed that the desired results can be 
+ derived. The data represent an abstraction of reality in the sense that certain properties and 
+ characteristics of the real objects are ignored because they are peripheral and irrelevant to the 
+ particular problem. An abstraction is thereby also a simplification of facts.
+  
+ We may regard a personnel file of an employer as an example. Every employee is represented 
+ (abstracted) on this file by a set of data relevant either to the employer or to his accounting 
+ procedures. This set may include some identification of the employee, for example, his or her name 
+ and salary. But it will most probably not include irrelevant data such as the hair color, weight, and 
+ height.
+  
+ In solving a problem with or without a computer it is necessary to choose an abstraction of 
+ reality, i.e., to define a set of data that is to represent the real situation. This choice must be guided 
+ by the problem to be solved. Then follows a choice of representation of this information. This 
+ choice is guided by the tool that is to solve the problem, i.e., by the facilities offered by the 
+ computer. In most cases these two steps are not entirely separable.
+  
+ The choice of representation of data is often a fairly difficult one, and it is not uniquely 
+ determined by the facilities available. It must always be taken in the light of the operations that are 
+ to be performed on the data. A good example is the representation of numbers, which are 
+ themselves abstractions of properties of objects to be characterized. If addition is the only (or at 
+ least the dominant) operation to be performed, then a good way to represent the number
+  n
+  is to write
+  
+ n
+  strokes. The addition rule on this representation is indeed very obvious and simple. The Roman 
+ numerals are based on the same principle of simplicity, and the adding rules are similarly 
+ straightforward for small numbers. On the other hand, the representation by Arabic numerals 
+ requires rules that are far from obvious (for small numbers) and they must be memorized. However, 
+ the situation is reversed when we consider either addition of large numbers or multiplication and 
+ division. The decomposition of these operations into simpler ones is much easier in the case of 
+ representation by Arabic numerals because of their systematic structuring principle that is based on 
+ positional weight of the digits.
+  
+ It is generally known that computers use an internal representation based on binary digits (bits). 
+ This representation is unsuitable for human beings because of the usually large number of digits 
+ involved, but it is most suitable for electronic circuits because the two values 0 and 1 can be 
+ represented conveniently and reliably by the presence or absence of electric currents, electric 
+ charge, or magnetic fields.
+  
+ From this example we can also see that the question of representation often transcends several 
+ levels of detail. Given the problem of representing, say, the position of an object, the first decision 
+ may lead to the choice of a pair of real numbers in, say, either Cartesian or polar coordinates. The",NA
+1.2 The Concept of Data Type,"In mathematics it is customary to classify variables according to certain important characteristics. 
+ Clear distinctions are made between real, complex, and logical variables or between variables",NA
+1.3 Standard Primitive Types,"Standard primitive types are those types that are available on most computers as built-in features. 
+ They include the whole numbers, the logical truth values, and a set of printable characters. On many 
+ computers fractional numbers are also incorporated, together with the standard arithmetic 
+ operations. We denote these types by the identifiers
+  
+ INTEGER, REAL, BOOLEAN, CHAR, SET
+  
+ 1.3.1 The type
+  INTEGER
+  
+ The type
+  INTEGER
+  comprises a subset of the whole numbers whose size may vary among 
+ individual computer systems. If a computer uses
+  n
+  its to represent an integer in two's complement 
+ notation, then the admissible values x must satisfy
+  -2
+ n-1
+ 
+  x < 2
+ n-1
+ . It is assumed that all operations on 
+ data of this type are exact and correspond to the ordinary laws of arithmetic, and that the 
+ computation will be interrupted in the case of a result lying outside the representable subset. This",NA
+1.4 The Array Structure,"The array is probably the most widely used data structure; in some languages it is even the only 
+ one available. An array consists of components which are all of the same type, called its base type; 
+ it is therefore called a
+  homogeneous
+  structure. The array is a
+  random-access
+  structure, because all 
+ components can be selected at random and are equally quickly accessible. In order to denote an 
+ individual component, the name of the entire structure is augmented by the
+  index
+  selecting the 
+ component. This index is to be an integer between 0 and
+  n-1
+ , where
+  n
+  is the number of elements, the
+  
+ size
+ , of the array.
+  
+ TYPE T = ARRAY n OF T0
+  
+ Examples
+  
+ TYPE Row = ARRAY 4 OF REAL
+  
+ TYPE Card = ARRAY 80 OF CHAR
+  
+ TYPE Name = ARRAY 32 OF CHAR
+  
+ A particular value of a 
+ variable 
+  
+  
+ VAR x: Row
+  
+ with all components satisfying the equation
+  x
+ i
+  = 2
+ -i
+ , may be visualized as shown in Fig. 1.2.
+  
+ x
+ 0 
+  
+ x
+ 1 
+  
+ x
+ 2 
+  
+ x
+ 3
+  
+  
+ 1.0 
+  
+ 0.5 
+  
+ 0.25 
+  
+ 0.125 
+  
+  
+ Fig. 1.2. Array of type
+  Row
+  with
+  x
+ i
+  = 2
+ -i
+ .
+  
+ An individual component of an array can be selected by an
+  index
+ . Given an array variable
+  x
+ , we 
+ denote an array selector by the array name followed by the respective component's index
+  i
+ , and we 
+ write
+  x
+ i
+  or 
+ x[i]
+ . Because of the first, conventional notation, a component of an array component is 
+ therefore also called a
+  subscripted
+  variable.
+  
+ The common way of operating with arrays, particularly with large arrays, is to selectively update 
+ single components rather than to construct entirely new structured values. This is expressed by 
+ considering an array variable as an array of component variables and by permitting assignments to 
+ selected components, such as for example
+  x[i] := 0.125
+ . Although selective updating causes only a 
+ single component value to change, from a conceptual point of view we must regard the entire 
+ composite value as having changed too.",NA
+1.5 The Record Structure,"The most general method to obtain structured types is to join elements of arbitrary types, that are 
+ possibly themselves structured types, into a compound. Examples from mathematics are complex 
+ numbers, composed of two real numbers, and coordinates of points, composed of two or more 
+ numbers according to the dimensionality of the space spanned by the coordinate system. An 
+ example from data processing is describing people by a few relevant characteristics, such as their 
+ first and last names, their date of birth, sex, and marital status.
+  
+ In mathematics such a compound type is the Cartesian product of its constituent types. This stems 
+ from the fact that the set of values defined by this compound type consists of all possible 
+ combinations of values, taken one from each set defined by each constituent type. Thus, the number 
+ of such combinations, also called
+  n",NA
+-,"tuples
+ , is the product of the number of elements in each 
+ constituent set, that is, the cardinality of the compound type is the product of the cardinalities of the 
+ constituent types.
+  
+ In data processing, composite types, such as descriptions of persons or objects, usually occur in 
+ files or data banks and record the relevant characteristics of a person or object. The word record has 
+ therefore become widely accepted to describe a compound of data of this nature, and we adopt this 
+ nomenclature in preference to the term Cartesian product. In general, a record type
+  T
+  with 
+ components of the types
+  T
+ 1
+ ,
+  T
+ 2
+ , ... ,
+  T
+ n
+  is defined as follows:
+  
+ TYPE T 
+  
+ card(T)
+  
+ = RECORD s
+ 1
+ : T
+ 1
+ ; s
+ 2
+ : T
+ 2
+ ; ... s
+ n
+ : T
+ n
+  END = card(T
+ 1
+ ) * 
+ card(T
+ 2
+ ) * ... * card(T
+ n
+ )",NA
+"1.6 Representation Of Arrays, Records, And Sets","The essence of the use of abstractions in programming is that a program may be conceived, 
+ understood, and verified on the basis of the laws governing the abstractions, and that it is not 
+ necessary to have further insight and knowledge about the ways in which the abstractions are 
+ implemented and represented in a particular computer. Nevertheless, it is essential for a professional 
+ programmer to have an understanding of widely used techniques for representing the basic concepts 
+ of programming abstractions, such as the fundamental data structures. It is helpful insofar as it 
+ might enable the programmer to make sensible decisions about program and data design in the light 
+ not only of the abstract properties of structures, but also of their realizations on actual computers, 
+ taking into account a computer's particular capabilities and limitations.
+  
+ The problem of data representation is that of mapping the abstract structure onto a computer 
+ store. Computer stores are — in a first approximation — arrays of individual storage cells called
+  
+ bytes
+ . They are understood to be groups of 8 bits. The indices of the bytes are called
+  addresses
+ .
+  
+ VAR store: ARRAY StoreSize OF BYTE
+  
+ The basic types are represented by a small number of bytes, typically 2, 4, or 8. Computers are 
+ designed to transfer internally such small numbers (possibly 1) of contiguous bytes concurrently, 
+ ""in parallel"". The unit transferable concurrently is called a
+  word
+ .
+  
+ 1.6.1 Representation of Arrays
+  
+ A representation of an array structure is a mapping of the (abstract) array with components of 
+ type
+  T 
+ onto the store which is an array with components of type
+  BYTE
+ . The array should be mapped 
+ in such a way that the computation of addresses of array components is as simple (and therefore as 
+ efficient) as possible. The address
+  i
+  of the
+  j
+ -th array component is computed by the linear mapping 
+ function
+  
+ i = i
+ 0
+  + j*s
+ ,
+  
+ where
+  i
+ 0
+  is the address of the first component, and
+  s
+  is the number of words that a component 
+ occupies. Assuming that the word is the smallest individually transferable unit of store, it is 
+ evidently highly desirable that
+  s
+  be a whole number, the simplest case being
+  s = 1
+ . If
+  s
+  is not a whole 
+ number (and this is the normal",NA
+1.7 The File or Sequence,"Another elementary structuring method is the sequence. A sequence is typically a homogeneous 
+ structure like the array. That is, all its elements are of the same type, the
+  base type
+  of the sequence. 
+ We shall denote a sequence
+  s
+  with
+  n
+  elements by
+  
+ s = <s
+ 0
+ , s
+ 1
+ , s
+ 2
+ , ... , s
+ n-1
+ >
+  
+ n
+  is called the
+  length
+  of the sequence. This structure looks exactly like the array. The essential 
+ difference is that in the case of the array the number of elements is fixed by the array's declaration, 
+ whereas for the sequence it is left open. This implies that it may vary during execution of the 
+ program. Although every sequence has at any time a specific, finite length, we must consider the 
+ cardinality of a sequence type as infinite, because there is no fixed limit to the potential length of 
+ sequence variables.
+  
+ A direct consequence of the variable length of sequences is the impossibility to allocate a fixed 
+ amount of storage to sequence variables. Instead, storage has to be allocated during program 
+ execution, namely whenever the sequence grows. Perhaps storage can be reclaimed when the 
+ sequence shrinks. In any case, a dynamic storage allocation scheme must be employed. All 
+ structures with variable size share this property, which is so essential that we classify them as 
+ advanced structures in contrast to the fundamental structures discussed so far.
+  
+ What, then, causes us to place the discussion of sequences in this chapter on fundamental 
+ structures? The primary reason is that the storage management strategy is sufficiently simple for 
+ sequences (in contrast to other advanced structures), if we enforce a certain discipline in the use of 
+ sequences. In fact, under this proviso the handling of storage can safely be delegated to a 
+ machanism that can be guaranteed to be reasonably effective. The secondary reason is that 
+ sequences are indeed ubiquitous in all computer applications. This structure is prevalent in all cases 
+ where different kinds of storage media are involved, i.e. where data are to be moved from one 
+ medium to another, such as from disk or tape to primary store or vice-versa.
+  
+ The discipline mentioned is the restraint to use sequential access only. By this we mean that a 
+ sequence is inspected by strictly proceeding from one element to its immediate successor, and that it 
+ is generated by repeatedly appending an element at its end. The immediate consequence is that 
+ elements are
+  not directly accessible
+ , with the exception of the one element which currently is up for 
+ inspection. It is this accessing discipline which fundamentally distinguishes sequences from arrays. 
+ As we shall see in Chapter 2, the influence of an access discipline on programs is profound.
+  
+ The advantage of adhering to sequential access which, after all, is a serious restriction, is the 
+ relative simplicity of needed storage management. But even more important is the possibility to use 
+ effective buffering techniques when moving data to or from secondary storage devices. Sequential 
+ access allows us to feed streams of data through pipes between the different media. Buffering",NA
+1.8 Searching,"The task of searching is one of most frequent operations in computer programming. It also 
+ provides an ideal ground for application of the data structures so far encountered. There exist 
+ several basic variations of the theme of searching, and many different algorithms have been 
+ developed on this subject. The basic assumption in the following presentations is that the collection 
+ of data, among which a given element is to be searched, is fixed. We shall assume that this set of
+  N
+  
+ elements is represented as an array, say as 
+  
+ a: ARRAY N OF Item
+  
+ Typically, the type item has a record structure with a field that acts as a key. The task then consists 
+ of finding an element of a whose key field is equal to a given
+  search argument
+  x
+ . The resulting 
+ index
+  i
+ , satisfying
+  a[i].key = x
+ , then permits access to the other fields of the located element. Since we 
+ are here interested in the task of searching only, and do not care about the data for which the 
+ element was searched in the first place, we shall assume that the type
+  Item
+  consists of the key only, 
+ i.e
+  is
+  the key.
+  
+ 1.8.1 Linear Search
+  
+ When no further information is given about the searched data, the obvious approach is to proceed 
+ sequentially through the array in order to increase step by step the size of the section, where the 
+ desired element is known not to exist. This approach is called
+  linear search
+ . There are two 
+ conditions which terminate the search:
+  
+ 1. The element is found, i.e.
+  a
+ i
+  = x
+ .
+  
+ 2. The entire array has been scanned, and no match was found.
+  
+ This results in the following algorithm:
+  
+ i := 0; 
+  
+ (* ADenS18_Search *) 
+ WHILE (i < N) & (a[i] # x) DO INC(i) END
+  
+ Note that the order of the terms in the Boolean expression is relevant.
+  
+ The invariant, i.e the condition satisfied before and after each loop step, is
+  
+ (0
+  
+  i < N) & (Ak: 0
+  
+  k < i : a
+ k
+  
+  x)
+  
+ expressing that for all values of
+  k
+  less than
+  i
+  no match exists. Note that the values of
+  i
+  before and 
+ after each loop step are different. The invariant is preserved nevertheless due to the while-clause.
+  
+ From this and the fact that the search terminates only if the condition in the while-clause is false, the 
+ resulting condition is derived as:
+  
+ (
+ (i = N) OR (a
+ i
+  = x )) & (Ak: 0
+  
+  k < i : a
+ k
+  
+  x)
+  
+ This condition not only is our desired result, but also implies that when the algorithm did find a 
+ match, it found the one with the least index, i.e. the first one.
+  i = N
+  implies that no match exists.
+  
+ Termination of the repetition is evidently guaranteed, because in each step
+  i
+  is increased and 
+ therefore certainly will reach the limit
+  N
+  after a finite number of steps; in fact, after
+  N
+  steps, if no 
+ match exists.
+  
+ Each step evidently requires the incrementing of the index and the evaluation of a Boolean 
+ expression. Could this task be simplifed, and could the search thereby be accelerated? The only 
+ possibility lies in finding a simplification of the Boolean expression which notably consists of two 
+ factors. Hence, the only chance for finding a simpler solution lies in establishing a condition 
+ consisting of a single factor that implies both factors. This is possible only by guaranteeing that a 
+ match will be found, and is achieved by posting an additional element with value
+  x
+  at the end of the",NA
+1.9 String search,"A frequently encountered kind of search is the so-called
+  string search
+ . It is characterized as 
+ follows. Given an array
+  s
+  of
+  N
+  elements and an array
+  p
+  of
+  M
+  elements, where
+  0 < M < N
+ , declared as 
+  
+  
+ s: ARRAY N OF Item 
+  
+  
+ p: ARRAY M OF Item
+  
+ string search is the task of finding the first occurrence of
+  p
+  in
+  s
+ . Typically, the items are characters; 
+ then
+  s 
+ may be regarded as a text and
+  p
+  as a pattern or word, and we wish to find the first occurrence 
+ of the word in the text. This operation is basic to every text processing system, and there is obvious 
+ interest in finding an efficient algorithm for this task.
+  
+ A specific feature of this problem is the presence of two arrays and a necessity to scan them 
+ simultaneously in such a way that the coordination of the two indices used to scan the arrays is 
+ determined by the data. A correct implementation of such ""braided"" loops is simplified by 
+ expressing them using the so-called
+  Dijkstra's loop
+ , i.e. a multibranch version of the
+  WHILE
+  loop. 
+ This fundamental and powerful control structure is described in Appendix C.
+  
+ We consider three string search algorithms: straight string search; an optimization of the straight 
+ search due to Knuth, Morris and Pratt,; and, finally, the algorithm of Boyer and Moor based on a 
+ revision of the basic idea of the straight search, which proves to be the most efficient of the three.
+  
+ 1.9.1 Straight String Search
+  
+ Before paying particular attention to efficiency, however, let us first present a straightforward 
+ searching algorithm. We shall call it
+  straight string search
+ . It is convenient to have in view fig. 1.9 
+ that schematically pictures the pattern
+  p
+  of length
+  M
+  being matched against the text
+  s
+  of length
+  N
+  in 
+ position
+  i
+ . The index
+  j 
+ numbers the elements of the pattern, and the pattern element
+  p[j]
+  is matched 
+ against the text element 
+ s[i+j]
+ .
+  
+ 0 
+  
+ i 
+  
+ N-1 
+  
+ string 
+  
+ pattern 
+  
+ 0 
+  
+ j 
+  
+ M-1 
+  
+ Fig. 1.9. A pattern of length
+  M
+  is being matched against a text of length
+  N
+  in position
+  i
+ .
+  
+ The predicate
+  R(i)
+  that describes a complete match of the pattern against text characters in position
+  i
+  
+ is formulated as follows:
+  
+ R(i) = Aj: 0
+  
+  j < M : p
+ j
+  = s
+ i+j
+  
+ The allowed values of
+  i
+  where a match can occur range from
+  0
+  to
+  N-M
+  inclusive.
+  R
+  is evaluated by 
+ repeatedly comparing the corresponding pairs of characters. This, evidently, amounts to a linear 
+ search of a non-matching pair:
+  
+ R(i) = (Aj: 0
+  
+  j < M : p
+ j
+  = s
+ i+j
+ ) = ~(Ej: 0
+  
+  j < M : p
+ j
+  
+  s
+ i+j
+ )
+  
+ Therefore
+  R(i)
+  is easily formulated as follows:
+  
+ PROCEDURE R (i: INTEGER): BOOLEAN;
+  
+ VAR j: INTEGER; 
+  
+ BEGIN 
+  
+ (* 0 <= i < N *) 
+  
+ j := 0;",NA
+ ,"k < M-1 : p
+ k
+  
+  x
+  
+ Substituting
+  s
+ i-1
+  for
+  x
+ , we obtain
+  
+ Ak: M-d
+ s[i-1]
+  
+  k < M-1 : s
+ i-1
+  
+  p
+ k 
+  
+ = Ah: 1
+  
+  h
+  
+  d
+ s[i-1]
+ -1 : si
+ -1
+  
+  p
+ M-1-h
+  
+ ⇒ Ah: 1
+  
+  h
+  
+  d
+ s[i-1]
+ -1 : ~R(i+h)
+  
+ The following program includes the presented, simplified Boyer-Moore strategy in a setting 
+ similar to
+  
+ that of the preceding KMP-search program.
+  
+ PROCEDURE Search (VAR s, p: ARRAY OF CHAR; M, N: INTEGER; VAR r: INTEGER); 
+  
+ (* 
+ ADenS193_BM *)
+  
+ (*search for pattern p of length M in text s of length N*) 
+  
+ (*if p is found, then r indicates the position in s, otherwise r = -1*) VAR i, j, k: 
+ INTEGER; 
+  
+  
+  
+ d: ARRAY 128 OF INTEGER; 
+  
+ BEGIN 
+  
+ FOR i := 0 TO 127 DO d[i] := M END; 
+  
+ FOR j := 0 TO M-2 DO d[ORD(p[j])] := M-j-1 END; 
+  
+ i := M; j := M; k := i; 
+  
+ WHILE (j > 0) & (i <= N) & (s[k-1] = p[j-1]) DO 
+  
+  
+  
+ DEC(k); DEC(j) 
+  
+ ELSIF (j > 0) & (i <= N) DO 
+  
+  
+  
+ i := i + d[ORD(s[i-1])]; j := M; k := i; 
+  
+ END; 
+  
+ IF j <= 0 THEN r := k ELSE r := -1 END 
+  
+ END Search
+  
+ Analysis of Boyer-Moore Search.
+  The original publication of this algorithm [1-9] contains a 
+ detailed",NA
+Exercises,"1.1. Assume that the cardinalities of the standard types
+  INTEGER
+ ,
+  REAL
+  and
+  CHAR
+  are denoted by
+  c
+ int
+ , 
+ c
+ real
+  and
+  c
+ char
+ . What are the cardinalities of the following data types defined as exemples in this 
+ chapter: 
+ Complex
+ ,
+  Date
+ ,
+  Person
+ ,
+  Row
+ ,
+  Card
+ ,
+  Name
+ ?
+  
+ 1.2. Which are the instruction sequences (on your computer) for the 
+ following: (a) Fetch and store operations for an element of packed records 
+ and arrays? (b) Set operations, including the test for membership?
+  
+ 1.3. What are the reasons for defining certain sets of data as sequences instead of arrays?
+  
+ 1.4. Given is a railway timetable listing the daily services on several lines of a railway system. Find 
+ a representation of these data in terms of arrays, records, or sequences, which is suitable for lookup 
+ of arrival and departure times, given a certain station and desired direction of the train.
+  
+ 1.5. Given a text
+  T
+  in the form of a sequence and lists of a small number of words in the form of two 
+ arrays
+  A
+  and
+  B
+ . Assume that words are short arrays of characters of a small and fixed maximum 
+ length. Write a program that transforms the text
+  T
+  into a text
+  S
+  by replacing each occurrence of a 
+ word
+  A
+ i
+  by its corresponding word
+  B
+ i
+ .
+  
+ 1.6. Compare the following three versions of the binary search with the one presented in the text. 
+ Which of the three programs are correct? Determine the relevant invariants. Which versions are 
+ more efficient?
+  
+ We assume the following variables, and the constant
+  N > 0
+  
+ VAR i, j, k, x: INTEGER; 
+  
+ a: ARRAY N OF INTEGER;
+  
+ Program A:
+  
+ i := 0; j := N-1; 
+  
+ REPEAT 
+  
+ k := (i+j) DIV 2; 
+  
+ IF a[k] < x THEN i := k ELSE j := k END 
+  
+ UNTIL (a[k] = x) OR (i > j)
+  
+ Program B:
+  
+ i := 0; j := N-1; 
+  
+ REPEAT 
+  
+ k := (i+j) DIV 2; 
+  
+ IF x < a[k] THEN j := k-1 END; 
+  
+ IF a[k] < x THEN i := k+1 END 
+  
+ UNTIL i > j",NA
+References,"[1.1] O-.J. Dahl, E.W. Dijkstra, C.A.R. Hoare. Structured Programming. F. Genuys, Ed., New York, 
+  
+ Academic Press, 1972.
+  
+ [1.2] C.A.R. Hoare, in Structured Programming [1.1], pp. 83-174.
+  
+ [1.3] K. Jensen and N. Wirth. PASCAL — User Manual and Report. Springer-Verlag, 1974.
+  
+ [1.4] N. Wirth. Program development by stepwise refinement.
+  Comm. ACM
+ , 14, No. 4 (1971), 221-
+ 27.
+  
+ [1.5] N. Wirth. Programming in Modula-2. Springer-Verlag, 1982.
+  
+ [1.6] N. Wirth. On the composition of well-structured programs.
+  Computing Surveys
+ , 6, No. 4, 
+ (1974) 
+  
+ 247-59.
+  
+ [1.7] C.A.R. Hoare. The Monitor: An operating systems structuring concept.
+  Comm. ACM
+  17, 10 
+ (Oct. 
+  
+ 1974), 549-557.
+  
+ [1.8] D.E.Knuth, J.H. Morris, and V.R. Pratt. Fast pattern matching in strings.
+  SIAM J. Comput.
+ , 6, 
+ 2, 
+  
+ (June 1977), 323-349.",NA
+2 SORTING,NA,NA
+2.1 Introduction,"The primary purpose of this chapter is to provide an extensive set of examples illustrating the use 
+ of the data structures introduced in the preceding chapter and to show how the choice of structure 
+ for the underlying data profoundly influences the algorithms that perform a given task. Sorting is 
+ also a good example to show that such a task may be performed according to many different 
+ algorithms, each one having certain advantages and disadvantages that have to be weighed against 
+ each other in the light of the particular application.
+  
+ Sorting is generally understood to be the process of rearranging a given set of objects in a specific 
+ order. The purpose of sorting is to facilitate the later search for members of the sorted set. As such it 
+ is an almost universally performed, fundamental activity. Objects are sorted in telephone books, in 
+ income tax files, in tables of contents, in libraries, in dictionaries, in warehouses, and almost 
+ everywhere that stored objects have to be searched and retrieved. Even small children are taught to 
+ put their things ""in order"", and they are confronted with some sort of sorting long before they learn 
+ anything about arithmetic.
+  
+ Hence, sorting is a relevant and essential activity, particularly in data processing. What else 
+ would be easier to sort than data! Nevertheless, our primary interest in sorting is devoted to the even 
+ more fundamental techniques used in the construction of algorithms. There are not many techniques 
+ that do not occur somewhere in connection with sorting algorithms. In particular, sorting is an ideal 
+ subject to demonstrate a great diversity of algorithms, all having the same purpose, many of them 
+ being optimal in some sense, and most of them having advantages over others. It is therefore an 
+ ideal subject to demonstrate the necessity of performance analysis of algorithms. The example of 
+ sorting is moreover well suited for showing how a very significant gain in performance may be 
+ obtained by the development of sophisticated algorithms when obvious methods are readily 
+ available.
+  
+  
+ Fig. 2.1. The sorting of an array
+  
+ The dependence of the choice of an algorithm on the structure of the data to be processed - an 
+ ubiquitous phenomenon - is so profound in the case of sorting that sorting methods are generally 
+ classified into two categories, namely, sorting of arrays and sorting of (sequential) files. The two 
+ classes are often called internal and external sorting because arrays are stored in the fast, high-
+ speed, random-access ""internal"" store of computers and files are appropriate on the slower, but more 
+ spacious ""external"" stores based on mechanically moving devices (disks and tapes). The importance",NA
+2.2 Sorting Arrays,"The predominant requirement that has to be made for sorting methods on arrays is an economical 
+ use of the available store. This implies that the permutation of items which brings the items into 
+ order has to be performed
+  in situ
+ , and that methods which transport items from an array a to a result 
+ array b are intrinsically of minor interest. Having thus restricted our choice of methods among the 
+ many possible solutions by the criterion of economy of storage, we proceed to a first classification 
+ according to their efficiency, i.e., their economy of time. A good measure of efficiency is obtained 
+ by counting the numbers
+  C 
+ of needed key comparisons and
+  M
+  of moves (transpositions) of items. 
+ These numbers are functions of the number
+  n
+  of items to be sorted. Whereas good sorting 
+ algorithms require in the order of
+  n*log(n) 
+ comparisons, we first discuss several simple and obvious 
+ sorting techniques, called
+  straight
+  methods, all of which require in the order
+  n
+ 2
+ comparisons of keys. 
+ There are three good reasons for presenting straight methods before proceeding to the faster 
+ algorithms.
+  
+ 1. Straight methods are particularly well suited for elucidating the characteristics of the major 
+ sorting 
+  
+ principles.
+  
+ 2. Their programs are easy to understand and are short. Remember that programs occupy storage as 
+  
+ well!
+  
+ 3. Although sophisticated methods require fewer operations, these operations are usually more 
+ complex 
+  
+ in their details; consequently, straight methods are faster for sufficiently small
+  n
+ , 
+ although they must not 
+  
+ be used for large
+  n
+ .
+  
+ Sorting methods that sort items
+  in situ
+  can be classified into three principal categories according to 
+ their underlying method:
+  
+ Sorting by insertion
+  
+ Sorting by selection
+  
+ Sorting by exchange
+  
+ These three pinciples will now be examined and compared. The procedures operate on a global 
+ variable
+  a 
+ whose components are to be sorted
+  in situ
+ , i.e. without requiring additional, temporary 
+ storage. The components are the keys themselves. We discard other data represented by the record 
+ type
+  Item
+ , thereby simplifying matters. In all algorithms to be developed in this chapter, we will 
+ assume the presence of an array
+  a
+  and a constant
+  n
+ , the number of elements of
+  a
+ : 
+  
+  
+ TYPE Item = INTEGER; 
+  
+  
+ VAR a: ARRAY n OF Item",NA
+2.3 Advanced Sorting Methods,"2.3.1 Insertion Sort by Diminishing Increment
+  
+ A refinement of the straight insertion sort was proposed by D. L. Shell in l959. The method is 
+ explained and demonstrated on our standard example of eight items (see Table 2.5). First, all items 
+ that are four positions apart are grouped and sorted separately. This process is called a 4-sort. In this 
+ example of eight items, each group contains exactly two items. After this first pass, the items are 
+ regrouped into groups with items two positions apart and then sorted anew. This process is called a 
+ 2-sort. Finally, in a third pass, all items are sorted in an ordinary sort or 1-sort.
+  
+ 4-sort yields
+  
+ 44
+  
+ 55
+  
+ 12
+  
+ 42
+  
+ 94
+  
+ 18
+  
+ 06
+  
+ 67
+  
+ 44
+  
+ 18
+  
+ 06
+  
+ 42
+  
+ 94
+  
+ 55
+  
+ 12
+  
+ 67
+  
+ 2-sort yields
+  
+ 06
+  
+ 18
+  
+ 12
+  
+ 42
+  
+ 44
+  
+ 55
+  
+ 94
+  
+ 67
+  
+ 1-sort yields
+  
+ 06
+  
+ 12
+  
+ 18
+  
+ 42
+  
+ 44
+  
+ 55
+  
+ 67
+  
+ 94
+  
+ Table 2.5. An Insertion Sort with Diminishing Increments.
+  
+ One may at first wonder if the necessity of several sorting passes, each of which involves all 
+ items, does not introduce more work than it saves. However, each sorting step over a chain either 
+ involves relatively few items or the items are already quite well ordered and comparatively few 
+ rearrangements are required.
+  
+ It is obvious that the method results in an ordered array, and it is fairly obvious that each pass 
+ profits from previous passes (since each i-sort combines two groups sorted in the preceding
+  2i
+ -sort). 
+ It is also obvious that any sequence of increments is acceptable, as long as the last one is unity, 
+ because in the worst case the last pass does all the work. It is, however, much less obvious that the 
+ method of diminishing increments yields even better results with increments other than powers of 2.
+  
+ The procedure is therefore developed without relying on a specific sequence of increments. The
+  T 
+ increments are denoted by
+  h
+ 0
+ ,
+  h
+ 1
+ ,
+  ...
+  ,
+  h
+ T-1
+  with the conditions
+  
+ h
+ T-1
+  = 1, h
+ i+1
+  < h
+ i
+  
+ The algorithm is described by the procedure Shellsort [2.11] for
+  T = 4
+ :
+  
+ PROCEDURE ShellSort; 
+  
+ CONST T = 4;
+  
+ (* ADenS2_Sorts *)
+  
+ VAR i, j, k, m, s: INTEGER; 
+  
+  
+  
+ x: Item; 
+  
+  
+  
+ h: ARRAY T OF INTEGER; 
+  
+ BEGIN 
+  
+ h[0] := 9; h[1] := 5; h[2] := 3; h[3] := 1; 
+  
+ FOR m := 0 TO T-1 DO 
+  
+  
+  
+ k := h[m]; 
+  
+  
+  
+ FOR i := k TO n-1 DO 
+  
+  
+  
+ x := a[i]; j := i-k; 
+  
+  
+  
+ WHILE (j >= k) & (x < a[j]) DO 
+  
+  
+  
+   
+ a[j+k] := a[j]; j := j-k 
+  
+  
+  
+ END; 
+  
+  
+  
+ IF (j >= k) OR (x >= a[j]) THEN",NA
+2.4 Sorting Sequences,"2.4.1 Straight Merging
+  
+ Unfortunately, the sorting algorithms presented in the preceding chapter are inapplicable, if the 
+ amount of data to be sorted does not fit into a computer's main store, but if it is, for instance, 
+ represented on a peripheral and sequential storage device such as a tape or a disk. In this case we 
+ describe the data as a (sequential) file whose characteristic is that at each moment one and only one 
+ component is directly accessible. This is a severe restriction compared to the possibilities offered by 
+ the array structure, and therefore different sorting techniques have to be used. The most important 
+ one is sorting by merging. Merging (or collating) means combining two (or more) ordered 
+ sequences into a single, ordered sequence by repeated selection among the currently accessible 
+ components. Merging is a much simpler operation than sorting, and it is used as an auxiliary 
+ operation in the more complex process of sequential sorting. One way of sorting on the basis of 
+ merging, called
+  straight merging
+ , is the following:
+  
+ 1. Split the sequence a into two halves, called
+  b
+  and
+  c
+ .
+  
+ 2. Merge
+  b
+  and
+  c
+  by combining single items into ordered pairs.
+  
+ 3. Call the merged sequence
+  a
+ , and repeat steps 1 and 2, this time merging ordered pairs into ordered 
+  
+ quadruples.
+  
+ 4. Repeat the previous steps, merging quadruples into octets, and continue doing this, each time 
+ doubling 
+  
+ the lengths of the merged subsequences, until the entire sequence is ordered.
+  
+ As an example, consider the sequence
+  
+ 44
+  
+ 55
+  
+ 12
+  
+ 42
+  
+ 94
+  
+ 18
+  
+ 06
+  
+ 67
+  
+ In step 1, the split results in the sequences
+  
+ 44
+  
+ 55
+  
+ 12
+  
+ 42
+  
+ 94
+  
+ 18
+  
+ 06
+  
+ 67
+  
+ The merging of single components (which are ordered sequences of length 1), into ordered pairs 
+ yields
+  
+ 44
+  
+ 94 '
+  
+ 18
+  
+ 55 '
+  
+ 06
+  
+ 12 '
+  
+ 42
+  
+ 67
+  
+ Splitting again in the middle and merging ordered pairs yields
+  
+ 06
+  
+ 12
+  
+ 44
+  
+ 94 '
+  
+ 18
+  
+ 42
+  
+ 55
+  
+ 67
+  
+ A third split and merge operation finally produces the desired result
+  
+ 06
+  
+ 12
+  
+ 18
+  
+ 42
+  
+ 44
+  
+ 55
+  
+ 67
+  
+ 94
+  
+ Each operation that treats the entire set of data once is called a
+  phase
+ , and the smallest subprocess 
+ that by repetition constitutes the sort process is called a pass or a stage. In the above example the 
+ sort took three passes, each pass consisting of a splitting phase and a merging phase. In order to 
+ perform the sort, three tapes are needed; the process is therefore called a three-tape merge.
+  
+ Actually, the splitting phases do not contribute to the sort since they do in no way permute the 
+ items; in a sense they are unproductive, although they constitute half of all copying operations. 
+ They can be eliminated altogether by combining the split and the merge phase. Instead of merging 
+ into a single sequence, the output of the merge process is immediately redistributed onto two tapes, 
+ which constitute the sources of the subsequent pass. In contrast to the previous two-phase merge 
+ sort, this method is called a
+  single-phase merge
+  or a
+  balanced merge
+ . It is evidently superior 
+ because only half as many copying operations are necessary; the price for this advantage is a fourth 
+ tape.",NA
+Exercises,"2.1. Which of the algorithms given for straight insertion, binary insertion, straight selection, bubble 
+ sort,
+  
+ shakersort, shellsort, heapsort, quicksort, and straight mergesort are stable sorting methods?",NA
+References,"[2.1] B. K. Betz and Carter.
+  Proc. ACM National Conf
+ . 14, (1959), Paper 14.
+  
+ [2.2] R.W. Floyd. Treesort (Algorithms 113 and 243).
+  Comm. ACM
+ , 5, No. 8, (1962), 434, and 
+  
+  
+ Comm. ACM
+ , 7, No. 12 (1964), 701.
+  
+ [2.3] R.L. Gilstad. Polyphase Merge Sorting - An Advanced Technique.
+  Proc. AFIPS Eastern Jt. 
+  
+  
+ Comp. Conf.
+ , 18, (1960), 143-48.
+  
+ [2.4] C.A.R. Hoare. Proof of a Program: FIND.
+  Comm. ACM
+ , 13, No. 1, (1970), 39-45.
+  
+ [2.5] C.A.R. Hoare. Proof of a Recursive Program: Quicksort.
+  Comp. J.
+ , 14, No. 4 (1971), 391-
+ 95. [2.6] C.A.R. Hoare. Quicksort.
+  Comp.J.
+ , 5. No.1 (1962), 10-15.
+  
+ [2.7] D.E. Knuth. The Art of Computer Programming. Vol. 3. Reading, Mass.: Addison- Wesley, 
+ 1973. [2.8] H. Lorin. A Guided Bibliography to Sorting.
+  IBM Syst. J.
+ , 10, No. 3 (1971), 244-254.
+  
+ [2.9] D.L. Shell. A Highspeed Sorting Procedure.
+  Comm. ACM
+ , 2, No. 7 (1959), 30-32.
+  
+ [2.10] R.C. Singleton. An Efficient Algorithm for Sorting with Minimal Storage (Algorithm 347).
+  
+ Comm. 
+  
+ ACM
+ , 12, No. 3 (1969), 185.
+  
+ [2.11] M.H. Van Emden. Increasing the Efficiency of Quicksort (Algorithm 402).
+  Comm. ACM
+ , 13, 
+ No. 9 (1970), 563-66, 693.
+  
+ [2.12] J.W.J. Williams. Heapsort (Algorithm 232)
+  Comm. ACM
+ , 7, No. 6 (1964), 347-48.",NA
+3 Recursive Algorithms,NA,NA
+3.1 Introduction,"An object is said to be recursive, if it partially consists or is defined in terms of itself. Recursion 
+ is encountered not only in mathematics, but also in daily life. Who has never seen an advertising 
+ picture which contains itself?
+  
+  
+ Fig. 3.1. A picture with a recursion
+  
+ Recursion is a particularly powerful technique in mathematical definitions. A few familiar examples 
+ are those of natural numbers, tree structures, and of certain functions:
+  
+ 1. Natural numbers: 
+  
+  
+ (a) 0 is a natural 
+ number.
+  
+ (b) the successor of a natural number is a natural number.
+  
+ 2. Tree structures: 
+  
+  
+ (a)
+   
+  is a tree (called the empty 
+ tree).
+  
+ (b) If
+  t
+ 1
+  and
+  t
+ 2
+  are trees, then the structure consisting of a node with two descendants
+  t
+ 1
+  and
+  t
+ 2
+  is 
+  
+ also a (binary) tree.
+  
+ 3. The factorial function
+  f(n)
+ : 
+  
+ f(0) = 1 
+  
+ f(n) = n 
+ 
+  f(n - 1)
+  for
+  n > 0
+  
+ The power of recursion evidently lies in the possibility of defining an infinite set of objects by a 
+ finite statement. In the same manner, an infinite number of computations can be described by a 
+ finite recursive program, even if this program contains no explicit repetitions. Recursive algorithms, 
+ however, are primarily appropriate when the problem to be solved, or the function to be computed, 
+ or the data structure to be processed are already defined in recursive terms. In general, a recursive 
+ program
+  P
+  can be expressed as a composition
+  P
+  of a sequence of statements
+  S
+  (not containing
+  P
+ ) and
+  
+ P
+  itself.
+  
+ P
+  
+  P
+ [S, P]
+  
+ The necessary and sufficient tool for expressing programs recursively is the procedure or 
+ subroutine, for it allows a statement to be given a name by which this statement may be invoked. If 
+ a procedure
+  P
+  contains an explicit reference to itself, then it is said to be
+  directly recursive
+ ; if
+  P",NA
+3.2 When Not To Use Recursion,"Recursive algorithms are particularly appropriate when the underlying problem or the data to be 
+ treated are defined in recursive terms. This does not mean, however, that such recursive definitions 
+ guarantee that a recursive algorithm is the best way to solve the problem. In fact, the explanation of 
+ the concept of recursive algorithm by such inappropriate examples has been a chief cause of 
+ creating widespread apprehension and antipathy toward the use of recursion in programming, and of 
+ equating recursion with inefficiency.",NA
+3.3 Two Examples of Recursive Programs,"The attractive graphic pattern shown in Fig. 3.4 consists of a superposition of five curves. These 
+ curves
+  
+ follow a regular pattern and suggest that they might be drawn by a display or a plotter under control 
+ of a
+  
+ computer. Our goal is to discover the recursion schema, according to which the drawing program 
+ might be
+  
+ constructed. Inspection reveals that three of the superimposed curves have the shapes shown in Fig. 
+ 3.3; we denote them by
+  H
+ 1
+ ,
+  H
+ 2
+  and
+  H
+ 3
+ . The figures show that
+  H
+ i+1
+  is obtained by the composition of 
+ four instances of
+  H
+ i
+  of half size and appropriate rotation, and by tying together the four
+  H
+ i
+  by three 
+ connecting lines. Notice that
+  H
+ 1
+  may be considered as consisting of four instances of an empty
+  H
+ 0
+  
+ connected by three straight lines.
+  H
+ i
+  is called the
+  Hilbert curve
+  of order
+  i
+  after its inventor, the 
+ mathematician D. Hilbert (1891).
+  
+  
+  
+  
+ H
+ 1
+  
+ H
+ 2
+  
+ H
+ 3
+  
+ Fig. 3.3. Hilbert curves of order 1, 2, and 3
+  
+ Since each curve
+  H
+ i
+  consists of four half-sized copies of
+  H
+ i-1
+ , we express the procedure for 
+ drawing
+  H
+ i 
+ as a composition of four calls for drawing
+  H
+ i-1
+  in half size and appropriate rotation. For 
+ the purpose of illustration we denote the four parts by
+  A
+ ,
+  B
+ ,
+  C
+  and
+  D
+ , and the routines drawing the 
+ interconnecting lines by
+  
+ arrows pointing in the corresponding direction. Then the following recursion scheme emerges (see 
+ Fig.
+  
+ 3.3).
+  
+ A:
+  
+ D
+  ←
+  
+ A
+  
+ ↓
+  
+ A
+  
+ →
+  
+ B
+  
+ B:
+  
+ C
+  
+ ↑
+  
+ B
+  
+ →
+  
+ B
+  
+ ↓
+  
+ A
+  
+ C:
+  
+ B
+  
+ →
+  
+ C
+  
+ ↑
+  
+ C
+  
+ ←
+  
+ D
+  
+ D:
+  
+ A
+  
+ ↓
+  
+ D
+  ←
+  
+ D
+  
+ ↑
+  
+ C
+  
+ Let us assume that for drawing line segments we have at our disposal a procedure line which 
+ moves a
+  
+ drawing pen in a given direction by a given distance. For our convenience, we assume that the 
+ direction be indicated by an integer parameter
+  i
+  as
+  45 
+ 
+  i
+  degrees. If the length of the unit line is 
+ denoted by
+  u
+ , the procedure corresponding to the scheme
+  A
+  is readily expressed by using recursive 
+ activations of analogously designed procedures
+  B
+  and
+  D
+  and of itself.
+  
+ PROCEDURE A (i: INTEGER); 
+  
+ BEGIN 
+  
+ IF i > 0 THEN 
+  
+  
+  
+ D(i-1); line(4, u); 
+  
+  
+  
+ A(i-1); line(6, u); 
+  
+  
+  
+ A(i-1); line(0, u); 
+  
+  
+  
+ B(i-1)",NA
+ ,"B
+  
+ C
+  
+ ↓
+  
+ A
+  
+ C:
+  
+ C
+  
+ C
+  
+ D
+  ←
+  B",NA
+ ,"D:
+  
+ D
+  
+ D
+  
+ A
+  
+ ↑
+  
+ C
+  
+ If we use the same primitives for drawing as in the Hilbert curve example, the above recursion 
+ scheme is
+  
+ transformed without difficulties into a (directly and indirectly) recursive algorithm.
+  
+ PROCEDURE A (k: INTEGER); 
+  
+ BEGIN 
+  
+ IF k > 0 THEN 
+  
+  
+  
+ A(k-1); Draw.line(7, h); B(k-1); Draw.line(0, 2*h); 
+  
+  
+ D(k-1); Draw.line(1, h); A(k-1) 
+  
+ END 
+  
+ END A
+  
+ This procedure is derived from the first line of the recursion scheme. Procedures corresponding to 
+ the patterns
+  B
+ ,
+  C
+  and
+  D
+  are derived analogously. The main program is composed according to the 
+ base pattern. Its task is to set the initial values for the drawing coordinates and to determine the unit 
+ line length
+  h 
+ according to the size of the plane. The result of executing this program with
+  n = 4
+  is 
+ shown in Fig. 3.6.
+  
+ VAR h: INTEGER; 
+  
+ (* ADenS33_Sierpinski *)
+  
+ PROCEDURE A (k: INTEGER); 
+  
+ BEGIN 
+  
+ IF k > 0 THEN 
+  
+  
+  
+ A(k-1); Draw.line(7, h); B(k-1); Draw.line(0, 2*h); 
+  
+  
+ D(k-1); Draw.line(1, h); A(k-1) 
+  
+ END 
+  
+ END A;",NA
+3.4 Backtracking Algorithms,"A particularly intriguing programming endeavor is the subject of so-called general problem 
+ solving. The task is to determine algorithms for finding solutions to specific problems not by 
+ following a fixed rule of computation, but by trial and error. The common pattern is to decompose 
+ the trial-and-error process onto partial tasks. Often these tasks are most naturally expressed in 
+ recursive terms and consist of the exploration of a finite number of subtasks. We may generally 
+ view the entire process as a trial or search process that gradually builds up and scans (prunes) a tree 
+ of subtasks. In many problems this search tree grows very rapidly, often exponentially, depending 
+ on a given parameter. The search effort increases accordingly. Frequently, the search tree can be 
+ pruned by the use of heuristics only, thereby reducing computation to tolerable bounds.
+  
+ It is not our aim to discuss general heuristic rules in this text. Rather, the general principle of 
+ breaking up such problem-solving tasks into subtasks and the application of recursion is to be the 
+ subject of this chapter. We start out by demonstrating the underlying technique by using an 
+ example, namely, the well known
+  knight's tour
+ .
+  
+ Given is a
+  n
+ 
+ n
+  board with
+  n
+ 2
+ fields. A knight — being allowed to move according to the rules of 
+ chess— is placed on the field with initial coordinates
+  x0
+ ,
+ y0
+ . The problem is to find a covering of the 
+ entire board, if there exists one, i.e. to compute a tour of
+  n
+ 2
+ -1
+  moves such that every field of the 
+ board is visited exactly once.",NA
+3.5 The Eight Queens Problem,"The problem of the eight queens is a well-known example of the use of trial-and-error methods 
+ and of backtracking algorithms. It was investigated by C .F. Gauss in 1850, but he did not 
+ completely solve it. This should not surprise anyone. After all, the characteristic property of these 
+ problems is that they defy analytic solution. Instead, they require large amounts of exacting labor, 
+ patience, and accuracy. Such algorithms have therefore gained relevance almost exclusively through 
+ the automatic computer, which possesses these properties to a much higher degree than people, and 
+ even geniuses, do.
+  
+ The eight queens poblem is stated as follows (see also [3-4]): Eight queens are to be placed on a 
+ chess board in such a way that no queen checks against any other queen. We will use the last 
+ schema of Sect. 3.4 as a template.
+  
+ Since we know from the rules of chess that a queen checks all other figures lying in either the 
+ same column, row, or diagonal on the board, we infer that each column may contain one and only 
+ one queen, and that the choice of a position for the
+  i
+ -th queen may be restricted to the
+  i
+ -th column. 
+ The next move in the general recursive scheme will be to position the next queen in the order of 
+ their numbers, so
+  Try
+  will attempt to position the
+  i
+ -th queen, receiving
+  i
+  as a parameter which 
+ therefore becomes the column index, and the selection process for positions ranges over the eight 
+ possible values for a row index j.
+  
+ PROCEDURE Try (i: INTEGER); 
+  
+ BEGIN 
+  
+ IF i < 8 THEN 
+  
+  
+  
+ initialize selection of safe j and select the first one; 
+  
+  
+ WHILE ~(no more safe j) & ~CanBeDone(i, j) DO 
+  
+  
+ select next safe j 
+  
+  
+  
+ END 
+  
+ END 
+  
+ END Try;
+  
+ PROCEDURE CanBeDone (i, j: INTEGER): BOOLEAN; 
+  
+ (*solution can be completed with i-th queen in j-th row*) BEGIN 
+  
+ SetQueen; 
+  
+ Try(i+1); 
+  
+ IF not successful THEN 
+  
+  
+  
+ RemoveQueen 
+  
+ END; 
+  
+ RETURN successful 
+  
+ END CanBeDone",NA
+3.6 The Stable Marriage Problem,"Assume that two disjoint sets
+  A
+  and
+  B
+  of equal size
+  n
+  are given. Find a set of
+  n
+  pairs
+  <a, b>
+  such 
+ that
+  a 
+ in
+  A
+  and
+  b
+  in
+  B
+  satisfy some constrains. Many different criteria for such pairs exist; one of them 
+ is the rule called the
+  stable marriage rule
+ .
+  
+ Assume that
+  A
+  is a set of men and
+  B
+  is a set of women. Each man and each women has stated 
+ distinct preferences for their possible partners. If the
+  n
+  couples are chosen such that there exists a 
+ man and a woman who are not married, but who would both prefer each other to their actual 
+ marriage partners, then the assignment is unstable. If no such pair exists, it is called stable. This 
+ situation characterizes many related problems in which assignments have to be made according to 
+ preferences such as, for example, the choice of a school by students, the choice of recruits by 
+ different branches of the armed services, etc. The example of marriages is particularly intuitive; 
+ note, however, that the stated list of preferences is invariant and does not change after a particular 
+ assignment has been made. This assumption simplifies the problem, but it also represents a grave 
+ distortion of reality (called abstraction).
+  
+ One way to search for a solution is to try pairing off members of the two sets one after the other 
+ until the two sets are exhausted. Setting out to find all stable assignments, we can readily sketch a 
+ solution by using the program schema of
+  AllQueens
+  as a template. Let
+  Try(m)
+  denote the algorithm to 
+ find a partner for man 
+ m
+ , and let this search proceed in the order of the man's list of stated 
+ preferences. The first version based on these assumptions is:
+  
+ PROCEDURE Try (m: man);",NA
+3.7 The Optimal Selection Problem,"The last example of a backtracking algorithm is a logical extension of the previous two examples 
+ represented by the general schema. First we were using the principle of backtracking to find a
+  single 
+ solution to a given problem. This was exemplified by the knight's tour and the eight queens. Then 
+ we tackled the goal of finding
+  all
+  solutions to a given problem; the examples were those of the eight 
+ queens and the stable marriages. Now we wish to find an
+  optimal
+  solution.
+  
+ To this end, it is necessary to generate all possible solutions, and in the course of generating them 
+ to retain the one that is optimal in some specific sense. Assuming that optimality is defined in terms 
+ of some positive valued function
+  f(s)
+ , the algorithm is derived from the general schema of
+  Try
+  by 
+ replacing the statement
+  print solution
+  by the statement
+  
+ IF f(solution) > f(optimum) THEN optimum := solution END
+  
+ The variable
+  optimum
+  records the best solution so far encountered. Naturally, it has to be properly 
+ initialized; morever, it is customary to record to value
+  f(optimum)
+  by another variable in order to 
+ avoid its frequent recomputation.
+  
+ An example of the general problem of finding an optimal solution to a given problem follows: 
+ We choose the important and frequently encountered problem of finding an optimal selection out of 
+ a given set of objects subject to constraints. Selections that constitute acceptable solutions are 
+ gradually built up by investigating individual objects from the base set. A procedure
+  Try
+  describes 
+ the process of investigating the suitability of one individual object, and it is called recursively (to 
+ investigate the next object) until all objects have been considered.
+  
+ We note that the consideration of each object (called candidates in previous examples) has two 
+ possible outcomes, namely, either the inclusion of the investigated object in the current selection or 
+ its exclusion. This makes the use of a repeat or for statement inappropriate; instead, the two cases 
+ may as well be explicitly written out. This is shown, assuming that the objects are numbered
+  0, 1, ... , 
+ n-1.",NA
+Exercises,"3.1. (Towers of Hanoi). Given are three rods and
+  n
+  disks of different sizes. The disks can be stacked 
+ up on the rods, thereby forming towers. Let the
+  n
+  disks initially be placed on rod
+  A
+  in the order of 
+ decreasing size, as shown in Fig. 3.9 for
+  n = 3
+ . The task is to move the
+  n
+  disks from rod
+  A
+  to rod
+  C
+  
+ such that they are ordered in the original way. This has to be achieved under the constraints that
+  
+ 1. In each step exactly one disk is moved from one rod to another rod.
+  
+ 2. A disk may never be placed on top of a smaller disk.
+  
+ 3. Rod
+  B
+  may be used as an auxiliary store.
+  
+ Find an algorithm that performs this task. Note that a tower may conveniently be considered as 
+ consisting of the single disk at the top, and the tower consisting of the remaining disks. Describe the 
+ algorithm as a recursive program.
+  
+ 0 
+  
+ 1 
+  
+ 2 
+  
+ A 
+  
+ B 
+  
+ C 
+  
+ Fig. 3.9. The towers of Hanoi
+  
+ 3.2. Write a procedure that generates all
+  n!
+  permutations of
+  n
+  elements a
+ 0
+ , ..., a
+ n-1
+  in situ
+ , i.e., without 
+ the aid of another array. Upon generating the next permutation, a parametric procedure
+  Q
+  is to be 
+ called which may, for instance, output the generated permutation.
+  
+ Hint:
+  Consider the task of generating all permutations of the elements
+  a
+ 0
+ , ..., a
+ m-1
+  as consisting of 
+ the m subtasks of generating all permutations of
+  a
+ 0
+ , ..., a
+ m-2
+  followed by
+  a
+ m-1
+ , where in the
+  i
+ -th subtask 
+ the two elements
+  a
+ i
+  and
+  a
+ m-1
+  had initially been interchanged.
+  
+ 3.3. Deduce the recursion scheme of Fig. 3.10 which is a superposition of the four curves
+  W
+ 1
+ ,
+  W
+ 2
+ ,
+  
+ W
+ 3
+ , 
+ W
+ 4
+ . The structure is similar to that of the Sierpinski curves in Fig. 3.6. From the recursion 
+ pattern, derive a recursive program that draws these curves.",NA
+References,"[3.1] D.G. McVitie and L.B. Wilson. The Stable Marriage Problem.
+  Comm. ACM
+ , 14, No. 7 (1971), 
+ 486-92.
+  
+ [3.2] D.G. McVitie and L.B. Wilson. Stable Marriage Assignment for Unequal Sets.
+  Bit
+ , 10, (1970), 
+ 295-309.",NA
+4 Dynamic Information Structures,NA,NA
+4.1 Recursive Data Types,"In Chap. 1 the array, record, and set structures were introduced as fundamental data structures. 
+ They are called fundamental because they constitute the building blocks out of which more complex 
+ structures are formed, and because in practice they do occur most frequently. The purpose of 
+ defining a data type, and of thereafter specifying that certain variables be of that type, is that the 
+ range of values assumed by these variables, and therefore their storage pattern, is fixed once and for 
+ all. Hence, variables declared in this way are said to be
+  static
+ . However, there are many problems 
+ which involve far more complicated information structures. The characteristic of these problems is 
+ that not only the values but also the structures of variables change during the computation. They are 
+ therefore called
+  dynamic
+  structures. Naturally, the components of such structures are — at some 
+ level of resolution — static, i.e., of one of the fundamental data types. This chapter is devoted to the 
+ construction, analysis, and management of dynamic information structures.
+  
+ It is noteworthy that there exist some close analogies between the methods used for structuring 
+ algorithms and those for structuring data. As with all analogies, there remain some differences, but 
+ a comparison of structuring methods for programs and data is nevertheless illuminating.
+  
+ The elementary, unstructured statement is the assignment of an expression's value to a variable. 
+ Its corresponding member in the family of data structures is the scalar, unstructured type. These two 
+ are the atomic building blocks for composite statements and data types. The simplest structures, 
+ obtained through enumeration or sequencing, are the compound statement and the record structure. 
+ They both consist of a finite (usually small) number of explicitly enumerated components, which 
+ may themselves all be different from each other. If all components are identical, they need not be 
+ written out individually: we use the
+  for 
+ statement and the
+  array
+  structure to indicate replication by a 
+ known, finite factor. A choice among two or more elements is expressed by the conditional or the 
+ case statement and by extensions of record types, respectively. And finally, a repetiton by an 
+ initially unknown (and potentially infinite) factor is expressed by the
+  while
+  and
+  repeat
+  statements. 
+ The corresponding data structure is the
+  sequence
+  (file), the simplest kind which allows the 
+ construction of types of infinite cardinality.
+  
+ The question arises whether or not there exists a data structure that corresponds in a similar way 
+ to the procedure statement. Naturally, the most interesting and novel property of procedures in this 
+ respect is recursion. Values of such a recursive data type would contain one or more components 
+ belonging to the same type as itself, in analogy to a procedure containing one or more calls to itself. 
+ Like procedures, data type definitions might be directly or indirectly recursive.
+  
+ A simple example of an object that would most appropriately be represented as a recursively 
+ defined type is the arithmetic expression found in programming languages. Recursion is used to 
+ reflect the possibility of nesting, i.e., of using parenthesized subexpressions as operands in 
+ expressions. Hence, let an expression here be defined informally as follows:
+  
+ An expression consists of a term, followed by an operator, followed by a term. (The two terms 
+ constitute the operands of the operator.) A term is either a variable — represented by an identifier 
+ — or an expression enclosed in parentheses.
+  
+ A data type whose values represent such expressions can easily be described by using the tools 
+ already available with the addition of recursion:
+  
+ TYPE expression = RECORD op: INTEGER; 
+  
+ opd1, opd2: term",NA
+4.2 Pointers,"The characteristic property of recursive structures which clearly distinguishes them from the 
+ fundamental structures (arrays, records, sets) is their ability to vary in size. Hence, it is impossible 
+ to assign a fixed amount of storage to a recursively defined structure, and as a consequence a 
+ compiler cannot associate specific addresses to the components of such variables. The technique 
+ most commonly used to master this problem involves dynamic allocation of storage, i.e., allocation 
+ of store to individual components at the time when they come into existence during program 
+ execution, instead of at translation time. The compiler then allocates a fixed amount of storage to 
+ hold the address of the dynamically allocated component instead of the component itself. For 
+ instance, the pedigree illustrated in Fig. 4.2 would be represented by individual— quite possibly 
+ noncontiguous — records, one for each person. These persons are then linked by their addresses 
+ assigned to the respective
+  father
+  and
+  mother
+  fields. Graphically, this situation is best expressed by the 
+ use of arrows or pointers (Fig. 4.3).",NA
+4.3 Linear Lists,"4.3.1 Basic Operations
+  
+ The simplest way to interrelate or link a set of elements is to line them up in a single list or queue. 
+ For, in this case, only a single link is needed for each element to refer to its successor.
+  
+ Assume that types
+  Node
+  and
+  NodeDesc
+  are defined as shown below. Every variable of type
+  
+ NodeDesc 
+ consists of three components, namely, an identifying key, the pointer to its successor, and 
+ possibly further associated information. For our further discussion, only
+  key
+  and
+  next
+  will be 
+ relevant.
+  
+ TYPE Node = 
+  
+  
+ POINTER TO NodeDesc; 
+  
+ TYPE NodeDesc = RECORD key: INTEGER; next: Node; data: ... END; VAR p, q: 
+ Node 
+  
+ (*pointer variables*)
+  
+ A list of nodes, with a pointer to its first component being assigned to a variable
+  p
+ , is illustrated in 
+ Fig. 4.6. Probably the simplest operation to be performed with a list as shown in Fig. 4.6 is the 
+ insertion of an element at its head. First, an element of type
+  NodeDesc
+  is allocated, its reference 
+ (pointer) being assigned to an auxiliary pointer variable, say
+  q
+ . Thereafter, a simple reassignment of 
+ pointers completes the operation. Note that the order of these three statements is essential.
+  
+ NEW(q); q.next := p; p := q
+  
+ p 
+  
+ 1 
+  
+ 2 
+  
+ 3 
+  
+ 4 
+  
+ NIL
+  
+ Fig. 4.6. Example of a linked list",NA
+4.4 Tree Structures,"4.4.1 Basic Concepts and Definitions
+  
+ We have seen that sequences and lists may conveniently be defined in the following way: A 
+ sequence (list) with base type
+  T
+  is either
+  
+ 1. The empty sequence (list).
+  
+ 2. The concatenation (chain) of a
+  T
+  and a sequence with base type
+  T
+ .
+  
+ Hereby recursion is used as an aid in defining a structuring principle, namely, sequencing or 
+ iteration.
+  
+ Sequences and iterations are so common that they are usually considered as fundamental patterns of
+  
+ structure and behaviour. But it should be kept in mind that they can be defined in terms of recursion,
+  
+ whereas the reverse is not true, for recursion may be effectively and elegantly used to define much 
+ more
+  
+ sophisticated structures. Trees are a well-known example. Let a tree structure be defined as follows: 
+ A tree structure with base type
+  T
+  is either",NA
+4.5 Balanced Trees,"From the preceding discussion it is clear that an insertion procedure that always restores the trees' 
+ structure to perfect balance has hardly any chance of being profitable, because the restoration of 
+ perfect balance after a random insertion is a fairly intricate operation. Possible improvements lie in 
+ the formulation of less strict definitions of balance. Such imperfect balance criteria should lead to 
+ simpler tree reorganization procedures at the cost of only a slight deterioration of average search 
+ performance. One such definition of balance has been postulated by Adelson-Velskii and Landis [4-
+ 1]. The balance criterion is the following:
+  
+ A tree is
+  balanced
+  if and only if for every node the heights of its two subtrees differ by at most 1.
+  
+ Trees satisfying this condition are often called AVL-trees (after their inventors). We shall simply 
+ call them balanced trees because this balance criterion appears a most suitable one. (Note that all 
+ perfectly balanced trees are also AVL-balanced.)
+  
+ The definition is not only simple, but it also leads to a manageable rebalancing procedure and an 
+ average search path length practically identical to that of the perfectly balanced tree. The following 
+ operations can be performed on balanced trees in
+  O(log n)
+  units of time, even in the worst case:
+  
+ 1. 
+  
+ Locate a node with a given key.
+  
+ 2. 
+  
+ Insert a node with a given key. 
+  
+ 3. 
+  
+ Delete the node with a given 
+ key.
+  
+ These statements are direct consequences of a theorem proved by Adelson-Velskii and Landis, 
+ which guarantees that a balanced tree will never be more than 45% higher than its perfectly 
+ balanced counterpart, no matter how many nodes there are. If we denote the height of a balanced 
+ tree with
+  n
+  nodes by
+  h
+ b
+ (n)
+ , then 
+  
+  
+ log(n+1) < h
+ b
+ (n) < 1.4404*log(n+2) - 0.328
+  
+ The optimum is of course reached if the tree is perfectly balanced for
+  n = 2k-1
+ . But which is the 
+ structure of the worst AVL-balanced tree? In order to find the maximum height
+  h
+  of all balanced 
+ trees with
+  n
+  nodes, let us consider a fixed height
+  h
+  and try to construct the balanced tree with the 
+ minimum number of nodes. This strategy is recommended because, as in the case of the minimal 
+ height, the value can be attained only for certain specific values of
+  n
+ . Let this tree of height
+  h
+  be 
+ denoted by
+  T
+ h
+ . Clearly,
+  T
+ 0
+  is the empty tree, and
+  T
+ 1
+  is the tree with a single node. In order to 
+ construct the tree
+  T
+ h
+  for
+  h > 1
+ , we will provide the root with two subtrees which again have a 
+ minimal number of nodes. Hence, the subtrees are also
+  T
+ . Evidently, one subtree must have height
+  h-",NA
+4.6 Optimal Search Trees,"So far our consideration of organizing search trees has been based on the assumption that the 
+ frequency of access is equal for all nodes, that is, that all keys are equally probable to occur as a 
+ search argument. This is probably the best assumption if one has no idea of access distribution. 
+ However, there are cases (they are the exception rather than the rule) in which information about the 
+ probabilities of access to individual keys is available. These cases usually have the characteristic 
+ that the keys always remain the same, i.e., the search tree is subjected neither to insertion nor 
+ deletion, but retains a constant structure. A typical example is the scanner of a compiler which 
+ determines for each word (identifier) whether or not it is a keyword (reserved word). Statistical 
+ measurements over hundreds of compiled programs may in this case yield accurate information on 
+ the relative frequencies of occurrence, and thereby of access, of individual keys.
+  
+ Assume that in a search tree the probability with which node
+  i
+  is accessed is
+  
+ Pr {x = k
+ i
+ } = p
+ i
+ , 
+  
+ (
+ Si: 1
+  
+  i
+  
+  n : p
+ i
+ ) = 1
+  
+ We now wish to organize the search tree in a way that the total number of search steps - counted 
+ over sufficiently many trials - becomes minimal. For this purpose the definition of path length is 
+ modified by (1) attributing a certain weight to each node and by (2) assuming the root to be at level 
+ 1 (instead of 0), because it accounts for the first comparison along the search path. Nodes that are 
+ frequently accessed become heavy nodes; those that are rarely visited become light nodes. The 
+ (internal) weighted path length is then the sum of all paths from the root to each node weighted by 
+ that node's probability of access.
+  
+ P = Si: 1
+  
+  i
+  
+  n : p
+ i
+  * h
+ i
+  
+ h
+ i
+  is the level of node
+  i
+ . The goal is now to minimize the weighted path length for a given probability 
+ distribution. As an example, consider the set of keys 1, 2, 3, with probabilities of access
+  p
+ 1
+  = 1/7
+ ,
+  p
+ 2
+  =",NA
+4.7 B-trees,"So far, we have restricted our discussion to trees in which every node has at most two 
+ descendants, i.e., to binary trees. This is entirely satisfactory if, for instance, we wish to represent 
+ family relationships with a preference to the pedigree view, in which every person is associated 
+ with his parents. After all, no one has more than two parents. But what about someone who prefers 
+ the posterity view? He has to cope with the fact that some people have more than two children, and 
+ his trees will contain nodes with many branches. For lack of a better term, we shall call them
+  
+ multiway
+  trees.
+  
+ Of course, there is nothing special about such structures, and we have already encountered all the 
+ programming and data definition facilities to cope with such situations. If, for instance, an absolute 
+ upper limit on the number of children is given (which is admittedly a somewhat futuristic 
+ assumption), then one may represent the children as an array component of the record representing 
+ a person. If the number of children varies strongly among different persons, however, this may",NA
+4.8 Priority Search Trees,"Trees, and in particular binary trees, constitute very effective organisations for data that can be 
+ ordered on a linear scale. The preceding chapters have exposed the most frequently used ingenious 
+ schemes for efficient searching and maintenance (insertion, deletion). Trees, however, do not seem 
+ to be helpful in problems where the data are located not in a one-dimensional, but in a multi-
+ dimensional space. In fact, efficient searching in multi-dimensional spaces is still one of the more 
+ elusive problems in computer science, the case of two dimensions being of particular importance to 
+ many practical applications.
+  
+ Upon closer inspection of the subject, trees might still be applied usefully at least in the two-
+ dimensional case. After all, we draw trees on paper in a two-dimensional space. Let us therefore 
+ briefly review the characteristics of the two major kinds of trees so far encountered.
+  
+ 1. A search tree is governed by the invariants
+  
+ p.left
+  
+  NIL
+  
+ implies
+  
+ p.left.x < p.x,
+  
+ p.right
+  
+  NIL
+  
+ implies
+  
+ p.x < p.right.x,
+  
+ holding for all nodes
+  p
+  with key
+  x
+ . It is apparent that only the horizontal position of nodes is at all 
+ constrained by the invariant, and that the vertical positions of nodes can be arbitrarily chosen such 
+ that access times in searching, (i.e. path lengths) are minimized.
+  
+ 2. A heap, also called
+  priority tree
+ , is governed by the invariants
+  
+ p.left
+  
+  NIL
+  
+ implies
+  
+ p.y
+  
+  p.left.y,
+  
+ p.right
+  
+  NIL
+  
+ implies
+  
+ p.y
+  
+  p.right.y,
+  
+ holding for all nodes
+  p
+  with key
+  y
+ . Here evidently only the vertical positions are constrained by the 
+ invariants.
+  
+ It seems straightforward to combine these two conditions in a definition of a tree organization in 
+ a two-dimensional space, with each node having two keys
+  x
+  and
+  y
+  which can be regarded as",NA
+Exercises,"4.1. Let us introduce the notion of a recursive type, to be declared as
+  
+ RECTYPE T = T0
+  
+ and denoting the set of values defined by the type
+  T0
+  enlarged by the single value
+  NONE
+ . The 
+ definition of the type
+  person
+ , for example, could then be simplified to
+  
+ RECTYPE person = RECORD name: Name; 
+  
+  
+ father, mother: person 
+  
+  
+ END
+  
+ Which is the storage pattern of the recursive structure corresponding to Fig. 4.2? Presumably, an 
+ implementation of such a feature would be based on a dynamic storage allocation scheme, and the 
+ fields named father and mother in the above example would contain pointers generated 
+ automatically but hidden from the programmer. What are the difficulties encountered in the 
+ realization of such a feature?
+  
+ 4.2. Define the data structure described in the last paragraph of Section 4.2 in terms of records and 
+ pointers. Is it also possible to represent this family constellation in terms of recursive types as 
+ proposed in the preceding exercise?
+  
+ 4.3. Assume that a first-in-first-out (fifo) queue
+  Q
+  with elements of type
+  T0
+  is implemented as a 
+ linked list. Define a module with a suitable data structure, procedures to insert and extract an 
+ element from
+  Q
+ , and a function to test whether or not the queue is empty. The procedures should 
+ contain their own mechanism for an economical reuse of storage.
+  
+ 4.4. Assume that the records of a linked list contain a key field of type
+  INTEGER
+ . Write a program to 
+ sort the list in order of increasing value of the keys. Then construct a procedure to invert the list.
+  
+ 4.5. Circular lists (see Fig. 4.52) are usually set up with a so-called list header. What is the reason 
+ for introducing such a header? Write procedures for the insertion, deletion, and search of an element 
+ identified by a given key. Do this once assuming the existence of a header, once without header.",NA
+References,"[4.1] G.M. Adelson-Velskii and E.M. Landis.
+  Doklady Akademia Nauk SSSR, 146
+ , (1962), 263-66; 
+ English translation in Soviet Math, 3, 1259-63.
+  
+ [4.2] R. Bayer and E.M. McCreight. Organization and Maintenance of Large Ordered Indexes.
+  
+ Acta 
+   
+ Informatica,
+  1, No. 3 (1972), 173-89.
+  
+ [4.3] R. Bayer and E.M. McCreight. Binary B-trees for Virtual memory.
+  Proc. 1971 ACM 
+ SIGFIDET 
+  
+  
+ Workshop
+ , San Diego, Nov. 1971, pp. 219-35.
+  
+ [4.4] R. Bayer and E.M. McCreight. Symmetric Binary B-trees: Data Structure and 
+ Maintenance Algorithms.
+  Acta Informatica
+ , 1, No. 4 (1972), 290-306.
+  
+ [4.5] T.C. Hu and A.C. Tucker.
+  SIAM J. Applied Math
+ , 21, No. 4 (1971) 514-32.
+  
+ [4.6] D. E. Knuth. Optimum Binary Search Trees.
+  Acta Informatica
+ , 1, No. 1 (1971), 14-25.
+  
+ [4.7] W.A. Walker and C.C. Gotlieb. A Top-down Algorithm for Constructing Nearly Optimal 
+ Lexicographic Trees, in: Graph Theory and Computing (New York: Academic Press, 1972), pp. 
+ 303-23.
+  
+ [4.8] D. Comer. The ubiquitous B-Tree.
+  ACM Comp. Surveys
+ , 11, 2 (June 1979), 121-137.
+  
+ [4.9] J. Vuillemin. A unifying look at data structures.
+  Comm. ACM
+ , 23, 4 (April 1980), 229-239.
+  
+ [4.10] E.M. McCreight. Priority search trees.
+  SIAM J. of Comp.
+  (May 1985)",NA
+5 Key Transformations (Hashing),NA,NA
+5.1 Introduction,"The principal question discussed in Chap. 4 at length is the following: Given a set of items 
+ characterized by a key (upon which an ordering relation is defined), how is the set to be organized 
+ so that retrieval of an item with a given key involves as little effort as possible? Clearly, in a 
+ computer store each item is ultimately accessed by specifying a storage address. Hence, the stated 
+ problem is essentially one of finding an appropriate mapping
+  H
+  of keys (
+ K
+ ) into addresses (
+ A
+ ):
+  
+ H: K
+  →
+  A
+  
+ In Chap. 4 this mapping was implemented in the form of various list and tree search algorithms 
+ based on different underlying data organizations. Here we present yet another approach that is 
+ basically simple and very efficient in many cases. The fact that it also has some disadvantages is 
+ discussed subsequently.
+  
+ The data organization used in this technique is the array structure.
+  H
+  is therefore a mapping 
+ transforming keys into array indices, which is the reason for the term
+  key transformation
+  that is 
+ generally used for this technique. It should be noted that we shall not need to rely on any dynamic 
+ allocation procedures; the array is one of the fundamental, static structures. The method of key 
+ transformations is often used in problem areas where tree structures are comparable competitors.
+  
+ The fundamental difficulty in using a key transformation is that the set of possible key values is 
+ much larger than the set of available store addresses (array indices). Take for example names 
+ consisting of up to 16 letters as keys identifying individuals in a set of a thousand persons. Hence, 
+ there are
+  26
+ 16
+ possible keys which are to be mapped onto
+  10
+ 3
+ possible indices. The function
+  H
+  is 
+ therefore obviously a many-to-one function. Given a key
+  k
+ , the first step in a retrieval (search) 
+ operation is to compute its associated index 
+ h = H(k)
+ , and the second - evidently necessary - step is to 
+ verify whether or not the item with the key
+  k
+  is indeed identified by
+  h
+  in the array (table)
+  T
+ , i.e., to 
+ check whether
+  T[H(k)].key = k
+ . We are immediately confronted with two questions:
+  
+ 1. What kind of function
+  H
+  should be used?
+  
+ 2. How do we cope with the situation that
+  H
+  does not yield the location of the desired item?
+  
+ The answer to the second question is that some method must be used to yield an alternative 
+ location, say index
+  h'
+ , and, if this is still not the location of the wanted item, yet a third index
+  h""
+ , and 
+ so on. The case in which a key other than the desired one is at the identified location is called a
+  
+ collision
+ ; the task of generating alternative indices is termed collision handling. In the following we 
+ shall discuss the choice of a transformation function and methods of collision handling.",NA
+5.2 Choice of a Hash Function,"A prerequisite of a good transformation function is that it distributes the keys as evenly as 
+ possible over the range of index values. Apart from satisfying this requirement, the distribution is 
+ not bound to any pattern, and it is actually desirable that it give the impression of being entirely 
+ random. This property has given this method the somewhat unscientific name
+  hashing
+ , i.e., 
+ chopping the argument up, or making a mess.
+  H
+  is called the
+  hash function
+ . Clearly, it should be 
+ efficiently computable, i.e., be composed of very few basic arithmetic operations.
+  
+ Assume that a transfer function
+  ORD(k)
+  is avilable and denotes the ordinal number of the key
+  k
+  in 
+ the set of all possible keys. Assume, furthermore, that the array indices
+  i
+  range over the intergers
+  0 .. 
+ N-1
+ , where 
+ N
+  is the size of the array. Then an obvious choice is",NA
+5.3 Collision Handling,"If an entry in the table corresponding to a given key turns out not to be the desired item, then a 
+ collision is present, i.e., two items have keys mapping onto the same index. A second probe is 
+ necessary, one based on an index obtained in a deterministic manner from the given key. There 
+ exist several methods of generating secondary indices. An obvious one is to link all entries with 
+ identical primary index
+  H(k)
+  together in a linked list. This is called direct chaining. The elements of 
+ this list may be in the primary table or not; in the latter case, storage in which they are allocated is 
+ usually called an
+  overflow area
+ . This method has the disadvantage that secondary lists must be 
+ maintained, and that each entry must provide space for a pointer (or index) to its list of collided 
+ items.
+  
+ An alternative solution for resolving collisions is to dispense with links entirely and instead 
+ simply look at other entries in the same table until the item is found or an open position is 
+ encountered, in which case one may assume that the specified key is not present in the table. This 
+ method is called
+  open addressing
+  [5-3]. Naturally, the sequence of indices of secondary probes 
+ must always be the same for a given key. The algorithm for a table lookup can then be sketched as 
+ follows:
+  
+ h := H(k); i := 0; 
+  
+ REPEAT 
+  
+ IF T[h].key = k THEN item found 
+  
+ ELSIF T[h].key = free THEN item is not in table ELSE 
+ (*collision*) 
+  
+  
+  
+ i := i+1; h := H(k) + G(i) 
+  
+ END 
+  
+ UNTIL found or not in table (or table full)
+  
+ Various functions for resolving collisions have been proposed in the literature. A survey of the 
+ topic by Morris in 1968 [4-8] stimulated considerable activities in this field. The simplest method is 
+ to try for the next location - considering the table to be circular - until either the item with the 
+ specified key is found or an empty location is encountered. Hence,
+  G(i) = i
+ ; the indices
+  h
+ i
+  used for 
+ probing in this case are
+  
+ h
+ 0
+  
+ = H(k)
+  
+ i = 1 ... N-1
+  
+ h
+ i
+  
+ = (h
+ i-1
+  + i) MOD N,",NA
+5.4 Analysis of Key Transformation,"Insertion and retrieval by key transformation has evidently a miserable worst-case performance. 
+ After all, it is entirely possible that a search argument may be such that the probes hit exactly all 
+ occupied locations, missing consistently the desired (or free) ones. Actually, considerable 
+ confidence in the correctness of the laws of probability theory is needed by anyone using the hash 
+ technique. What we wish to be assured of is that on the average the number of probes is small. The 
+ following probabilistic argument reveals that it is even very small.
+  
+ Let us once again assume that all possible keys are equally likely and that the hash function
+  H
+  
+ distributes them uniformly over the range of table indices. Assume, then, that a key has to be 
+ inserted in a table of size 
+ N
+  which already contains
+  k
+  items. The probability of hitting a free location 
+ the first time is then
+  (N-k)/N
+ . This is also the probability
+  p
+ 1
+ that a single comparison only is needed. 
+ The probability that excatly one second probe is needed is equal to the probability of a collision in 
+ the first try times the probability of hitting a free location the next time. In general, we obtain the 
+ probability
+  p
+ i
+  of an insertion requiring exactly
+  i 
+ probes as
+  
+ p
+ 1
+  
+ =
+  
+ (N-k)/N
+  
+ =
+  
+ (k/N) 
+ 
+  (N-k)/(N-1)
+  
+ p
+ 2
+  
+ =
+  
+ (k/N) 
+ 
+  (k-1)/(N-1) 
+ 
+  (N-k)/(N-2)
+  
+ p
+ 3
+  
+ ……….
+  
+ p
+ i
+  
+ =
+  
+ (k/N) 
+ 
+  (k-1)/(N-1) 
+ 
+  (k-2)/(N-2)
+  
+  …
+  
+  (N-k)/(N-(i-1))
+  
+ The expected number
+  E
+  of probes required upon insertion of the
+  k+1
+ st key is therefore
+  
+ E
+ k+1
+  
+ =
+  
+ Si: 1
+  
+  i
+  
+  k+1 : i 
+ 
+  p
+ i
+  
+ = 1
+  
+  (N-k)/N + 2
+  
+  (k/N)
+  
+  (N-k)/(N-1) + ...
+  
+ + (k+1) * (k/N)
+  
+  (k-1)/(N-1)
+  
+  (k-2)/(N-2)
+  
+  …
+  
+  1/(N-(k-1))
+  
+ = (N+1) / (N-(k-1))
+  
+ Since the number of probes required to insert an item is identical with the number of probes needed 
+ to retrieve it, the result can be used to compute the average number
+  E
+ of probes needed to access a 
+ random key in a table. Let the table size again be denoted by
+  N
+ , and let
+  m
+  be the number of keys 
+ actually in the table. Then
+  
+ E = (Sk: 1
+  
+  k
+  
+  m : E
+ k
+ ) / m
+  
+ = (N+1)
+  
+  (Sk: 1
+  
+  k
+  
+  m : 1/(N-k+2))/m
+  
+ = (N+1)
+  
+  (H
+ N+1
+  - H
+ N-m+1
+ )
+  
+ where
+  H
+  is the harmonic function.
+  H
+  can be approximated as
+  H
+ N
+  = ln(N) + g
+ , where
+  g
+  is Euler's 
+ constant.
+  
+ If, moreover, we substitute
+  a
+  for
+  m/(N+1)
+ , we obtain 
+  
+  
+ E = (ln(N+1) - ln(N-m+1))/a = ln((N+1)/(N-m+1))/a = -ln(1-a)/a
+  
+ a
+  is approximately the quotient of occupied and available locations, called the
+  load factor
+ ;
+  a = 0
+  
+ implies",NA
+Exercises,"5.1. If the amount of information associated with each key is relatively large (compared to the key 
+ itself), this information should not be stored in the hash table. Explain why and propose a scheme 
+ for representing such a set of data.
+  
+ 5.2. Consider the proposal to solve the clustering problem by constructing overflow trees instead of 
+ overflow lists, i.e., of organizing those keys that collided as tree structures. Hence, each entry of the 
+ scatter (hash) table can be considered as the root of a (possibly empty) tree. Compare the expected 
+ performance of this tree hashing method with that of open addressing.
+  
+ 5.3. Devise a scheme that performs insertions and deletions in a hash table using quadratic 
+ increments for collision resolution. Compare this scheme experimentally with the straight binary 
+ tree organization by applying random sequences of keys for insertion and deletion.
+  
+ 5.4. The primary drawback of the hash table technique is that the size of the table has to be fixed at 
+ a time when the actual number of entries is not known. Assume that your computer system 
+ incorporates a dynamic storage allocation mechanism that allows to obtain storage at any time. 
+ Hence, when the hash table
+  H
+  is full (or nearly full), a larger table
+  H'
+  is generated, and all keys in
+  H
+  
+ are transferred to
+  H'
+ , whereafter the store for
+  H
+  can be returned to the storage administration. This is 
+ called rehashing. Write a program that performs a rehash of a table
+  H
+  of size
+  N
+ .
+  
+ 5.5. Very often keys are not integers but sequences of letters. These words may greatly vary in 
+ length, and therefore they cannot conveniently and economically be stored in key fields of fixed 
+ size. Write a program that operates with a hash table and variable length keys.",NA
+References,"[5.1] W.D. Maurer. An Improved Hash Code for Scatter Storage.
+  Comm. ACM
+ , 11, No. 1 (1968), 
+ 35-38.
+  
+ [5.2] R. Morris. Scatter Storage Techniques.
+  Comm. ACM
+ , 11, No. 1 (1968), 38-43.
+  
+ [5.3] W.W. Peterson. Addressing for Random-access Storage.
+  IBM J. Res. & Dev.
+ , 1 (1957), 130-
+ 46.
+  
+ [5.4] G. Schay and W. Spruth. Analysis of a File Addressing Method.
+  Comm. ACM
+ , 5, No. 8 (1962) 
+ 459-62.",NA
+Appendix A. The ASCII Character Set,"0
+  
+ 0
+  
+ 10
+  
+ 20
+  
+ 30
+  
+ 40
+  
+ 50
+  
+ 60
+  
+ 70
+  
+ nul
+  
+ dle
+  
+ 0
+  
+ @
+  
+ P
+  
+ `
+  
+ p
+  
+ soh
+  
+ dc1
+  
+ !
+  
+ 1
+  
+ A
+  
+ Q
+  
+ a
+  
+ q
+  
+ 1
+  
+ stc
+  
+ dc2
+  
+ ""
+  
+ 2
+  
+ B
+  
+ R
+  
+ b
+  
+ r
+  
+ 2
+  
+ etx
+  
+ dc3
+  
+ #
+  
+ 3
+  
+ C
+  
+ S
+  
+ c
+  
+ s
+  
+ 3
+  
+ eot
+  
+ dc4
+  
+ $
+  
+ 4
+  
+ D
+  
+ T
+  
+ d
+  
+ t
+  
+ 4
+  
+ enq
+  
+ nak
+  
+ %
+  
+ 5
+  
+ E
+  
+ U
+  
+ e
+  
+ u
+  
+ 5
+  
+ ack
+  
+ syn
+  
+ &
+  
+ 6
+  
+ F
+  
+ V
+  
+ f
+  
+ v
+  
+ 6
+  
+ bel
+  
+ etb
+  
+ '
+  
+ 7
+  
+ G
+  
+ W
+  
+ g
+  
+ w
+  
+ 7
+  
+ bs
+  
+ can
+  
+ (
+  
+ 8
+  
+ H
+  
+ X
+  
+ h
+  
+ x
+  
+ 8
+  
+ ht
+  
+ em
+  
+ )
+  
+ 9
+  
+ I
+  
+ Y
+  
+ i
+  
+ y
+  
+ 9
+  
+ lf
+  
+ sub
+  
+ *
+  
+ :
+  
+ J
+  
+ Z
+  
+ j
+  
+ z
+  
+ A
+  
+ vt
+  
+ esc
+  
+ +
+  
+ ;
+  
+ K
+  
+ [
+  
+ k
+  
+ {
+  
+ B
+  
+ ff
+  
+ fs
+  
+ ,
+  
+ <
+  
+ L
+  
+ \
+  
+ l
+  
+ |
+  
+ C
+  
+ cr
+  
+ gs
+  
+ -
+  
+ =
+  
+ M
+  
+ ]
+  
+ m
+  
+ }
+  
+ D
+  
+ so
+  
+ rs
+  
+ .
+  
+ >
+  
+ N
+  
+ ^
+  
+ n
+  
+ ~
+  
+ E
+  
+ si
+  
+ us
+  
+ /
+  
+ ?
+  
+ O
+  
+ _
+  
+ o
+  
+ del
+  
+ F",NA
+Appendix B. The Syntax of Oberon,NA,NA
+1. The Syntax of Oberon,"ident = letter {letter | digit}.
+  
+ number = integer | real.
+  
+ integer = digit {digit} | digit {hexDigit} ""H"" .
+  
+ real = digit {digit} ""."" {digit} [ScaleFactor].
+  
+ ScaleFactor = (""E"" | ""D"") [""+"" | ""-""] digit {digit}.
+  
+ hexDigit = digit | ""A"" | ""B"" | ""C"" | ""D"" | ""E"" | ""F"".
+  
+ digit = ""0"" | ""1"" | ""2"" | ""3"" | ""4"" | ""5"" | ""6"" | ""7"" | ""8"" | ""9"".
+  
+ CharConstant = """""" character """""" | digit {hexDigit} ""X"". string = 
+ """""" {character} """""" .
+  
+ qualident = [ident "".""] ident.
+  
+ identdef = ident [""*""].
+  
+ TypeDeclaration = identdef ""="" type.
+  
+ type = qualident | ArrayType | RecordType | PointerType | ProcedureType. ArrayType = 
+ ARRAY length {"","" length} OF type.
+  
+ length = ConstExpression.
+  
+ RecordType = RECORD [""("" BaseType "")""] FieldListSequence END.
+  
+ BaseType = qualident.
+  
+ FieldListSequence = FieldList {"";"" FieldList}.
+  
+ FieldList = [IdentList "":"" type].
+  
+ IdentList = identdef {"","" identdef}.
+  
+ PointerType = POINTER TO type.
+  
+ ProcedureType = PROCEDURE [FormalParameters].
+  
+ VariableDeclaration = IdentList "":"" type.
+  
+ designator = qualident {""."" ident | ""["" ExpList ""]"" | ""("" qualident "")"" | ""^"" }. ExpList = 
+ expression {"","" expression}.
+  
+ expression = SimpleExpression [relation SimpleExpression]. relation = 
+ ""="" | ""#"" | ""<"" | ""<="" | "">"" | "">="" | IN | IS.
+  
+ SimpleExpression = [""+""|""-""] term {AddOperator term}.
+  
+ AddOperator = ""+"" | ""-"" | OR .
+  
+ term = factor {MulOperator factor}.
+  
+ MulOperator = ""*"" | ""/"" | DIV | MOD | ""&"" .
+  
+ factor = number | CharConstant | string | NIL | set | 
+  
+ designator [ActualParameters] | ""("" expression "")"" | ""~"" factor. set = ""{"" [element {"","" 
+ element}] ""}"".
+  
+ element = expression ["".."" expression].
+  
+ ActualParameters = ""("" [ExpList] "")"" .
+  
+ statement = [assignment | ProcedureCall | 
+  
+ IfStatement | CaseStatement | WhileStatement | RepeatStatement | LoopStatement 
+ | WithStatement | EXIT | RETURN [expression] ].
+  
+ assignment = designator "":="" expression.
+  
+ ProcedureCall = designator [ActualParameters].
+  
+ IfStatement = IF expression THEN StatementSequence {ELSIF 
+ expression THEN StatementSequence} 
+  
+ [ELSE StatementSequence] 
+  
+ END.
+  
+ CaseStatement = CASE expression OF case {""|"" case} [ELSE StatementSequence] END. Case = 
+ [CaseLabelList "":"" StatementSequence].
+  
+ CaseLabelList = CaseLabels {"","" CaseLabels}.
+  
+ CaseLabels = ConstExpression ["".."" ConstExpression].
+  
+ WhileStatement = WHILE expression DO StatementSequence END.",NA
+2. Symbols and Keywords,"+
+  
+ :=
+  
+ ARRAY
+  
+ IS
+  
+ TO
+  
+ -
+  
+ ^
+  
+ BEGIN
+  
+ LOOP
+  
+ TYPE
+  
+ *
+  
+ =
+  
+ CASE
+  
+ MOD
+  
+ UNTIL
+  
+ /
+  
+ #
+  
+ CONST
+  
+ MODULE
+  
+ VAR
+  
+ ~
+  
+ <
+  
+ DIV
+  
+ NIL
+  
+ WHILE
+  
+ &
+  
+ >
+  
+ DO
+  
+ OF
+  
+ WITH
+  
+ .
+  
+ <=
+  
+ ELSE
+  
+ OR
+  
+ ,
+  
+ >=
+  
+ ELSIF
+  
+ POINTER
+  
+ ;
+  
+ ..
+  
+ END
+  
+ PROCEDURE
+  
+ |
+  
+ :
+  
+ EXIT
+  
+ RECORD
+  
+ (
+  
+ )
+  
+ IF
+  
+ REPEAT
+  
+ [
+  
+ ]
+  
+ IMPORT
+  
+ RETURN
+  
+ {
+  
+ }
+  
+ IN
+  
+ THEN",NA
+3. Standard Data Types,"CHAR, BOOLEAN, SHORTINT 
+ (8 bits)
+  
+ INTEGER 
+ (16 or 32 bits)
+  
+ LONGINT, REAL, SET 
+ (32 bits)
+  
+ LONGREAL 
+ (64 bits)",NA
+4. Standard Functions and Procedures,"Name
+  
+ Argument type
+  
+ Result type
+  
+ absolute value
+  
+ ABS(x)
+  
+ numeric
+  
+ type of
+  x
+  
+ ODD(x)
+  
+ integer type
+  
+ BOOLEAN
+  
+ x MOD 2 = 1
+  
+ CAP(x)
+  
+ CHAR
+  
+ CHAR
+  
+ corresponding capital letter
+  
+ ASH(x, n)
+  
+ integer types
+  
+ LONGINT
+  
+ x 
+ 
+  2
+ n
+ (arithmetic shift)
+  
+ LEN(v, n)
+  
+ v:
+  array type
+  
+ LONGINT
+  
+ length of
+  v
+  in dimension
+  n
+  
+ LEN(v)
+  
+ v:
+  array type
+  
+ LONGINT
+  
+ length of
+  v
+  in dimension
+  0",NA
+Appendix C. The Dijkstra loop,"E.W. Dijkstra [C.1] (see also [C.2]) introduced and justified a multibranch generalization of the 
+ conventional
+  WHILE
+  loop in his theory of systematic derivation of imperative programs. This loop 
+ proves convenient for expression and — most importantly — for verification of the algorithms 
+ which are usually expressed in terms of embedded loop, thus significantly reducing the effort of 
+ debugging.
+  
+ In the language Oberon-07 presented in [C.3], the syntax of this loop is defined as follows:
+  
+ WhileStatement 
+  
+ = WHILE logical expression DO 
+  
+  
+  
+ operator sequence 
+  
+ {ELSIF logical expression DO 
+  
+  
+  
+ operator sequence} 
+  
+ END.
+  
+ If any of the logical expressions (guards) is evaluated to
+  TRUE
+  then the corresponding operator 
+ sequence is executed. The evaluation of the guards and the execution of the corresponding operator 
+ sequences is repeated until all guards evaluate to
+  FALSE
+ . So, the postcondition for this loop is the 
+ conjunction of negations of all guards.
+  
+ Example:
+  
+ WHILE m > n DO m := m - n 
+  
+ ELSIF n > m DO n := n - m 
+  
+ END
+  
+ Postcondition:
+  ~(m > n) & ~(n > m)
+ , which is equivalent to
+  n = m
+ .
+  
+ The loop invariant must hold at the beginning and at the end of each branch.
+  
+ Roughly speaking, an
+  n
+ -branch Dijkstra loop usually corresponds to constructions with
+  n
+  usual loops 
+ that are somehow embedded one into another.
+  
+ The advantage of the Dijkstra loop is due to the fact that all the logic of an arbitrarily complex 
+ loop is expressed at the same level and is radically clarified, so that algorithms with various cases of 
+ embedded interacting (""braided"") loops receive a completely uniform treatement.
+  
+ An efficient way to construct such a loop consists in enumerating all possible situations that can 
+ emerge, describing them by the corresponding guards, and for each guard — independently of the 
+ others —constructing operations that advance the algorithm towards its goal, togethers with the 
+ operations that restore the invariant. The enumeration of the guards is stopped when the disjunction 
+ (
+ OR
+ ) of all guards covers the assumed precondition of the loop. It is useful to remember that the task 
+ of construction of a correct loop is simplified if one postpones worrying about the order of 
+ evaluation of the guards and execution of the branches, optimizations of evaluation of the guards 
+ etc., until the loop is correctly constructed. Such lower-level optimizations are rarely significant, 
+ and their implementation is greatly simplified when the correctness of a complicated loop has 
+ already been ensured.
+  
+ Although in Dijkstra's theory the order of guard evaluations is undefined, in this book the guards are 
+ assumed to be evaluated (and branches selected for execution) in their textual order.
+  
+ In most programming languages the Dijkstra loop has to be modelled. In the older versions of 
+ Oberon (including Component Pascal) it is sufficient to use the
+  LOOP
+  construct, with the body 
+ consisting of a multibranch
+  IF
+  operator that contains the single loop
+  EXIT
+  operator in the
+  ELSE
+  branch:",NA
+References,"[C.1] E.W. Dijkstra. A Discipline of Programming. Prentice-Hall, 1976.
+  
+ [C.2] D. Gries. The Science of Programming. Springer-Verlag, 1981.
+  
+ [C.3] N. Wirth. The Programming Language Oberon. Revision 1.9.2007.",NA

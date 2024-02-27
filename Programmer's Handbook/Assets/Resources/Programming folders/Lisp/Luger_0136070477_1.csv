@@ -1,0 +1,4128 @@
+Larger Text,Smaller Text,Symbol
+"AI Algorithms, Data Structures, and ",NA,NA
+"Idioms in Prolog, Lisp, and Java","Luger_all_wcopyright_COsfixed.pd1   1
+  
+ 5/15/2008   6:34:39 PM",NA
+"AI Algorithms, Data Structures, and ",NA,NA
+"Idioms in Prolog, Lisp, and Java","George F. Luger
+  
+  William A. Stubblefield
+  
+ Luger_all_wcopyright_COsfixed.pd3   3
+  
+ 5/15/2008   6:34:39 PM",NA
+Contents,"Part I
+  
+ Preface
+  
+ ix
+  
+ 1
+  
+ 59
+  
+ Language Idioms and the Master Programmer
+  
+ Chapter 1
+  
+ Idioms, Patterns, and Programming
+  
+ 3
+  
+ Part II
+  
+ 1.1 Introduction: Idioms and Patterns
+  
+ 3
+  
+ 1.2 Selected Examples of Language Idioms
+  
+ 6
+  
+ 1.3 A Brief History of Three Programming Paradigms
+  
+ 11
+  
+ 1.4 A Summary of Our Task
+  
+ 15
+  
+ Programming in Prolog
+  
+ 17
+  
+ Chapter 2
+  
+ Prolog: Representation
+  
+ 19
+  
+ Chapter 3
+  
+ 2.1 Introduction: Logic-Based Representation
+  
+ 19
+  
+ 2.2 Prolog Syntax
+  
+ 20
+  
+ 2.3 Creating, Changing, and Tracing a Prolog Computation
+  
+ 24
+  
+ 2.4 Lists and Recursion in Prolog
+  
+ 25
+  
+ 2.5 Structured Representation and Inheritance Search
+  
+ 28
+  
+ Exercises
+  
+ 32
+  
+ Abstract Data Types and Search
+  
+ 33
+  
+ Chapter 4
+  
+ 3.1 Introduction
+  
+ 33
+  
+ 3.2 Using
+  cut
+  to Control Search in Prolog
+  
+ 36
+  
+ 3.3 Abstract Data Types (ADTs) in Prolog
+  
+ 38
+  
+ Exercises
+  
+ 42
+  
+ Depth- Breadth-, and Best-First Search
+  
+ 43
+  
+ Chapter 5
+  
+ 4.1 Production System Search in Prolog
+  
+ 43
+  
+ 4.2 A Production System Solution of the FWGC Problem
+  
+ 46
+  
+ 4.3 Designing Alternative Search Strategies
+  
+ 52
+  
+ Exercises
+  
+ 58
+  
+ Meta-Linguistic Abstraction, Types, and Meta-Interpreters
+  
+ 5.1 Meta-Interpreters, Types, and Unification
+  
+ 59
+  
+ 5.2 Types in Prolog
+  
+ 61
+  
+ 5.3 Unification, Variable Binding, and Evaluation
+  
+ 64
+  
+ Exercises
+  
+ 68
+  
+ v
+  
+ Luger_all_wcopyright_COsfixed.pd5   5
+  
+ 5/15/2008   6:34:39 PM",NA
+Preface,"What we have to learn to do 
+  
+ We learn by doing…
+  
+ -
+  Aristotle,
+  Ethics
+  
+ Why Another 
+ Programming 
+ Language 
+  
+ Book?
+  
+ Writing a book about designing and implementing representations and 
+ search algorithms in Prolog, Lisp, and Java presents the authors with a 
+ number of exciting opportunities.
+  
+ The first opportunity is the chance to compare three languages that give 
+ very different expression to the many ideas that have shaped the evolution 
+ of programming languages as a whole. These core ideas, which also support 
+ modern AI technology, include functional programming, list processing, 
+ predicate logic, declarative representation, dynamic binding, meta-linguistic 
+ abstraction, strong-typing, meta-circular definition, and object-oriented 
+ design and programming. Lisp and Prolog are, of course, widely recognized 
+ for their contributions to the evolution, theory, and practice of 
+ programming language design. Java, the youngest of this trio, is both an 
+ example of how the ideas pioneered in these earlier languages have shaped 
+ modern applicative programming, as well as a powerful tool for delivering 
+ AI applications on personal computers, local networks, and the world wide 
+ web.
+  
+ The second opportunity this book affords is a chance to look at Artificial 
+ Intelligence from the point of view of the craft of programming. Although 
+ we sometimes are tempted to think of AI as a theoretical position on the 
+ nature of intelligent activity, the complexity of the problems AI addresses 
+ has made it a primary driver of progress in programming languages, 
+ development environments, and software engineering methods. Both Lisp 
+ and Prolog originated expressly as tools to address the demands of symbolic 
+ computing. Java draws on object-orientation and other ideas that can trace 
+ their roots back to AI programming. What is more important, AI has done 
+ much to shape our thinking about program organization, data structures, 
+ knowledge representation, and other elements of the software craft. Anyone 
+ who understands how to give a simple, elegant formulation to unification-
+ based pattern matching, logical inference, machine learning theories, and the 
+ other algorithms discussed in this book has taken a large step toward 
+ becoming a master programmer.
+  
+ The book’s third, and in a sense, unifying focus lies at the intersection of 
+ these points of view: how does a programming language’s formal structure 
+ interact with the demands of the art and practice of programming to
+  
+ xi
+  
+ Luger_all_wcopyright_COsfixed.pd11   11
+  
+ 5/15/2008   6:34:40 PM",NA
+PART I: Language Idioms and the,NA,NA
+Master Programmer,"all good things - trout as well as eternal salvation - come by grace and grace comes by art and art does not 
+ come easy…
+  
+ - Norman Maclean
+ , (1989) A River Runs Through It
+  
+ Language and 
+ Idioms
+  
+ In defining a programming language idiom, an analogy with natural language 
+ use might help. If I ask a friend, “Do you know what time it is?”
+  
+ or equivalently
+  “
+ Do you have a watch?
+ ”
+ , I would be surprised if she simply 
+ said “yes” and turned away. These particular forms for asking someone for 
+ the time of day are idiomatic in that they carry a meaning beyond their literal 
+ interpretation. Similarly, a programming language idiom consists of those 
+ patterns of use that good programmers accept as elegant, expressive of their 
+ design intent, and that best harness the language’s power. Good idiomatic 
+ style tends to be specific to a given language or language paradigm: the way 
+ experienced programmers organize a Prolog program would not constitute 
+ accepted Java style.
+  
+ Language idioms serve two roles. The first is to enhance communication 
+ between programmers. As experienced programmers know, we do not 
+ simply write code for a compiler; we also write it for each other. Writing in a 
+ standard idiom makes it easier for other people to understand our intent, 
+ and to maintain and/or extend our code. Second, a language’s idiom helps 
+ us to make sure we fully use the power the language designers have afforded 
+ us. People design a language with certain programming styles in mind. In the 
+ case of Java, that style was object-oriented programming, and getting full 
+ benefit of such Java features as inheritance, scoping, automatic garbage 
+ collection, exception handling, type checking, packages, interfaces, and so 
+ forth requires writing in an object-oriented idiom. A primary goal of this 
+ book is to explore and give examples of good idioms in three diverse 
+ language paradigms: the declarative (logic-based), functional, and object-
+ oriented.
+  
+ The Master 
+  
+ Programmer
+  
+ The goal of this book is to develop the idea and describe the practice of the
+  
+ master programmer
+ . This phrase carries a decidedly working class
+  
+ connotation, suggesting the kind of knowledge and effort that comes 
+ through long practice and the transmission of tools and skills from master to 
+ student through the musty rituals of apprenticeship. It certainly suggests 
+ something beyond the immaculate formalization that we generally associate 
+ with scientific disciplines. Indeed, most computer science curricula
+  
+ 1
+  
+ Luger_all_wcopyright_COsfixed.pd17   17
+  
+ 5/15/2008   6:34:41 PM",NA
+"1 Idioms, Patterns, and Programming","Chapter 
+ This chapter introduces the ideas that we use to organize our thinking about 
+ Objectives 
+ languages and how they shape the design and implementation of programs. 
+   
+  
+ These are the ideas of language, idiom, and design pattern.
+  
+ Chapter 
+  
+ Contents
+  
+ 1.1 Introduction 
+  
+ 1.2 Selected Examples of AI Language Idioms 
+  
+ 1.3 A Brief History of Three Programming Paradigms
+  
+ 1.4 A Summary of our Task
+  
+ 1.1 
+  
+ Idioms and 
+ Patterns
+  
+ Introduction 
+  
+ As with any craft, programming contains an undeniable element of 
+ experience. We achieve mastery through long practice in solving the
+  
+ problems that inevitably arise in trying to apply technology to actual problem 
+ situations. In writing a book that examines the implementation of major AI 
+ algorithms in a trio of languages, we hope to support the reader’s own 
+ experience, much as a book of musical etudes helps a young musician with 
+ their own exploration and development.
+  
+ As important as computational theory, tools, and experience are to a 
+ programmer’s growth, there is another kind of knowledge that they only 
+ suggest. This knowledge comes in the form of pattern languages and idioms, 
+ and it forms a major focus of this book. The idea of pattern languages 
+ originated in architecture (Alexander et al. 1977) as a way of formalizing the 
+ knowledge an architect brings to the design of buildings and cities that will 
+ both support and enhance the lives of their residents. In recent years, the 
+ idea of pattern languages has swept the literature on software design 
+ (Gamma, et al. 1995; Coplein & Schmidt 1995; Evans 2003), as a way of 
+ capturing a master’s knowledge of good, robust program structure.
+  
+ A design pattern describes a typical design problem, and outlines an 
+ approach to its solution. A pattern language consists of a collection of 
+ related design patterns. In the book that first proposed the use of pattern 
+ languages in architecture, Christopher Alexander et al. (1977, page x) state 
+ that a pattern
+  
+ describes a problem which occurs over and over again in our environment, and 
+  
+ then describes the core of the solution to that problem, in such a way that you 
+  
+ can use this solution a million times over, without ever doing it the same way 
+  
+ twice.
+  
+ Design patterns capture and communicate a form of knowledge that is 
+ essential to creating computer programs that users will embrace, and that
+  
+ 3
+  
+ Luger_all_wcopyright_COsfixed.pd19   19
+  
+ 5/15/2008   6:34:42 PM",NA
+PART II: Programming in Prolog,"The only way to rectify our reasonings is to make them as tangible as those of the mathematicians, so that we 
+ can find our error at a glance, and when there are disputes among persons we can simply say, “Let us 
+ calculate… to see who is right.”
+  
+ —Leibniz,
+  The Art of Discovery
+  
+ As an implementation of logic programming, Prolog makes many important 
+ contributions to AI problem solving. First and foremost, is its direct and 
+ transparent representation and interpretation of predicate calculus 
+ expressions. The predicate calculus has been an important representational 
+ scheme in AI from the beginning, used everywhere from automated 
+ reasoning to robotics research. A second contribution to AI is the ability to 
+ create meta-predicates or predicates that can constrain, manipulate, and 
+ interpret other predicates. This makes Prolog ideal for creating meta-
+ interpreters or interpreters written in Prolog that can interpret subsets of 
+ Prolog code. We will do this many times in the following chapters, writing 
+ interpreters for expert rule systems, exshell,
+  
+ interpreters
+  
+ for
+  
+ machine
+  
+ learning
+  
+ using
+  
+ version
+  
+ space
+  
+ search
+  
+ and
+  
+ explanation based learning models, and deterministic and stochastic natural 
+ language parsers.
+  
+ Most importantly Prolog has a
+  declarative semantics
+ , a means of directly 
+ expressing problem relationships in AI. Prolog also has built-in unification, 
+ some high- powered techniques for pattern matching and a depth-first left to 
+ right search. For a full description of Prolog representation, unification, and 
+ search as well as Prolog interpreter compared to an automated theorem 
+ prover, we recommend Luger (2009, Section 14.3) or references mentioned 
+ in Chapter 10. We will also address many of the important
+  
+ issues
+  
+ of
+  
+ Prolog
+  
+ and
+  
+ logic
+  
+ programming
+  
+ for
+  
+ artificial
+  
+ intelligence
+  
+ applications in the chapters that make up Part II.
+  
+ In Chapter 2 we present the basic Prolog syntax and several simple 
+ programs. These programs demonstrate the use of the predicate calculus as a 
+ representation language. We show how to monitor the Prolog environment 
+ and demonstrate the use of the
+  cut
+  with Prolog’s built in
+  
+ depth-first
+  
+ left-to-right
+  
+ search.
+  
+ We
+  
+ also
+  
+ present
+  
+ simple
+  
+ structured
+  
+ representations including semantic nets and frames and present a simple 
+ recursive algorithm that implements inheritance search.
+  
+ In Chapter 3 we create
+  abstract data types
+  (ADTs) in Prolog. These ADTs 
+ include
+  stacks
+ ,
+  queues
+ ,
+  priority queues,
+  and
+  sets
+ . These data types are the basis for 
+ many of the search and control algorithms in the remainder of Part II.
+  
+ 17
+  
+ Luger_all_wcopyright_COsfixed.pd33   33
+  
+ 5/15/2008   6:34:55 PM",NA
+2,NA,NA
+ Prolog: Representation,"Chapter 
+ Prolog’s fundamental representations are described and built: 
+  
+ Objectives 
+   
+ Facts 
+  
+  
+  
+  
+ Rules 
+  
+  
+  
+  
+ The and, or, not, and imply connectives 
+  
+  
+ The environment for Prolog is presented: 
+  
+  
+  
+  
+ The program as a data base of facts and relations between facts 
+  
+  
+  
+ Predicates are for creating and modifying this data base 
+  
+ Prolog’s procedural semantics is described with examples 
+  
+  
+  
+  
+ Pattern-matching 
+  
+  
+ Left-to-right depth-first search 
+  
+  
+ Backtracking on variable bindings 
+  
+  
+ The built-in predicates for monitoring Prolog’s execution are presented 
+   
+  
+ spy and trace 
+  
+  
+ The list representation and recursive search are introduced 
+  
+  
+  
+  
+ Examples of member check and writing out lists 
+  
+  
+ Representations for structured hierarchies are created in Prolog 
+  
+  
+  
+  
+ Semantic net and frame systems 
+  
+  
+  
+  
+ Inherited properties determined through recursive (tree) search
+  
+ Chapter 
+  
+ 2.1 Introduction: Logic-Based Representation 
+  
+ Contents 
+  
+ 2.2 Syntax for Predicate Calculus Programming 
+  
+   
+ 2.3 Creating, Changing and Tracing a Prolog Computation 
+  
+  
+ 2.4 Lists and Recursion in Prolog 
+  
+   
+ 2.5 Structured Representations and Inheritance Search in Prolog
+  
+  
+  
+ 2.1 
+ Prolog and 
+ Logic
+  
+ Introduction: Logic-Based Representation 
+  
+ Prolog is a computer language that uses many of the representational 
+ strengths of the First-Order Predicate Calculus (Luger 2009, Chapter 2).
+  
+ Because Prolog has this representational power it can express general 
+ relationships between entities. This allows expressions such as “all females 
+ are intelligent” rather than the limited representations of the propositional 
+ calculus: “Kate is intelligent”, “Sarah is intelligent”, “Karen is intelligent”, 
+ and so on for a very long time!
+  
+ As in the Predicate Calculus, predicates offer the primary (and only) 
+ representational structure in Prolog. Predicates can have zero or more 
+ arguments, where their
+  arity
+  is the number of arguments. Functions may only 
+ be represented as the argument of a predicate; they cannot be a program 
+ statement in themselves. Prolog predicates have the usual
+  and
+ , 
+ or
+ ,
+  not
+  
+ and
+  implies
+  connectives. The predicate representation along with its 
+ connectives is presented in Section 2.2.
+  
+ 19
+  
+ Luger_all_wcopyright_COsfixed.pd35   35
+  
+ 5/15/2008   6:34:56 PM",NA
+3 Abstract Data Types and Search,"Chapter 
+ Prolog’s graph search representations were described and built: 
+  
+ Objectives 
+   
+ Lists 
+  
+  
+ A recursive tree-walk algorithm 
+  
+  
+ The cut predicate, !, for Prolog was presented: 
+  
+  
+  
+  
+ Controls the interpreter’s backtracking 
+  
+  
+ Limits variable instantiations, and thus 
+  
+  
+  
+  
+ May prevent the interpreter from computing good solutions 
+  
+  
+ Demonstrated procedural abstraction and information hiding with Abstract Data 
+  
+ Types 
+  
+  
+ The stack operators 
+  
+  
+  
+  
+ The queue operators 
+  
+  
+  
+  
+ The priority queue operators 
+  
+  
+  
+  
+ Sets
+  
+ Chapter 
+  
+ 3.1 Recursive Search in Prolog 
+  
+ Contents 
+  
+ 3.2 Using cut to Control Search in Prolog 
+  
+   
+ 3.3 Abstract Data Types in Prolog
+  
+ 3.1
+  
+ Recursion-
+  
+ Based Graph 
+ Search
+  
+ Introduction 
+  
+ We next introduce the 3 x 3 knight’s tour problem, create a predicate 
+ calculus based representation of problem states, and a recursive search of its 
+ state space. The chess knight can move on a restricted board as on any
+  
+ regular chessboard: two squares one direction (horizontally or vertically) and 
+ one in the other (vertically or horizontally). Thus, the knight can go from 
+ square 1 to either square 6 or 8 or from square 9 to either 2 or 4. We ask if 
+ the knight can generate a sequence on legal moves from one square to 
+ another on this restricted chessboard, from square 1 to 9, for example. The 
+ knight’s moves are represented in Prolog using
+  move
+  facts, Figure 3.1.
+  
+ The
+  path
+  predicate defines an algorithm for a path between its two 
+ arguments, the present state,
+  X
+ , and the goal that it wants to achieve,
+  Y
+ . To 
+ do this it first tests whether it is where it wants to be,
+  path(Z, Z)
+ , and if 
+ not, looks for a state,
+  W
+ , to move to
+  
+ The Prolog search defined by
+  path
+  is a recursive, depth-first, left-to-right, 
+ tree walk. As shown in Section 2.3,
+  assert
+  is a built-in Prolog predicate 
+ that always succeeds and has the side effect of placing its argument in the 
+ database of specifications. The
+  been
+  predicate is used to record each state 
+ as it is visited and then
+  not(been(X))
+  determines, with each new state 
+ found whether that state has been previously visited, thus avoiding looping 
+ within the search space.
+  
+ 33
+  
+ Luger_all_wcopyright_COsfixed.pd49   49
+  
+ 5/15/2008   6:35:06 PM",NA
+ cut,"to Control Search in Prolog
+  
+ The predicate
+  cut
+  is represented by an exclamation point, !. The syntax for 
+ cut is that of a goal with no arguments. Cut has several side effects: first, 
+ when originally encountered it always succeeds, and second, if it is “failed 
+ back to” in backtracking, it causes the entire goal in which it is contained to 
+ fail. For a simple example of the effect of the cut, we create a two-move 
+ path
+  call from the knight’s tour example that we just presented. Consider 
+ the predicate path2:
+  
+ path2(X, Y) :- move(X, Z), move(Z, Y).
+  
+ There is a two-move path between X and Y if there exists an intermediate 
+ state Z between them. For this example, assume part of the knight’s tour 
+ database:
+  
+ move(1, 8).
+  
+ move(6, 7).
+  
+ move(6, 1).
+  
+ move(8, 3).
+  
+ move(8, 1).
+  
+ The interpreter finds all the two-move paths from 1; there are four:
+  
+ ?- path2(1, W).
+  
+ W = 7
+  
+ Luger_all_wcopyright_COsfixed.pd52   52
+  
+ 5/15/2008   6:35:08 PM",NA
+4,NA,NA
+" Depth-, Breadth-, and Best-First Search",NA,NA
+Using the Production System Design,NA,NA
+Pattern,"Chapter 
+ A production system was defined and examples given: 
+  
+ Objectives 
+   
+ Production rule sets 
+  
+  
+ Control strategies 
+  
+  
+ A production system written in Prolog was presented: 
+  
+  
+  
+  
+ A rule set and control strategy for the Farmer Wolf, Goat, and Cabbage 
+  
+ problem 
+  
+  
+ Search strategies for the production system created using Abstract Data Types 
+  
+ Depth-first 
+ search and the stack operators 
+  
+  
+  
+  
+ Breadth-first search and the queue operators 
+  
+  
+  
+  
+ Best first search and the priority queue operators 
+  
+  
+  
+  
+ Sets were used for the closed list in all searches
+  
+ Chapter 
+  
+ 4.1 Production System Search in Prolog 
+  
+ Contents 
+  
+ 4.2 A Production System Solution to the Farmer, Wolf, Goat, Cabbage Problem 
+   
+ 4.3 Designing Alternative Search Strategies
+  
+ 4.1 
+  
+ The Production 
+ System
+  
+ Production System Search in Prolog 
+  
+ The
+  production system
+  (Luger 2009, Section 6.2) is a model of computation that has 
+ proved particularly important in AI, both for implementing search algorithms
+  
+ and for modeling human problem solving behavior. A production system 
+ provides pattern-directed control of a problem-solving process and consists of a 
+ set of
+  production rules
+ , a
+  working memory
+ , and a
+  recognize–act
+  control cycle.
+  
+ A
+  production system
+  is defined by:
+  
+ The set of production rules
+ . These are often simply called
+  productions
+ . A production is a
+  
+ condition–action
+  pair and defines a single chunk of problem-solving knowledge. 
+ The
+  condition part
+  of the rule is a pattern that determines when that rule may 
+ be applied by matching data in the working memory. The 
+ action part
+  of the 
+ rule defines the associated problem-solving step.
+  
+ Working memory
+  contains a description of the
+  current state of the world
+  in a reasoning 
+ process. This description is a pattern that, in
+  data-driven reasoning
+ , is matched 
+ against the condition part of a production to select appropriate problem-
+ solving actions. The actions of production rules are specifically designed to 
+ alter the contents of working memory, leading to the next phase of the 
+ recognize-act cycle.
+  
+ The recognize–act cycle
+ . The control structure for a production system is simple: 
+ working memory
+  is initialized with the beginning problem description. The 
+ current state of the problem solving is maintained as a set of patterns in 
+ working memory. These patterns are matched against the conditions of the
+  
+ 43
+  
+ Luger_all_wcopyright_COsfixed.pd59   59
+  
+ 5/15/2008   6:35:09 PM",NA
+5,NA,NA
+" Meta-Linguistic Abstraction, Types, and",NA,NA
+Meta-Interpreters,"Chapter 
+  
+ Objectives
+  
+ A number of Prolog meta-predicates are presented, including: 
+  
+ Atom
+  
+  
+ clause 
+  
+  
+ univ
+  (
+ =..
+ ) 
+  
+  
+ call 
+  
+ The type system for Prolog: 
+  
+  
+ Programmer implements typing as needed 
+  
+  
+ Types as run time constraints rather than enforced at compile time 
+ Unification and variable binding explained 
+  
+ Evaluation versus unification 
+  
+  
+ is
+  versus
+  = 
+  
+  
+ Difference lists demonstrated
+  
+ Chapter 
+  
+ 5.1 Meta-Predicates, Types, and Unification 
+  
+ Contents 
+  
+ 5.2 Types in Prolog 
+  
+   
+ 5.3 Unification: The Engine for Variable Binding and Evaluation
+  
+ 5.1 
+  
+ Meta-Logical 
+ Predicates
+  
+ Meta-Interpreters, Types, and Unification 
+  
+ In this chapter we first consider a set of powerful Prolog predicates, called 
+ meta-predicates
+ . These predicates take as their scope other predicates in the
+  
+ Prolog environment. Thus they offer tools for building
+  meta-interpreters
+ , 
+ interpreters in a language that are able to interpret specifications in that 
+ language. An example will be to build a rule interpreter in Prolog, an 
+ interpreter that can manipulate and interpret rule sets, specified in Prolog 
+ syntax. These interpreters can also be used to query the user, offer 
+ explanations of the interpreter’s decisions, implement multi-valued or fuzzy 
+ logics, and run any Prolog code.
+  
+ In Section 5.1 we introduce a useful set of meta-predicates. In Section 5.2 
+ we discuss data typing for Prolog and describe how type constraints can be 
+ added to a prolog system. An example of a typed relational database in 
+ Prolog is given. Finally, in Section 5.3, we discuss unification and 
+ demonstrate with difference lists how powerful this can be.
+  
+ Meta-logical constructs extend the expressive power of any programming 
+ environment. We refer to these predicates as
+  meta
+  because they are designed 
+ to match, query, and manipulate other predicates that make up the 
+ specifications of the problem domain. That is, they can be used to reason 
+ about Prolog predicates rather than the terms or objects these other 
+ predicates denote. We need meta-predicates in Prolog for (at least) five 
+ reasons:
+  
+ 59
+  
+ Luger_all_wcopyright_COsfixed.pd75   75
+  
+ 5/15/2008   6:35:16 PM",NA
+6,NA,NA
+" Three Meta-Interpreters: Prolog in Prolog,",NA,NA
+"EXSHELL, and a Planner","Chapter 
+  
+ Objectives
+  
+ Prolog’s meta-predicates used to build three meta-interpreters 
+ Prolog in Prolog 
+  
+ An expert system shell:
+  exshell
+  
+  
+ A planner in Prolog 
+  
+ The Prolog in Prolog interpreter: 
+  
+  
+ Left-to-right and depth-first search 
+  
+  
+ Solves for a goal look first for facts, then rules, then ask user 
+  
+ exshell
+  performed, using a set of
+  solve
+  predicates: 
+  
+  
+ Goal-driven, depth-first search 
+  
+  
+ Answers
+  how
+  (rule stack) and
+  why
+  (proof tree) 
+  
+  
+ Pruned search paths using the Stanford certainty factor algebra 
+  
+ The Prolog planner 
+  
+  
+ Uses an add and delete list to generate new states 
+  
+  
+ Performs depth-first and left-to-right search for a plan
+  
+ Chapter 
+  
+ 6.1 An Introduction to Meta-Interpreters: Prolog in Prolog 
+  
+ Contents 
+  
+ 6.2 A Shell for a Rule-Based Expert System 
+  
+   
+ 6.3 A Prolog Planner
+  
+ 6.1 
+  
+ Meta 
+  
+ Interpreters
+  
+ An Introduction to Meta-Interpreters: Prolog in Prolog 
+ In 
+ both Lisp and Prolog, it is easy to write programs that manipulate 
+ expressions written in that language’s syntax. We call such programs
+  meta-
+  
+ interpreters
+ . In an example we will explore throughout this book, an
+  expert 
+ system shell
+  interprets a set of rules and facts that describe a particular 
+ problem. Although the rules of a problem situation are written in the syntax 
+ of the underlying language, the meta-interpreter redefines their semantics. 
+ The “tools” for supporting the design of a meta-interpreter in Prolog were 
+ the
+  meta predicates
+  presented in Chapter 5.
+  
+ In this chapter we present three examples of meta-interpreters. As our first 
+ example, we define the semantics of pure Prolog using the Prolog language 
+ itself. This is not only an elegant statement of Prolog semantics, but also will 
+ serve as a starting point for more complex meta-interpreters.
+  solve 
+ takes 
+ as its argument a Prolog goal and processes it according to the semantics of 
+ Prolog:
+  
+ solve(true) :-!.
+  
+ solve(not A) :- not(solve(A)).
+  
+ solve((A, B)) :-!, solve(A), solve(B).
+  
+ solve(A) :- clause(A, B), solve(B).
+  
+ 69
+  
+ Luger_all_wcopyright_COsfixed.pd85   85
+  
+ 5/15/2008   6:35:19 PM",NA
+7,NA,NA
+ Machine Learning Algorithms in Prolog,"Chapter 
+ Two different machine learning algorithms 
+  
+ Objectives 
+   
+ Version space search 
+  
+  
+  
+  
+  
+ Specific-to-general 
+  
+  
+  
+  
+  
+ Candidate elimination 
+  
+  
+  
+  
+ Explanation-based learning 
+  
+  
+  
+  
+  
+ Learning from examples 
+  
+  
+  
+  
+  
+ Generalization 
+  
+  
+ Prolog meta-predicates and interpreters for learning 
+  
+  
+  
+  
+ Version space search 
+  
+  
+  
+  
+ Explanation-based learning
+  
+ Chapter 
+  
+ Contents
+  
+ 7.1 Machine Learning: Version Space Search 
+ 7.2 Explanation Based Learning in Prolog
+  
+ 7.1
+  
+ Machine Learning: Version Space Search
+  
+ In this section and the next, we implement two machine learning algorithms:
+  
+ version space search
+  and
+  explanation-based learning
+ . The algorithms themselves are 
+ presented in detail in Luger (2009, Chapter 10). In this chapter, we first 
+ briefly summarize them and then implement them in
+  
+ Prolog.
+  
+ Prolog
+  
+ is
+  
+ used
+  
+ for
+  
+ machine
+  
+ learning
+  
+ because,
+  
+ as
+  
+ these
+  
+ implementations illustrate, in addition to the flexibility to respond to novel 
+ data elements provided by its powerful built-in pattern matching, its meta-
+ level reasoning capabilities simplify the construction and manipulation of 
+ new representations.
+  
+ The Version 
+  
+ Space Search 
+  
+ Algorithm
+  
+ Version
+  
+ space
+  
+ search
+  
+ (Mitchell
+  
+ 1978,
+  
+ 1979,
+  
+ 1982)
+  
+ illustrates
+  
+ the
+  
+ implementation of inductive learning as search through a concept space. A 
+ concept space is a state space representation of all possible generalizations
+  
+ from data in a problem domain. Version space search takes advantage of the 
+ fact that generalization operations impose an ordering on the concepts in a 
+ space, and then uses this ordering to guide the search.
+  
+ Generalization
+  and
+  specialization
+  are the most common types of operations for 
+ defining a concept space. The primary generalization operations used in 
+ machine learning and expressed in the predicate calculus (Luger 2009, Chapter 
+ 2) are: 
+  
+ Replacing constants with variables. For example:
+  
+ color(ball,red)
+  
+ generalizes to
+  
+ color(X,red)
+  
+ 87
+  
+ Luger_all_wcopyright_COsfixed.pd103   103
+  
+ 5/15/2008   6:35:24 PM",NA
+8,NA,NA
+ Natural Language Processing in Prolog,"Chapter 
+ Natural language processing representations were presented 
+  
+ Objectives 
+   
+ Semantic relationships 
+  
+  
+  
+  
+  
+ Conceptual graphs 
+  
+  
+  
+  
+  
+ Verb-based case frames 
+  
+  
+ Prolog was used to build a series of parsers 
+  
+  
+  
+  
+ Context free parsers 
+  
+  
+  
+  
+  
+ Deterministic 
+  
+  
+  
+  
+ Probabilistic Parsers 
+  
+  
+  
+  
+  
+ Probabilistic measures for sentence structures and words 
+  
+  
+  
+  
+ Lexicalized probabilistic parsers capture word combination 
+  
+  
+  
+  
+  
+ plausibility 
+  
+  
+  
+  
+ Context sensitive parsers 
+  
+  
+  
+  
+  
+ Deterministic 
+  
+  
+ Recursive descent semantic net parsers 
+  
+  
+  
+  
+ Enforce word-based case frame constraints
+  
+ Chapter 
+  
+ Contents
+  
+ 8.1 Natural Language Understanding in Prolog 
+ 8.2 Prolog-Based Semantic Representations
+  
+ 8.3 A Context-Free Parser in Prolog 
+  
+ 8.4 Probabilistic Parsers in Prolog 
+  
+ 8.5 A Context-Sensitive Parser in Prolog 
+  
+ 8.6 A Recursive Descent Semantic Net Parser
+  
+ 8.1
+  
+ Natural Language Understanding in Prolog
+  
+ Because of its declarative semantics, built-in search, and pattern matching, 
+ Prolog provides an important tool for programs that process natural language. 
+ Indeed, natural language understanding was one of Prolog’s earliest 
+ applications. As we will see with many examples in this chapter, we can write 
+ natural language grammars directly in Prolog, for example, context-free, 
+ context-sensitive, recursive descent semantic network, as well as stochastic 
+ parsers. Semantic representations are also easy to create in Prolog, as we see 
+ for conceptual graphs and case frames in Section 8.2. Semantic relationships 
+ may be captured either using the first-order predicate calculus or by a meta-
+ interpreter for another representation, as suggested by semantic networks 
+ (Section 2.4.1) or frames (Sections 2.4.2 and 8.1). 
+  
+ This not only 
+ simplifies programming, but also keeps a close connection between theories 
+ and their implementation.
+  
+ In Section 8.3 we present a context-free parser and later add context 
+ sensitivity to the parse Section 8.5. We accomplish many of the same 
+ justifications for context sensitivity in parsing, e.g., noun-verb agreement, 
+ with the various probabilistic parsers of Section 8.4. Finally, semantic
+  
+ 107
+  
+ Luger_all_wcopyright_COsfixed.pd123   123
+  
+ 5/15/2008   6:35:34 PM",NA
+9,NA,NA
+ Dynamic Programming and the Earley,NA,NA
+Parser,"Chapter 
+ Language parsing with dynamic programming technique 
+  
+ Objectives 
+ Memoization of subparses 
+  
+  
+ Retaining partial solutions (parses) for reuse 
+  
+  
+  
+  
+ The
+  chart
+  as medium for storage and reuse 
+  
+  
+  
+  
+  
+ Indexes for word list (sentence) 
+  
+  
+  
+  
+  
+ States reflect components of parse 
+  
+  
+  
+  
+  
+ Dot reflects extent parsing right side of grammar rule 
+  
+  
+  
+ Lists of states make up components of chart 
+  
+  
+  
+  
+  
+ Chart linked to word list 
+  
+  
+ Prolog implementation of an Earley parser 
+  
+  
+  
+  
+ Context free parser 
+  
+  
+  
+  
+  
+ Deterministic 
+  
+  
+  
+  
+ Chart supports multiple parse trees 
+  
+  
+ Forwards development of chart composes components of successful parse 
+  
+ Backwards search of chart produces possible parses of word list 
+  
+  
+ Earley parser important use of meta-interpreter technology.
+  
+ Chapter 
+  
+ 9.1 Dynamic Programming Revisited 
+  
+ Contents 
+  
+ 9.2 Earley Parsing: Pseudocode and an Example 
+  
+   
+ 9.3 The Earley Parser in Prolog
+  
+ 9.1
+  
+ Dynamic Programming Revisited
+  
+ The dynamic programming (DP) approach to problem solving was originally 
+ proposed by Richard Bellman (1956). The idea is straightforward: when 
+ addressing a large complex problem that can be broken down into multiple 
+ subproblems, save partial solutions as they are generated so that they can be 
+ reused later in the solution process for the full problem. This“save and reuse 
+ of partial solutions” is sometimes called
+  memoizing
+  the subproblem solutions 
+ for later reuse.
+  
+ There are many examples of dynamic programming in pattern matching 
+ technology, for example, it has been used 
+  
+ in determining a difference 
+ measure between two strings of bits or characters. The overall difference 
+ between the strings will be a function of the differences between its specific 
+ components. An example of this is a spell checker going to its dictionary and 
+ suggesting words that are “close” to your misspelled word. The spell checker 
+ determines “closeness” by calculating a difference measure between your 
+ word and words that it has in its dictionary. This difference is often calculated, 
+ using some form of the DP algorithm, as a
+  
+ 125
+  
+ Luger_all_wcopyright_COsfixed.pd141   141
+  
+ 5/15/2008   6:35:48 PM",NA
+·,"Noun Verb
+  
+  
+ S
+  
+ Noun",NA
+ ·,"Verb 
+  
+ Noun Verb",NA
+·,"Noun 
+  
+ Verb
+  
+ mary",NA
+·,runs,NA
+·,"mary 
+  
+ runs
+  
+ Figure 9.1 The relationship of dotted rules to the generation of a parse 
+ tree.
+  
+ We refer to the entire collection of state sets as the
+  chart
+  produced by the 
+ parser. Figure 9.1 illustrates the relationship between state set generation and 
+ the examination of input words.
+  
+ Luger_all_wcopyright_COsfixed.pd143   143 
+  
+ 5/15/2008   6:35:49 PM",NA
+10,NA,NA
+ Prolog: Final Thoughts,"Chapter 
+  
+ Objectives
+  
+ Prolog and declarative representations 
+  
+ Facts 
+  
+  
+ Rules 
+  
+ The
+  append
+  example
+  
+ Prolog referenced to automated reasoning systems 
+  
+  
+ Lack of
+  occurs check 
+  
+  
+ No
+  unique names
+  or
+  closed world 
+  
+ Prolog semantics 
+  
+  
+ Pattern-matching 
+  
+ Left-to-right depth-first search search 
+  
+ Backtracking on variable bindings 
+  
+ References offered for Prolog extensions
+  
+ Chapter 
+  
+ Contents
+  
+ 10.1Prolog: Towards a Declarative Semantics 
+ 10.2 Prolog and Automated Reasoning
+  
+ 10.3 Prolog Idioms 
+  
+ 10.4 Prolog Extensions
+  
+ 10.1
+  
+ Prolog: Towards a Declarative Semantics
+  
+ We have now finishing our nine-chapter presentation of Prolog. To 
+ summarize and conclude we describe again the design philosophy 
+ supporting this language paradigm, look at how this influenced the history of 
+ its development, summarize the main language idioms we used in building 
+ our AI applications programs, and mention several modern extensions of 
+ this declarative approach to programming.
+  
+ Prolog was first designed and used at the University of Marseilles in the 
+ south of France in the early 1970s. The first Prolog interpreter was intended 
+ to analyze French using
+  metamorphosis grammars
+  (Colmerauer 1975). From 
+ Marseilles, the language development moved on to the University of 
+ Edinburgh in Scotland, where at the Artificial Intelligence Department, 
+ Fernando Pereira and David Warren (1980) created
+  definite clause grammars
+ . In 
+ fact, because of the declarative nature of Prolog and the flexibility of 
+ pattern-driven control, tasks in Natural Language Processing, NLP, (Luger 
+ 2009, Chapter 15) have always offered a major application domain (see 
+ Chapters 8 and 9). Veronica Dahl (1977), Dahl and McCord (1983), Michael 
+ McCord (1982, 1986), and John Sowa (Sowa 1984, Walker et al. 1987) have 
+ all contributed to this research.
+  
+ Besides NLP, Prolog has supported many research tasks including the 
+ development of early expert systems (Bundy et al. 1979). Building AI 
+ representations such as semantic nets, frames, and objects has always been 
+ an important task for Prolog (see especially
+  Knowledge Systems and Prolog
+  by
+  
+ 141
+  
+ Luger_all_wcopyright_COsfixed.pd157   157
+  
+ 5/15/2008   6:35:52 PM",NA
+Part III: Programming in Lisp,"“The name of the song is called ‘Haddocks’ Eyes.’ “
+  
+ “Oh, that’s the name of the song, is it?” Alice said, trying to feel interested.
+  
+ “No, you don’t understand,” the Knight said, looking a little vexed. “That’s what the name is called. The 
+ name really is ‘The Aged Aged Man.’ “
+  
+ “Then I ought to have said ‘That’s what the song is called’?” Alice corrected herself.
+  
+ “No, you oughtn’t: that’s quite another thing! The song is called ‘Ways and Means’: but that’s only what it’s 
+ called you know!”
+  
+ “Well, what is the song, then?” said Alice, who was by this time completely bewildered.
+  
+ “I was coming to that,” the Knight said.
+  
+ —Lewis Carroll, Through the Looking Glass
+  
+ For the almost fifty years of its existence, Lisp has been an important 
+ language for artificial intelligence programming. Originally designed for 
+ symbolic computing, Lisp has been extended and refined over its lifetime in 
+ direct response to the needs of AI applications. Lisp is an
+  imperative 
+ language: 
+ Lisp programs describe
+  how
+  to perform an algorithm. This contrasts with
+  
+ declarative
+  languages such as Prolog, whose programs are assertions that 
+ define relationships and constraints in a problem domain. However, unlike 
+ traditional imperative languages, such as FORTRAN, C++ or Java, Lisp is
+  
+ functional
+ : its syntax and semantics are derived from the mathematical theory 
+ of recursive functions.
+  
+ The power of functional programming, combined with a rich set of high-
+ level tools for building symbolic data structures such as predicates, frames, 
+ networks, rules, and objects, is responsible for Lisp’s popularity in the AI 
+ community. Lisp is widely used as a language for implementing AI tools and 
+ models, particularly in the research community, where its high-level 
+ functionality and rich development environment make it an ideal language 
+ for building and testing prototype systems.
+  
+ In Part III, we introduce the syntax and semantics of Common Lisp, with 
+ particular emphasis on the features of the language that make it useful for AI 
+ programming: the use of lists to create symbolic data structures, and the 
+ implementation of interpreters and search algorithms to manipulate these 
+ structures. Examples of Lisp programs that we develop in Part III include 
+ search engines, pattern matchers, theorem provers, rule-based expert system 
+ shells, semantic networks, algorithms for learning, and object-oriented 
+ simulations. It is not our goal to provide a complete introduction to Lisp; a 
+ number of excellent texts (see the epilogue Chapter 20) do this in
+  
+ 149
+  
+ Luger_all_wcopyright_COsfixed.pd165   165
+  
+ 5/15/2008   6:35:54 PM",NA
+"11 S-expressions, the Syntax of Lisp","Chapter 
+ The Lisp, s-expression introduced 
+  
+ Objectives 
+   
+ Basic syntactic unit for the language 
+  
+  
+ Structures defined recursively 
+  
+  
+ The list as data or function 
+  
+  
+  
+  
+ quote 
+  
+  
+  
+  
+ eval 
+  
+  
+ Creating new functions in Lisp: 
+  
+  
+  
+  
+ defun 
+  
+  
+ Control structures in Lisp 
+  
+  
+  
+  
+ Functions 
+  
+  
+  
+  
+  
+ cond 
+  
+  
+  
+  
+  
+ if 
+  
+  
+  
+  
+ Predicates 
+  
+  
+  
+  
+  
+ and 
+  
+  
+  
+  
+  
+ or 
+  
+  
+  
+  
+  
+ not
+  
+ Chapter 
+  
+ Contents
+  
+ 11.1 Introduction to Symbol Expressions 
+  
+ 11.2 Control of Lisp Evaluation:
+  quote
+  and
+  
+ eval
+  
+ 11.3 Programming in Lisp: Creating New Functions 
+  
+ 11.4 Program Control in Lisp: Conditionals and Predicates
+  
+ 11.1 
+  
+ The S-
+  
+ expression
+  
+ Introduction to Symbol Expressions 
+  
+ The syntactic elements of the Lisp programming language are
+  symbolic 
+ expressions
+ , also known as
+  s-expressions
+ . Both programs and data are
+  
+ represented as s-expressions: an s-expression may be either an
+  atom
+  or a
+  list
+ . 
+ Lisp atoms are the basic syntactic units of the language and include both 
+ numbers and symbols. Symbolic atoms are composed of letters, numbers, 
+ and the non-alphanumeric characters.
+  
+ Examples of Lisp atoms include: 
+  
+ 3.1416 
+  
+ 100 
+  
+ hyphenated-name 
+  
+ *some-global* 
+  
+ nil
+  
+ A
+  list
+  is a sequence of either atoms or other lists separated by blanks and 
+ enclosed in parentheses. Examples of lists include: 
+  
+  
+ (1 2 3 4) 
+  
+  
+ (george kate james joyce) 
+  
+  
+ (a (b c) (d (e f))) 
+  
+  
+ ()
+  
+ Note that lists may be elements of lists. This nesting may be arbitrarily
+  
+ 151
+  
+ Luger_all_wcopyright_COsfixed.pd167   167
+  
+ 5/15/2008   6:35:55 PM",NA
+12,NA,NA
+ Lists and Recursive Search,"Chapter 
+ Lisp processing of arbitrary symbol structures 
+  
+ Objectives 
+   
+ Building blocks for data structures 
+  
+  
+  
+  
+ Designing accessors 
+  
+  
+ The symbol list as building block 
+  
+  
+  
+  
+ car 
+  
+  
+  
+  
+ cdr 
+  
+  
+  
+  
+ cons 
+  
+  
+ Recursion as basis of list processing 
+  
+  
+  
+  
+ cdr
+  recursion 
+  
+  
+  
+  
+ car-cdr
+  recursion 
+  
+  
+ The tree as representative of the structure of a list
+  
+ Chapter 
+  
+ 12.1 Functions, Lists, and Symbolic Computing 
+  
+ Contents 
+  
+ 12.2 Lists as Recursive Structures 
+  
+   
+ 12.3 Nested Lists, Structure, and car/cdr Recursion
+  
+ 12.1 
+  
+ Symbolic 
+  
+ Computing
+  
+ Functions, Lists, and Symbolic Computing 
+  
+ Although the Chapter 11 introduced Lisp syntax and demonstrated a few 
+ useful Lisp functions, it did so in the context of simple arithmetic
+  
+ examples. The real power of Lisp is in symbolic computing and is based on 
+ the use of lists to construct arbitrarily complex data structures of symbolic 
+ and numeric atoms, along with the forms needed for manipulating them. We 
+ illustrate the ease with which Lisp handles symbolic data structures, as well 
+ as the naturalness of data abstraction techniques in Lisp, with a simple 
+ database example. Our database application requires the manipulation of 
+ employee records containing name, salary, and employee number fields.
+  
+ These records are represented as lists, with the name, salary, and number fields 
+ as the first, second, and third elements of a list. Using
+  nth
+ ,
+  it is possible to 
+ define access functions for the various fields of a data record. For example:
+  
+ (defun name-field (record)
+  
+ (nth 0 record))
+  
+ will have the behavior:
+  
+ > (name-field ‘((Ada Lovelace) 45000.00 38519))
+  
+ (Ada Lovelace)
+  
+ Similarly, the functions
+  salary-field
+  and
+  number-field
+  may be 
+ defined to access the appropriate fields of a data record. Because a name is 
+ itself a list containing two elements, a first name and a last name, it is useful 
+ to define functions that take a name as argument and return either the first 
+ or last name as a result.
+  
+ 161
+  
+ Luger_all_wcopyright_COsfixed.pd177   177
+  
+ 5/15/2008   6:35:57 PM",NA
+"13 Variables, Datatypes, and Search","Chapter 
+ Variables introduced 
+  
+ Objectives 
+   
+ Basic support for type systems 
+  
+  
+ Fundamental to search 
+  
+  
+ Creating and binding variables 
+  
+  
+  
+  
+ set 
+  
+  
+  
+  
+   
+ let 
+  
+  
+ Depth-first search in Lisp: 
+  
+  
+  
+  
+ Use of production system architecture 
+  
+  
+  
+  
+ Backtracking supports search of all options
+  
+ Chapter 
+ Contents
+  
+ 13.1 Variables and Datatypes 
+  
+ 13.2 Search: The Farmer, Wolf, Goat, and Cabbage Problem
+  
+ 13.1
+  
+ Variables and Datatypes
+  
+ We begin this chapter by demonstrating the creation of variables using 
+ set
+  
+ and
+  let
+  and discussing the scope of their bindings. We then introduce 
+ datatypes and discuss run-time type checking. We finish this chapter with a 
+ sample search, where we use variables for state and recursion for generation 
+ of the state-space graph.
+  
+ Binding 
+  
+ Variables Using 
+ Set
+  
+ Lisp is based on the theory of recursive functions; early Lisp was the first 
+ example of a functional or
+  applicative
+  programming language. An important 
+ aspect of purely functional languages is the lack of any side effects as a
+  
+ result of function execution. This means that the value returned by a 
+ function call depends only on the function definition and the value of the 
+ parameters in the call. Although Lisp is based on mathematical functions, it 
+ is possible to define Lisp forms that violate this property. Consider the 
+ following Lisp interaction:
+  
+ > (f 4)
+  
+ 5
+  
+ > (f 4)
+  
+ 6
+  
+ > (f 4)
+  
+ 7
+  
+ Note that
+  f
+  does not behave as a true function in that its output is not 
+ determined solely by its actual parameter: each time it is called with
+  4
+ , it 
+ returns a different value. This implies that f is retaining its state, and that 
+ each execution of the function creates a side effect that influences the 
+ behavior of future calls.
+  f
+  is implemented using a Lisp built-in function 
+ called
+  set
+ :
+  
+ 171
+  
+ Luger_all_wcopyright_COsfixed.pd187   187
+  
+ 5/15/2008   6:36:01 PM",NA
+14 Higher-Order Functions and Flexible ,NA,NA
+Search,"Chapter 
+  
+ Objectives
+  
+ Lisp higher-order functions 
+  
+ Lisp functions 
+  
+ map
+  
+  
+  
+ filter 
+  
+ Lisp functions as arguments of functions 
+  
+  
+  
+ funcall 
+  
+  
+  
+ apply 
+  
+ Designing search algorithms in Lisp 
+  
+  
+ General production system framework 
+  
+  
+ Use of open and closed lists 
+  
+ Algorithms designed in Lisp 
+  
+  
+ Depth-first search 
+  
+  
+ Breadth-first search 
+  
+  
+ Best first search 
+  
+  
+ Programmer implements typing as needed
+  
+ Chapter 
+ Contents
+  
+ 14.1 Higher-Order Functions and Abstraction 
+ 14.2 Search Strategies in Lisp
+  
+ 14.1
+  
+ Higher-Order Functions and Abstraction
+  
+ One of the most powerful techniques that Lisp and other functional 
+ programming languages provide is the ability to define functions that take 
+ other functions as parameters or return them as results. These functions are 
+ called
+  higher-order functions
+  and are an important tool for procedural 
+ abstraction.
+  
+ Maps and 
+  
+ Filters
+  
+ A
+  filter
+  is a function that applies a test to the elements of a list, eliminating 
+ those that fail the test.
+  filter-negatives
+ , presented in Section 12.2,
+  
+ was an example of a filter.
+  Maps
+  takes a list of data objects and applies a 
+ function to each one, returning a list of the results. This idea may be further 
+ generalized through the development of general maps and filters that take as 
+ arguments both lists and the functions or tests that are to be applied to their 
+ elements.
+  
+ To begin with an example, recall the function
+  filter-negatives 
+ from Section 12.2. This function took as its argument a list of numbers and 
+ returned that list with all negative values deleted. Similarly, we can define a 
+ function to filter out all the even numbers in a list. Because these two 
+ functions differ
+  only
+  in the name of the predicate used to filter elements from 
+ the list, it is natural to think of generalizing them into a single function that 
+ takes the filtering predicate as a second parameter:
+  
+ 185
+  
+ Luger_all_wcopyright_COsfixed.pd201   201
+  
+ 5/15/2008   6:36:04 PM",NA
+15 Unification and Embedded Languages ,NA,NA
+in Lisp,"Chapter 
+ Pattern matching in Lisp: 
+  
+ Objectives 
+   
+ Database examples 
+  
+  
+ Full unification as required for Predicate Calculus problem solving 
+  
+  
+  
+ Needed for applying inference rules 
+  
+  
+  
+  
+ General structure mapping 
+  
+  
+  
+  
+ Recursive for embedded structures 
+  
+  
+ Building interpreters and embedded languages 
+  
+  
+  
+  
+ Example:
+  read-eval-print
+  loop 
+  
+  
+ Example: infix interpreter
+  
+ Chapter 
+ Contents
+  
+ 15.1 Pattern Matching: Introduction 
+  
+ 15.2 Interpreters and Embedded Languages
+  
+ 15.1
+  
+ Pattern Matching: Introduction
+  
+ In Chapter 15 we first design an algorithm for matching patterns in general 
+ list structures. This is the basis for the unify function which supports full 
+ pattern matching and the return of sets of unifying substitutions for 
+ matching patterns in predicate calculus expressions. We will see this as the 
+ basis for interpreters for logic programming and rule-based systems in Lisp, 
+ presented in Chapters 16 and 17.
+  
+ Pattern 
+  
+ Matching in 
+  
+ Lisp
+  
+ Pattern matching is an important AI methodology that has already been 
+ discussed in the Prolog chapters and in the presentation of production 
+ systems. In this section we implement a recursive pattern matcher and use
+  
+ it to build a pattern-directed retrieval function for a simple database.
+  
+ The heart of this retrieval system is a function called
+  match
+ , which takes 
+ as arguments two s-expressions and returns
+  t
+  if the expressions match. 
+ Matching requires that both expressions have the same
+  structure
+  as well as 
+ having identical atoms in corresponding positions. In addition, match allows 
+ the inclusion of variables, denoted by
+  ?
+ , in an s-expression. Variables are 
+ allowed to match with any s-expression, either a list or an atom, but do not 
+ save bindings, as with full unification (next). Examples of the desired 
+ behavior for
+  match
+  appear below. If the examples seem reminiscent of the 
+ Prolog examples in Part II, this is because
+  match
+  is actually a simplified 
+ version of the unification algorithm that forms the heart of the Prolog 
+ environment, as well as of many other pattern-directed AI systems. We will 
+ later expand
+  match
+  into the full unification algorithm by allowing named 
+ variables and returning a list of bindings required for a match.
+  
+ 195
+  
+ Luger_all_wcopyright_COsfixed.pd211   211
+  
+ 5/15/2008   6:36:06 PM",NA
+16 Logic Programming in Lisp,"Chapter 
+ A Lisp-based logic programming interpreter: 
+  
+ Objectives 
+   
+ An example of meta-linguistic abstraction 
+  
+  
+ Critical components of logic interpreter 
+  
+  
+ Predicate Calculus like facts and rules 
+  
+  
+ Horn clause form 
+  
+  
+ Queries processed by unification against facts and rules 
+  
+  
+ Successful goal returns unification substitutions 
+  
+  
+ Supporting technology for logic interpreter 
+  
+  
+  
+  
+ Streams 
+  
+  
+  
+  
+ Stream processing 
+  
+  
+  
+  
+ Stream of variables substitutions filtered through conjunctive subgoals 
+  
+  
+  
+ gensym
+  used to standardize variables apart 
+  
+  
+ Exercises expanding functionality of logic interpreter 
+  
+  
+  
+  
+ Adding
+  and
+ ,
+  not 
+  
+  
+  
+  
+ Additions of numeric and equality relations
+  
+ Chapter 
+  
+ 16.1 A Simple Logic Programming Language 
+  
+ Contents 
+  
+ 16.2 Streams and Stream Processing 
+  
+   
+ 16.3 A Stream-Based Logic Programming Interpreter
+  
+ 16.1 
+  
+ Example
+  
+ A Simple Logic Programming Language 
+  
+ As an example of meta-linguistic abstraction, we develop a Lisp-based logic
+  
+ programming interpreter, using the unification algorithm from Section 15.2. 
+ Like Prolog, our logic programs consist of a database of facts and rules in 
+ the predicate calculus. The interpreter processes queries (or goals) by 
+ unifying them against entries in the logic database. If a goal unifies with a 
+ simple fact, it succeeds; the solution is the set of bindings generated in the 
+ match. If it matches the head of a rule, the interpreter recursively attempts to 
+ satisfy the rule premise in a depth-first fashion, using the bindings generated 
+ in matching the head. On success, the interpreter prints the original goal, 
+ with variables replaced by the solution bindings.
+  
+ For
+  
+ simplicity’s
+  
+ sake,
+  
+ this
+  
+ interpreter
+  
+ supports
+  
+ conjunctive
+  
+ goals
+  
+ and
+  
+ implications: or and not are not defined, nor are features such as arithmetic, 
+ I/O, or the usual Prolog built-in predicates. Although we do not implement full 
+ Prolog, and the exhaustive nature of the search and absence of the
+  cut 
+ prevent 
+ the proper treatment of recursive predicates, the shell captures the basic 
+ behavior of the logic programming languages. The addition to the interpreter of 
+ the other features just mentioned is an interesting exercise.
+  
+ Our logic programming interpreter supports Horn clauses, a subset of full 
+ predicate calculus (Luger 2009, Section 14.2). Well-formed formulae consist 
+ of terms, conjunctive expressions, and rules written in a Lisp-
+  
+ 207
+  
+ Luger_all_wcopyright_COsfixed.pd223   223
+  
+ 5/15/2008   6:36:10 PM",NA
+17 Lisp-shell: An Expert System Shell in ,NA,NA
+Lisp,"Chapter 
+  
+ Objectives
+  
+ This chapter defines streams (lists) and delayed evaluation with functions 
+ delay
+  
+  
+  
+ force 
+  
+ Stream processing based on lexical closures 
+  
+  
+ Freezes evaluation of stream 
+  
+  
+ Closures preserve variable bindings and scope 
+  
+ lisp-shell
+  created as full expert system shell in Lisp 
+  
+ Unification based on stream processing 
+  
+ Askable list organizes user queries 
+  
+  
+ Full certainty factor system based on Stanford Certainty Factor Algebra 
+ Demonstration of
+  lisp-shell
+  with a “plant identification” data base 
+ Exercises on extending function of
+  lisp-shell
+  
+ Chapter 
+ Contents
+  
+ 17.1 Streams and Delayed Evaluation 
+  
+ 17.2 An Expert System Shell in Lisp
+  
+ 17.1 
+  
+ Why delayed 
+ evaluation?
+  
+ Streams and Delayed Evaluation 
+  
+ As we demonstrated in the implementation of
+  logic-shell
+  in Chapter 
+ 16, a stream-oriented view can help with the organization of a complex
+  
+ program. However, our implementation of streams as lists did not provide 
+ the full benefit of stream processing. In particular, this implementation 
+ suffers from inefficiency and an inability to handle potentially infinite data 
+ streams.
+  
+ In the list implementation of streams, all of the elements must be computed 
+ before that stream (list) can be passed on to the next function. In
+  logic-
+ shell
+  this leads to an exhaustive search of the knowledge base for each 
+ intermediate goal in the solution process. In order to produce the first solution 
+ to the top-level goal, the program must produce a list of all solutions. Even if 
+ we want only the first solution on this list, the program must still search the 
+ entire solution space. What we would really prefer is for the program to produce 
+ just the first solution by searching only that portion of the space needed to 
+ produce that solution and then to delay finding the rest of the goals until they 
+ are needed.
+  
+ A second problem is the inability to process potentially infinite streams of 
+ information. Although this problem does not arise in
+  logic-shell
+ , it 
+ occurs naturally in the stream-based solution to many problems. Assume, for 
+ example, that we would like to write a function that returns a stream of the first 
+ n odd Fibonacci numbers. A straightforward implementation would use a 
+ generator to produce a stream of Fibonacci numbers, a filter to eliminate the
+  
+ 219
+  
+ Luger_all_wcopyright_COsfixed.pd235   235
+  
+ 5/15/2008   6:36:13 PM",NA
+"18 Semantic Networks, Inheritance, and ",NA,NA
+CLOS,"Chapter 
+ We build
+  Semantic Networks
+  in Lisp: 
+  
+ Objectives 
+   
+ Supported by
+  property lists 
+  
+  
+ First implementation (early 1970s) of
+  object systems 
+  
+  
+ Object systems in Lisp include: 
+  
+  
+  
+  
+ Encapsulation 
+  
+  
+  
+  
+ Inheritance 
+  
+  
+  
+  
+  
+ Hierarchical 
+  
+  
+  
+  
+ Polymorphism 
+  
+  
+ The Common Lisp Object System (CLOS) 
+  
+  
+ Encapsulation 
+  
+  
+  
+  
+ Inheritance 
+  
+  
+  
+  
+  
+ Inheritance search programmer designed 
+  
+  
+ Example CLOS implementation 
+  
+  
+  
+  
+ Further implementations in exercises
+  
+ Chapter 
+ Contents
+  
+ 18.1 Introduction 
+  
+ 18.2 Object-Oriented Programming Using CLOS 
+ 18.3 CLOS Example: A Thermostat Simulation
+  
+ 18.1
+  
+ Semantic Networks and Inheritance in Lisp
+  
+ This chapter introduces the implementation of semantic networks and 
+ inheritance, and a full object-oriented programming system in Lisp. As a 
+ family of representations, semantic networks provide a basis for a large 
+ variety of inferences, and are widely used in natural language processing and 
+ cognitive modeling. We do not discuss all of these, but focus on a basic 
+ approach to constructing network representations using
+  property lists
+ . After 
+ these are discussed and used to define a simple semantic network, we define 
+ a function for class inheritance. Finally, since semantic networks and 
+ inheritance are important precursors of object-oriented design, we present 
+ CLOS, the Common Lisp Object System, Section 18.2, and an example 
+ implementation in 18.3.
+  
+ A Simple 
+  
+ Semantic 
+  
+ Network
+  
+ Lisp is a convenient language for representing any graph structure, including 
+ semantic nets. Lists provide the ability to create objects of arbitrary 
+ complexity and these objects may be bound to names, allowing
+  
+ for easy reference and the definition of relationships between them. Indeed, 
+ all Lisp data structures are based on an internal implementation as chains of 
+ pointers, a natural isomorph to graph structures.
+  
+ For example, labeled graphs may be represented using association lists: each 
+ node is an entry in an association list with all the arcs out of that node stored in 
+ the datum of the node as a second association list. Arcs are described by an
+  
+ 233
+  
+ AcrEAB3.tmp   1
+  
+ 5/15/2008   6:52:01 PM",NA
+19 Machine Learning in Lisp,"Chapter 
+ ID3 algorithm and inducing decision trees from lists of examples. 
+ Objectives 
+   
+ A basic Lisp implementation of ID3 
+  
+  
+  
+  
+ Demonstration on a simple credit assessment example.
+  
+ Chapter 
+ Contents
+  
+ 19.1 Learning: The ID3 Algorithm 
+  
+ 19.2 Implementing ID3
+  
+ 19.1
+  
+ Learning: The ID3 Algorithm
+  
+ In this section, we implement the ID3 induction algorithm described in 
+ Luger (2009, Section 10.3). ID3 infers decision trees from a set of training 
+ examples, which enables classification of an object on the basis of its 
+ properties. Each internal node of the decision tree tests one of the properties 
+ of a candidate object, and uses the resulting value to select a branch of the 
+ tree. It continues through the nodes of the tree, testing various properties, 
+ until it reaches a leaf, where each leaf node denotes a classification. ID3 uses 
+ an information theoretic test selection function to order tests so as to 
+ construct a (nearly) optimal decision tree. See Table 19.1 for a sample data 
+ set and Figure 19.1 for an ID3 induced decision tree. The details for the tree 
+ induction algorithms may be found in Luger (2009, Section 10.3) and in 
+ Quinlan (1986).
+  
+ The ID3 algorithm requires that we manage a number of complex data 
+ structures, including objects, properties, sets, and decision trees. The heart of 
+ our implementation is a set of structure definitions, aggregate data types similar 
+ to records in the Pascal language or structures in C. Using 
+ defstruct
+ ,
+  
+ Common Lisp allows us to define types as collections of named slots;
+  
+ defstruct
+  constructs functions needed to create and manipulate objects of 
+ that type.
+  
+ Along with the use of structures to define data types, we exploit higher order 
+ functions such as
+  mapcar
+ . As the stream-based approach to our expert 
+ system shell demonstrated, the use of maps and filters to apply functions to lists 
+ of objects can often capture the intuition behind an algorithm with greater 
+ clarity than less expressive programming styles. The ability to treat functions as 
+ data, to bind function closures to symbols and process them using other 
+ functions, is a cornerstone of Lisp programming style.
+  
+ A Credit History 
+ Example
+  
+ This chapter will demonstrate the ID3 implementation using a simple credit 
+ assessment example. Suppose we want to determine a person’s credit
+  
+ risk (high, moderate, low) based on data recorded from past loans. We can 
+ represent this as a decision tree, where each node examines one aspect of a 
+ person’s credit profile. For example, if one of the factors we care about is
+  
+ 251
+  
+ Luger_all_wcopyright_COsfixed.pd267   267
+  
+ 5/15/2008   6:36:23 PM",NA
+20 Lisp: Final Thoughts,"Both Lisp and Prolog are based on formal mathematical models of 
+ computation: Prolog on logic and theorem proving, Lisp on the theory of 
+ recursive functions. This sets these languages apart from more traditional 
+ languages whose architecture is just an abstraction across the architecture of 
+ the underlying computing (von Neumann) hardware. By deriving their 
+ syntax and semantics from mathematical notations, Lisp and Prolog inherit 
+ both expressive power and clarity.
+  
+ Although Prolog, the newer of the two languages, has remained close to its 
+ theoretical roots, Lisp has been extended until it is no longer a purely functional 
+ programming language. The primary culprit for this diaspora was the Lisp 
+ community itself. The pure lisp core of the language is primarily an assembly 
+ language for building more complex data structures and search algorithms. Thus 
+ it was natural that each group of researchers or developers would “assemble” 
+ the Lisp environment that best suited their needs. After several decades of this 
+ the various dialects of Lisp were basically incompatible. The 1980s saw the 
+ desire to replace these multiple dialects with a core Common Lisp, which also 
+ included an object system, CLOS. Common Lisp is the Lisp language used in 
+ Part III.
+  
+ But the primary power of Lisp is the fact, as pointed out many times in Part III, 
+ that the data and commands of this language have a uniform structure. This 
+ supports the building of what we call
+  meta-interpreters
+ , or similarly, the use of
+  meta-
+ linguistic abstraction
+ . This, simply put, is the ability of the program designer to 
+ build interpreters within Lisp (or Prolog) to interpret other suitably designed 
+ structures in the language. We saw this many time in Part III, including building 
+ a Prolog interpreter in Lisp, the design of the expert system interpreter
+  lisp-
+ shell
+ , and the ID3 machine learning interpreter used for data mining. But 
+ Lisp is, above all, a practical programming language that has grown to support 
+ the full range of modern techniques. These techniques include functional and 
+ applicative programming, data abstraction, stream processing, delayed 
+ evaluation, and object-oriented programming.
+  
+ The strength of Lisp is that it has built up a range of modern programming 
+ techniques as extensions of its core model of functional programming. This set 
+ of techniques, combined with the power of lists to create a variety of symbolic 
+ data structures, forms the basis of modern Lisp programming. Part III is 
+ intended to illustrate that style.
+  
+ Partly as a result of the Lisp diaspora that produced Common Lisp, was the 
+ creation of a number of other functional programming languages. With the 
+ desire to get back to the semantic foundations on which McCarthy created Lisp 
+ (
+ Recursive functions of symbolic expressions and their computation by machine
+ , 1960),
+  
+ 267
+  
+ Luger_all_wcopyright_COsfixed.pd283   283
+  
+ 5/15/2008   6:36:27 PM",NA
+.,"Objective Caml or Ocaml is an object-oriented extension to the functional 
+ language Caml. It has an interactive interpreter, a byte-code compiler, and an 
+ optimized native-code compiler. It integrates object-orientation with functional 
+ programming with SML-like type inference. The language is maintained by 
+ INRIA; for further details see
+  Introduction to Objective Caml
+  by Jason Hickey 
+ (2008) and
+  Practical OCaml
+  by Joshua Smith (2006).
+  
+ In designing the algorithms of Part III, we have been influenced by Abelson and 
+ Sussman’s book
+  The Structure and Interpretation of Computer Programs
+  (1985). Steele 
+ (1990) offers an essential guide to using Common Lisp. Valuable tutorials and 
+ textbooks on Lisp programming include
+  Lisp
+  (Winston and Horn 1984),
+  Common 
+ LispCraft
+  (Wilensky 1986),
+  Artificial Intelligence Programming
+ , Charniak et al. (1987),
+  
+ Common Lisp Programming for Artificial Intelligence 
+ (Hasemer and Domingue 1989),
+  
+ Common Lisp: A Gentle Introduction to Symbolic Computation
+  (Touretzky 1990),
+  On 
+ Lisp: Advanced Techniques for Common Lisp 
+ (Graham 1993), and
+  ANSI Common Lisp
+  
+ (Graham 1995).
+  
+ A number of books explore the use of Lisp in the design of AI problem solvers.
+  
+ Building Problem Solvers
+  (Forbus and deKleer 1993) is an encyclopedic treatment 
+ of AI algorithms in Lisp and an invaluable reference for AI practitioners. Also, 
+ see any of a number of general AI texts that take a more Lisp-centered approach 
+ to the basic material, including
+  The Elements of Artificial Intelligence Using Common 
+ Lisp
+  by Steven Tanimoto (1990). Finally, we mention 
+ Practical Common Lisp
+  an 
+ introductory book on Common Lisp by Peter Seibel (2004).
+  
+ Luger_all_wcopyright_COsfixed.pd284   284
+  
+ 5/15/2008   6:36:28 PM",NA
+PART IV: AI Programming in Java,"for now we see as through a glass darkly.
+  
+ —Paul to the Corinthians
+  
+ The map is not the territory; the name is not the thing named.
+  
+ —
+ Alfred Korzybski
+  
+ What have I learned but the proper use of several tools?.
+  
+ —
+ Gary Snyder
+  “What Have I Learned”
+  
+ Java is the third language this book examines, and it plays a different role in 
+ the development of Artificial Intelligence programming than do Lisp and 
+ Prolog. These earlier languages were tied intimately to the intellectual 
+ development of the field and, to a large extent, they both reflect and helped 
+ to shape its core ideas. We can think of Lisp as a test bed for the basic ideas 
+ of functional programming and the specification for the Physical Symbol 
+ System Hypothesis (Newell and Simon 1976): that dynamic operations on 
+ symbol structures are a necessary and sufficient specification for intelligent 
+ activity.
+  
+ Similarly, Prolog was a direct exploration of declarative specifications of 
+ knowledge and intelligence. Java’s place in the history of AI is different. 
+ Rather than shaping the development of artificial intelligence itself, Java, 
+ especially its object-oriented features and inheritance, are a product of earlier 
+ AI language research, especially SmallTalk and Flavors. Our inclusion of 
+ Java in this book is also evidence that Artificial Intelligence has grown up, in 
+ that most of its tools and techniques are now considered to be language 
+ independent. In fact, In Part V, Chapters 26, 29 and 31 present Java-based 
+ Artificial Intelligence software available on the Internet.
+  
+ Developed in the early 1990s by the Sun Microsystems Corporation, Java 
+ was an effort to realize the full power of object-oriented programming, 
+ OOP, in a language expressly designed for large-scale software engineering. 
+ In spite of their power and flexibility, early object-oriented languages 
+ including SmallTalk, Flavors, and the Common Lisp Object System (CLOS), 
+ languages developed by the AI community itself, did not receive the 
+ attention they deserved from the software engineering community. Java, 
+ implementing many of the features of these early tools, has been more 
+ widely accepted.
+  
+ Although the reasons given for the rejection of these earlier, elegant 
+ languages may appear to contemporary programmers to surpass rational
+  
+ 269
+  
+ Luger_all_wcopyright_COsfixed.pd285   285
+  
+ 5/15/2008   6:36:28 PM",NA
+21,NA,NA
+"Java, Representation, and Object-",NA,NA
+ Oriented Programming,"Chapter 
+ The primary representational constructs for Java are introduced including: 
+ Objectives 
+   
+ Objects and classes 
+  
+  
+ Polymorphism 
+  
+  
+ Encapsulation 
+  
+  
+ Inheritance constructs presented 
+  
+  
+  
+  
+ Single inheritance 
+  
+  
+  
+  
+ Interfaces 
+  
+  
+  
+  
+ Scoping and access 
+  
+  
+ Java Standard Libraries 
+  
+  
+ The Java idiom
+  
+ Chapter 
+  
+ 21.1 Introduction to O-O Representation and Design 
+  
+ Contents 
+  
+ 21.2 Object Orientation 
+  
+   
+ 21.3 Classes and Encapsulation 
+  
+   
+ 21.4 Polymorphism 
+  
+   
+ 21.5 Inheritance 
+  
+   
+ 21.6 Interfaces 
+  
+   
+ 21.7 Scoping and Access 
+  
+   
+ 21.8 The Java Standard Library 
+  
+   
+ 21.9 Conclusions: Design in Java
+  
+ 21.1
+  
+ Introduction to O-O Representation and Design
+  
+ Java has its roots in several languages and their underlying ways of thinking 
+ about computer programming. Its syntax resembles C++, its semantics
+  
+ reflects
+  
+ Objective-C,
+  
+ and
+  
+ its
+  
+ philosophy
+  
+ of
+  
+ development
+  
+ owes
+  
+ a
+  
+ fundamental debt to Smalltalk. However, over the years, Java has matured 
+ into its own language. This chapter traces the roots of Java to the ideas of 
+ object-oriented programming, a way of thinking about programming, 
+ program structure, and the process of development that it shares with these 
+ earlier languages.
+  
+ The origins of object-oriented programming are within the artificial
+  
+ intelligence
+  
+ research
+  
+ community.
+  
+ The
+  
+ first
+  
+ implementation
+  
+ of
+  
+ this
+  
+ programming paradigm was built at Xerox’s Palo Alto Research Center with 
+ the creation of Smalltalk. The first release was Smalltalk-72 (in 1972). 
+ Object-orientation was a critical component of the early AI research
+  
+ community’s
+  
+ search
+  
+ for
+  
+ representational
+  
+ techniques
+  
+ that
+  
+ supported
+  
+ intelligent activity both in humans and machines. The 1960s and 1970s saw 
+ the AI community develop semantic nets, frames, flavors, as well as other 
+ techniques, all of which had a role in the eventual development of object 
+ systems (see Luger 2009, Section 7.1).
+  
+ 273
+  
+ Luger_all_wcopyright_COsfixed.pd289   289
+  
+ 5/15/2008   6:36:29 PM",NA
+Problem Spaces and Search,NA,NA
+22,"Chapter
+  
+ Uninformed state space search strategies are revisited:
+  
+ Objectives
+  
+ Depth-first search
+  
+ Breadth-first search 
+  
+ Heuristic or best-first search is presented 
+  
+ Java idioms are created for implementing state-space search 
+  
+  
+ Establishing a framework 
+  
+  
+  
+ Interface class 
+  
+  
+  
+  
+ Solver 
+  
+  
+  
+  
+ AbstractSolver
+  
+ Implements search algorithms
+  
+ Chapter 
+  
+ 22.1 Abstraction and Generality in Java 
+  
+ Contents 
+  
+ 22.2 Search Algorithms 
+  
+   
+ 22.3 Abstracting Problem States 
+  
+   
+ 22.4 Traversing the Solution Space 
+  
+   
+ 22.5 Putting the Framework to Use
+  
+ 22.1
+  
+ Abstraction and Generality in Java
+  
+ This book, like the history of programming languages in general, is a story
+  
+ of
+  
+ increasingly
+  
+ powerful
+  
+ abstraction
+  
+ mechanisms.
+  
+ Because
+  
+ of
+  
+ the
+  
+ complexity of the problems it addresses and the rich body of theory that 
+ defines those problems in computational terms, AI has proven an ideal 
+ vehicle for developing languages and the abstraction mechanisms that give 
+ them much of their value. Lisp advanced ideas of procedural abstraction by 
+ following a mathematical model – recursive functions – rather than the 
+ explicitly machine influenced structures of earlier languages. The result was a 
+ sophisticated approach to variable binding, data structures, function 
+ definition and other ideas that made Lisp a powerful test bed for ideas
+  
+ about
+  
+ symbolic
+  
+ computing
+  
+ and
+  
+ programming
+  
+ language
+  
+ design.
+  
+ In
+  
+ particular, Lisp contributed to the development of object-oriented 
+ programming through a variety of Lisp-based object languages culminating 
+ in the Common Lisp Object System (CLOS). Prolog took a more radical 
+ approach, combining unification based pattern matching, automated 
+ theorem proving, and built-in search to render procedural mechanisms 
+ almost completely implicit and allow programmers to approach programs in 
+ a declarative, constraint-based manner.
+  
+ This chapter continues exploring abstraction methods, taking as its focus the 
+ object-oriented idiom, and using the Java programming language as a 
+ vehicle. It builds on Java’s object-orientated semantics, employing such 
+ mechanisms as inheritance and encapsulation. It also explores the interaction 
+ between AI theory and program architecture: the problems of
+  
+ 287
+  
+ Luger_all_wcopyright_COsfixed.pd303   303
+  
+ 5/15/2008   6:36:34 PM",NA
+23 A Java Representation for Predicate ,NA,NA
+Calculus and Unification,"Chapter 
+ A brief introduction to the predicate calculus 
+  
+ Objectives 
+   
+ Predicates with: 
+  
+  
+  
+  
+  
+ Atoms 
+  
+  
+  
+  
+  
+ Variables 
+  
+  
+  
+  
+  
+ Functions 
+  
+  
+  
+  
+ A unification algorithm 
+  
+  
+  
+  
+  
+ A
+  car/crd
+  recursive tree walk 
+  
+  
+  
+  
+  
+ Ignoring occurs check 
+  
+  
+ Techniques proposed for mapping predicate calculus to an object system 
+   
+  
+ A meta-linguistic interpreter 
+  
+  
+  
+  
+ Class hierarchy for
+  PCExpression 
+  
+  
+ Built
+  Unifiable
+  interface 
+  
+  
+ Important discussion on design issues 
+  
+  
+  
+  
+ Building a representation for predicate calculus based reasoning 
+  
+  
+  
+ Discussion in Section 23.3 and 23.5 
+  
+  
+ First of three chapters covering predicate calculus 
+  
+  
+  
+  
+ Representation and unification (Ch 23) 
+  
+  
+  
+  
+ Reasoning with the predicate calculus (Ch 24) 
+  
+  
+  
+  
+ A rule-based expert system shell in Java (Ch 25)
+  
+ Chapter 
+  
+ 23.1 Introduction to the Task 
+  
+ Contents 
+  
+ 23.2 A Review of the Predicate Calculus and Unification 
+  
+   
+ 23.3 Building a Predicate Calculus Problem Solver in Java 
+  
+   
+ 23.4 Design Discussion 
+  
+   
+ 23.5 Conclusion: Mapping Logic into Objects
+  
+ 23.1
+  
+ Introduction to the Task
+  
+ Although Java supports classes, inheritance, relations, and other structures 
+ used in knowledge representation, we should not think of it as a 
+ representation language in itself, but as a general purpose programming 
+ language. In AI applications, Java is more commonly used to implement 
+ interpreters for higher-level representations such as logic, frames, semantic 
+ networks, or state-space search. Generally speaking, representing the 
+ elements of a problem domain directly in Java classes and methods is only 
+ feasible for well-defined, relatively simple problems. The complex, ill-formed 
+ problems that artificial intelligence typically confronts require higher-level 
+ representation and inference languages for their solution.
+  
+ The difference between AI representation languages and Java is a matter of 
+ semantics. As a general programming language, Java grounds object-oriented 
+ principles in the practical virtual machine architecture – the abstract 
+ architecture at the root of Java’s platform independence – rather
+  
+ 305
+  
+ Luger_all_wcopyright_COsfixed.pd321   321
+  
+ 5/15/2008   6:36:45 PM",NA
+24 A Logic-Based Reasoning System,"Chapter 
+ Predicate calculus representation extended: 
+  
+ Objectives 
+   
+ Continued use of meta-linguistic abstraction 
+  
+  
+  
+  
+ Java interpreter for predicate calculus expressions 
+  
+  
+ Search supported by unification 
+  
+  
+ Proof trees implemented 
+  
+  
+  
+  
+ Capture logic inferences 
+  
+  
+  
+  
+ Represent structure of logic-based implications 
+  
+  
+  
+  
+ Reflect search path for producing proofs 
+  
+  
+ Tester
+  class developed 
+  
+  
+  
+  
+ Tests code so far built 
+  
+  
+ Extensions proposed for user transparency 
+  
+  
+ Java idioms utilized 
+  
+  
+ Implement separation of representation and search 
+  
+  
+  
+  
+ Use of static structures
+  
+ Chapter 
+  
+ 24.1 Introduction 
+  
+ Contents 
+  
+ 24.2 Logical Reasoning as Searching an And/Or Graph 
+  
+   
+ 24.3 The Design of a Logic-Based Reasoning System 
+  
+   
+ 24.4 Implementing Complex Logic Expressions 
+  
+   
+ 24.5 Logic-Based Reasoning as And/Or Graph Search 
+  
+   
+ 24.6 Testing the Reasoning System 
+  
+   
+ 24.7 Design Discussion
+  
+ 24.1
+  
+ Introduction
+  
+ Chapter 23 introduced
+  meta-linguistic abstraction
+  as an approach to solving the 
+ complex problems typically found in Artificial Intelligence. That chapter 
+ also began a three-chapter (23, 24, and 25) exploration this idea through the 
+ development of a reasoning engine for predicate calculus. Chapter 23 
+ outlined a scheme for representing predicate calculus expressions as Java 
+ objects, and developed the unification algorithm for finding a set of variable 
+ substitutions, if they exist, that make two expressions in the predicate 
+ calculus equivalent. This chapter extends that work to include more 
+ complex predicate expressions involving the logical
+  
+ operators
+  and
+ , ,
+  or
+ ,,
+  not
+ ,
+  
+ , and implication,, and develops a
+  
+ reasoning engine that solves logic queries through the backtracking search 
+ of a state space defined by the possible inferences on a set of logic 
+ expressions.
+  
+ 24.2 Reasoning in Logic as Searching an And/Or Graph
+  
+ A
+  logic-based reasoner
+  searches a space defined by sequences of valid inferences 
+ on a set of predicate logic sentences. For example:
+  
+ 325
+  
+ Luger_all_wcopyright_COsfixed.pd341   341
+  
+ 5/15/2008   6:36:51 PM",NA
+25 An Expert System Shell,"Chapter 
+ Completing the meta-interpreter for rule systems in Java 
+  
+ Objectives 
+ Full backtracking unification algorithm 
+  
+  
+  
+  
+ A goal-based reasoning shell 
+  
+  
+  
+  
+ An example rule system demonstration 
+  
+  
+ The extended functionality for building expert systems 
+  
+  
+  
+  
+ Askable predicates 
+  
+  
+  
+  
+ Response to how and why queries 
+  
+  
+  
+  
+ Structure presented for addition of certainty factors
+  
+ Chapter 
+  
+ 25.1 Introduction: Expert Systems 
+  
+ Contents 
+  
+ 25.2 Certainty Factors and the Unification Problem Solver 
+  
+   
+ 25.3 Adding User Interactions 
+  
+   
+ 25.4 Design Discussion
+  
+ 25.1
+  
+ Introduction: Expert Systems
+  
+ In Chapter 24, we developed a unification-based logic problem solver that 
+ solved queries through a depth-first, backward chaining search. In this 
+ chapter, we will extend those classes to implement two features commonly 
+ found in expert-system shells: the ability to attach confidence estimates, or 
+ certainty factors, to inferences (see Luger 2009 for more on certainty 
+ factors), and the ability to interact with the user during the reasoning 
+ process. Since all the classes in this chapter will extend classes from the 
+ unification problem solver, readers must be sure to have read that chapter 
+ before continuing.
+  
+ In developing the expert system shell, we have two goals. The first is to 
+ explore the use of simple inheritance to extend an existing body of code. 
+ The second is to provide the reader with a start on more extensive 
+ modifications to the code that will be a valuable learning experience; the 
+ exercises will make several suggestions for such extensions.
+  
+ Certainty 
+  
+ Factors
+  
+ The first extension to the reasoner will be to implement a simplified version 
+ of the certainty factor algebra described in Luger (2009). Certainty
+  
+ factors will be numbers between -1.0 and 1.0 that measure our confidence in 
+ an inference: -1.0 indicates the conclusion is false with maximum certainty, 
+ and 1.0 means it is true with maximum certainty. A certainty value of 0.0 
+ indicates nothing is known about the assertion. Values between -1.0 and 1.0 
+ indicate varying degrees of confidence.
+  
+ Rules have an attached certainty factor, which indicates the certainty of their 
+ conclusion if all elements in the premise are known with complete certainty. 
+ Consider the following rule and corresponding certainty factor:
+  
+ If p then q, CF = 0.5
+  
+ 351
+  
+ Luger_all_wcopyright_COsfixed.pd367   367
+  
+ 5/15/2008   6:37:15 PM",NA
+26 Case Studies: JESS and other Expert ,NA,NA
+Systems Shells in Java,"Chapter 
+ This chapter examines Java expert system shells available on the world wide web 
+ Objectives
+  
+ Chapter 
+  
+ 26.1 Introduction 
+  
+ Contents 
+  
+ 26.2 JESS 
+  
+   
+ 26.3 Other Expert System Shells 
+  
+   
+ 26.4 Using Open Source Tools
+  
+ 26.1
+  
+ Introduction
+  
+ In the last three chapters we demonstrated the creation of a simple expert 
+ system shell in Java. Chapter 22 presented a representational formalism for 
+ describing predicate calculus expressions, the representation of choice for 
+ expert rule systems and many other AI problem solvers. Chapter 24 created 
+ a procedure for unification. We demonstrated this algorithm with a set of 
+ predicate calculus expressions, and then built a simple Prolog in Java 
+ interpreter. Chapter 25 added full backtracking to our unification algorithm 
+ so that it could check all possible unifications in the processes of finding
+  
+ sets
+  
+ of
+  
+ consistent
+  
+ substitutions
+  
+ across
+  
+ sets
+  
+ of
+  
+ predicate
+  
+ calculus
+  
+ specifications. In Chapter 25 we also created procedures for answering why 
+ and how queries, as well as for setting up a certainty factor algebra.
+  
+ In this chapter we present a number of expert system shell libraries written 
+ in Java. As mentioned throughout our presentation of Java, the presence of 
+ extensive code libraries is one of the major reasons for the broad acceptance 
+ of Java as a problem-solving tool. We have explored these expert shells at 
+ the time of writing this chapter. We realize that many of these libraries will 
+ change over time and may well differ (or not even exist!) when our readers 
+ considers them. So we present their urls, current as of January 2008, with 
+ minimal further comment.
+  
+ 26.2 JESS
+  
+ The first library we present is JESS, the Java Expert System Shell, built and
+  
+ maintained
+  
+ by
+  
+ programmers
+  
+ at
+  
+ Sandia
+  
+ National
+  
+ Laboratories
+  
+ in
+  
+ Albuquerque New Mexico. JESS is a rule engine for the Java platform. Unlike 
+ the unification system presented in Chapters 23 and 24, JESS is driven by a 
+ lisp-style scripting language built in Java itself. 
+  
+ There are 
+ advantages and disadvantages to this approach. One main advantage of an 
+ independent scripting language is that it is easier to work with for the code 
+ builder. For example, Prolog has its own language that is suitable for rule
+  
+ 363
+  
+ Luger_all_wcopyright_COsfixed.pd379   379
+  
+ 5/15/2008   6:37:17 PM",NA
+27,NA,NA
+ ID3: Learning from Examples,"Chapter 
+ Review of supervised learning and decision tree representation 
+ Objectives 
+   
+ Representing decision trees as recursive structures 
+  
+  
+  
+ A general decision tree induction algorithm 
+  
+  
+ Information theoretic decision tree test selection heuristic
+  
+ Chapter 
+  
+ 27.1 Introduction to Supervised Learning 
+  
+ Contents 
+  
+ 27.2 Representing Knowledge as Decision Trees 
+  
+   
+ 27.3 A Decision Tree Induction Program 
+  
+   
+ 27.4 ID3: An Information Theoretic Tree Induction Algorithm
+  
+ 27.1
+  
+ Introduction to Supervised Learning
+  
+ In machine learning,
+  inductive learning
+  refers to training a learner through use 
+ of examples. The simplest case of this is rote learning, whereby the learner 
+ simply memorizes the training examples and reuses them in the same 
+ situations. Because they do not generalize from training data, rote learners 
+ can only classify exact matches of previous examples. A further limitation of 
+ rote learning is that the learned examples might contain conflicting 
+ information, and without some form of generalization, the learner cannot 
+ effectively deal with this noise. To be effective, a learner must apply 
+ heuristics to induce reliable generalizations from multiple training examples 
+ that can handle unseen situations with some degree of confidence.
+  
+ A common inductive learning task is learning to classify specific instances into 
+ general categories. In
+  supervised learning
+ , a teacher provides the system with 
+ categorized training examples. This contrasts with clustering and similar 
+ unsupervised learning tasks where the learner forms its own categories from 
+ training data. See (Luger 2009) for a discussion of these different learning 
+ tasks. An example of a supervised inductive learning problem, which we will 
+ develop throughout the chapter is a bank wanting to train a computer learning 
+ system categorize new borrowers according to 
+ credit 
+  
+ risk
+  on 
+ the basis of properties such as their
+  credit history
+ , current
+  debt
+ , 
+ their
+  collateral
+ , and current
+  income
+ . One approach would be to look 
+ at the
+  credit risk
+ , as determined over time by the actual debt payoff 
+ history of data from previous borrowers to provide categorized examples. In 
+ this chapter we do exactly that, using the ID3 algorithm.
+  
+ 27.2 Representing Knowledge as Decision Trees
+  
+ A decision tree is a simple form of knowledge representation that is widely 
+ used in both advisors and machine learning systems. Decision trees are 
+ recursive structures in which each node examines a property of a collection
+  
+ 367
+  
+ Luger_all_wcopyright_COsfixed.pd383   383
+  
+ 5/15/2008   6:37:19 PM",NA
+28 Genetic and Evolutionary Computing,"Chapter 
+ A brief introduction to the genetic algorithms 
+  
+ Objectives 
+   
+ Genetic operators include 
+  
+  
+  
+  
+  
+ Mutation 
+  
+  
+  
+  
+  
+ Crossover 
+  
+  
+ An example GA application worked through 
+  
+  
+  
+  
+ The WordGuess problem 
+  
+  
+ Appropriate object hierarchy created 
+  
+  
+ Generalizable to other GA applications 
+  
+  
+ Exercises emphasize GA interface design
+  
+ Chapter 
+  
+ 28.1 Introduction 
+  
+ Contents 
+  
+ 28.2 The Genetic Algorithm: A First Pass 
+  
+   
+ 28.3 A GA Implementation in Java 
+  
+   
+ 28.4 Conclusion: Complex Problem Solving and Adaptation
+  
+ 28.1
+  
+ Introduction
+  
+ The genetic algorithm (GA) is one of a number of computer programming 
+ techniques loosely based on the idea of natural selection. The idea of applying 
+ principles of natural selection to computing is not new. By 1948, Alan Turing 
+ proposed “genetical or evolutionary search” (Turing 1948). Less than two 
+ decades later, H.J. Bremmermann performed computer simulations of
+  
+ “optimization through evolution and 
+ recombination”(Eiben and Smith 1998). It was John Holland who coined the 
+ term,
+  genetic algorithm
+  (Holland 1975). However, the GA was not widely studied 
+ until 1989, when D.E. Goldberg showed that it could be used to solve a 
+ significant number of difficult problems (Goldberg 1989). Currently, many of 
+ these threads have come together under the heading
+  evolutionary computing 
+ (Luger 2009, Chapter 12).
+  
+ 28.2 The Genetic Algorithm: A First Pass
+  
+ The Genetic Algorithm is based loosely on the concept of natural selection. 
+ Individual members of a species who are better adapted to a
+  
+ given
+  
+ environment
+  
+ reproduce
+  
+ more
+  
+ successfully.
+  
+ They
+  
+ pass
+  
+ their
+  
+ adaptations on to their offspring. Over time, individuals possessing the
+  
+ adaptation
+  
+ form
+  
+ a
+  
+ new
+  
+ species
+  
+ that is
+  
+ particularly
+  
+ suited
+  
+ to
+  
+ the
+  
+ environment. The genetic algorithm applies the
+  metaphor
+  of natural selection 
+ to optimization problems. No claim is made about its biological accuracy, 
+ although individual researchers have proposed mechanisms both with and 
+ without a motivating basis from nature.
+  
+ A candidate solution for a genetic algorithm is often called a
+  chromosome
+ . The 
+ chromosome is composed of multiple
+  genes.
+  A collection of
+  
+ 389
+  
+ Luger_all_wcopyright_COsfixed.pd405   405
+  
+ 5/15/2008   6:37:25 PM",NA
+29 Case Studies: Java Machine Learning ,NA,NA
+Software Available on the Web,"Chapter 
+ This chapter provides a number of sources for open source and free machine 
+ Objectives 
+ learning software on the web.
+  
+ Chapter 
+  
+ 29.1 Java Machine Learning Software 
+  
+ Contents
+  
+ 29.1
+  
+ Java Machine Learning Software
+  
+ There are many popular java-based open-source machine learning software 
+ packages available on the internet. Several important and widely used ones 
+ are described below.
+  
+ Weka 
+  
+ Weka is a Java-based open-source software distributed under the GNU 
+  
+ General Public License. It was developed at the University of Waikato in 
+  
+ Hamilton, New Zealand in 1993.
+  
+ Weka is a very popular machine learning software that is widely used for 
+ data-mining problems. The main algorithms implemented in Weka focus on 
+ pattern classification, regression and clustering. Tools for data preprocessing 
+ and data visualization are also provided. These algorithms can either be 
+ directly applied to a dataset or be called from other Java code. Weka 
+ algorithms can also be used as building blocks for implementing new 
+ machine learning techniques.
+  
+ http://www.cs.waikato.ac.nz/ml/weka/
+  
+ ABLE 
+  
+ ABLE is a freely-available Java-toolkit for agent-based machine learning 
+  
+ problems developed by the IBM T. J. Watson Research Center in 
+  
+ Yorktown Heights, NY.
+  
+ The ABLE framework provides a library of packages, classes and interfaces 
+ for implementing machine learning techniques like neural networks, 
+ Bayesian classifiers and decision trees. It also provides a Rule Language for 
+ rule-based inference using Boolean and fuzzy logic. The packages and classes 
+ can be extended for developing custom algorithms. Support is also
+  
+ provided
+  
+ for
+  
+ reading
+  
+ and
+  
+ writing
+  
+ text
+  
+ and
+  
+ database
+  
+ data,
+  
+ data
+  
+ transformation and scaling and invocation of user-defined external functions.
+  
+ http://www.alphaworks.ibm.com/tech/able
+  
+ JOONE 
+  
+ JOONE (Java Object-Oriented Neural Engine) is a free java framework 
+  
+ for 
+ implementing, training and testing machine learning algorithms using 
+  
+ artificial 
+ neural networks (ANN). The software includes algorithms for 
+  
+ feed-forward neural 
+ networks, recursive neural networks, time-delay neural
+  
+ networks,
+  
+ standard
+  
+ and
+  
+ resilient
+  
+ back
+  
+ propagation,
+  
+ Kohonen
+  
+ self-
+  
+ 403
+  
+ Luger_all_wcopyright_COsfixed.pd419   419
+  
+ 5/15/2008   6:37:33 PM",NA
+30 The Earley Parser: Dynamic ,NA,NA
+Programming in Java,"Chapter 
+ Sentence parsing using dynamic programming 
+  
+ Objectives 
+  
+ Memoization of subparses 
+  
+  
+  
+ Retaining partial solutions (parses) for reuse 
+  
+  
+ The chart as medium for storage and reuse 
+  
+  
+  
+  
+  
+ Indexes for word list (sentence) 
+  
+  
+  
+  
+  
+ States reflect components of parse 
+  
+  
+  
+  
+  
+ Dot reflects extent of parsing right hand side of grammar rule 
+  
+ Lists of states make up components of chart 
+  
+  
+  
+  
+  
+ Chart linked to word list 
+  
+  
+ Java Implementation of an Earley parser 
+  
+  
+  
+  
+  
+ Context free parser 
+  
+  
+  
+  
+  
+ Deterministic 
+  
+  
+ Chart supports multiple parse trees 
+  
+  
+ Forward development of chart composes components of successful parse 
+  
+ Backward 
+ search of chart produces possible parses of the sentence
+  
+ Chapter 
+  
+ 30.1 Chart Parsing: An Introduction 
+  
+ Contents 
+  
+ 30.2 The Earley Parser: Components 
+  
+   
+ 30.3 The Earley Parser: Java Code 
+  
+   
+ 30.4 The Completed Parser 
+  
+   
+ 30.5 Generating Parse Trees from Charts and Grammar Rules (Advanced Section)
+  
+ 30.1
+  
+ Chart Parsing: An Introduction
+  
+ The Earley parser (Earley 1970) uses dynamic programming to analyze 
+ strings of words. Traditional dynamic programming techniques (Luger 2009, 
+ Section 4.1) use an array to save (memoize) the partial solutions of a 
+ problem for use in the generation of subsequent partial solutions. In Earley 
+ parsing this array is called a
+  chart
+ , and thus this approach to parsing sentences 
+ is often called
+  chart parsing
+ .
+  
+ In Chapter 9, Sections 1 and 2, we first presented the full algorithms along 
+ with the evolving chart for Earley parsing. In these sections, we presented 
+ pseudo-code, demonstrated the “dot” as a pointer indicating the current 
+ state of the parse for each grammar rule, and explicitly considered the state 
+ of the chart after each step of the algorithm. We refer to Sections 9.1, 9.2, 
+ and Luger (2009, Section 15.2.2) for these specific details if there is any 
+ concern about how the chart-parsing algorithm works. We feel that it is also 
+ interesting to compare the data representation and control structures used in 
+ the declarative Prolog environment, Chapter 9, with what we next present 
+ with the object-oriented representations of Java.
+  
+ Luger_all_wcopyright_COsfixed.pd421   421
+  
+ 5/15/2008   6:37:33 PM",NA
+31 Case Studies: Java Natural Language ,NA,NA
+Tools Available on the Web,"Chapter 
+ This chapter provides a number of sources for open source and free atural 
+ Objectives 
+ language understanding software on the web.
+  
+ Chapter 
+  
+ 31.1 Java NLP Software 
+  
+ Contents 
+  
+ 31.2 LingPipe from the University of Pennsylvania 
+  
+   
+ 31.3 The Stanford Natural Language Processing Group Software 
+   
+ 31.4 Sun’s Speech API
+  
+ 31.1
+  
+ Java Natural Language Processing Software
+  
+ There are several popular java-based open-source natural language 
+ understanding software packages available on the internet. We describe three 
+ of these in Chapter 31. It must be remembered both that these web sites 
+ may change over time and that new sites will appear focusing on problems in 
+ NLP.
+  
+ 31.2 LingPipe from the University of Pennsylvania
+  
+ Background 
+  
+ LingPipe is an available Java resource from Alias-I, http://www.alias-
+  
+ i.com/lingpipe/. Alias-i began in 1995 as a collaboration of students at 
+  
+ University of Pennsylvania. After competing in different events (including 
+  
+ DARPA MUC-6), the group was awarded a research contract under the
+  
+ TIDES
+  
+ (Trans-Lingual
+  
+ Information
+  
+ Detection
+  
+ Extraction
+  
+ and
+  
+ Summarization) program. Starting as Baldwin Language Technologies, the 
+ company’s name later changed to Alias-i. LingPipe was used in two of Alias-
+ i’s products, FactTracker and ThreatTracker. In 2003, LingPipe was released 
+ as open source software with commercial licenses available as well. LingPipe 
+ contains many tools for linguistic analysis of human language, including 
+ tools for sentence-boundary detection; and a part-of-speech tagger and 
+ phrase chunker.
+  
+ LingPipe is easy to download from the website. The download contains 
+ demos, documentation and there are models available to download as well. 
+ On the website there are tutorials, documentation, and a FAQ. Also there 
+ are links to the community of LingPipe consumers. This includes a listing of 
+ some commercial customers, as well as research patrons. There is a 
+ newsgroup for discussion as well as a blog for being kept up to date on the 
+ suite.
+  
+ We next take a look at some of the tools provided by LingPipe.
+  
+ Sentence-
+  
+ boundary 
+  
+ Detectio
+ n
+  
+ To start with, there are tutorials contained in the download for the sentence-
+ boundary detection classes. These tutorials contain example programs that 
+ use and extend the
+  com.aliasi.sentences
+  classes. If you follow
+  
+ 423
+  
+ Luger_all_wcopyright_COsfixed.pd439   439
+  
+ 5/15/2008   6:37:37 PM",NA
+PART V: Conclusion: Model Building and the ,NA,NA
+Master Programmer,"The limits of my language mean the limits of my world…
+  
+ — Ludwig Wittgenstein, “Tractatus Logico-Philosophicus”
+  
+ Theories are like nets: He who casts, captures…
+  
+ — Ludwig Wittgenstein, “Tractatus Logico-Philosophicus”
+  
+ The best you can do by Friday is a form of the best you can do…
+  
+ —
+  Charles Eames, Noted Twentieth Century Designer
+  
+ We have come to the end of our task! In Part V we will give a brief summary 
+ of our views of computer language use, especially in a comparative setting 
+ where we have been able to compare and contrast the idioms of three 
+ different language paradigms and their use in building structures and 
+ strategies for complex problem solving. We begin Chapter 32 with a brief 
+ review of these paradigm differences, and then follow with summary 
+ comments on paradigm based abstractions and idioms.
+  
+ But first we briefly review the nature of the programming enterprise and why 
+ we are part of it.
+  
+ Well, first, we might say that programming offers monetary compensation to 
+ ourselves and our dependents. But this isn’t really why most of us got into 
+ our field. We authors got into this profession because computation offered 
+ us a critical medium for exploring and understanding our world. And, yes, 
+ we mean this in the large sense where computational tools are seen as 
+ epistemological artifacts for comprehending our world and ourselves.
+  
+ We see computation as Galileo might have seen his telescope, as a medium 
+ for exploring entities, relationships, and invariance’s never before perceived 
+ by the human agent. It took Newton and his “laws of motion” almost
+  
+ another
+  
+ century
+  
+ fully
+  
+ to
+  
+ capture
+  
+ Galileo’s
+  
+ insights.
+  
+ We
+  
+ visualize
+  
+ computation from exactly this viewpoint, where even as part of our own and 
+ our colleagues’ small research footprint we have explored complex human 
+ phenomena including:
+  
+ 
+  
+ Human subjects’ neural state and connectivity, using human 
+  
+ testing, 
+  
+ fMRI scanning, coupled 
+  
+ with dynamic 
+  
+ Bayesian 
+  
+ networks and MCMC sampling, none of which would be 
+  
+ possible without computation.
+  
+ 429
+  
+ Luger_all_wcopyright_COsfixed.pd445   445
+  
+ 5/15/2008   6:37:39 PM",NA
+32 Conclusion: The Master Programmer,"Chapter 
+ This chapter provides a summary and discussion of the primary idioms and design 
+ Objectives 
+ patterns presented in our book.
+  
+ Chapter 
+  
+ 32.1 Paradigm-Based Abstractions and Idioms 
+  
+ Contents 
+  
+ 32.2 Programming as a Tool for Exploring Problem Domains 
+  
+   
+ 32.3 Programming as a Social Activity 
+  
+   
+ 32.4 Final Thoughts
+  
+ 32.1
+  
+ Language Paradigm-Based Abstractions and Idioms
+  
+ In the Introduction to this book, we stated that we wanted to do more than 
+ simply demonstrate the implementation of key AI algorithms in some of the 
+ major languages used in the field. We also wanted to explore the ways that 
+ the problems we try to solve, the programming languages we create to help 
+ in their solution, and the patterns and idioms that arise in the practice of AI 
+ programming have shaped each other. We will conclude with a few 
+ observations on these themes.
+  
+ More than anything else, the history of programming languages is a history 
+ of increasingly powerful, ever more diverse abstraction mechanisms. Lisp, 
+ the oldest of the languages we have explored, remains one of the most 
+ dramatic examples of this progression. Although procedural in nature, Lisp 
+ was arguably the first to abstract procedural programming from such 
+ patterns as explicit branching, common memory blocks, parameter passing 
+ by reference, pointer arithmetic, global scoping of functions and variables, 
+ and other structures that more or less reflect the underlying machine 
+ architecture. By adopting a model based on the theory of recursive 
+ functions, Lisp provides programmers with a cleaner semantics, including 
+ recursive control structures, principled variable scoping mechanisms, and a 
+ variety of structures for implementing symbolic data structures.
+  
+ Like Lisp, Prolog bases its abstraction on a mathematical theory: in this case, 
+ formal logic and resolution theorem proving. This allows Prolog to abstract 
+ out procedural semantics almost completely (the left to right handling of 
+ goals and such pragmatic mechanisms as the cut are necessary exceptions). 
+ The result is a declarative semantics that allows programmers to view 
+ programs as sets of constraints on problem solutions. Also, because 
+ grammars naturally take the form of rules, Prolog has not only proven its 
+ value in natural language processing applications, as well as a tool for 
+ manipulating formal languages, such as compilers or interpreters.
+  
+ Drawing in part on the lessons of these earlier languages, object-oriented 
+ languages, such as Java, offer an extremely rich set of abstractions that 
+ support the idea of organizing even the most ordinary program as a model
+  
+ 431
+  
+ Luger_all_wcopyright_COsfixed.pd447   447
+  
+ 5/15/2008   6:37:39 PM",NA

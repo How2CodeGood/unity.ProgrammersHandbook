@@ -1,0 +1,3515 @@
+Larger Text,Smaller Text,Symbol
+MachineLearningonGeographicalData ,NA,NA
+UsingPython ,NA,NA
+IntroductionintoGeodatawithApplications ,NA,NA
+andUseCases,NA,NA
+Introduction,"Spatial data has long been an ignored data type in general data science 
+ and statistics courses. Yet at the same time, there is a ield of spatial 
+ analysis which is strongly developed. Due to differences in tools and 
+ approaches, the two ields have long developed in separate 
+  
+ environments.
+  
+ With the popularity of data in many business environments, the 
+ importance of treating spatial data is also increasing. The goal of the 
+ current book is to bridge the gap between data science and spatial 
+ analysis by covering tools of both worlds and showing how to use tools 
+ from both to answer use cases.
+  
+ The book starts with a general introduction to geographical data, 
+ including data storage formats, data types, common tools and libraries 
+ in Python, and the like. Strong attention is paid to the speciicities of 
+ spatial data, including coordinate systems and more.
+  
+ The second part of the book covers a number of methods of the ield 
+ of spatial analysis. All of this is done in Python. Even though Python is 
+ not the most common tool in spatial analysis, the ecosystem has taken 
+ large steps in user-friendliness and has great 
+  
+ interoperability with machine learning libraries. Python with its rich 
+ ecosystem of libraries will be an important tool for spatial analysis in 
+ the near future.
+  
+ The third part of the book covers multiple machine learning use 
+ cases on spatial data. In this part of the book, you see that tools from 
+ spatial analysis are combined with tools from machine learning and data 
+ science to realize more advanced use cases than would be 
+  
+ possible in many spatial analysis tools. Speciic considerations are 
+ needed for applying machine learning to spatial data, due to the 
+  
+ speciic nature of coordinates and other speciic data formats of spatial 
+ data.",NA
+SourceCode,"All source code used in the book can be downloaded from
+  
+ github.com/apress/machine-learning-geographic-
+ data-python
+ .",NA
+TableofContents ,"PartI:GeneralIntroduction 
+  
+ Chapter1:IntroductiontoGeodata 
+  
+  
+ ReadingGuideforThisBook 
+  
+  
+ GeodataDeinitions 
+  
+  
+  
+ CartesianCoordinates 
+  
+  
+  
+ PolarCoordinatesandDegrees 
+  
+  
+  
+ TheDifferencewithReality 
+  
+  
+ GeographicInformationSystemsandCommonTools 
+  
+  
+ WhatAreGeographicInformationSystems 
+  
+  
+ StandardFormatsofGeodata 
+  
+  
+  
+ Shapeile 
+  
+  
+  
+ GoogleKMLFile 
+  
+  
+  
+ GeoJSON 
+  
+  
+  
+ TIFF/JPEG/PNG 
+  
+  
+  
+ CSV/TXT/Excel 
+  
+  
+ OverviewofPythonToolsforGeodata 
+  
+  
+ KeyTakeaways 
+  
+ Chapter2:CoordinateSystemsandProjections 
+  
+  
+ CoordinateSystems 
+  
+  
+  
+ GeographicCoordinateSystems 
+  
+  
+  
+ ProjectedCoordinateSystems 
+  
+  
+  
+ LocalCoordinateSystems 
+  
+  
+ WhichCoordinateSystemtoChoose 
+  
+  
+ PlayingAroundwithSomeMaps 
+  
+  
+  
+ Example:WorkingwithOwnData",NA
+AbouttheAuthor,"JoosKorstanje 
+  
+ is a data scientist, with over ive years of 
+ industry experience in developing 
+  
+ machine learning tools. He has a double 
+ MSc in Applied Data Science and in 
+  
+ Environmental Science and has 
+  
+ extensive experience working with 
+  
+ geodata use cases. He has worked at a 
+ number of large companies in the 
+  
+ Netherlands and France, developing 
+  
+ machine learning for a variety of tools. 
+ His experience in writing and teaching 
+ has motivated him to write this book on 
+ machine learning for geodata with 
+  
+ Python.",NA
+AbouttheTechnicalReviewer,"XiaochiLiu
+  
+ is a PhD researcher and data scientist at 
+ Macquarie University, specializing in 
+ machine learning, explainable artiicial 
+ intelligence, spatial analysis, and their 
+ novel application in environmental and 
+ public health. He is a programming 
+  
+ enthusiast using Python and R to 
+  
+ conduct end-to-end data analysis. His 
+ current research applies cutting-edge AI 
+ technologies to untangle the causal 
+  
+ nexus between trace metal 
+  
+ contamination and human health to
+  
+  
+ develop evidence-based intervention 
+  
+  
+ strategies for mitigating environmental exposure.",NA
+PartI ,NA,NA
+GeneralIntroduction,NA,NA
+1.IntroductiontoGeodata,"Joos Korstanje
+ 1
+  
+  
+ (1)
+  
+ VIELS MAISONS, France
+  
+ Mapmaking and analysis of the geographical environment around us 
+ have been present in nature and human society for a long time. Human 
+ maps are well known to all of us: they are a great way to share 
+  
+ information about our environment with others.
+  
+ Yet communicating geographical instructions is not invented only by 
+ the human species. Bees, for example, are well known to communicate on 
+ food sources with their fellow hive mates. Bees do not make maps, but, 
+ just like us, they use a clearly deined communication system.
+  
+ As geodata is the topic of this book, I ind it interesting to share this 
+ out-of-the-box geodata system used by honeybees. Geodata in the bee 
+ world has two components: distance and direction.
+  
+ Honeybeedistancemetrics
+  
+ – The round dance: A food source is present less than 50 meters from the 
+  
+ hive.
+  
+ – The sickle dance: Food sources are present between 50 and 150 meters 
+  
+ from the hive.
+  
+ – The waggle (a.k.a. wag-tail) dance: Food sources are over 150 meters 
+ from the hive. In addition, the duration of the waggle dance is an 
+ indicator of how far over 150 meters the source is located.
+  
+ Honeybeedirectionmetrics
+  
+ – Although more complicated, the angle of the dance is known to be an 
+ indicator of the angle relative to the sun that bees must follow to get to 
+ their food source.
+  
+ – As the sun changes location throughout the day, bees will update each 
+  
+ other by adapting their communication dances accordingly.",NA
+ReadingGuideforThisBook,"As you will understand from these two examples, working with geodata is 
+ a challenge. While identifying locations of points by coordinates may 
+ appear simple, the devil really is in the details.
+  
+ The goal of this book is to go over all those details while working on 
+ example code projects in Python. This should give you the fundamental 
+ knowledge needed to start working in the interesting domain of geodata 
+ while avoiding mistakes. You will then discover numerous ways to 
+ represent geodata and learn to work with tools that make working with 
+ geodata easier.
+  
+ After laying the basis, the book will become more and more advanced 
+ by focusing on machine learning techniques for the geodata domain. As 
+ you may expect, the speciicities of the use of geodata make that a lot of 
+ standards techniques are not applicable at all, or in other cases, they may 
+ need speciic adaptations and conigurations.",NA
+GeodataDeinitions,"To get started, I want to cover the basics of coordinate systems in the 
+ simplest mathematic situation: the Euclidean space. Although the world 
+ does not respect the hypothesis made by Euclidean geometry, it is a great 
+ entry into the deeper understanding of coordinate systems.",NA
+CartesianCoordinates,"To locate points in the Euclidean space, we can use the Cartesian 
+  
+ coordinate system. This coordinate system speciies each point uniquely 
+ by a pair of numerical coordinates. For example, look at the coordinate 
+ system in Figure 
+ 1-2
+ , in which two points are located: a square and a 
+ triangle.
+  
+  
+ The square is located at x = 2 and y = 1 (horizontal axis). The triangle 
+ is located at x = -2 and y = -1.",NA
+PolarCoordinatesandDegrees,"A commonly used alternative to Cartesian coordinates is the polar 
+ coordinate system. In the polar system, one starts by deining one point as 
+ the pole. From this pole starts the polar axis. The graphic in Figure 
+ 1-3 
+ shows the idea.",NA
+TheDifferencewithReality,"In reality, you never work with Euclidean space on a map. This is because 
+ the world is not lat, but rather a sort of sphere. First of all, it needs to be 
+ considered that the object is in three dimensions. More importantly, 
+ distances from one point to another need to take into account the speciic 
+ curvature of the earth at that point. After all, to make it even more 
+ dificult, the earth unfortunately is not a perfectly round ball.
+  
+ In the real world, things have to be much more complicated than in 
+ the Euclidean examples. This is done by the Geographic Coordinate 
+ System which is adapted to our ellipsoidal reality. In this system, we 
+ usually measure a point by a combination of latitude and longitude.
+  
+ Latitude indicates how high or low on the globe you are with respect 
+ to the equator. Longitude tells us how much left or right on the globe you 
+ are with respect to the Greenwich meridian.
+  
+ The earth is split into four quadrants from the zero point at the 
+ intersection of the equator and the Greenwich meridian. You have north 
+ and south and east and west together making up four quadrants. The 
+ North Pole has a latitude of 90 degrees North, and the South Pole is 90",NA
+GeographicInformationSystemsandCommon ,NA,NA
+Tools,"As you must understand by now, geodata is an easy way into a headache 
+ if you do not have tools that do all the conversion work for you. And we 
+ are lucky, as many such tools exist. In this part, let’s have a look at a few 
+ of the most commonly used tools together with some advantages and 
+ disadvantages of each of them.",NA
+WhatAreGeographicInformationSystems,"GIS or Geographic Information Systems are a special type of database 
+ system that is made speciically for geographic data, also called geodata. 
+ Those database systems are developed in such a way that problems like 
+ coordinate systems and more are not a problem to be solved by the user.
+  
+ It is all done inherently by the system. GIS also stands for the industry 
+ that deals with those information systems.",NA
+ArcGIS,"ArcGIS, made by ESRI, is arguably the most famous software package for 
+ working with Geographic Information Systems. It has a very large 
+  
+ number of functionalities that can be accessed through a user-friendly 
+ click-button system, but visual programming of geodata processing 
+ pipelines is also allowed. Python integration is even possible for those who 
+ have speciic tasks for which there are no preexisting tools in ArcGIS. 
+ Among its tools are also AI and data science options.
+  
+ ArcGIS is a great software for working with geodata. Yet there is one 
+ big disadvantage, and that is that it is a paid, proprietary software. It is 
+ therefore accessible only to companies or individuals that have no 
+ dificulty paying the considerably high price. Even though it may be worth 
+ its price, you’ll need to be able to pay or convince your company to pay 
+ for such software. Unfortunately, this is often not the case.",NA
+QGISandOtherOpenSourceArcGISAlternatives,"Open source developers have jumped into this open niche of GIS systems 
+ by developing open source (and therefore free to use) alternatives. These 
+ include QGIS, GRASS GIS, PostGIS, and more.
+  
+ The clear advantage of this is that they are free to use. Yet their 
+ functionality is often much more limited. In most of them, users have the 
+ ability to code their own modules in case some of the needed tools are not 
+ available.
+  
+ This approach can be a good it for your need if you are not afraid to 
+ commit to a system like QGIS and ill the gaps that you may eventually 
+ encounter.",NA
+Python/RProgramming,"Finally, you can use Python or R programming for working with geodata 
+ as well. Programming, especially in Python or R, is a very common skill 
+ among data professionals nowadays.
+  
+ As programming skills were less well spread a few years back, the 
+ boom in data science, machine learning, and artiicial intelligence has 
+ made languages like Python become very commonly spread throughout 
+ the workforce.
+  
+ Now that many are able to code or have access to courses to learn 
+ how to code, the need for full software becomes less. The availability of a 
+ number of well-functioning geodata packages is enough for many to get 
+ started.
+  
+ Python or R programming is a great tool for treating geodata with 
+ common or more modern methods. By using these programming 
+  
+ languages, you can easily apply tools from other libraries to your geodata, 
+ without having to convert this to QGIS modules, for example.
+  
+ The only problem that is not very well solved by programming 
+  
+ languages is long-term geodata storage. For this, you will need a 
+  
+ database. Cloud-based databases are nowadays relatively easy to arrange 
+ and manage, and this problem is therefore relatively easily solved.",NA
+StandardFormatsofGeodata,"As you have understood, there are different tools and programming 
+ languages that can easily deal with geodata. While doing geodata in",NA
+Shapeile,"The shapeile is a very commonly used ile format for geodata because it is 
+ the standard format for ArcGIS. The shapeile is not very friendly for being 
+ used outside of ArcGIS, but due to the popularity of ArcGIS, you will likely 
+ encounter shapeiles at some point.
+  
+ The shapeile is not really a single ile. It is actually a collection of iles 
+ that are stored together in one and the same directory, all having the 
+ same name. You have the following iles that make up a shapeile:
+  
+ – myile.shp: The main ile, also called the shapeile (confusing but true)– 
+ myile.shx: The shapeile index ile
+  
+ – myile.dbf: The shapeile data ile that stores attribute data
+  
+ – myile.prj: Optional ile that stores spatial reference and projection 
+  
+ metadata
+  
+ As an example, let’s look at an open data dataset containing the 
+ municipalities of the Paris region that is provided by the French 
+ government. This dataset is freely available at
+  
+ https://geo.data.gouv.fr/en/datasets/8fadd7040c4b94f
+  
+ 2c318a0971e8faedb7b5675d6 
+  
+  
+ On this website, you can download the data in SHP/L93 format, and 
+ this will allow you to download a directory with a zip ile. Figure 
+ 1-6 
+ shows what this contains.
+  
+  
+ Figure1-6
+  The inside of the shapeile. Image by author Data source: Ministry of DINSIC. Original 
+ data downloaded from  
+ https://geo.data.gouv.fr/en/datasets/8fadd7040c4b94f2c318a0971e8faedb7b5675d6
+ , updated on 1 
+ July 2016. Open Licence 2.0 (
+ www.etalab.gouv.fr/wp-content/uploads/2018/11/open-licence.pdf
+ )",NA
+GoogleKMLFile,"You are probably familiar with Google Earth: one of the dominating map-
+ based applications of our time. Google has popularized the KML ile for 
+ geodata. It is an XML-based text ile that can contain geometry data.
+  
+  
+ The .KMZ ile is a compressed version of the KML ile. You can 
+ decompress it using any unzipping tool and obtain a KML ile.
+  
+  
+ As an example, let’s look at the exact same database as before, which 
+ is located at France’s open geodata platform: 
+  
+  
+ Ministry of DINSIC. Original data downloaded from
+  
+ https://geo.data.gouv.fr/en/datasets/8fadd7040c4b94f 
+ 2c318a0971e8faedb7b5675d6
+ , updated on 1 July 2016. Open Licence 
+ 2.0 (
+ www.etalab.gouv.fr/wp-
+  
+ content/uploads/2018/11/open-licence.pdf
+ ) 
+  
+  
+ In the resources part, you’ll see that this map of the Paris region’s 
+ municipalities is also available in the KML format. Download it and you’ll",NA
+GeoJSON,NA,NA
+TIFF/JPEG/PNG,"Image ile types can also be used to store geodata. After all, many maps 
+ are 2D images that lend themselves well to be stored as an image. Some 
+ of the standard formats to store images are TIFF, JPEG, and PNG.
+  
+ – The TIFF format is an uncompressed image. A georeferenced TIFF 
+ image is called a GeoTIFF, and it consists of a directory with a TIFF ile 
+ and a tfw (world ile).
+  
+ – The better-known JPEG ile type stores compressed image data. When 
+ storing a JPEG in the same folder as a JPW (world ile), it becomes a 
+ GeoJPEG.
+  
+ – The PNG format is another well-known image ile format. You can make 
+ this ile into a GeoJPEG as well when using it together with a PWG 
+ (world ile).
+  
+  
+ Image ile types are generally used to store raster data. For now, 
+ consider that raster data is image-like (one value per pixel), whereas",NA
+CSV/TXT/Excel,"The same ile as used in the irst three examples is also available in CSV. 
+ When downloading it and opening it with a text viewer, you will observe 
+ something like Figure 
+ 1-16
+ .",NA
+OverviewofPythonToolsforGeodata,"Here is a list of Python packages that you may want to look into on your 
+ journey into geodata with Python:
+  
+ Geopandas 
+  
+ General GIS tool with a pandas-like code syntax that makes it very 
+ accessible for the data science world.
+  
+ Fiona 
+  
+ Reading and writing geospatial data.
+  
+ Rasterio 
+  
+ Python package for reading and writing raster data.
+  
+ GDAL/OGR 
+  
+ A Python package that can be used for translating between different GIS 
+ ile formats.
+  
+ RSGISLIB 
+  
+ A package containing remote sensing tools together with raster 
+ processing and analysis.
+  
+ PyProj 
+  
+ A package that can transform coordinates with multiple geographic 
+ reference systems.
+  
+ Geopy 
+  
+ Find postal addresses using coordinates or the inverse.
+  
+ Shapely 
+  
+ Manipulation of planar geometric objects.
+  
+ PySAL 
+  
+ Spatial analysis package in Python.
+  
+ Scipy.spatial 
+  
+ Spatial algorithms based on the famous scipy package for data science.",NA
+KeyTakeaways,"1.
+  
+ Cartesian coordinates and polar coordinates are two alternative 
+ coordinate systems that can indicate points in a two-dimensional 
+ Euclidean space.
+  
+ 2.
+  
+ The world is an ellipsoid, which makes the two-dimensional 
+ Euclidean space a bad representation. Other coordinate systems 
+ exist for this real-world scenario.
+  
+ 3.
+  
+ Geodata is data that contains geospatial references. Geodata can come 
+ in many different shapes and sizes. As long as you have 
+  
+ software implementation (or the skills to build it), you will be able to 
+ convert between data formats.
+  
+ 4.
+  
+ A number of Python packages exist that do a lot of the heavy lifting 
+ for you.
+  
+ 5.
+  
+ The advantage of using Python is that you can have a lot of autonomy 
+ on your geodata treatment and that you can beneit from the large 
+ number of geodata and other data science and AI packages in the 
+ ecosystem.
+  
+ 6. A potential disadvantage of Python is that the software is open 
+ source, meaning that you have no guarantee that your preferred 
+ libraries still exist in the future. Python is also not suitable for long-
+ term data storage and needs to be complemented with such a data 
+ storage solution (e g databases or ile storage)",NA
+2.CoordinateSystemsandProjections,"Joos Korstanje
+ 1
+  
+  
+ (1)
+  
+ VIELS MAISONS, France
+  
+ In the previous chapter, you have seen an introduction to coordinate 
+ systems. You saw an example of how you can use Cartesian coordinates 
+ as well as polar coordinates to identify points on a lat, two-dimensional 
+ Euclidean space. It was already mentioned at that point that the real-
+ world scenario is much more complex.
+  
+ When you are making maps, you are showing things (objects, images, 
+ etc.) that are located on earth. Earth does not respect the rules that were 
+ shown in the Euclidean example because Earth is an ellipsoid: a ball form 
+ that is not perfectly round. This makes map and coordinate system 
+ calculations much more complex than what high-school mathematics 
+ teaches us about coordinates.
+  
+ To make the problem clearer, let’s look at an example of airplane 
+ navigation. Airplane lights are a great example to illustrate the problem, 
+ as they generally cover long distances. Taking into account the curvature 
+ of the earth really doesn’t matter much when measuring the size of your 
+ terrace, but it does make a big impact when moving across continents.
+  
+ Imagine you are lying from Paris to New York using this basic sketch 
+ of the world’s geography. You are probably well aware of such an 
+  
+ organization of the world’s map on a two-dimensional image.
+  
+ A logical irst impression would be that to go from Madrid to New York 
+ in the quickest way, we should follow a line parallel from the latitude 
+ lines. Yet (maybe surprisingly at irst) this is 
+ not
+  the shortest path. An 
+ airplane would better curve via the north!
+  
+ The reason for this is that the more you move to the north, the shorter 
+ the latitude lines actually are. Latitude lines go around the earth, so at the 
+ North Pole you have a length of zero, and at the equator, the",NA
+CoordinateSystems,"While the former discussion was merely intuitive, it is now time to slowly 
+ get to more oficial deinitions of the concepts that you have seen. As we are 
+ ignoring the height of a point (e.g., with respect to sea level) for the 
+ moment, we can identify three types of coordinate systems:
+  
+ – Geographic Coordinate Systems
+  
+ – Projected Coordinate Systems
+  
+ – Local Coordinate Systems
+  
+ Let’s go over all three of them.",NA
+GeographicCoordinateSystems,"Geographic Coordinate Systems are the coordinate systems that we have 
+ been talking about in the previous part. They respect the fact that the 
+ world is an ellipsoid, and they, therefore, express points using degrees or 
+ radians latitude and longitude.
+  
+  
+ As they respect the ellipsoid property of the earth, it is very hard to 
+ make maps or plots with such coordinate systems.",NA
+LatitudeandLongitude,"In Geographic Coordinate Systems, we speak of latitude and longitude. 
+ Generally, the degrees are either expressed together with a mention of 
+ North (above the equator) and South (below the equator), East (east from 
+ Greenwich meridian), or West (west from Greenwich meridian). 
+ East/West and North/South can also be written as negative and positive 
+ coordinates. East and North take positive, whereas South and West take 
+ negative.
+  
+ Although this is standard practice, this can change depending on the 
+ exact deinition of the Geographic Coordinate System you are using. In 
+ theory, anyone could invent a new coordinate system and make it totally 
+ different. In practice, there are some standards that everyone is used to, 
+ and therefore it is best to use those.",NA
+WGS1984GeographicCoordinateSystem,"The WGS 1984, also called WGS 84 or EPSG:4326, is one of the most used 
+ Geographic Coordinate Systems. It is also the reference coordinate system 
+ of GPS (Global Positioning System) which is used in very many 
+ applications. Let’s dive into how the WGS 84 was designed.
+  
+ The WGS 1984 was designed with the goal to have a coordinate origin 
+ located at the center of mass of the Earth. The reference meridian or zero 
+ meridian is the IERS Reference Meridian. It is very close to the Greenwich 
+ meridian: only 5.3 arc seconds or 102 meters to the east.
+  
+ There are more speciic deinitions that deine the WGS 84, yet at this 
+ point, the information becomes very technical. To quote from the 
+  
+ Wikipedia page of the WGS 84:
+  
+ The WGS 84 datum surface is an oblate spheroid with equatorial 
+ radius a = 6378137 m at the equator and lattening f = 
+  
+ 1/298.257223563. The reined value of the WGS 84 gravitational",NA
+OtherGeographicCoordinateSystems,"As an example, ETRS89 is a coordinate system that is recommended by 
+ the European Union for use in geodata in Europe. It is very close to the 
+ WGS 84 but has some minor differences that make the ETRS89 not 
+ subject to change due to continental drift. As you will understand, 
+ continental drift is very slow, and taking things like this into account is 
+ partly based on theory rather than practical importance.
+  
+ Another example is the NAD-83 system, which is used mainly for 
+ North America. As the Earth is an imperfect ellipsoid, the makers of this 
+ system wanted to take into account how much North America deviates 
+ from an ellipsoid to perform better in North America.",NA
+ProjectedCoordinateSystems,"When making maps, we need to convert the three-dimensional earth into 
+ two-dimensional form. This task is impossible to do perfectly: imagining 
+ taking a round plastic soccer ball and cutting it open to make it lat. You 
+ will never be able to paste this round ball into a lat rectangle without 
+ going through an immense struggle to ind a way to cut the stuff so that it 
+ looks more or less coherent.
+  
+ Luckily, many great minds have come before us to take this challenge 
+ and ind great ways to “cut up the ellipsoid earth and paste it on a 
+ rectangle.” We call this projecting, as you could imagine that the 3D 
+ geographic coordinates get matched with a location on the square. This 
+ projects everything in between to its corresponding location.",NA
+XandYCoordinates,NA,NA
+FourTypesofProjectedCoordinateSystems,"As you have understood, there will be a distortion in all Projected 
+ Coordinate Systems. As the projections place locations on a three-
+ dimensional ball-like form onto a lat two-dimensional rectangle, some 
+ features of reality can be maintained as others get lost.
+  
+ There is no projection better than the other. The question here is 
+ rather which types of features you want to maintain and you are 
+  
+ accepting to lose. There are four categories of Projected Coordinate 
+ Systems, all making sure that one aspect of reality is perfectly maintained 
+ on the projection.
+  
+ When choosing a map projection for your project, the key choice is to 
+ decide which distortions will be the most appropriate and which features 
+ you absolutely want to maintain.
+  
+ EqualAreaProjections
+  
+ The irst type of projection is one that preserves the area of speciic 
+ features. You may not be aware of it, but many maps that you see do not 
+ respect equal area. As an example, if you zoom out a bit on Google Maps, 
+ you will see that Greenland is huge in the projection that was chosen by 
+ Google Maps.
+  
+ For some use cases, this can be a big problem. Equal area projections 
+ are there to make sure that the surface area of speciic features stays the 
+ same (e.g., countries or others). The cost of this is that other features like 
+ shapes and angles may become distorted. You may end up with a 
+  
+ projection in which Greenland respects its real area, but the shape is not 
+ perfectly represented as a result.
+  
+ Example1:MollweideProjection",NA
+LocalCoordinateSystems,"As you have seen, there are a number of Geographic Coordinate Systems, 
+ followed by an even larger number of map projections that each have 
+ their own speciic mathematical deinitions and are each created for a 
+ speciic use case or practical and theoretical goals. What they have in",NA
+WhichCoordinateSystemtoChoose,"After seeing this large variety and detail of coordinate systems, you may 
+ wonder which coordinate systems you should use. And, unfortunately, 
+ there is not one clear answer to this. Only if you have very clear needs, 
+ whether it is equal distances, equal shapes, or equal areas, there will be a 
+ very clear winner. Conic vs. cylindrical maps may also be a clear element 
+ of choice in this.
+  
+ Another part of the answer is that you will very often be “forced” into 
+ working with a speciic coordinate system, as you retrieve geodata 
+ datasets that are already in a chosen coordinate system. You can always 
+ go from one to the other, but if your dataset is large, conversions may 
+ take some time and pose problems: staying with a dataset’s coordinate 
+ system can be the right choice if you have no speciic needs.
+  
+ Besides that, it can be a best practice to use “standard” choices. If all 
+ maps in your domain of application or in your region use a speciic 
+ coordinate system, you may as well go with that choice for increased 
+ coherence.
+  
+ One key takeaway here is that metadata is a crucial part of geodata. 
+ Sending datasets with coordinates while failing to mention details on the 
+ coordinate system used is very problematic. At the same time, if you are 
+ on the receiving end, stay critical of the data you receive, and pay close",NA
+PlayingAroundwithSomeMaps,"To end this chapter on coordinate systems, let’s get to some practical 
+ applications. You will see how to create some data, change coordinate 
+ systems, and show some simple maps in those different coordinate 
+ systems. You will see a irst example in which you create your own 
+ dataset using Google My Maps. You will project your data into another 
+ coordinate system and compare the differences.",NA
+Example:WorkingwithOwnData,"In the irst example, you will learn an easy and accessible method for 
+ annotating geodata using Google My Maps. You will then import the map 
+ in Python and see how to convert it to a different coordinate system.",NA
+Step1:MakeYourOwnDatasetonGoogleMyMaps,"Google My Maps is a great starting point for building simple geodatasets. 
+ Although it is not much used in professional use cases, it is a great way to 
+ get started or to make some quick sketches for smaller projects.
+  
+ To start building a Google My Maps, you need to go to your Google 
+ Drive (drive.google.com). Inside your Google Drive, you click New, and 
+ you select New Google My Map. Once you do this, it will automatically 
+ open a Google Maps–like page in which you have some additional tools. 
+ You will see the toolbars top left.",NA
+Step2:AddSomeFeaturesonYourMap,"You can add features on your map by clicking the 
+  icon for points and
+  
+ the 
+  icon for lines and polygons. Let’s try to make a polygon that
+  
+ contains the whole country of France, by clicking around its borders. You 
+ should end up with a gray polygon. For copyright reasons, it is not 
+ possible to reprint the map in Google format, but you can freely access it 
+ over here:
+  
+ www.google.com/maps/d/edit?
+  
+ mid=1phChS9aNUukXKk2MwOQyXvksRk-HTOdZ&usp=sharing",NA
+Step3:ExportYourMapAsa.KML,"By doing this, you have just created a very simple geodata dataset that 
+ contains one polygon. Now, to get this geodata into a different 
+  
+ environment, let’s export the data.
+  
+ To do so, you go to the three little dots to the right of the name of your 
+ map, and you click Export Map, or Download KML, depending on your 
+ version and settings. You can then select to extract 
+ onlythelayerrather 
+ thantheentiremap
+ . This way, you will end up with a dataset that has 
+ your own polygon in it. Also, select the option to 
+ geta.KMLratherthan 
+ a.KMZ
+ .",NA
+Step4:Importthe.KMLinPython,"Now, let’s see how we can get this map into Python. You can use the 
+ geopandas library together with the Fiona library to easily import a .KML 
+ map. If you don’t have these libraries installed, you can use Code Block 
+ 2-
+ 1
+  if you’re in a Jupyter notebook.
+  
+ !pip install fiona 
+  
+ !pip install geopandas
+  
+ CodeBlock2-1
+  Installing the libraries 
+  
+ Then you can use the code in Code Block 
+ 2-2
+  to import your map and 
+ show the data that is contained within it.
+  
+ import fiona 
+  
+ import geopandas as gpd
+  
+ gpd.io.file.fiona.drvsupport.supported_drivers['KML'] 
+ = 'rw' 
+  
+ kmlfile = 
+  
+ gpd.read_file(“the/path/to/the/exported/file.kml"") 
+ print(kmlfile)
+  
+ CodeBlock2-2
+  Importing the data 
+  
+ You’ll ind that there is just one line in this dataframe and that it 
+ contains a polygon called France. Figure 
+ 2-11
+  shows this.",NA
+Step5:PlottheMap,"Now that you understand how to deine polygon-shaped map data as a 
+ text ile, let’s use simple Python functionality to make this into a map. 
+ This can be done very easily by using the plot method, as shown in Code 
+ Block 
+ 2-5
+ .
+  
+ import matplotlib.pyplot as plt 
+ kmlfile.plot() 
+  
+ plt.title('Map in WGS 84')
+  
+ CodeBlock2-5
+  Plotting the map 
+ The result of this code is shown in Figure 
+ 2-12
+ .",NA
+Step6:ChangetheCoordinateSystem,"KML standardly uses the WGS 84 Geographic Coordinate System. You can 
+ check that this is the case using the code in Code Block 
+ 2-6
+ .
+  
+ kmlfile.crs
+  
+ CodeBlock2-6
+  Extracting the coordinate system 
+ You’ll see the result like in Figure 
+ 2-13
+  being shown in your notebook.",NA
+Step7:PlottheMapAgain,"Now to plot the polygon, the code in Code Block 
+ 2-8
+  will do the job.
+  
+ proj_kml.plot() 
+  
+ plt.title('ESRI:102014 map')
+  
+ CodeBlock2-8
+  Plotting the map",NA
+KeyTakeaways,"1.
+  
+  
+ Coordinate systems are mathematical descriptions of the earth that 
+  
+ allow us to communicate about locations precisely 
+  
+ 2.
+  
+ Many coordinate systems exist, and each has its own advantages and 
+ imperfections. One must choose a coordinate system depending on 
+ their use case.
+  
+ 3.
+  
+ Geographic Coordinate Systems use degrees and try to model the 
+ Earth as an ellipsoid or sphere.
+  
+ 4.
+  
+ Projected Coordinate Systems propose methods to convert the 3D 
+ reality onto a 2D map. This goes as the cost of some features of 
+ reality, which cannot be presented perfectly in 2D.
+  
+ 5. There are a number of well-known projection categories. Equidistant 
+  
+ makes sure that distances are not disturbed. Equal area projections",NA
+3.GeodataDataTypes,"Joos Korstanje
+ 1
+  
+  
+ (1)
+  
+ VIELS MAISONS, France
+  
+ Throughout the previous chapters, you have been (secretly) exposed to a number 
+ of different geodata data types. In Chapter 
+ 1
+ , we have talked about identifying 
+ points inside a coordinate system. In the previous chapter, you saw how a polygon 
+ of the shape of the country France was created. You have also seen examples of a 
+ TIFF data ile being imported into Python.
+  
+ Understanding geodata data types is key in working eficiently with geodata.
+  
+ In regular, tabular, datasets, it is generally not too costly to transform from one 
+ data type to another. Also, it is generally quite easy to say which data type is 
+ the“best” data type for a given variable or a given data point.
+  
+ In geodata, the choice of data types is much more impacting. Transforming 
+ polygons of the shapes of countries into points is not a trivial task, as this would 
+ require deining (artiicially) where you’d want to put each point. This would be in 
+ the “middle,” which would often require quite costly computations.
+  
+ The other way around, however, would not be possible anymore. Once you 
+ have a point dataset with the centers of countries, you would never be able to ind 
+ the countries’ exact boundaries anymore.
+  
+ This problem is illustrated using the two images in Figures 
+ 3-1
+  and 
+ 3-2
+ . You see 
+ one that has a map with the contours of the countries of the world, which has some 
+ black crosses indicating some of the countries’ center points. In the second 
+ example, you see the same map, but with the polygons deleted. You can see clearly 
+ that once the polygon information is lost, you cannot go back to this information. 
+ This may be acceptable for some use cases, but it may be a problem for many use 
+ cases.
+  
+ In this chapter, you will see the four main types of geodata data types, so that 
+ you will be comfortable working with all types, and you will be able to decide on 
+ the type of data to use.",NA
+Vectorvs.RasterData,"The big split in geodata data types is between vector data and raster data. There 
+ is a fundamental difference in how those two are organized.
+  
+ Vector data is data that contains objects with the speciic coordinates of those 
+ objects. Those objects are points, lines, and polygons. In the two images",NA
+Points,"The simplest data type is probably the point. You have seen some examples of 
+ point data throughout the earlier chapters, and you have seen before that the 
+ point is one of the subtypes of vector data.
+  
+ Points are part of vector data, as each point is an object on the map that has its 
+ own coordinates and that can have any number of attributes necessary. Point 
+ datasets are great for identifying locations of speciic landmarks or other types of 
+ locations. Points cannot store anything like the shape of the size of landmarks, so it 
+ is important that you use points only if you do not need such information.",NA
+Lines,"Line data is the second category of vector data in the world of geospatial data. 
+ They are the logical next step after points. Let’s get into the deinitions straight 
+ away.
+  
+ DeinitionofaLine
+  
+ Lines are also well-known mathematical objects. In mathematics, we generally 
+ consider straight lines that go from one point to a second point. Lines have no 
+ width, but they do have a length.
+  
+ In geodata, line datasets contain not just one line, but many lines. Line segments 
+ are straight, and therefore they only need a from point and a to point.",NA
+Polygons,"Polygons are the next step in complexity after points and lines. They are the third 
+ and last category of vector geodata.
+  
+ DeinitionofaPolygon
+  
+ In mathematics, polygons are deined as two-dimensional shapes, made up of 
+ lines that connect to make a closed shape. Examples are triangles, rectangles, 
+ pentagons, etc. A circle is not oficially a polygon as it is not made up of straight 
+ lines, but you could imagine a lot of very small straight lines being able to 
+ approximate a circle relatively well.",NA
+Rasters/Grids,"Raster data, also called grid data, is the counterpart of vector data. If you’re used 
+ to working with digital images in Python, you might ind raster data quite similar. 
+ If you’re used to working with dataframes, it may be a bit more abstract, and take 
+ a moment to get used to it.
+  
+ DeinitionofaGridorRaster
+  
+ A grid, or a raster, is a network of evenly spaced horizontal and vertical lines that 
+ cut a space into small squares. In images, we tend to call each of those squares a 
+ pixel. In mathematics, there are many other uses for grids, so pixel is not a 
+ universal term.
+  
+ Grid geodata are grids that contain one value per “pixel,” or cell, and therefore 
+ they end up being a large number of values illing up a square box. If you are not 
+ familiar with this approach, it may seem unlikely that this could be converted into 
+ something, but once a color scale is assigned to the values, this is actually how 
+ images are made. For raster/grid maps, the same is true.
+  
+ ImportingaRasterDatasetinPython
+  
+ On the following website, you can download a GeoTIF ile that contains an 
+ interpolated terrain model of Kerbernez in France:
+  
+ https://geo.data.gouv.fr/en/datasets/b0a420b9e003d45aaf
+  
+ 0670446f0d600df14430cb 
+  
+ You can use the code in Code Block 
+ 3-20
+  to read and show the raster ile in 
+ Python.
+  
+ import rasterio 
+  
+ griddata = r'ore-kbz-mnt-litto3d-5m.tif' 
+ img = rasterio.open(griddata) 
+  
+ matrix = img.read() 
+  
+ matrix
+  
+ CodeBlock3-20
+  Opening the raster data
+  
+ As you can see in Figure 
+ 3-21
+ , this data looks nothing like a geodataframe 
+ whatsoever. Rather, it is just a matrix full of the values of the one (and only one) 
+ variable that is contained in this data.",NA
+KeyTakeaways,"1.
+  
+ 2.
+  
+ 3.
+  
+ 4.
+  
+ There are two main categories of geodata: vector and raster. They have 
+ fundamentally different ways of storing data.
+  
+ Vector data stores objects and stores the geospatial references for those 
+ objects.
+  
+ Raster data cuts an area into equal-sized squares and stores a data value for 
+ each of those squares.
+  
+ There are three main types of vector data: point, line, and polygon.
+  
+ 5.
+  
+ Points are zero-dimensional, and they have no size. They are only indicated 
+ by a single x,y coordinate. Points are great for indicating the location of 
+ objects.
+  
+ 6.
+  
+ Lines are one-dimensional. They have a length, but no width. They are 
+ indicated by two or more points in a sequence. Lines are great for indicating 
+ line-shaped things like rivers and roads.
+  
+ 7. Polygons are two-dimensional objects. They have a shape and size. Polygons are 
+ great when your objects are polygons and when you need to retain this 
+ information. Polygons can indicate the location of objects if you also need to 
+ locate their contour. It can also apply for rivers and roads when you also need 
+ to store data about their exact shape and width. Polygons are the data type that 
+ can retain the largest amount of information among the three vector data types",NA
+4.CreatingMaps,"Joos Korstanje
+ 1
+  
+  
+ (1)
+  
+ VIELS MAISONS, France
+  
+ Mapmaking is one of the earliest and most obvious use cases of the ield of geodata. 
+ Maps are a special form of data visualization: they have a lot of standards and are 
+ therefore easily recognizable and interpretable for almost anyone.
+  
+ Just like other data visualization methods, maps are a powerful tool to share a 
+ message about a dataset. Visualization tools are often wrongly interpreted as an 
+ objective depiction of the truth, whereas in reality, map makers and visualization 
+ builders have a huge power of putting things on the map or leaving things out.
+  
+ An example is color scale picking on maps. People are so familiar with some 
+ visualization techniques that when they see them, they automatically believe 
+ them.
+  
+ Imagine a map showing pollution levels in a speciic region. If you would want 
+ people to believe that pollution is not a big problem in the area, you could build 
+ and share a map that shows areas with low pollution as dark green and very 
+ strongly polluted areas as light green. Add to that a small, unreadable, legend, and 
+ people will easily interpret that there is no big pollution problem.
+  
+ If you want to argue the other side, you could publish an alternative map that 
+ shows the exact same values, but you depict strong pollution as dark red and 
+ slight pollution as light red. When people see this map, they will directly be 
+ tempted to conclude that pollution is a huge problem in your area and that it 
+ needs immediate action.
+  
+ It is important to understand that there is no truth in choosing visualization. 
+ There are however a number of levers in mapmaking that you should master well 
+ in order to create maps for your speciic purpose. Whether your purpose is making 
+ objective maps, beautiful maps, or communicating a message, there are a number 
+ of tools and best practices that you will discover in this chapter. Those are 
+ important to remember when making maps and will come in handy when 
+ interpreting maps as well.",NA
+MappingUsingGeopandasandMatplotlib,NA,NA
+MakingaMapwithCartopy,"We now move on to a second well-known map mapping library in Python called 
+ Cartopy. We’ll be walking through one of the simpler examples of Cartopy that is 
+ shown in their documentation, in order to get a grasp of the different options, 
+ strong points, and weak points of this library.
+  
+ A strong point of Cartopy is that they have a relatively extensive mapping 
+ gallery with maps that you can take and make your own. If you want to check out 
+ the examples on their gallery, they can be found on this link:
+  
+ https://scitools.org.uk/cartopy/docs/latest/gallery/lines_
+  
+ and_polygons/feature_creation.html#sphx-glr-gallery-lines-
+ and-polygons-feature-creation-py
+ .
+  
+ The example that we’ll be looking at irst is based on the example called “lines 
+ and polygons feature creation.” It allows you to make a basic land map of a region 
+ of the earth.
+  
+ The code in Code Block 
+ 4-10
+  shows you how this can be done. It goes through a 
+ number of steps. The irst important part of the code is to create the
+  
+ “ig.add_subplot” in which you call a projection argument to solve any problems of 
+ coordinate systems right from the start. In this case, the PlateCarree projection is 
+ chosen, but the cartopy.crs library has a large number of alternatives.
+  
+ Secondly, you see that ax.set_extent is called. This will make a subset of the map 
+ ranging from the coordinate (-10, 30) in the left-bottom corner to (40, 70) in the 
+ top-right corner. You’ll see more details on setting extents in the next chapter.
+  
+ After this, ax.stock_img() is called to add a background map. It is a simple but 
+ recognizable background image with blue seas and brown/green land.
+  
+ A number of built-in features from Cartopy are also added to the map: Land, 
+ Coastline, and the states_provinces that come from Natural Earth Features and 
+ are set to a 1:10 million scale.
+  
+ Finally, a copyright is added to the bottom right.
+  
+ !pip install cartopy 
+  
+ import cartopy 
+  
+ import matplotlib.pyplot as plt 
+  
+ import cartopy.crs as ccrs 
+  
+ import cartopy.feature as cfeature 
+  
+ from matplotlib.offsetbox import AnchoredText",NA
+MakingaMapwithPlotly,"It is now time to move to a mapping library that will allow you to make much 
+ more aesthetically pleasing visualizations. One library that you can do this with is 
+ Plotly. Plotly is a well-known data visualization library in Python, and it has a well-
+ developed component for mapping as well.
+  
+ I strongly recommend checking out the Plotly map gallery (Figure 
+ 4-11
+ ), which 
+ is a great resource for getting started with mapmaking. Their plot gallery can be 
+ found at 
+ https://plotly.com/python/maps/
+ , and it contains a large 
+ number of code examples of different types of graphs, including
+  
+ – Choropleth maps
+  
+ – Bubble maps
+  
+ – Heat maps
+  
+ – Scatter plots
+  
+ – And much more
+  
+  
+ Figure4-11
+  Screenshot of the Plotly graph gallery (plotly.com/python/maps)",NA
+MakingaMapwithFolium,"In this fourth and inal part on mapmaking with Python, you’ll go another step 
+ further in the direction of better aesthetics. Folium is a Python library that 
+ integrates with a JavaScript library called Lealet.js.
+  
+ Folium allows you to create interactive maps, and the results will almost give 
+ you the feeling that you are working in Google Maps or comparable software. All 
+ this is obtained using a few lines of code, and all the complex work for generating 
+ those interactive maps is hidden behind Folium and Lealet.js.
+  
+ Folium has extensive documentation with loads of examples and quick-start 
+ tutorials (
+ https://python-",NA
+KeyTakeaways,"1.
+  
+ 2.
+  
+ 3.
+  
+ 4.
+  
+ 5.
+  
+ 6.
+  
+ There are many mapping libraries in Python, each with its speciic advantages 
+ and disadvantages.
+  
+ Using geopandas together with matplotlib is probably the easiest and most 
+ intuitive approach to making maps with Python. This approach allows you to 
+ work with your dataframes in an intuitive pandas-like manner in geopandas 
+ and use the familiar matplotlib plotting syntax. Aesthetically pleasing maps 
+ may be a little bit of work to obtain.
+  
+ Cartopy is an alternative that is less focused on data and more on the actual 
+ mapping part. It is a very speciic library to cartography and has good support 
+ for different geometries, different coordinate systems, and the like.
+  
+ Plotly is a visualization library, and it is, therefore, less focused on the 
+ geospatial functionalities. It does come with a powerful list of visualization 
+ options, and it can create aesthetically pleasing maps that can really 
+ communicate a message.
+  
+ Folium is a great library for creating interactive maps. The maps that you can 
+ create even with little code are of high quality and are similar in user 
+  
+ experience to Google Maps and the like. The built-in background maps allow 
+ you to make useful maps even when you have very little data to show.
+  
+ Having seen those multiple approaches to mapmaking, the most important 
+ takeaway is that maps are created for a purpose. They either try to make an 
+ objective representation of some data, or they can try to send a message.
+  
+ They can also be made for having something that is nice to look at. When 
+ choosing your method for making maps with Python, you should choose the 
+ library and the method that best serves your purpose. This always depends 
+ on your use case.",NA
+PartII ,NA,NA
+GISOperations,NA,NA
+5.ClippingandIntersecting,"Joos Korstanje
+ 1
+  
+  
+ (1)
+  
+ VIELS MAISONS, France
+  
+ In the previous four chapters, you have discovered the foundations of 
+ working with geodata. In the irst chapter, you have seen what geodata is, 
+ how to represent it, and a general overview of tools for using geodata.
+  
+ After that, Chapter 
+ 2
+  has given you a deeper introduction to coordinate 
+ systems and projections, which gives you a framework in which 
+  
+ coordinates can be used.
+  
+ Chapter 
+ 3
+  has shown you how to represent geographical data in 
+ practice, using one of the geographical data types or shapes. Chapter 
+ 4 
+ has given you an introduction to creating maps.
+  
+ At this point, you should start having a general idea of geodata and 
+ start getting some understanding of what can be done with it, both in a 
+ general, theoretical sense and in a practical sense through the Python 
+ examples that have been presented.
+  
+ Now that this introduction is done, the remainder of this book will 
+ serve two main objectives. In the coming four chapters, we will focus on 
+ four standard operations in geodata processing. The goal here will be to 
+ show how to use Python for tasks that are generally already implemented 
+ in more speciic GIS tools and systems. When using Python for your GIS 
+ work, it is essential that you have these types of standard geodata 
+  
+ processing tasks in your personal toolkit.
+  
+ More advanced use cases using machine learning are much less 
+ commonly implemented in GIS tools, and their easy availability is what 
+ makes Python a great choice as a tool for geodata. These use cases will be 
+ covered in the inal chapters of the book.
+  
+ The standard operations that will be covered are
+  
+  
+ Clipping and intersecting",NA
+WhatIsClipping?,"Clipping, in geoprocessing, takes one layer, an input layer, and uses a 
+ speciied boundary layer to cut out a part of the input layer. The part that 
+ is cut out is retained for future use, and the rest is generally discarded.
+  
+  
+ The clipping operation is like a cookie cutter, in which your cookie 
+ dough is the input layer in which a cookie-shaped part is being cut out.",NA
+ASchematicExampleofClipping,"Let’s clarify this deinition using a more intuitive example. Imagine that 
+ you are working with geodata of a public park. You can get a lot of public 
+ data from the Internet, but of course any public data is unlikely to be 
+ exactly catered to the size of your park: it will generally be on a much 
+ larger scale.
+  
+ To make working with the data easier, you can use a clipping 
+  
+ operation to get all the data back to a smaller size and keep only data that 
+ is relevant for your park. The schematic drawing in Figure 
+ 5-1
+  shows how 
+ this would work.",NA
+WhatHappensinPracticeWhenClipping?,"As you have understood by now, any mapping information is just data. 
+ Let’s try to understand what happens to the data when we are executing a 
+ clipping operation.
+  
+ In practice, the clipping operation can have multiple effects, 
+  
+ depending on the input data. If you are working with raster data, a 
+ clipping operation would simply remove the pixels of the raster that are 
+ not selected and keep the pixels that are still relevant. The previous 
+ schematic drawing shows what would happen with raster data. You can 
+ consider that the input data consists of a large number of pixels. In the 
+ output, the nonrelevant pixels have been deleted.",NA
+ClippinginPython,"In this example, you will see how to apply a clipping operation in Python. 
+ The dataset is a dataset that I have generated speciically for this 
+  
+ exercise. It contains two features:
+  
+  
+  
+ A line that covers a part of the Seine River (a famous river in Paris, 
+ France, which also covers a large part of the country of France) A 
+ polygon that covers the center of Paris",NA
+WhatIsIntersecting?,"The second operation that we will be looking at is the intersection. For 
+ those of you who are aware of set theory, this part will be relatively 
+ straightforward. For those who are not, let’s do an introduction of set 
+ theory irst.",NA
+WhatHappensinPracticeWhenIntersecting?,"An intersection in set theory takes two input sets and keeps only those 
+ items from the set that are present in both. In geodata processing, the 
+ same is true. Consider that your sets are now geographical datasets, in 
+ which we use the geographical location data as identiier of the objects.
+  
+ The intersection of two objects will keep all features (columns) of both 
+ datasets, but it will keep only those data points that are present in both 
+ datasets.
+  
+ As an example, let’s consider that we again use the Seine River data, 
+ and this time we use the main road around Paris (Boulevard 
+  
+ Périphérique) to identify places at which we should ind bridges or 
+ tunnels. This could be useful, for example, if we have no data about 
+ bridges and tunnels yet, and we want to automatically identify all 
+ locations at which we should ind bridges or tunnels.
+  
+ The intersection of the two would allow us to keep both the 
+  
+ information about the road data and the data from the river dataset while 
+ reducing the data to the locations where intersections are to be found.
+  
+  
+ Of course, this can be generalized to a large number of problems 
+ where the intersection of two datasets is needed.",NA
+ConceptualExamplesofIntersectingGeodata,"Let’s now see some examples of how the intersection operation can apply 
+ to geodata. Keep in mind that in raster data, there are no items, just pixels, 
+ so using set theory is only useful for vector data. You will now see a 
+ number of examples of the different vector data types and how an 
+  
+ intersection would work for them.
+  
+ Let’s start with considering what happens when intersecting points 
+ with points. As a point has no width nor length, only a location, the only 
+ intersection that we can do is identify whether points from one dataset 
+ overlap with points from the other dataset. If they do, we can consider 
+ that these overlapping points are in the intersection. The schematic 
+ drawing in Figure 
+ 5-11
+  shows an example of this.",NA
+IntersectinginPython,"Let’s now start working on the example that was described earlier in this 
+ chapter. We take a dataset with the Boulevard Périphérique and the Seine 
+ River, and we use the intersection of those two to identify the locations 
+ where the Seine River crosses the Boulevard Périphérique.
+  
+  
+ You can use the code in Code Block 
+ 5-7
+  to import the data and print 
+ the dataset.
+  
+ gpd.io.file.fiona.drvsupport.supported_drivers['KML'] 
+ = 'rw' 
+  
+ data = 
+  
+ gpd.read_file('ParisSeineData_example2_v2.kml') 
+  
+ data.head()
+  
+ CodeBlock5-7
+  Import and print the data",NA
+DifferenceBetweenClippingandIntersecting,"Now that you have seen both the clipping and the intersection tools, you 
+ should understand that both of them generally reduce the quantity of 
+ data. There is a fundamental difference between the two, and your choice 
+ for the tool should depend on what you intend to accomplish.
+  
+ Clipping reduces data by taking an input dataset and a boundary 
+ dataset. The resulting output data is of the exact shape of the input data, 
+ only limited to the geographic extent imposed by the boundary dataset. 
+ The only data that is kept is the data of the input layer. You have seen in 
+ the clipping example that the Paris polygon was not present in the output: 
+ only the Seine River was present, yet in a geographically reduced form.
+  
+ With intersections, both datasets can be considered as equally 
+ important. There is not one input dataset and one boundary dataset, but 
+ there are two input datasets. The resulting output is a combination that 
+ keeps all the information from both input datasets while still keeping 
+ only points that coincide geographically.",NA
+KeyTakeaways,"1.
+  
+ 2.
+  
+ 3.
+  
+ 4.
+  
+ 5.
+  
+ 6.
+  
+ 7.
+  
+ 8.
+  
+ There are numerous basic geodata operations that are standardly 
+ implemented in most geodata tools. They may seem simple at irst 
+ sight, but applying them to geodata can come with some dificulties.
+  
+ The clipping operation takes an input dataset and reduces its size to 
+ an extent given by a boundary dataset. This can be done for all 
+ geodata data types.
+  
+ Using clipping for raster data or points comes down to deleting the 
+ pixel points that are out of scope.
+  
+ Using clipping for lines or polygons will delete those lines and 
+ polygons that are out of scope entirely, but will create a new reduced 
+ form for those points that are partly inside and partly outside of the 
+ boundaries.
+  
+ The intersection operation is based on set theory and allows to ind 
+ features that are shared between two input datasets. It is different 
+ from clipping, as it treats the two datasets as input and therefore 
+ keeps the features of both of them. In clipping, this is not the case, as 
+ only the features from the input dataset are considered relevant.
+  
+ Intersecting points basically comes down to iltering points based on 
+ their presence in both datasets.
+  
+ Intersecting lines generally results in points (either crossings 
+  
+ between two lines or touchpoints between two curving lines), but 
+ they can also be lines if two lines are perfectly equal on a part of their 
+ trajectory.
+  
+ Intersecting polygons will result in one or multiple smaller polygons, 
+ as the intersection is considered to be the area that the two polygons 
+ have in common.",NA
+6.Buffers,"Joos Korstanje
+ 1
+  
+  
+ (1)
+  
+ VIELS MAISONS, France
+  
+ In the previous chapter, we have started looking at a number of common 
+ geospatial operations: data operations that are not possible, or at least 
+ not common, on regular data, but that are very common on geospatial 
+ data.
+  
+ The standard operations that will be covered are
+  
+  
+  
+  
+  
+ Clipping and intersecting 
+ Buffering 
+  
+ Merge and dissolve 
+  
+ Erase
+  
+ In the previous chapter, you have already seen two major operations. 
+ You have irst seen how to clip data to a speciic extent, mainly for the use 
+ of dropping data based on a spatial range. You have also seen how to use 
+ intersecting to create data based on applying set theory on geospatial 
+ datasets. It was mentioned that other set theory operations can be found 
+ in that scope as well.
+  
+ In this chapter, we will look at a very different geospatial operation. 
+ You will discover the geospatial operation of buffering or creating buffers. 
+ They are among the standard operations of geospatial operations, and it is 
+ useful to master this tool.
+  
+ Just like intersecting, the buffer is a tool that can be used either as a 
+ stand-alone or as a tool for further analysis. It was not mentioned, but in 
+ the example of intersections, a buffer operation was used to create 
+ polygon data of the bridges and rivers.
+  
+  
+ This clearly shows how those spatial operations should all be seen as 
+ tools in a toolkit, and when you want to achieve a speciic goal, you need",NA
+WhatAreBuffers?,"Buffers are newly created polygons that surround other existing shapes. 
+ The term buffering is adequate, as it really consists of creating a buffer 
+ around an existing object.
+  
+ You can create buffers around all vector data objects, and they always 
+ become polygons. For example, this would give the following results 
+ based on data type:
+  
+ – When you create a buffer around a point, you will end up with a new 
+  
+ buffer polygon that contains the surrounding area around that 
+ point.– By adding a buffer to a line, you have a new feature that 
+ contains the 
+  
+ area around that line.
+  
+ – Buffers around polygons will also contain the area just outside the 
+  
+ polygon.
+  
+ Buffers are newly created objects. After computing the buffer polygon, 
+ you still have your original data. You will simply have created a new 
+ feature which is the buffer.",NA
+ASchematicExampleofBuffering,"Let’s clarify this deinition using a more intuitive example. We will take 
+ the example that was used in the previous chapter as well, in which we 
+ had a line dataset of roads, but we needed to transform those roads into 
+ polygons to take into account the width of the road. In the image in 
+ Figure 
+ 6-1
+ , you see a road depicted irst as a polygon and then as a line.",NA
+WhatHappensinPracticeWhenBuffering?,"Let’s now see some examples of how the intersection operation can apply 
+ to geodata. Keep in mind that in raster data, there are no items, just pixels, 
+ so using set theory is only useful for vector data. You will now see a 
+ number of examples of the different vector data types and how an 
+  
+ intersection would work for them.",NA
+BuffersforPointData,"Let’s start with considering what happens when constructing buffers 
+ around points. Points have no width or length, just location. If we create a 
+ buffer, we generally make buffers of which the borders are equally far 
+ away from the buffered object. Therefore, buffers around points would 
+ generally be circles. The chosen size of the buffer would determine the 
+ size of those circles. You can see an example in the schematic drawing in 
+ Figure 
+ 6-2
+ .",NA
+BuffersforLineData,"Let’s now consider the case in which we apply buffers to line data. A irst 
+ schematic example was already given before. In that example, a line 
+ dataset was present, but it needed to be converted into a polygon to use 
+ it for the intersection exercise.
+  
+ Let’s consider another example. Imagine that you are planning a 
+ railroad location somewhere, and you need to investigate the amount of 
+ noise problems that you are going to observe and how many people this 
+ is going to impact. This is an interesting example, as it advances on the 
+ sound pollution problem introduced earlier.",NA
+BuffersforPolygonData,NA,NA
+CreatingBuffersinPython,"In the coming example, we will be looking at a quite simple but intuitive 
+ example of searching a house to rent. Imagine that you have a database 
+ with geographic point data that are houses, and you want to do a geodata 
+ lookup to test for a number of criteria. In this example, we will go through 
+ a number of examples using buffers. You will discover how you can use 
+ buffers for your house searching criteria:
+  
+  
+ You will see how to use buffers around points to investigate whether 
+ each of the houses is on walking distance to a subway station (a real 
+ added value).",NA
+CreatingBuffersAroundPointsinPython,"Let’s start by importing the .kml data. Having gone through this 
+  
+ numerous times in early chapters, this should start to become a habit by 
+ now. The code to import the data is shown in Code Block 
+ 6-1
+ .
+  
+ import geopandas as gpd 
+  
+ import fiona
+  
+ # import the paris subway station data 
+  
+ gpd.io.file.fiona.drvsupport.supported_drivers['KML'] 
+ = 'rw' 
+  
+ data = gpd.read_file('Paris_Metro_Stations.kml') data
+  
+ CodeBlock6-1
+  Import the data 
+ The resulting dataframe is shown in Figure 
+ 6-5
+ .",NA
+CreatingBuffersAroundLinesinPython,"In this second part of the exercise, you will see how to create a buffer 
+ around a line. We will take a line feature that shows the railroad of the 
+ subway line, and we will create a buffer that we consider too close to the 
+ subway line. Imagine that the subway makes quite some noise. For full 
+ disclosure, a large part of the line is actually underground, but let’s leave 
+ that out of the equation here, for the purpose of an easier exercise.
+  
+ Rather than importing a line dataset, let’s use the point dataset from 
+ before and convert the eight points into one single line feature. To do so, 
+ we irst need to make sure that the points are in the right order, and then 
+ we pass them to the LineString function from the shapely package. This is 
+ all done in the code in Code Block 
+ 6-6
+ .
+  
+ from shapely.geometry.linestring import LineString 
+ LineString(data.loc[[7,6,5,4,0,1,2,3], 
+  
+ 'geometry'].reset_index(drop=True))
+  
+ CodeBlock6-6
+  A LineString object",NA
+CreatingBuffersAroundPolygonsinPython,"The third criterion for the house selection is proximity to a park. In the 
+ Paris_Parks.kml dataset, you can ind some parks in Paris. This data is 
+ just to serve the example, it is far from perfect, but it will do the trick for 
+ this exercise. You can import the data using the code in Code Block 
+ 6-11
+ .
+  
+ # import the paris parks data 
+  
+ gpd.io.file.fiona.drvsupport.supported_drivers['KML'] 
+ = 'rw' 
+  
+ parks = gpd.read_file('Paris_Parks.kml') 
+  
+ parks
+  
+ CodeBlock6-11
+  Importing the parks data 
+  
+ In Figure 
+ 6-15
+ , you will see that there are 18 parks in this dataset, all 
+ identiied as polygons.",NA
+CombiningBuffersandSetOperations,NA,NA
+KeyTakeaways,"1.
+  
+ 2.
+  
+ 3.
+  
+ 4.
+  
+ There are numerous basic geodata operations that are standardly 
+ implemented in most geodata tools. They may seem simple at irst 
+ sight, but applying them to geodata can come with some dificulties.
+  
+ The buffer operation adds a polygon around a vector object. Whether 
+ the initial object is point, line, or polygon, the result is always a 
+ polygon.
+  
+ When applying a buffer, one can choose the distance of the buffer’s 
+ boundary to the initial object. The choice depends purely on the use 
+ case.
+  
+ Once buffers are computed, they can be used for mapping purposes, 
+ or they can be used in further geospatial operations.",NA
+7.MergeandDissolve,"Joos Korstanje
+ 1
+  
+  
+ (1)
+  
+ VIELS MAISONS, France
+  
+ In the previous two chapters, we have started looking at a number of common 
+ geospatial operations: data operations that are not possible, or at least not 
+ common, on regular data, but that are very common on geospatial data.
+  
+ Although this book is working toward machine learning applications, it is 
+ good to have an understanding of the types of geospatial operations that exist 
+ and have a working understanding that will allow you to igure out other, 
+ comparable operations using documentation or research. The standard 
+ operations that are showcased in this book are
+  
+  
+  
+  
+  
+ Clipping and intersecting 
+  
+ Buffering 
+  
+ Merge and dissolve 
+  
+ Erase
+  
+ In the previous chapter, you have already seen clipping, intersecting, and 
+ buffering. You have even seen a use case that combines those methods in a 
+ logical manner.
+  
+ In this chapter, we will look at merging and dissolving, which are again 
+ very different operations than those previously presented. They are also 
+ among the standard geospatial operations, and it is useful to master these 
+ tools.
+  
+ As explained in previous chapters, those spatial operations should all be 
+ seen as tools in a toolkit, and when you want to achieve a speciic goal, you 
+ need to select the different tools that you need to get there. This often means 
+ using different combinations of tools in an intelligent manner. The more tools 
+ you know, the more you will be able to achieve.
+  
+ We will start this chapter with the merge operation, covering both theory 
+ and implementation in Python, and we will then move on to the dissolve 
+ operation. At the end, you will see a comparison of both.",NA
+TheMergeOperation,"Let’s begin by introducing the merge operation. We will start with a 
+  
+ theoretical introduction and some examples and then move on to the Python 
+ implementation of the merge operation.
+  
+ WhatIsaMerge?
+  
+ Merging geodata, just like with regular data, consists of taking multiple input 
+ datasets and making them into a single new output feature. In the previous 
+ chapter, you already saw a possible use case for a merge. If you remember, 
+ multiple “suitability” polygons were created based on multiple criteria. At the 
+ end, all of these polygons were combined into a single spatial layer. Although 
+ another solution was used in that example, a merge could have been used to 
+ get all those layers together in one and the same layer.
+  
+ ASchematicExampleofMerging
+  
+ Let’s clarify this deinition using a visual example. As a simple and intuitive 
+ example, imagine that you have three datasets containing some polygon 
+ features, each on a speciic region. You are asked to make a map of the three 
+ regions combined, and you therefore need to ind a way to put those three 
+ datasets together into a single, three-region, dataset. The merge operation 
+ will do this for you. Figure 
+ 7-1
+  shows you how this works.",NA
+MerginginPython,"In the coming examples, we will be looking at some easy-to-understand data. 
+ There are multiple small datasets, and throughout the exercise, we will do all 
+ the three types of merges.
+  
+ The data contains
+  
+ – A ile with three polygons for Canada, USA, and 
+ Mexico– A ile with some cities of Canada
+  
+ – A ile with some cities of the USA
+  
+ – A ile with some cities of Mexico
+  
+ During the exercise, we will take the following steps:
+  
+ – Combine the three city iles using a row-wise merge
+  
+ – Add a new variable to the combined city ile using an attribute lookup– 
+ Find the country of each of the cities using a spatial lookup with the 
+ polygon ile
+  
+  
+ Let’s now start by combining the three city iles into a single layer with all 
+ the cities combined.
+  
+ Row-WiseMerginginPython
+  
+ The row-wise merge operation is the operation that is generally referred to 
+ when talking about the merge operation. It is like a row-wise concatenation of 
+ the three datasets. Let’s see how to do this in Python using the three example 
+ data iles containing some of the cities of each country. Let’s start by importing 
+ the data as follows and plot each of them separately and add a background 
+ map, using the functionalities that you have already seen in earlier chapters. 
+ This is shown in Code Block 
+ 7-1
+ .
+  
+ import geopandas as gpd",NA
+TheDissolveOperation,"When combining many different datasets, it can often happen that you obtain 
+ a lot of overlapping features, like polygons of different granularity being all 
+ kept in the data, or the same features being present in each of the dataset and 
+ creating doubled information. The dissolve operation is something that can 
+ solve such problems.
+  
+ WhatIstheDissolveOperation?",NA
+KeyTakeaways,"1.
+  
+ 2.
+  
+ 3.
+  
+ There are numerous basic geodata operations that are standardly 
+ implemented in most geodata tools. They may seem simple at irst sight, 
+ but applying them to geodata can come with some dificulties.
+  
+ The merge operation is generally used to describe a row-wise merge, in 
+ which multiple objects are concatenated into one dataset.
+  
+ The attribute join, which is confusingly called merge in geopandas, does a 
+ column-wise, SQL-like join using a common attribute between the two 
+ input datasets.
+  
+ The spatial join is another column wise join that allows to combine two",NA
+8.Erase,"Joos Korstanje
+ 1
+  
+  
+ (1)
+  
+ VIELS MAISONS, France
+  
+ In this chapter, you will learn about the erase operation. The previous 
+ three chapters have presented a number of standard GIS operations. 
+ Clipping and intersecting were covered in Chapter 
+ 5
+ , buffering in Chapter 
+ 6
+ , and merge and dissolve were covered in Chapter 
+ 7
+ .
+  
+ This chapter will be the last of those four chapters covering common 
+ tools for geospatial analysis. Even though there are much more tools 
+ available in the standard GIS toolbox, the goal here is to give you a good 
+ mastering of the basics and allowing you to be autonomous in learning 
+ the other GIS operations in Python.
+  
+ The chapter will start with a theoretical introduction of the erase 
+ operation and then follow through with a number of example 
+  
+ implementations in Python for applying the erase on different geodata 
+ types.",NA
+TheEraseOperation,"Erasing is not just an operation in GIS analysis but also a common 
+ synonym for deleting. To clarify, let’s irst look at a “standard” deletion of a 
+ feature, which is not a spatial erase, but just a deletion of a complete 
+ feature based on its ID rather than based on its spatial information.
+  
+ Whether you are working with points, lines, or polygons, you could 
+ imagine that you simply want to drop one of them. The schematic 
+ drawing in Figure 
+ 8-1
+  shows what this would mean.",NA
+SchematicOverviewofSpatiallyErasingPoints,"Spatially erasing points is really quite similar to the standard delete 
+ operation. When doing a spatial erase, you are going to delete all parts of 
+ the input features that coincide spatially with the erase feature. However, 
+ as points do not have a size, they will be either entirely inside or entirely 
+ outside of the erase feature, which causes each point to be either entirely 
+ deleted or retained. The schematic drawing in Figure 
+ 8-3
+  shows how this 
+ works.
+  
+  
+ Figure8-3
+  Schematic drawing of spatially erasing points. Image by author 
+  
+ You can see how the data table would change before and after the 
+ operation in the schematic drawing in Figure 
+ 8-4
+ .",NA
+SchematicOverviewofSpatiallyErasingLines,"Let’s now see how this works when doing a spatial erase on line data. In 
+ Figure 
+ 8-5
+ , you see that there are two line features and a polygon erase 
+ feature.",NA
+SchematicOverviewofSpatiallyErasingPolygons,"The functioning of a spatial erase on polygons is essentially the same as 
+ the spatial erase applied to lines. The polygons in the input layer, just like 
+ lines, can be altered when they are falling partly inside the erase feature. 
+ The schematic drawing in Figure 
+ 8-7
+  shows how this works.",NA
+Erasevs.OtherOperations,"As you have already seen in the previous three chapters, there are a large 
+ number of spatial operations in standard GIS toolkits. This is great, as it 
+ allows you to use the tools that are best suitable for your use case.
+  
+ However, it is also essential to look into the details of each of the 
+ operations to make sure that you are effectively using the right tool for 
+ the task that you have at hand.
+  
+ Let’s now look at a few operations that are relatively comparable to 
+ the eraser task. In some cases, you may use another tool for the exact 
+ same task. There is no problem in this, as long as you are attentive to the 
+ exact implementation and look closely at the documentation of the tools 
+ before executing them.",NA
+Erasevs.DeletingaFeature,"Deleting an entire feature, also called dropping a feature, or dropping a 
+ row in your data, was already mentioned earlier as being relatively 
+ similar to the spatial eraser. However, there is an essential difference 
+ between the spatial eraser and simply dropping an entire feature.
+  
+ Dropping a feature will only allow you to drop a feature in its entirety.
+  
+ The spatial erase can also do this, but the spatial eraser can do more. 
+ When a feature in the input layer is entirely covered by the erase feature, 
+ the entire input feature will be deleted, but when the feature in the input 
+ layer only overlaps partly with the erase feature, there will be an",NA
+Erasevs.Clip,"You have seen the clipping operation as the irst GIS tool that was 
+ covered. This tool is made for clipping an input layer to a ixed extent, 
+ meaning that you delete everything that is outside of your extent. As 
+ clipping is also deleting some part of your data, it may be confused with 
+ the spatial erase operation. Let’s look at the difference between the two.
+  
+ The main difference between the clip and the erase operation is that 
+ the clip operation will reduce your data to a ixed extent, which can be 
+ coordinates or a feature. With a clip, your goal will always be to retain a 
+ certain part of the data and delete everything that is outside of your 
+ boundaries. In short, you keep inside (where you focus your analysis or 
+ map) and remove data that is further away, outside of your boundaries.
+  
+ The spatial erase does not necessarily take an inside/outside 
+ boundaries logic. You can use the eraser also to remove small areas 
+ within a general area of interest while keeping the surrounding area.
+  
+ Whereas both tools are like cookie cutters, the cookie that is cut out is 
+ used differently: with the clip operation, you are using the cookie cutter 
+ to cut out the cookie that you want to keep, whereas with the erase 
+ operation, the cutter is used to cut out parts that you want to throw away. 
+ In short, it is a very similar tool for a very different purpose.",NA
+Erasevs.Overlay,"A third and last operation that is similar to the spatial erase operation is 
+ the spatial overlay operation. As described when covering intersections 
+ in Chapter 
+ 5
+ , there are multiple operations from set theory that can be 
+ used on geodata. In that chapter, you mainly focused on the intersection, 
+ meaning retaining all data when both layers are spatially intersecting.
+  
+  
+ Another operation from set theory is the difference operation. You 
+ can use the same spatial overlay functionality as for the intersection to",NA
+ErasinginPython,"In this exercise, you will be working with a small sample map that was 
+ created speciically for this exercise. The data should not be used for any 
+ other purpose than the exercise as it isn’t very precise, but that is not a 
+ problem for now, as the goal here is to master the geospatial analysis 
+ tools.
+  
+  
+ During the coming exercises, you will be working with a mixed 
+ dataset of Iberia, which is the peninsula containing Spain and Portugal.
+  
+ The goal of the exercise is to create a map of Spain out of this data, 
+ although there is no polygon that indicates the exact region of Spain: this 
+ must be created by removing Portugal from Iberia.
+  
+ I recommend running this code in Kaggle notebooks or in a local 
+ environment, as there are some problems in Google Colab for creating 
+ overlays. To get started with the exercise, you can import the data using 
+ the code in Code Block 
+ 8-1
+ .
+  
+ import geopandas as gpd 
+  
+ import fiona
+  
+ gpd.io.file.fiona.drvsupport.supported_drivers['KML'] 
+ = 'rw' 
+  
+ all_data = gpd.read_file('chapter_08_data.kml') 
+  
+ all_data
+  
+ CodeBlock8-1
+  Importing the data",NA
+ErasingPortugalfromIberiatoObtainSpain,NA,NA
+ErasingPointsinPortugalfromtheDataset,"In this second part of the exercise, you will be working on the point data 
+ that represents the cities of Iberia. In the dataset, you have some of the 
+ major cities of Iberia, meaning that there are some cities in Spain, but some 
+ other cities in Portugal. The goal of the exercise is to ilter out those cities 
+ that are in Spain and remove those that are in Portugal.
+  
+ In previous chapters, you have seen some techniques that could be 
+ useful for this. One could imagine, for example, doing a join with an 
+ external table. This external table could be a map from city to country, so",NA
+CuttingLinestoBeOnlyinSpain,"In this section, we will work on the line data, which is the only part of the 
+ input data that we have not treated yet. The input dataset contains ive 
+ roads. If you look back at the irst overall plot of the data, you can see that 
+ some of those roads go through both countries, whereas there are some 
+ that are just inside one country. The operation is partly iltering, but also 
+ altering, as the multicountry roads need to be cut to the size of the 
+ Spanish polygon.
+  
+  
+ Let’s start by creating a dataframe with only the roads, as it is always 
+ better to have single-type datasets. This is done in Code Block 
+ 8-12
+ .
+  
+ from shapely.geometry.linestring import LineString 
+ roads_filter = all_data.geometry.apply(lambda x: 
+ type(x) == LineString) 
+  
+ roads = all_data[roads_filter] 
+  
+ roads
+  
+ CodeBlock8-12
+  Create a dataframe with only roads 
+  
+ You now obtain a dataset that contains only the roads, just like shown 
+ in Figure 
+ 8-20
+ .",NA
+KeyTakeaways,"1. The erase operation has multiple interpretations. In spatial analysis, 
+  
+ its deinition is erasing features or parts of features based on a",NA
+PartIII ,NA,NA
+MachineLearningandMathematics,NA,NA
+9.Interpolation,"Joos Korstanje
+ 1
+   
+ (1)
+  
+ VIELS MAISONS, France
+  
+ After having covered the fundamentals of spatial data in the irst four chapters of this 
+ book, and a number of basic GIS operations in the past four chapters, it is now time to 
+ move on to the last four chapters in which you will see a number of statistics and 
+ machine learning techniques being applied to spatial data.
+  
+ This chapter will cover interpolation, which is a good entry into machine learning. 
+ The chapter will start by covering deinitions and intuitive explanations of interpolation 
+ and then move on to some example use cases in Python.",NA
+WhatIsInterpolation?,"Interpolation is a task that is relatively intuitive for most people. From a high-level 
+ perspective, interpolation means to ill in missing values in a sequence of numbers. For 
+ example, let’s take the list of numbers:
+  
+ 1, 2, 3, 4, ???, 6, 7, 8, 9, 10
+  
+ Many would easily be able to ind that the number 5 should be at the place where the 
+ ??? is written. Let’s try to understand why this is so easy. If we want to represent this 
+ list graphically, we could plot the value against the position (index) in the list, as shown 
+ in Figure 
+ 9-1
+ .",NA
+DifferentTypesofInterpolation,NA,NA
+FromOne-DimensionaltoSpatialInterpolation,"Now that you have seen some intuitive fundamentals of interpolation, it is time to move 
+ on to spatial interpolation. Of course, the goal of this chapter is to talk about interpolation 
+ of spatial data, and it may be hard to imagine how we move from the previous graphs to 
+ an interpolation in the two-dimensional case of spatial interpolation. Or you can imagine 
+ the previous graphs are side views of spatial interpolated values when you stand on the 
+ ground.
+  
+ As visuals are generally a great way to understand interpolation methods, let’s start 
+ discussing spatial interpolation with a very common use case: interpolation temperature 
+ over a country that has only a few numbers of oficial national thermometers. Imagine that 
+ you have a rectangular country on the map in Figure 
+ 9-7
+ , with the temperature measures 
+ taken at each point.",NA
+SpatialInterpolationinPython,"In this section, you will see how to apply some of these interpolation methods in Python. 
+ Let’s start by generating some example data points that we can apply this interpolation to. 
+ Imagine we have only data on the following four points. Each data point is a temperature 
+ measurement at the same timestamp, but at a different location. The goal of the exercise is 
+ to use interpolation to estimate these values at unmeasured, in-between locations. The 
+ data looks as shown in Code Block 
+ 9-1
+ .
+  
+ data = { 'point1': {
+  
+  
+  
+  
+  'lat': 0,
+  
+  
+  
+  
+  'long': 0,
+  
+  
+  
+  
+  'temp': 0 
+ },
+  
+  
+  'point2': {
+  
+  
+  
+  'lat': 10,
+  
+  
+  
+  'long': 10,
+  
+  
+  
+  'temp': 20 },
+  
+  
+  'point3' : {
+  
+  
+  
+  'lat': 0,
+  
+  
+  
+  'long': 10,
+  
+  
+  
+  'temp': 10 },
+  
+  
+  'point4': {
+  
+  
+  
+  'lat': 10,
+  
+  
+  
+  'long': 0,
+  
+  
+  
+  'temp': 30 }",NA
+Kriging,"In the irst part of this chapter, you have discovered some basic, fundamental approaches 
+ to interpolation. The thing about interpolation is that you can make it as simple, or as 
+ complex, as you want.
+  
+ Although the fundamental approaches discussed earlier are often satisfactory in 
+ practical results and use cases, there are some much more advanced techniques that we 
+ need to cover as well.
+  
+ In this second part of the chapter, we will look at Kriging for an interpolation method. 
+ Kriging is a much more advanced mathematical deinition for interpolation. Although it 
+ would surpass the level of this book to go into too much mathematical detail here, for 
+ those readers that are at ease with more mathematical details, feel free to check out some 
+ online resources like 
+ https://en.wikipedia.org/wiki/Kriging
+  and
+  
+ www.publichealth.columbia.edu/research/population-
+ health-methods/kriging-interpolation
+ .
+  
+ LinearOrdinaryKriging
+  
+ There are many forms of Kriging. As often with mathematical methods, the more complex 
+ they are, the more tuning and settings there are to be done. In the coming sections, let’s 
+ look at a number of Kriging solutions that would be in competition with the linear",NA
+ConclusiononInterpolationMethods,"Interestingly, we have started this chapter with a fairly simple interpolation use case. 
+ While one might be inclined to think that this question is super easy to solve and can 
+ even be solved manually, the variety of possible answers given by the different methods 
+ shows that this is not necessarily a trivial task.
+  
+ To recap, we have obtained all possible answers in Table 
+ 9-1
+ .
+  
+ Table9-1
+  The Results from the Interpolation Benchmark
+  
+  
+ Linear 
+  
+ LinearKriging 
+  
+ GaussianKriging 
+  
+ ExponentialKriging
+  
+ Point5 
+  
+ 5
+  
+ 7.54
+  
+ 3.79
+  
+ 9.68
+  
+ Point6 
+  
+ 15
+  
+ 15
+  
+ 15
+  
+ 15
+  
+ Point7 
+  
+ 15
+  
+ 15
+  
+ 15
+  
+ 15
+  
+ Point8 
+  
+ 15
+  
+ 15
+  
+ 15
+  
+ 15
+  
+ Point9 
+  
+ 25
+  
+ 22.46
+  
+ 26.21
+  
+ 20.32
+  
+ Even for such a simple interpolation example, we see spectacularly large differences in the 
+ estimations of points 5 (middle bottom in the graph) and 9 (right middle in the graph).
+  
+ Now the big question here is of course whether we can say that any of those are better 
+ than the others. Unfortunately, when applying mathematical models to data where there is 
+ no ground truth, you just don’t know. You can build models that are useful to your use 
+ case, you can use human and business logic to assess different estimates, and you can use 
+ rules",NA
+KeyTakeaways,"1.
+  
+ 2.
+  
+ 3.
+  
+ 4.
+  
+ 5.
+  
+ Interpolation is the task of estimating unknown values in between a number of known 
+ values, which comes down to estimating values on unmeasured locations.
+  
+ We generally deine a mathematical function or formula based on the known values 
+ and then use this function to estimate the values that we do not know.
+  
+ There are many mathematical “base” formulas that you can apply to your points, and 
+ depending on the formula you chose, you may end up with quite different results.
+  
+ When interpolating, we generally strive to obtain estimates for points of which we do 
+ not have a ground truth value, that is, we really don’t know which value is wrong or 
+ correct. Cross-validation and other evaluation methods can be used and will be 
+ covered in the coming chapters on machine learning.
+  
+ In the case where multiple interpolation methods give different results, we often 
+ need to deine a choice based on common sense, business logic, or domain knowledge.",NA
+10.Classiication,"Joos Korstanje
+ 1
+  
+  
+ (1)
+  
+ VIELS MAISONS, France
+  
+ With the current chapter, you are now arriving at one of the main parts of 
+ the book about machine learning, namely, classiication. Classiication is, 
+ next to regression and clustering, one of the three main tasks in machine 
+ learning, and they will all be covered in this book.
+  
+ Machine learning is a very large topic, and it would be impossible to 
+ cover all of machine learning in just these three chapters. The choice has 
+ been made to do a focus on applying machine learning models to spatial 
+ data. The focus is therefore on presenting interesting and realizing use 
+ cases for machine learning on spatial data while showing how spatial 
+ data can be used as an added value with respect to regular data.
+  
+ There will not be very advanced mathematical, statistical, nor 
+ algorithmic discussions in the chapters. There are many standard 
+ resources out there for those readers who want to gain a deep and 
+ thorough mathematical understanding of machine learning in general.
+  
+ The chapter will start with a general introduction of what 
+  
+ classiication is, what we can use it for, and some models and tools that 
+ you’ll need for doing classiication, and then we’ll dive into a deep spatial 
+ classiication use case for the remainder of the chapter. Let’s now start 
+ with some deinitions and introductions irst.",NA
+QuickIntrotoMachineLearning,"For those of you who are not very familiar with machine learning, let’s do 
+ a very brief intro into the matter. In very short, the goal of machine 
+ learning is to ind patterns in data by creating models that can be reused 
+ on new data. There are tons of different models, which are basically",NA
+QuickIntrotoClassiication,"The targets in supervised machine learning are, in most cases, one of two 
+ types. If the target is a numeric variable, we are going to be in a case of 
+ regression. If the target is a categorical variable, we are in a case of 
+ classiication.
+  
+ Without going into the details, you can intuitively understand that 
+ predicting a number is a bit different from predicting a category. The 
+ ields are related, and the models are often built on the same basis, but 
+ the adaptations that are necessary to adapt to the target outcome make 
+ that they are considered as two different use cases.",NA
+SpatialClassiicationUseCase,"In this chapter, we’ll do a use case of classiication. Therefore, we are in 
+ the supervised machine learning category, so this means that we know a 
+ ground truth for our target variable. Also, as we are in classiication, the 
+ target variable will be categorical.",NA
+FeatureEngineeringwithAdditionalData,"In this use case, there is a heavy weight of feature engineering, which is 
+ done using spatial analysis operations just like those that were covered in 
+ the chapter before this. This shows how the topics are related and how 
+ spatial operations have a great added value for machine learning on 
+ spatial data.
+  
+ The reason for this is that mere GPS coordinates do not hold much 
+ value to predict anything at all. We need to work with this data and 
+ transcribe it into variables that can actually be used to create a 
+  
+ prediction for coupon interest. Let’s move on to have a look at the data, 
+ so that it becomes clearer what we are working with. For this use case, it 
+ is recommended to use Kaggle notebook environments or any other 
+ environment of your choice.",NA
+ImportingandInspectingtheData,"Let’s get started by importing the data. You can use the code in Code 
+ Block 
+ 10-1
+  to do so.",NA
+SpatialOperationsforFeatureEngineering,"Now that we have good overview of this dataset, it is time to start doing 
+ the spatial operation needed to add the information of 
+ participants’presence in each of the locations. For this, we are going to 
+ need some sort of spatial overlay operation, as you have seen in the 
+ earlier parts of this book.
+  
+ To do the overlay part, it is easier to do this point by point, as we have 
+ lines that are passing through many of the interest areas. If we were to do 
+ the operation using lines, we would end up needing to cut the lines 
+ according to the boundaries of the polygons and use line length for 
+ estimating time spent in the store section.
+  
+ If we cut the lines into points, we can do a spatial operation to ind the 
+ presence of each point and then simply count, for each participant, the 
+ number of points in each store section. If the points are collected on the 
+ basis of equal frequency, the number of points is an exact representation 
+ of time.
+  
+ The reason that we can do without the line is that we do not care 
+ about direction or order here. After all, if we wanted to study the order of 
+ visits to each store section, we would need to keep information about the 
+ sequence. The line is able to do this, whereas the point data type is not.
+  
+ In this section, you can see what a great advantage it is to master 
+ Python for working on geodata use cases. Indeed, it is very advantageous 
+ of Python that we have liberty to convert geometry objects to strings and 
+ do loops through them which would potentially be way more complex in 
+ more click button, precoded, GIS tools.
+  
+ The disadvantage may be that it is a little hard to get your head 
+ around sometimes, but the code in Code Block 
+ 10-5
+  walks you through an 
+ approach to get the data from a wide data format (one line per client) to a 
+ long data format (one row per data point/coordinate).
+  
+ import pandas as pd 
+  
+ from shapely.geometry.point import Point
+  
+ results = []
+  
+ # split the lines into points 
+  
+ for i, row in itineraries.iterrows():
+  
+  
+  # making the line string into a list of 
+ the coordinates as strings and removing 
+ redundant",NA
+ReorganizingandStandardizingtheData,"Now that all the needed information is there for building our 
+  
+ classiication model, we still need to work on the correct organization of",NA
+Modeling ,"Let’s now keep the data this way for the model – for inputting the data 
+ into the model. Let’s move away from the dataframe format and use the 
+ code in Code Block 
+ 10-12
+  to convert the data into numpy arrays.
+  
+ X = location_behavior.values 
+ X 
+  
+ CodeBlock10-12
+  Convert into numpy 
+ The X array looks something like Figure 
+ 10-11
+ .",NA
+ModelBenchmarking,"The model made one mistake, so we can conclude that it is quite a good 
+ model. However, for completeness, it would be good to try out another 
+ model. Feel free to test out any classiication model from scikit-learn, but 
+ due to the relatively small amount of data, let’s try out a decision tree 
+ model here. The code in Code Block 
+ 10-19
+  goes through the exact same 
+ steps as before but simply with a different model.
+  
+ from sklearn.tree import DecisionTreeClassifier 
+ my_dt = DecisionTreeClassifier()",NA
+KeyTakeaways,"1. Classiication is an area in supervised machine learning that deals with 
+ models that learn how to use independent variables to predict a 
+ categorical target variable.",NA
+11.Regression,"Joos Korstanje
+ 1
+  
+  
+ (1)
+  
+ VIELS MAISONS, France
+  
+ In the previous two chapters, you have learned about the fundamentals of machine 
+ learning use cases using spatial data. You have irst seen several methods of 
+  
+ interpolation. Interpolation was presented as an introduction to machine learning, in 
+ which a theory-based interpolation function is deined to ill in unknown values of the 
+ target variable.
+  
+ The next step moved from this unsupervised approach to a supervised approach, 
+ in which we build models to predict values of which we have ground truth values. By 
+ applying a train-test-split, this ground truth is then used to compute a performance 
+ metric.
+  
+ The previous chapter showed how to use supervised models for classiication. In 
+ classiication models, unlike with interpolation, the target variable is a categorical 
+ variable. The shown example used a binary target variable, which classiied people 
+ into two categories: buyers and nonbuyers.
+  
+ In this chapter, you will see how to build supervised models for target variables 
+ that are numeric. This is called regression. Although regression, just like 
+  
+ interpolation, is used to estimate a numeric target, the methods are actually 
+ generally closer to the supervised classiication methods.
+  
+ In regression, the use of metrics and building models with the best performance 
+ on this metric will be essential as it was in classiication. The models are adapted for 
+ taking into account a numeric target variable, and the metrics need to be chosen 
+ differently to take into account the fact that targets are numeric.
+  
+ The chapter will start with a general introduction of what regression models are 
+ and what we can use them for. The rest of the chapter will present an in-depth 
+ analysis of a regression model with spatial data, during which numerous theoretical 
+ concepts will be presented.",NA
+IntroductiontoRegression,"Although the goal of this book is not to present a deep mathematical content on 
+ machine learning, let’s start by exploring the general idea behind regression models 
+ anyway. Keep in mind that there are many resources that will be able to ill in this",NA
+SpatialRegressionUseCase,"The remainder of this chapter will walk you through a number of iterations on a 
+ supervised machine learning use case. In practice, building machine learning models 
+ generally happens in multiple steps and iterations. This chapter is divided into 
+ multiple parts in order to represent this as close to reality as possible.
+  
+ The goal of the model is to estimate the price that we should charge for an Airbnb 
+ location in the center of Amsterdam. Imagine that you live in Amsterdam and that you 
+ want to rent out your apartment on Airbnb for the best price, and you have collected 
+ some data to ind out how to decide on the price.
+  
+ The target variable of this use case is the price, and there are numerous variables 
+ that we will use as predictor variables. Firstly, there is data on the maximum number 
+ of guests that are allowed in the apartment. Secondly, data has been collected to note 
+ whether or not a breakfast is included in the price of the apartment. Let’s start by 
+ importing and preparing the data.
+  
+ ImportingandPreparingData
+  
+ In this section, we will import and prepare the data. There are two iles in the 
+ dataset:
+  
+ – The geodata in a KML ile
+  
+ – An Excel ile with price and prediction variables for each apartment
+  
+  
+ The geodataset can be imported using geopandas and Fiona, just as you have 
+ seen in earlier chapters of this book. This is done in Code Block 
+ 11-1
+ .
+  
+ import geopandas as gpd 
+  
+ import fiona
+  
+ gpd.io.file.fiona.drvsupport.supported_drivers['KML'] = 'rw' 
+ geodata = gpd.read_file('chapter 11 data.kml') 
+  
+ geodata.head()
+  
+ CodeBlock11-1
+  Importing the data
+  
+ The geodata, once imported, is shown in Figure 
+ 11-3
+ .",NA
+KeyTakeaways,"1.
+  
+ 2.
+  
+ 3.
+  
+ 4.
+  
+ Regression is an area in supervised machine learning that deals with models that 
+ learn how to use independent variables to predict a numeric target variable.
+  
+ Feature engineering, spatial data, and other data can be used to feed this 
+ regression model.
+  
+ The R2 score is a metric that can be used for evaluation regression models.
+  
+ Linear regression is one of the most common regression models, but many 
+ alternative models, including Decision Tree, Random Forest, or Boosting, can be 
+ used to challenge its performances in a model benchmark.",NA
+12.Clustering,"Joos Korstanje
+ 1
+  
+  
+ (1)
+  
+ VIELS MAISONS, France
+  
+ In this fourth and last chapter on machine learning, we will cover clustering. To get 
+ this technique in perspective, let’s do a small recap of what we have gone through in 
+ terms of machine learning until now.
+  
+ The machine learning topics started after the introduction of interpolation. In 
+ interpolation, we tried to estimate a target variable for locations at which the value of 
+ this target variable is unknown. Interpolation uses a mathematical formula to decide 
+ on the best possible theoretical way to interpolate these values.
+  
+ After interpolation, we covered classiication and regression, which are the two 
+ main categories in supervised modeling. In supervised modeling, we build a model 
+ that uses X variables to predict a target (y) variable. The great thing about supervised 
+ models is that we have a large number of performance metrics available that can help 
+ us in tuning and improving the model.",NA
+IntroductiontoUnsupervisedModeling,"In this chapter, we will go deeper into unsupervised models. They are the opposite 
+ of supervised models in the sense that there is no notion of target variable in 
+  
+ unsupervised models. There are two main types inside unsupervised models:
+  
+ 1. 
+ 2.
+  
+ Feature reduction 
+  
+ Clustering
+  
+ In feature reduction, the goal is to take a dataset with a large number of variables 
+ and then redeine these variables in a more eficient variable deinition. Especially 
+ when many of the variables are strongly correlated, you can reduce the number of 
+ variables in the dataset in such a way that the new variables are not correlated.
+  
+ Feature reduction will be a great irst step for machine learning data 
+  
+ preprocessing and can also be used for data analysis. Examples of methods are PCA, 
+ Factor Analysis, and more. Feature reduction is not much different on geospatial data 
+ than on regular data, which is why we will not dedicate more space for this technique.",NA
+IntroductiontoClustering,"In clustering, the goal is to identify clusters, or groups, of observations based on some 
+ measure of similarity or distance. As mentioned before, there is no target variable 
+ here: we simply use all of the available variables about each observation to create 
+ groups of similar observations.
+  
+ Let’s consider a simple and often used example. In the graph in Figure 
+ 12-1
+ , you’ll 
+ see a number of people (each person is an observation) of which we have collected 
+ the spending on two product groups at a supermarket: snacks and fast food is the irst 
+ category and healthy products is the second.
+  
+  
+ Figure12-1
+  The graph showing the example. Image by author
+  
+ As this data has only two variables, it is relatively easy to identify three groups of 
+ clients in this database. A subjective proposal for boundaries is presented in the graph 
+ in Figure 
+ 12-2
+ .",NA
+DifferentClusteringModels,"Now, instead of doing this manual split on the graph, we will need a more precise 
+ mathematical machine learning model to deine such splits. Luckily, a large number of 
+ such models exist. Examples are
+  
+ – The k-means algorithm
+  
+ – Hierarchical clustering
+  
+ – DBSCAN
+  
+ – OPTICS
+  
+ – Gaussian mixture
+  
+ – And many more. The following source contains a rich amount of information on 
+  
+ different clustering methods: 
+ https://scikit-
+  
+  
+ learn.org/stable/modules/clustering.html
+ .",NA
+SpatialClusteringUseCase,"In the remainder of this chapter, we will go through a use case for clustering on 
+ spatial data. The use case is the identiication on points of interest based solely on GPS 
+ tracks of people.
+  
+ With those tracking points, we will try to identify some key locations during their 
+ trip, based on the idea that people have spent a little time at that location and 
+ therefore will have multiple points in a cluster of interest. On the other hand, the 
+ points will be more spread out and less clustered when people are on transportation 
+ between points.
+  
+ We can use clustering for this, since we can expect clustering to ind the clusters 
+ representing the points of interest. After this, we will use the center points of the 
+ identiied clusters as an estimate of the real point of interest.
+  
+ The steps that we will take from here are
+  
+ – Importing and inspecting the data
+  
+ – Building a cluster model for one user
+  
+ – Tuning the clustering model for this user– 
+ Applying the tuned model to the other users
+  
+ Let’s start by importing the data in the next section.",NA
+ImportingandInspectingtheData,"Let’s get started by importing and inspecting the data. The data is provided as a KML 
+ ile. You can use the code in Code Block 
+ 12-1
+  to import the data into Python.
+  
+ import geopandas as gpd 
+  
+ import fiona
+  
+ gpd.io.file.fiona.drvsupport.supported_drivers['KML'] = 'rw'",NA
+ClusterModelforOnePerson,"Let’s now move on to the machine learning part. In this section, we start by extracting 
+ only one trajectory, so one person. We will apply a clustering to this trajectory to see 
+ if it can identify clusters in this trajectory.
+  
+  
+ We start by extracting the data for the irst person using the code in Code Block 
+ 12-4
+ .
+  
+ #Let's start with finding POI of one person 
+  
+ one_person = geodata[geodata['Name'] =='Person 1'] 
+ one_person
+  
+ CodeBlock12-4
+  Extract data of Person 1",NA
+TuningtheClusteringModel,"Tuning models is much more complicated in unsupervised models than in supervised 
+ models. After all, we do not have an annotated dataset: the “real” points of interest 
+ are not known. The best thing is to do some manual checks and keep in mind what 
+ your objective really is. In the current case, we want to ind centroids, and only 
+ centroids of points of interest.
+  
+ In the following code, a different setting has been set in the OPTICS model:
+  
+ – Min_samples is set to 10.",NA
+ApplyingtheModeltoAllData,"Let’s now loop through the three people in the dataset and apply the same clustering 
+ method for each of them. For each person, the cluster centroids will be printed and",NA
+KeyTakeaways,"1.
+  
+ 2.
+  
+ 3.
+  
+ 4.
+  
+ Unsupervised machine learning is a counterpart to supervised machine learning. 
+ In supervised machine learning, there is a ground truth with a target variable. In 
+ unsupervised machine learning, there is no target variable.
+  
+ Feature reduction is a family of methods in unsupervised machine learning, in 
+ which the goal is to redeine variables. It is not very different to apply feature 
+ reduction in spatial use cases.
+  
+ Clustering is a family of methods in unsupervised machine learning that focuses 
+ on inding groups of observations that are fairly similar. When working with 
+ spatial data, there are some speciics to take into account when clustering.
+  
+ The OPTICS clustering model with haversine distance was used to identify points 
+ of interest in the trajectories of three people in Brussels. Although the default 
+ OPTICS model did not ind those points of interests correctly, a manual tuning has 
+ resulted in a model that correctly identiies the points of interest of each of the 
+ three people observed in the data.",NA
+13.Conclusion,"Joos Korstanje
+ 1
+  
+  
+ (1)
+  
+ VIELS MAISONS, France
+  
+ Throughout the 12 chapters of this book, you have been thoroughly 
+ introduced to three main themes. The book started with an 
+  
+ introduction to spatial data in general, spatial data tools, and speciic 
+ knowledge needed to work eficiently with spatial data.
+  
+ After that, a number of common tools from Geographic Information 
+ Systems (GIS) and the general domain of spatial analysis were 
+  
+ presented. The inal chapters of this book were dedicated to machine 
+ learning on spatial data. The focus there was on those decisions and 
+ considerations in machine learning that are different when working on 
+ machine learning with spatial data.
+  
+ In this chapter, we will do a recap of the main learnings of each of 
+ the chapters. At the end, we will come back to some next steps for 
+ continuing learning in the domain of machine learning, data science, 
+ and spatial data.",NA
+WhatYouShouldRememberfromThisBook,"In this section, we will quickly go over the main notions that have been 
+ presented throughout the book. As some topics were presented only in 
+ a speciic chapter and did not come back multiple times, this will help 
+ you refresh your mind and give you pointers to where you can ind 
+ some of the key information in case you need to go back.",NA
+RecapofChapter,NA,NA
+1,NA,NA
+–IntroductiontoGeodata,NA,NA
+RecapofChapter,NA,NA
+2,NA,NA
+–CoordinateSystemsandProjections,"In Chapter 
+ 2
+ , we went into more detail on coordinate systems and 
+ projections. Spatial references in data are what differentiate spatial 
+ data from nonspatial data. Coordinate systems are one of the things 
+ that make working with spatial data dificult. Even if you have a 
+ latitude and longitude column in your dataset, there are many ways to 
+ interpret this, depending on coordinate systems.",NA
+RecapofChapter,NA,NA
+3,NA,NA
+–GeodataDataTypes,"In Chapter 
+ 3
+ , you have learned about the different data types that 
+ geodata can have. A irst important distinction is between vector data 
+ and raster data. Raster data is image-like data in which you divide the 
+ surface of your map in pixels and assign a value to each pixel. This is 
+ often used for scientiic calculations like hydrology, earth sciences, and 
+ the like. A heat map is a great example of this, as a heat map does not 
+ have a speciic shape. Rather, you want to specify heat at each location 
+ of the map.
+  
+ Vector data works very differently. In vector data, you have objects 
+ that are georeferenced. There are three main vector data types: points, 
+ lines, and polygons.",NA
+RecapofChapter,NA,NA
+4,NA,NA
+–CreatingMaps,"Chapter 
+ 4
+  proposed a deep dive into making maps using Python. As 
+ Python is an open source language, there are many contributors 
+ maintaining libraries for making maps. In the end, you can choose the 
+ library of your choice, but a number of approaches have been covered.
+  
+ The irst approach was to use geopandas together with matplotlib.
+  
+ Geopandas is a great Python package for working with geodata, as it 
+ closely resembles the famous Pandas libraries, which is a data 
+  
+ processing library that is very widely used in data science. Matplotlib is 
+ a plotting library that is also widely used in the data science 
+  
+ community. The combination of those two libraries is therefore greatly 
+ appreciated for those with experience in the data science ecosystem.
+  
+ Secondly, you have seen how to build maps with the Cartopy library.
+  
+ Although it may be a bit less intuitive for data scientists, it still 
+  
+ proposes a lot of options that are more anchored in the ield of GIS and 
+ spatial analysis. This approach may be a great choice for you if you 
+ come from a spatial analysis or cartography background.
+  
+ Plotly was proposed as a third option for mapping with Python.
+  
+ Plotly is purely a data visualization library, and it approaches 
+  
+ mapmaking as “just another visualization.” For users that put strong 
+ importance to the visual aspect of their maps, Plotly would be a great 
+ tool to incorporate for making maps.",NA
+RecapofChapter,NA,NA
+5,NA,NA
+–ClippingandIntersecting,"In Chapters 
+ 5
+  to 
+ 8
+ , a number of GIS spatial operations were presented. 
+ Chapter 
+ 5
+  started this with the clipping operation and the intersecting 
+ operation.
+  
+ The clipping operation allows you to take a spatial dataset and cut 
+ out all parts of the data that are outside of boundaries that you specify 
+ to the clip. This even works with features (lines, polygons) that are 
+ partly inside and partly outside of your boundaries, and it will make an 
+ alteration to those shapes.
+  
+ Intersections are a spatial overlay operation that allow you to take 
+ two input datasets and only keep those features in the irst dataset that 
+ intersect with features in the second dataset. This operation, just like 
+ many other spatial overlay operations, is derived from set theory.
+  
+ In the Python examples of this chapter, you have irst seen how to 
+ apply a clip to a dataset with a number of spatial features. In the 
+ intersecting example, you have seen how to ind the intersections of a 
+ river with a road in order to ind out where to ind bridges. When a 
+ road and a river intersect, we must have a bridge or a tunnel.",NA
+RecapofChapter,NA,NA
+6,NA,NA
+–Buffers,"Chapter 
+ 6
+  proposed the buffering operation. Buffers are areas around 
+ any existing spatial shape (point, line, polygon). Creating buffers are 
+ commonly used in spatial operations as they allow you to create a 
+ shape that contains not just the original feature but also its close 
+ vicinity.
+  
+ In the Python use case of this chapter, you have used multiple 
+ datasets to deine a region in which you want to buy a house based on 
+ distance criteria to parks, metro stations, and more. You have used an 
+ intersection here to ind a location that respects all of the criteria at the 
+ same time.",NA
+RecapofChapter,NA,NA
+7,NA,NA
+–MergeandDissolve,"Chapter 
+ 7
+  covered the merge operation and the dissolve operation. The 
+ chapter started with the different deinitions of merging. The spatial join 
+ is more than just putting different features in the same dataset, as it will 
+ also combine the ields (columns) of different datasets together based on 
+ spatial overlap. This is a very useful operation, as we are used to be able 
+ to join tables only when we have a common identiier 
+  
+ between the two tables. For spatial data, this is not necessary as we can 
+ use the coordinates to identify whether (parts of) the features are 
+ overlapping.
+  
+ The dissolve tool is different as it is not meant to do join-like 
+ merges. Rather, it is useful when you want to combine many features 
+ into a smaller number of features, based on one speciic value. It is like a 
+ spatial group by operation.",NA
+RecapofChapter,NA,NA
+8,NA,NA
+–Erase,"The fourth and last chapter on spatial operations was Chapter 
+ 8
+ , 
+  
+ presenting the erase operation. Although different deinitions of erasing 
+ exist, we covered a spatial erasing operation in which you want to 
+ erase a speciic part of a spatially referenced dataset. This is done not 
+ based on a common identiier, nor by removing an entire feature (row) 
+ at once, but rather by altering the data to keep those parts of features 
+ that must be erased and keep those parts of a feature that must be 
+ kept.",NA
+RecapofChapter,NA,NA
+9,NA,NA
+–Interpolation,"From Chapter 
+ 9
+ , we moved on to more mathematical topics, even 
+ though interpolation is a very common use case in spatial operations as 
+ well. Interpolating is the task of illing in values in regions where you 
+ have no measurements, even though you have measurements in the 
+ vicinity.
+  
+ Interpolation is a widely studied topic in mathematics, and one can 
+ make interpolations as dificult as one wants. The different methods for 
+ interpolation that were covered are
+  
+ – Linear interpolation
+  
+ – Polynomial interpolation",NA
+RecapofChapter,NA,NA
+10,NA,NA
+–Classiication,"In Chapters 
+ 10
+  and 
+ 11
+ , we covered the two main machine learning 
+ methods of the family of supervised machine learning. Supervised 
+ machine learning is a branch of machine learning in which we aim to 
+ predict a target value by itting a model on historical data of this target 
+ variable, as well as a number of predictor variables.
+  
+ In classiication, we do so with a target variable that is categorical.
+  
+ We have covered speciic models and metrics for the case of 
+ classiication.
+  
+ The Python example on classiication covered a use case in which 
+ we used movements of clients of a mall, and we used this to it a 
+  
+ predictive model that was meant to predict whether a person would be 
+ interested in a product based on their movement patterns. This 
+  
+ example used spatial operations from earlier chapters to do the data 
+ preprocessing for the model.",NA
+RecapofChapter,NA,NA
+11,NA,NA
+–Regression,"Regression is the supervised machine learning counterpart of 
+ classiication. Whereas the target variable is categorical in 
+  
+ classiication, it is numeric in regression. You have seen numerous 
+ metrics and machine learning models that can be used for the 
+ regression case.
+  
+ The Python example of this chapter used spatial and nonspatial 
+ data to predict Airbnb prices of apartments in Amsterdam. You have 
+ seen an example here of how to prepare the spatial and nonspatial data 
+ to end up with a dataset that is suitable for building regression models.",NA
+RecapofChapter,NA,NA
+12,NA,NA
+–Clustering,"In the last chapter, you have seen a third machine learning method 
+ called clustering. Clustering is quite different from regression and 
+ classiication, as there is no target variable in clustering. As the method 
+ is part of the family of unsupervised models, the goal is not to predict 
+ something, but rather to identify groups of similar observations based 
+ on distances and similarities.
+  
+ Clustering on spatial data comes with some speciicities, as 
+  
+ computing distances on spatial data (coordinates) needs to be 
+  
+ mathematically correct. As you have seen in the earlier chapters of the 
+ book, distance between two coordinates cannot be correctly computed 
+ using the standard, Euclidean distance.
+  
+ The Python use case in this chapter presented how to use the 
+ OPTICS clustering model with the haversine distance metric to create a 
+ clustering method that needs to ind points of interests in movement 
+ patterns of three GPS-tracked people. This chapter has concluded the 
+ part on machine learning on spatial data.",NA
+FurtherLearningPath,"Of course, this book should have given you a solid introduction into 
+ spatial data with Python and machine learning on spatial data, but 
+ there is always more to learn. This section will give you some ideas for 
+ further learning. Of course, there is never one only way for learning, so 
+ you may consider this as inspiration rather than a presentation of the 
+ one and only way to proceed.
+  
+ As the book has touched mainly on spatial data and machine 
+ learning, two interesting paths for further learning could be 
+  
+ specializing in GIS generally or going further into machine learning.
+  
+ Otherwise, things like data storage and data engineering for spatial 
+ data can also be interesting, although a bit further away from the 
+ contents of this book.",NA
+GoingintoSpecializedGIS,NA,NA
+SpecializinginMachineLearning,"Although this book has touched multiple machine learning methods 
+ applied to spatial data, the topic of machine learning is a very complex 
+ mathematical domain. If you want to become an expert in machine 
+ learning, there are many things to learn.
+  
+ This career path is quite popular at the moment, as it allows many 
+ people to work on the forefront of present-day technology, yet it must 
+ be noted that there is a serious learning curve for getting up to speed 
+ with this domain.",NA
+RemoteSensingandImageTreatment,"Remote sensing was not covered in this book, but thanks to recent 
+ advances in computer vision, there are a lot of advances in earth 
+ observation and remote sensing as well. As you probably know, a large 
+ number of satellites are continuously orbiting around the earth and 
+ sending photos back. With new technologies from artiicial 
+  
+ intelligence, these photos can be interpreted by the computer and can 
+ serve a large number of purposes.
+  
+ Although computer vision may seem like a scary and dificult 
+ domain, you can see it as a next step in your learning path after 
+ mastering “regular” machine learning. Of course, the learning curve 
+ may be steep here as well, but the use cases are often very interesting 
+ and state of the art.",NA
+OtherSpecialties,"There are also other ields of study that are related to the topics that 
+ have been touched on in this book. As an example, we have talked 
+ extensively about different data storage types, but we have not had the 
+ room for talking about things like speciic GIS databases and long-term 
+ storage. If you are interested in data engineering, or databases, there is 
+ more to learn on speciic data storage for spatial data, together with 
+ everything that goes with it (data architectures, security, accessibility, 
+ etc.).
+  
+ Many other domains also have GIS-intensive workloads. Consider 
+ the ields of meteorology, hydrology, and some domains of ecology and 
+ earth sciences in which many professionals are GIS experts just 
+  
+ because of the heavy impact of spatial data in those ields.
+  
+ When mastering spatial data operations, you will be surprised of 
+ how many ields can actually beneit from spatial operations. Some 
+ domains already know it and are very GIS heavy in their daily work, 
+ and in other domains, everything is yet to be invented.",NA
+KeyTakeaways,"1.
+  
+ Throughout this book, you have seen three main topics:
+  
+ a.
+  
+ Spatial data, its theoretical speciicities, and managing spatial
+  
+ data in Python
+  
+ b.
+  
+ GIS spatial operations in Python
+  
+ c.
+  
+ Machine learning on spatial data and speciic considerations to
+  
+ adapt regular machine learning to the case of spatial data
+  
+ 2. This chapter has presented a number of ideas for further learning 
+  
+ in the form of potential learning paths:
+  
+ a.
+  
+ Specialize in GIS by going into more detail of different GIS tools 
+ and mapmaking.
+  
+ b. Specialize in machine learning by studying machine learning 
+ theory and practice in more detail",NA
+Index,NA,NA
+A,"Albers equal area conic projection 
+  
+ Azimuthal equidistant projection 
+  
+ Azimuthal/true direction projection",NA
+B,"Babinet projection 
+  
+ Buffering operations 
+  
+  
+ data type 
+  
+  
+ deinition 
+  
+  
+ difference creation 
+  
+  
+ GIS spatial operations 
+  
+  
+ intersection operation 
+  
+  
+ line data 
+  
+  
+ point data 
+  
+  
+ polygon 
+  
+  
+ Python 
+  
+  
+  
+ data resulting 
+  
+  
+  
+ house searching criteria 
+  
+  
+  
+ LineString object 
+  
+  
+  
+ point data 
+  
+  
+  
+ polygons 
+  
+  
+  
+ visualization 
+  
+  
+ schematic diagram 
+  
+  
+ set operations 
+  
+  
+ standard operations",NA
+C,"Cartesian coordinate system 
+  
+ Cartopy 
+  
+ Classiication 
+  
+  
+ data modeling 
+  
+  
+  
+ array resulting 
+  
+  
+  
+ dataframe format 
+  
+  
+  
+ error analysis",NA
+D,"Data types 
+  
+  
+ GIS spatial operations 
+  
+  
+ lines 
+  
+  
+  
+ airports data 
+  
+  
+  
+ dataframe 
+  
+  
+  
+ deinition 
+  
+  
+  
+ LineString geometry 
+  
+  
+  
+ mathematical objects 
+  
+  
+  
+ merging data 
+  
+  
+  
+ plot resulting 
+  
+  
+  
+ Python 
+  
+  
+ points 
+  
+  
+ See
+  Point data 
+  
+  
+ polygon information 
+  
+  
+ polygons 
+  
+  
+  
+ deinition 
+  
+  
+  
+ operations 
+  
+  
+  
+ Python dataset 
+  
+  
+ rasters/grids 
+  
+  
+  
+ deinition 
+  
+  
+  
+ Python 
+  
+  
+ vector/raster data 
+  
+ Dissolve operation 
+  
+  
+ deinition 
+  
+  
+ GIS spatial operations 
+  
+  
+ grouped dataset 
+  
+  
+ Python 
+  
+  
+ schematic drawing 
+  
+ Doubly equidistant projection 
+  
+  
+ See
+  Two-point equidistant projection",NA
+E,"Elliptical projection 
+  
+ Equal area projections 
+  
+ Equidistant projections 
+  
+ Erase operation 
+  
+  
+ clipping 
+  
+  
+ deleting/dropping 
+  
+  
+ GIS spatial operations 
+  
+  
+ line data 
+  
+  
+ overlay 
+  
+  
+ points 
+  
+  
+ polygons 
+  
+  
+ Python 
+  
+  
+  
+ data resulting 
+  
+  
+  
+ data table 
+  
+  
+  
+ deinition 
+  
+  
+  
+ Iberia 
+  
+  
+  
+ line data 
+  
+  
+  
+ map resulting 
+  
+  
+  
+ plot resulting 
+  
+  
+  
+ point data 
+  
+  
+  
+ Spain data 
+  
+  
+  
+ visualization 
+  
+  
+ schematic drawing 
+  
+  
+ spatial operations 
+  
+  
+ table view",NA
+F,Folium map,NA
+G,"Geodata system 
+  
+ CSV/TXT/Excel 
+  
+ deinition 
+  
+ distance/direction 
+  
+ GIS 
+  
+ See
+  Geographic Information Systems (GIS)",NA
+H,Homolographic projection,NA
+"I,J","Interpolation 
+  
+ benchmark 
+  
+ classiication/regression",NA
+K,Kriging solutions,NA
+L,"Lambert conformal conic projection 
+  
+ Lambert equal area azimuthal 
+  
+ Linear interpolation 
+  
+ Local Coordinate Systems",NA
+M,"Mapmaking 
+  
+  
+ Cartopy 
+  
+  
+ color scale picking 
+  
+  
+ folium 
+  
+  
+ geopandas/matplotlib 
+  
+  
+  
+ additional column 
+  
+  
+  
+ color-coded column 
+  
+  
+  
+ documentation 
+  
+  
+  
+ grayscale map 
+  
+  
+  
+ legend 
+  
+  
+  
+ plot method 
+  
+  
+  
+ point dataset 
+  
+  
+  
+ title image 
+  
+  
+ GIS spatial operations 
+  
+  
+ Plotly 
+  
+ Mercator map projection 
+  
+ Merge operation 
+  
+  
+ attribute join 
+  
+  
+ deinition 
+  
+  
+ GIS spatial operations 
+  
+  
+ Python 
+  
+  
+  
+ attribute join 
+  
+  
+  
+ concatenation 
+  
+  
+  
+ datasets 
+  
+  
+  
+ lookup table",NA
+N,Nearest neighbor interpolation,NA
+O,Overlay operation,NA
+"P,Q","Plotly map 
+  
+ Point data 
+  
+  
+ deinition 
+  
+  
+ ilter morning 
+ vs.
+  afternoon 
+  
+  
+ geometry format 
+  
+  
+ operations 
+  
+  
+ Python 
+  
+  
+  
+ content 
+  
+  
+  
+ coordinate system 
+  
+  
+  
+ data information 
+  
+  
+  
+ graph image 
+  
+  
+  
+ plotting information 
+  
+  
+  
+ squirrel data 
+  
+  
+ XML parsing 
+  
+ Polar coordinate system 
+  
+  
+ components 
+  
+  
+ deinition 
+  
+  
+ formulas 
+  
+  
+ radians 
+ vs.
+  degrees 
+  
+  
+ schematic drawing 
+  
+  
+ trigonometric computations 
+  
+ Polynomial interpolation 
+  
+ Potential learning paths",NA
+R,"Raster 
+ vs.
+  vector data 
+  
+ Regression models 
+  
+  
+ data exploration 
+  
+  
+ exploration and model 
+  
+  
+ GIS spatial operations 
+  
+  
+ importing/preparing data 
+  
+  
+ linear 
+  
+  
+ mathematical form 
+  
+  
+ metrics/building models 
+  
+  
+ modeling process 
+  
+  
+  
+ code results 
+  
+  
+  
+ decision tree 
+  
+  
+  
+ DecisionTreeRegressor 
+  
+  
+  
+ geographic data 
+  
+  
+  
+ interpretation 
+  
+  
+  
+ linear model 
+  
+  
+  
+ max_depth 
+  
+  
+  
+ prediction 
+  
+  
+  
+ R2 score evaluation 
+  
+  
+  
+ train and test 
+  
+  
+ numeric target/predictor variable 
+  
+ target variable",NA
+S,"Spline/piecewise polynomial 
+  
+ Supervised models",NA
+T,Two-point equidistant projection,NA
+U ,Unsupervised models,NA
+"V,W,X,Y,Z ","Vector 
+ vs.
+  raster data 
+  
+ Visualization method",NA

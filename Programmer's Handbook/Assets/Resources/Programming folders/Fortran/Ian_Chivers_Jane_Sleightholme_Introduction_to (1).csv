@@ -1,0 +1,3511 @@
+Larger Text,Smaller Text,Symbol
+ Introduction to Programming with Fortran,NA,NA
+Ian Chivers•Jane Sleightholme,NA,NA
+Introduction to Programming ,NA,NA
+with Fortran,NA,NA
+With Coverage of Fortran ,NA,NA
+"90, 95, 2003, 2008 and 77",NA,NA
+ Acknowledgement ,"The material in the book has evolved fi rstly from our combined experience of 
+ working in Computing Services within the University of London at
+  
+ •  King’s College, IDC (1986–2002) and JS (1985–2008) 
+ •  Chelsea College, JS (1978–1985) 
+  
+ • 
+  
+  Imperial College, IDC (1978–1986) 
+  
+ in the teaching, advice and support of Fortran and related areas, and secondly in the 
+ provision of commercial training courses. The following are some of the organisa-
+ tions we’ve provided training for:
+  
+ •  AWE, Aldermaston. 
+  
+ •  Centre for Ecology and Hydrology, Wallingford. 
+  
+ •  DTU – Danish Technical University. 
+  
+ •  Environment Agency, Worthing. 
+  
+ •  JET – Joint European Torus. 
+  
+ •  The Met Offi ce, Bracknell and Exeter. 
+  
+ •  Natural Resources Canada, Ottowa. 
+  
+ •  QinetiQ, Farnborough. 
+  
+ •  Rolls Royce, Derby. 
+  
+ •  SHMU, Slovak Hydrometeorological Institute, Bratislava, Slovakia. •  
+ University of Ulster, Jordanstown, Northern Ireland. 
+  
+ •  Veritas DGC Ltd., Crawley. 
+  
+ • 
+  
+  Westland Helicopters, Yeovil. 
+  
+  
+  The examples in the book are based on what will work with compilers that 
+ support the Fortran 2008 standard. 
+  
+  Thanks are due to:
+  
+ •  The staff and students at King’s College, Chelsea College and Imperial College. 
+ •  The people who have attended the commercial courses. Its been great fun 
+ teaching you and things have been very lively at times. 
+  
+ v",NA
+ Contents,"1 Overview
+  .................................................................................................. 
+  
+ 1
+  
+ 1.1 Introduction ...................................................................................... 
+  
+ 1
+  
+ 1.2 Program Examples ........................................................................... 
+  
+ 5
+  
+ 1.3 Further Reading ............................................................................... 
+  
+ 5
+  
+ 1.3.1 The Fortran Standard ........................................................... 
+  
+ 5
+  
+ 1.3.2 J3 and WG5 Working Documents ....................................... 
+  
+ 5
+  
+ 1.3.3 Compiler Documentation ..................................................... 
+  
+ 5
+  
+ 1.3.4 Books ................................................................................... 
+  
+ 7
+  
+  2 Introduction to Problem Solving
+  ........................................................... 
+  
+ 9
+  
+ 2.1 Introduction ...................................................................................... 
+  
+ 10
+  
+ 2.2 Natural Language ............................................................................. 
+  
+ 10
+  
+ 2.3 Artifi cial Language .......................................................................... 
+  
+ 10
+  
+ 2.3.1 Notations .............................................................................. 
+  
+ 11
+  
+ 2.4 Resume ............................................................................................. 
+  
+ 11
+  
+ 2.5 Algorithms ....................................................................................... 
+  
+ 11
+  
+ 2.5.1 Top-Down ............................................................................ 
+  
+ 12
+  
+ 2.5.2 Bottom-Up ........................................................................... 
+  
+ 12
+  
+ 2.5.3 Stepwise Refi nement ............................................................ 
+  
+ 13
+  
+ 2.6 Module Programming ...................................................................... 
+  
+ 13
+  
+ 2.7 Object Oriented Programming ......................................................... 
+  
+ 13
+  
+ 2.8 Systems Analysis and Design .......................................................... 
+  
+ 13
+  
+ 2.8.1 Problem Defi nition ............................................................... 
+  
+ 14
+  
+ 2.8.2 Feasibility Study and Fact Finding ...................................... 
+  
+ 14
+  
+ 2.8.3 Analysis ................................................................................ 
+  
+ 14
+  
+ 2.8.4 Design .................................................................................. 
+  
+ 15
+  
+ 2.8.5 Detailed Design .................................................................... 
+  
+ 15
+  
+ 2.8.6 Implementation .................................................................... 
+  
+ 15
+  
+ 2.8.7 Evaluation and Testing ......................................................... 
+  
+ 15
+  
+ 2.8.8 Maintenance ......................................................................... 
+  
+ 16
+  
+ 2.9 Conclusions ...................................................................................... 
+  
+ 16
+  
+ vii",NA
+ Chapter 1 ,NA,NA
+ Overview ,"I don’t know what the language of the year 2000 will look like, 
+ but it will be called Fortran. 
+  
+  C.A.R. Hoare 
+  
+  1.1 Introduction 
+  
+  The book aims to provide coverage of a reasonable working subset of the Fortran 
+ programming language. The subset chosen should enable you to solve quite a wide 
+ range of frequently occurring problems. 
+  
+  This book has been written for both complete beginners with little or no pro-
+ gramming background and experienced Fortran programmers who want to update 
+ their skills and move to a modern version of the language. 
+  
+  Chapters  2 and  3 provide a coverage of problem solving and the history and 
+ development of programming languages. Chapter   2     is essential for the beginner 
+ as the concepts introduced there are used and expanded on throughout the rest of 
+ the book. Chapter  3  should be read at some point but can be omitted initially. 
+ Programming languages evolve and some understanding of where Fortran has 
+ come from and where it is going will prove valuable in the longer term.
+  
+ •    Chapter   2     looks at problem solving in some depth, and there is a coverage 
+ of the way we defi ne problems, the role of algorithms, the use of both top-
+ down and bottom-up methods, and the requirement for formal systems analysis 
+ and design for more complex problems. 
+  
+ •   Chapter   3     looks at the history and development of programming languages. 
+ This is essential as Fortran has evolved considerably from its origins in the mid-
+ 1950s, through the fi rst standard in 1966, the Fortran 77 standard, the Fortran 
+ 90 stan-dard, the Fortran 95 standard, TR 15580 and TR 15581, Fortran 2003 
+ and Fortran 2008. It helps to put many of the current and proposed features of 
+ Fortran into 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 1 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_1, © Springer-Verlag London Limited 2012",NA
+ Chapter 2 ,NA,NA
+ Introduction to Problem Solving ,"They constructed ladders to reach to the top of the enemy’s 
+ wall, and they did this by calculating the height of the wall from 
+ the number of layers of bricks at a point which was facing in 
+ their direction and had not been plastered. The layers were 
+ counted by a lot of people at the same time, and though some 
+ were likely to get the fi gure wrong the majority would get it 
+ right… Thus, guessing what the thickness of a single brick was, 
+ they calculated how long their ladder would have to be. 
+  
+  Thucydides, The Peloponnesian War 
+  
+  ‘When I use a word,’ Humpty Dumpty said, in a rather scornful 
+ tone, ‘it means just what I choose it to mean—neither more nor 
+ less.’ 
+  
+  ‘The question is,’ said Alice, ‘whether you can make words 
+ mean so many different things.’ 
+  
+  Lewis Carroll, Through the Looking Glass 
+  
+ and What Alice Found There 
+  
+  Aims 
+  
+  The aims of this chapter are:
+  
+ •  To examine some of the ideas and concepts involved in problem solving. 
+ •  To introduce the concept of an algorithm. 
+  
+ •  To introduce two ways of approaching algorithmic problem solving. 
+  
+ •  To introduce the ideas involved with systems analysis and design, i.e., to show 
+  
+ the need for pencil and paper study before using a computer system. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 9 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_2, © Springer-Verlag London Limited 2012",NA
+ Chapter 3 ,NA,NA
+ Introduction to Programming Languages ,"We have to go to another language in order to think clearly 
+ about the problem. 
+  
+  Samuel R. Delany, Babel-17 
+  
+  Aims 
+  
+  The primary aim of this chapter is to provide a short history of program language 
+ development and give some idea as to the concepts that have had an impact on 
+ Fortran. It concentrates on some but not all of the major milestones of the last 40 
+ years, in roughly chronological order. The secondary aim is to show the breadth of 
+ languages available. The chapter concludes with coverage of a small number of 
+ more specialised languages. 
+  
+  3.1  Introduction 
+  
+  It is important to realise that programming languages are a recent invention. They 
+ have been developed over a relatively short period—55 years—and are still 
+ undergoing improvement. Time spent gaining some historical perspective will help 
+ you understand and evaluate future changes. This chapter starts right at the 
+ beginning and takes you through some, but not all, of the developments during this 
+ 55 year span. The bulk of the chapter describes languages that are reasonably 
+ widely available commercially, and therefore ones that you are likely to meet. The 
+ chapter concludes with a coverage of some more specialised and/or recent 
+ developments. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 19 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_3, © Springer-Verlag London Limited 2012",NA
+ Chapter 4 ,NA,NA
+ Introduction to Programming ,"“Though this be madness, yet there is method in’t” Shakespeare  
+ ‘Plenty of practice’ he went on repeating, all the time that Alice 
+ was getting him on his feet again. ‘plenty of practice.’ 
+  
+  The White Knight, Through the Looking Glass and What Alice 
+ Found There, 
+  
+  Lewis Carroll 
+  
+  Aims 
+  
+  The aims of the chapter are:
+  
+ •    To introduce the idea that there is a wide class of problems that can be solved 
+  
+ with a computer and, further, that there is a relationship between the kind of 
+  
+ problem to be solved and the choice of programming language that is used. •  To 
+ give some of the reasons for the choice of Fortran. 
+  
+ •  To introduce the fundamental components or kinds of statements to be found in 
+  
+ a general purpose programming language. 
+  
+ •  To introduce the three concepts of name, type and value. 
+  
+ •   To illustrate the above with sample programs based on three of the fi ve intrinsic 
+  
+ data types:
+  
+  – character, integer and real 
+  
+ • 
+  
+  To introduce some of the formal syntactical rules of Fortran. 
+  
+  4.1  Introduction 
+  
+  We have seen that an algorithm is a sequence of steps that will solve a part or the 
+ whole of a problem. A program is the realisation of an algorithm in a programming 
+ language, and there are at fi rst sight a surprisingly large number of programming 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 45 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_4, © Springer-Verlag London Limited 2012",NA
+ Chapter 5 ,NA,NA
+ Arithmetic ,"Taking Three as the subject to reason about— 
+  
+  A convenient number to state— 
+  
+  We add Seven, and Ten, and then multiply out 
+  
+  By One Thousand diminished by Eight. 
+  
+  The result we proceed to divide, as you see, 
+  
+  By Nine Hundred and Ninety and Two: 
+  
+  then subtract Seventeen, and the answer must be 
+  
+  Exactly and perfectly true. 
+  
+  Lewis Carroll, The Hunting of the Snark 
+  
+  Round numbers are always false. 
+  
+  Samuel Johnsons 
+  
+  Aims
+  
+ •  The aims of this chapter are to introduce: 
+  
+ •   The rules for the evaluation of arithmetic expressions to ensure that they are 
+  
+ evaluated as you intend. 
+  
+ •  The idea of truncation and rounding applied to reals. 
+  
+ •  The use of the  parameter attribute to defi ne or set up constants. 
+  
+ • 
+  
+  The concepts and ideas involved in numerical computation, including:
+  
+  –  Specifying data types using kind-type parameters. 
+  
+  –   The concept of numeric models and positional number systems for integer 
+  
+ and real arithmetic and their implementation on binary devices. 
+  
+  – Testing the numerical representation of different kind types on a system. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 57 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_5, © Springer-Verlag London Limited 2012",NA
+(,NA,NA
+),"Although this is similar to the way in which we might expect an algebraic 
+ expres-sion to be evaluated, it is not consistent with the rules for multiplication 
+ and division, and may lead to some confusion. When in doubt, use brackets.",NA
+( ,"B 
+  
+ +
+  
+  C",NA
+),"A 
+  
+ +
+  
+  B
+  
+ =
+  
+ B 
+  
+ -
+  
+  A 
+  
+ A 
+  
+ +
+  
+  B 
+  
+ +
+  
+  C 
+  
+ =
+  
+  A 
+  
+  
+  The last is nominally evaluated left to right, as the additions are of equal 
+ precedence:
+  
+ A * B 
+ =
+  B * A
+  
+ A * B * C 
+ =
+  A * B * C",NA
+( ),"and again the last is nominally evaluated left to right, as the multiplications are of 
+ equal precedence:
+  
+ A * B 
+ -
+  A*C 
+ =
+  A* B",NA
+(,"-
+ C",NA
+),"A /  B /  C 
+ =
+  A / B * C",NA
+( ,NA,NA
+),The last is true for real and complex numeric types only.,NA
+(,NA,NA
+),"and similarly:
+  
+ 17 / 3 
+ =
+ 5.7 rounding up from 5.666666...",NA
+( ,NA,NA
+),NA,NA
+( ,16*16 / 0.14,NA
+),"We would like an answer in the region of 1828.5718, or, to two signifi cant 
+ digits, 1800.0. If we evaluate the terms within the brackets fi rst, the answer is 
+ 260/0.14, or 1857.1428; 1900.0 on the two-digit machine. Thinking that we could 
+ do better, we could rewrite the fraction as",NA
+( ,16 / 0.14 * 16,NA
+),"Which gives a result of 1800.0. 
+  
+  
+  Algebra shows that all these evaluations are equivalent if unlimited precision is 
+ available. 
+  
+  Care should also be taken when is one is near the numerical limits of the 
+ machine. 
+  
+ Consider the following:
+  
+  Z =  B * C / D 
+  
+ where B, C and D are all 10 
+ 30
+   and we are using 32-bit fl oating point numbers 
+ where the maximum real is approximately 10 
+ 38
+   . Here the product B * C generates 
+ a number of 10 
+ 60
+  —beyond the limits of the machine. This is called overfl ow as 
+ the number is too large. Note that we could avoid this problem by retyping this as
+  
+  Z =  B * C / D) 
+  
+ where the intermediate result would now be 10 
+ 30
+  /10 
+ 30
+  , i.e., 1. 
+  
+  
+  There is an inverse called underfl ow when the number is too small, which is 
+ illustrated below:
+  
+  Z =  X1 * Y1 * Z1 
+  
+ where X1 and Y1 are 10 
+ −20
+   and Z1 is 10 
+ 20
+   . The intermediate result of X1 * Y1 is 
+ 10 
+ −40
+  —again beyond the limits of the machine. This problem could have been 
+ over-come by retyping as
+  
+  Z =  X1 * (Y1 * Z1) 
+  
+  This is a particular problem for many scientists and engineers with all machines 
+ that use 32-bit arithmetic for integer and real calculations. This is because there are 
+ a number of physical constants (Plank constant, elementary charge, Bohr magneton 
+ etc.,) that will cause arithmetic problems due to their size. This is rarely a problem 
+ with machines with hardware support for 64-bit arithmetic. 
+  
+  How we get around this problem and how we move our programs from one 
+ platform to another making sure that we are working with the same precision and 
+ same range of numbers are covered in detail in the next section.",NA
+ å,"k 
+ = 
+ 0
+  
+ b 
+ k
+  
+ 2
+  
+ k
+  
+ where I is the integer value, n is the number of bits, and b 
+ k
+   is a bit value of 0 or 1, 
+ with bit numbering starting at 0, and reading right to left. Thus the integer 43 and 
+ bit pattern 101011 is given by:
+  
+ 43
+  
+ =",NA
+( ,1*32,NA
+) ( ,0*16,NA
+) ( ,1*8,NA
+) ( ,0*4,NA
+) ( ,1*2,NA
+) ( ,1*1,NA
+),"Or
+  
+ 43
+  
+ =",NA
+( ,"1*2
+  
+ 5",NA
+) ( ,"0*2
+  
+ 4",NA
+) ( ,"1*2
+  
+ 3",NA
+) ( ,"0*2
+  
+ 2",NA
+) ( ,"1*2 
+ 1",NA
+) ( ,"1*2
+  
+ 0",NA
+),"5.7.7  Integer Data Type and Representation Model 
+  
+  The integer data type is based on the model
+  
+ i
+  
+ q 
+  
+ =",NA
+ å,"k 
+ = 
+ 1
+  
+ l r 
+ k
+  
+ k
+  
+ = 
+ 1
+  
+ where I is the integer value, s is the sign, q is the number of digits (always 
+ positive), r is the radix or base (integer greater than 1), and lk is a positive integer 
+ (less than r). 
+  
+  A base of 2 is typical so 1,023 is
+  
+ 1023
+  
+ =",NA
+( ,"1*2
+  
+ 9",NA
+),NA,NA
+ ( ,"1*2
+  
+ 8",NA
+),NA,NA
+ ( ,"1*2
+  
+ 7",NA
+) ( ,"1*2
+  
+ 6",NA
+) ( ,"1*2
+  
+ 5",NA
+) ( ,"1*2
+  
+ 4",NA
+) ( ,"1*2
+  
+ 3",NA
+),+,NA
+( ,"1*2
+  
+ 2",NA
+) ( ,"1*2 
+ 1",NA
+) ( ,"1*2
+  
+ 0",NA
+),"5.7.8  Real Data Type and Representation Model 
+  
+  The real data type is based on the model
+  
+ x
+  
+ =
+  
+ sb
+  
+ e
+  
+ m",NA
+å,"k 
+ = 
+ 1
+  
+ f b 
+ k
+  
+ -
+  
+ k
+  
+ where x is the real number, s is the sign, b is the radix or base (greater than 1), m is 
+ the number of bits in the mantissa, e is an integer in the range e 
+ min
+   to e 
+ max
+  , and f 
+ k
+   
+ is a positive number less than b. 
+  
+  This means that with, for example, a 32-bit real there would be 8 bits allocated 
+ to the exponent and 24 to the mantissa. One of the bits in each part would be used 
+ to represent the sign and is called the sign bit. This reduces the number of bits that 
+ can actually be used to represent the mantissa and exponent to 31 and 7, respec-
+ tively. There is also the concept of normalisation, where the exponent is adjusted 
+ so that the most signifi cant bit is in position 22—bits are typically numbered 0–22, 
+ rather than 1–23. This form of representation is not new, and is fi rst documented",NA
+( ,"x
+  
+ 2
+  
+ -
+  
+ y
+  
+ 2",NA
+),NA,NA
+ ( ,"x*x
+  
+ -
+  
+ y*y",NA
+) ( ,"x
+  
+ -
+  
+ y * x",NA
+) ,NA,NA
+(,"+
+  
+ y",NA
+),"Try the following program:
+  
+  program expression_equivalence  
+ ! 
+  
+  ! simple evaluation of x*x-y*y  
+ ! when x and y are similar 
+  
+  ! 
+  
+  ! we will evaluate in three ways.  
+ ! 
+  
+  implicit none 
+  
+  real :: x =  1. 002 
+  
+  real :: y =  1. 001 
+  
+  real :: t1, t2, t3, t4, t5 
+  
+  
+  t1 =  x-y 
+  
+  
+  t2 =  x +  y 
+  
+  
+  print *,t1 
+  
+  
+  print *,t2 
+  
+  
+  t3 =  t1*t2 
+  
+  
+  t4 =  x**2-y**2 
+  
+  
+  t5 =  x*x-y*y 
+  
+  
+  print *,t3 
+  
+  
+  print *,t4",NA
+ Chapter 6 ,NA,NA
+ Arrays 1: Some Fundamentals ,"Thy gifts, thy tables, are within my brain 
+  
+  Full charactered with lasting memory. 
+  
+  William Shakespeare, The Sonnets 
+  
+  Here, take this book, and peruse it well: 
+  
+  The iterating of these lines brings gold. 
+  
+  Christopher Marlowe, The Tragical History of Doctor Faustus 
+  
+  Aims 
+  
+  The aims of the chapter are to introduce the fundamental concepts of arrays and do 
+ loops, in particular:
+  
+ •    To introduce the idea of tables of data and some of the formal terms used to 
+  
+ describe them:
+  
+  –  Array. 
+  
+  –  Vector. 
+  
+  – List and linear list. 
+  
+ •   To discuss the array as a random access structure where any element can be 
+ accessed as readily as any other and to note that the data in an array are all of 
+ the same type. 
+  
+ •   To introduce the twin concepts of data structure and corresponding control 
+  
+ structure. 
+  
+ •   To introduce the statements necessary in Fortran to support and manipulate 
+ these 
+  
+ data structures. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 85 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_6, © Springer-Verlag London Limited 2012",NA
+ ,"x 
+ i
+  
+ is often expressed in Fortran as a loop as in this example:
+  
+  do Month =  1,12 
+  
+  Total =  Total +  RainFall(Month)  
+ enddo 
+  
+  6.3.1  Possible Missing Data 
+  
+  The rainfall data in this example has been taken from the UK Met Offi ce site. Visit
+  
+ http://www.metoffi ce.gov.uk/climate/uk/stationdata 
+  
+ to see where some of the stations are. One of us was born in Wales, the other in 
+ Yorkshire so we have chosen stations accordingly. 
+  
+  The following is one of the mid Wales stations:
+  
+ http://www.metoffi 
+ ce.gov.uk/climate/uk/stationdata/cwmys twythdata.txt 
+  
+  Here is a sample of data from this site for 2 years. 
+  
+  
+  
+  tmax 
+  
+  tmin 
+  
+  af 
+  
+  rain  
+  
+  sun 
+  
+  yyyy 
+  
+  mm 
+  
+  degC 
+  
+  degC 
+  
+  days 
+  
+  mm 
+  
+  hours 
+  
+  1959 
+  
+  1 
+  
+  4.5  
+  
+  −1.9  
+  
+  20 
+  
+  –––  
+  
+  57.2 
+  
+  1959 
+  
+  2 
+  
+  7.3  
+  
+  0.9 
+  
+  15 
+  
+  –––  
+  
+  87.2 
+  
+  1959 
+  
+  3 
+  
+  8.4  
+  
+  3.1 
+  
+  3 
+  
+  –––  
+  
+  81.6 
+  
+  1959 
+  
+  4 
+  
+  10.8 
+  
+  3.7  
+  
+  1 
+  
+  –––  
+  
+  107.4 
+  
+  1959 
+  
+  5 
+  
+  15.8 
+  
+  5.8  
+  
+  1 
+  
+  –––  
+  
+  213.5 
+  
+  1959 
+  
+  6 
+  
+  16.9 
+  
+  8.2  
+  
+  0 
+  
+  –––  
+  
+  209.4 
+  
+  1959 
+  
+  7 
+  
+  18.5 
+  
+  9.5  
+  
+  0 
+  
+  –––  
+  
+  167.8 
+  
+  1959 
+  
+  8 
+  
+  19.C 
+  
+  10.5 
+  
+  0 
+  
+  –––  
+  
+  164.8 
+  
+  1959 
+  
+  9 
+  
+  18.3 
+  
+  5.9  
+  
+  0 
+  
+  –––  
+  
+  196.5 
+  
+  1959 
+  
+  19 
+  
+  14.8  
+  
+  7.9  
+  
+  1 
+  
+  –––  
+  
+  101.1 
+  
+  1959 
+  
+  11 
+  
+  8.8  
+  
+  3.9 
+  
+  3 
+  
+  –––  
+  
+  38.9 
+  
+  1959 
+  
+  12 
+  
+  7.2  
+  
+  2.5 
+  
+  3 
+  
+  –––  
+  
+  19.2 
+  
+  1961 
+  
+  1 
+  
+  5.4  
+  
+  0.2 
+  
+  11 
+  
+  144.8  
+  
+  31.0 
+  
+  1961 
+  
+  2 
+  
+  8.7  
+  
+  2.9 
+  
+  2 
+  
+  112.5  
+  
+  45.2 
+  
+  1961 
+  
+  3 
+  
+  10.2 
+  
+  2.1  
+  
+  10 
+  
+  77.2  
+  
+  102.6 
+  
+  1961 
+  
+  4 
+  
+  11.9 
+  
+  5.0  
+  
+  1 
+  
+  130.7  
+  
+  83.9 
+  
+  1961 
+  
+  5 
+  
+  ––– 
+  
+  ––– 
+  
+  ––– 
+  
+  66.3  
+  
+  173.7 
+  
+ (continued)",NA
+( ,NA,NA
+),"write a program that uses a do loop to make the length go from 1 to 10 m in 1 
+ m increments. 
+  
+  
+  Produce a table with two columns, the fi rst of lengths and the second of 
+ periods.",NA
+ Chapter 7 ,NA,NA
+ Arrays 2: Further Examples ,"Sir, In your otherwise beautiful poem (The Vision of Sin) 
+ there is a verse which reads 
+  
+  Every moment dies a man, 
+  
+  every moment one is born. 
+  
+  Obviously this cannot be true and I suggest that in the next 
+ edition you have it read 
+  
+  Every moment dies a man, 
+  
+  every moment 1 1/16 is born. 
+  
+  Even this value is slightly in error but should be suffi ciently 
+ accurate for poetry. 
+  
+ Charles Babbage in a letter to Lord Tennyson
+  
+  Aims 
+  
+  The aims of the chapter are to extend the concepts introduced in the previous 
+ chap-ter and in particular:
+  
+ •  To set an array size at run time – allocatable arrays. 
+  
+ •   To introduce the idea of an array with more than one dimension and the corre-
+ sponding control structure to permit easy manipulation of higher-dimensioned 
+ arrays. 
+  
+ •   To introduce an extended form of the dimension attribute declaration, and the 
+ corresponding alternative form to the do statement, to manipulate the array in 
+ this new form. 
+  
+ •   To introduce the do loop as a mechanism for the control of repetition in general, 
+  
+ not just for manipulating arrays. 
+  
+ • 
+  
+  To formally defi ne the block do syntax. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 99 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_7, © Springer-Verlag London Limited 2012",NA
+ Chapter 8 ,NA,NA
+ Whole Array and Additional Array Features ,"A good notation has a subtlety and suggestiveness which at 
+ times make it seem almost like a live teacher. 
+  
+ Bertrand Russell
+  
+  Aims 
+  
+  The aims of the chapter are:
+  
+ •  To look more formally at the terminology required to precisely describe arrays. •   
+ To introduce ways in which we can manipulate whole arrays and parts of arrays 
+  
+ (sections). 
+  
+ •   allocatable arrays – ways in which the size of an array can be deferred until 
+  
+ execution time. 
+  
+ •   To introduce the concept of array element ordering and physical and virtual 
+  
+ memory. 
+  
+ •  To introduce ways in which we can initialise arrays using array constructors. 
+ •  To introduce the where statement and array masking. 
+  
+ • 
+  
+  To introduce the forall statement and construct. 
+  
+  8.1  Terminology 
+  
+  Fortran supports an abundance of array handling features. In order to make the 
+ description of these features more precise a number of additional terms have to be 
+ covered and these are introduced and explained below. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 113 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_8, © Springer-Verlag London Limited 2012",NA
+ Chapter 9 ,NA,NA
+ Output of Results ,"Why, sometimes I’ve believed as many as six impossible things 
+ before breakfast. 
+  
+  Lewis Carroll, Through the Looking-Glass 
+  
+ and What Alice Found There 
+  
+  Aims 
+  
+  The aims here are to introduce the facilities for producing neat output and to show 
+ how to write results to a fi le, rather than to the terminal. In particular:
+  
+ •  The A, I, E, F, and X layout or edit descriptors. • 
+  
+  The open, write, and close statements. 
+  
+  9.1  Introduction 
+  
+  When you have used print * a few times it becomes apparent that it is not always 
+ as useful as it might be. The data are written out in a way which makes some 
+ sense, but may not be especially easy to read. Real numbers are written out with all 
+ their signifi cant places, which is very often rather too many, and it is often diffi 
+ cult to line up the columns for data which are notionally tabular. It is possible to be 
+ much more precise in describing the way in which information is presented by the 
+ program. To do this, we use format statements. Through the use of the format we 
+ can:
+  
+ •  Specify how many columns a number should take up. •  
+ Specify where a decimal point should lie. 
+  
+ •  Specify where there should be white space. 
+  
+ • 
+  
+  Specify titles. 
+  
+  The format statement has a label associated with it; through this label, the print 
+ statement associates the data to be written with the form in which to write them. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 131 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_9, © Springer-Verlag London Limited 2012",NA
+ Chapter 10 ,NA,NA
+ Reading in Data ,"Winnie-the-Pooh read the two notices very carefully,  
+ fi rst from left to right, and afterwards, 
+  
+  in case he had missed some of it, from right to left. 
+  
+  A A Milne, Winnie-the-Pooh 
+  
+  Aims 
+  
+  The aims of this chapter are to introduce some of the ideas involved in reading 
+ data into a program. In particular, using the following:
+  
+ •  Reading from fi xed fi elds. 
+  
+ •  Integers, reals and characters. 
+  
+ •  Blanks – nulls or zero? 
+  
+ • 
+  
+  read – extensions.
+  
+  – error handling on input. 
+  
+ • 
+  
+  open – associating unit numbers and fi le names.
+  
+  –  close 
+  
+  –  rewind 
+  
+  – backspace 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 155 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_10, © Springer-Verlag London Limited 2012",NA
+ Chapter 11 ,NA,NA
+ Files ,"It is a capital mistake to theorise before one has data. 
+  
+  Sir Arthur Conan Doyle 
+  
+  Aims 
+  
+  The aims of this chapter are:
+  
+ •  To review the process of fi le creation at a terminal. 
+  
+ •  To introduce more formally the idea of the fi le as a fundamental entity. 
+  
+ •  To show how fi les can be declared explicitly by the open and close statements. •  
+ To introduce the arguments for the open and close statements. 
+  
+ •  To demonstrate the interaction between the read/write statements and the open/ 
+  
+ close statements. 
+  
+  11.1  Introduction 
+  
+  When you work interactively at a computer, you are working with fi les, fi les that 
+ contain programs, fi les that contain data, and perhaps fi les that are libraries. The 
+ fi le is fundamental to most modern operating systems, and almost all operations 
+ are carried out on fi les. 
+  
+  
+  In this chapter we are going to extend some of your ideas about fi les. Let us 
+ con-sider what kinds of fi les you have met so far:
+  
+  1.  Text fi les. These are the source of your programs, compilation listings, etc. 
+ They can be examined by printing them. They can also be transmitted around a 
+ com-puter system fairly easily. A fi le sent to a printer is a text fi le. Mail 
+ messages are generally plain text fi les. Note that when mail messages arrive in 
+ your mail box they will then typically contain additional nonprintable 
+ information. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 171 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_11, © Springer-Verlag London Limited 2012",NA
+ Chapter 12 ,NA,NA
+ Functions ,"I can call spirits from the vasty deep. 
+  
+  Why so can I, or so can any man; but will they come  
+ when you do call for them? 
+  
+  William Shakespeare, King Henry IV, part 1 
+  
+  Aims 
+  
+  The aims of this chapter are:
+  
+ •    To consider some of the reasons for the inclusion of functions in a 
+ programming 
+  
+ language. 
+  
+ •   To introduce, with examples, some of the predefi ned functions available in 
+  
+ Fortran. 
+  
+ •   To introduce a classifi cation of intrinsic functions, generic, elemental, 
+  
+ transformational. 
+  
+ •  To introduce the concept of a user defi ned function. 
+  
+ •  To introduce the concept of a recursive function. 
+  
+ •  To introduce the concept of user defi ned elemental and pure functions. 
+  
+ •  To briefl y look at scope rules in Fortran for variables and functions. 
+  
+ • 
+  
+  To look at internal user defi ned functions. 
+  
+  12.1  Introduction 
+  
+  The role of functions in a programming language and in the problem-solving 
+ process is considerable and includes:
+  
+ •    Allowing us to refer to an action using a meaningful name, e.g., sine(x) a very 
+  
+ concrete use of abstraction. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 179 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_12, © Springer-Verlag London Limited 2012",NA
+( ),"z
+  
+ =
+  
+ cos y",NA
+( ),"a
+  
+ =
+  
+ tan y",NA
+( ),"This is in rather the same way that we might say that X is a function of Y, or X 
+ is sine Y. Note that the argument, Y, is in radians not degrees. 
+  
+  12.2.1  Example 1: Simple Function Usage 
+  
+  A complete example is given below:
+  
+  program ch1201 
+  
+  implicit none 
+  
+  real :: 
+ x",NA
+ Chapter 13 ,NA,NA
+ Control ,NA,NA
+Structures ,"Summarizing: as a slow-witted human being I have a very small 
+ head and I had better learn to live with it and to respect my 
+ limitations and give them full credit, rather than try to ignore 
+ them, for the latter vain effort will be punished by failure. 
+  
+  Edsger W. Dijkstra, Structured Programming 
+  
+  Aims 
+  
+  The aims of this chapter are to introduce:
+  
+ •  Selection among various courses of action as part of the algorithm. • 
+  
+  
+ The concepts and statements in Fortran needed to support the above:
+  
+  Logical expressions and logical operators.  
+ One or more blocks of statements. 
+  
+ •  The if then endif construct. 
+  
+ •  The if then else if endif construct. 
+  
+ •  To introduce the case statement with examples. 
+  
+ • 
+  
+  To introduce the do loop, in three forms with examples, in particular:
+  
+  The iterative do loop. 
+  
+  The do while form. 
+  
+  The do … if then exit end do or repeat until form.  
+ The cycle statement. 
+  
+  The exit statement.",NA
+ ,"x
+  
+ n
+  
+  
+ 1
+  
+ x
+  
+  
+  
+ n 
+ = 
+ 1
+  
+ (
+  
+ n
+  
+  
+  
+ 1) 
+ !
+  
+ n
+  
+ Every succeeding term is just the previous term multiplied by x/n. At some point 
+ the term x/n becomes very small, so that it is not sensibly different from zero, and 
+ suc-cessive terms add little to the value. The function therefore repeats the loop 
+ until x/n",NA
+ Chapter 14 ,NA,NA
+ Characters ,"These metaphysics of magicians, 
+  
+  And necromantic books are heavenly; 
+  
+  Lines, circles, letters and characters. 
+  
+  Christopher Marlowe, The Tragical History of Doctor Faustus 
+  
+  Aims 
+  
+  The aims of this chapter are:
+  
+ •  To extend the ideas about characters introduced in earlier chapters. 
+  
+ •   To demonstrate that this enables us to solve a whole new range of problems in a 
+  
+ satisfactory way. 
+  
+  14.1  Introduction 
+  
+  For each type in a programming language there are the following concepts:
+  
+ •  Values are drawn from a fi nite domain. 
+  
+ • 
+  
+  There are a restricted number of operations defi ned for each type. 
+  
+  For the numeric types we have already met, integers and reals:
+  
+ •    The values are either drawn from the domain of integer numbers or the domain 
+  
+ of real numbers. 
+  
+ •   The valid operations are addition, subtraction, multiplication, division and 
+  
+ exponentiation. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 217 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_14, © Springer-Verlag London Limited 2012",NA
+ Chapter 15 ,NA,NA
+ Complex ,"Make it as simple as possible, but no simpler. 
+  
+  Albert Einstein 
+  
+  Aims 
+  
+  The aims of this chapter are:
+  
+ •  To introduce the last predefi ned numeric data type in Fortran. 
+ • 
+  
+  To illustrate with examples how to use this type. 
+  
+  15.1  Introduction 
+  
+  This variable type refl ects an extension of the real data type available in Fortran – 
+ the complex data type, where we can store and manipulate complex variables. 
+ Problems that require this data type are restricted to certain branches of mathemat-
+ ics, physics and engineering. Complex numbers are defi ned as having a real and 
+ imaginary part, i.e.,
+  
+ a
+  
+ =
+  
+ x
+  
+ +
+  
+ iy
+  
+ where I is the square root of−1. 
+  
+  
+  They are not supported in many programming languages as a base type which 
+ makes Fortran the language of fi rst choice for many people. 
+  
+  
+  To use this variable type we have to write the number as two parts, the real and 
+ imaginary elements of the number, for example,
+  
+ complex :: U 
+  
+  
+  U =  
+ cmplx(1.0,2.0
+ ) 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 231 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_15, © Springer-Verlag London Limited 2012",NA
+ Chapter 16 ,NA,NA
+ Logical ,"A messenger yes/no semaphore 
+  
+  her black/white keys in/out whirl of morse 
+  
+  hoopooe signals salvation deviously. 
+  
+  Nathaniel Tarn, The Laurel Tree 
+  
+  Aims 
+  
+  The aims of this chapter are:
+  
+ •  To examine the last predefi ned type available in Fortran: logical. 
+  
+ •   To introduce the concepts necessary to use logical expressions effectively, 
+  
+ namely:
+  
+  –  Logical variables. 
+  
+  –  Logical operators. 
+  
+  –  The hierarchy of operations. 
+  
+  – Truth tables. 
+  
+  16.1  Introduction 
+  
+  Often we have situations where we need ON/OFF, TRUE/FALSE or YES/NO 
+ switches, and in such circumstances we can use  
+ logical
+  type variables, e.g.,
+  
+  
+ logical :: fl ag 
+  
+  Logicals may take only two possible values, as shown in the following:
+  
+  Flag=.true. 
+  
+ or
+  
+  fl ag=.false. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 237 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_16, © Springer-Verlag London Limited 2012",NA
+ Chapter 17 ,NA,NA
+ Introduction to Derived Types ,"Russell’s theory of types leads to certain complexities in the 
+ foundations of mathematics… Its interesting features for our 
+ purposes are that types are used to prevent certain erroneous 
+ expressions from being used in logical and mathematical 
+  
+ formulae; and that a check against violation of type constraints 
+ can be made purely by scanning the text, without any 
+  
+ knowledge of the value which a particular symbol might 
+  
+ happen to have. 
+  
+  C.A.R. Hoare, Structured Programming 
+  
+  Aims 
+  
+  The aim of this chapter is to introduce the concepts and ideas involved in using the 
+ facilities offered in Fortran 90 for the construction and use of user defi ned types:
+  
+ •  The way in which we defi ne our own types. 
+  
+ •  The way in which we declare variables to be of a user defi ned type. 
+  
+ •  The way in which we manipulate variables of our own types. • 
+  
+  The way in which we can nest types within types. 
+  
+  The examples are simple and are designed to highlight the syntax. More 
+ complex and realistic examples of the use of user defi ned data types are to be 
+ found in later chapters. 
+  
+  17.1  Introduction 
+  
+  In the coverage so far we have used the intrinsic types provided by Fortran. The 
+ only data structuring technique available has been to construct arrays of these 
+ intrinsic types. Whilst this enables us to solve a reasonable variety of problems, it 
+ is 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 243 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_17, © Springer-Verlag London Limited 2012",NA
+ Chapter 18 ,NA,NA
+ An Introduction to Pointers ,"Not to put too fi ne a point on it. 
+  
+  Charles Dickens, Bleak House. 
+  
+  Aim 
+  
+  The primary aim of the chapter is to introduce some of the key concepts of 
+ pointers in Fortran. 
+  
+  18.1  Introduction 
+  
+  All of the data types introduced so far, with the exception of the allocatable array, 
+ have been static. Even with the allocatable array a size has to be set at some stage 
+ during program execution. The facilities provided in Fortran by the concept of a 
+ pointer combined with those offered by a user defi ned type enable us to address a 
+ completely new problem area, previously extremely diffi cult to solve in Fortran. 
+ There are many problems where one genuinely does not know what requirements 
+ there are on the size of a data structure. Linked lists allow sparse matrix problems 
+ to be solved with minimal storage requirements, two-dimensional spatial problems 
+ can be addressed with quad-trees and three-dimensional spatial problems can be 
+ addressed with oct-trees. Many problems also have an irregular nature, and pointer 
+ arrays address this problem. 
+  
+  First we need to cover some of the technical aspects of pointers. A pointer is a 
+ variable that has the pointer attribute. A pointer is associated with a target by 
+ alloca-tion or pointer assignment. A pointer becomes associated as follows:
+  
+ •    The pointer is allocated as the result of the successful execution of an allocate 
+  
+ statement referencing the pointer
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 251 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_18, © Springer-Verlag London Limited 2012",NA
+ Chapter 19 ,NA,NA
+ Introduction to Subroutines ,"A man should keep his brain attic stacked with all the furniture 
+ he is likely to use, and the rest he can put away in the lumber 
+ room of his library, where he can get at it if he wants. 
+  
+  Sir Arthur Conan Doyle, Five Orange Pips 
+  
+  Aims 
+  
+  The aims of this chapter are:
+  
+ •  To consider some of the reasons for the inclusion of subroutines in a program-
+  
+ ming language. 
+  
+ •   To introduce with a concrete example some of the concepts and ideas involved 
+  
+ with the defi nition and use of subroutines.
+  
+  –  Arguments or parameters. 
+  
+  –  The intent attribute for parameters. 
+  
+  –  The call statement. 
+  
+  –  Scope of variables. 
+  
+  –  Local variables and the save attribute. 
+  
+  –   The use of parameters to report on the status of the action carried out in the 
+  
+ subroutine. 
+  
+ • 
+  
+  Module procedures to provide interfaces. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 261 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_19, © Springer-Verlag London Limited 2012",NA
+ Chapter 20 ,NA,NA
+ Subroutines : ,NA,NA
+2 ,"It is one thing to show a man he is in error, and another to 
+ put him in possession of the truth. 
+  
+ John Locke
+  
+  Aims 
+  
+  The aims of this chapter are to extend the ideas in the earlier chapter on 
+ subroutines and look in more depth at parameter passing, in particular using a 
+ variety of ways of passing arrays. 
+  
+  20.1  More on Parameter Passing 
+  
+  So far we have seen scalar parameters of type real, integer and logical. We will 
+ now look at numeric array parameters and character parameters. We need to 
+ introduce some technical terminology fi rst. Don’t panic if you don’t fully 
+ understand the ter-minology as the examples should clarify things. 
+  
+  20.1.1  Assumed-Shape Array 
+  
+  An assumed-shape array is a nonpointer dummy argument array that takes its 
+ shape from the associated actual argument array.",NA
+ Chapter 21 ,NA,NA
+ Modules ,"Common sense is the best distributed commodity in the world, 
+ for every man is convinced that he is well supplied with it. 
+  
+  Descartes 
+  
+  Aims 
+  
+  The aims of this chapter are to look at the facilities found in Fortran provided by 
+ modules, in particular:
+  
+ •    The use of a module to aid in the consistent defi nition of precision throughout a 
+  
+ program and subprograms. 
+  
+ •  The use of modules for global data. 
+  
+ •  The use of modules for derived data types. 
+  
+ •  Modules containing procedures 
+  
+ •  Public, private and protected attributes • 
+  
+  The use statement and its extensions 
+  
+  21.1  Introduction 
+  
+  We have now covered the major executable building blocks in Fortran and they 
+ are
+  
+ •  The main program unit 
+  
+ •  Functions 
+  
+ • 
+  
+  Subroutines 
+  
+ and these provide us with the tools to solve many problems using just a main pro-
+ gram and one or more external and internal procedures. Both external and internal 
+ procedures communicate through their argument lists, whilst internal procedures 
+ have access to data in their host program units. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 287 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_21, © Springer-Verlag London Limited 2012",NA
+ Chapter 22 ,NA,NA
+ Simple Data Structuring in Fortran ,"The good teacher is a guide who helps others to dispense 
+ with his services. 
+  
+  R. S. Peters, Ethics and Education 
+  
+  Aims 
+  
+  The aims of this chapter are to look at several complete examples illustrating data 
+ structuring in Fortran.
+  
+ •  Singly linked list: reading in an arbitrary amount of text 
+  
+ •  Singly linked list: reading in an arbitrary quantity of numeric data •  
+ Ragged arrays – lower triangular matrix 
+  
+ •  Ragged arrays – variable sized data sets 
+  
+ •  Perfectly balanced tree 
+  
+ • 
+  
+  Date derived type 
+  
+  22.1  Introduction 
+  
+  This chapter looks at simple data structuring in Fortran using a range of examples. 
+ We use modules throughout to defi ne the data structures that we will be working 
+ with. The chapter starts with a number of pointer examples. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 299 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_22, © Springer-Verlag London Limited 2012",NA
+ Chapter 23 ,NA,NA
+ Operator Overloading ,"All the persons in this book are real and none is fi ctitious 
+ even in part. 
+  
+ Flann O’Brien, The Hard Life
+  
+  Aims 
+  
+  The aims of this chapter are to look at operator overloading in Fortran. 
+  
+  23.1  Introduction 
+  
+  In programming operator overloading can be regarded as a way of achieving poly-
+ morphism in that operators (e.g. +,−,*,/ or =) can have different implementations 
+ depending on the types of their arguments. 
+  
+  In some programming languages overloading is defi ned by the language. In 
+ Fortran for example, the addition + operator invokes quite different code when 
+ used with integer, real or complex types. 
+  
+  Some languages allow the programmer to implement support for user defi ned 
+ types. Fortran introduced support for operator and assignment overloading in the 
+ 1990 standard. 
+  
+  23.2  Other Languages 
+  
+  Operator overloading is not new and several languages offer support for the 
+ feature including:
+  
+ •  Algol 68 – 1968 
+  
+ • 
+  
+  Ada – Ada 83 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 327 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_23, © Springer-Verlag London Limited 2012",NA
+ Chapter 24 ,NA,NA
+ Generic Programming ,"General notions are generally wrong. 
+  
+  Letter to Mr. Wortley Montegu, 28 
+ th
+  March 1710. 
+  
+  Aims 
+  
+  This chapter looks at an example that implements generic programming in Fortran. 
+  
+  24.1  Introduction 
+  
+  Fortran 77 had several generic functions, e.g. the sine function could be called 
+ with arguments of type real, double precision or complex. Fortran 90 extended the 
+ idea so that a programmer could write their own generic functions or subroutines. 
+ For example we can now write a sort routine works with arguments of a variety of 
+ types, e.g. integer, real etc. 
+  
+  24.2  Generic Programming and Other Languages 
+  
+  Generic programming has a wider meaning in computer science and effectively is 
+ a style of computer programming in which an algorithm is written once, but can be 
+ made to work with a variety of types. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 331 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_24, © Springer-Verlag London Limited 2012",NA
+ Chapter 25 ,NA,NA
+ Mathematical Examples ,"You look at science (or at least talk of it) as some sort of 
+ demoralising invention of man, something apart from real life, 
+ and which must be cautiously guarded and kept separate from 
+ everyday existence. But science and everyday life cannot and 
+ should not be separated. Science, for me, gives a partial 
+ explanation for life. In so far as it goes, it is based on fact, 
+ experience and experiment. 
+  
+  Rosalind Franklin. 
+  
+  Aims 
+  
+  The aims of this chapter are to look at several mathematical examples in Fortran.
+  
+ •  Using linked lists for sparse matrix problems. 
+  
+ •   The solution of a set of ordinary differential equations using the Runge–Kutta–
+ Merson method, with the use of a procedure as a parameter, and the use of work 
+ arrays. 
+  
+ •  Diagonal extraction of a matrix. 
+  
+ •  The solution of linear equations using Gaussian elimination • 
+  
+  An elemental e**x function 
+  
+  25.1 Introduction 
+  
+  This chapter looks at a small number of mathematical examples in Fortran. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 343 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_25, © Springer-Verlag London Limited 2012",NA
+  ,"x 
+ i 
+ y
+    . There are a number 
+ i
+  
+ i 
+ = 
+ 1
+  
+ of approaches to doing this and the one we use in the program below stores",NA
+ Chapter 26 ,NA,NA
+ Object Oriented Programming ,"“For Madmen only” 
+  
+ Hermann Hesse, Steppenwolf
+  
+  Aims 
+  
+  The aims of this chapter are to look at object oriented programming in Fortran. 
+  
+  26.1  Introduction 
+  
+  This chapter looks at object oriented programming in Fortran. The chapter on pro-
+ gramming languages covers the topic in a broader context. 
+  
+  26.2  Brief Review of the History of Object Oriented 
+  
+ Programming 
+  
+  Object oriented programming is not new. One of the fi rst languages to offer 
+ support was Simula 67, a language designed for discrete event simulation by Ole 
+ Johan Dahl, Bjorn Myhrhaug and Kristen Nygaard whilst working at the 
+ Norwegian Computing Centre in Oslo in the 1960s. 
+  
+  One of the next major developments was in the 1970s at the Xerox Palo Alto 
+ Research Centre Learning Research Group who began working on a vision of the 
+ ways different people might effectively use computing power. One of the 
+ outcomes of their work was the Smalltalk 80 system. Objects are at the core of the 
+ Smalltalk 80 system. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 367 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_26, © Springer-Verlag London Limited 2012",NA
+ Chapter 27 ,NA,NA
+ Introduction to Parallel Programming ,"‘Can you do addition?’ the White Queen asked. ‘What’s one 
+ and one and one and one and one and one and one and one and 
+ one and one?’ 
+  
+  ‘I don’t know’ said Alice. ‘I lost count.’ 
+  
+  ‘She can’t do addition,’ the Red Queen interrupted. 
+  
+ Lewis Carroll, Through the Looking Glass and What Alice 
+  
+ Found There.
+  
+  Aim 
+  
+  The aims of this chapter is to provide a short introduction to parallel programming. 
+  
+  27.1  Introduction 
+  
+  Parallel programming involves breaking a program down into parts that can be 
+ executed concurrently. Here is a simple diagram to illustrate the idea. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 397 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_27, © Springer-Verlag London Limited 2012",NA
+ Chapter 28 ,NA,NA
+ MPI – Message Passing Interface ,"In almost every computation a great variety of arrangements for 
+ the succession of the processes is possible, and various 
+ considerations must infl uence the selections amongst them for 
+ the purposes of a calculating engine. One essential object is to 
+ choose that arrangement which shall tend to reduce to a 
+  
+ minimum the time necessary for completing the calculation. 
+  
+  Ada Lovelace 
+  
+  Aim
+  
+  The aims of this chapter is to provide a short introduction to MPI programming in 
+ Fortran. 
+  
+  28.1  Introduction 
+  
+  Documents for the MPI standard are available from the MPI Forum. Their web 
+ address is
+  
+ http://www.mpi-forum.org
+  
+  
+  If you are going to do MPI programming we recommend getting hold of the 
+ document that refers to your implementation. 
+  
+  28.2  MPI Programming 
+  
+  MPI programming typically requires two components, a compiler and an MPI 
+ implementation. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 417 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_28, © Springer-Verlag London Limited 2012",NA
++,"0
+  
+ 1
+  
+ 4 
+  
+ + 
+ xdx
+  
+ is one way of calculating an approximation to  
+ p
+  , and is a problem that is easy to 
+ parallelise. The integral can be approximated by
+  
+ 1",NA
+ ,"n
+  
+  
+ 4
+  
+   
+ n
+   
+ 1
+  
+ 1
+  
+   
+ 0.5
+  
+ + 
+  
+ n
+  
+ 
+ 
+ 
+  
+ 2
+  
+ p
+   to 50 digits is 
+  
+ 3.14159265358979323846264338327950288419716939937510 
+ according to Wikipedia 
+  
+  Another way of calculating  
+ p
+  is using the formula 4 tan 
+ −1
+  (1), and in Fortran 
+ this is
+  
+  4.0*atan(1.0).",NA
+ Chapter 29 ,NA,NA
+ OpenMP ,"The best way to have a good idea is to have a lot of ideas. 
+  
+  
+ Linus Pauling 
+  
+  Aim 
+  
+  The aims of this chapter is to provide a short introduction to OpenMP 
+ programming in Fortran. 
+  
+  29.1  Introduction 
+  
+  The main site is 
+  
+ http://openmp.org/wp/ 
+  
+ and this site has details about the various specifi cations 
+  
+ http://openmp.org/wp/openmp-specifi cations/
+  
+  
+  We recommend downloading the documentation if you are going to do 
+ OpenMP programming. You should visit 
+  
+ http://openmp.org/wp/openmp-compilers/ 
+  
+ to see an up to date list of what compilers support the OpenMP specifi cation, and 
+ at what level. 
+  
+  The OpenMP site has a range of resources available, check 
+ out 
+ http://openmp.org/wp/resources 
+  
+ for more information. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 445 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_29, © Springer-Verlag London Limited 2012",NA
+ Chapter 30 ,NA,NA
+ Coarray Fortran ,"Science is a wonderful thing if one does not have to earn one’s 
+ living at it. 
+  
+  Einstein 
+  
+ Aim
+  
+  The aims of this chapter is to provide a short introduction to coarray programming 
+ in Fortran. 
+  
+  30.1  Introduction 
+  
+  Coarrays were the major component of the Fortran 2008 standard. As stated 
+ earlier they are based on a single program multiple data model. Coarrays are a 
+ simple parallel programming extension to Fortran. They are effectively variables 
+ that can be shared across multiple instances of the same program or images in 
+ Fortran terminology. 
+  
+  
+  Coarray variables look like conventional Fortran arrays, except that they use [] 
+ brackets instead of () brackets. In the simple declaration below
+  
+  character(len=20) :: name[*]='*****' 
+  
+ we declare name to be a  character  coarray and the * in the [] brackets means that 
+ the bounds of the coarray are calculated at run time, rather than compile time.
+  
+  read *, name 
+  
+ is a reference to the coarray on the current image.  
+ We can then use the following statement
+  
+  name [i] =  name 
+  
+ to broadcast the value read in to each of the other images. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 457 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_30, © Springer-Verlag London Limited 2012",NA
+ Chapter 31 ,NA,NA
+ C Interop ,"We can’t solve problems by using the same kind of thinking 
+ we used when we created them. 
+  
+  Einstein 
+  
+ Aim
+  
+  This chapter looks briefl y at C interoperability. 
+  
+  31.1  Introduction 
+  
+  C is a widely used programming languages and there is a considerable amount of 
+ software written in C. Fortran 2003 introduced a standardised mechanism for inter-
+ operating with C. 
+  
+  
+  In this chapter we provide a brief coverage of some of the technical details 
+ required for interoperability and then have a look at a couple of examples. 
+  
+  31.2  ISO_C_BINDING Module 
+  
+  There is an intrinsic module called ISO_C_BINDING that contains named con-
+ stants, derived types and module procedures to support interoperability. 
+  
+  31.3  Named Constants and Derived Types in the Module 
+  
+  The entities listed in the second column of Table  
+ 31.1
+  , are named constants of 
+ type default integer. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 469 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_31, © Springer-Verlag London Limited 2012",NA
+ Chapter 32 ,NA,NA
+ ISOTR 15580 IEEE Arithmetic ,"Any effectively generated theory capable of expressing 
+  
+ elementary arithmetic cannot be both consistent and complete. 
+ In particular, for any consistent, effectively generated formal 
+ theory that proves certain basic arithmetic truths, there is an 
+ arithmetical statement that is true, but not provable in the 
+ theory. 
+  
+  Godel, First incompleteness theorem 
+  
+  Aims 
+  
+  The aims of this chapter are to look in more depth at arithmetic and in particular at 
+ the support that Fortran provides for the IEEE 754 standard. There is a coverage of:
+  
+ •  Hardware support for arithmetic. 
+  
+ •  Integer formats. 
+  
+ •  Floating point formats: single and double. 
+  
+ •  Special values: denormal, infi nity and not a number – NAN. 
+  
+ • 
+  
+  Exceptions and fl ags: divide by zero, inexact, invalid, overfl ow, under fl ow. 
+  
+  32.1  Introduction 
+  
+  The literature contains details of the IEEE 754 standard and the bibliography 
+ contains details of a number of printed and on-line sources. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 479 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_32, © Springer-Verlag London Limited 2012",NA
+ Chapter 33 ,NA,NA
+ Miscellaneous Features and Examples ,"The Analytical Engine weaves algebraic patterns, just as the 
+ Jacquard loom weaves fl owers and leaves. 
+  
+  Ada Lovelace 
+  
+  Aims 
+  
+  The aims of this chapter are to look at some additional features of Fortran and also 
+ provide coverage of a small number of other areas including
+  
+ •  keyword and optional arguments 
+  
+ •  Non recursive quicksort 
+  
+ • 
+  
+  Simple graphics programming – dislin 
+  
+  33.1  Introduction 
+  
+  This chapter looks at a small number of additional examples that don’t really fi t 
+ anywhere else. We also cover a small number of additional Fortran concepts. 
+  
+  33.2  Keyword and Optional Arguments 
+  
+  The examples of procedures so far have assumed that the dummy arguments and 
+ the corresponding arguments are in the same position, i.e., we are using positional 
+ argu-ments. Fortran also provides the ability to supply the actual arguments to a 
+ proce-dure by keyword, and hence in any order. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 499 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_33, © Springer-Verlag London Limited 2012",NA
+ Chapter 34 ,NA,NA
+ Converting from Fortran 77 ,"Twas brillig, and the slithy toves 
+  
+  did gyre and gimble in the wabe; 
+  
+  All mimsy were the borogoves, 
+  
+  And the mome raths outgrabe. 
+  
+  Lewis Carroll 
+  
+  Aim 
+  
+  This chapter looks at some of the options available when working with older 
+ Fortran code. 
+  
+  34.1  Introduction 
+  
+  This chapter looks at converting Fortran 77 code to a modern Fortran style. 
+  
+  
+  The aim is to provide the Fortran 77 programmer (and in particular the person 
+ with legacy code) with some simple guidelines for conversion. 
+  
+  The fi rst thing that one must have is a thorough understanding of the newer, 
+ better language features of Fortran. It is essential that the material in the earlier 
+ chapters of this book are covered, and some of the problems attempted. This will 
+ provide a feel for modern Fortran. 
+  
+  The second thing one must have is a thorough understanding of the language 
+ constructs used in your legacy code. Use should be made of the compiler documen-
+ tation for whatever Fortran 77 compiler you are using, as this will provide the 
+ detailed (often system specifi c) information required. The recommendations below 
+ are therefore brief. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 531 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9_34, © Springer-Verlag London Limited 2012",NA
+ Appendix A,"Glossary 
+  
+  Abstract interface 
+  Set of procedure characteristics with dummy argument names 
+  
+ Actual argument 
+   A value (variable, expression or procedure) passed from a 
+ calling program unit to a subprogram unit. 
+  
+  Adjustable array 
+  An explicit-shape array that is a dummy argument to a 
+ subprogram. 
+  Algorithm 
+   Derived from the name of the ninth century Persian 
+ mathematician Abu Ja’far Mohammed ibn Musa al-Kuwarizmi (father of Ja’far 
+ Mohammed, son of Moses, native of Kuwarizmi), corrupted through western 
+ culture as Al-Kuwarizmi. Now a sequence of computations. 
+  
+  Allocatable 
+  Having the allocatable attribute 
+  
+  Allocatable array 
+  An array that has the allocatable attribute. 
+  
+  Argument 
+   Exists in two forms; actual argument, which is in the calling routine 
+ and is one of a variable, expression or procedure, and dummy argument, which 
+ is in the called routine. 
+  
+  Argument association 
+   The process of matching up an actual argument and dum-
+ my argument during program execution. 
+  
+  Array 
+   An array is a data structure where each scalar element has the same type 
+ and kind. An array may be up to rank 7. It may be referenced by element (via 
+ subscripts), by section or as a whole. 
+  
+  Array constructor 
+   A mechanism used to initialise or give values to a one- 
+ dimensional array. The RESHAPE function can then be used to handle rank 2 
+ and above arrays. 
+  
+  Array element 
+   A scalar item of an array. An array element is picked out by a 
+  
+ subscript. 
+  
+  Array element ordering 
+   The elements of an array, regardless of rank, form a  
+ linear sequence. The sequence is such that the subscripts along the fi rst dimen-
+ sion vary most rapidly. 
+  
+  Array section 
+  A part of an array. The actual set depends on the subscripts. 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 539 
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ , 
+  
+ DOI 10.1007/978-0-85729-233-9, © Springer-Verlag London Limited 2012",NA
+ Appendix B,"ASCII Character Set 
+  
+  0 
+  
+  nul 
+  
+  32 
+  
+  ! 
+  
+  64 
+  
+  @ 
+  
+  96 
+  
+  ' 
+  
+  1 
+  
+  soh 
+  
+  33 
+  
+  65 
+  
+  A 
+  
+  97 
+  
+  a 
+  
+  2 
+  
+  stx 
+  
+  34 
+  
+  "" 
+  
+  66 
+  
+  B 
+  
+  98 
+  
+  b 
+  
+  3 
+  
+  etx 
+  
+  35 
+  
+  # 
+  
+  67 
+  
+  C 
+  
+  99 
+  
+  c 
+  
+  4 
+  
+  eot 
+  
+  36 
+  
+  $ 
+  
+  68 
+  
+  D 
+  
+  100 
+  
+  d 
+  
+  5 
+  
+  enq 
+  
+  37 
+  
+  % 
+  
+  69 
+  
+  E 
+  
+  101 
+  
+  e 
+  
+  6 
+  
+  ack 
+  
+  38 
+  
+  & 
+  
+  70 
+  
+  F 
+  
+  102 
+  
+  f 
+  
+  7 
+  
+  bel 
+  
+  39 
+  
+  ' 
+  
+  71 
+  
+  G 
+  
+  103 
+  
+  g 
+  
+  8 
+  
+  bs 
+  
+  40 
+  
+  ( 
+  
+  72 
+  
+  H 
+  
+  104 
+  
+  h 
+  
+  9 
+  
+  ht 
+  
+  41 
+  
+  ) 
+  
+  73 
+  
+  I 
+  
+  105 
+  
+  i 
+  
+  10 
+  
+  lf 
+  
+  42 
+  
+  * 
+  
+  74 
+  
+  J 
+  
+  106 
+  
+  j 
+  
+  11 
+  
+  vt 
+  
+  43 
+  
+  + 
+  
+  75 
+  
+  K 
+  
+  107 
+  
+  k 
+  
+  12 
+  
+  ff 
+  
+  44 
+  
+  , 
+  
+  76 
+  
+  L 
+  
+  108 
+  
+  1 
+  
+  13 
+  
+  cr 
+  
+  45 
+  
+  – 
+  
+  77 
+  
+  M 
+  
+  109 
+  
+  m 
+  
+  14 
+  
+  so 
+  
+  46. 
+  
+  . 
+  
+  78 
+  
+  N 
+  
+  110 
+  
+  n 
+  
+  15 
+  
+  si 
+  
+  47 
+  
+  / 
+  
+  79 
+  
+  O 
+  
+  111 
+  
+  o 
+  
+  16 
+  
+  dle 
+  
+  48 
+  
+  0 
+  
+  80 
+  
+  P 
+  
+  112 
+  
+  P 
+  
+  17 
+  
+  dc1 
+  
+  49 
+  
+  1 
+  
+  81 
+  
+  Q 
+  
+  113 
+  
+  q 
+  
+  18 
+  
+  dc2 
+  
+  50 
+  
+  2 
+  
+  82 
+  
+  R 
+  
+  114 
+  
+  r 
+  
+  19 
+  
+  dc3 
+  
+  51 
+  
+  3 
+  
+  83 
+  
+  S 
+  
+  115 
+  
+  s 
+  
+  20 
+  
+  dc4 
+  
+  52 
+  
+  4 
+  
+  84 
+  
+  T 
+  
+  116 
+  
+  t 
+  
+  21 
+  
+  nak 
+  
+  53 
+  
+  5 
+  
+  85 
+  
+  U 
+  
+  117 
+  
+  u 
+  
+  22 
+  
+  syn 
+  
+  54 
+  
+  6 
+  
+  86 
+  
+  V 
+  
+  118 
+  
+  v 
+  
+  23 
+  
+  etb 
+  
+  55 
+  
+  7 
+  
+  87 
+  
+  W 
+  
+  119 
+  
+  w 
+  
+  24 
+  
+  can 
+  
+  56 
+  
+  8 
+  
+  88 
+  
+  X 
+  
+  120 
+  
+  x 
+  
+  25 
+  
+  em 
+  
+  57 
+  
+  9 
+  
+  89 
+  
+  Y 
+  
+  121 
+  
+  y 
+  
+  26 
+  
+  sub 
+  
+  58 
+  
+  : 
+  
+  90 
+  
+  Z 
+  
+  122 
+  
+  z 
+  
+  27 
+  
+  esc 
+  
+  59 
+  
+  ; 
+  
+  91 
+  
+  [ 
+  
+  123 
+  
+  { 
+  
+  28 
+  
+  fs 
+  
+  60 
+  
+  < 
+  
+  92 
+  
+  \ 
+  
+  124 
+  
+  | 
+  
+  29 
+  
+  gs 
+  
+  61 
+  
+  = 
+  
+  93 
+  
+  ] 
+  
+  125 
+  
+  } 
+  
+  30 
+  
+  rs 
+  
+  62 
+  
+  > 
+  
+  94 
+  
+  ^ 
+  
+  126 
+  
+  ~ 
+  
+  31 
+  
+  us 
+  
+  63 
+  
+  ? 
+  
+  95 
+  
+  _ 
+  
+  127 
+  
+  del 
+  
+ 547",NA
+ Appendix C,"Intrinsic Functions and Procedures 
+  
+  This appendix has a brief coverage of some of the more commonly used intrinsic 
+ functions and procedures. Chap.   13     of the standard should be consulted for 
+ exhaus-tive coverage. 
+  
+  
+  The following abbreviations and typographic conventions are used in this 
+ appendix. 
+  
+  Argument type and result type: 
+  
+  I 
+  
+  R 
+  
+  C 
+  
+  N 
+  
+  L 
+  
+  P 
+  
+  P* 
+  
+  T 
+  
+  DP 
+  
+  Char  
+ S 
+  
+  Boz 
+  
+  Co 
+  
+  integer 
+  
+  real 
+  
+  complex 
+  
+  Numeric (any of integer, real, complex)  
+ Logical 
+  
+  pointer 
+  
+  polymorphic 
+  
+  target 
+  
+  double precision 
+  
+  character, length  
+ =
+  1. 
+  
+  character 
+  
+  boz-literal-constant 
+  
+  coarray or coindexed object 
+  
+  Class 
+  
+  A 
+  
+  E 
+  
+  ES 
+  
+  I 
+  
+  PS 
+  
+  S 
+  
+  T 
+  
+  indicates that the procedure is an atomic subroutine 
+  
+  indicates that the procedure is an elemental function  
+ indicates that the procedure is an elemental subroutine  
+ indicates that the procedure is an inquiry function 
+  
+  indicates that the procedure is a pure subroutine 
+  
+  indicates that the procedure is an impure subroutine 
+  
+  indicates that the procedure in a transformational function 
+  
+ 549",NA
+ Appendix D ,"English and Latin Texts 
+  
+  YET IF HE SHOULD GIVE UP WHAT HE HAS BEGUN, AND AGREE TO 
+ MAKE US OR OUR KINGDOM SUBJECT TO THE KING OF ENGLAND OR 
+ THE ENGLISH, WE SHOULD EXERT OURSELVES AT ONCE TO DRIVE 
+ HIM OUT AS OUR ENEMY AND A SUBVERTER OF HIS OWN RIGHTS 
+ AND OURS, AND MAKE SOME OTHER MAN WHO WAS ABLE TO 
+ DEFEND US OUR KING; FOR, AS LONG AS BUT A HUNDRED OF US 
+ REMAIN ALIVE, NEVER WILL WE ON ANY CONDITIONS BE BROUGHT 
+ UNDER ENGLISH RULE. IT IS IN TRUTH NOT FOR GLORY, NOR RICHES, 
+ NOR HONOURS THAT WE ARE FIGHTING, BUT FOR FREEDOM - FOR 
+ THAT ALONE, WHICH NO HONEST MAN GIVES UP BUT WITH LIFE 
+ ITSELF. 
+  
+  QUEM SI AB INCEPTIS DIESISTERET, REGI ANGLORUM AUT 
+ ANGLICIS 
+ NOS 
+ AUT 
+ REGNUM 
+ NOSTRUM 
+ VOLENS 
+ SUBICERE, 
+ TANQUAM 
+ INIMICUM 
+ NOSTRUM 
+ ET 
+ SUI 
+ NOSTRIQUE 
+ JURIS 
+ SUBUERSOREM STATIM EXPELLERE NITEREMUR ET ALIUM REGEM 
+ NOSTRUM 
+ QUI 
+ AD 
+ DEFENSIONEM 
+ NOSTRAM 
+ SUFFICERET 
+ FACEREMUS. QUIA QUANDIU CENTUM EX NOBIS VIUI REMANSERINT, 
+ NUCQUAM 
+ ANGLORUM 
+ DOMINIO 
+ ALIQUATENUS 
+ VOLUMUS 
+ SUBIUGARI. NON ENIM PROPTER GLORIAM, DIUICIAS AUT HONORES 
+ PUGNAMUS SET PROPTER LIBERATEM SOLUMMODO QUAM NEMO 
+ BONUS NISI SIMUL CUM VITA AMITTIT. 
+  
+  
+  from ‘The Declaration of Arbroath’ c.1320. The English translation is by Sir 
+ James Fergusson.",NA
+ Appendix E ,"Coded Text Extract 
+  
+  OH YABY NSFOUN, YAN DUBZY LZ DBUYLTUBFAJ BYYBOHNX GPDA 
+ FNUZNDYOLH YABY YAN SBF LZ B GOHTMN FULWOHDN DLWNUNX 
+ YAN GFBDN LZ BH NHYOUN DOYJ, BHX YAN SBF LZ YAN NSFOUN 
+ OYGNMZ BH NHYOUN FULWOHDN. OH YAN DLPUGN LZ YOSN, 
+ YANGN NKYNHGOWN SBFG VNUN ZLPHX GLSNALV VBHYOHT, BHX 
+ GL YAN DLMMNTN LZ DBUYLTUBFANUG NWLMWNX B SBF LZ YAN 
+ NSFOUN YABY VBG YAN GBSN GDBMN BG YAN NSFOUN BHX YABY 
+ DLOHDOXNX VOYA OY FLOHY ZLU FLOHY. MNGG BYYNHYOWN YL 
+ YAN GYPXJ LZ DBUYLTUBFAJ, GPDDNNXOHT TNHNUBYOLHG DBSN 
+ YL RPXTN B SBF LZ GPDA SBTHOYPXN DPSENUGLSN, BHX, HLY 
+ VOYALPY OUUNWNUNHDN, YANJ BEBHXLHNX OY YL YAN UOTLPUG 
+ LZ GPH BHX UBOH. OH YAN VNGYNUH XNGNUYG, YBYYNUNX 
+ ZUBTSNHYG LZ YAN SBF BUN GYOMM YL EN ZLPHX, GANMYNUOHT 
+ BH LDDBGOLHBM ENBGY LU ENTTBU; OH YAN VALMN HBYOLH, HL 
+ LYANU UNMOD OG MNZY LZ YAN XOGDOFMOHN LZ TNLTUBFAJ. 
+  
+ 595",NA
+ Appendix F ,"Formal Syntax 
+  
+  Statement ordering 
+  
+  
+  format statements may appear anywhere between the use statement and the  
+ contains statement. 
+  
+  
+  The following table summarises the usage of the various statements within indi-
+ vidual scoping units. 
+  
+  Kind of scoping 
+  
+  Main 
+  
+  module 
+  
+  external sub 
+  
+  module sub 
+  
+  Internal sub 
+  
+  
+ interface 
+  
+ unit 
+  
+ program 
+  
+ program 
+  
+ program 
+  
+ program 
+  
+ body 
+  
+  use 
+  
+  Y 
+  
+  Y 
+  
+  Y 
+  
+  Y 
+  
+  Y 
+  
+  Y 
+  
+  format 
+  
+  Y 
+  
+  N 
+  
+  Y 
+  
+  Y 
+  
+  Y 
+  
+  N 
+  
+  Misc Dec 
+ a
+  
+  Y 
+  
+  Y 
+  
+  Y 
+  
+  Y 
+  
+  Y 
+  
+  Y 
+  
+  Derived type 
+  
+  Y 
+  
+  Y 
+  
+  Y 
+  
+  Y 
+  
+  Y 
+  
+  Y 
+  
+ defi nition 
+  
+  interface block 
+  
+  Y 
+  
+  Y 
+  
+  Y 
+  
+  Y 
+  
+  Y 
+  
+  Y 
+  
+  Executable 
+  
+  Y 
+  
+  N 
+  
+  Y 
+  
+  Y 
+  
+  Y 
+  
+  N 
+  
+ statement 
+  
+  contains Y 
+  
+  Y 
+  
+  Y 
+  
+  Y 
+  
+  Y 
+  
+  N 
+  
+ a
+  Misc Dec (Miscellaneous declaration) are parameter statements, implicit state-
+ ments, type declaration statements and specifi cation statements 
+  
+  
+  Syntax summary of some frequently used Fortran constructs 
+  
+  
+  The following provides simple syntactical defi nitions of some of the more fre-
+ quently used parts of Fortran. 
+  
+  Main program
+  
+  program [ program-name ] 
+  
+  
+  
+  [ specifi cation-construct ] … 
+  
+  
+  [ executable-construct ] … 
+  
+  
+  [contains 
+  
+  
+  [ internal procedure ] … ] 
+  
+  end [ program [ program-name ] ] 
+  
+  
+   
+ 597",NA
+ Appendix G ,"Compiler Options 
+  
+  In this appendix we look at some of compiler options we have used during the 
+ development of the programs in the book. 
+  
+  Cray 
+  
+  This compiler was available on the Hector Service and several compilers are avail-
+ able and the default is the Portland Group compiler. To make the Cray compiler 
+ available one had to use the following commands 
+  
+  module swap PrgEnv-pgi PrdEnv-cray 
+  
+  and then 
+  
+  ftn -h caf compiler options source fi les -o executable 
+  
+  gfortran 
+  
+  gfortran
+  
+  -W 
+  
+  -Wall 
+  
+  -fbounds-check 
+  
+  -pedantic-errors 
+  
+  -std=f2003 
+  
+  -Wunderfl ow -O 
+  
+  -fbacktrace 
+  
+  -ffpe-trap=zero,overfl ow,underfl 
+ ow 
+  
+  -fopenmp 
+  
+  -g 
+  
+ 603",NA
+ Index ,"A 
+  dummy arrays , 501, 503 
+  
+  ABS , 181, 183, 210, 212, 232–234, 362, 
+ 428, 
+  
+ 453, 461, 550, 585 
+  
+  ACHAR , 227, 470, 550–551 
+  
+  ACM.  
+ See
+  Association of Computing 
+  
+  function results , 362–363 
+  
+  Allocated , 472–473 
+  
+  Allocate statement , 101, 129, 258, 354  
+ Alternate return , 530, 531 
+  
+ Machinery (ACM)  ANINT , 550 
+  
+  ACOS , 181, 550–1  ANY , 552, 560, 593 
+  
+  Actual argument , 265, 269, 272–273, 292,  APL , 2, 25, 43 
+  
+  
+ 355, 458, 473, 499–501, 533, 539–540, 
+  
+ 564, 578, 588, 600 
+  
+  Ada , 2, 27–28, 40–41, 43, 327, 332, 417, 499  
+ Addition , 3, 58, 60, 62–64, 84, 139, 195, 217, 
+  
+ 239, 297, 324, 327–329, 368, 397, 483 
+  
+  Appendix A , 4, 539–545 
+  
+  Argument(s) , 190, 194–197, 264–266, 
+  
+  
+ 268–273, 370, 471–473, 500–501, 
+  
+  
+ 539–545, 550–555, 557–558, 562–566, 
+  
+ 569–571, 578, 580–582, 584–590 
+  
+  Addition operator , 328–329  actual , 500–501 
+  
+  ADJUSTL , 227, 551  associated , 533, 540 
+  
+  ADJUSTR , 227, 551  character , 272 
+  
+  Advance= , 227, 300–301, 308  
+ A edit descriptor , 139, 219 
+  
+  AIMAG , 232–234, 551, 558 
+  
+  complex , 332, 551, 558 
+  
+  corresponding , 499, 541 
+  
+  dummy , 265, 500, 598 
+  
+  AINT , 548–550  keyword , 296, 543 
+  
+  Algol , 2, 22, 197  list , 195, 266, 268, 287–288, 500–501 
+  
+  Algorithm(s) , 1, 9, 11–12, 15–17, 45, 58,  optional , 499 
+  
+ 183–184, 190–191, 198–199, 210, 250,  Arithmetic assignment statement , 50–51, 58, 
+  
+ 278, 281–282, 285, 325, 349, 357–358, 81, 187, 253 
+  
+  
+ 366, 434–435, 483 
+  
+  ALL , 4–5, 11, 51–52, 65–6, 69–70, 137, 
+  
+  
+ 141–145, 158–161, 353–354, 411–414, 
+  
+ 419–420, 486–487, 489–490, 501, 
+  
+  Arithmetic evaluation , 58 
+  
+  Arithmetic expressions , 57–58, 64, 80, 545  
+ Arithmetic if , 530 
+  
+  Arithmetic operators , 115, 223, 239 
+  
+ 604–605  Array(s) , 87–90, 99–101, 107–111, 113–118, 
+  
+  Allocatable 
+  
+  allocatable variable , 372, 388, 390 
+  
+  arrays , 35, 99–100, 113, 251, 270, 275, 
+  
+ 120–129, 283–284, 339, 539–542, 
+  
+ 559–562, 564–565, 567–569, 572–575, 
+ 577–582, 584–587, 589–590 
+  
+ 355, 539, 541, 584, 586  allocatable , 100 
+  
+  attribute , 36, 100–101, 129, 270, 275, 362,  associated actual argument , 269 
+  
+ 458, 471, 539, 552  bounds , 114 
+  
+  coarray , 458  character , 221, 247, 324 
+  
+ I. Chivers and J. Sleightholme, 
+ Introduction to Programming with Fortran: 
+  
+ 607
+  
+ With Coverage of Fortran 90, 95, 2003, 2008 and 77
+ ,
+  
+ DOI 10.1007/978-0-85729-233-9, © Springer-Verlag London Limited 2012",NA

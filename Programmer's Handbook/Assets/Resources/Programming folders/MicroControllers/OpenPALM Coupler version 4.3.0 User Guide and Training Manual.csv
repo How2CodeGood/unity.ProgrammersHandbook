@@ -1,0 +1,5856 @@
+Larger Text,Smaller Text,Symbol
+OpenPALM coupler ,NA,NA
+version 4.3.0,NA,NA
+User guide and training manual,"_______________________________________________________________
+  
+ Thierry Morel 
+ 1
+ , Florent Duchaine 
+ 1
+ , Anthony Thévenin 
+ 1
+ , Andrea Piacentini 
+ 1
+  , Moritz Kirmse 
+ 1
+  and Eric Quémerais 
+ 2
+  
+ April 2019
+  
+ TR-CMGC-19-70
+  
+ _____________________________
+  
+ 1: CERFACS, Global Change and Climate Modeling Team, 42 avenue G. Coriolis, 31 057 
+ Toulouse Cedex 01, France 
+  
+ 2 : Department of Fundamental and Applied Energetics (DEFA), ONERA, 29 Avenue de la 
+ Division Leclerc, 92 322 Châtillon Cedex, France
+  
+ 1",NA
+Table of Contents,"1 Session 1: Getting acquainted with the Graphical User Interface .................................................... 
+ 8 
+  
+ 1.1 Introduction ................................................................................................................................ 
+ 8 
+  
+ 1.2 Launching PrePALM ................................................................................................................. 
+ 8 
+  
+ 1.3 Inserting a branch ....................................................................................................................... 
+ 9 
+  
+ 1.4 Editing the branch code ........................................................................................................... 
+ 10
+  
+ 1.5 Compilation options setup ....................................................................................................... 
+ 10
+  
+ 1.6 Generating the PALM service files .......................................................................................... 
+ 11
+  
+ 1.7 Compiling the application and executing it ............................................................................. 
+ 12
+  
+ 1.8 Options of the PrePALM 
+ command
+  
+ ........................................................................................ 13
+  
+ 1.9 Summary of the main 
+ concepts
+  
+ ................................................................................................ 
+ 14
+  
+ 2 Session 2: Launching units ............................................................................................................. 
+ 16
+  
+ 2.1 Introduction .............................................................................................................................. 
+ 16
+  
+ 2.2 From a stand alone code to a PALM unit ................................................................................ 
+ 16
+  
+ 2.3 An example of a PALM unit .................................................................................................... 
+ 16
+  
+ 2.4 ID cards .................................................................................................................................... 
+ 17
+  
+ 2.5 Loading the units ID cards ....................................................................................................... 
+ 17
+  
+ 2.6 Launching the units .................................................................................................................. 
+ 18
+  
+ 2.7 Parallel computing ................................................................................................................... 
+ 20
+  
+ 2.8 The performance analyser ........................................................................................................ 
+ 21
+  
+ 2.9 Summary of the main concepts: ............................................................................................... 
+ 22
+  
+ 3 Session 3: The blocks ...................................................................................................................... 
+ 23
+  
+ 3.1 General comments on blocks ................................................................................................... 
+ 23
+  
+ 3.2 Launching the units inside the driver executable ..................................................................... 
+ 27
+  
+ 3.3 Passing arguments to the executables started by PALM ......................................................... 
+ 28
+  
+ 3.4 Summary of the main concepts: ............................................................................................... 
+ 28
+  
+ 4 Session 4: More about branches and units ...................................................................................... 
+ 29
+  
+ 4.1 Launching by another branch ................................................................................................... 
+ 29
+  
+ 4.2 The steps .................................................................................................................................. 
+ 29
+  
+ 4.3 The scripts ................................................................................................................................ 
+ 30
+  
+ 4.4 Launching a MPI parallel unit ................................................................................................. 
+ 30
+  
+ 4.5 Launching an OpenMP parallel unit ........................................................................................ 
+ 31
+  
+ 4.6 Summary of the main 
+ concepts
+  
+ ................................................................................................ 
+ 32
+  
+ 5 Session 5: 
+ Communications
+  
+ ............................................................................................................ 
+ 33
+  
+ 5.1 Introduction .............................................................................................................................. 
+ 33
+  
+ 5.2 Preparation of the units, the PALM primitives ........................................................................ 
+ 34",NA
+Introduction,"The OpenPALM coupling tool is based on the PALM coupler under development at CERFACS 
+ since 1998 and on the CWIPI interpolation library developed at ONERA DSNA/ELCI. 
+ OpenPALM is being co-developed as free software distributed according to LGPL license by 
+ CERFACS and ONERA since January 2011.
+  
+ The software's specificity are its ability to define complex algorithms around the computation codes 
+ to be coupled, as well as its efficiency and flexibility to transfer data between the codes. MPI 
+ technology which is in charge of process launching makes OpenPALM a portable and optimised 
+ tool on any unix/linux machine.
+  
+ OpenPALM has various coupling functionalities such as geometric interpolation in any kind of 
+ mesh.
+  
+ This manual is split into several training sessions and shows step-by-step all functionalities of 
+ OpenPALM. First use of the software is facilitated by the graphical interface PrePALM.
+  
+ 7",NA
+1 Session  1:  Getting  acquainted  with  the  Graphical  User ,NA,NA
+Interface ,NA,NA
+1.1 Introduction,"The use of the PrePALM graphical interface is a mandatory step in the development of a PALM 
+ application. It is very important to become acquainted with all the subtleties of this interface for the 
+ best usage of the coupler. In general you will spend more time in manipulating the PrePALM 
+ interface than in modifying the source code of the programs to be coupled. The principal reason is 
+ that the PALM interfaces (API) are very generic and not intrusive and the coupling algorithm is 
+ entirely described in the graphical user interface. Moreover, most of the coupler functions are 
+ defined via the graphical user interface which also controls the coherence of the input data.",NA
+1.2 Launching PrePALM,"Once the PrePALM software is installed, it is recommended to define an alias exporting the path of 
+ the PrePALM installation directory and creating a shortcut for the interface invocation (
+ cf
+ . § 20.2.2)
+  
+ In tcsh it would look like
+  
+ alias prepalm ’setenv PREPALMMPDIR 
+ install-path
+  ; $PREPALMMPDIR/PrePALM_MP.tcl \!* &’
+  
+ while in bash 
+  
+ function prepalm { 
+  
+ export PREPALMMPDIR=
+ install-path 
+  
+ $PREPALMMPDIR/prepalm_MP.tcl $* & 
+  
+ }
+  
+ Usually, this command finds its place in the user’s shell configuration file (
+ .cshrc
+ , 
+ .bashrc
+ , ... 
+ according to the Unix shell in use) or in a script. In the same file, one can also define the 
+ environment variable 
+ PREPALMEDITOR
+  that selects the text editor invoked by the graphical user 
+ interface. If this variable is not initialised, PrePALM will use the 
+ vi
+  editor. If for example you are 
+ more familiar with emacs, you may declare:
+  
+ setenv PREPALMEDITOR emacs 
+ or
+ export PREPALMEDITOR=emacs
+  
+ When the alias is defined, you simply enter the following command to start the graphical user 
+ interface:
+  
+ > prepalm
+  
+ Let's try!
+  
+  Move to the directory 
+ session_1
+  
+  Launch the 
+ PrePALM 
+ graphical user interface 
+  
+ 8",NA
+Category selectors,Actions on the entities,NA
+canvas,"Information concerning the commands or their results
+  
+ PrePALM
+  graphical user interface.",NA
+1.3 Inserting a branch,"The first operation we will carry out with PrePALM will consist in inserting an algorithm 
+ branch
+ . 
+ Branches are used to schedule the launching of the PALM 
+ units
+ . We will talk later about PALM 
+ units.
+  
+ PALM  is  a  dynamic  coupler.  The  sequence  of  elementary  actions  follows  the  logic  of  a 
+ programming language with variables declarations, instructions and control structures (loops and 
+ conditional switches): all this is defined in the branches.
+  
+  
+ It's time to work!
+  
+  
+  Select the 
+ Branches
+  category
+  
+  
+  Click on the Insert button 
+  
+ A window appears
+  
+  
+  Give your branch a name, for example 
+ b1
+ , and confirm
+  
+  In the canvas, you should see
+  
+  
+  
+ The upper rectangle represents the beginning of the branch, the lower one represents the end of the 
+ branch, and the large line connecting them will be used to symbolize the progression between the 
+ units.
+  
+ 9",NA
+1.4 Editing the branch code,"We will now create our first PALM application, the traditional “Hello World ”. To do so, we will 
+ insert a Fortran 90 region in the branch code.
+  
+ GO!
+  
+  Double click on the branch large line
+  
+ The 
+ Edit branch code
+  window appears 
+  
+  Click here 
+  
+  Select 
+  
+  
+  Write the F90 instruction",NA
+1.5 Compilation options setup,"PrePALM creates the PALM application by itself, including the application 
+ Makefile
+ . To do so, it 
+ needs to know a number of things like the place where the PALM libraryis installed, the name of 
+ the F90, F77, C and C++ compilers, the compilation options.
+  
+ For a better portability, the platform independent  
+ Makefile
+  includes a file (
+ Make.include
+ ) which is 
+ machine dependent. The  
+ Make.include
+  file can be edited in the graphical user interface or a set of 
+ options can be loaded from a file with the 
+ .mak
+  extension. 
+  
+ 10",NA
+1.6 Generating the PALM service files,"We can now generate the PALM service files, needed for the application 
+  
+ Ask PrePALM to work!
+  
+ Menu 
+ File
+ => 
+ Make Palm files
+  or icon 
+ Check the boxes as follow:
+  
+  
+  
+ Click on 
+ Ok
+  
+ 11",NA
+1.7 Compiling the application and executing it,"The graphical user interface does not launch the PALM application. It has to be compiled and 
+ executed on the computer of your choice (parallel or not) . For this tutorial you are most probably 
+ going to use the same workstation (Linux) to run the graphical user interface and to execute the 
+ coupled applications but in another context you could likely use a PC for the graphical user 
+ interface and a mainframe or supercomputer for the execution.
+  
+ Parallel  computing  and  message  passing  in  PALM  are  based  on  the  MPI2  standard,  some 
+ implementations meet this standard like Mpich Openmpi or Intelmpi on Linux. According to the 
+ library used (and version) it may be necessary before launching a parallel application to launch a 
+ daemon process
+  
+ Let’s try!
+  
+  
+ make
+  
+  
+ mpd& (if necessary with some mpich versions)
+  
+  
+ mpirun -np 1 ./palm_main
+  
+ You should read on the screen something like “
+ Bonjour
+ ”
+  
+ 12",NA
+1.8 Options of the PrePALM command,"Hitherto we have started the PrePALM command with no arguments. Nevertheless there are 
+ different options to start the PrePALM as a compiler creating the service files. To know the full 
+ syntax of the 
+ prepalm
+  command simply type
+  
+ > 
+ prepalm –help
+  
+ Usage : prepalm [--h] [--c] [--p] [--l file.f90] [--t] [filename.ppl] 
+  
+ Options 
+  
+  --h,--help:               display this information 
+  
+  --c,--compile:            compilation mode, make palm files 
+  
+  (.pil and service files) 
+  
+  --p,--pil-only:           (implies --c) make only the .pil file 
+  
+  --l,--load-constants-file file.f90: 
+  
+  replace the values of the constants 
+  
+  in the .ppl file with the values loaded from  
+ file.f90 (F90 parameter declaration syntax) 
+  
+  --m,--makefile-options-file file.mak: 
+  
+  replace the makefile commands and 
+  
+  options in the .ppl with the values loaded from  
+ file.mak (F90 mak options file syntax) 
+  
+  --np,--nb_procs:          enforces the max nb of processors 
+  
+  
+  --t,--trace-execution:    (implies --c) force trace execution mode in .pil 
+ file 
+  
+  
+  --mpi1,--mpi1_mode:       (implies --c) forces the MPI1 mode (mutually 
+ exclusive with --mpi2) 
+  
+  
+  --mpi2,--mpi2_mode:       (implies --c) forces the MPI2 mode (mutually 
+ exclusive with –mpi1) 
+  
+ 13",NA
+1.9 Summary of the main concepts,"In this first session you've learnt how to start the Graphical User Interface PrePALM and how to 
+ create and edit or manipulate the basic entity used to describe a PALM algorithm, i.e. a 
+ branch
+ . 
+ Then you have seen how to generate, compile and run the PALM application and where to look for 
+ its output.
+  
+ To conclude this session you have seen the different syntaxes of the 
+ prepalm
+  command and how to 
+ use it as a command line compiler to generate the files needed by the PALM application.
+  
+ You should have realised that the graphical user interface PrePALM does not start or drive the 
+ execution of the coupled application. It is just used to enter the control structures, some F90-like 
+ regions and to prepare the ingredients to compile the application on the target machine.
+  
+ Notice that a number of C and F90 service files are created by PrePALM when you click on “
+ Make 
+ PALM files
+ ”. For instance, any possible syntax error in the F90 regions of a branch will only be 
+ detected when compiling the applications. Once compiled, this services files are linked against the 
+ PALM driver library (
+ libdrv.a
+  in the PALM install directories) to obtain the palm_main executable. 
+ This is an MPI application, master of all the PALM coupled applications. From now on, we'll 
+ mention this leading process as the 
+ driver
+ . This is the executable we start on the target machine and 
+ that, in most of the cases, takes care of organising the rest of the application.
+  
+ 14",NA
+2 Session 2: Launching units,NA,NA
+2.1 Introduction,"A PALM 
+ unit
+  is a chunk of user code that can be invoked by calling a C or C++ function or a 
+ FORTRAN subroutine without arguments (or, as we'll see later, in some cases it can also be a 
+ precompiled black-box code or an interpreted language procedure). A unit must be seen as an 
+ elementary task that can be scheduled inside a coupling algorithm. The units’ granularity must be 
+ chosen according to the applications and to the expected degree of modularity. For models coupling 
+ a very coarse grain is generally sufficient; each unit can correspond to a complete computer code. 
+ For data assimilation applications, where the goal is to organize operators (direct and adjoint 
+ model, observation operator,…) in order to generate one or more assimilation algorithms (3DVAR, 
+ 4DVAR...), a finer grain is often essential. 
+  
+ PALM makes it possible to assemble units written in different languages. For the moment our units 
+ will be simple independent subroutines without communications. The goal is to show how to 
+ interface an existing computer code to make a PALM unit out of it.",NA
+2.2 From a stand alone code to a PALM unit ,"In general, to couple computer codes, we start from existing codes. The entry point of these codes 
+ is the 
+ main
+  (C or C++) or 
+ PROGRAM
+  (F90 and F77) instruction. The first thing to be done is thus to 
+ replace 
+ PROGRAM
+  by 
+ SUBROUTINE
+  (or 
+ main
+  by another function name). The only constraint is to have 
+ the source code of the program to be coupled or at least the of the main routine. If we cannot access 
+ the main program source code, the situation is not desperate (although less comfortable) if it is 
+ possible to call some user-defined routines from within the black box code. This opportunity is in 
+ general available for the industrial codes which are distributed without the source listings (
+ cf
+ .
+  
+ Chapter 17)",NA
+2.3 An example of a PALM unit,"You will find in the directory 
+ session_2
+  four examples of basic PALM units written in C, C++, 
+ F77 and F90. Let’s take a look to the F77 one:
+  
+ C$PALM_UNIT -name unit77\ 
+  
+ C          -functions {F77 unit77}\ 
+  
+ C          -object_files {unit77.o}\ 
+  
+ C          -comment {exemple en Fortan77}
+  
+  SUBROUTINE UNIT77
+  
+  INCLUDE ""palmlib.h""              
+  
+  WRITE(PL_OUT,*) 'UNIT77 : Bonjour'
+  
+  RETURN
+  
+  END
+  
+ The first four lines are comments. There is nothing original in the following apart from the PALM 
+ header include palmlib.h and the writing to the logical unit 
+ PL_OUT
+ . 
+ PL_OUT
+  is simply associated to 
+ a PALM output file which can be used to follow the execution of the different units (it can be 
+ referenced as unit 
+ PL_OUT
+ , because it is defined in 
+ palmlib.h
+ ) 
+  
+  
+ 16",NA
+2.4 ID cards,"Let us go back to the first four lines. The aim of these lines is to declare the 
+ unit77
+  subroutine as a 
+ PALM unit recognized by the PrePALM graphical user interface. These lines are comments, so 
+ they can be inserted in the unit source code, which is practical for the maintenance of the code. But 
+ the user is not forced to write these lines at this place, they could be in a separated file. A complete 
+ help for the writing of the ID cards is accessible in the PrePALM 
+ Help
+  menu and in Chapter 26.
+  
+ Description of the various fields in our example:
+  
+ -name unit77
+ : gives the unit a generic name. Names given inside PALM and PrePALM should 
+ not contain spaces nor dots.
+  
+ -functions {f77 unit77}
+ : allows to specify which fortran77 subroutine must be called. Notice 
+ the f77 in front of unit77: it specifies the programming language used for the unit77 unit. Notice 
+ also the braces, they are used to describe lists; indeed it is possible to declare a unit which calls 
+ several functions in sequence.
+  
+ -object_files {unit77.o}
+ : allows to specify, for the application compilation and link, the name 
+ of the 
+ .o
+  files (objects) the unit needs. If, for example, unit77 calls another subroutine which is not 
+ in the same file, it is then necessary to add the 
+ .o
+  file containing the other subroutine. During the 
+ PALM application compilation, if the  
+ .o
+  file does not exist or is not up to date following the 
+ modification of the source program, the PALM 
+ Makefile
+  will try to generate it by using default 
+ compilation rules. In our example it will thus create 
+ unit77.o
+  starting from 
+ unit77.f
+  
+ Important remark
+ : 
+  
+ If your unit is for example a computer code calling many subroutines written in many files, it is not 
+ wise to describe in the field object_files all of the 
+ .o
+  files.
+  
+ In this case it is better to proceed like this: 
+  
+ You should compile in advance (without the link phase) the source files, and, rather than creating 
+ the executable file, you may create a library (
+ .a
+ ). Then, the library name has to be listed in the 
+ object_files
+  field.
+  
+ See the differences!
+  
+  In directory 
+ session_2
+ , open the files: 
+ unit77.f
+ , 
+ unit90.f90
+ , 
+ unitC.c
+ , 
+ unitCPP.C
+  
+ Notice the difference depending on the programming languages",NA
+2.5 Loading the units ID cards,"Before launching the units inside PrePALM, it is necessary to load their ID cards.
+  
+ Load!
+  
+  Run PrePALM in the directory 
+ session_2
+  
+  Menu 
+ File
+  => 
+ Load identity card
+  or icon 
+  
+  
+  Load the ID cards of the 4 units 
+ unit77.f
+ , 
+ unit90.f90
+ , 
+ unitC.c
+ , 
+ unitCPP.C
+  
+ 17",NA
+2.6 Launching the units,"The launching of the units is made at the branch code level. By clicking on the continuous line after 
+ the instruction 
+ BEGIN
+ , this menu appears:
+  
+  
+ Try it!
+  
+  Create a b1 branch
+  
+  Edit the branch code
+  
+  Launch the 4 units, one after the other
+  
+  Save your application
+  
+  Build the services files
+  
+  Set the maximum number of concurrent processes resource in  
+ Settings
+  =>  
+ Palm 
+  
+ execution setting
+  => 
+ Max number of procs
+ : 
+ 1
+  
+  Compile and execute
+ mpirun -np 1 ./palm_main
+  
+ The result of your “simulation”, that is to say the writings in the  
+ PL_OUT
+  file, is in the file 
+ b1
+ _000.log
+ :
+  
+  *********************************************************************** ***************       output file 
+ for process of         ************** ***************            branch=0 rank=0               ************** 
+ ***************         running entity index=2           ************** 
+ ***********************************************************************
+  
+  UNIT77 : Bonjour
+  
+  *********************************************************************** ***************       output file 
+ for process of         ************** ***************            branch=0 rank=0               ************** 
+ ***************         running entity index=3           ************** 
+ ***********************************************************************
+  
+  UNIT90 : Bonjour
+  
+  *********************************************************************** ***************       output file 
+ for process of         **************
+  
+ 18",NA
+2.7 Parallel computing,"We now will create an application where the units will be executed in parallel. PALM handles two 
+ levels of parallelism. The first is a task level parallelism which can be simply defined in the 
+ graphical user interface by creating several branches. The second is an internal parallelism, i.e. 
+ within the units. We will come back later on to this second level of parallelism.
+  
+ Parallelize it!
+  
+ - Create a second branch
+  
+ - Edit both branch codes at the same time
+  
+ - In the first branch: click on 
+ Unit_C
+  and 
+ Select to move
+ .
+  
+ - In the second one: click on 
+ Move - LAUNCH line here
+ . 
+  
+ - Repeat for 
+ Unit_CPP
+ , then close the branch editors
+  
+ - You can make the canvas look nicer by moving the units: left click to select a unit (it becomes 
+ red), then right click to move it. You should have something like that:
+  
+  
+ - Change the max. nr. of processes resource: 
+ Settings
+  => 
+ Palm execution setting
+  => 
+ Max 
+ number of procs
+ :
+  2
+  
+ - Save,generate theservice files, 
+ make clean
+ , 
+ make, 
+ mpirun -n 1./palm_main
+  
+ Congratulations! 
+  
+ You have executed your first (?) parallel computing almost without realizing it, without anything to 
+ know about MPI, only by drawing! It is one of the PALM features: one can make parallel 
+ computing without any further specific knowledge. The results are now in two distinct files: the file 
+ b1
+ _000.log
+  contains the branch 1 units output and the file b2
+ _000.log
+  the branch 2 units output. 
+ Open these files to see the results.
+  
+ Remark: 
+  
+ The command mpirun -n 1 ./palm_main has launched a single program (palm_main, also called the 
+ PALM driver). This program will schedule the launch of the other executable files (main_unitC,
+  
+ 20",NA
+2.8 The performance analyser,"By choosing the right option in PrePALM, PALM is capable of generating trace files, making it 
+ possible to analyse the application performances or to replay the execution. 
+  
+ Analyze!
+  
+  In menu 
+ Settings
+  => 
+ Palm execution settings
+ , check this box:
+  
+  
+  Service files; 
+ make clean
+ ; 
+ make
+  ; 
+ ./palm_main
+  
+  Menu 
+ Analyse run
+  => 
+ Load file
+ : choose 
+ palmperf.log
+  
+  A summary report gives you the execution time per unit
+  
+  Menu 
+ Analyse run
+  => 
+ Play
+ : it allows you to see the launching of the units graphically 
+  
+ (find by yourself how to do it!)
+  
+  Menu 
+ Analyse run
+  => 
+ Performances analyser
+ : produces the following picture
+  
+  
+  
+ On this example, we can see that 
+ unit77
+  runs at the same time as 
+ unitC
+  and 
+ unitCPP
+ .
+  
+ Management of the processes (processors)
+  
+ As we have seen, PALM manages the processes according to the units to be launched: sequentially 
+ inside the branches, or in parallel between the various branches. In all cases PALM will not exceed 
+ the maximum number of concurrent processes specified in PrePALM. The management is dynamic 
+ inside a static envelope. This is necessary in order to use the proper number of processors in a 
+ batch job and to avoid any overloading of a parallel machine.
+  
+ If PALM does not have enough resources, for example if there are two branches and only one 
+ processor, PALM is able to alternate the units executions. When two units are concurrent, PALM 
+ looks at the priority level, and determines which one must be launched first. By default this priority 
+ level is set at 100 (it is located in the top left corner of the box representing the unit), but it can be 
+ modified by the user: a left click on the priority decrements it, a right click increments it.
+  
+ 21",NA
+2.9 Summary of the main concepts:,"In this session you have seen how to define and launch a PALM 
+ unit
+ .
+  
+ In particular you have got to know what an identity card is and its basic syntax.
+  
+ You have also known some more features of the PrePALM generated makefile targets.
+  
+ In the following you have learnt how to run several concurrent parallel branches.
+  
+ Then you have seen how to analyse after the execution, the performances of a PALM application. 
+ You are now able to manage the computational resources and to play with the static processors 
+ envelope and with the execution priorities of the units to optimise the execution of your program.
+  
+ 22",NA
+3 Session 3: The blocks,NA,NA
+3.1 General comments on blocks,"So far we have seen that each PALM unit is transformed into an executable file and started 
+ (spawned) independently. For two main reasons (memory sharing and launching time optimization) 
+ it is interesting to gather several units in a single executable program, called a 
+ block
+ .
+  
+ We will build a new application in which we launch a unit in a DO-loop. To be able to easily 
+ parametrise the number of loops of this unit, we will use the PrePALM 
+ constants
+ . 
+  
+ PrePALM constants are implemented as FORTRAN 
+ PARAMETER
+  declarations, or C 
+ #define
+ . These 
+ values are known at compile time and cannot be modified during the execution.
+  
+ PrePALM provides a menu to declare the constants (type, name, value or expression). These 
+ constants may depend on each other through an arithmetic expression.
+  
+ It can be useful to have access to the values of the constants defined in the graphical user interface 
+ itself from inside the units. For this purpose, PrePALM can generate user files to be included in the 
+ unit's source programs according to their programming language:
+  
+  palm_user_param.f90
+  
+ F90 
+  
+ use palm_user_param
+  
+  palm_user_param.h 
+  
+ F77
+  
+ include 'palm_user_param.h'
+  
+  palm_user_paramc.h
+  
+ C,C++
+  
+ #include ""palm_user_paramc.h""
+  
+  palm_user_param.py 
+  
+ Python
+  
+ import palm_user_param
+  
+ Each of these files contains the same declaration of the PrePALM constants. They can be used for 
+ example for dimensioning the static arrays.
+  
+ The user can optionally choose additional file names (fortran90 module) to create subsets among 
+ the constants.
+  
+ In addition, for the sake of readability it is possible to introduce separators in the constants list. In 
+ our application, we will define only one constant which will be used only in the graphical user 
+ interface for the control of the upper bound of the DO-loop.
+  
+ Be constant!
+  
+  Run PrePALM in the directory 
+ session_3
+  
+  Menu 
+ Constants 
+ => 
+ Constants editor
+ :
+  
+  Add an integer constant, give it a name and a value (100)
+  
+  
+ For this application, we will use 2 units that you may find in 
+ unit_1.f90
+  and 
+ unit_2.f90
+ . 
+ Here is the code for unit_1:
+  
+ !PALM_UNIT -name unit_1\
+  
+ 23",NA
+3.2 Launching the units inside the driver executable ,"To allow even more flexibility and to possibly avoid any waste of resources, it is possible to 
+ execute the units not as independent processes but directly as subroutines of the PALM driver 
+ program (
+ palm_main
+ ). The PALM driver being mono-processor, only non-parallel units can be 
+ executed in such a way.
+  
+ Assemble in the driver!
+  
+  Open the previous .ppl
+  
+  Delete the second branch
+  
+  Edit the 2 units and select ""
+ Execute on driver”
+  
+  
+  
+  In 
+ Settings
+  => 
+ Palm execution settings
+ , set 0 for the max. process number 
+ Generate all service files then test the application 
+  
+ Notice that the units which are executed in the PALM driver appear surrounded by a gray oval in 
+ the PrePALM canvas. The execution results (writings in file 
+ PL_OUT
+ ) are now available in the file 
+ palmdriver.log
+ . Notice that the application behaves as if the units had been assembled in a block 
+ because in our case they all fit in the same executable (
+ palm_main
+ ).
+  
+ The possibility of running the units in the PALM driver is very interesting if you do not have 
+ parallel  units (or a parallel  machine).  You can for example  build  a mono-processor PALM 
+ application, without making parallel computing. You keep all the PALM flexibility and modularity 
+ with the possibility to describe several computing branches, or assembling units in different 
+ programming languages, etc. As long as your units do not communicate (we will see further how to 
+ exchange data between units) it is not possible to deadlock the application.
+  
+ This functionality is also very interesting for parallel applications. It can prevent the need of an 
+ additional process. But it can sometimes lead to deadlocks if the application is not correctly 
+ synchronized. Indeed, the PALM driver provides two essential functions: launching the units 
+ according to the coupling algorithm described in the graphical user interface, and answering the 
+ requests issued by the units during the run (mainly for the communications). If the PALM driver is
+  
+ 27",NA
+3.3 Passing arguments to the executables started by PALM ,"The independent executables launched by PALM have been built and compiled starting from 
+ functions (or subroutines) defined by the user and with no arguments. Their name is 
+ main_XXX
+  or 
+ main_block_NN
+  accordingly to their belonging to a block. By default PALM uses the MPI-2 Spawn 
+ function to launch the programs.
+  
+ If your PALM unit comes from a code which requires input arguments and if for some reason you 
+ want to preserve this feature, PALM allows to pass arguments to the unit or block. For the sake of 
+ flexibility, the arguments are not entered in the graphic user interface but are passed via an input 
+ file.
+  
+ If PALM finds the file  
+ main_XXX.args
+  in the working directory when launching the  
+ main_XXX 
+ executable, it will use the arguments listed in this file.
+  
+ In the 
+ session3/arguments
+  directory, you'll find examples for this mechanism in C, C++, F77 and 
+ F90. The case of a block is also treated: in this case the arguments are passed to all the units of the 
+ block.
+  
+ In the examples the arguments files are created via Fortran or command line (sh) functions inside 
+ the PALM branches, but you can imagine any other mechanism.
+  
+ In the units written in C one should define the input arguments with the standard 
+ (int argc, char 
+ **argv)
+  syntax. In Fortran, the use of the arguments is not standard. The common workarounds 
+ use extensions like  
+ iargc()
+  that returns the number of arguments and  
+ getarg(n, arg)
+  that 
+ returns the string 
+ arg
+  containing the n
+ th
+  argument.",NA
+3.4 Summary of the main concepts:,"In this session you have got to know the third PALM entity, the 
+ block
+ . To illustrate this feature that 
+ can be seen as an optimisation issue, you had the opportunity to learn how to define PrePALM 
+ constants
+  and how to access their values from inside a used defined unit.
+  
+ Another practical issue you have gone through is the 
+ Merge
+  ppl file command that lets you import 
+ part of another coupling algorithm in the current one.
+  
+ After that you have seen how to use the PALM 
+ driver
+  process to execute some mono-processor 
+ units and in which cases it could be useful. 
+  
+ 28",NA
+4 Session 4: More about branches and units,NA,NA
+4.1 Launching by another branch,"Until  now, all  the  branches  we  have  defined,  started  automatically  at  the  beginning  of the 
+ application because they had the “
+ start on”
+  attribute. It is possible to delay their execution by 
+ making them to be started by other branches. In the example below, the application crashes because 
+ when the branch b1 has to read some data in the file 
+ test.txt
+ , this file has not been created yet by 
+ the branch b2, although this is its task. There is a problem of synchronization in this application.
+  
+  
+  
+  
+  
+ Exercise 3: 
+  
+ Open the file 
+ ne_marche_pas.ppl
+  (“does_not_work.ppl”) in the directory 
+ session_4 
+ Check that it does not work!
+  
+ Set the branch b1 to “
+ start off
+ ”
+  
+ Launch b1 from b2 to make the application run correctly 
+ Save with another name and test it.",NA
+4.2 The steps ,"Another way of synchronizing an application consists in using barriers on the branches. In parallel 
+ computing, the barriers are synchronization of the processes: one can see them as a meeting point 
+ where every program waits until the other programs have reached the barrier. These barriers are 
+ associated to the PrePALM 
+ steps
+ . To use a step it is necessary to create it in the graphical user 
+ interface. A step may or may not have the 
+ BARRIER 
+ attribute. If it has this attribute, the application 
+ will be synchronized on every call to this step (all processes will wait until the last one reaches this 
+ point).
+  
+ Exercise 4: 
+  
+ Open the file 
+ ne_marche_pas.ppl
+  in the directory session_4 
+  
+ Create a step: select the step category, then the button “insert”
+  
+ Set the step value to: 
+ PL_BARRIER_ON 
+  
+ In both branch codes, call the step (
+ Insert step
+ ) in order to synchronize the end of the writing 
+ of the file 
+ test.txt
+ , with the beginning of the reading of this file.
+  
+ Save with another name and test.
+  
+ 29",NA
+4.3 The scripts ,"Let us imagine an application which launches a computer code in a loop with several data files, for 
+ example to make a parametric study. Quite often, computer codes read their data in a file having a 
+ given name. In our case this file will be called  
+ don.in
+ . To run the computer code on different 
+ cases, we need to copy, before launching, the appropriate data file to 
+ don.in
+ . Here our data files 
+ will be called 
+ fic1.in
+ , 
+ fic2.in
+ , 
+ fic3.in
+ , ... The copy of one of these files can be done by a 
+ simple UNIX command like 
+ cp -f fic3.in don.in
+ . In the graphical user interface, it is possible 
+ to launch UNIX commands or to launch scripts to make this kind of operations. It is even possible, 
+ in these commands, to refer to the branch code variables.
+  
+ Write!
+  
+  Still in the session_4, start from scratch (
+ File
+  => 
+ New file
+ ) 
+ Read the ID card in the file 
+ code.f90
+  
+  Insert a DO-loop: the index 
+ ib_do
+  goes from1 to 5
+  
+  Launch a unit code inside the DO-loop
+  
+  Before the launch, insert this script:
+  
+  
+  Test your application
+  
+  The result should be like that:
+  
+ 1
+  
+  premier_jeu_de_donnees 
+  
+ 2
+  
+  second 
+  
+ 3
+  
+  troisieme 
+  
+ 4
+  
+  quatrieme 
+  
+ 5
+  
+  cinquieme
+  
+ Exercise 5: 
+  
+ Try to make the DO-loop run in a block 
+  
+ What is happening?
+  
+ Change the code in 
+ code.f90 
+ to make it work correctly",NA
+4.4 Launching a MPI parallel unit,"For those who are not familiar with parallel computing, and to make it simple, this type of 
+ parallelism (MPI), consists in dividing a problem into a number of processes. Each process is an 
+ instance of the same executable program which is duplicated at launch time. By a call to a MPI 
+ library function, each process knows its rank in the pool of the processes as well as the size of the 
+ pool, and thus, can differentiate itself to perform a part of the calculation. Once launched, each 
+ process runs independently from others, and manages its own data (variables, arrays). MPI, which 
+ is a standard, provides both the execution environment of the processes and the way of making 
+ them exchange data by relying on primitives specifically designed for the communications. This
+  
+ 30",NA
+4.5 Launching an OpenMP parallel unit,31,NA
+4.6 Summary of the main concepts,"In this  session you have learnt how a branch can launch other branches  and how you can 
+ synchronise the branches with a barrier-type event (step).
+  
+ Then you have seen how to adjust a parallel code, either MPI or Open-MP based to build a PALM 
+ unit.
+  
+ 32",NA
+5 Session 5: Communications,NA,NA
+5.1 Introduction,"Until now, we have seen how PALM manages the processes in many different ways. In order to 
+ create a genuine coupled application, it is time to let the units talk together.
+  
+ Either for a full code or for a very simple routine, you first have to define what needs to be 
+ exchanged, what are the useful coupling data to be identified in a coupled application? Only the 
+ user or user group are able to answer this question. The coupling of an ocean model with an 
+ atmosphere model, for example, will imply the exchange of the temperature fields through the 
+ interface between the two models (e.g. the Sea Surface Temperature). On the other hand, in the 
+ coupling between a fluid dynamics model and a meshing tool the entities to be exchanged will be 
+ the constraints on a structure and the meshes. In the real computer code, these physical quantities or 
+ these fields are stored in variables, which have a type (integer, real, structure...) and a size (1d, 2d... 
+ arrays). In order to be a generic tool, PALM does not give any constraint concerning the nature, the 
+ type or the format of the data to be exchanged.
+  
+ In PALM, we call “
+ object
+ ” the data to be exchanged, and “
+ space
+ ” the computer representation of 
+ the objects. Several objects can share the same space. In the graphical user interface and in the 
+ units, the objects and the spaces will be characterized by a name.
+  
+ In order to have a maximum of flexibility in building PALM applications, the exchange of 
+ information will be made in two steps, thus allowing a total independence between the units.
+  
+ A unit (the source code) will never tell explicitly to which destination an object will be sent to. 
+ However the unit has to “publish”, at a specific place in the program, the fact that some data has 
+ been computed and is ready to be sent. This action will be done by inserting in the source code a 
+ call to the 
+ PALM_Put 
+ primitive.
+  
+ A unit will not tell either from which specific source it must receive its data, but simply it will pass 
+ the information that it needs some data and in which variable(s) the data must be received. For that 
+ it will be necessary to insert in the unit source code a call to the 
+ PALM_Get
+  primitive.
+  
+ The “true” link between the Puts and the Gets is done quite simply in the graphical user interface 
+ by connecting two plugs representing graphically the PALM_Put and PALM_Get invoked in the 
+ code. These calls must be first listed in the unit ID card.
+  
+ In most of code couplings, we deal with time evolving processes that translate into iterative time 
+ stepping procedures. The objects exchanged in this context reflect for example the temporal 
+ instances of a physical evolving quantity. In PALM, it is possible to differentiate in time two 
+ instances of the same object. When calling the Put/Get primitives it is necessary to specify a 
+ field“
+ time
+ ” containing the time value the object is associated to. For PALM, this time field is 
+ simply an integer variable. The user is free to associate this integer to a physical date (
+ cf
+ . Chapter 
+ 21.2 for the 
+ date to/from integer
+  conversion utility) or to neglect this attribute by using a predefined 
+ constant 
+ PL_NO_TIME
+  if the object is not time dependent.
+  
+ 33",NA
+"5.2 Preparation of the units, the PALM primitives ","This will be easier to understand if we consider an example. In the directory 
+ session_5
+ , open the 
+ file  
+ producteur.f90
+  (meaning  producer.f90).  This  unit  produces  a  square  matrix  of  size 
+ IP_SIZE*IP_SIZE and a vector of size IP_SIZE. Let’s look in detail at its ID card:
+  
+  1    !PALM_UNIT -name producteur\
+  
+  2    !          -functions {F90 producteur}\ 3    !          -object_files 
+ {producteur.o}\ 4    !          -comment {producteur}
+  
+  5    !
+  
+  6    !PALM_SPACE -name mat2d\
+  
+  7    !           -shape (IP_SIZE, IP_SIZE)\
+  
+  8    !           -element_size PL_DOUBLE_PRECISION\ 9    !           -comment {tableau 
+ 2d double precision} 10    !
+  
+ 11    !PALM_SPACE -name vect1d\ 
+  
+ 12    !           -shape (IP_SIZE)\ 
+  
+ 13    !           -element_size PL_DOUBLE_PRECISION\ 14    !           -comment 
+ {tableau 1d double precision} 15    !
+  
+ 16    !PALM_OBJECT -name ref_time\ 
+  
+ 17    !            -space one_integer\ 
+  
+ 18    !            -intent IN\ 
+  
+ 19    !            -comment {Temps auquel le vecteur est produit} 20    !
+  
+ 21    !PALM_OBJECT -name matrice\ 
+  
+ 22    !            -space mat2d\ 
+  
+ 23    !            -intent OUT\ 
+  
+ 24    !            -comment {matrice 2d} 
+  
+ 25    !
+  
+ 26    !PALM_OBJECT -name vecteur\ 
+  
+ 27    !            -space vect1d\ 
+  
+ 28    !            -time ON\ 
+  
+ 29    !            -intent OUT\ 
+  
+ 30    !            -comment {vecteur 1d}
+  
+ 1:  In addition  to the key word  
+ PALM_UNIT
+  you already know, you can see new keywords: 
+ PALM_SPACE 
+ (6,11) and 
+ PALM_OBJECT
+  (16,21,26).
+  
+ 6: the first 
+ PALM_SPACE
+  allows us to define a 2-dimensional array by the field shape (7). These two 
+ dimensions are described with a parameter (
+ IP_SIZE
+ ). N.B. It is perfectly possible, to hardwire 
+ values, but using the  
+ IP_SIZE
+  constant which has to be defined in the graphical user interface 
+ PrePALM constant editor make it easier to describe different configurations without having to edit 
+ and reload the identity cards. One then defines the size of each array element. As this size may 
+ depend on the PALM library compilation options, it is given with specific PALM keywords. This 
+ size will have the right value in accordance with the linked PALM library: for example the 
+ automatic  promotion,  or  not,  of  single  precision  reals  to  double  precision  depends  on  the 
+ compilation options (usually 
+ -r4
+  or 
+ -r8
+ ).
+  
+ 11: the second 
+ PALM_SPACE
+  allows us to define a 1-dimensional vector. Note the parenthesis in 
+ the“-shape” definition, you should never forget them. 
+  
+ 16: the first 
+ PALM_OBJECT
+  allows us to define an input (
+ intent IN
+ ) object. It refers to a space 
+ which  has  not  been  explicitly  defined  (
+ one_integer
+ ).  Several  spaces  are  pre-defined,  like 
+ one_integer
+ ,  
+ one_real
+ ,  
+ one_double
+ ,  
+ one_complex
+ ,  
+ one_string
+  (256 characters string) and
+  
+ 34",NA
+5.3 The communications in PrePALM ,"Now, we will make our units work together
+  
+ Communicate!
+  
+  Start from scratch in the directory 
+ session_5
+  (new PrePALM file)
+  
+  Add a constant 
+ IP_SIZE
+  with value 1000 (vector and matrix size)
+  
+  Load the ID card of 
+ producteur.f90
+  and 
+ vecteur_print.f90
+  
+  Insert a branch 
+ b1
+  (
+ IP_START_ON
+ )
+  
+  Edit the branch code. Launch first 
+ producteur
+  and then 
+ vecteur_print
+  in this order 
+ Add a DO-loop around the 2 units (
+ il_time
+  as index varying from 1 to 20) and a block 
+  
+ around the DO-loop. Close the branch.
+  
+  
+  Without clicking, move the mouse cursor on the plugs (small colored circles on the units). 
+ Examine the pop up window and also the help message at the bottom of the PrePalm 
+ main window.
+  
+  Click on the plug corresponding to the production of the 
+ producteur
+  vector. It becomes 
+ red. Do the same with the plug of 
+ vecteur_print
+  corresponding to the PALM_Get.
+  
+  You should have the following dialog box:
+  
+  
+  In the field 
+ Time list
+  instead of 
+ PL_NO_TIME
+ , enter 
+ 1:20
+  
+ You have just defined your first communication between two PALM units. By initialising the field 
+ Time list 
+ with 1:20, you authorize the vector (if it is created) to be sent and received at these 
+ times. We now have to tell the unit “producteur” to produce the vector at these 20 times, and 
+ the“vecteur_print” unit to request the vector at all of these times.
+  
+ 37",NA
+5.4 Time lists,"In our example, we set 1:20 in the 
+ time list
+ . The syntax of the 
+ time list
+  field is as follows:
+  
+ start1
+ [
+ :end1
+ [:
+ step1
+ ]][
+ | start2 
+ [
+ :end2
+ [
+ :step2
+ ]]] [ ; …]
+  
+ The expressions between [ ] are optional.
+  
+ The character pipe | makes it possible to describe different times for the source and for the 
+ target. The character “;” is used to separate two expressions. 
+  
+ The character “:” is used for the loop ranges.
+  
+ Examples:
+  
+ Expression
+  
+ Source
+  
+ Target
+  
+ 18 ; 33 : 34
+  
+ 18 
+  
+ 33 
+  
+ 34
+  
+ 1
+ 8 
+  
+ 3
+ 3 
+  
+ 3
+ 4
+  
+ 20 : 30 : 5
+  
+ 20
+  
+ 20
+  
+ 38",NA
+5.5 Hardwired values,"In the previous example, the branch loop variable (
+ il_time
+ ) was used to set the time at which 
+ vecteur_print
+  must work. In this field, PrePALM accepts any type of valid Fortran90 expression. 
+ This ability to use directly an expression for an input plug is not restricted to scalar variables. Any 
+ PALM_Get
+  can be initialised this way. This functionality can be very interesting to perform unitary 
+ tests on the units. The only constraint is that the expression used to initialise the variable must be 
+ written with a single Fortran90 instruction.
+  
+ Exercise 8: vecteur_print unit test 
+  
+ Start from scratch 
+  
+ Load the 
+ vecteur_print
+  unit 
+  
+ Define the vector size to be 50 in the PrePALM constants 
+  
+ Launch the unit in a DO-loop with 
+ ib_do
+  going from 10 to 100 with a stride of 10 
+  
+ Hardwire the plug 
+ ref_time
+  with the DO-loop variable 
+  
+ Declare an integer variable 
+ i
+  in the branch 
+  
+ Initialize (hardwire with a right click) the input vector with the following Fortran90 expression 
+ (/(i,i=1,IP_SIZE)/)*ib_do
+  
+ Remark
+ : do not insert blanks in your expression; PrePALM does not accept them.",NA
+5.6 The NULL space and space inheritance,"In this session, the two units  
+ producteur
+  and  
+ vecteur_print
+  exchange a 1d vector: this is 
+ possible because the computer representation of the object (type and size of the spaces) are the 
+ same. The compatibility is ensured in the identity cards, where both spaces are declared being of 
+ double precision real type and of the same size 
+ IP_SIZE
+ , the latter being a user defined constant 
+ whose value is set in the graphic user interface. The compatibility check is performed by the 
+ graphic user interface when the user draw a communication between the two corresponding plugs. 
+ The check acts on the type and the the size of the spaces, not on their names that can differ in the 
+ two units. 
+  
+ Sharing a PrePALM constant name in two identity cards is a safe way to enforce compatibility, but 
+ it breaks the full independence of the units.
+  
+ Another  solution  would  be  to  use  two different  constant  names  in  the  two  units,  let’s  say 
+ IP_SIZE_P
+  and 
+ IP_SIZE_V
+  and then to assign 
+ IP_SIZE_P =IP_SIZE
+  and 
+ IP_SIZE_V=IP_SIZE
+  in 
+ the PrePALM 
+ Constant
+  menu. Nevertheless this solution also has a drawback: it makes impossible 
+ to change the size of the handled objects between different (or successive) instances of the units.
+  
+ 40",NA
+5.7 Communications attributes,"Let’s take the time to go through all the possible attributes you can set in a communication box. 
+ Not all the possible options will be used during the training sessions but it is mandatory to know all 
+ of them if debugging or optimising a coupled application.
+  
+  
+ The box is split in three sections. The first one recalls the features of the source object, namely:
+  
+ •
+  
+ the source unit name
+  
+ •
+  
+ the source object name, suffixed by the unit name, to grant uniqueness in case of multiple 
+  
+ instances of the same unit or of objects with the same name in different units
+  
+ •
+  
+ the way the source object is stored on the source unit, what we call a  
+ distributor
+ . This 
+  
+ information  will  become  meaningful  when  dealing  with  parallel  units  and  parallel 
+  
+ communications in session 11. In this session the distributor is 
+ SINGLE_PROC
+  because the 
+  
+ unit is not parallel and therefore the array containing the whole object is entirely stored on 
+  
+ the only processor of the unit
+  
+ •
+  
+ the subset of the local object that is really used for the communication. Most of the time a 
+  
+ communication  exchanges  a full object, coincident  with the full local storage. Some 
+  
+ particular applications (think of exchanging only the 2D surface layer of a 3D model) only 
+  
+ need to access a subset of the local object. This field contains the name of the description of 
+  
+ the mapping of the subobject in the local object. 
+ IDENTITY
+  means that the whole object is 
+  
+ exchanged. Session 12 is entirely devoted to the use of subobjects.
+  
+ The second section of the box is identical to the first one but describes the target object.
+  
+ 42",NA
+5.8 Summary of the main concepts,"In this important session you have seen in practice how the PALM one-sided communication 
+ model works. You have got familiar with the concepts of 
+ space
+  and of 
+ object
+  and you have seen 
+ how to describe them in the identity card. By the way you have noticed that the spaces for scalar 
+ quantities are predefined in PALM (
+ one_integer
+ , 
+ one_real
+ , etc).
+  
+ 43",NA
+6 Session 6: Predefined units,NA,NA
+6.1 Introduction,"When you are building a coupled application, you may need to perform linear algebra operations on 
+ PALM objects before exchanging them between two units. For example a matrix vector product. 
+ These “generic” operations, from the simplest to the most complex, are directly available in the 
+ graphical user interface PrePALM. When they exist, you are even strongly encouraged to use these 
+ functions rather than to develop them by yourself, since they are calling the mathematical libraries 
+ tested and optimised on your computer.
+  
+ The predefined units (or algebra units) have the same operating mode as the user-defined units. The 
+ only difference concerns the time and tag attributes management of the objects sent to, or received 
+ from these units. Indeed, these units must be able to receive the objects at the times defined by the 
+ user in his application. For each received and/or sent object, it will thus be necessary to specify for 
+ which time and which tag the 
+ PALM_Get
+  and/or 
+ PALM_Put
+  must be performed in the algebra unit.
+  
+ To illustrate the use of algebra units, we will make the product between the matrix and the vector 
+ built by the “producteur” unit (the same unit as in session 5)
+  
+ Load the predefined units!
+  
+  Open a new PrePALM in the directory 
+ session_6
+  
+  In a first “START_ON” branch launch “producteur” then “vecteur_print” 
+ Make both units work at the time10 by hardwiring the proper input plugs 
+ Load the algebra unit 
+ DGEMV
+ : menu 
+ File
+  => 
+ Load Algebra unit
+  
+  
+  Open 
+ Basic_operations
+  => 
+ PB_xGEMV
+  
+  Select 
+ DGEMV
+  then click on 
+ Load
+  
+ After loading the unit, PrePALM pops up a help window concerning this routine. Check that it 
+ corresponds to what you want to do and close the window.
+  
+ 45",NA
+6.2 Summary of the main concepts,"PALM provides a toolbox of algebraic operations. They are made available as a set of predefined 
+ units. The only difference they have with user-defined units is the time stamp and tag specification 
+ mechanism.
+  
+ You also had the opportunity to practice a little more the usage of the time stamps lists association.
+  
+ 47",NA
+7 Session 7: Derived data type objects,NA,NA
+7.1 Introduction,"Up to now, the exchanged objects type was always a canonical data type: integer, real or double 
+ precision. In PALM, it is possible to manage objects having a derived type which corresponds to 
+ data structures defined by the user. This possibility is interesting for example, when sending in a 
+ single message several arrays having different characteristics, or just arrays of data structures 
+ defined by the user in a unit. Whether the derived types are contiguous or not in memory, the use of 
+ the PALM primitives is more or less practical. We will examine both cases.",NA
+7.2 Memory contiguous objects ,"For contiguous objects, which were declared as such in the unit source program, the procedure is 
+ the same as for traditional objects. The only difference concerns the description of their space size. 
+ PALM must know (or be able to deduce) the size of the array to be handled. Two solutions are 
+ proposed to describe the size of the space of derived type objects.
+  
+ The  first  one  consists  in  describing  the  field  
+ -element_size
+  in  the  form  of  an  arithmetic 
+ expression using the basic types of the structure in terms of the PALM keywords identifying the 
+ basic types (
+ PL_INTEGER_SIZE
+ ,  
+ PL_REAL_SIZE
+ ,...). Let us suppose that our derived type is as 
+ follows:
+  
+  TYPE personne ! = person
+  
+  
+  SEQUENCE
+  
+  
+  CHARACTER*20 :: nom ! = surname
+  
+  
+  CHARACTER*20 :: prenom  ! = first name
+  
+  INTEGER :: age
+  
+  
+  REAL :: taille ! = size
+  
+  END TYPE personne
+  
+ Notice the attribute 
+ SEQUENCE
+  in the Fortran90 definition of this derived type. It forces the compiler 
+ to keep the four fields contiguous in memory. In the ID card, in the space definition, the elements 
+ size can be described in the following way:
+  
+ !PALM_SPACE -name groupe_space\ 
+  
+ !           -shape (3)\ 
+  
+ !
+  
+ -element_size 40*PL_CHARACTER_SIZE+PL_INTEGER_SIZE+PL_REAL_SIZE
+  
+ The second solution consists in referring to a list of spaces whose size was already defined. For the 
+ same example, we must first define a space of size 20 characters (
+ chaine20
+ ). Then we must define 
+ a list of items (tuples) containing : i) the item name and ii) the space associated with this item. For 
+ the same example of derived type, we may describe its space in the following way:
+  
+ !PALM_SPACE -name chaine20\ 
+  
+ !           -shape (1)\ 
+  
+ !           -element_size 20*PL_CHARACTER_SIZE\ 
+ !           -comment {20 caracteres} 
+  
+ !
+  
+ !PALM_SPACE -name groupe_space\
+  
+ 48",NA
+7.3 Non contiguous objects,"It is also possible to describe objects whose elements are not necessarily contiguous in memory. 
+ This possibility is very useful to handle data structures (C language) of pointers (thus dynamically 
+ allocatable arrays for which the alignment in memory cannot be guaranteed) or more simply to 
+ send in a single message several arrays having different characteristics.
+  
+ To illustrate this function, we will send two arrays with different shapes and sizes in a single 
+ PALM_Put
+ . The unit which produces the data is written in C. The unit which recovers them is 
+ written in Fortran90. This will also illustrate the differences between the languages when calling 
+ the PALM primitives.
+  
+ Open the source code of 
+ producteur.c
+ :
+  
+ 1    /*PALM_UNIT -name producteur\ 
+  
+ 2              -functions {C producteur}\ 3              
+ -object_files {producteur.o}\ 4              
+ -comment {pack de 2 tableaux}
+  
+ 49",NA
+7.4 Summary of the main concepts,"This session deals entirely with derived data types and structures. The main difference is between 
+ objects which are contiguous in memory, for which you have simply seen how to describe them in 
+ the identity cards, and generic structures for which you have to create a contiguous communication 
+ buffer. For this reason you have got to know the new 
+ PALM_Pack
+  and 
+ PALM_Unpack
+  primitives.
+  
+ 53",NA
+8 Session 8: Time interpolation ,NA,NA
+8.1 Introduction,"When two computer codes are coupled, these programs do not necessarily use the same time step. 
+ In order to sidestep this problem we may interpolate in time the physical fields: to be able to 
+ accomplish the interpolation we have to store in memory several temporal instances of the same 
+ object. This kind of time interpolation is one of the functions of the PALM coupler: a unit can for 
+ example produce its objects every 10 seconds whereas another unit requires them every 3 seconds. 
+ In association with this time interpolation function we will see how to manage data in a permanent 
+ storage memory space called the 
+ PALM BUFFER
+ . Let's recall here the difference between how 
+ PALM handles the communication amongst units and the usage of this intermediate space. In direct 
+ communications,  PALM tries  to optimise the memory consumption  and the number of data 
+ transfers. If a 
+ PALM_Get
+  is posted before the corresponding 
+ PALM_Put
+ , the concerned object will be 
+ directly routed from the source to the target unit as soon as the 
+ PALM_Put
+  is issued. On the contrary, 
+ the  non  blocking  policy  imposes  to  store  in  a  temporary  space  a  produced  object  if  the 
+ corresponding 
+ PALM_Get
+ 's have not all been issued yet. As soon as the last 
+ PALM_Get
+  is completed, 
+ the object copy is removed from the temporary storage space. If for some reason the user needs to 
+ keep a copy of a posted object regardless of if, when and how many times the object has to be 
+ received, he can address the communication to an explicit storage space that has to be thought of as 
+ a sort of shelf from where the object can be repeatedly recovered until it is not explicitly discarded. 
+ In order to avoid any overflow of this BUFFER with data that are no more required by the 
+ application, a flexible mechanism has been designed for a detailed management of the objects 
+ stored in the BUFFER: this is the 
+ steplang
+  language.",NA
+8.2 Units Preparation ,"We will start again from the “producteur” (= “producer”) unit which we improved so that it 
+ behaves more closely like a real model. In its inner loop it will produce a vector for different time 
+ steps, which is often the case in the computer codes. To be more flexible, this unit will ask for the 
+ indices of start, end, and stride of the inner loop.
+  
+ Send your objects to the BUFFER!
+  
+  Open a new PrePALM canvas in the directory 
+ session_8
+  
+  Define four constants: 
+ IP_SIZE
+  = 100000 (vector size), 
+ debut_prod
+  = 0, 
+ fin_prod
+  = 
+  
+ 1000 and 
+ step_prod
+  = 10 (= start, end and frequency stride of the inner loop)
+  
+  Insert a branch  
+ b1
+  which launches the producer. For the producer input, in order to 
+  
+ control the produced times, hardwire the values by selecting the previously defined 
+  
+ constants.
+  
+  Send the vector to the PALM BUFFER. To do so, double-click on the vector output plug.
+  
+ The dialogue box asks you an object name for the copy of vector stored in the BUFFER. 
+ For the field “time list” put: 
+ debut_prod:fin_prod:step_prod
+ .then validate.
+  
+  On the canvas, you should see a communication which is plugged in a small square: the 
+  
+ PALM BUFFER symbol.
+  
+ 54",NA
+8.3 Monitoring the application in real time,"It is normal that the execution takes some time to run. In the loop producing the vector (unit 
+ producer) a  
+ sleep(1)
+  call artificially slows down the execution. We need it to learn how to 
+ monitor in real time the execution of a coupled simulation.
+  
+ 55",NA
+"8.4 Steps, events and actions ","In  session  4,  we  have  already  seen  how  to  define  steps  for  synchronization  purposes 
+ (
+ PL_BARRIER_ON
+ ). The steps are events explicitly inserted at specific places in the branches. 
+ Associated with these steps, we may define some actions to be performed on the BUFFER objects. 
+ The communications managed by PALM are also events which can be used to trigger actions on 
+ the objects in the BUFFER. The association between the events and the actions is made by a 
+ programming language specific to PALM named  
+ steplang
+ . In the PrePALM  
+ Help
+  =>  
+ Help on 
+ steplang grammar
+  menu, you may find the syntax of the steplang language. You should read 
+ carefully this help .
+  
+ Does it sound obscure? A concrete example will show you that it is not so difficult to use steplang.
+  
+ Let us go back to our interpolation problem. The unit “producteur” produces a vector every 10 time 
+ steps starting at time 0. The unit “vecteur_print” needs the values of this vector every 7 time steps 
+ starting at time 1. In order to perform the interpolation at a required time step, it is necessary that 
+ the producteur unit produces the vector at two time steps surrounding the required time step.
+  
+ producteur
+  
+ 0
+  
+ 10
+  
+ 20
+  
+ 30
+  
+ time
+  
+  
+ vecteur_print
+  
+ 1
+  
+ 8
+  
+ 15
+  
+ 22
+  
+ 29
+  
+ For example when vecteur_print needs a vector at time step 15, it is necessary that producteur had 
+ already produced the vectors at times10 and 20. On the other hand, at this stage of the application, 
+ the vector produced at time 0 is no more useful. Same thing for the vectors printed at times 22 and 
+ 29: they do not need the vector produced at time 10 anymore (see figure).
+  
+ In order to avoid any waste of memory storage, we should be able to ask PALM to perform the 
+ following action:
+  
+ “At all times after time 15, when a communication from the BUFFER to the vecteur_print, is 
+ complete,  delete  from  the  BUFFER the  objects  “older”  than  the  smaller  time  used for  the 
+ interpolation”.
+  
+ This is easily translated into the steplang language by:
+  
+ for $time in [15:1000:7] {
+  
+  
+  on {
+  
+   
+  com(""BUFFER"", 0, ""vecteur"", $time, PL_NO_TAG,
+  
+   
+  
+  ""vecteur_print"", 0, ""vecteur"", $time, PL_NO_TAG);
+  
+  } do {
+  
+  
+  $time1 = ($time / 10 - 1) * 10 ;  
+  
+ Nice trick with integers!!
+  
+  }
+  
+  delete(""vecteur"", $time1, PL_NO_TAG);
+  
+ } 
+  
+ The flexibility of the Steplang language together with some imagination is enough to easily 
+ translate relatively complex actions to manage the objects in the buffer.
+  
+ 57",NA
+8.5 The memory slaves,"In order to avoid memory overflows (e.g. in batch jobs or to prevent pagination), in the  
+ Palm 
+ memory settings
+  item of the 
+ Settings 
+ menu you can limit the maximum size of the memory that 
+ PALM can use for internal storage, including the permanent BUFFER. If you are working on a 
+ distributed memory computer, this limitation has to reflect the maximum size you can reasonably 
+ allocate on one processor. Initially, the internal storage memory is progressively allocated on the 
+ processor running the driver. When there is no more place for the PALM BUFFER, new processes 
+ can  be  associated  to the  PALM  driver.  These  additional  processes  are  devoted  only  to  the 
+ management of the BUFFER memory. When these processes are launched on other processors, 
+ they allow to use their memory as an extension of the BUFFER, and thus we can go beyond the 
+ limits of the driver alone. Notice again that this option is of interest only on distributed memory 
+ machines. On shared memory machines, each processor can access the full memory, thus making 
+ the “memory slaves” useless.
+  
+ In the Palm memory settings menu you can therefore set the maximum number of additional 
+ processors that can be used to store the PALM work memory. If it set to 0, only the driver will 
+ handle this workspace. In order to avoid the overhead of starting new memory slave processes and 
+ create the communication context within them and the driver, you can already start some of them at 
+ start time. To do this, simply set the 
+ Min memory slaves
+  field to more than 0.
+  
+ 59",NA
+8.6 Summary of the main concepts,"In this session you have learnt how to use the PALM provided 
+ time interpolation
+  to receive objects 
+ with time stamps different from their production time stamps.
+  
+ This has lead us to introduce the PALM  
+ buffer
+ , i.e. a permanent storage space from which the 
+ objects are not removed after reception. The way to explicitly remove objects from the buffer, goes 
+ through event-driven actions which are programmed in PrePALM with a specific language called 
+ steplang
+ .
+  
+ You have also learnt how to follow the state of an ongoing simulation with the  
+ Real time 
+ monitoring
+  tool provided by PrePALM.
+  
+ Finally you have seen some basic principle to optimise memory usage by synchronisation and how 
+ to use more processes as 
+ Memory slaves
+  on distributed memory computers.
+  
+ 60",NA
+9 Session 9: Space inheritance and dynamic objects ,"Until now, in every unit we used, the memory size of the objects was known at compile time. 
+ We have seen that this size could be parametrised via the constants of PrePALM, however it 
+ was static, i.e. it could not be changed at run-time. The computer codes which could be coupled 
+ with PALM may involve objects whose size is known only at execution time. These objects are 
+ typically dynamically allocated arrays. Let's see now how we can deal with this type of objects.
+  
+ A first remark can be made: the size of a 
+ dynamic
+  object must, of course, be known before the 
+ exchange, and this information can only be provided by the unit which produces the object. 
+ Only the sending unit may know its current size. Thus, the source unit must, before the sending, 
+ let PALM know the actual size of its object so that the coupler can transfer the right message 
+ size: the 
+ PALM_Space_set_shape
+  primitive will be used for that.
+  
+ The receiving unit should use a compliant space for the exchange: since the units are supposed 
+ to be independent (spaces are private to each unit) in this case a 
+ NULL
+  space can be specified 
+ for the object in the receiving unit identity card. It means that the space definition will be 
+ derived from a communication described in the graphical user interface PrePALM: we say that 
+ the receiving unit 
+ inherits 
+ the properties from the source object. 
+  
+ In PrePALM the dynamic objects correspond to pink plugs. Objects with an indefinite space 
+ (NULL) correspond to yellow plugs. No static space will be given a pink or yellow colour code.
+  
+ Moreover, you should notice that NULL spaces can indifferently inherit the properties from a 
+ dynamic space or from a static space. Algebra boxes, which have been presented in session 6, 
+ use NULL spaces in order to be generic. For example, in a single application, we may have 
+ several instances of the same pre-defined unit working on objects of different size. This would 
+ not be authorized with constants, only the NULL space and the inheritance mechanism can 
+ make  it  possible.  For  the  same  reason  we  recommend  the  use  of  NULL  spaces  when 
+ implementing units that can appear more than once in the same application if they can work on 
+ objects of different size/shape.
+  
+ Important to note
+ : You can easily find the type of space of an object, after answering both 
+ questions in the diagram below.
+  
+ No
+  
+ Is the size 
+  
+ Yes
+  
+ of the object known 
+  
+ before launching 
+  
+ the application?
+  
+ No
+  
+ Is the size
+  
+ Yes
+  
+ Static space
+  
+ of the object set
+  
+ in this unit?
+  
+ NULL space Dynamic space
+  
+ 61",NA
+9.1 Summary of the main concepts,"In this session you have learnt how to describe in PALM spaces of which you don't know the size 
+ beforehand.  On  the  sender  side  you  can  define  run-time  the  space  size  with  the 
+ PALM_Space_set_shape
+  primitive. Such a space is said to be 
+ dynamic
+ . On the receiver side you 
+ postpone the space declaration till run-time, giving to it the 
+ NULL
+  label and the space size is said to 
+ be  
+ inherited
+  at  run  time.  Some  additional  primitives  (
+ PALM_Object_get_spacename
+  and 
+ PALM_Space_get_shape
+ ) let you retrieve the space features in order to perform the necessary 
+ allocations before the actual PALM_Get.
+  
+ 65",NA
+10 Session 10: Assembling objects in the BUFFER ,"We have introduced in session 8 the PALM BUFFER and we have seen how to use it for keeping 
+ objects in a permanent memory and thus to be able to recover them repeatedly or to interpolate 
+ them in time. Another role of the BUFFER is the object assembling, for example to calculate 
+ averages or sums of objects. The underlying idea is that several sources of communications can 
+ contribute to the same result. We allocate a place for the final result in the PALM BUFFER and we 
+ address all contributing communications toward this location. Since we do not know necessarily in 
+ advance how many contributions are going to be collected, the result is flagged as 
+ not ready
+  and 
+ therefore cannot be received with a  
+ PALM_Get
+ . We are once more going to use the  
+ steplang
+  to 
+ describe the conditions under which the result can be considered 
+ ready
+ .
+  
+ For our training session, the unit  
+ je_compte.f90
+  ( = I_count.f90), that you may find in the 
+ directory 
+ session_10
+ , produces in a loop the integers from 1 to N, N being an input of the unit. If a 
+ 4 is given in input to je_compte, it produces 1, 2, 3 and 4. We want to compute the sum of the 
+ integers produced by this unit and let the branch post the result. When repeating the procedure with 
+ N ranging from 2 to 20, we will start the unit 
+ je_compte
+  by initialising each time the sum to 0. You 
+ will learn how to reset to 0 and to flag as 
+ not ready
+  an object in the BUFFER, using the 
+ steplang
+ .
+  
+ Arrange!
+  
+  Create the following branch:
+  
+  
+  In the PrePALM canvas, define the communications:
+  
+  
+ -
+  
+ The input n in 
+ je_compte
+  takes the values of the loop index (right click)
+  
+ -
+  
+ The output of the integers is stored in the BUFFER as the object 
+ somme
+  (=sum).
+  
+ Check the field “
+ add
+ ” of “Palm algebra” and set 1 and 1 for the assembling 
+ coefficients.
+  
+  
+  
+  
+ The branch issues a 
+ PALM_Get
+  to recover this object from the BUFFER-
+  
+  An object being assembled in the BUFFER is not supposed to be ready. With the 
+  
+ steplang help (
+ Help
+  => 
+ Help on steplang grammar
+ ) write an instruction which sets 
+  
+ the object state to “
+ ready
+ ” on step1 and which reset its value to 0 on step2.
+  
+  Test it
+  
+ 66",NA
+10.1Summary of the main concepts,"You have seen another important and often useful usage of the PALM BUFFER. When addressing 
+ a communication to the BUFFER you can ask instead of replacing any possible previous copy to 
+ combine
+  the new with the old value (you indicate the coefficients of the combination).
+  
+ To avoid any synchronization problem, you have seen how to act on objects stored in the buffer to 
+ change their status flag and/or to reset their value to 0. This is just another use of the event driven 
+ actions described with the 
+ steplang
+ .
+  
+ 67",NA
+11 Session 11: Parallel communications,NA,NA
+11.1Introduction,"PALM has been designed to manage parallel units. In session 2, with the calculation of π, we have 
+ already seen how to launch such units. When we talk about parallel programming, this also imply 
+ to say something on data distributions. Now will should see how PALM can manage distributed 
+ data in order to facilitate the exchanges between units.
+  
+ First of all, some concepts of parallel computing are essential for this session. We deal here with 
+ the so called domain decomposition parallelism, implemented with the SPMD (Single Program 
+ Multiple Data) paradigm. For the treatment of the whole domain, the same program is replicated on 
+ several processors (or processes) sharing the problem to be treated, according to a strategy which is 
+ defined by the programmer. This type of programming is not possible without the use of a parallel 
+ library like MPI. At execution time, each process specializes itself and treats only part of the 
+ problem. Note that the domain decomposition is not made by PALM, but the coupler will know 
+ how the data are distributed in order to manage the object as a whole.
+  
+ To be concrete, let us imagine an ocean circulation model where the 3d global domain is 
+ discretized by finite differences in the form of elementary grid cells. This type of program works on 
+ 3d arrays (corresponding to a physical domain discretization) which cover the whole Earth. The 
+ code is parallelized in order either to reduce the computing time, or simply to be able to treat a 
+ large problem which does not hold in the memory of a single processor. Each process treats only a 
+ part of the virtual 3d array. In general, with this type of parallelism, you need to exchange at each 
+ time steps some information at the borders of each local domain to be able to continue the iteration 
+ process. This does not prevent us from being able to consider the global 3d arrays as a PALM 
+ object, even if it is physically distributed in the memory of several processors.
+  
+ Proc 0
+  
+ Proc 1
+  
+ Boundary
+  
+ Domain 1 
+  
+ Domain 2
+  
+  
+ Proc 2 
+  
+ Proc 3 
+  
+ Domain 3 
+  
+ Domain 4
+  
+ Example of distributing a 3d field on 4 processors
+  
+ Each processor holds only one portion of the whole array. The local arrays stored in each processor 
+ does not have necessarily the same size in memory. To avoid gathering the global array in only one 
+ processor before sending it, PALM offers the possibility that each processor issues a PALM_Put of 
+ only the part of the field it knows.
+  
+ 68",NA
+PALM ,"knows the contributions of the four 
+  
+ processors.
+  
+ According to the requests of the other 
+  
+ units, it is able to transfer the global 
+  
+ object, by parts, while minimizing the 
+  
+ number of process to process 
+  
+ communications 
+  
+ Unit receiver : different distribution 
+  
+ Proc 0 
+  
+ Proc 1 
+  
+ Proc 2
+  
+ Call PALM_Get 
+  
+ Call PALM_Get 
+  
+ Call PALM_Get 
+  
+ Call PALM_Put
+  
+ Call PALM_Put
+  
+ Call PALM_Put
+  
+ If we want PALM to be able to handle such exchanges, it is necessary to describe how the objects 
+ are distributed, on the source side and on the target side. It is a necessary and sufficient condition. 
+ This is the role of the distributors.",NA
+11.2The distributors,"Distributors are nothing else but the way of letting PALM know how the objects are distributed, 
+ that is to say how the code has been parallelized. The relevant information is: “what is the part of 
+ the global object managed by every single process and how is is stored locally?”. In PALM we 
+ have introduced a syntax to describe this information. To grant enough flexibility, it is possible to 
+ describe the distributors in two different ways suitable for different approaches.
+  
+ The distributors of 
+ regular 
+ type allow a description of a basic pattern which is repeated inside the 
+ global array. These distributions, directly inspired by the decompositions used by parallel scientific
+  
+ 69",NA
+11.3Block cyclic distributors,"This distribution is directly inspired by the distributions used in the ScaLAPACK library. In 
+ PALM, they are called “
+ regular distributions”
+ .
+  
+ The processes involved in a distribution are organized according to a multidimensional grid, having 
+ the same number of dimensions as the global object. The global object is split into blocks in a 
+ regular way, n
+ i
+  elements per block along each dimension i.
+  
+ If the size of the global object along a dimension is not an exact multiple of the blocks size in this 
+ dimension, then the last block is smaller than the others.
+  
+ Example of a 2d object distributed on a 2x2 process grid:
+  
+ Process Grid
+  
+ Processes
+  
+  
+ 0
+  
+ 0        1
+  
+ 0
+  
+ 1
+  
+ 2
+  
+ 3
+  
+  
+  
+ 0
+  
+ 1
+  
+ 2
+  
+ 3
+  
+  
+ 1
+  
+ Object
+  
+ 0
+  
+  1        0       1        0    1
+  
+ Array on proc 1
+  
+ Array on proc 2
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ 1
+  
+ 0
+  
+ 1
+  
+ 0
+  
+ To define the order in which the blocks are assigned to the processes, the blocks are cyclically 
+ numbered in each dimension, with a cycling length corresponding to the process grid size in this 
+ dimension. The choice of the number from which one starts to count in every dimension is 
+ arbitrary.
+  
+ In this example, we choose a 2x2 grid, therefore we number every direction form 0 to 1. We 
+ dispose the 4 processors on the grid and we associate them to the two coordinates of the grid (top 
+ right image. We split the object in blocks of the given size (plus the remainder), then we number 
+ every dimension from 0 to 1, arbitrarily starting from 0 for the rows and 1 for the columns, cycling 
+ 70",NA
++,"1
+  
+ k   l
+  
+ m   n
+  
+ o",NA
+=,"k   l
+  
+ m   n
+  
+  
+ o
+  
+  
+ p   q
+  
+ r   s
+  
+ t
+  
+ p   q
+  
+ r   s
+  
+ t
+  
+  
+  
+  
+ 0
+  
+ u   v
+  
+ w   x
+  
+ y
+  
+  
+  
+ u   v
+  
+  
+  
+ w   x
+  
+  
+ y
+  
+ Therefore we obtain the following distribution:
+  
+ Processor 0 
+ a   
+ b   e 
+  
+ f    g   j 
+  
+ u   v   y
+  
+ Processor 1 
+ c   
+ d 
+  
+ h   i 
+  
+ w   x
+  
+ Processor 2 
+ k   
+ l   o 
+  
+ p   q   t
+  
+ Processor 3 
+ m   
+ n 
+  
+ r     s
+  
+ The necessary information to describe such a distribution is as follows: 
+  
+  
+ 1. 
+   
+ The processor grid shape (i.e. its size in all dimensions): (2,2) in the previous example 
+  
+ 2. 
+  
+  
+ The elementary block size: (2,2) for this last example 
+  
+  
+  
+ 3. 
+    
+ The coordinates in the process grid which will contain the first global object block: (0,0) in 
+  
+   
+   
+ this last example 
+  
+  
+ 4. 
+   
+ For each process: 
+  
+  
+  
+ 1. 
+  
+ the local object shape 
+  
+  
+  
+ 2. 
+  
+ the coordinates in the local arrays of the first element of the first block
+  
+ This way of describing the distributed objects is very concise but it does not allow to represent all 
+ the possible types of distribution.",NA
+11.4'CUSTOM' distributors ,"This distribution method is the most flexible: for each process, we give the list of the blocks which 
+ are stored in it, and their place in the local object. This method is compatible with any distribution. 
+ For example, it is well adapted to a domain decomposition using a non-structured grids because the 
+ blocks can be placed anywhere in the local object.
+  
+ Example:
+  
+ 71",NA
+11.5Examples of distributed objects,"In  the  directory  
+ session_11/cas_reel
+ ,  edit  the  file  
+ toy_ocean.f90
+ . Answer  the  following 
+ questions. Use the ID card to help you.
+  
+ - Is the unit parallel and of which type?
+  
+ - How many processes the unit 
+ orca_toymodel
+  can use?
+  
+ - How many objects are defined (IN and OUT)?
+  
+ - How many objects are distributed?
+  
+ - What is the distributor associated with the object “field”?- What 
+ are the object rank and the distributed object global size?
+  
+ Looking more closely at the distributor:
+  
+ - What is the distributor's type?
+  
+ - How many processes does the distributor use?
+  
+ - In which file is the distribution function ?
+  
+ Look at the FORTRAN code:
+  
+ - What is the variable which will contain the local distributed object?
+  
+ - Why is this variable dynamically allocated?
+  
+ - What is the size of this variable?
+  
+ - What is the subroutine which determines this size and which parameters are involved?
+  
+ Now open the distribution function in the file  
+ ocean_distrib.f90
+ . Notice that this function, 
+ whose template was generated by PrePALM, offers two calling modes according to the argument 
+ id_action
+ . This function is not explicitly called in the units code, but directly by PALM. The first 
+ operating mode returns the size of the array which will contain the distributor (this is useful for 
+ PALM to dynamically allocate the work array containing the distributor), the second mode returns 
+ a vector of integers containing the distributor
+  
+ 72",NA
+11.6Localisations and process associations ,"The example we have just run is rather simple, but we may encounter much more complex cases. 
+ For example in a parallel code, the domain decomposition of some fields can be done on just a 
+ subset of the processor set used during the run. For example, one processor is usually specialized 
+ for the I/O. In the same way, some objects cannot be distributed, but are simply replicated on all the 
+ processes. All of these characteristics must be communicated to PALM. This is done again via the 
+ ID cards (since the localisation is an attribute of the object, it is defined in the id card) and the 
+ graphical user interface while describing the communications.
+  
+ Let's concentrate on the ID card: have a look to the toy_ocean unit and you will see that there are 
+ two fields 
+ -localisation
+  in the object descriptions. 
+  
+ !PALM_OBJECT -name freq_time\ 
+  
+ !            -space one_integer\ 
+  
+ !            
+ -localisation REPLICATED_ON_ALL_PROCS\ 
+ !            -intent IN\ 
+  
+ !            -comment {frequence}
+  
+ !PALM_OBJECT -name field\ 
+  
+ !            -space one_matrix\ 
+  
+ !            -intent OUT\ 
+  
+ !            -distributor ocean_distrib\ 
+  
+ !            -
+ localisation DISTRIBUTED_ON_ALL_PROCS\ 
+ !            -time ON\ 
+  
+ !            -comment {Champs calcules}
+  
+ The localisations may specify two things for the objects of distributed units :
+  
+ 1) Make the difference between distributed and replicated objects 
+  
+ 2) Specify on which processors the distributors apply, and in which order.
+  
+ In practice, there are two ways to describe the localisations
+  
+ 1) use the predefined localisations (as in the example): 
+  
+ DISTRIBUTED_ON_ALL_PROCS
+ : the object is distributed on all unit processes 
+  
+ REPLICATED_ON_ALL_PROCS
+ : the object is replicated on all unit processes 
+  
+ SINGLE_ON_FIRST_PROC
+  (default  localisation):  the  object  is  neither  distributed,  nor 
+ replicated; it has only one instance located on the unit process 0.
+  
+ This keyword can be used in the 
+ -localisation
+  field for an object.
+  
+ 74",NA
+11.7Summary of the main concepts,"In this session you have seen how PALM handles the communication between parallel units. In 
+ particular you have seen how the user can describe the way an object is stored in the memory of the 
+ single processes of the units. This lead us to introduce the concept of  
+ distributor
+ , i.e. the syntactical 
+ entity describing a distribution. For the sake of efficiency, we defined two kinds of distributors,  the  
+ regular
+  ones,  well  suited  for  block  cyclic  distributions  (on  the  style  of ScaLAPACK, for 
+ instance) and the 
+ custom
+  ones, less compact but able to describe any kind of distribution.
+  
+ Finally you have learnt how to use the  
+ localisation
+  attribute of an object to describe on which 
+ subset of processes it is hosted or replicated and the 
+ local association
+  field of the communication 
+ properties to map the localisation on the source side onto the localisation on the target side.
+  
+ 78",NA
+12 Session 12: Sub-objects,"The 
+ sub-objects
+  have been introduced in PALM_MP to grant an even higher level of independence 
+ between the units. It may be useful for example, to recover only a part of an object in a target unit 
+ without having to modify the code of the source unit. For this purpose we may use sub-object 
+ descriptors. A sub-object is seen as a set of sub-blocks of the object which it belongs to.
+  
+ This feature allows:
+  
+  
+ to recover in a target unit only a portion of an object produced by a source unit 
+  
+  
+  
+ to update in a target unit only part of an object by a PALM_Get,
+  
+  
+ The sub-objects must be defined in PrePALM and not in the units, since they are completely 
+ dependent on the application in which they are used. This is why they are not defined in the unit ID 
+ card.
+  
+ To define a sub-object, the user must check the box  
+ Sub-object descriptor
+  in the Category 
+ Selector then click on the 
+ Insert
+  button. A window pops up. The user must enter the name of the 
+ sub-object, its type, the name of the function which describes it, the name of the compiled file 
+ which contains the function, and the shape of the object for which it is defined (in the following we 
+ will call this object a 
+ global object
+ ).
+  
+ 79",NA
+12.1Summary of the main concepts,"This short session taught you how to associate an object on one side of a communication with only 
+ a compliant portion (or, to be precise, a collection of sub-blocks with compliant global shape) of 
+ the object on the other side.
+  
+ This feature is of relevant importance to avoid heavy intervention on the source code when just a 
+ subset of a field is exchanged during a coupling. A typical example of application is the coupling 
+ via the surface layer of a 3D field. Instead of extracting the 2D array containing the surface level 
+ and issuing a PALM_Put of it, it is much simpler to PALM_Put the whole 3D object and ask 
+ PALM to exchange only the sub-object corresponding to the surface layer.
+  
+ 82",NA
+"13 Session 13: Read and write in files, geophysical fields ",NA,NA
+interpolation ,"As we have seen above, the  
+ PALM_Get
+ /
+ Put
+  primitives allow the PALM units to, respectively, 
+ require information or to make them available. The sending or the receiving of data is effective 
+ only when communications are described (correctly!) in PrePALM. In general these data are 
+ provided or dispatched towards other units of the same application. Everything occurs in memory 
+ and the data handled by the 
+ PALM_Get
+ /
+ Put
+  primitives are lost after the execution of the application.
+  
+ While handling these data (for which the data-processing characteristics were described in the ID 
+ cards) it seems natural to be able to store them also in a permanent way in files. Conversely, we 
+ may well imagine that units requiring data could read them directly from files without having to 
+ create a unit dedicated to this task. This is the role of the PrePALM files: the idea is to be able to 
+ directly connect the plugs corresponding to the Put/Get of the units, to existing or new files. A call 
+ to 
+ PALM_Get
+  in a unit will start a reading, a call to 
+ PALM_Put
+  a writing.
+  
+ The file format selected in PALM is NetCDF, a standard well-known in the climate community, 
+ which offers several advantages:
+  
+  
+ -
+  
+ The format is self-descriptive; the file contains a header which describes what is 
+  
+  
+ contained in the file.
+  
+ -
+  
+ The file access is direct; the records can be read/written in any order.
+  
+ The data are stored in an optimal way in terms of data size because they are-
+  
+ written in a binary format, but unlike the FORTRAN binary, this format is portable  
+ from  one  machine  to  another.  The  NetCDF  binary  preserves  the machine 
+ precision.
+  
+ -
+  
+ The NetCDF library is installed on most computers. If this is not the case, its 
+  
+ installation is very easy.
+  
+ A number of pre- or post-treatment software are using this format.-
+  
+ As an illustration, let us take again the toy model of the realistic case from session 11. At each time 
+ step, the model  
+ toy_ocean
+  produces 2d fields on a relatively complex discrete spherical grid 
+ (
+ orca2
+  grid from the largely adopted model developed at LOCEAN in Paris, which is a structured 
+ but non regular grid). We will store these fields in a file and then we’ll spatially interpolate them on 
+ a different grid (grid from the Météo-France ARPEGE model). This case would correspond, for 
+ example, to the use of sea surface temperature data issued from an ocean model as a forcing in an 
+ atmosphere model.
+  
+ The first thing to be made is to describe the file format which will contain these surface fields for 
+ each time step. For PrePALM, NetCDF files are described like units, through ID cards.
+  
+ Store!
+  
+  Open the file 
+ champs_orca.id
+  (=orca_fields.id): ID card of the file we will manipulate. 
+ Notice the keyword 
+ PALM_FILE
+  instead of 
+ PALM_UNIT
+ . 
+  
+ Also notice the heading  
+ -shape_label
+  in the spaces definition. It is an additional 
+ information compared to the usual spaces definition in units. Beside that, one finds the 
+ same information as in the ID cards of the PALM units.
+  
+ 83",NA
+13.1Summary of the main concepts,"The main aim of this session was to teach how to access NetCDF files in a way that makes very 
+ easy to interchange I/O on files with coupling communications. If the user describe the file contents 
+ (NetCDF header) in an identity card (N.B. PrePALM provides a utility to create the id card of an 
+ existing NetCDF file), the output to a file can be implemented as a communication linking a 
+ PALM_Put
+  to an input plug of a “
+ file unit
+ ” and conversely, the input from a file can be implemented 
+ as a communication linking a 
+ PALM_Get
+  to an output plug of a “
+ file unit
+ ”.
+  
+ This mechanism could be easily extended to other self-descriptive file formats, as HDF5, GRIB, 
+ etc. Users wishing to do it are strongly encouraged to contribute.
+  
+ In the application example, you have seen how to use the grid to grid interpolation unit from the 
+ PrePALM algebraic toolbox.
+  
+ 86",NA
+14 Session 14: Using a minimiser,"In the predefined algebra toolbox, PALM provides some 
+ minimisers
+  which may be useful to the 
+ user for some applications. Some minimisers are coded in “reverse communication”: they are 
+ adapted to PALM because they do not request a dedicated application process.
+  
+ As an example, we will minimise a cost function of the form: 
+ J
+ (x) = x
+  
+ T
+  B
+ -1
+ x
+ . The gradient of this
+  
+ function is 
+ grad 
+ J
+ (x) = 2*B
+ -1
+ x
+ . We will use the CGPLUS minimiser implementing a conjugated 
+ gradient algorithm.
+  
+ We will need only three user units. The first one, named 
+ init
+ , will give a first value of the function 
+ (a vector having all elements equal to 1). The second unit (
+ compute
+ ) will take a vector in input and 
+ will multiply it by a diagonal matrix 
+ B
+ -1
+  (the elements of the pre-inverted 
+ B
+ -1
+  matrix are 1, 2, 3, ..., 
+ ip_vectsize
+ ) and it will return the 
+ B
+ -1
+ x
+  result. The third unit (
+ result
+ ) will just print out the result.
+  
+ The gradient 
+ 2*B
+ -1
+ x 
+ can be easily calculated just by multiplying 
+ B
+ -1
+ x
+  by 2 with the algebra unit 
+ DSCAL
+ . The expression 
+ x 
+  
+ T
+  B
+ -1
+ x 
+ is calculated with the scalar product from the 
+ DDOT
+  unit. In our
+  
+ example, the analytical solution is 
+ x = 0
+  to be compared with the result returned by the minimiser.
+  
+ To  simplify  the  communications  all  
+ PALM_Put
+ /
+ Get
+  calls  are  made  without  time  nor  tag 
+ (
+ PL_NO_TIME
+ , 
+ PL_NO_TAG
+ ).
+  
+ The CGPLUS minimiser is an iterative process that works like this: starting from a first value of 
+ the function (f) and its gradient (G), it calculates a new point where the value of the function and its 
+ gradient must be computed to make a new iteration. For each iteration, the minimiser raises a flag 
+ telling if the minimization process has finished or if this processing should be continued. The 
+ criterion of convergence and the maximum number of iterations are inputs of the minimiser.
+  
+ The algorithm will thus be a loop around the minimiser (do while) that will stop only when the 
+ convergence is reached or if the maximum iteration count is exceeded. The unit which gives the 
+ first value of the function will be launched outside the loop.
+  
+ Minimize!
+  
+  Open PrePALM and define those constants:
+  
+  
+  Load the 3 users units: 
+ init
+ , 
+ compute
+ , 
+ vecteur_print
+  
+ And the three algebra units: 
+ DDOT
+ , 
+ DSCAL
+ , 
+ CGPLUS
+  
+ 87",NA
+14.1Summary of the main concepts,"In this session you have learnt how to set up an application using a reverse communication 
+ minimiser. Since the minimisation is the base of many optimization procedures, this session is of 
+ particular interest for the users going to implement a data assimilation suite or an automatic design/ 
+ shape optimization application.
+  
+ In the second part of the session you have learnt some useful practical tricks to make the use of 
+ PrePALM easier and quicker.
+  
+ 90",NA
+15 MPI-1 Mode,NA,NA
+15.1Introduction,"The original PALM development is based on the MPI-2 standard. In addition to the functions of the 
+ MPI-1 mode, it exploits two functions of the MPI-2 mode:
+  
+  
+ - the dynamic launching of new processes (
+ MPI_Comm_spawn
+  and related functions),
+  
+  
+ - the client/server mechanism (
+ MPI_Comm_connect
+  and related functions).
+  
+ To port PALM on a given computer, this has to be equipped with a MPI-2 implementation, if not 
+ complete, at least supporting these functions. The majority of the public domain distributions such 
+ as LAM/MPI, OpenMPI (not to be confused with Open-MP; cf. §4.5) or MPICH2 implement these 
+ functions and thanks to these distributions PALM has worked efficiently and has been validated in 
+ a  fully  public  domain  environment.  Nevertheless,  some  proprietary  distributions  released  by 
+ supercomputer  manufacturers,  and  optimised  on  their  computers,  do  not  accept  the  MPI-2 
+ functions. We can take as an example  the IBM BLUE-GENE L supercomputer  where it is 
+ completely impossible to install another MPI version, apart from that given by IBM. 
+  
+ To solve these porting problems on this kind of machines, we have developed a “light” version of 
+ the PALM coupler: this is what we call the MPI-1 mode of PALM. One can choose this version 
+ when installing PALM by activating a key on the automatic configuration system when installing 
+ PALM (cf. § 20.3 and 
+ configure --help
+  for further details) and through the PrePALM graphical 
+ interface when generating the application service files.
+  
+ The principle of this version lays on starting all the programs since the very beginning of the 
+ application, exploiting the MPMD mode of MPI-1. This mode in not part of the MPI-1 standard, 
+ but can be found almost everywhere on the various implementations of MPI-1. In this 
+ “extended”MPI-1 mode, many different executables can be launched at the same time, sharing the 
+ same MPI_COMM_WORLD communicator. We are, thus, in a MPMD configuration, although in 
+ pure MPI-1.",NA
+15.2Restrictions at the level of the PALM coupler,"In MPI-1 the PALM executables (units and blocks) cannot be re-launched many times during the 
+ simulation, so the loops and the other control structures have to be systematically encapsulated in 
+ blocks. We have seen in session 3 that being obliged to encapsulate in a block the loops containing 
+ some executables  was not without consequences on the applications. As an example,  if the 
+ programs do not free their memory, when launching a few consecutive runs, the machine’s capacity 
+ may be overcome. Most of the programs are not conceived to work “in a loop” since this requires a 
+ programming effort which is not necessarily compatible with the original development design.
+  
+ So, before choosing the PALM MPI-1 mode, one has to analyse his application to see whether the 
+ coupling can be done. For couplings such as fluid/structure interaction, where the codes are to be 
+ launched just once at the beginning of the simulation, this mode is perfectly adapted and with no 
+ loss of performances.
+  
+ We have to point out that, for the parallel codes, with the MPI-1 mode it is necessary to use the 
+ PL_COMM_EXEC
+  communicator  instead  of  
+ MPI_COMM_WORLD
+ ,  since  the  
+ MPI_COMM_WORLD
+  
+ 91",NA
+15.3Executing an application in MPI-1 mode,"To install the PALM MPI-1 mode, one has to use the option  
+ --with-mpi1mode
+  during the 
+ configuration (
+ configure
+ ) 
+ Cf
+ . § 20.3. This mode has also to be activated in the 
+ Make PALM files 
+ menu  of  PrePALM  to  create  the  appropriate  service  functions.  One  has  to  select  the  box 
+ corresponding to the required mode. A help button reminds the characteristics of this mode.
+  
+  
+ Pay attention: this choice must be totally coherent with the PALM library one uses. If one prepares 
+ the PrePALM files in MPI-1 mode, it is compulsory that the PALM library specified in the 
+ PALMLIB of the 
+ Make.include
+  file ends with the 
+ _mpi1mode
+  extension. For further information 
+ on the PALM compilation, see the corresponding section (cf. Chapter 20).
+  
+ Together with the service files, a new shell script (
+ run_mpi1.sh
+ ) has been created by PrePALM. 
+ This file adopts a syntax for the 
+ mpiexec
+  command which is compliant with LAM/MPI, MPICH2 
+ or Open-MPI. You are possibly lead to edit this script to adapt it to your local MPI distribution. If 
+ in MPI-2 mode you simply had to start the driver 
+ ./palm_main
+ , in MPI-1 mode you have to invoke 
+ ./run_mpi1.sh
+ .",NA
+15.4An application example in MPI-1 mode,"Let’s go back to the units of the section 2 of this textbook (
+ unit 77
+ , 
+ unit 90
+  and 
+ unit C
+ ) and 
+ examine the differences when executing them in MPI-2 or in MPI-1 mode.
+  
+ Let’s start from the following application in PrePALM:
+  
+ 92",NA
+15.5Summary of the main concepts,"In this section you have learnt how to compile and use a “restrained” version of PALM that does 
+ not need MPI-2. This is suitable on some particular supercomputers where the available MPI-2 
+ distributions cannot be installed or would cause a major loss of performances.
+  
+ The IBM Blue Gene L is one of these machines, therefore a section has been dedicated to the use 
+ on this specific MPP platform.
+  
+ Your attention has been driven to the limitations that this “degraded” mode imposes to the full 
+ flexibility of PALM, making the MPI-2 mode the recommended way to install and use PALM.
+  
+ 95",NA
+16 Grid-based Interpolation with CWIPI library,NA,NA
+16.1General information,"The  CWIPI  library  developed  at  ONERA  under  LGPL  license  (sites.onera.fr/cwipi/)  allows 
+ exchanging information between parallel codes based on unstructured meshes. CWIPI, which is 
+ part of the OpenPALM distribution, can be used alone as a coupler or via the OpenPALM coupler 
+ to take advantage of both the PALM and CWIPI libraries as well as the PrePALM graphical 
+ interface.
+  
+ The great advantage of CWIPI is that it allows to exchange coupling fields on different meshes on 
+ the source and target side by interpolating the quantities on the fly. CWIPI's functionalities are 
+ based on a 3D spatialization of the data; for CWIPI a coupling field is associated with a mesh 
+ described as unstructured elements. It should be noted that a structured mesh can be described as an 
+ unstructured mesh if you  encode an interface. CWIPI also has the advantage of almost seamless 
+ parallel code management based on domain decomposition; its communication scheme is well 
+ suited to couple massively parallel codes.",NA
+16.2The bases of unstructured meshes in CWIPI,"In CWIPI, meshes are based on the definition of basic elements such as:- 
+ segments for 1D elements, 
+  
+ - triangles, quadrangles or polygons for 2D elements,
+  
+ - tetrahedra, pyramids, prisms, hexahedra or polyhedra for 3D elements.
+  
+ All these elements are described in a 3D Cartesian reference frame which must be common to the 
+ various codes. CWIPI needs geometrical information that must be described in memory through the 
+ use of specific primitives, it requires constraints on the form and type of tables to be communicated 
+ to it. It is unusual to provide internal data structure of the solvers to CWIPI since::
+  
+  
+ - in the code these data structures are not necessarily described in the CWIPI format, 
+  
+ - 
+ the coupling zones are generally local, e.g. an exchange can take place on a sub-surface or 
+  
+ a 
+ sub-volume of the mesh.",NA
+16.3First steps with CWIPI under OpenPALM,"In this example we will perform a coupling by interpolating a 2D field between two surface 
+ meshes. Go to the session_PCW/base directory, Here (in the polyg.f90 file) is the first code we will 
+ couple, starting with its ID card:
+  
+  1 !PALM_UNIT -name polyg\
+  
+  2 !          -functions {f90 polyg}\
+  
+  3 !          -object_files {polyg.o}\
+  
+  4 !          -comment {CWIPI test fortran} 
+ 5 !
+  
+  6 !PALM_OBJECT -name coord_id -space one_integer -intent IN\ 
+ 7 !            -closedlist {{1 : X coord} {2 : Y coord}}\ 8 !            
+ -default 1\
+  
+ 96",NA
+16.4A more complete exercise,"This session uses a simple example to give a hands-on experience of the CWIPI primitives related 
+ to interpolation of data on unstructured meshes. These primitives start with the prefix PCW and 
+ make calls to the CWIPI library.
+  
+ In this exercise two codes, one in fortran (
+ fortran_surf.f90
+ ) and one in C (
+ c_surf_coupling.c
+ ) 
+ exchange data and perform interpolation on a mobile three-dimensional mesh of the following 
+ shape (refer to Figure 1 below):
+  
+  
+ •
+  
+ -10 ≤ x ≤ 10
+  
+  
+ •
+  
+ -10 ≤ y ≤ 10
+  
+  
+ •
+  
+ z = ampl*cos(omega*time+phi) * (x²+y²)
+  
+ 104",NA
+16.5Definition of the coupling in PrePALM,"For all exercises in this chapter, the PrePALM environment is identical. Let's build it now.
+  
+ To start with, have a look at the ID cards of the codes. They are given at the beginning of the 
+ source code file. As for every OpenPALM application, you can find the the PALM_UNIT 
+ keyword, where you can define the unit name as well as some parameters which should be quite 
+ well-known by now. One can see 6 objects (PALM_OBJECT keyword) which are received by the 
+ units. These objects correspond to the data to be read from the configuration files dataC.dat and 
+ dataF.dat. The variable geom_tol will be used by CWIPI as geometric tolerance during the mesh 
+ localisation.
+  
+ The keyword PALM_CWIPI_COUPLING is completely new and declares a CWIPI coupling 
+ environment  for  the  units.  These  environments  will  be  associated  with  exchange  objects 
+ (PALM_CWIPI_OBJECT keyword). These exchange objects can be for reception only (intent IN), 
+ for transmission only (intent OUT) or both (intent INOUT). It is possible to create  several 
+ couplings  in  one  unit.  For  example  a  CFD  code  can  have  primitives  to  exchange  data 
+ simultaneously with a thermal conduction code, a radiation code, etc.
+  
+ C code ID card:
+  
+ /*PALM_UNIT -name c_surf_coupling\
+  
+  
+  -functions {C c_surf_coupling}\
+  
+  
+  -parallel mpi\
+  
+  
+  -minproc 1\
+  
+  
+  -maxproc 100000\
+  
+  
+  -object_files {c_surf_coupling.o grid_mesh.o}\
+  
+  -comment {CWIPI test c_surf_coupling} 
+  
+ */ 
+  
+ /*PALM_OBJECT -name itdeb\
+  
+  
+  
+  -space one_integer\
+  
+  
+  
+  -intent IN\
+  
+ */
+  
+  -localisation REPLICATED_ON_ALL_PROCS
+  
+ /*PALM_OBJECT -name itend\
+  
+  -space one_integer\
+  
+  -intent IN\
+  
+  -localisation REPLICATED_ON_ALL_PROCS
+  
+ 106",NA
+16.6Exercise 1: initial instrumentation,"The stubs of Fortran and C code in the folder lack any function call to the coupling primitives. As 
+ the instrumentation of both codes would be long and repetitive in the scope of the training session, 
+ the user shall choose to instrument either the Fortran or the C code according to personal taste. The 
+ explanation in the user guide is based on the Fortran code. The sections to be completed in the 
+ source files are marked with “To fill” --> “End to fill”. The PCW_ primitives can be found at the 
+ end of the user guide.
+  
+ The different steps of instrumentation are:
+  
+ •
+  
+ initialisation of the coupling
+  
+ •
+  
+ creation of the coupling environment
+  
+ •
+  
+ definition of the mesh support
+  
+ •
+  
+ data exchange
+  
+ •
+  
+ processing of the received data
+  
+ •
+  
+ deletion of the coupling environment
+  
+ •
+  
+ finalisation of the coupling",NA
+16.6.1 ,NA,NA
+Initialisation of the coupling,"The initialisation is done via the PCW_Init primitive. The PCW_Dump_application_properties 
+ primitive can be called at any time to print the properties of the CWIPI environment to the log files, 
+ this should look like:
+  
+ Local application properties
+  
+ 'fortran_surf' properties
+  
+  - Ranks in global MPI_comm : 0 <= ranks <= 3 
+ - Int Control Parameter :
+  
+  - Double Control Parameter :
+  
+  - String Control Parameter :
+  
+ Distant application properties
+  
+ 'c_surf_coupling' properties
+  
+  - Ranks in global MPI_comm : 4 <= ranks <= 4 
+ - Int Control Parameter :
+  
+  - Double Control Parameter :
+  
+  - String Control Parameter :",NA
+16.6.2 ,NA,NA
+Creation of the coupling environment,"The  creation  of  the  coupling  environment  is  done  via  the  PCW_Create_coupling  primitive. 
+ Remember, the codes are parallel, the exchanged data has two dimensions and the mesh is static. 
+ The following variables are defined in the Fortran code and can be used directly in the function 
+ call:
+  
+  cl_coupling_name = ""test2D_3""
+  
+  output_format = 'Ensight Gold'
+  
+  output_format_option = 'text'
+  
+ 111",NA
+16.6.3 ,NA,NA
+Definition of the mesh support,"In CWIPI, a coupling is currently uniquely linked to a mesh. The mesh is attached to the coupling 
+ via the primitive PCW_Define_mesh which is given as arguments the coupling name, the node 
+ count (nvertex), the cell count (nelts), and the tables of coordinates (coords) and connectivity 
+ (connecindex and connec).
+  
+ Take your time to find out how the coordinate table is built. Its size is 3*nvertex (CWIPI always 
+ uses a three-dimensional Cartesian coordinate system). The x, y, z coordinates of node n° i are 
+ interlaced and stored in the following way:
+  
+ •
+  
+ x: coords((i-1)*3 + 1)
+  
+ •
+  
+ y: coords((i-1)*3 + 2)
+  
+ •
+  
+ z: coords((i-1)*3 + 3)
+  
+ The table connecindex of size nelts +1 indicates the number of vertices for each element. The 
+ element i is composed of n vertices: 
+  
+  
+ n = connecindex(i+1) – connecindex(i) 
+  
+ The table connec contains the indices of its vertices (1 based array).
+  
+ If the mesh contains various element types, they must be sorted in the following order:
+  
+ •
+  
+ linear elements : bars
+  
+ •
+  
+ surface elements : triangles -> quadrangles -> polygones
+  
+  
+ •
+  
+ volume elements : tetrahedra -> pyramids -> prisms -> hexahedra 
+ The internal connectivity of the elements can be seen in Figure 7.
+  
+  
+ Figure 7: Element ordering
+  
+ One can also define polyhedra. This is done via the function PCW_Add_polyhedra. The definition 
+ of polyhedra is done separately since it is more complex. The description of polyhedra contains two 
+ parts:
+  
+ •
+  
+ description of the connectivity of the polygon faces in the polyhedron (same definition as 
+  
+ polygons in PCW_Define_mesh)
+  
+ 112",NA
+16.6.4 ,NA,NA
+Data exchange,"On one single coupling entity, which means a single mesh, you can perform several exchange 
+ operations which may correspond to various variables or different time instants of the same 
+ variables.  The  cross  exchange  is  done  via  the  primitive  PCW_Sendrecv  which  requires  the 
+ following arguments:
+  
+ •
+  
+ name of the coupling context
+  
+ •
+  
+ number of interlaced data fields in the exchange. The data is interlaced in a similar way as 
+  
+ the coordinate table: in case of the exchange of 2 interlaced variables, the index (i-1)*2 + 1 
+  
+ designates the first variable value at the vertex i if cell vertex mode is configured, in 
+  
+ element i if the mode is cell centered. The value of the second variable can be found at the 
+  
+ index (i-1)*2 +2.
+  
+ •
+  
+ the current iteration time step and the corresponding time value for visualisation
+  
+ •
+  
+ the names and address/reference to the data fields to be sent and received
+  
+ Besides the received data fields, the primitive PCW_Sendrecv returns the number of non located 
+ points. Furthermore the error code tells whether the data exchange has encountered a major 
+ problem or not. This error code can be interpreted by the function PCW_Dump_status which writes 
+ the result (success/failure) of the exchange into the log files.",NA
+16.6.5 ,NA,NA
+Processing of the received data,"In this example, the received data is simply written to Ensight data format for graphic rendering 
+ with Ensight software. The source code is already written for this part, so nothing remains to be 
+ done.",NA
+16.6.6 ,NA,NA
+Deletion of the coupling environment,"The primitive PCW_Delete_coupling deletes the coupling specified by the coupling name, and 
+ finally the primitive PCW_Finalize will close the CWIPI session and terminate properly the active 
+ CWIPI environment.",NA
+16.6.7 ,NA,NA
+Running the application and analysing the results,"Once the instrumentation completed, compile the project with the command 
+ make
+ . If you are in 
+ PALM MPI1 mode the application is launched via a script  
+ run_mpi1.sh  
+ created directly  by 
+ PrePALM:
+  
+ #!/bin/sh
+  
+ 113",NA
+16.7Exercise 2: detection of non located points,"Take the previous coupling application and increase the amplitude from 0.012 to 0.015 in the file 
+ dataF.dat
+ . Big surprise when you look at the output files (CHR_*.case): the data field is 
+ completely messed up. This is due to the presence of non-located points which can be observed in 
+ the CWIPI output files (Figure 9).
+  
+  
+ Figure 9.Fortran exchange surface (left to right):
+  
+ - located points (red) and non-located points (blue) from CWIPI 
+ output- correctly located data in CWIPI output files
+  
+ - output of Fortran code, perturbed field
+  
+ After a data transfer it is very important to make sure that all point have been located correctly on 
+ the source mesh. For this purpose, one can check the argument 
+ not_located_points 
+ returned by the 
+ PCW_Sendrecv
+  primitive.
+  
+ The primitive 
+ PCW_Dump_notlocatedpoints 
+ writes the indices of the non-located points into the 
+ OpenPALM log files. Furthermore, the primitive 
+ PCW_Get_not_located_points
+  allows the 
+ program to retrieve the indices of non-located points via an integer array whose length has been set 
+ in accordance with the number of non-located points. The PCW_Sendrecv primitive only returns 
+ the values of located points leaving out all non-located points, therefore the indexing of the 
+ received data array is impacted. For clarification, if one considers a data exchange on 5 nodes and 
+ the third node could not be located, the array returned by PCW_Sendrecv contains:
+  
+ •
+  
+ index 1 : value at node 1
+  
+ •
+  
+ index 2 : value at node 2
+  
+ •
+  
+ index 3 : value at node 4
+  
+ •
+  
+ index 4 : value at node 5
+  
+ •
+  
+ index 5 : 0
+  
+ The existence of non-located points may not be a problem for the coupling algorithm, but it is still 
+ absolutely necessary to process the returned array and take into account the offset in received data 
+ caused by non-located points.
+  
+ For this exercise, you should perform a test to check for non located points and retrieve their 
+ number. Print the indices of non-located nodes and print the located nodes with their corresponding 
+ value:
+  
+ “x y value”
+  
+ The meshes are randomised by the code during their creation, so the non-located nodes may be 
+ different for every subsequent run of the application.
+  
+ 116",NA
+16.8Exercise 3: time-varying coupling,"Use the previous coupling application and increase the value of  
+ itend  
+ in the configuration files 
+ dataX.dat
+ . Caution, itend must be identical in both files; otherwise one code will have finished the 
+ execution and the other code will wait indefinitely. Set the other parameters as in exercise 1 to 
+ ensure the localisation of the points. When executing the application directly, the following error 
+ message appears:
+  
+ coupling.cxx:651: Fatal error. 
+  
+ coupling mesh is already created
+  
+ This is due to the fact that the mesh is created inside the time loop. At the second time step, CWIPI 
+ informs you about the problem that the mesh is already defined.
+  
+ Make the necessary modifications so that the mesh is only defined once per execution.
+  
+ When the application is operational, load the CWIPI output files. The number of solutions depends 
+ on the parameter output frequency given to the 
+ PCW_Create_coupling 
+ primitive (1 if intermediate 
+ output is desired for each coupling, 2 for every second coupling, etc.). In addition, the time step and 
+ time value must be incremented at each iteration, otherwise the coupler exits with an error message.
+  
+ Note that the surface in the CWIPI output files is static. The surface written by the Fortran code is 
+ mobile and moving with the time. However, CWIPI cannot see this mobility since it has never been 
+ told that the surface has moved. You can check this behaviour if you select different flapping 
+ frequencies for the two codes. The data exchange still has only localised points.",NA
+16.9Exercise 4: time-varying coupling with moving coupling surface,"Use the previous coupling and find a method to notify the coupler about the moving surface.
+  
+ 117",NA
+16.10Advanced topics with CWIPI,NA,NA
+16.10.1 ,NA,NA
+Definition of the interpolation points,"You can redefine the definition of the the interpolation points which are the cell centers by default 
+ or the vertices depending on the solver type. For example this feature is useful in a finite element 
+ solver if you want to obtain values at Gaussian points for integration or if the solver needs to make 
+ available a mesh different from the points where is wants to retrieve the information (for instance 
+ the complete 3D mesh is available, but data shall be only retrieved on a surface).
+  
+ This overloading is done with the function 
+ PCW_Set_points_to_locate
+ .",NA
+16.10.2 ,NA,NA
+Asynchronous communication,"The asynchronous communication allow for optimisation of the exchange and to have better control 
+ of the synchronisation points between the codes. A data exchange with  
+ PCW_Sendrecv  
+ can be 
+ replaced with the following call sequence:
+  
+ PCW_irecv(…) 
+  
+ PCW_issend(…)
+  
+ …
+  
+ Other instructions
+  
+ …
+  
+ PCW_Wait_irecv(…) 
+  
+ PCW_Wait_issend(…)
+  
+ The synchronisation points are located in the PCW_Wait functions. In order to optimise application 
+ computation time, some source code may be placed between the PCW_issend/PCW_ireceive and 
+ PCW_Wait calls. This mechanism is based on asynchronous I/O in MPI, theoretically this allows to 
+ have some overlap between the calculation time and communication time, but the efficiency 
+ depends strongly on the application and on the quality of the MPI implementation. The other 
+ benefit of asynchronous I/O is to avoid the potential of 
+ deadlock 
+ due to simultaneous calls of two 
+ transmissions or two receptions in the two codes.
+  
+ 118",NA
+16.10.3 ,NA,NA
+User defined interpolation,"You can also overload a different interpolation method by defining a user function in C or Fortran 
+ in accordance with the following prototype:
+  
+ C/C++: 
+  
+ static void _userInterpolation(const int entities_dim,
+  
+  
+  const int n_local_vertex,
+  
+  
+  const int n_local_element,
+  
+  
+  const int n_local_polhyedra,
+  
+  
+  const int n_distant_point,
+  
+  
+  const double local_coordinates[],
+  
+  
+  const int local_connectivity_index[],
+  
+  
+  const int local_connectivity[],
+  
+  
+  const int local_polyhedra_face_index[],
+  
+  
+  const int local_polyhedra_cell_to_face_connectivity[],
+  
+  const int local_polyhedra_face_connectivity_index[],
+  
+  const int local_polyhedra_face_connectivity[],
+  
+  
+  const double distant_points_coordinates[],
+  
+  
+  const int distant_points_location[],
+  
+  
+  const float distant_points_distance[],
+  
+  
+  const int distant_points_barycentric_coordinates_index[],
+  
+  const double distant_points_barycentric_coordinates[],
+  
+  const int stride,
+  
+  
+  const cwipi_solver_type_t  solver_type,
+  
+  
+  const void *local_field,
+  
+  
+  void *distant_field) 
+  
+ FORTRAN: 
+  
+ subroutine  userInterpolation(entitiesDim, &
+  
+  
+  
+  nLocalVertex, &
+  
+  
+  
+  nLocalElement, &
+  
+  
+  
+  nLocalPolyhedra, &
+  
+  
+  
+  nDistantPoint, &
+  
+  
+  
+  localCoordinates, &
+  
+  
+  
+  localConnectivityIndex, &
+  
+  
+  
+  localConnectivity, &
+  
+  
+  
+  localPolyFaceIndex, &
+  
+  
+  
+  localPolyCellToFaceConnec, &
+  
+  
+  
+  localPolyFaceConnecIdx, &
+  
+  
+  
+  localPolyFaceConnec, &
+  
+  
+  
+  disPtsCoordinates, &
+  
+  
+  
+  disPtsLocation, &
+  
+  
+  
+  disPtsDistance, &
+  
+  
+  
+  disPtsBaryCoordIdx, &
+  
+  
+  
+  disPtsBaryCoord, &
+  
+  
+  
+  stride, &
+  
+  
+  
+  solverType, &
+  
+  
+  
+  localField, &
+  
+  
+  
+  distantField)
+  
+ CWIPI passes all relevant data to the user function in the arguments. In particular the user has 
+ access to the result of the geometric localisation.
+  
+ A user function can be registered in CWIPI via the following function calls:
+  
+ •
+  
+ PCW_Set_interpolation_function 
+ for a user function written in C
+  
+  
+ •
+  
+ PCW_Set_interpolation_function_f
+  for a user function written in Fortran 
+  
+ This feature is interesting for finite elements solvers of discontinuous Galerkin methods which use 
+ higher order elements. In this case, the user function can perform a more precise interpolation based 
+ on the basic element functions. Another application could be a higher order interpolation on 
+ Cartesian grids by Lagrange interpolation.
+  
+ 119",NA
+16.10.4 ,NA,NA
+Python interface,"As for Palm, the CWIPI library can be used in Python units via the Cython interface. Data 
+ exchange is based on buffers declared as 
+ numpy 
+ arrays. All primitives are grouped in the 
+ Coupling 
+ class.
+  
+ The code extract below should give you a first glance on how to use the Python primitive calls. For 
+ more details on the Python interface, refer to chapter 18 dedicated to Python applications. Python 
+ uses an object called  
+ Coupling 
+ containing the attribute  
+ coupling_id
+ , so all  
+ PCW_  
+ primitives are 
+ already aware of this parameter, it does not have to be specified at each function call.
+  
+ import mpi4py.MPI as MPI 
+  
+ import numpy as np 
+  
+ import palm 
+  
+ import PCW 
+  
+ import palm_user_param as pu
+  
+ PCW.init() 
+  
+ cl_coupling_name = ""test"" 
+  
+ output_format = 'Ensight Gold' 
+  
+ output_format_option = 'text' 
+  
+ cp = PCW.Coupling(cl_coupling_name, 
+  
+  
+ PCW.COUPLING_PARALLEL_WITH_PARTITIONING, 
+  
+  
+ 2, geom_tol, PCW.MOBILE_MESH, PCW.SOLVER_CELL_CENTER, 
+  
+ 1, output_format, output_format_option)
+  
+ [....]
+  
+ cp.define_mesh(nvertex, nelts, coords, connecindex, connec)
+  
+ [...]
+  
+ cp.sendrecv(cl_exchange_name, stride, it, time, cl_sending_field_name, values, 
+ cl_receiving_field_name, localvalues)
+  
+ cp.get_n_not_located_points() 
+  
+ cp.get_not_located_points()
+  
+ print 'not located: ', cp.n_not_located_points
+  
+ A complete CWIPI example written in Python and based on the stub in this chapter can be found in 
+ the directory 
+ corrige_python
+ .
+  
+ 120",NA
+17 Connection of an external code to a PALM application,NA,NA
+17.1Introduction,"Due to the difficulty of “PALMing” certain program whose source codes are not available, it has 
+ been  developed,  for  the  PALM  coupler,  a  way  to  work  through  a  dynamic  library.  Some 
+ commercial codes offer the possibility to include some user defined treatment that have to be 
+ compiled and archived in a dynamic library which is loaded at run-time. PALM exploits this 
+ principle.
+  
+ Simulation 
+  
+ Dynamic 
+  
+ Connection to PALM
+  
+ PALM 
+  
+ code
+  
+ Driver
+  
+ library
+  
+ Pre-compiled 
+  
+ Source files
+  
+ Dynamic creation
+  
+ MPI
+  
+ black box 
+  
+ PALM Calls
+  
+ Executable
+  
+ executable
+  
+ of an MPI communicator
+  
+ We have to keep in mind that a dynamic library (
+ .so
+  file in unix/linux, 
+ .dll
+  for Windows) is a 
+ collection of sub-routines connected to an application through its name (and possibly its path). The 
+ executable knows just the functions’ prototype and the path to access them. When the main 
+ program runs, the library is dynamically loaded in memory at the first call (it could also not be 
+ loaded, if the program doesn’t call any of its entries while it runs). This technique allows to propose 
+ some user defined functions, since they are not directly modifying the main program. Another 
+ advantage of the dynamic libraries is to create smaller executables, since the binary code of the 
+ library is not copied in the executable image.
+  
+ We have seen that a PALM unit is a FORTRAN subroutine or a C function with no arguments. The 
+ main program is created by PrePALM (service file 
+ main_*.c
+ ). For the user this approach has the 
+ advantage  that  he  does  not  have  to  explicitly  call  some  functions  such  as  
+ PALM_Init
+  or 
+ PALM_Finalize
+ . These calls are in fact directly included in the main created by PrePALM. We’ve 
+ also seen that this technique allows PALM to create some blocks around various units, the blocks 
+ permitting to concatenate several units in just one executable, which would be impossible to do if 
+ the codes included their main program. This encapsulation imposes a strong constraint: we need to 
+ have access to the source codes of the main program. This may be too intrusive to adapt an existing 
+ program to PALM, especially for commercial codes.
+  
+ If we need to couple a code of which we cannot edit the sources, we can launch it independently 
+ from  PALM  (avoiding  therefore  to spawn the  unit  with  
+ MPI_Comm_Spawn
+ ), and to establish 
+ afterwards a communication context via the creation of an MPI communicator, as illustrated in the 
+ previous figure.
+  
+ 121",NA
+17.2How it works,"The two primitives that drive the connection/disconnection with PALM are 
+ PALM_Connect()
+  and 
+ PALM_Disconnect()
+ .  
+ N.B.
+ : in a parallel code, these primitives  have to be called by  all the 
+ processes. 
+  
+ Once  
+ PALM_Connect  
+ has been called, the user can access the full PALM environment, and 
+ therefore call all the others PALM primitives as, for instance, 
+ PALM_Put
+ , 
+ PALM_Get
+ , etc and write 
+ to the usual PALM output files.
+  
+ Remark
+ :  
+ PALM_Connect  
+ is based on the client/server capabilities of MPI-2, therefore only the 
+ MPI-2 mode of PALM can be used in this situation. 
+  
+ Constraints
+ : 
+  
+  
+ 1. If the code itself already uses MPI, the dynamic libraries must be compiled with the 
+ same 
+  
+  
+ MPI distribution and version
+ . This constraint is quite hard because the commercial 
+  
+  
+ distribution of computational codes are not necessarily linked against PALM compliant MPI 
+  
+  
+ releases. Moreover, if several codes are coupled to PALM via PALM_Connect, they all 
+  
+  
+ have to be compiled with the same MPI version.
+  
+ 2. The 
+ MPI library must support dynamic libraries
+ . Pay attention because this is often an 
+  
+ option that has to be explicitly turned on when installing MPI 
+  
+ 3. PALM must be installed with the 
+ --with-shared_lib
+  option turned on
+  when issuing the 
+  
+ configure
+  command (
+ cf
+ . Chapter 20 on PALM installation).
+  
+ The usage of this extension is illustrated on two examples that you can find in the 
+ chapter_16 
+ directory. Coupling a single processor or a parallel code does not change the procedure.",NA
+17.3Connecting a single processor code to PALM.,"In this case the computational code is a toy model that mimics the mechanism of the extension of a 
+ pre-compiled code with user defined functions compiled in an external library. You'll find the 
+ sources (in C) of the toy model in the 
+ code.c
+  file of the 
+ chapter_16/connect_code 
+ directory.
+  
+ Here are the contents (comments are in french, ask for translation if needed)
+  
+ /* Ce code est independant de PALM, aucune reference à PALM n'apparait
+  
+  Il appelle une librairie dynamique udf_* (pour User Defined Function) 
+ c'est dans ces fonctions que les appels à PALM sont effectues
+  
+  ce code possède une boucle interne sur le temps, dont le nombre d'itérations  
+ est retourné par la fonction udf_init
+  
+  une fois ce nombre d'iterations connu il calcule un champs (100 
+ réels) à chaque iteration chaque valeur du champs est incrémentée de 
+ 1.
+  
+  Pour  compiler  ce  code,  il  faut  déjà  compiler  les  fonctions  
+ utilisateur (vierge de tout appel à PALM) 
+  
+ */
+  
+ /* #include ""mpi.h"" */ 
+  
+ #include <stdio.h> 
+  
+ #include <string.h>
+  
+ int main(int argc, char *argv[] ) {
+  
+ 122",NA
+17.4Connecting a parallel code to PALM.,"In the 
+ chapter_16/connect_code_par 
+ directory, you'll find a full example of how to connect an 
+ external parallel code.
+  
+ The main differences with the previous case are:
+  
+ •
+  
+ the presence of a distributor (
+ dist_d3x100.f90
+ ) for the exchanged array because the object 
+  
+ is distributed on all the processes
+  
+ •
+  
+ no calls to 
+ MPI_Init 
+ and to 
+ MPI_Finalize 
+ in the user defined library because these calls 
+  
+ are already issued by the parallel main code.
+  
+ /*PALM_UNIT -name code\
+  
+  
+  -functions {SH {run_code&}}\
+  
+  
+  -object_files {code.o} \  
+  
+  
+  -parallel mpi \ 
+  
+  
+  -minproc 1\
+  
+  
+  -maxproc 100\
+  
+  
+  -comment {test code independant} */
+  
+ /*PALM_SPACE -name vect_real\
+  
+  
+  -shape (100*ip_nbproc)\
+  
+  
+  -element_size PL_REAL\
+  
+  
+  -comment {100 simple precision par proc} */
+  
+ /*PALM_DISTRIBUTOR -name d3x100\
+  
+  -type custom\
+  
+  -shape (ip_nbproc*100)\
+  
+  -nbproc ip_nbproc\
+  
+  -function d3x100\
+  
+  -object_files {dist_d3x100.o}\
+  
+ 126",NA
+17.5 To go further: IP connection of an external code,"As seen previously, a strong limitation of the connection type presented before is that if the code to 
+ connect already uses MPI, the dynamic libraries of this code and PALM must be compiled with the 
+ same  MPI  distribution  and  version.  This  constraint  is  quite  hard  because  the  commercial 
+ distribution of computational codes are not necessarily linked against PALM compliant MPI 
+ releases. Moreover, if several codes are coupled to PALM via PALM_Connect, they all have to be 
+ compiled with the same MPI version. To overcome this too strong constraint, the external code 
+ connection has been extended with IP socket protocol.
+  
+ The concept of sockets has been introduced in the Berkeley Unix distribution (an historical UNIX 
+ system, parts of which are sill used today), explaining why we sometime talk about
+  BSD
+  (
+ Berkeley 
+ Software Distribution
+ )  
+ sockets
+ . This  is a model allowing inter process  communications.  The 
+ processes can either communicate within the same machine or through a TCP/IP network. There 
+ are two types of communications:
+  
+ 128",NA
+17.6Summary of the main concepts,"In this session you have seen how to connect an 
+ external code
+  to PALM. By external we mean that 
+ the code is not encapsulated in an executable (unit or block) started by PALM during the coupling 
+ algorithm. The code can therefore be a black box commercial software, under the condition that it 
+ provides a way to call user defined functions. This PALM extension relies on the quite common 
+ use of dynamic libraries of user defined functions. In the examples you have seen the slight 
+ differences for connecting a single processor code rather than a parallel one. Pay particular 
+ attention to the remarks pointing out the software environment constraints that this approach 
+ implies.
+  
+ Moreover, if the code is not compatible with the MPI version used to compile PALM or if the MPI-
+ 1 mode of PALM is mandatory, the solution consists in using an IP connection with a mirror unit. 
+ This solution can also be used for code coupling on heterogeneous architectures.
+  
+ 136",NA
+18 Writing PALM units in Python,"Initially the Python interface was based on the SWIG library as described in chapter 19, but since 
+ OpenPALM version 4.1.4 it has been rewritten in order to be more compatible with parallel codes 
+ whose main program is an assembly of Python modules. Actually the SWIG based solution only 
+ allows server/client based MPI coupling and forces the programmer to use the MPI2 version of 
+ OpenPALM without access to the CWIPI library.
+  
+ The current solution works equally well in MPI1 and MPI2 modes of OpenPALM, and is based on 
+ the NUMPY [1] tools for array handling, MPI4PY [2] for the MPI interface (these are standard 
+ tools for parallel codes using python), and CYTHON [3] to build the interface with PALM. 
+ Therefore you must make sure that these tools are installed on your machine, or install them from 
+ their open source repositories.
+  
+ [1] 
+ http://numpy.scipy.org 
+  
+ [2] 
+ http://mpi4py.scipy.org 
+  
+ [3] 
+ http://www.cython.org
+  
+ The interface files (interface_palm.pyx for PALM and interface_pcw.pyx for CWIPI) written in 
+ CYTHON are provided in the folder PrePALM/TEMPLATE. They are automatically copied into 
+ the project folder when the PALM service files are created. The PALM Makefile instructs the 
+ compiler to build the library palm.so for use in the python code.
+  
+ You must add the path towards python, cython and the other libraries into the Make.include file: 
+ PYTHON 
+ = python 
+  
+ CYTHON
+  = cython 
+  
+ PYTHON_INCLUDE
+ =/path/include/python2.7 
+  
+ MPI4PY_INCLUDE
+ =/path/python2.7/site-packages/mpi4py/include 
+  
+ NUMPY_INCLUDE
+ =/path/python2.7/site-packages/numpy/core/include/
+  
+ One can easily obtain these paths from a command shell via: 
+  
+ $python -c 'from distutils import sysconfig; print( sysconfig.get_python_inc() )' 
+ $python -c 'import mpi4py; print( mpi4py.get_include() )' 
+  
+ $python -c 'import numpy; print( numpy.get_include() )'",NA
+18.1Python unit,"If you create a Python unit, you have to fill in the ID card so that PrePALM can recognise the 
+ Python unit: 
+  
+ #PALM_UNIT -name test_send\ 
+  
+ #          -functions {python test_send}\ 
+  
+ #          -object_files {}\ 
+  
+ #          -comment {exemple python put}\ 
+  
+ #          -help {No help available}
+  
+ After loading the ID card, the unit can be inserted into a PrePALM branch like any C or 
+ FORTRAN unit.
+  
+ 137",NA
+18.2Object oriented Python interface,"In Python, there is little flexibility for argument-passing in the function calls because variables are 
+ not typed. All objects are passed by reference, however elementary variable types (int, float) are 
+ passed by value.
+  
+ The OpenPALM interface for Python is built on classes to simplify the passing of output variables 
+ as class attributes.
+  
+ 138",NA
+18.3Dynamic communication via OpenPALM,"Let's put this transmission unit test_send.py in a PrePALM branch, followed by a unit 
+ test_receive.py which receives the data.
+  
+ In this example we need 2 constants in PrePALM: 
+ dim1: integer, value = 7 
+  
+ dim2: integer, value = 5
+  
+ The module test_receive.py has to retrieve the dimensions of the dynamic space and get the data. It 
+ uses also a PalmObject, but this time via a 'NULL' space.
+  
+ #PALM_UNIT -name test_receive\ 
+  
+ #          -functions {python test_receive}\ 
+ #          -object_files {}\ 
+  
+ #          -comment {exemple python get}\ #          
+ -help {No help available} 
+  
+ # 
+  
+ #PALM_OBJECT -name mat_in\ 
+  
+ #            -intent IN\ 
+  
+ #            -space NULL\ 
+  
+ #            -comment {test}
+  
+ In the class PalmObject you can directly call the sequence of name inquiry, rank and shape inquiry 
+ since the methods use the attribute 
+ dynspace 
+ reserved for dynamic spaces, while the attribute 
+ space 
+ remains set to 'NULL'.
+  
+ 139",NA
+18.4Parallel codes: Get MPI communicator,"In a parallel Python unit with MPI, the Python interface uses MPI4PY. In this case the different 
+ processes have to share the same MPI communicator. OpenPALM provides this communicator via 
+ the function get_mycomm.
+  
+ The MPI communicator object can be used after importing mpi4py:
+  
+ import mpi4py.MPI as MPI
+  
+ Mycomm=MPI.Comm() 
+  
+ palm.get_mycomm(Mycomm)
+  
+ You can now use MPI commands on this communicator:
+  
+ rank = Mycomm.Get_rank() 
+  
+ size = Mycomm.Get_size()",NA
+18.5Python help function,"Once you have compiled the Cython Palm module, it will provide an online help function inside an 
+ interactive Python console:
+  
+ >import palm 
+  
+ >help(palm)
+  
+ This command lists all OpenPALM functions and their use in Python. The same help text can be 
+ requested at the command line via:
+  
+ pydoc palm
+  
+ 140",NA
+19 Writing PALM units in interpreted languages such as Perl or ,NA,NA
+Tcl/Tk,NA,NA
+19.1Introduction,"Most of the interpreted languages used in scientific computing, such as Perl or Tcl/Tk, authorise to 
+ interface some pre-compiled functions written in other languages. Here again, they are loaded and 
+ executed as dynamic libraries (
+ .so
+  files in Unix and Linux, 
+ .dll
+  files for Windows).
+  
+ We can take advantage of this opportunity to write PALM units in interpreted languages. The aim 
+ is to effectively exchange data through the PALM API (mainly 
+ PALM_Put
+ /
+ Get
+ ) thus avoiding the 
+ use of intermediate files. One interesting application is the possibility to pre or post-process data in 
+ parallel with the application consuming or producing them. Another one is the interactive steering 
+ of a computational code through a graphical user interface.
+  
+ This mechanism is based on the connection (via the MPI-2 client/server capabilities) of external 
+ codes (the interpreted procedure, in this case) that you have seen in chapter 17 and on the generic 
+ interface tool 
+ SWIG
+  (that can be freely downloaded from 
+ www.swig.org
+ ). The user does not need a 
+ thorough knowledge of SWIG because the PALM interface declaration file (
+ palm.i
+ ) is already 
+ provided with the PALM distribution. On the contrary, it is mandatory to install SWIG on the 
+ machines meant to compile and run the PALM application.
+  
+ As an example of application, starting from the same parallel code driven by PALM (a Shallow 
+ Water model, often referred to as SW), we are going to build three different couplings.
+  
+ In the first one, SW will interact with a Python unit, in the second one with the same unit written in 
+ Perl, and in the third one with a visualisation and steering tool written in Tcl/Tk. The principle is 
+ the same in all cases and the SWIG interface declaration file (
+ palm.i
+ ) is the same for all 
+ languages.
+  
+ The  sources  of  the  applications  and  the
+  
+ palm.i
+  
+ files  are  available  in  the
+  
+ chapter_17/unit_python
+ , 
+ chapter_17/unit_perl
+  and 
+ chapter_17/unit_tcl
+  directories.
+  
+ Dynamic PALM 
+  
+ PrePALM 
+  
+ SWIG interface 
+  
+ Library
+  
+ Service Files
+  
+ palm.i file
+  
+ Dynamic Library 
+  
+ SWIG
+  
+ Preparation
+  
+ for the interpreted 
+  
+ Source files
+  
+ language
+  
+ _palm.so
+  
+ PALM Calls
+  
+ Interpreted
+  
+ Connection to PALM
+  
+ PALM Driver
+  
+ PALM unit
+  
+ Dynamic creation of
+  
+ palm_main
+  
+ an MPI communicator
+  
+ PALM F90 Unit 
+  
+ SW Model
+  
+  PALM Application
+  
+ 141",NA
+19.2PALM unit in perl,"The perl unit that we propose as an example simply recovers some time instances of the water 
+ height field H from the SW model and prints them out in the PALM log files. You'll find the 
+ application sources in the 
+ chapter_17/unit_perl 
+ directory.
+  
+ After having received the total number of iteration from the SW unit, the perl unit enters its internal 
+ loop with the same number of iterations. In this loop it receives the current iterate count from the
+  
+ 143",NA
+19.3PALM unit in Tcl/Tk,"This example is still close to the previous ones. The model is stricly the same, but, to introduce 
+ some new features, we'll rely on the the graphical capabilities of Tcl/Tk, often used in the GUI 
+ implementations. In our case it will allow to code a very simple visualisation tool to represent the 
+ 2D H field. We'll go a little further, giving the user the possibility to interactively modify a 
+ parameter of the SW model.
+  
+ The square basin is forced by a point source moving, at constant speed, along a circle centred in the 
+ basin. This source modify locally the water height with an amplitude varying in time as a sinus. To 
+ illustrate the steering capabilities, the user can reverse the source rotation direction by a simple 
+ click in the Tcl/Tk graphical interface and he'll visualize the effect on the results in the visualisation 
+ window.
+  
+ 145",NA
+19.4Summary of the main concepts,"This session was dedicated to a particular case of the situation presented in the previous chapter. In 
+ this case, the external unit to be connected is not pre-compiled but rather written in an interpreted 
+ language. The interface with the dynamic PALM library is created with the SWIG tool.
+  
+ Some paradigmatic example of on-line post-processing and interactive steering are provided, also 
+ illustrating how to couple a F90 model with a perl or Tcl/Tk interpreted procedure.
+  
+ 150",NA
+20 PALM Installation ,NA,NA
+20.1Introduction,"In the PALM distribution you'll find the source codes of the PALM library, of its interface and of all 
+ the sessions of the training. OpenPALM is free software LGPL v3.
+  
+ The first thing to do you have to decompress the gzipped tar archive of the distribution:
+  
+ > tar -xvfz 
+ distrib
+ .tgz
+  
+ Two directories are created: 
+ PrePALM_MP
+  and 
+ PALM_MP
+ . The first one contains the graphical user 
+ interface PrePALM, the second one the PALM library. The interface can be locally installed on the 
+ user workstation or PC, while the library has to be compiled on the different platforms where the 
+ PALM coupled applications are meant to run.",NA
+20.2Installation of the PrePALM graphical user interface,NA,NA
+20.2.1 ,NA,NA
+Pre-requirements,"The graphical interface PrePALM is written in Tcl/Tk with some C. Therefore you need these two 
+ environments on the machines where PrePALM has to run. The Tcl/Tk version has to be at least 
+ 8.3 PrePALM can run under Windows if a Linux emulator is installed. We recommend Cygwin.
+  
+ A small C program is used to interpret the STEPLANG language: it is therefore necessary to 
+ compile this component. A pre-compiled version working on i386 to i686 and x86_64 platforms is 
+ provided with the PALM distribution.
+  
+ The most widespread public domain algebra libraries (such as BLAS, LAPACK, ScaLAPACK) 
+ interfaced in the PALM algebra toolbox are not provided with the PALM distribution and should 
+ be installed (if they are not already pre-installed) on the machines where the final application has to 
+ be compiled and executed. On the contrary, the geophysical interpolation library based on the 
+ OASIS coupler and on the SCRIP algorithms is provided with the PALM distribution.",NA
+20.2.2 ,NA,NA
+PrePALM command definition,"The graphical user interface is written in Tcl/Tk which is an interpreted language. Therefore there 
+ is no need of compilation. Nevertheless every user has to set an environment variable containing 
+ the installation path and an alias as a shortcut for the GUI.
+  
+ Accordingly to the preferred shell you should add to the 
+ .cshrc
+  or 
+ .bashrc 
+ or .
+ …rc
+  file:
+  
+ csh, tcsh : 
+  
+ setenv PREPALMMPDIR 
+ path_to_PrePALM 
+  
+ alias prepalm ‘$PREPALMMPDIR/prepalm_MP.tcl \!* &’ 
+  
+ sh, bash : 
+  
+ function prepalm { 
+  
+ export PREPALMMPDIR=
+ path_to_PrePALM 
+  
+ $PREPALMMPDIR/prepalm_MP.tcl $* &
+  
+ 151",NA
+20.2.3 ,NA,NA
+STEPLANG interpreter installation,"Steplang
+  is the command language used to describe the event driven actions manipulating the 
+ objects stored in the 
+ buffer
+ . If you need to recompile its interpreter, enter 
+ STEPLANG 
+ the directory
+  
+ > cd PrePALM_MP/STEPLANG/
+  
+ Modify, if needed, the simple 
+ Makefile
+  and issue:
+  
+ > make clean 
+  
+ > make
+  
+ If everything go right, you should end up with the 
+ steplang-i386
+  executable..",NA
+20.2.4 ,NA,NA
+"Installation of the OASIS library, if needed","The OASIS library takes care of the grid to grid interpolation of geophysical fields on a spherical 
+ system of coordinates. It works for most the structured or non structured grids used in the climate 
+ modelling community. You'll find more details in the documentation of the OASIS coupler, 
+ developed at CERFACS.
+  
+ The  source  code  of  this  library  is  included  in  the  PALM  distribution  in  the 
+ PrePALM_MP/ALGEBRA/Interpolation/Geophysic/DSCRIP_lib 
+ directory. Edit the 
+ Makefile
+ , if 
+ needed, and simply issue
+  
+ >make.",NA
+20.3Installation of the PALM library,NA,NA
+20.3.1 ,NA,NA
+Pre-requirements,"The PALM library includes the objects used to generate the PALM driver (
+ palm_main
+ ) and the 
+ user defined entities (units and blocks). This library has to compiled on the platform where the 
+ PALM application will eventually run. The installation procedure is based on the automatic 
+ configuration tool 
+ autoconf
+ . Remember that PALM has been implemented in FORTRAN 90 and 
+ C.
+  
+ 152",NA
+20.3.2 ,NA,NA
+Installation,"You install PALM with simply three commands from the 
+ PALM_MP
+  directory of the distribution: 
+  
+ > ./configure
+ [OPTION]... [VAR=VALUE]...
+  
+ > make 
+  
+ > make install
+  
+ The only step requiring some attention is the first one, for you have to choose the proper options for 
+ the configuration. They depend on your compilers, on the platform, on the MPI distribution and, 
+ finally, on the flavour of PALM (single proc, MPI-1, MPI-2) that you are going to install.
+  
+ You can obtain a summary of the available options with the command ./configure –help that will 
+ answer: 
+  
+ Usage: ./configure [OPTION]... [VAR=VALUE]...
+  
+ To assign environment variables (e.g., CC, CFLAGS...), specify them as VAR=VALUE. See below for 
+ descriptions of some of the useful variables.
+  
+ Defaults for the options are specified in brackets.
+  
+ Configuration:
+  
+  
+  -h, --help              display this help and exit
+  
+   
+  --help=short        display options specific to this package
+  
+   
+  --help=recursive    display the short help of all the included packages
+  
+  -V, --version           display 
+ version information and exit
+  
+  
+  -q, --quiet, --silent   do not print `checking...' messages
+  
+   
+  --cache-file=FILE   cache test results in FILE [disabled]
+  
+  
+  -C, --config-cache      alias for `--cache-file=config.cache'
+  
+  
+  -n, --no-create         do not create output files
+  
+   
+  --srcdir=DIR        find the sources in DIR [configure dir or `..']
+  
+ Installation directories:
+  
+  
+ --prefix=PREFIX
+          install architecture-independent files in PREFIX
+  
+  
+  [NONE]
+  
+ 153",NA
+20.3.3 ,NA,NA
+Example of installation on a Linux workstation,"Let's suppose that we have to install PALM on a 64 bits Linux workstation where the PGI compiler 
+ suite is installed (
+ pgf90
+  and 
+ pgcc
+  commands), and where LAM/MPI 7.1.4 has been compiled with
+  
+ 155",NA
+20.4Summary of the main concepts,"This chapter is a short summary of how to install PALM and its graphical interface. Every platform 
+ has its own specificity and sharing the experience will help avoiding the most frequent and 
+ common difficulties. Feel free to send your feedback on the installation to the PALM team.
+  
+ 156",NA
+21 Some more or less specific utilities,NA,NA
+21.1Default value and choice from a list of pre-defined values for the ,NA,NA
+units input plugs,"We have seen in the previous chapters that quite often the input objects described in the identity 
+ cards (and therefore corresponding to a 
+ PALM_Get
+  in the unit code and to an upper plug on the 
+ canvas representation) are scalar flags or parameters that toggle a function of the unit. This inputs 
+ are filled with regular communications or hardwired (right click).
+  
+ If it is suitable, it is possible to indicate in the identity card a default value for these objects. If this 
+ is the case, when the unit is inserted in the branch code, the corresponding plug will already be 
+ closed and set (hardwired) to the default value. You can, of course, modify it afterwards.
+  
+ Let's take as an example the  
+ producteur
+  unit from session 5 and let's add an integer input for 
+ specifying a working mode. If we want it to take the default value 1 we simply add in the id card:
+  
+ !PALM_OBJECT -name run_mode\ 
+  
+ !            -space one_integer\ 
+  
+ !            -intent IN\ 
+  
+ !            -default 1\ 
+  
+ !            -comment {mode de fonctionnement de l'unite} !
+  
+ and we will add the corresponding 
+ PALM_Get
+  in the code.
+  
+ We can go a little further and define a “closed” list of value from which we can choose the one to 
+ hardwire. Let's imagine that in our example the unit can have 3 (and only 3) different working 
+ modes. With the 
+ -closedlist
+  attribute we can limit the user choice to these values and, therefore, 
+ to reduce the risk of errors.
+  
+ !PALM_OBJECT -name run_mode\ 
+  
+ !            -space one_integer\ 
+  
+ !            -intent IN\ 
+  
+ !            -closedlist { {1 : mode normal} {2 : option 1} {3 : option 2}}\ !            -default 1\ 
+  
+ !            -comment {mode de fonctionnement de l'unite}
+  
+ Every list item has to be enclosed in braces. The first string is the value of the variable, the 
+ following is taken as a comment that will be displayed when hardwiring the input.",NA
+21.2Some subtleties on the time stamp: conversion to/from dates,NA,NA
+21.2.1 ,NA,NA
+Introduction ,"The “
+ time stamp
+ ” argument of the 
+ PALM_Put/Get
+  primitives is coded as an integer. This allows to 
+ have a simple and generic interface, but deserves some further explanations. In the session about 
+ communications we have insisted on the importance of this stamp because it allows:
+  
+ •
+  
+ to handle easily the inner and outer loops on time of the codes to be coupled
+  
+ •
+  
+ to interpolate the objects in time if the time steps of the units do not coincide
+  
+ 157",NA
+21.2.2 ,NA,NA
+Two-ways coupling a.k.a. strong coupling,"Code A Code B
+  
+ Two-ways coupling: 
+ Units A and B run simultaneously: the synchronisation is ensured by the 
+ communications
+  
+ In general, in a strong coupling, 
+ i.e.
+  a two ways exchange in an iterative process, the user has to 
+ choose the exchange frequencies looking for the least common multiple of the model time steps. 
+ Notice that in this case the two models have to run in parallel on two separate branches.
+  
+ Since  
+ PALM_Get
+  is blocking and the exchanges are two ways, the communications implicitly 
+ synchronise the execution, because each code waits the results from the other one. The time stamp 
+ attribute, therefore, is not strictly necessary but it is nevertheless recommended if we want the unit 
+ to be generic and reusable in other couplings. Activating the time attribute of an object in the 
+ identity card still allow to choose between two ways of describing the coupling exchanges. Either 
+ the user let the model know the initial time, final time and frequency of the exchange (via a 
+ configuration/input file, the PrePALM constants or PALM communications) and the model issues 
+ only the strictly necessary 
+ PALM_Get/Put
+  with the 
+ PL_NO_TIME
+  stamp, or the model systematically 
+ issues its 
+ PALM_Get/Put'
+ s at every time step, with a meaningful time stamp and the “
+ time 
+ list
+ ”attribute of the communication, acting as a filter, select which exchanges will actually take 
+ place. Even if the 
+ time list
+  syntax allows to associate different values of the time stamp on the 
+ source and target side of a communications, it is nevertheless recommended to find a common time 
+ reference and to use the same timing conventions for all the units participating in communications.",NA
+21.2.3,NA,NA
+One-way coupling a.k.a. ,NA,NA
+forcing,"Code B
+  
+ Code A
+  
+ One-way coupling: 
+ Data flow only from unit A to unit B. If the exchanges concern different 
+ instants it is important to associate a “time stamp” attribute, to the object to distinguish different 
+ temporal instances of the objects.
+  
+ 158",NA
+21.2.4 ,NA,NA
+Conversion of integer time stamps from/to dates ,"Especially in geophysics applications, where the exchanged fields are naturally associated to dates, 
+ the user can choose to give to the integer time stamp the meaning of a date. To do that, one has to 
+ choose a reference date, a time unit (ranging from seconds to days) and the kind of calendar to 
+ count on. The integer time stamp will simply indicate the number of time units separating the 
+ reference date from the current date, counted on the given calendar.
+  
+ The reference date, the unit and the calendar are chosen once for all the units in the graphical user 
+ interface. Afterwards a PALM primitive can compute the date to/from integer conversion in the 
+ unit sources and the corresponding calculator is also available in the graphical user interface to 
+ express the 
+ time list
+  ranges for the communications in a coherent way.
+  
+ In practice, when setting up the application, the user has to choose in the 
+ Date Conversion
+  menu 
+ the 
+ Calendar
+  amongst 
+ Standard
+  (usual Gregorian calendar for which every year that is exactly 
+ divisible by four is a leap year, except for years that are exactly divisible by 100; the centurial years 
+ that are exactly divisible by 400 are still leap years), 
+ NoLeap
+  (for which all the years are 365 days 
+ long, neglecting leap years), 
+ 360
+  (for which all the months are 30 days long, used in some climate 
+ simulations),  
+ Julian
+  (for which every year that is exactly divisible  by four is a leap year, 
+ neglecting the centurial years exceptions). Afterwards he chooses the time unit in the 
+ Reference 
+ time step
+  list from seconds to days. Let's recall that if the hour is chosen, in the time stamps, two 
+ consecutive integers will refer to objects separated in time by an hour. Finally he has to set the 
+ Reference date
+  for the conversion (detailed up to the time unit). It is the origin of the counter and 
+ it can be optionally shifted from 0 (
+ First integer for this date
+  field).
+  
+ In the unit code the 
+ PALM_Time_convert
+  primitive (
+ cf
+ . the reference guide for the full syntax) will 
+ convert in a unique way every date to an integer and vice-versa. There is no reference to the 
+ calendar, the time unit or the reference date in the primitive arguments. Changing the PrePALM 
+ settings will change the results (which allows to reuse the unit as it is in different couplings), but 
+ the main point is that in a given applications, all the units will obtain the same integer for the same 
+ date. In the graphical user interface, the user needs to know the integer time stamps that will be 
+ used when describing the time range lists in the communications properties or when programming 
+ the event driven actions in Steplang. For this reason, in the 
+ Date conversion
+  menu, he can access 
+ a date converter that gives the same results as the primitive calls. The converter can also compute 
+ time ranges: a typical example could be the computation of the integer time stamps expressed in 
+ days to indicate the first day of the month over 50 years.",NA
+21.3Dynamic verbosity settings,159,NA
+21.4Checking the object contents: palm_debug.f90/c,"You'll have certainly noticed that the Make PALM files menu creates a  
+ palm_debug.f90
+  or 
+ palm_debug.c
+  template file and that in the communication properties window there is a  
+ Palm 
+ debug status
+  selector. These tools can be used to check the objects contents when they are sent or 
+ received.  Accordingly  to  the  choice  for  
+ Palm  debug  status 
+  
+ (
+ PL_DEBUG_ON_SEND
+ , 
+ PL_DEBUG_ON_RECV
+  or  
+ PL_DEBUG_ON_BOTH
+ ),  the  user  defined  procedures  implemented  in 
+ palm_debug.f90
+  or 
+ palm_debug.c
+ , depending on the language preferred by the user, are invoked 
+ respectively when the object is sent, received or on both sides.
+  
+ Since  the  same  subprogram  is  invoked  for  all  the  “debugged”  applications,  the  appropriate 
+ procedures have to be triggered on the basis of the object name and space. The examples and 
+ comments in  
+ palm_debug.f90
+ /
+ c
+  are explicit enough to draw inspiration. Let's recall that it is 
+ recommended to use this feature instead of intervening in the units sources.
+  
+ Aside from debugging, this feature finds another application for run-time sanity checks: checking 
+ the exchanged objects against physical coherency tests (e.g. out of physical range values) can help 
+ detecting anomalies in the simulation and stopping the application (by a call to 
+ PALM_Abort
+ ).",NA
+21.5Print out the object contents: the PALM_Dump primitive,"The PALM_Dump primitive, usually called from inside palm_debug but also available for calls in 
+ the units sources, provides a simple way to print out some information about object contents such 
+ as its minimum or maximum value, the global sum, etc.
+  
+ The syntax of the PALM_Dump primitive is described in the reference guide section.",NA
+21.6Summary of the main concepts,"In this section you have got to learn or revise some practical features that, even if not strictly 
+ necessary to set up and run a PALM application, can make it quite easier. In particular you have 
+ seen how to set a default value for a unit input or to restrain the possible values to a closed list, you 
+ have learnt how to associate the integer time stamps to dates and finally you have seen how to set 
+ the verbosity levels or check the objects contents to debug an application or to make it more robust.
+  
+ 160",NA
+22 Batch file for PrePALM ,"It is possible to generate PrePALM files without the GUI. For this, the user must construct a file 
+ with the extension .pml (PrePALM Meta Language). As documentation, some examples  are 
+ provided in different “corrige” directories from training session directory. Is given below the .pml 
+ file to achieve the tutorial session_8.
+  
+ To test this example : 
+  
+ > cd training/session_8 
+  
+ > prepalm corrige/session_8.pml 
+  
+ > make 
+  
+ > mpirun -np 1 ./palm_main 
+  
+ # OpenPALM version > 4.1.7 
+  
+ # Exemple de fichier de commande PrePALM 
+ # résolution de la session 2 du tutorial 
+  
+ # choix du mode MPI (1 ou 2) 
+  
+ MPI_MODE 2 
+  
+ # definition des constantes 
+  
+ CONSTANT IP_SIZE     PL_INTEGER 100000 
+  
+ CONSTANT debut_prod  PL_INTEGER 0 
+  
+ CONSTANT fin_prod    PL_INTEGER 1000 
+  
+ CONSTANT step_prod   PL_INTEGER 10 
+  
+ CONSTANT debut_print PL_INTEGER 1 
+  
+ CONSTANT fin_print   PL_INTEGER 1000 
+  
+ CONSTANT step_print  PL_INTEGER 7 
+  
+ # chargement des cartes d'identité
+  
+ LOAD producteur.f90 vecteur_print.f90 
+  
+ ############################## 
+  
+ # définition de la branche b1 
+  
+ ############################# 
+  
+ BRANCH b1 IP_START_ON 
+  
+ # lancement d'une instance de producteur 
+  
+ LAUNCH producteur producteur 1 100 
+  
+ ############################## 
+  
+ # définition de la branche b2 
+  
+ ############################# 
+  
+ BRANCH b2 IP_START_ON 
+  
+ # déclaration des variables pour cette branche 
+ VAR ib_do PL_INTEGER 
+  
+ VAR nouv_put PL_INTEGER 
+  
+ VAR dernier_put PL_INTEGER -1 
+  
+ # définition d'un block 
+  
+ BLOCK 
+  
+   
+ # définition d'une boucle do
+  
+  
+  DO ib_do debut_print fin_print step_print 
+  
+    
+  
+ # région fortran
+  
+    
+  F90 nouv_put = (ib_do/10+1)*10 
+  
+    
+  
+ # définition d'une condition
+  
+    
+  IF nouv_put.ne.dernier_put 
+  
+    
+   
+  PALM_PUT one_integer b2_put_1 PL_NO_TIME PL_NO_TAG nouv_put 
+    
+   
+  F90 dernier_put = nouv_put 
+  
+ 161",NA
+23 Palm Glossary,"Action:  
+ steplang language instruction to be executed on an event; for example: deletion of an 
+ object stored in the buffer, or set the status of an assembled object to ready. 
+ Cf
+ . § 8.4
+  
+ Algebra:
+  pre-defined unit for algebraic algorithms. The algebraic operations (linear combinations, 
+ linear systems solving, eigenvalues and eigenvectors computing, minimisers, ...) are implemented 
+ in the the PrePALM toolbox and can be used as any other unit in a coupling. 
+ Cf
+ . Chapter 6
+  
+ Application:
+  a PALM application is the collection of elementary units plus the main driver that 
+ cooperate to execute a given algorithm, by starting the necessary tasks and performing the needed 
+ data exchanges between these components.
+  
+ Barrier:
+  can be part of a PrePalm STEP: barriers are used for the synchronisation of parallel 
+ applications. In order to synchronize two or more branches it is possible to force a rendezvous. A 
+ barrier is enabled by the attribute 
+ PL_BARRIER_ON
+  of a STEP primitive invoked by the concerned 
+ branches. The branches will be blocked until every concerned branch has reached the step. 
+ Cf
+ . § 4.2
+  
+ Block:  
+ collection of several Palm units and control structures in a single executable file.  
+ Cf
+ . 
+ Chapter 3.
+  
+ Branch:  
+ a branch is a component of a PALM simulation. It is used for the description of the 
+ coupling algorithm. Several branches can be executed in parallel or sequentially. Each branch can 
+ start at the beginning of the simulation, or later on. A branch contains variables declarations and 
+ control structures. 
+ Cf
+ . Chapters 1 and 4.
+  
+ Buffer:
+  memory area belonging to the main process: the Palm driver (
+ palm_main
+ ). The buffer has 
+ to be considered as a common storage space accessible by all units. It can be distributed, spanning 
+ several processors and is dynamically managed, with allocations  and de-allocations triggered 
+ during the algorithm execution. It allows an explicit management of the objects exchanged between 
+ units, like an interpolation, or a composition. 
+ Cf
+ . Chapter 8.
+  
+ Category:
+  in Prepalm the bottom left pane displays the attributes of different entities, grouped in 
+ homogeneous collections called categories. With the top left selector you can switch the displayed 
+ category. 
+ Cf
+ . § 1.2.
+  
+ Communication: 
+ the mean for a unit (or a branch) to receive (get) or to release (put) an object. The 
+ PALM paradigm is based on end-point communications. A unit simply notifies that an object is 
+ asked (
+ PALM_Get
+ ) or made available (
+ PALM_Put
+ ). The user defines the correspondence between the 
+ two sides of the communication via the PrePALM interface. 
+ Cf
+ . Chapter 5.
+  
+ Computing code: 
+ source code of the program, written in a high level language like FORTRAN, C 
+ or C++.
+  
+ Constant: 
+ constants can be defined in Prepalm. They may be needed for the algorithm definition in 
+ the branch codes and in several menus (time or tag ranges of a communication). Moreover, they 
+ can be used inside the units source code by the inclusion of a language dependent file generated by 
+ PrePALM. 
+ Cf
+ . Chapter 3.
+  
+ 163",NA
+24 Reference guide of the PALM primitives ,NA,NA
+24.1C and Fortran formulation,NA,NA
+Dependence on the programming language: ,"Call from C/C++: 
+  
+  
+ int il_err ; 
+  
+  
+ il_err
+  = PALM_
+ Example
+ (arg1,arg2,…) ; 
+  
+ Call from FORTRAN: 
+  
+  
+ integer il_err 
+  
+  
+ CALL PALM_
+ Example
+  (arg1, arg2, …, 
+ il_err
+ ) 
+  
+ Remark: in the following the PALM primitives are written in the C format. For a FORTRAN use, 
+ do not forget to add the final return code integer argument",NA
+Application control: ,int PALM_Abort(),NA
+Communications: ,"int PALM_Get(char *space, char *obj, int *time, int *tag, void *data) 
+ int PALM_Put(char *space, char *obj, int *time, int *tag, void *data) 
+ int PALM_Query_get(char *space, char *obj, int *time, int *tag) int 
+ PALM_Query_put(char *space, char *obj, int *time, int *tag) 
+ With: 
+  
+  
+  
+ space, obj: character strings of length PL_LNAME
+  
+  
+  time: integer or PL_NO_TIME 
+  
+  
+  
+ tag: integer or PL_NO_TAG 
+  
+  
+  
+ data: array containing the data",NA
+Date to integer or integer to date conversions: ,"int PALM_Time_convert(int * dir,int *day,int *month,int *year,int *hour,int *min,int *sec,int 
+ *time) 
+  
+ With: 
+  
+  
+ dir: PL_TIME_INT2DATE or PL_TIME_DATE2INT 
+  
+ 168",NA
+Verbosity level definition:,"int PALM_Verblevel_overall_set(int *level)
+  
+ With
+ : 
+  
+  
+ level: integer or PL_VERBLVL_NOTHING, PL_VERBLVL_WARNING, 
+ PL_VERBLVL_USRLEVEL.
+  
+ and
+  
+ int PALM_Verblevel_get(int category, int *level)
+  
+ int PALM_Verblevel_set(int category, int *level)
+  
+ With: 
+  
+  
+ category: PL_VERB_BRANCH, PL_VERB_UNIT, PL_VERB_COMM,
+  
+  
+  PL_VERB_STEP or PL_VERB_GENERIC 
+  
+  
+ level : 0, 10, 20, 30, 40 or 50",NA
+Messages in PALM outputs:,"Writing messages
+ : 
+  
+ void PALM_Write 
+  
+ Only for C and C++: the function PALM_Write has the same format as fprintf , in order to be close 
+ to the Fortran: write(PL_OUT, … 
+  
+ Example: PALM_Write(PL_OUT, ‘’message %i’’,23) ; 
+  
+ Maximum message size: 1024 characters
+  
+ To force the actual writing of bufferised output on disk 
+ void PALM_Flush(PL_OUT);
+  
+ N.B. In FORTRAN you simply use the PL_OUT unit number in regular WRITE and FLUSH calls.
+  
+ Checking the content of objects: 
+  
+ int PALM_Dump(int op, char *space, char *obj, int time, int tag, void *data)
+  
+ With: 
+  
+  
+  
+ space, obj: character strings of length PL_LNAME
+  
+  
+  time: integer or PL_NO_TIME 
+  
+  
+  
+ tag: integer or PL_NO_TAG 
+  
+  
+  
+ data: array containing the data 
+  
+  
+  
+ op: PL_DUMP_MIN, PL_DUMP_MAX, PL_DUMP_SUM, PL_DUMP_ALL
+  
+ 169",NA
+Derived data types management:,"int PALM_Space_get_size(char *space)
+  
+ int PALM_Pack(void *buffer, char *space, char *item, int *position, void *data)
+  
+ int PALM_Unpack(void *buffer, char *space, char *item, int *position, void *data)
+  
+ With: 
+  
+ space, item: character strings of length: PL_LNAME 
+ buffer: array containing the packed data 
+  
+ data: array containing the unpacked data of type: item",NA
+Dynamic space management:,"int PALM_Space_set_shape(char* space, int* rank, int *shape) 
+ int PALM_Space_get_rank (char *space, int* rank) 
+  
+ int PALM_Space_get_shape(char *space, int rank, int *shape) 
+ int PALM_Object_get_spacename(char *obj, char *space)
+  
+ With: 
+  
+ space, obj: character strings of length PL_LNAME rank: 
+ number of dimensions 
+  
+ shape: integer array of size: rank (define each dimension)",NA
+Independent executable dynamic connection (with shared libraries) :,"int PALM_Connect() 
+  
+ int PALM_Disconnect()",NA
+Others primitives :,"int PALM_Get_myname(char *name)
+  
+ Return the name of the instance of the unit in PrePALM.With name character strings of length 
+ PL_LNAME 
+  
+ int PALM_Barrier(MPI_Comm comm)
+  
+ Allows synchronization on the MPI communicator comm. Based on MPI_Ibarrier and MPI_Test 
+ followed by a sleep. The environment variables PALMSPINWAITS and PALMNANOSLEEP 
+ have an influence on the behavior of this primitive.
+  
+ PALMSPINWAITS : Number of MPI_Test attempts before sleep mode.
+  
+ PALMNANOSLEEP : Passive waiting time in microseconds.
+  
+ 170",NA
+24.2Python formulation,"Python does not allow passing fundamental data types (int, float) by reference, which makes it 
+ impossible to write the functions in the same way as in C and Fortran.
+  
+ In Python, a class is used to group all the input/output attributes for the function calls. The Palm 
+ primitives are methods called on this object. In order to get a clear understanding of how to use the 
+ class, check the contents of the chapter dedicated to Python.
+  
+ Inside the palm module there is a class called PalmObject for communication, a class TimeConvert 
+ for time and date conversions and some primitives not associated with a class.",NA
+PalmObject class:,"Public attributes:
+  
+ object 
+  
+  
+ string of length PL_LNAME containing the object name 
+  
+ space 
+  
+ string of length PL_LNAME containing the space name for transmission/reception 
+ operations 
+  
+ for dynamic spaces, 
+ space 
+ shall be set to ""NULL"" 
+  
+ used only by the functions space_set_shape, put and get
+  
+ dynspace 
+  
+ string of length PL_LNAME containing the space name for operations concerning dynamic 
+ spaces 
+  
+ used only by the functions object_get_spacename, space_get_rank and space_get_shape
+  
+ rank 
+  
+  
+ integer defining the dimension count of the data array
+  
+ shape 
+  
+  
+ numpy integer array of dimension 
+ rank 
+ defining the shape of the data.
+  
+ When setting the attribute, any input format among integer, tuple, list or array will be 
+ converted automatically to a numpy object.
+  
+ The return type is always a numpy array.
+  
+ time 
+  
+  
+ integer defining the time stamp for the exchange
+  
+ tag 
+  
+  
+ integer defining the additional criteria 
+ tag
+  for the exchange
+  
+ 172",NA
+TimeConvert class:,"Public attributes:
+  
+ jour, mois, an, heure, min, sec: 
+ integers (day, month, year, hour, min, sec) defining the date in 
+ common format 
+  
+ time: 
+ integer encoding the date in Palm conventions according to PrePALM definitions.
+  
+ The conversion is done automatically when writing or reading the attributes.
+  
+ Public methods:
+  
+ TimeConvert.convert_time() 
+  
+  
+ Manual call of the date conversion routine (OpenPALM -> calendar).
+  
+  
+ arguments:
+  none 
+  
+  
+ return value:
+  error status 
+ il_err 
+  
+ TimeConvert.convert_to_time() 
+  
+  
+ Manual call of the date conversion routine (calendar -> OpenPALM).
+  
+ arguments:
+  none 
+  
+ return value:
+  error status 
+ il_err",NA
+Primitives without class:,"init
+ (char *unit_name) 
+  
+ Initialize an OpenPALM session.This command opens a connection to an OpenPALM 
+ session. It is used in the service files generated by PrePALM and usually need not be called 
+ manually.
+  
+  
+ arguments:
+  none 
+  
+  
+ return value
+ : error status 
+ il_err 
+  
+ finalize
+ () 
+  
+  
+ Finalize the OpenPALM session. This command closes the current OpenPALM session. It 
+  
+ is called at the end of the service files generated by PrePALM and usually need not be 
+  
+ called manually.
+  
+  
+ arguments:
+  none 
+  
+  
+ return value:
+  error status
+  il_err 
+  
+ get_mycomm
+ (Comm application_comm) 
+  
+  
+ Return MPI communicator used by PALM. This function can be used to obtain the MPI 
+  
+ communicator associated with the PALM execution. This communicator must be used by 
+  
+ parallel applications running in OpenPALM environment.
+  
+  
+ arguments:
+  MPI Comm object into which the communicator is written 
+  
+  
+ return value:
+  error status
+  il_err 
+  
+ abort
+ () 
+  
+  
+ Abort a PALM session. This command will be called on all running parallel processes and 
+  
+ terminates the application.
+  
+  
+ arguments:
+  none 
+  
+  
+ return value: 
+ error status
+  il_err 
+  
+ freeproc_nb
+ () 
+  
+  
+ Get the number of available processors. This formulation is more suitable to Python than 
+  
+ get_freeproc_nb
+ .
+  
+ arguments:
+  none 
+  
+ return value:
+  number of free processors
+  
+ 175",NA
+Not yet interfaced with Python: ,"connect, disconnect, query_put, query_get, verblevel_set, verblevel_get, flush
+  
+ The  functions  below  exist,  to  keep  a  similar  interface  to  C  and  Fortran.  However,  it  is 
+ recommended to use the methods on the PalmObject class in Python.
+  
+ space_set_shape
+ (char *spacename, int rank, ndarray shape) 
+ object_get_spacename
+ (char *objectname, char *spacename) 
+ space_get_rank
+ (char *spacename, ndarray rank) 
+  
+ space_get_shape
+ (char *spacename, int rank, ndarray shape)
+  
+ put
+ (char *space_name, char *object_name, int time, int tag, ndarray object) 
+ get(
+ char *space_name, char *object_name, int time, int tag, ndarray object
+ )
+  
+ 176",NA
+25 List of PCW primitives for the CWIPI library,NA,NA
+25.1C and Fortran Formulation,NA,NA
+Dependence on the programming language:,"Call from C/C++: 
+  
+ int il_err ; 
+  
+ il_err
+  = PCW_
+ Example
+ (arg1,arg2,…) ;
+  
+ Call from FORTRAN: 
+  
+ integer il_err 
+  
+ CALL PCW_
+ Example
+  (arg1, arg2, …, 
+ il_err
+ )
+  
+ Remark: in the following the PALM primitives are written in the C format. For a FORTRAN use, 
+ do not forget to add the final return code integer argument",NA
+CWIPI coupling control:,"int PCW_Init
+ () 
+  
+ Initialisation of the CWIPI library and setting up redirection of CWIPI output into the OpenPALM 
+ log files. Synchronisation point between all OpenPALM units which use CWIPI.
+  
+ int PCW_Init_tned
+ (int id_flag, MPI_Comm *id_outcomm) 
+  
+ Same as PCW_Init, but the id_flag parameter (value PL_CWIPI_ON or PL_CWIPI_OFF) allows 
+ user to use only some process in the coupling. If the value of id_flag is PL_CWIPI_OFF the other 
+ PCW primitives must not be called. The communicator id_outcomm include only processus called 
+ with the PL_CWIPI_ON flag. 
+  
+ int PCW_Finalize
+ () 
+  
+ Terminates the CWIPI environment. Synchronisation point.
+  
+ int PCW_Create_coupling
+ (char *coupling_id, 
+  
+ <= coupling identifier 
+  
+ int coupling_type, 
+  
+ <= coupling type
+  
+ int entitiesDim, 
+  
+ double tolerance,
+  
+ <= mesh dimension (1, 2 or 3) 
+  
+ <= geometric tolerance for localisation
+  
+ cwipi_mesh_type_t mesh_type, 
+  
+ <= mesh type
+  
+ cwipi_solver_type_t solver_type, 
+  
+ <= solver type
+  
+ int output_frequency, 
+  
+ char *output_format, 
+  
+ char *output_format_option, 
+ int nb_locations)
+  
+ <= intermediate output frequency 
+ <= format of visualisation files 
+ <= options for visualisation files 
+ <= optionally, if mesh_type = 
+  
+ CWIPI_CYCLIC_MESH, number of localisations to store in memory. 
+  
+ This command creates a coupling environment (coupling object) with the following parameters:
+  
+ - coupling_type 
+  
+ in C/C++: 
+  
+  
+ CWIPI_COUPLING_SEQUENTIAL 
+  
+  
+ CWIPI_COUPLING_PARALLEL_WITH_PARTITIONING 
+  
+  
+ CWIPI_COUPLING_PARALLEL_WITHOUT_PARTITIONNING 
+  
+  
+  
+ 177",NA
+CWIPI communications: ,"int PCW_Sendrecv
+ (char *coupling_id, 
+  
+ char *exchange_name,
+  
+ <= Face connectivity index (0 to n-1), size : n_faces+1 
+ <= Face connectivity (1 to n), 
+  
+  
+ size : face_connectivity_index[n_faces]
+  
+ <= coupling identifier (in) 
+  
+ <= exchange object identifier (in)
+  
+ int stride, 
+  
+ <= number of interlaced fields to exchange (in)
+  
+ int time_step, 
+  
+ <= time step for visualisation (in)
+  
+ double time_value, 
+  
+ char *sending_field_name, 
+ double *sending_field, 
+  
+ char *receiving_field_name, 
+ double *receiving_field, 
+  
+ int *not_located_points)
+  
+ <= time value for visualisation (in) <= 
+ name of transmitted field (in) 
+  
+ <= transmitted field (in) 
+  
+ <= name of received field (in) 
+  
+ <= received field (out) 
+  
+ <= number of non located points (out)
+  
+ Cross exchange of data fields on the two meshes. This primitive is a synchronisation point. In 
+ C/C++ this command can simulate a one way communication as in PCW_Send or PCW_Recv by 
+ using a NULL pointer for the received or sent field respectively.
+  
+ int PCW_Recv
+ (char *coupling_id, 
+  
+ char *exchange_name,
+  
+ <= coupling identifier (in) 
+  
+ <= exchange object identifier (in)
+  
+ int stride, 
+  
+ <= number of interlaced fields to exchange (in)
+  
+ int time_step, 
+  
+ <= time step for visualisation (in)
+  
+ double time_value, 
+  
+ char *receiving_field_name, 
+ double *receiving_field, 
+  
+ int *not_located_points)
+  
+ int PCW_Send
+ (char *coupling_id, 
+  
+ char *exchange_name,
+  
+ <= time value for visualisation (in) <= 
+ name of received field (in) 
+  
+ <= received field (out) 
+  
+ <= number of non located points (out)
+  
+ <= coupling identifier (in) 
+  
+ <= exchange object identifier (in)
+  
+ int stride, 
+  
+ <= number of interlaced fields to exchange (in)
+  
+ int time_step, 
+  
+ <= time step for visualisation (in)
+  
+ double time_value, 
+  
+ char *sending_field_name, 
+ double *sendingfield, 
+  
+ int *not_located_points)
+  
+ int PCW_Irecv
+ (char *coupling_id, 
+ char *exchange_name,
+  
+ <= time value for visualisation (in) <= 
+ name of transmitted field (in) 
+  
+ <= transmitted field (in) 
+  
+ <= number of non located points (out)
+  
+ <= coupling identifier (in) 
+  
+ <= exchange object identifier (in)
+  
+ int tag, 
+  
+ <= MPI tag of the communication (in) 
+  
+ int stride, 
+  
+ <= number of interlaced fields to exchange (in)
+  
+ int time_step, 
+  
+ <= time step for visualisation (in)
+  
+ double time_value, 
+  
+ char *receiving_field_name,
+  
+ <= time value for visualisation (in) 
+ <= name of received field (in)
+  
+ 179",NA
+Other primitives:,"int PCW_Set_output_listing
+ (int iunit) 
+  
+ <= Fortran logic device number 
+  
+ Redirects the CWIPI output into the Fortran logic device defined by its number. By default, the 
+ output is written to the files with the name of the branches followed by the process number if the 
+ unit is parallel.
+  
+ int PCW_Dump_application_properties
+ () 
+  
+ Writes the coupling properties to the output file.
+  
+ int PCW_Locate
+ (char *coupling_id) 
+  
+ <= coupling identifier (in) 
+  
+ Explicit localisation (by default, the localisation is done at the first data exchange except for non 
+ blocking-communications).
+  
+ int PCW_Update_location
+ (char *coupling_id) 
+  
+ <= coupling identifier (in) 
+ Explicit update of the localisation for mobile meshes.
+  
+ int PCW_Get_n_not_located_points
+ (char *coupling_id, <= coupling identifier (in) 
+  
+  
+ int *n_not_located_points) 
+  
+ <= number of non located points (out) 
+ Gives the number of non located points at the previous PCW_Locate
+  
+ int PCW_Get_not_located_points
+ (char *coupling_id 
+ int n_not_located_points, 
+  
+ int *not_located_points)
+  
+ int PCW_Get_n_located_points
+ (char *coupling_id, 
+  
+ int *n_located_points)
+  
+ <= coupling identifier (in) 
+  
+ <= number of non-located points (in) 
+ <= indices of non-located points (out)
+  
+ <= coupling identifier (in) 
+  
+ <= number of located points (out)
+  
+ Gives the number of located points at the previous PCW_ 
+  
+ Locate
+  
+ 180",NA
+"Localisations storage, from CWIPI 0.8.0","in memory: 
+  
+ int  PCW_Set_location_index
+ (char * coupling_id, <= coupling identifier  (in) 
+  
+ int index) 
+  
+ <= localisation index (in) 
+  
+ disk: 
+  
+ int PCW_Open_location_file
+ (char * coupling_id, <= coupling identifier (in) 
+  
+ char *filename, 
+  
+ <= file name(in) 
+  
+  
+ char *mode) 
+  
+ <= 'r' read, 'w' write Open a 
+ file to store the localisations. 
+  
+ int PCW_Close_location_file
+ (char * coupling_id) <= coupling identifier  (in) 
+ Close the file. 
+  
+ int PCW_Save_location
+ (char * coupling_id) 
+  
+ <= coupling identifier  (in) 
+ Store the current localisation, to call after an exchange. 
+  
+ int PCW_Load_location
+ (char * coupling_id) 
+  
+ <= coupling identifier  (in) 
+ Read the current localisation, to call before an exchange 
+  
+ 181",NA
+25.2Python Formulation,"Similarly to the Python interface for Palm (chapter 24.2), the PCW module also uses a class called 
+ Coupling 
+ which groups the attributes and methods for communications and contains independent 
+ functions outside of the Coupling class.",NA
+Coupling class:,"The interface is very similar to C, but the coupling id is saved along with the object, so that the 
+ argument char *coupling_id is never passed in the method calls as in C.
+  
+ Public attributes:
+  
+ n_not_located_points 
+  
+  
+ integer representing the number of non-located points found during a CWIPI mesh location
+  
+ not_located_points 
+  
+ numpy integer array of length 
+ n_not_located_points
+  containing the indices of non-located 
+ points
+  
+ irecv_request 
+  
+  
+ integer, unique identifier for an asynchronous communication (obtained by irecv) 
+ issend_request 
+  
+  
+ integer, unique identifier for an asynchronous communication (obtained by issend)
+  
+ Public methods:
+  
+ Creator: 
+  
+ Coupling
+ (char *coupling_id, int coupling_type, int entitiesDim, double tolerance, int mesh_type, 
+ int solver_type, int output_frequency, char *output_ 
+  
+ format, char *output_format_option) 
+  
+  
+ Creates a Coupling object, for parameter description refer to C/FORTRAN manual
+  
+ Destructor: 
+  
+ ~Coupling
+ () 
+  
+  
+ Destroys the CWIPI Coupling object.
+  
+ Coupling.define_mesh
+ (int n_vertex, int n_element, ndarray coordinates, ndarray 
+ connectivity_index, ndarray connectivity)
+  
+ Coupling.add_polyhedra
+ (int id_nbelem, ndarray ida_face_index, ndarray 
+  
+ ida_cell_to_face_connectivity, int n_faces, ndarray ida_face_connectivity_index, ndarray 
+ ida_face_connectivity)
+  
+ Coupling.set_points_to_locate
+ (int elem, ndarray coordinates)
+  
+ Coupling.update_location
+ ()
+  
+ Coupling.locate
+ ()
+  
+ 182",NA
+Other primitives: ,"init
+ () 
+  
+ finalize
+ () 
+  
+ set_output_listing
+ (file output_listing) 
+  
+ dump_application_properties
+ () 
+  
+ dump_status
+ (cwipi_exchange_status_t status)
+  
+ 184",NA
+26 Identity Cards syntax,"!PALM_UNIT
+  
+ Attribute
+  
+ Description
+  
+ type
+  
+  
+ -name
+  
+ Unit name 
+  
+ string
+  
+  
+ -functions
+  
+ List of the functions available to the user, and 
+ the programming language (F77 for Fortran77, 
+ F90 for Fortran90, C for C or C++ for C++) (*)
+  
+ List
+  
+  
+ -object_files
+  
+ List of objects files (*.o) or libraries (*.a) 
+ needed for link phase of the unit 
+  
+ List
+  
+  
+ -parallel
+  
+ Type of parallelism : 
+  
+ mpi for MPI 
+  
+ omp for OpenMP 
+  
+ no for mono-processor units
+  
+ mpi 
+  
+ omp 
+  
+ no
+  
+ option
+  
+ -minproc
+  
+ Minimum number of processors
+  
+ integer
+  
+ option
+  
+ -maxproc
+  
+ Maximum number of processors
+  
+ integer 
+  
+ option
+  
+ -comment
+  
+ Comment
+  
+ List
+  
+ option
+  
+ -class (**)
+  
+ Allows to specify that the unit is an algebra unit 
+ (or not)
+  
+ algebra or 
+ nothing
+  
+ option
+  
+ -library (**)
+  
+ Algebra library name (in case of an algebra unit)
+  
+ string
+  
+ option
+  
+ -mode (**)
+  
+ Specific information on the execution context, 
+ in case of an algebra unit
+  
+ sticky or 
+  
+ no_sticky 
+  
+ option
+  
+ -label (**)
+  
+ Short title of the unit, in case of an algebra unit 
+  
+ text
+  
+ option
+  
+ -help (**)
+  
+ detailed information on the unit
+  
+ text
+  
+ option
+  
+ (**) specific attribute defined only for the predefined algebra units.
+  
+ (*) If several functions are listed, the unit will sequentially execute each of them in the list order.
+  
+ 185",NA

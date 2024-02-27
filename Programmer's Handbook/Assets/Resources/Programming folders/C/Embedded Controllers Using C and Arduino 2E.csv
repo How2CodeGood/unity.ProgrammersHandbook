@@ -1,0 +1,6070 @@
+Larger Text,Smaller Text,Symbol
+Embedded Controllers ,NA,NA
+Using C and Arduino / 2E,NA,NA
+James M. Fiore,NA,NA
+Embedded Controllers ,NA,NA
+Using C and Arduino,NA,NA
+by ,NA,NA
+James M. Fiore,"Version 2.1.10, 07 May 2021
+  
+ Embedded Controllers 
+  
+ 3",NA
+Introduction,"This text is designed to introduce and expand upon material related to the C programming language and 
+ embedded controllers, and specifically, the Arduino development system and associated Atmel ATmega 
+ microcontrollers.  It is intended to fit the time constraints of a typical 3 to 4 credit hour course for 
+ electrical engineering technology and computer engineering technology programs, although it could also 
+ fit the needs of a hardware-oriented course in computer science. As such, the text does not attempt to 
+ cover 
+ every
+  aspect of the C language, the Arduino system or Atmel 
+ AVR
+  microcontrollers. The first 
+ section deals with the C language itself. It is assumed that the student is a relative newcomer to the C 
+ language but has some experience with another high level language, for example, Python. This means 
+ concepts such as conditionals and iteration are already familiar and the student can get up and running 
+ fairly quickly. From there, the Arduino development environment is examined. 
+  
+ Unlike the myriad Arduino books now available, this text does not simply rely on the Arduino libraries. 
+  
+ As convenient as the libraries may be, there are other, sometimes far more efficient, ways of 
+ programming the boards. Many of the chapters examine library source code to see “what’s under the 
+ hood”. This more generic approach means it will be easier for the student to use other processors and 
+ development systems instead of being tightly tied to one platform. 
+  
+ All Atmel schematics and data tables are derived from the published version of the Atmel 328P 
+ documentation which may be found at 
+ https://www.microchip.com/wwwproducts/en/ATMEGA328P
+  This 
+ serves as the final word on the operation and performance of the 328P and all interested parties should 
+ become familiar with it.
+  
+ There is a companion laboratory manual to accompany this text. Other 
+ OER
+  (Open Educational Resource) 
+ laboratory manuals in this series include Computer Programming with Python, and Science of Sound. 
+ OER
+  texts and laboratory manuals are available for Operational Amplifiers & Linear Integrated Circuits, 
+ Semiconductor Devices, 
+ DC
+  Electrical Circuit Analysis and 
+ AC
+  Electrical Circuit Analysis. Please check 
+ my web sites for the latest versions.",NA
+A Note from the Author,"This text is used at Mohawk Valley Community College in Utica, NY, for our 
+ ABET
+  accredited 
+ AAS 
+ program in Electrical Engineering Technology. Specifically, it is used in our second year embedded 
+ controllers course. I am indebted to my students, co-workers and the 
+ MVCC
+  family for their support and 
+ encouragement of this project. While it would have been possible to seek a traditional publisher for this 
+ work, as a long-time supporter and contributor to freeware and shareware computer software, I have 
+ decided instead to release this using a Creative Commons non-commercial, share-alike license. I 
+ encourage others to make use of this manual for their own work and to build upon it. If you do add to this 
+ effort, I would appreciate a notification. 
+  
+ “When things get so big, I don’t trust them at all 
+  
+ You want some control-you gotta keep it small”
+  
+ - Peter Gabriel
+  
+ Embedded Controllers 
+  
+ 5",NA
+Table of Contents,"1. Course Introduction 
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 8
+  
+ 68
+  
+  2. C Memory Organization 
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 10
+  
+  3. C Language Basics 
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 14
+  
+  4. C Language Basics II
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 24
+  
+  5. C Storage Types and Scope
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 32
+  
+  6. C Arrays and Strings
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 36
+  
+  7. C Conditionals and Looping
+  
+ .
+  
+ .
+  
+ .
+  
+  .
+  
+ 40
+  
+  8. C Pointers and Addresses
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 48
+  
+  9. C Look-Up Tables
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 52
+  
+ 10. C Structures
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 56
+  
+ 11. C Linked Lists*
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 60
+  
+ 12. C Memory*
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 64
+  
+ 13. C File I/O*
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 14. C Command Line Arguments*
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 72
+  
+ 15. Embedded Programming
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 74
+  
+ 16. Hardware Architecture.
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 78
+  
+ 17. AVR ATmega 328P Overview**
+  
+ .
+  
+ .
+  
+ .
+  
+ 84
+  
+ 18. Bits & Pieces: includes and 
+ defines
+  
+ .
+  
+ .
+  
+ .
+  
+ 90
+  
+ 19. Bits & Pieces: Digital Output Circuitry .
+  
+ .
+  
+ .
+  
+ 98
+  
+ 20. Bits & Pieces: Digital Input 
+ Circuitry
+  
+ .
+  
+ .
+  
+ .
+  
+ 102 
+  
+ 21. Bits & Pieces: pinMode .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 106
+  
+ 22. Bits & Pieces: digitalWrite
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 112
+  
+ 23. Bits & Pieces: delay
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 116
+  
+ 24. Bits & Pieces: digitalRead
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 124
+  
+ 25. Bits & Pieces: Analog Input Circuitry .
+  
+ .
+  
+ .
+  
+ 132
+  
+ 26. Bits & Pieces: analogRead
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 136
+  
+ 27. Bits & Pieces: analogWrite
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 142
+  
+ 28. Bits & Pieces: Timer/Counters .
+  
+ .
+  
+ .
+  
+ .
+  
+ 146
+  
+ 29. Bits & Pieces: Interrupts .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 154
+  
+ Appendices .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 160
+  
+ Index .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ .
+  
+ 165
+  
+ * Included for language coverage but seldom used for small to medium scale embedded work. 
+ ** Including modest comic relief for 
+ film noir
+  buffs.
+  
+ Embedded Controllers 
+  
+ 7",NA
+1. Course Introduction,NA,NA
+1.1 Overview ,"This course introduces the C programming language and specifically addresses the issue of embedded 
+ programming. It is assumed that you have worked with some other high level language before, such as 
+ Python, 
+ BASIC
+ , 
+ FORTRAN
+  or Pascal. Due to the complexities of embedded systems, we begin with a 
+ typical desktop system and examine the structure of the language along with basic examples. Once we 
+ have a decent grounding in syntax, structure, and the development cycle, we switch over to an embedded 
+ system, namely an 
+ Arduino
+  based development system. 
+  
+ This course is designed so that you can do considerable work at home with minimal cost if you choose to 
+ (this is entirely optional, but programming these little beasties can be addicting so be forewarned). Along 
+ with this course text and the associated lab manual, you will need an Arduino Uno board (about $25) and 
+ a 
+ USB
+  host cable. A small “wall wart” power adapter for it may also be useful. There’s a lot of free C 
+ programming info on the Internet but if you prefer print books and want more detail, you may also wish 
+ to purchase one of the many C programming texts available. Two good titles are Kochan’s book 
+ Programming in C
+  and the one by Deitel & Deitel, 
+ C-How to Program
+ . Whichever book you choose, 
+ make sure that its focus is C and not C++. You will also need a desktop C compiler. Just about any will 
+ do, including Visual C/C++, Borland, CodeWarrior, or even 
+ GCC
+ . A couple of decent freeware compilers 
+ available on the Internet include 
+ Pelles C
+  and 
+ Miracle C
+ .",NA
+1.2 Frequently Asked Questions,"Why learn C language programming? 
+  
+ C is perhaps the most widely used development language today. That alone is a good reason to 
+ consider it but there’s more: 
+  
+ •
+  
+ •
+  
+ •
+  
+ •
+  
+ •
+  
+ •
+  
+ •
+  
+ It is a modern structured language that has been standardized (ANSI). 
+  
+ It is modular, allowing reuse of code. 
+  
+ It is widely supported, allowing source code to be used for several different platforms by just 
+ recompiling for the new target. 
+  
+ Its popularity means that several third-party add-ons (libraries and modules) are available to 
+ “stretch” the language. 
+  
+ It has type checking which helps catch errors.
+  
+ It is very powerful, allowing you to get “close to the metal”.
+  
+ Generally, it creates very efficient code (small space and fast execution).
+  
+ What’s the difference between C and C++?
+  
+ C++ is a superset of C. First came C, then came C++. In fact, the name C++ is a programmer’s joke 
+ because ++ is the increment operator in C. Thus, C++ literally means “increment C”, or perhaps “give 
+ me the next C”. C++ does everything C does plus a whole lot more. These extra features don’t come 
+ free and embedded applications usually cannot afford the overhead. Consequently, although much 
+  
+ 8 
+ Embedded Controllers",NA
+2. C Memory Organization,NA,NA
+2.1 Introduction,"When programming in C, it helps if you know at least a little about the internal workings of simple 
+ computer systems. As C tends to be “close to the metal”, the way in which certain things are performed as 
+ well preferred coding techniques will be more apparent. 
+  
+ First off, let’s narrow the field a bit by declaring that we will only investigate a fairly simple system, the 
+ sort of thing one might see in an embedded application. That means a basic processor and solid state 
+ memory. We won’t worry about disk drives, monitors, and so forth. Specific details concerning controller 
+ architecture, memory hardware and internal 
+ IO
+  circuitry are covered in later chapters.",NA
+2.2 Guts 101,"A basic system consists of a control device called a 
+ CPU
+  (central processing unit), microprocessor, or 
+ microcontroller. There are subtle distinctions between these but we have little need to go very deep at this 
+ point. Microcontrollers tend not to be as powerful as standard microprocessors in terms of processing 
+ speed but they usually have an array of input/output ports and hardware functions (such as analog-to-
+ digital or digital-to-analog converters) on chip that typical microprocessors do not. To keep things simple 
+ we shall use the term “processor” as a generic.
+  
+ Microprocessors normally are connected to external memory (
+ RAM
+  chips). Microcontrollers generally 
+ contain sufficient on-board memory to alleviate this requirement but it is worthwhile to note that we are 
+ not talking about large (megabyte) quantities. A microcontroller may only contain a few hundred bytes of 
+ memory but in simple applications that may be sufficient. Remember, a byte of memory consists of 8 bits, 
+ each bit being thought of as a 1/0, high/low, yes/no, or true/false pair. 
+  
+ In order for a processor to operate on data held in memory, the data must first be copied into a processor’s 
+ register (it may have dozens of registers). Only in a register can mathematical or logical operations be 
+ carried out. For example, if you desire to add one to a variable, the value of the variable must first be 
+ copied into a register. The addition is performed on the register contents yielding the answer. This answer 
+ is then copied back to the original memory location of the variable. It seems a little roundabout at first, 
+ but don’t worry, the C language compiler will take care of most of those details for you.",NA
+2.3 Memory Maps,"Every byte of memory in a computer system has an address associated with it. This is a requirement. 
+  
+ Without an address, the processor has no way of identifying a specific location in memory. Generally, 
+ memory addressing starts at 0 and works its way up, although some addresses may be special or 
+ “reserved” in some systems. That is, a specific address might not refer to normal memory, but instead 
+ might refer to a certain input/output port for external communication. Very often it is useful to draw a 
+ memory map
+ . This is nothing more than a huge array of memory slots. Some people draw them with the 
+ lowest (starting) address at the top and other people draw them with the lowest address at the bottom. 
+  
+ 10 
+ Embedded Controllers",NA
+2.4 Stacks,"Many programs need only temporary storage for certain variables. That is, a variable may only be used for 
+ a limited time and then “thrown away”. It would be inefficient to allocate permanent space for this sort of 
+ variable. In its place, many systems use a 
+ stack
+ . Ordinarily, an application is split into two parts, a code 
+ section and a data section. The data section contains the “permanent” (global) data. As these two will not 
+ consume the entire memory map, the remainder of the memory is often used for temporary storage via a 
+ stack. The stack starts at the opposite end of the memory map and grows toward the code and data 
+ sections. It is called a First-In-Last-Out stack or 
+ FILO
+  stack. It works like a stack of trays in a cafeteria. 
+ The first tray placed on the stack will be the last one pulled off and vice versa. When temporary 
+  
+ Embedded Controllers
+  
+ 11",NA
+3. C Language Basics,NA,NA
+3.1 Introduction,"C is a terse language. It is designed for professional programmers who need to do a lot with a little code 
+ quickly. Unlike 
+ BASIC
+  or Python, C is a compiled language. This means that once you have written a 
+ program, it needs to be fed into a compiler that turns your C language instructions into machine code that 
+ the microprocessor or microcontroller can execute. This is an extra step, but it results in a more efficient 
+ program than an interpreter. An interpreter turns your code into machine language while it’s running, 
+ essentially a line at a time. This results in slower execution. Also, in order to run your program on another 
+ machine, that machine must also have an interpreter on it. You can think of a compiler as doing the 
+ translation all at once instead of a line at a time.
+  
+ Unlike many languages, C is not line oriented, but is instead free-flow. A program can be thought of as 
+ consisting of three major components: Variables, statements and functions. Variables are just places to 
+ hold things, as they are in any other language. They might be integers, floating point (real) numbers, or 
+ some other type. Statements include things such as variable operations and assignments (i.e., set x to 5 
+ times y), tests (i.e., is x more than 10?), and so forth. Functions contain statements and may also call other 
+ functions.",NA
+"3.2 Variable Naming, Types and Declaration","Variable naming is fairly simple. Variable names are a combination of letters, numerals, and the 
+ underscore. Upper and lower case can be mixed and the length is typically 31 characters max, but the 
+ actual limit depends on the C compiler in use. Further, the variable name cannot be a reserved (key) word 
+ nor can it contain special characters such as 
+ . ; , * -
+  and so on. So, legal names include things like 
+ x
+ , 
+ volts
+ , 
+ resistor7
+ , or even 
+ I_Wanna_Go_Home_Now
+ . 
+  
+ C supports a handful of variable types. These include floating point or real numbers in two basic flavors: 
+ float
+ , which is a 32 bit number, and 
+ double
+ , which is a higher precision version using 64 bits. There 
+ are also a few integer types including 
+ char
+ , which is 8 bits, 
+ short int
+ , which is 16 bits, and
+  long 
+ int
+ , which is 32 bits. As 
+ char
+  is 8 bits, it can hold 2 to the 8th combinations, or 256 different values. 
+ This is sufficient for a single ASCII character, hence the name. Similarly, a 
+ short int
+  (or 
+ short
+ , for 
+ short!) can hold 2 to the 16th combinations, or 65,536 values. 
+ char
+ s and 
+ int
+ s may be 
+ signed
+  or 
+ unsigned
+  (
+ signed
+ , allowing negative values, is the default). There is also a plain old 
+ int
+ , which might 
+ be either 16 or 32 bits, depending on which is most efficient for the compiler (to be on the safe side, never 
+ use plain old 
+ int
+  if the value might require more than 16 bits). 
+  
+ Sometimes you might also come across special double long integers (also called long longs) that take up 8 
+ bytes as well as 80 bit extended precision floats (as defined by the 
+ IEEE
+ ).
+  
+ 14 
+ Embedded Controllers",NA
+3.3 Functions,"Functions use the same naming rules as variables. All functions use the same template that looks 
+ something like this:
+  
+ return_value function_name( function argument list )
+  
+ {
+  
+ statement(s)
+  
+ }
+  
+ Figure 3.1, basic function template
+  
+ You might think of the function in the mathematical sense. That is, you give it some value(s) and it gives 
+ you back a value. For example, your calculator has a sine function. You send it an angle and it gives you 
+ back a value. In C, functions may have several arguments, not just one. They might not even have an 
+ argument. Also, C functions may return a value, but they don’t have to. The “guts” of the function are 
+ defined within the opening and closing brace pair 
+ {}
+ . So, a function which takes two integers, x and y, as 
+ arguments, and returns a floating point value will look something like this:
+  
+ float my_function( int x, int y )
+  
+ {
+  
+ //...appropriate statements here...
+  
+ }
+  
+ If the function doesn’t take or return values, the word 
+ void
+  is used. If a function neither requires values 
+ nor returns a value, it would look like:
+  
+ void other_function( void )
+  
+ {
+  
+ //...appropriate statements here...
+  
+ }
+  
+ This may appear to be extra fussy work at first, but the listing of data types makes a lot of sense because 
+ C has something called 
+ type checking
+ . This means that if you try to send a function the wrong kind of 
+ variable, or even the wrong number of variables, the compiler will warn you that you’ve made a mistake! 
+ Thus if you try to send 
+ my_function()
+  above two floats or three integers, the compiler will complain 
+ and save you a big headache during testing. 
+  
+ All programs must have a place to start, and in C, program execution begins with a function called 
+ main
+ . 
+ This does not have to be the first function written or listed, but all programs must have a function called 
+ main
+ .
+  Here’s our first program, found in Figure 3.2, following:
+  
+ 16
+  
+ Embedded Controllers",NA
+3.4 Libraries,"The examples above are rather limited because, although they perform a calculation, we have no way of 
+ seeing the result! We need some way to print the answer to the computer screen. To do this, we rely on 
+ system functions and libraries. There are a series of libraries included with most C development systems 
+ to cover a variety of needs. Essentially, someone has already coded, tested and compiled a bunch of 
+ functions for you. You add these functions to your program through a process called 
+ linking
+ . Linking 
+ simply combines your compiled code along with any required library code into a final executable 
+ program. For basic printouts, data input, and the like, we use the 
+ standard 
+ IO
+  (Input/Output) library
+ , or 
+ stdio
+  for short. There is a function in this library named 
+ printf()
+  for “print formatted”. So that the 
+  
+ 18
+  
+ Embedded Controllers",NA
+3.5 Some Simple Math,"C uses the same basic math operators as many other languages. These include 
+ +
+ , 
+ −
+ , 
+ /
+ (divide), and 
+ *
+ (multiply). Parentheses are used to group elements and force hierarchy of operations. C also includes 
+ % 
+ for modulo. Modulo is an integer operation that leaves the remainder of a division, thus 5 modulo 7 is 2. 
+  
+ The divide behaves a little differently with integers than with floats as there can be no remainder. Thus 9 
+ integer divide 4 is 2, not 2.25 as it would be if you were using floats. C also has a series of bit 
+  
+ manipulators that we will look at a little later. For higher math operations, you will want to look at the 
+ math library (
+ math.h
+  header file). Some examples are 
+ sin()
+ , 
+ cos()
+ , 
+ tan()
+ , 
+ log10(
+ )
+  (common log) 
+ and 
+ pow()
+  for powers and roots. Do 
+ not
+  try to use 
+ ^
+  as you do on many calculators. 
+ x
+  raised to the 
+ y 
+ power is 
+ not
+ x^y
+  but rather
+  pow(x, y)
+ . The 
+ ^
+  operator has an entirely different meaning in C! Recalling 
+ what we said earlier about libraries, if you wanted to use a function like 
+ sin()
+  in your code, you’d have 
+ to tell the compiler where to find the prototype and similar info. At the top of your program you’d add the 
+ line:
+  
+ #include <math.h>
+  
+ 20
+  
+ Embedded Controllers",NA
+3.6 The program creation/development cycle,"To create a C program:
+  
+ 1. 
+  
+ Do the requisite mental work. This is the most important part.
+  
+ 2. 
+  
+ Create the C source code. This can be done using a text editor, but is normally done within the 
+  
+ IDE
+  (Integrated Development Environment). C source files are plain text and saved with a “.c” 
+  
+ extension.
+  
+ 3. 
+  
+ Compile the source code. This creates an assembly output file. Normally, compiling 
+  
+ automatically fires up the assembler, which turns the assembly file into a machine language 
+  
+ output file.
+  
+ 4. 
+  
+ Link the output file with any required libraries using the linker. This creates an executable file. 
+  
+ For desktop development, this is ready to test. 
+  
+ 5. 
+  
+ For embedded development, download the resulting executable to the target hardware (in our 
+  
+ case, the Arduino development board). For the Arduino, steps 3, 4, and 5 can be combined by 
+  
+ selecting “Build” from the 
+ IDE
+  menu.
+  
+ 6. 
+  
+ Test the executable. If it doesn’t behave properly, go back to step one.",NA
+3.7 Summary,"Here are some things to keep in the back of your mind when learning C:
+  
+ •
+  
+ •
+  
+ •
+  
+ •
+  
+ •
+  
+ •
+  
+ •
+  
+ •
+  
+ C is terse. You can do a lot with a little code.
+  
+ As it allows you to do almost anything, a novice can get into trouble very quickly.
+  
+ It is a relatively thin language, meaning that most “system functions” are not part of the language 
+ per se, but come from link-time libraries.
+  
+ Function calls, function calls, and more function calls!
+  
+ Source code is free flow, not line oriented. A “line” of code is usually terminated with a 
+ semicolon.
+  
+ Shortcuts allow experts to create code that is almost indecipherable by normal programmers. 
+ All variables must be declared before use (not free flow as in Python).
+  
+ Variables can be global or local in scope. That is, a local variable can be “known” in one place of 
+  
+ the program and not in another.
+  
+ Embedded Controllers 
+  
+ 21",NA
+3.8 Exercises ,"1. Write a C code comment that includes your name and the date. Use both the single line and the multi-
+ line styles.
+  
+ 2. Write a function that will take three floating point values as arguments. The function should return the 
+ average value of the three arguments.
+  
+ 3. Write a program that will print out your name.
+  
+ 22 
+ Embedded Controllers",NA
+4. C Basics II,NA,NA
+4.1 Input and Output,"We’ve seen the use of 
+ printf() 
+ to send information to the computer screen. 
+ printf()
+  is a very large 
+ and complicated function with many possible variants of format specifiers. Format specifiers are the “% 
+ things” used as placeholders for values. Some examples are:
+  
+ %f 
+ float
+  
+ %lf 
+ double (long float)
+  
+ %e 
+ float using exponent notation
+  
+ %g 
+ float using shorter of 
+ e
+  or 
+ f
+  style
+  
+ %d 
+ decimal integer
+  
+ %ld 
+ decimal long integer
+  
+ %x 
+ hexadecimal (hex or base 16) integer
+  
+ %o 
+ octal (base 8) integer
+  
+ %u 
+ unsigned integer
+  
+ %c 
+ single character
+  
+ %s 
+ character string 
+  
+ Figure 4.1, print format types
+  
+ Suppose that you wanted to print out the value of the variable
+ ans
+  in decimal, hex, and octal. The 
+ following instruction would do it all:
+  
+ printf(“The answer is %d, or hex %x, or octal %o.\n”, ans, ans, ans );
+  
+ Note how the three variables are labeled. This is important. If you printed something in hex without some 
+ form of label, you might not know if it was hex or decimal. For example, if you just saw the number “23”, 
+ how would you know it’s 23 decimal or 23 hex (35 decimal)? For that matter, how would you set a hex 
+ constant in your C code? The compiler would have no way of “knowing” either. To get around this, hex 
+ values are prefixed with
+  0x
+ . Thus, we have 
+ 0x23
+  for hex 23. The 
+ printf()
+  function does not 
+ automatically add the 
+ 0x
+  on output. The reason is because it may prove distracting if you have a table 
+ filled only with hex values. It’s easy enough to use 
+ 0x%d
+  instead of just 
+ %d
+  for the output format.
+  
+ You can also add a field width specifier. For example, 
+ %5d
+  means print the integer in decimal with 5 
+ spaces minimum. Similarly, 
+ %6.2f
+  means print the floating point value using 6 spaces minimum. The 
+ “.2” portion is a precision specifier and in this case indicates 2 digits after the decimal point are to be 
+ used. As you can see, this is a very powerful and flexible function!
+  
+ The mirror input function is 
+ scanf().
+  This is similar to Python’s 
+ input
+  statement. Although you can 
+ ask for several values at once, it is generally best to ask for a single value when using this function. It uses 
+ the same sort of format specifiers as 
+ printf()
+ . There is one important point to note. The 
+ scanf() 
+ function needs to know where to place the entered value in computer memory. Simply informing it of the 
+ name of the variable is insufficient. You must tell it where in memory the variable is, in other words, you 
+  
+ 24
+  
+ Embedded Controllers",NA
+4.2 Variable Sizes,"A common question among new programers is “Why are there so many sizes of variables available?” We 
+ have two different sizes of reals; 
+ float
+  at 32 bits, and 
+ double
+  at 64 bits. We also have three different 
+ sizes of intgers at 8, 16, and 32 bits each
+ 4
+ . In many languages, there’s just real and integer with no size 
+ variation, so why does C offer so many choices? The reason is that “one size 
+ doesn’t
+  fit all”. You have 
+ options in order to optimize your code. If you have a variable that ranges from say, 0 to 1000, there’s no 
+ need to use more than a short (16 bit) integer. Using a 32 bit integer simply uses more memory. Now, you 
+ might consider 2 extra bytes to be no big deal, but remember that we are talking about embedded 
+ controllers in some cases, not desktop systems. Some small controllers may have only a few hundred 
+ bytes of memory available for data. Even on desktop systems with gigabytes of memory, choosing the 
+ wrong size can be disastrous. For example, suppose you have a system with an analog to digital converter 
+ for audio. The 
+ CD
+  standard sampling rate is 44,100 samples per second. Each sample is a 16 bit value (2 
+ bytes), producing a data rate of 88,100 bytes per second. Now imagine that you need enough memory for 
+ a five minute song in stereo. That works out to nearly 53 megabytes of memory. If you had chosen long 
+ (32 bit) integers to hold these data, you’d need about 106 megabytes instead. As the values placed on an 
+ audio 
+ CD
+  never exceed 16 bits, it would be foolish to allocate more than 16 bits each for the values. Data 
+ sizes are power-of-2 multiples of a byte though, so you can’t choose to have an integer of say, 22 bits 
+ length. It’s 8, 16, or 32 for the most part (some controllers have an upper limit of 16 bits).
+  
+ In the case of 
+ float
+  versus 
+ double
+ , 
+ float
+  is used where space is at a premium. It has a smaller range 
+ (size of exponent) and a lower precision (number of significant digits) than 
+ double
+ . 
+ double
+  is generally 
+ preferred and is the norm for most math functions. Plain floats are sometimes referred to as 
+ singles
+  (that 
+ is, single precision versus double precision).
+  
+ If you don’t know the size of a particular data item (for example an 
+ int
+  might be either 16 or 32 bits 
+ depending on the hardware and compiler), you can use the 
+ sizeof()
+  command. This looks like a 
+ function but it’s really built into the language. The argument is the item or expression you’re interested in. 
+ It returns the size required in bytes.
+  
+ size = sizeof( int );
+  
+ size
+  will be either 2 or 4 depending on the system.
+  
+ 4
+  In some systems 80 bit doubles and/or 64 bit integers are also available.
+  
+ Embedded Controllers 
+  
+ 25",NA
+4.3 More Math,"OK, so what happens if you add or multiply two 
+ short int
+  together and the result is more than 16 bits 
+ long? You wind up with an overrange condition. Note that the compiler cannot warn you of this because 
+ whether or not this happens will depend entirely on values entered by the user and subsequently computed 
+ within the program. Hopefully, you will always consider maximum value cases and choose appropriate 
+ data sizes and this won’t be a problem. But what actually happens? To put it simply, the top most bits will 
+ be ignored. Consider an 8 bit unsigned integer. It goes from 0 to 255. 255 is represented as eight 1s. What 
+ happens if you add the value 1 to this? You get a 9 bit number: a 1 followed by eight 0s. 
+  
+ That ninth bit is thrown away as the variable only has eight bits. Thus, 255 plus 1 equals 0! This can 
+ create some serious problems! For example, suppose you wanted to use this variable as a loop counter. 
+ You want to go through a loop 500 times. The loop will never terminate because an 8 bit integer can’t go 
+ up that high. You keep adding one to it, but it keeps flipping back to 0 after it hits 255. This behavior is 
+ not all bad; it can, in fact, be put to good use with things like interrupts and timers, as we shall see.
+  
+ What happens if you mix different types of variables? For example, what happens if you divide a 
+ double 
+ by an 
+ int
+  or a 
+ float
+  by 
+ double
+ ? C will 
+ promote
+  the lesser size/precision types to the larger type and 
+ then do the operation. This can sometimes present a problem if you try to assign the result back to 
+ something smaller, even if you know it will always “fit”. The compiler will complain if you divide a 
+ long int
+  by another 
+ long int
+  and try to assign the result to a 
+ short int
+ . You can get around this by 
+ using a 
+ cast
+ . This is your way of telling the compiler that you know there is a potential problem, but to go 
+ ahead anyway (hopefully, because you know it will always work, not just because you want to defeat the 
+ compiler warning). Casting in C is similar to type conversion in Python (e.g., the 
+ int()
+  function). Here’s 
+ an example.
+  
+ short int x, y=20; 
+  
+ long int z=3;
+  
+ x=(short int)(y/z);
+  
+ Note how you are directing the compiler to turn the division into a 
+ short int
+ . Otherwise, the result is in 
+ fact a 
+ long int
+  due to the promotion of 
+ y
+  to the level of 
+ z
+ . What’s the value of 
+ x
+ ? Why it’s 6 of course! 
+ Remember, the fractional part is meaningless, and thus lost, on integer divides. 
+  
+ Casting is also useful when using math functions. If you have to use 
+ float
+ , you can cast them to/from 
+ double
+  to make use of functions defined with 
+ double
+ . For example, suppose 
+ a
+ , 
+ b
+ , and 
+ c
+  are declared as 
+ float
+  but you wish to use the 
+ pow()
+  function to raise 
+ a
+  to the 
+ b
+  power. 
+ pow()
+  is defined as taking two 
+ double
+  arguments and returning a 
+ double
+  answer.
+  
+ c = (float)pow( (double)a, (double)b );
+  
+ This is a very explicit example. Many times you can rely on a “silent cast” promotion to do your work for 
+ you as in the integer example above. Sometimes being explicit is a good practice just as a form of 
+ documentation.
+  
+ 26 
+ Embedded Controllers",NA
+4.4 Bitwise Operations,"Sometimes you’d like to perform bitwise operations rather than ordinary math. For example, what if you 
+ want to logically 
+ AND
+  two variables, bit by bit? Bitwise operations are very common when programming 
+ microcontrollers as a means of setting, clearing and testing specific bits in control registers (for example, 
+ setting a specific pin on a digital port to read mode instead of write mode). C has a series of bitwise 
+ operators. They are:
+  
+ & 
+ AND
+  
+ | 
+ OR
+  
+ ^ 
+ XOR
+  
+ ~ 
+ One’s Complement
+  
+ >> 
+ Shift Right
+  
+ << 
+ Shift Left
+  
+ Figure 4.2, bitwise operators
+  
+ Note the double use of 
+ &
+  for “address of” and now 
+ AND
+ . The unary operation is always “address of”, and 
+ the binary operation is always 
+ AND
+ , so
+  a & b
+  would 
+ not
+  imply the address of 
+ b
+ . If you wanted to 
+ AND
+ x 
+ with 
+ y
+ , shift the result 2 places to the left and assign the result to 
+ z
+ , you’d use:
+  
+ z = (x&y)<<2;
+  
+ Let’s look at a few examples. Suppose the variables 
+ X
+ , 
+ Y
+  and 
+ Z
+  are 
+ unsigned char
+ s. 
+ X
+  and 
+ Y
+  are set to 
+ 13 and 134, respectively. In hex, that’s 0x0d and 0x86 for bit patterns of 00001101 and 10000110.
+  
+ Z = X<<3; 
+ Z = X>>1; 
+ Z = ~X; 
+  
+ Z = X|Y; 
+  
+ Z = X&Y; 
+  
+ Z = X^Y;
+  
+ // Z is 01101000 or 
+ 0x68 // Z is 00000110 
+ or 
+ 0x06 
+ // 
+ Z 
+ is 
+ 11110010 or 0xf2 // Z 
+ is 10001111 or 0x8f // 
+ Z is 00000100 or 0x04 
+ // Z is 10001011 or 
+ 0x8b",NA
+"4.5 Setting, Clearing and Reading Register Bits","Bitwise operations may appear to be somewhat arcane to the uninitiated but are in fact commonly used. A 
+ prime use is in setting, clearing and testing specific bits in registers. One example involves configuring 
+ bidirectional ports for input or output mode via a 
+ data direction register
+ , typically abbreviated 
+ DDR
+ . Each 
+ bit of the 
+ DDR
+  represents a specific output pin. A logic high might indicate output mode while a logic low 
+ would indicate input mode. Assuming 
+ DDR
+  is an 8 bit register, if you wanted to set all bits except the 0
+ th 
+ bit to input mode, you could write
+ 5
+ :
+  
+ DDR = 0x01; // set bit zero to output mode
+  
+ 5
+  In C, bit position counting, 
+  
+ Embedded Controllers
+  
+ like most sequences, starts from position 0 not position 1.
+  
+ 27",NA
+4.6 #define ,"Very often it is desirable to use symbolic constants in place of actual values. For example, you’d probably 
+ prefer to use a symbol such as PI instead of the number 3.14159. You can do this with the
+  #define 
+ preprocessor directive. These are normally found in header files (such as stdio.h or math.h) or at the top 
+ of a module of C source code. You might see something like: 
+  
+   
+ #define PI 3.14159 
+  
+ Once the compiler sees this, every time it comes across the token 
+ PI
+  it will replace it with the value 
+ 3.14159.  This directive uses a simple substitution but you can do many more complicated things than 
+ this. For example, you can also create something that looks like a function:
+  
+ 28 
+ Embedded Controllers",NA
+4.7 Keywords ,"Here is a list of keywords in the C language:
+  
+  
+ auto
+  
+ break
+  
+ case
+  
+ char
+  
+ const
+  
+ continue 
+  
+ do
+  
+ default
+  
+ double
+  
+ else
+  
+ entry 
+  
+ extern
+  
+ float
+  
+ for
+  
+ goto
+  
+ if 
+  
+ int
+  
+ long
+  
+ register
+  
+ return
+  
+ sizeof
+  
+ short
+  
+ static
+  
+ struct
+  
+ switch
+  
+ typedef 
+  
+ union
+  
+ unsigned
+  
+ volatile
+  
+ while
+  
+  
+ Figure 4.3, C language keywords
+  
+ We’ve looked at quite a few of these already. Some that we haven’t you can probably guess the use of. As 
+ stated previously, C is a “skinny” language!",NA
+4.8 Exercises ,"1. Write a line of code that will print the statement “The result is 
+ x
+  volts” where 
+ x 
+ is the value given by the 
+ floating point variable 
+ output_voltage
+ .
+  
+ 2. Write a line of code to define a constant called 
+ RECIP2PI
+  that is equal to 1/(2π).
+  
+ 3. Write the code to determine the number of bytes required for a variable called 
+ POWER_SUPPLY
+ . 
+  
+ 4. Assume the 8 bit variable 
+ X
+  exists. Write the code to set the MSB (most significant bit), leaving all 
+ other bits unchanged.
+  
+ 5. Assume the 8 bit variable 
+ Y
+  exists. Write the code to set the LSB (least significant bit), leaving all other 
+ bits unchanged.
+  
+ 6. Assume the 8 bit variable 
+ Z
+  exists. Write the code to clear the MSB and LSB, leaving all other bits 
+ unchanged.
+  
+ 7. Assume the 8 bit variable 
+ W
+  exists. Write the code to complement each bit (flip 0 to 1 and 1 to 0). 
+ 8. If 
+ X
+  is 0x04 and 
+ Y
+  is 0x09, what are a) 
+ X|Y
+ , b) 
+ X&Y
+ , c) 
+ ~X
+ , d) 
+ 0xf1&Y
+ ?
+  
+ 9. If 
+ X
+  is 0xf0 and 
+ Y
+  is 0x11, what are a) 
+ X|Y
+ , b) 
+ X&Y
+ , c) 
+ ~X
+ , d) 
+ 0xf1&Y
+ ?
+  
+ 30
+  
+ Embedded Controllers",NA
+5. C Storage Types and Scope,NA,NA
+5.1 Types,"C has several ways of storing or referencing variables. These affect the way variables behave. Some of the 
+ more common ones are: auto, register, and static. 
+  
+ Auto variables are variables declared within functions that are not static or register types. That is, the 
+ auto
+  keyword is the default. Normally, auto variables are created on the application’s stack, although C 
+ doesn’t require this. The stack is basically a chunk of memory that is allocated for the application’s use 
+ when it is first run. It is a place for temporary storage, with values popped onto and pulled off of the stack 
+ in first-in, last-out order (like a stack of plates). Unless you initialize an auto variable, you have no idea 
+ what its value is when you first use it. Its value happens to be whatever was in that memory location the 
+ previous time it was used. It is important to understand that this includes subsequent calls to a function 
+ (i.e., its prior value is not “remembered” the next time you call the function). This is because any 
+ subsequent call to a function does not have to produce the same the memory locations for these variables, 
+ anymore than you always wind up with the same plate every time you go to the cafeteria. 
+  
+ Register variables are similar to auto types in behavior, but instead of using the usual stack method, a 
+ CPU 
+ register is used (if available). The exact implementation is 
+ CPU
+  and compiler specific. In some case the 
+ register
+  keyword is ignored and a simple auto type is used. 
+ CPU
+  registers offer faster access than 
+ normal memory so register variables are used to create faster execution of critical code. Typically this 
+ includes counters or pointers that are incremented inside of loops. A declaration would like something 
+ like this:
+  
+ register int x;
+  
+ Static variables are used when you need a variable that maintains its value between function calls. So, if 
+ we need a variable that will “appear the way we left it” from the last call, we might use something like 
+ this:
+  
+ static char y;
+  
+ There is one important difference between auto and static types concerning initialization. If an auto 
+ variable is initialized in a function as so:
+  
+ char a=1;
+  
+ Then 
+ a
+  is set to 
+ 1
+  each time the function is entered. If you do the same initialization with a static, as in:
+  
+ static char b=1;
+  
+ Then 
+ b
+  is set to 
+ 1
+ only
+  on the first call. Subsequent entries into the function would not incur the 
+ initialization. If it did reinitialize, what would be the sense of having a static type? This is explained by 
+ the fact that a static does not usually use the stack method of storage, but rather is placed at a fixed 
+ memory location. Again, C does not 
+ require
+  the use of a stack, rather, it is a typical implementation.
+  
+ 32 
+ Embedded Controllers",NA
+5.2 Scope,"Scope has to do with where variables are “seen”. We have already mentioned the idea of global and local 
+ in previous work but it is time to delve a little deeper. Generally, variables only exist within the block they 
+ are declared. While it is legal to declare variables inside of a conditional or loop block, we normally 
+ declare variables at the very beginning of a function. Consequently, these variables are known within the 
+ function. That is, their scope of reference is within the function. Nothing outside of the function knows 
+ anything about them. Thus, we say that they are local, or perhaps localized, to the function. For example, 
+ consider the two function fragments below:
+  
+ void func1( void )
+  
+ {
+  
+ int x;
+  
+ int y; 
+  
+ //...some code here...
+  
+ }
+  
+ void func2( void ) 
+  
+ { 
+  
+  
+ int y; 
+  
+  
+ int z;
+  
+ }
+  
+ //...some other code here...
+  
+ There is no direct way to access the 
+ z
+  variable of 
+ func2() 
+ from 
+ func1()
+ . Likewise, there is no direct 
+ way to access the 
+ x
+  variable of 
+ func1()
+  from 
+ func2()
+ . More interestingly, the 
+ y
+  variables of 
+ func1() 
+ and 
+ func2()
+  are entirely different! They do 
+ not
+  refer to the same variable. This sometimes can be 
+ confusing for new programmers but it is essential for large programs. Imagine that you were working with 
+ a team of people on a very large program, perhaps tens of thousands of lines long. If the idea of local 
+ scope did not exist, you’d have to make sure that every single variable in the program had a unique name!
+  
+ This would create a nightmare of confusion. By using local scope, you’re saying: “I only need this 
+ variable for a job within this function. As it only needs to exist within this function, its name is only 
+ meaningful within this function.”
+  
+ If some form of “universally known” data item is needed, we can resort to the 
+ global
+ . Globals act pretty 
+ much like statics and are usually stored the same way. If you have a program that consists of a single file, 
+ you can declare your globals by listing them at the beginning of the program before (and outside of) any 
+ functions. In this way they will be read by the compiler first and will therefore be “known” to all 
+ functions that follow. Do not get in the habit of declaring all variables as global. This is considered a bad 
+ and inefficient coding method. Get into the habit of using locals as the norm and resort to globals only 
+ when called for. 
+  
+ Embedded Controllers 
+  
+ 33",NA
+5.4 Exercises ,"1. Assume a function declares a variable like so: 
+ static int x=0;
+  The function increments the 
+ variable and then prints its value. What does the function print out on the tenth call to the function? How 
+ would this change if the 
+ static
+  keyword was not used?
+  
+ 2. Consider the following snippet of code: 
+  
+  
+ void doug( void ) 
+  
+  
+ { 
+  
+  
+  
+ int x=0; 
+  
+  
+  
+ x=x+1; 
+  
+  
+  
+ printf( “%d\n”, x ); 
+  
+  
+ } 
+  
+  
+ void dinsdale( void )
+  
+ {
+  
+ int x=20;
+  
+ x=x+1;
+  
+ }
+  
+ printf( “%d\n”, x );
+  
+ Suppose you call 
+ doug()
+  five times in a row and then call 
+ dinsdale()
+  five times in a row. What would 
+ the resulting output look like?
+  
+ 34 
+ Embedded Controllers",NA
+6. C Arrays and Strings,NA,NA
+6.1 Introduction,"Up to now we haven’t talked much about character strings, that is, variables that contain non-numeric 
+ data such as a person’s name or address. There is no string variable type in C (unlike Python). In C, 
+ strings are nothing more than arrays of characters. Arrays are a simple grouping of like variables in a 
+ sequence, each with the same name and accessed via an index number. They behave similarly to arrays in 
+ most other languages (or lists in Python). C arrays may have one, two, or more dimensions. Here are a 
+ few example declarations:
+  
+ float results[10]; 
+  
+ An array of 10 floats
+  
+ long int x[20]; 
+  
+ An array of 20 longs, or 80 bytes
+  
+ char y[10][15]; 
+  
+ A two-dimension array, 10 by 15 chars each, 150 bytes total
+  
+ Note the use of square brackets and the use of multiple sets of square brackets for higher dimension 
+ arrays. Also, C arrays are counted from index 0 rather than 1.
+ 6
+  For example, the first item of 
+ results[] 
+ is 
+ results[0
+ ]
+ . The last item is
+  results[9]
+ . There is no such item here as 
+ results[10]
+ . That would 
+ constitute an illegal access. You can pre-initialize arrays by listing values within braces, each separated by 
+ a comma:
+  
+ double a[5] = {1.0, 2.0, 4.7, -177.0, 6.3e4};
+  
+ If you leave the index out, you get as many elements as you initialize:
+  
+ short int b[] = {1, 5, 6, 7}; /* four elements */
+  
+ If you declare more than you initialize, the remainder are set to zero if the array is global or static (but not 
+ if auto).
+  
+ short int c[10] = {1, 3, 20}; /* remaining 7 are set to 0 */
+  
+ If you are dealing with character strings you could enter the ASCII codes for the characters, but this 
+ would be tedious in most cases. C let’s you specify the character in single quotes and it will do the 
+ translation:
+  
+ char m[20] = {‘m’, ‘y’, ‘ ’, ‘d’, ‘o’, ‘g’, 0};
+  
+ (The reason for the trailing 0 will be evident in a moment.) Even easier is to specify the string within 
+ double quotes:
+  
+ char n[20]={“Bill the cat”};
+  
+ Consider the string
+  n[]
+  above. It contains 12 characters but was declared to hold 20. Why do this? Well, 
+ you may need to copy some other string into this variable at a future time. By declaring a larger value, the 
+ variable can hold a larger string later. At this point you might be wondering how the C library functions 
+ “know” to use just a portion of the allocated space at any given time (in this case, just the first 12 
+  
+ 6
+  The reason for this will be apparent when we cover addresses and pointers.
+  
+ 36 
+ Embedded Controllers",NA
+6.2 String Manipulation,"A confusing aspect of C strings for beginners (especially those coming from 
+ BASIC
+  or even Python) is 
+ how to manipulate them. That is, how do you copy one string to another, compare strings, extract a 
+ substring, and so forth? As strings are really arrays, you can’t assign one to the other as in 
+ a[] = b[]; 
+ Instead, we rely on a series of string functions found in the string library. To use these functions, you need 
+ to link your code with the string library and use 
+ #include <string.h>
+  at the start of your code. To 
+ copy one string to another, use 
+ strcpy()
+ . The template is:
+  
+ strcpy( destination, source );
+  
+ So, if you wanted to copy the contents of 
+ my_pet[]
+  into 
+ n[]
+ , you could write:
+  
+ strcpy( &n[0], &my_pet[0] );
+  
+ If you’re awake at this point, you might ask “What’s with the ampersand?” Good question! What the 
+ string copy function needs are the starting addresses of the two arrays. In essence, all it does is copy a 
+ character at a time from the source to the destination. When it hits the trailing null it’s done. We’ve 
+ already seen the “address of” (
+ &
+ ) operator earlier when we looked at 
+ scanf()
+ . So, all we’re saying here 
+ is “For the source, start at the address of the first character of 
+ my_pet[]
+ , and for the destination, start at 
+ the first character of 
+ n[]
+ .” This can be a little cumbersome, so C offers a shortcut. You can think of 
+ &
+  and 
+ []
+  as sort of canceling each other out. We’d normally write:
+  
+ strcpy( n, my_pet );
+  
+ Note that it is perfectly acceptable to use an index other than zero if you need to copy over just a chunk of 
+ the string. You could start copying from index 2 if you’d like, and just get “do” instead of “fido”:
+  
+ Embedded Controllers 
+  
+ 37",NA
+6.3 Exercises ,"1. Write the code to declare an array of 12 single precision real numbers. 
+  
+ 2. Write the code to declare an array of 15 eight bit signed integers.
+  
+ 3. Assume that an array of 100 double precision real numbers has been declared and is named 
+ points
+ . 
+ Write the code to print out the first item of 
+ points
+ . Also, write the code to set the last item of 
+ points
+  to 
+ 0.0. 
+  
+ 4. Declare a string called 
+ mammal
+  and initialize it to the word 
+ woodchuck
+ .
+  
+ 5. Do you see any potential problems with this snippet of initialization code? If so, explain the issues and 
+ how they might be corrected.
+  
+ char bird; 
+  
+ bird[0]=’s’
+  
+ bird[1]=’w’
+  
+ bird[2]=’a’
+  
+ bird[3]=’l’
+  
+ bird[4]=’l’
+  
+ bird[5]=’o’
+  
+ bird[6]=’w’
+  
+ Embedded Controllers 
+  
+ 39",NA
+7. C Conditionals and Looping,NA,NA
+7.1 Conditionals,"C uses a fairly standard if/else construct for basic conditionals. They may be nested and each portion may 
+ consist of several statements. The condition itself may have multiple elements and be formed in either 
+ positive or negative logic. The basic construct is:
+  
+ if( test condition(s)... ) 
+  
+ {
+  
+ }
+  
+ //...do stuff...
+  
+ The else portion is optional and looks like:
+  
+ if( test condition(s).. )
+  
+ {
+  
+ //...do stuff...
+  
+ } 
+  
+ else
+  
+ {
+  
+ //...do other stuff...
+  
+ }
+  
+ If there is only a single statement in the block (i.e., between the braces), the braces may be removed if 
+ desired:
+  
+ if( test condition(s).. )
+  
+ else
+  
+ //...single statement...
+  
+ //...do other statement...
+  
+ The test condition may check for numerous possibilities. The operators are:
+  
+ == 
+  
+ equality
+  
+ != 
+  
+ inequality
+  
+ > 
+  
+ greater than
+  
+ < 
+  
+ less than
+  
+ >= 
+  
+ greater than or equal to
+  
+ <= 
+  
+ less than or equal to
+  
+ Figure 7.1, relational operators
+  
+ It is very important to note that equality uses a double equal sign. A single equal sign is an assignment 
+ operation. Don’t think “equals”, think “same as”, with one symbol for each word. You may also use 
+ Boolean (logic) operators, as shown in Figure 7.2.
+  
+ 40
+  
+ Embedded Controllers",NA
+7.2 Nesting,"If a multiple condition won’t cut it, you can nest if/else tests. Nesting conditionals is easy:
+  
+ if( test condition(s).. )
+  
+ {
+  
+ if( other tests.. )
+  
+ { 
+  
+ } 
+  
+ else 
+  
+ {
+  
+ }
+  
+ }
+  
+ else 
+  
+ { 
+  
+  
+ if( still other tests.. ) 
+  
+  
+ { 
+  
+  
+ } 
+  
+  
+ else 
+  
+  
+ { 
+  
+  
+ } 
+  
+ }
+  
+ You can go many levels deep if you desire. Note that C, unlike Python, doesn’t 
+ require
+  the indenting 
+ shown, but it is expected formatting. For selection of a single value out of a list, you can use the 
+ switch/case construct. The template looks like:
+  
+ switch( test_variable ) 
+  
+ { 
+  
+  
+ case value_1: 
+  
+  
+  
+ //...do stuff...
+  
+  
+ break; 
+  
+ case value_2: 
+  
+  
+ //...do other stuff...
+  
+  
+ break; 
+  
+ default: 
+  
+  
+ //...do stuff for a value not in the list...
+  
+ 42
+  
+ }
+  
+ break;
+  
+ Embedded Controllers",NA
+7.3 Looping,"There are three looping constructs in C. They are 
+ while()
+ , 
+ do-while()
+ , and 
+ for(
+ )
+ . 
+ do-while() 
+ is 
+ really just a 
+ while()
+  with the loop continuation test at the end instead of the beginning. Therefore, you 
+ always get at least one iteration. The continuation test follows the same rules as the 
+ if()
+  construct. Here 
+ are the 
+ while()
+  and 
+ do-while()
+  templates:
+  
+ while( test condition(s)... ) 
+  
+ {
+  
+ }
+  
+ //...statements to iterate...
+  
+ do { 
+  
+  
+ //..statements to iterate... 
+  
+ } while( test condition(s)... )
+  
+ Here are some examples:
+  
+ while( a<10 )
+  
+ {
+  
+ }
+  
+ /* Perhaps a is incremented in here.
+  
+  If a starts off at 10 or more, this loop never executes */
+  
+ do { 
+  
+  
+ /* Perhaps a is incremented in here.
+  
+  
+  If a starts off at 10 or more, this loop executes once */ 
+ } while( a<10 )
+  
+ while( a<10 && b ) 
+  
+ { 
+  
+  
+ /* This loop continues until a is 10 or more, or b is zero.
+  
+  
+  Either condition will halt the loop. Variable a must be 
+  
+  
+ less than 10 and b must be non-zero for the loop to 
+  
+  continue 
+ */ 
+  
+ }
+  
+ Usually, loops use some form of counter. The obvious way to implement a counter is with a statement 
+ like:
+  
+ a=a+1; 
+  
+ /* add one to the current value of a */
+  
+ C has increment and decrement operators, 
+ ++
+  and 
+ --
+ , so you can say things like:
+  
+ a++; 
+  
+ /* add one to the current value of a */ 
+  
+ a--; 
+  
+ /* subtract one from the current value of a */
+  
+ C also has a shortcut mode for most operations. Here are two examples:
+  
+ a+=1; /* equivalent to a=a+1; or a++; */ 
+ a*=2; /* equivalent to a=a*2; */
+  
+ 44 
+ Embedded Controllers",NA
+7.4 While or For?,"So, which do you use, a 
+ while()
+  or a 
+ for()
+ ? You can make simple loops with either of them but 
+ for() 
+ loops are handy in that the initialization, termination, and increment are all in one spot. With 
+ while() 
+ loops, you only specify the termination, so you must remember to write the variable initializations before 
+ the loop as well as the increments within the loop. If you forget either of these your loop will behave 
+ erratically. It may fail to terminate altogether, resulting in an infinite loop, as shown below.
+  
+ a=0;
+  
+ while( a<10 ) 
+  
+ {
+  
+ } 
+  
+ printf(“hello\n”);
+  
+ This code fragment doesn’t print the word 
+ hello
+  ten times, it prints 
+ hello
+  forever (or better to say until you 
+ forcibly terminate the program)! Although 
+ a
+  was initialized and tested, it was never incremented. You 
+ need an
+  a++;
+  (or similar) within that loop.
+  
+ 46 
+ Embedded Controllers",NA
+7.5 Exercises ,"1. Write the code to examine the value of the variable 
+ X
+ . If it’s less than zero, the message 
+ negative 
+ value 
+ should be printed. 
+  
+ 2. Write the code to examine the value of the variable 
+ X
+ . If it’s equal to zero, the message 
+ zero 
+ value 
+ should be printed. 
+  
+ 3. Write the code to compare the values of the variables 
+ X
+  and 
+ Y
+ . The greater value should be printed. 
+  
+ 4. Write the code to examine the values of the variables 
+ X
+  and 
+ Y
+ . If both 
+ X
+  and 
+ Y
+  are greater than zero, 
+ increment 
+ X
+  by one. 
+  
+ 5. Write the code necessary to print the message 
+ Error!
+  six times but without using six sequential 
+ printf()
+  calls. 
+  
+ 6. Write the code required to control a loop so that it continues so long as the variable 
+ K
+  is less than 
+ 50. 7. Write the code needed to cycle the variable 
+ R
+  from 100 to 200 in steps of 5 (i.e., 100, 105, 110, 
+ etc.). 8. Explain the practical difference between a 
+ while 
+ loop and a 
+ do-while
+  loop.
+  
+ Embedded Controllers 
+  
+ 47",NA
+8. C Pointers and Addresses,NA,NA
+8.1 Introduction,"As you may recall from earlier course work, every byte of memory in a computer system is identified by a 
+ unique address. C works directly with addresses and this is one reason why it can be used to create 
+ efficient and powerful code. You can obtain the address of virtually any variable or data item using the 
+ “address of” operator, 
+ &
+ . One exception to this is the 
+ register
+  class variable. This is because 
+ CPU
+ ’s 
+ registers don’t have an address like normal memory. Also, as functions are just memory locations filled 
+ with microprocessor/microcontroller op-codes, C also makes it possible to obtain the starting address of 
+ functions.",NA
+8.2 Using Addresses and Pointers,"If we declare a variable as so:
+  
+ char a;
+  
+ then referencing 
+ a
+  will get us the value stored in 
+ a
+ , as in the code
+  b=a;
+ . Using the 
+ address of
+  operator, as 
+ in 
+ &a
+ , will obtain the memory location of 
+ a
+ , not 
+ a
+ ’s value or contents. This is the sort of thing we used 
+ with 
+ scanf()
+  and 
+ strcpy()
+ . It is possible to declare variables that are designed to hold these addresses.
+  
+ They are called 
+ pointers
+ . To declare a pointer, you preface the variable with an asterisk like so:
+  
+ char *pc;
+  
+ The variable 
+ pc
+  is not a 
+ char
+ , it is a pointer to a 
+ char
+ . That is, its contents are the address of a 
+ char 
+ variable. The content of 
+ any
+  pointer is an address. This is a very important point. Consider the following 
+ code fragments based on the declarations above:
+  
+ pc = a; 
+  
+ /* unhappy */ 
+  
+ pc = &a; 
+  
+ /* just fine */
+  
+ The first line makes no sense as we are trying to assign apples to oranges, so to speak. The second line 
+ makes perfect sense as both 
+ pc
+  and 
+ &a
+ are the same sort of thing, namely the address of a variable that 
+ holds a 
+ char
+ . What if we want pointers to other kinds of things? No problem, just follow the examples 
+ below:
+  
+ float *pf; 
+  
+ long int *pl; 
+  
+ double *pd, *p2;
+  
+ /* pointer to a float */ 
+  
+ /* pointer to a long int */ 
+ /* two pointers to doubles */
+  
+ short int *ps, i; /* ps is a pointer to a short int */ 
+  
+ /* i is just a short int */
+  
+ As mentioned, all pointers contain addresses. Therefore, 
+ no matter what the pointer points to, all 
+ pointers are the same size (same number of bytes)
+ . In most modern systems, pointers are either 32 bits 
+ (4 bytes) or 64 bits (8 bytes) although some small controllers use 16 bit addressing. When in doubt, you 
+ can check your code with
+ sizeof()
+ . If all pointers are the same size, then why do we declare different 
+  
+ 48 
+ Embedded Controllers",NA
+8.3 Pointer Dereferencing,"Suppose you have the following code fragment:
+  
+ char *pc, c, b;
+  
+ c = 1; 
+  
+ pc = &c;
+  
+ We have declared two variables, a 
+ char
+  and a pointer to a 
+ char
+ . We then set the contents of the 
+ char
+  to 
+ 1, and set the contents of the pointer to the address of the 
+ char
+ . We don’t really need to know what this 
+ address is, but for the sake of argument, let’s say that 
+ c
+  is located at memory address 2000 while 
+ pc
+  is 
+ located at memory address 3000. If we were to search the computer’s memory, at address 2000 we would 
+ find the number 1. At address 3000, we would find the number 2000, that is, the address of the 
+ char 
+ variable. In a typical system, this value could span 32 bits or 4 bytes. In other words, the memory used by 
+ pc
+  is addresses 3000, 3001, 3002, and 3003. Conversely, in a 16 bit system, 
+ pc
+  would only span 3000 
+ and 3001 (half as many bytes, but far fewer possible addresses). 
+  
+ As the contents of (i.e., value of) 
+ pc
+  tell us where a 
+ char
+  resides, we can get to that location, and thus the 
+ value of the 
+ char
+  variable 
+ c
+ . To do this, we 
+ dereference
+  the pointer with an asterisk. We could say:
+  
+ b = *pc;
+  
+ Read this as “
+ b
+  gets the value at the address given by 
+ pc
+ ”. That is, 
+ pc
+  doesn’t give us the value, rather, it 
+ tells us where to go to get the value. It’s as if you went to your professor’s office and asked for your 
+ grade, and instead he hands you a piece of paper that reads “I will e-mail it to you”. The paper doesn’t 
+ indicate your grade, but it shows you where to find it. This might sound unduly complicated at first but it 
+ turns out to have myriad uses. By the way, in this example the value of 
+ b
+  will be 
+ 1
+  because 
+ pc
+  points to 
+ c
+ , 
+ which was assigned the value 
+ 1
+  at the start. That is, 
+ b
+  gets the value at the address 
+ pc
+  points to, which is 
+ simply 
+ c
+ .",NA
+8.4 Pointer Math,"One of the really neat things about pointers is pointer math. Returning to our example of 
+ pc
+  at address 
+ 3000, if you increment 
+ pc
+ , as in 
+ pc++;
+  you’ll get 3001. No surprise, right? If, on the other hand, you had 
+ a pointer to a 
+ double
+ , 
+ pd
+ , at address 3000 and you incremented it, you wouldn’t wind up with 3001. In 
+ fact, you’d wind up with 3008. Why? This comes down to how large the thing is that we’re pointing at. 
+ double
+ s are 8 bytes each. If you had a bunch of them, as in an array, incrementing the pointer would get 
+ you the next item in the array. This is extremely useful. Note that adding and subtracting to/from pointers 
+ makes perfect sense, but multiplying, dividing, and higher manipulations generally make no sense and are 
+ to be avoided.
+  
+ Embedded Controllers 
+  
+ 49",NA
+8.5 Pointers and Arrays,"We very often use pointers with arrays. One example is the use of strings. We noted this in earlier work. 
+ Recall that the “address of” and array index “cancel each other” so that the following are equivalent: 
+  
+ &somestring[0] 
+  
+ somestring
+  
+ Let’s look at an example of how you might use pointers instead of normal array indexing. We shall write 
+ our own version of
+ strcpy()
+  to copy one string to another. The function takes two arguments, the 
+ address of a source string and the address of a destination string. We will copy over a character at a time 
+ until we come to the null termination. First, the normal array index way:
+  
+ void strcpy1( char dest[], char source[] )
+  
+ {
+  
+ }
+  
+ int i=0;
+  
+ /* index variable, init to first char */
+  
+ while( source[i] != 0 )
+  
+ /* if it’s not null...*/
+  
+ {
+  
+ dest[i] = source[i];
+  
+ /* copy the char */
+  
+ i++;
+  
+ /* increment index */
+  
+ }
+  
+ dest[i] = 0;
+  
+ /* null terminate */
+  
+ Looks pretty straightforward, right? There are some minor improvements you can make such as changing 
+ the loop to 
+ while( source[i] )
+ , but that’s not a big deal. Now in contrast, let’s write the same thing 
+ using pointers. 
+  
+ void strcpy2( char *dest, char *source )
+  
+ {
+  
+ while( *dest++ = *source++ );
+  
+ }
+  
+ That’s it. Here’s how it works. 
+ dest
+  and 
+ source
+  are the starting addresses of the strings. If you say:
+  
+ *dest = *source;
+  
+ then what happens is that the value that
+ source
+  points to gets copied to the address referred to by
+ dest
+ . 
+ That copies one character. Now, to this we add the post increment operator 
+ ++
+ :
+  
+ *dest++ = *source++;
+  
+ This line copies the first character as above and then increments each pointer. Thus, each pointer contains 
+ the address of the next character in the array (you’ve got to love that pointer math, this will work with any 
+ sized datum). By placing this code within the 
+ while()
+  loop, if the content (i.e., the character copied) is 
+ non-zero, the loop will continue. The loop won’t stop until the terminating null has been copied. As you 
+ can imagine, the underlying machine code for 
+ strcpy2()
+  will be much simpler, more compact, and 
+ faster to execute than that of 
+ strcpy1()
+ . As was said at the outset of the course, you can do a lot in C 
+ with just a little code!
+  
+ 50 
+ Embedded Controllers",NA
+8.6 Exercises ,"1. Declare a pointer to a floating point variable, naming it 
+ fptr
+ .
+  
+ 2. Declare a pointer to a signed character variable, naming it 
+ cptr
+ .
+  
+ 3. Consider the following snippet of code: 
+  
+ unsigned char c, *p; 
+  
+ Explain the difference between 
+ c
+  and 
+ p
+ .
+  
+ 4. Consider the following snippet of code: 
+  
+ unsigned char *p; 
+  
+ double *p2; 
+  
+ Assume that the value of 
+ p
+  is currently 1000 and the value of 
+ p2
+  is 2000. What are their values 
+ after the following piece of code is executed?
+  
+  
+ p++; 
+  
+  
+ p2++; 
+  
+ 5. Explain the difference between the 
+ *
+  and 
+ &
+  operators in relation to pointers.
+  
+ 6. Consider the line of code below.
+  
+ a = b*c; 
+  
+ Is the 
+ *
+  operator a pointer dereference or a multiply? How do we 
+ know?
+  
+ 7. Consider the line of code below.
+  
+ a = b**c; 
+  
+ What do you think this line does? How might you alter this line to mark the intent more clearly 
+ and less prone to error or misinterpretation?
+  
+ 8. Explain the difference between the two lines of code below.
+  
+ a*=b; 
+  
+ a=*b;",NA
+9. C Look-up Tables,NA,NA
+9.1 Introduction,"Sometimes we use tools to make things without thinking about how the tools themselves are made. In the 
+ world of software, sometimes 
+ how
+  things are done (the implementation) can have a huge impact on 
+ performance. It turns out that sometimes we can trade performance in one area for another. For example, 
+ a certain technique might be very memory efficient but rather slow to execute, or vice versa. We’re going 
+ to take a look at a common programming technique that is very fast (i.e., it's “computationally efficient”). 
+ Sometimes it can require a lot of memory, sometimes not. It’s called a look-up table.",NA
+"9.2 “Yes, I’d Like a Table for 360, Please”","Consider the common C trig function, 
+ sin()
+ . Not much to it, really. You pass it an argument and you get 
+ back the sine of the argument. But how is it implemented? It could be implemented as a Taylor Series 
+ expansion that requires several multiplies and adds. A single sine computation won’t take long but what if 
+ you need to do millions of them? All of those multiplies and adds add up, so to speak. Consider the 
+ following problem: You need to get the sine of an angle specified to the nearest degree, and 
+ fast
+ . 
+ Basically, you have 360 possible answers (0 degrees through 359 degrees)
+ 7
+ . Now suppose you create an 
+ array of 360 values which consists of the sine of each angle in one degree increments, starting at 0 
+ degrees and working up to 359 degrees. It might look something like this:
+  
+ double sine_table[] = { 0.0, 0.01745, 0.034899,  0.05234,  
+ /* and so on to the last entry */ -0.01745 };
+  
+ You can now “compute” the sine like so, given the argument 
+ angle
+ :
+  
+ answer = sine_table[ angle ];
+  
+ Because of the duality of arrays and pointers, you can also write this as:
+  
+ answer = *(sine_table + angle);
+  
+ Without an optimizing compiler, the second form will probably generate more efficient machine code. In 
+ either case, this is very fast because it’s nothing more than reading from a memory location with an offset. 
+ The result is just one add plus the access instead of a dozen multiply/adds. It does come at the cost of 360 
+ double floats, which, at eight bytes each, is nearly 3k of memory. By recognizing that the sine function 
+ has quarter wave symmetry, you can add a little code to check for the quadrant and reduce the table to just 
+ 90 entries. Also, 
+ float
+ s might have sufficient precision for the application which will cut the memory 
+ requirements in half again when compared to 
+ double
+ s. 
+  
+ 7
+  Outside those bounds you can always perform some minor integer math to get within the bounds (e.g., if the angle 
+ is 370, just mod by 360 to get the remainder of 10 degrees, effectively the “wrap around”). 
+  
+ 52 
+ Embedded Controllers",NA
+9.3 Waving Quickly,"So what’s all this business about needing to do this sort of thing very fast? One application might be the 
+ direct digital synthesis of arbitrary waveforms. The idea is to create a waveform of an arbitrary shape; not 
+ just the usual sines, squares and triangles (although that's possible, too). Arbitrary waveforms can be 
+ realized using analog oscillator techniques coupled with wave shaping circuits but it can be a challenge to 
+ do well. Instead, consider creating a large table of integer values. Typically, the table size would be a nice 
+ power of two, like 256. Each entry in the table would be the digitized value of the desired waveform. A 
+ simple ramp might look like this:
+  
+ unsigned short int ramp_table[] = { 0, 1, 2, 3, /* and so on */};
+  
+ A more complicated wave might look like this:
+  
+ unsigned short int squiggly_table[] = { 0, 21, 15, 33, /* etc */};
+  
+ These values could then be sent sequentially to a digital-to-analog converter (
+ DAC
+ ) to create the desired 
+ waveform. Once we get to the end of the table, we simply loop back to the start to make the next cycle. 
+  
+ With a 256 entry table, we can use an 
+ unsigned char
+  as the table index and once it reaches 255, 
+ incrementing it will cause it to roll over back to 0, automatically. The post increment operator is ideal for 
+ this. For the code below, assume 
+ PORT
+  is the memory location of the 
+ DAC
+  we are writing to.
+  
+ unsigned char i = 0;
+  
+ // loop forever 
+  
+ while ( 1 ) 
+  
+ { 
+  
+  
+ PORT = ramp_table[i++];
+  
+  
+ // now wait between each value, dependent on sample rate 
+  
+ delay(); 
+  
+ }
+  
+ Embedded Controllers 
+  
+ 53",NA
+9.4 Error Correction via Table Translation,"Another possible use for a look-up table is for error correction. Again, let’s limit this to a nice 256 entry 
+ table. Suppose you are reading a sensor with an 8 bit (256 level) analog-to-digital converter (
+ ADC
+ ). 
+ Maybe this is a temperature sensor and at the extremes of the temperature range it tends to go out of 
+ calibration. You can use the input value from the sensor (perhaps appropriately scaled and then turned 
+ into an integer) as the index into a 256 element table that contains the corrected values. 
+  
+ As an example, to keep it simple let’s say the sensor reads a temperature ranging from 0 ºC to 250ºC. You 
+ calibrate it by placing it in a known 150ºC oven and the sensor reads 145º instead of the ideal 150º. You 
+ repeat this process at several other temperatures and discover that it reads 166º when it’s really 170º, 188º 
+ when it’s really 195º, and so on. So you create a table where the 145
+ th
+  entry is 150, the 166
+ th
+  entry is 170, 
+ the 188
+ th
+  entry is 195, etc. Now use the sensor value as the index into the array. The value you access is 
+ the corrected result. The table effectively translates your input into a calibrated output.
+  
+ corrected_temp = calibration_array[ sensor_value ];
+  
+ This is a very fast process and as accurate as your calibration measurements. As long as the sensor data is 
+ repeatable (e.g., it always reads 145ºC in a 150ºC oven), you’ll get good results.
+  
+ 54 
+ Embedded Controllers",NA
+10. C Structures,NA,NA
+10.1 Introduction,"C allows compound data called structures, or 
+ struct
+  for short. The idea is to use a variety of the basic 
+ data types such as 
+ float
+  or 
+ int
+  to describe some sort of object. Structures may contain several of each 
+ type along with pointers, arrays, and even other structures. There are many uses for such a construct and 
+ structures are very common in production C code. 
+  
+ As an example, we may wish to describe an electronic component such as a transistor. What sort of things 
+ do we need? There are several performance parameters that may be used such as current gain, breakdown 
+ voltage and maximum power dissipation. All of these items may be represented as 
+ double
+  variables. 
+ There will be a model number. This will probably be a string as it may contain letters (such as 
+ “2N3904”). There will need to be a manufacturer’s code. This could be an 
+ int
+ . A real world device will 
+ have many more parameters than these five, but these will suffice for our purposes. If you only have one 
+ transistor to deal with, five separate variables is not a big deal to keep track of. On the other hand, what if 
+ you have a great number of parts as in a database? Perhaps there are 1000 devices. Creating 5000 separate 
+ variables and keeping them straight presents a bit of a challenge. It would be nice if we could combine the 
+ five items together into a “super variable”. Then, all we have to worry about is creating 1000 of them for 
+ the database (perhaps with an array, although there are other techniques). There shouldn’t be a problem of 
+ getting the current gain of one device confused with that of another. This is where structures come in. 
+ Below is an example of how we would define this transistor structure and associated instances.
+  
+ struct transistor {
+  
+ };
+  
+ double 
+  
+ currentgain;
+  
+ double 
+  
+ breakdown;
+  
+ double 
+  
+ maxpower;
+  
+ short int   manufacturer;
+  
+ char
+  
+ model[20];
+  
+ struct transistor my_transistor; 
+  
+ struct transistor *ptransistor;
+  
+ We have defined a structure of type 
+ transistor
+ . We have also declared an instance of a
+ struct 
+ transistor
+  called 
+ my_transistor
+ , along with a pointer to a 
+ struct transistor
+  called 
+ ptransistor
+ . The five elements are referred to as the 
+ fields
+  of the structure (e.g., the 
+ currentgain 
+ field). Note that this structure contains an array of characters for the model name/number. The model 
+ cannot exceed 19 characters (19 plus terminating null yields 20 declared). It is unlikely that we’ll ever 
+ have model name/number this long, but if by chance we do, we will have to truncate it. 
+  
+ To set or retrieve values from an instance, we use a period to separate the structure name from the field of 
+ interest. Here are some examples:
+  
+ my_transistor.currentgain = 200.0; 
+  
+ my_transistor.maxpower = 50.0; 
+  
+ my_transistor.manufacturer = 23;
+  
+ 56 
+ Embedded Controllers",NA
+10.2 Pointers and Structures,"It is generally not a good practice to send entire structures to functions as arguments. The reason is 
+ because you wind up copying a lot of data. The transistor structure above contains three 
+ double
+ s at 8 
+ bytes each, a 
+ short int
+  at 2 bytes, and 20 bytes for the 
+ char
+  array, leaving a total of 46 bytes of 
+ memory that need to be copied if we pass this to a function.  It would be much more efficient if we simply 
+ passed the starting address of the structure to the function. That is, we tell the function where to find the 
+ structure by using a pointer (this is called “passing by reference” versus the more familiar “passing by 
+ value”). This is why we declared 
+ ptransistor
+ . We initialize it like so:
+  
+ ptransistor = &my_transistor;
+  
+ To access the various fields, we can longer use the period because we no longer have a 
+ struct 
+ transistor
+ ; we have a pointer to one. For pointers, we access the fields via the pointer token, which is 
+ made up of a dash followed by a greater than sign: 
+ ->
+ Thus, we might say:
+  
+ ptransistor->currentgain = 200.0; 
+  
+ strcpy( ptransistor->model, “2N3904” );
+  
+ Embedded Controllers 
+  
+ 57",NA
+"10.3 Structures, Arrays, and So On","We have seen that it is possible to have arrays within structures. It is also possible to have structures 
+ within structures and pointers within structures. Here are some examples:
+  
+ /* The structure definitions */ 
+  
+ struct foo { 
+  
+  
+ float x;
+  
+ };
+  
+ float y;
+  
+ struct bar { 
+  
+ double *pd; 
+  
+ struct foo littlefoo;
+  
+ };
+  
+ struct foo *pf;
+  
+ /* The variable declarations */ 
+  
+ struct foo my_foo; 
+  
+ struct bar my_bar; 
+  
+ struct bar *pbar = &my_bar; 
+  
+ double z=1.0;
+  
+ The 
+ bar
+  structure contains a pointer to a 
+ double
+ , a pointer to 
+ struct foo
+ , and a 
+ struct foo
+ . We 
+ would access them as follows:
+  
+ my_bar.pd = &z; /* pd isn’t a double but the address of one, hence & */ 
+ my_bar.littlefoo.x = 2.2; 
+  
+ pbar->littlefoo.y = 3.3; 
+  
+ pbar->pf = &my_foo; 
+  
+ pbar->pf->x = 4.4;
+  
+ Note that if you didn’t say 
+ pbar->pf = &my_foo;
+  first, then 
+ pbar->pf->x = 4.4;
+  would be very 
+ evil! Without assigning 
+ my_foo
+  to 
+ pf
+ , this pointer would contain some random number. The second 
+  
+ 58 
+ Embedded Controllers",NA
+10.4 Exercises,"1. Declare a structure of type 
+ Quest
+  called 
+ Grail
+  that contains a float called 
+ X
+ , a long integer called 
+ Y 
+ and an unsigned character called 
+ Z
+ . 
+  
+ 2.  Given the structure of problem one, will the order of the three fields have any effect or importance? 
+ How might we determine if it does?
+  
+ 8
+  i.e., try to access the fields of.
+  
+ Embedded Controllers 
+  
+ 59",NA
+11. C Linked Lists ,NA,NA
+11.1 Introduction,"A linked list is an alternate way to collect together a number of instances of a given data type. Compared 
+ to arrays, linked lists offer the advantages of not requiring contiguous memory for the collection and an 
+ easy way to re-order the collection by simply swapping pointers. As we shall see later, linked lists are also 
+ very flexible when it comes to adding or deleting items to the collection. On the downside, linked lists 
+ require somewhat more memory than arrays (since space for pointers must be included), and arrays offer 
+ consistent fast access to any member of the array (linked lists require that the list be ""walked along"" in 
+ order to get to a given member). To create a linked list, a pointer to the structure type is included in the 
+ definition of the structure. Once the instances of the structure type are created, they are strung together by 
+ placing appropriate addresses in the pointer field.
+  
+ A graphical example is shown below with four instances of some structure:
+  
+ ptr=&B
+  
+ ptr=&C
+  
+ ptr=&D
+  
+ ptr=0
+  
+ A
+  
+ B
+  
+ C
+  
+ D
+  
+ Figure 11.1, linked list
+  
+ Imagine that each structure is 100 bytes in size. Further, assume that 
+ A
+  is located at memory address 1000 
+ (spanning 1000 to 1099), 
+ B
+  is a located at address 2000, 
+ C
+  at 3000, and 
+ D
+  at 4000. Each structure contains 
+ a pointer to the next one in the list. 
+ A
+  contains a pointer to the address of 
+ B
+ , 
+ B
+  to 
+ C
+ , and so forth. For 
+ example, the value of 
+ A
+ ’s pointer is 2000 (the memory address of 
+ B
+ ), while the value of 
+ C
+ ’s pointer is 
+ 4000 (the address of 
+ D
+ ).
+  
+ Note that 
+ &A
+  is the top of the list, and that the last item signifies that no items remain by having its pointer 
+ set to 
+ 0
+ . Further, these four items could be linked in any manner by simply changing the pointer values. 
+  
+ Finally, items 
+ A
+ , 
+ B
+ , 
+ C
+ , and 
+ D
+  may reside anywhere in the memory map; they need not be contiguous. In 
+ contrast, if we were to make an array out of these structures, they would need to be packed into memory 
+ in sequence in order to be indexed properly. That is, if 
+ A
+  were located at address 1000, 
+ B
+  would have to be 
+ at 1100, 
+ C
+  at 1200, and 
+ D
+  at 1300, as they are each 100 bytes in size
+ 9
+ . If you wanted to rearrange the 
+ structures (e.g., to sort them), add new ones or delete existing ones, this would require quite a bit of work 
+  
+ 9
+  Array indexing works by simply multiplying the index value by the size of the arrayed item, and then using this 
+ value as an offset from the starting address. Thus, in this example, item[2] (i.e., 
+ C
+ ) is found by multiplying the index 
+ of 2 by the size of 100 bytes to achieve a 200 offset from the starting location of address 1000, or 1200. Remember, 
+ item[0] is 
+ A
+ , while item[1] is 
+ B
+ , and item[2] is 
+ C
+ .
+  
+ 60 
+ Embedded Controllers",NA
+11.2 Linked List Example,"Now for a concrete example. A typical structure definition may look something like this:
+  
+ struct Marmot ( 
+  
+ struct Marmot *NextMarmot; 
+  
+ float Age;
+  
+ };
+  
+ float Weight;
+  
+ We could declare three instances of Marmots and link them together as follows:
+  
+ struct Marmot Larry = { 0, 3.4,  19.7 }; 
+ struct Marmot Jane = { &Larry, 2.5, 13.1 }; 
+ struct Marmot Felix = { &Jane, 2.9, 15.6 };
+  
+ Felix
+  is at the top of the list, while 
+ Larry
+  is at the bottom. Note that the items must be declared in 
+ inverse order since the pointer reference must exist prior to assignment (i.e., 
+ Jane
+  must exist in order for 
+ Felix
+  to use 
+ Jane
+ 's address). It is common to also declare a pointer to use as the head of the list. Thus, 
+ we might also add:
+  
+ struct Marmot *MarmotList = &Felix;
+  
+ Thus, the following are true:
+  
+ Felix.NextMarmot
+ points to 
+ Jane 
+  
+ MarmotList->NextMarmot
+ points to 
+ Jane 
+  
+ Jane.NextMarmot
+ points to
+  Larry 
+  
+ MarmotList->NextMarmot->NextMarmot
+ points to
+ Larry 
+ Larry.NextMarmot
+  is
+ 0 
+  
+ MarmotList->NextMarmot->NextMarmot->NextMarmot
+ is
+ 0
+  
+ The final line of pointers to pointers is not very practical. To get around this, we can use a temporary 
+ pointer. Below is an example function that takes the head of a 
+ Marmot
+  list as its argument, and then prints 
+ out the ages of all of the 
+ Marmot
+ s in the list. 
+  
+ void PrintMarmotAges( struct Marmot *top )
+  
+ {
+  
+ struct Marmot *temp;
+  
+ temp = top; /* initialize pointer to top of list */
+  
+ while( temp ) /* true only if marmot exists */
+  
+ {
+  
+ }
+  
+ printf( ""%f\n"", temp->Age ); 
+ temp = temp->NextMarmot );
+  
+ }
+  
+ Embedded Controllers 
+  
+ 61",NA
+11.3 Exercise,"A bipolar transistor can be described (partially) with the following information: A part number (such as 
+ ""2N3904""), a typical beta, and maximum ratings for P
+ d
+ , I
+ c
+ , and BV
+ ceo
+ . Using the data below, create a 
+ program that would allow the user to search for devices that meet a minimum specified requirement for 
+ beta, P
+ d
+ , I
+ c
+ , or BV
+ ceo
+ . Devices that meet the performance spec would be printed out in a table (all data 
+ fields shown). If no devices meet the spec, an appropriate message should be printed instead. For 
+ example, a user could search for devices that have a P
+ d
+  of at least 25 watts. All devices with P
+ d
+  >= 25.0 
+ would be printed out.
+  
+ Device
+  
+ Beta
+  
+ Pd(W)
+  
+ Ic(A)
+  
+ BVceo(V)
+  
+ Embedded Controllers
+  
+ 2N3904 
+  
+ 150
+  
+ .35
+  
+ .2
+  
+ 40
+  
+ 2N2202 
+  
+ 120
+  
+ .5
+  
+ .3
+  
+ 35
+  
+ 2N3055 
+  
+ 60
+  
+ 120
+  
+ 10
+  
+ 90
+  
+ 2N1013
+  
+ 95
+  
+ 50
+  
+ 4
+  
+ 110
+  
+ MPE106 
+  
+ 140
+  
+ 15
+  
+ 1.5
+  
+ 35
+  
+ MC1301
+  
+ 80
+  
+ 10
+  
+ .9
+  
+ 200
+  
+ ECG1201
+  
+ 130
+  
+ 1.3
+  
+ 1.1
+  
+ 55
+  
+ 62",NA
+12. C Memory,NA,NA
+12.1 Introduction,"Up until now, whenever we have needed variables we simply declared them, either globally or locally. 
+ There are times, however, when this approach is not practical. Consider a program that must deal with a 
+ large amount of data from external files such as a word processor, or graphics or sound editor. In all 
+ instances the application may need to open very large files, sometimes many megabytes in size. The issue 
+ is not merely the size. After all, you could declare a very large array, or perhaps several of them. The 
+ problem is that the data is both large and variable in size. For example, you might edit a sound file that’s 
+ 100k bytes in size, but you might also need to edit one that’s 100 times larger. It would not be wise to 
+ declare a 10 megabyte array when you only need 100k. Further, you can guarantee that if you do declare 
+ 10 megabytes, the day will come when you’ll need 11 megabytes. What is needed is some way of 
+ dynamically allocating memory of the size needed, when needed.",NA
+12.2 Free Memory Pool,"In a given computer, memory is used by the operating system as well as by any running applications. Any 
+ memory left over is considered to be part of the “free memory pool”. This pool is not necessarily 
+ contiguous. It may be broken up into several different sized chunks. It all depends on the applications 
+ being run and how the operating system deals with them. The total amount of free memory and the 
+ locations of the various chunks will change over time. C offers ways of “asking” the operating system for 
+ a block of memory from the free pool. If the operating system can grant your request, you will have 
+ access to the memory and can use it as you see fit. When you are through using the memory, you tell the 
+ operating system that you are done with it so that it can reuse it elsewhere. Sounds simple, right? Well, it 
+ is!",NA
+12.3 Allocating Memory,"To use the memory routines, include the 
+ stdlib.h
+  header in your code and be sure to link with the 
+ standard library. There are two main memory allocation functions. They are 
+ malloc()
+  and 
+ calloc()
+ . 
+  
+ Here are their prototypes:
+  
+ void * malloc( unsigned int size ); 
+  
+ void * calloc( unsigned int num_item, unsigned int item_size );
+  
+ malloc()
+  takes a single argument: The number of bytes that you wish to allocate from the free pool. 
+  
+ calloc()
+  takes two arguments: The number of items that you want to fit into the memory block and 
+ their size in bytes. Basically, 
+ calloc()
+  just calls 
+ malloc()
+  after multiplying the two arguments 
+ together. It is used for convenience. Both functions return a pointer to a type 
+ void
+ . What is this? A 
+ void 
+ pointer can be thought of as a generic, one-size-fits-all pointer. It prevents possible type size clashes. You 
+ can assign a 
+ void
+  pointer to another type of pointer and not get a type mismatch. If the memory request 
+ cannot be made (not enough memory) then the functions will return 
+ NULL
+ . 
+ Always check for the 
+ NULL 
+ return! Never assume that the allocation will work!
+  
+ 64 
+ Embedded Controllers",NA
+12.4 Using Memory,"The pointer that is returned from the allocation function is used as the base of the object or array of 
+ objects in which you’re interested. Keeping it simple, suppose you want to allocate an array of three 
+ integers. If you want to set the first element to 0, and the second and third elements to 1, do the following 
+ (code fragment only, error processing not shown):
+  
+ int *ip;
+  
+ if( ip = calloc( 3, sizeof(int) ) )
+  
+ {
+  
+ *ip = 0;
+  
+  
+ }
+  
+ *(ip+1) = 1; 
+ *(ip+2) = 1;
+  
+ /* could also say ip[1] = 1; */ 
+ /* could also say ip[2] = 1; */",NA
+", ","initialize some fields, and return 
+ a pointer to it.
+  
+ struct foobar { 
+  
+  
+ double d; 
+  
+  
+ int i; 
+  
+  
+ char name[20]; 
+  
+ }; 
+  
+ /* other code... */ 
+  
+ struct foobar * alloc_foobar( void ) 
+  
+ { 
+  
+  
+ struct foobar *fp; 
+  
+  
+ if( fp = malloc( sizeof(struct foobar) ) ) 
+  
+ {
+  
+ fp->d = 12.0; 
+  
+ fp->i = 17;
+  
+ /* just some stuff to show how... */
+  
+ }
+  
+ }
+  
+ strcpy( fp->name, “Timmy” ); 
+  
+ return( fp );",NA
+12.5 Freeing Memory,"Once you’re done using memory, you must return it to the free memory pool. If you don’t, no other 
+ application (nor the operating system) can use it. The memory will be effectively lost until the system is 
+ rebooted. This is known as a memory leak. To return memory that you have no further use for, use 
+ free(
+ )
+ . Here is the prototype:
+  
+ int free( void *p );
+  
+ p
+  is the pointer that you initially received from either 
+ malloc() 
+ or 
+ calloc()
+ . The return value of the 
+ free()
+  function is 0 for success or −1 on error. Normally this function never fails if it is given a valid 
+ pointer. If it does fail, there is little that you can do about it (at least not at this level). 
+ Remember: Every 
+ block that you allocate eventually must be freed!
+  You might wonder why the 
+ free()
+  function does 
+ not need to know the size of the block to free. This is because along with the memory they pass to you, 
+ malloc()
+  and
+  calloc()
+  actually allocate a little bit more for use by the operating system. In this extra 
+ memory that you don’t see are stored items such as the size of the block. This saves you a little house 
+ keeping work.",NA
+12.6 Operating System Specific Routines,"Often the standard routines examined above are augmented with special routines unique to a given 
+ operating system. These might give you control over using virtual memory, presetting memory values, or 
+ allow you to obtain access to special kinds of memory (e.g., graphics memory).
+  
+ 66 
+ Embedded Controllers",NA
+12.7 Exercises ,"1. Write the code to allocate 1000 bytes of memory.
+  
+ 2. Write the code to allocate space for an array of 500 single precision floating point 
+ values. 3. Write the code to free the memory allocated in problems one and two.
+  
+ Embedded Controllers 
+  
+ 67",NA
+13. C File IO,NA,NA
+13.1 Introduction,"High level fileio in C uses functions such as
+ fopen()
+ ,
+ fclose()
+ ,
+ fread()
+ ,
+ fwrite
+ ,
+ fprintf()
+ , 
+ fgetc()
+ , and so on. These utilize a variable of type 
+ FILE
+  to access disk files. They allow you to read 
+ and write data from/to files on disk in a manner very similar to sending data to the computer screen via 
+ printf()
+  or retrieving data from the keyboard via 
+ scanf()
+ .
+  
+ Closer to home, we have low level fileio. These use a file descriptor, which is basically just an integer. 
+ High level functions actually call the low level functions anyway. There are five things you need to do 
+ with files. First, you open them to obtain access to an existing file or to create a new one. Next, you read 
+ or write data from/to the file. You may also need to move around in a file, perhaps to reread data or to 
+ skip over data. Finally, when you are finished using the file, you must close it. To open a file use:
+  
+ fh = open( name, mode );
+  
+ where
+  
+ char *name: /* disk name of file */ 
+  
+ int fh:     /* file descriptor */ 
+  
+ int mode;   /* a define */
+  
+ fh
+  is the file descriptor that is needed for subsequent read/write calls. It will be
+ >= O
+ if all is OK, 
+ -1
+  on 
+ error.
+  
+ Example modes: 
+  
+ O_RDONLY
+ read only 
+  
+ O_WRONLY
+ write only 
+  
+ O_CREAT
+ create if not exists
+  
+ To read/write data, use:
+  
+ count = read( fh, buffer, len ); 
+  
+ count = write( fh, buffer, len );
+  
+ fh
+ is the file descriptor returned from 
+ open()
+ ,
+  buffer
+  is the address of where to find/place data (i.e., 
+ the thing you’re copying to disk or making a copy of from disk), 
+ len 
+ is the number of bytes to 
+ read/write, 
+ count
+  is the actual number of bytes read/written.
+  
+ A common construct is:
+  
+ if( (count = read( fh, buf, len )) != len ) 
+ {
+  
+ 68
+  
+ }
+  
+  //...there was an error, process it...
+  
+ Embedded Controllers",NA
+14. C Command Line Args and More,NA,NA
+14.1 Command Line Arguments,"Question: How do various utilities “read” the arguments that you place after them on the command line? 
+ For example, you might have a utility that archives (compresses) a file, creating a new (compressed) file. 
+  
+ You might use it like this from a 
+ DOS
+  or shell prompt:
+  
+ C:>archive foo.txt foo.arc
+  
+ The program is called 
+ archive (archive.exe)
+ , and you're telling it to compress the file 
+ foo.txt 
+ and create a new file called 
+ foo.arc
+ . This is much faster than using
+ scanf()
+ type input from within the 
+ program (i.e., having the user run the program, at which point the program then prompts for the two file 
+ names). C allows a very simple method of obtaining these command line arguments. This requires a 
+ modification to the declaration of 
+ main()
+ :
+  
+ void main( int argc, char *argv[] )
+  
+ The first parameter is called the argument count and tells you how many items (strings) where entered on 
+ the command line. In the example above, 
+ argc
+ would be 3. The second parameter is called the argument 
+ vector. It is an array of pointers to strings. These strings are the items entered on the command line. Thus 
+ argv[0]
+  points to ""archive"", 
+ argv[l]
+  points to ""foo.txt"", and 
+ argv[2]
+  points to “foo.arc"".
+  
+ If
+  argc 
+ is 1, then no arguments were added after the executable name. Below is a simple echo 
+ example. This will echo whatever was typed in on the command line.
+  
+ void main( int argc, char *argv[] ) 
+  
+ { 
+  
+  
+ int x;
+  
+  
+ for( x=0; x<argc; x++ ) 
+  
+  
+  
+ printf( ""Argument %d is %s\n"", x, argv[x] ); 
+ }
+  
+ Note that since 
+ argv
+  is an array of pointers, then 
+ argv[x
+ ] is also a pointer, and is treated just like any 
+ other pointer to characters. Thus, you can use functions like 
+ strcpy()
+  or 
+ strcmp()
+  on it. For numeric 
+ arguments (such as ""archive blah 23""), you may convert the 
+ ASCII
+  string (""23"") into either an integer, 
+ long integer, or float via the 
+ atoi()
+ ,
+ atol()
+ , and 
+ atof()
+  functions, respectively.
+  
+ Other possibilities include printing out directions if 
+ argc
+  is 1 or if the only added argument is “
+ ?
+ ”. It is 
+ possible to take this further by adding “switches” or “flags” to the argument list so that arguments can be 
+ presented in any order. This is precisely what is done if the compiler or linker is run directly rather than 
+ via the 
+ IDE
+ .
+  
+ In summation, command line arguments are a very handy and quick way of getting values into a program. 
+ As an exercise, alter one of your previous programs to utilize command line arguments rather than the 
+ scanf()
+  approach.
+  
+ 72 
+ Embedded Controllers",NA
+14.2 Conditional Compilation,"Suppose for a moment that you wish to create two or more versions of a program that differ only in mild 
+ ways. While it is possible to maintain multiple sets of source code for each, this can be a pain when it 
+ comes time to fix a bug or add a feature since alterations will need to be made to each of the source files. 
+ It would be much easier to somehow “flag” parts of the source code as belonging to different versions of 
+ the program and then have the compiler or preprocessor do the work for you. This is exactly what 
+ conditional compilation is. To do this, we exploit the power of the preprocessor. We have already looked 
+ at the 
+ #define
+  directive as a way of defining constants or creating macros, but we can take it further. 
+  
+ Look at the following example fragment:
+  
+ #define VERSION_A
+  
+ #ifdef VERSION_A 
+  
+ char title[] = ""This is version A""; 
+  
+ #else 
+  
+ char title[] = ""This is some other version”; 
+ #endif
+  
+ The 
+ #if/#else/#endif
+  directives act similarly to the 
+ if/else
+  commands. Note that parentheses are 
+ not used to block multi-line sections (hence the need for the 
+ #endif
+  directive). In the example above, the 
+ char
+  array title is initialized to 
+ ""This is version A""
+ . If we commented out the 
+ #define VERSION 
+ A
+  line, then 
+ title
+  would be initialized to 
+ ""This is some other version""
+ . In some 
+ IDE
+ s it is 
+ possible to create variations on projects. Within each project you can define certain symbols (such as 
+ VERSION_A
+ ). This way you wouldn’t even have to comment/uncomment the 
+ #define
+ , but just select the 
+ desired project variation.  Note that it is possible to nest 
+ #if/else
+  directives. Further, you are not limited 
+ to simply altering global declarations. This technique can be used on code as well as data. In fact, entire 
+ functions may be added or excluded in this way. Here is another typical use:
+  
+ void some func( void ) 
+  
+ { 
+  
+  
+ //...code stuff...
+  
+ #ifdef DEBUG
+  
+  
+  printf(""Error in some_func, x=%d\n"", x ); 
+ #endif
+  
+ //...rest of function... 
+  
+ }
+  
+ If 
+ DEBUG
+  is defined, the 
+ printf()
+  call will be included in the executable. If it is not defined, it is as if 
+ the
+  printf()
+  call never existed.",NA
+14.3 Exercise,"Add 
+ DEBUG printf()
+ statements to any of your existing programs. Compile with and without the 
+ DEBUG
+  directive.
+  
+ Embedded Controllers 
+  
+ 73",NA
+15. Embedded Programming ,NA,NA
+15.1 Introduction,"As mentioned earlier, it is possible to break down computer programming into two broad camps: desktop 
+ applications and embedded applications. The embedded application market is ubiquitous but somewhat 
+ hidden to the average user. A typical person doesn’t even realize that they’re running an embedded 
+ program while they’re using their cell phone, 
+ DVD
+  player or microwave oven. Certainly, the trappings of 
+ a “normal” computer generally do not exist in these instances; there’s usually no monitor or keyboard to 
+ speak of. From a programmer’s perspective, what’s different about the two and how is program 
+ development and testing affected?",NA
+15.2 Input/Output,"Consider a typical embedded application such as a programmable or “intelligent” thermostat. Unlike a 
+ normal electro-mechanical thermostat, these devices allow the home owner to automatically change 
+ temperature at different times of the day in order to save energy. After all, why have the heat or air 
+ conditioner running when no one’s home? Certainly, these devices do not come with a monitor or 
+ keyboard. In their place may be a small 
+ LCD
+  display with a few fixed messages and a two digit numeric 
+ display for the temperature. For input there may be as few as two or three buttons for programming (set 
+ item plus up and down). By comparison, a microwave oven will probably have a complete numeric 
+ keypad with a series of special function buttons along with multiple seven-segment displays, or possibly 
+ several alpha-numeric displays for short messages. In any case, these devices are far different from the 
+ standard desktop computer. Consequently, a programmer’s approach to input and output processing will 
+ be much different in the embedded case.
+  
+ To start with, it is unlikely that there will be 
+ printf()
+  and 
+ scanf()
+  style functions. They are largely 
+ worthless in this world. What use would 
+ printf()
+  be if all you have for output hardware is a bunch of 
+ LED
+ s? For input, you often need to read the state of switches, pushbuttons, and possibly some form of 
+ level control such as a rotary knob. For output, you often need to simply light an 
+ LED
+  or set a value on a 
+ seven-segment display. For “fixed” style messages, these also need only a single signal to turn them on or 
+ off, such as an 
+ LED
+ . In more advanced applications, a multi-line alphanumeric display may be available 
+ so setting individual letters is a possibility. In almost all cases these chores are handled by setting or 
+ clearing bits on specific output or inputs ports on the microcontroller. Some ports may be set up as a byte 
+ or word. Further, some ports may be bi-directional, meaning that they can behave as either input or output 
+ depending on some other register setting. Ports are little more than pins on the microcontroller that are 
+ hooked up to external circuitry. Thus, if a port is connected to an 
+ LED
+  circuit, setting the output of the 
+ port 
+ HIGH
+  could light the 
+ LED
+  while setting the port 
+ LOW
+  could turn off the 
+ LED
+ . The obvious question 
+ then is “How do you read from or write to a port?” In many cases ports will be 
+ memory mapped
+ . That is, a 
+ specific address in the memory map is allocated to a given port. You read and write from/to it just like 
+ any other variable. Further, development systems sometimes disguise these addresses as pre-defined 
+ global variables. They might also include a library of specific routines to utilize the ports. Thus setting a 
+ certain port (let’s call it the “A” port) to a high might be as simple as 
+ PORT_A = 1;
+  or 
+ set_portA(1);
+ . 
+  
+ Reading from a port might be something like 
+ a = PORT_A;
+  or
+  a = get_portA();
+ . Consequently, 
+ embedded code is often all about reading and writing to/from ports and then branching to the requested 
+ chores.
+  
+ 74 
+ Embedded Controllers",NA
+15.3 Math ,"Usually, embedded code is not math intensive. There are some exceptions to this rule, but generally code 
+ for a microwave oven doesn’t need something like a cosine function. Many embedded systems do not 
+ have or need floating point math. All math operations are performed using integers. Look-up tables may 
+ be used to speed processing in some cases. You will sometimes hear of “fixed point” math versus floating 
+ point. This is a fairly simple idea. Suppose you need to work with variables to the precision of tenths but 
+ you only have integers. Simply treat your variables as having an unseen decimal point after the first digit 
+ and think of all values as being in tenths. Thus, the number 17.3 would be stored and manipulated as 173. 
+ If the result of some calculation is say, 2546, then you know the real answer is 254.6.",NA
+15.4 Memory and Hardware,"Most embedded applications just run one piece of code. Therefore, you can think of a program as 
+ “owning” everything. There’s no sharing of resources. This makes life easy in many regards. For 
+ example, there’s not much need for an operating system. Also, the system is “known” in that your code 
+ will be running on fixed hardware. Execution times are very predictable. Of course, the computational 
+ power of the processors tends to be much less than in the desktop world. Still, you can do things that are 
+ not practical in the desktop world due to hardware variation. A classic example is a “timing loop”. 
+  
+ Sometimes you need to create a time delay or to “waste” a certain amount of time, perhaps for 
+  
+ Embedded Controllers 
+  
+ 75",NA
+15.5 Code Development,"The real “kicker” is that you can’t do 
+ native development
+  with embedded code. In other words, you can’t 
+ program the microcontroller just using the microcontroller the way you can create desktop applications 
+ using a desktop computer. Instead, you need to have a 
+ host
+  and a 
+ target
+ . The host is the computer you use 
+ for development (such as a normal desktop unit) while the target is the thing you’re developing for (the 
+ embedded application). The compiler that you use is technically referred to as a 
+ cross-compiler
+  because it 
+ creates machine code for a processor other than the one the host uses. For example, your 
+ PC
+  might use a 
+ Pentium processor, but the cross-compiler that runs on it creates machine code for a specific Atmel 
+ AVR 
+ microcontroller. To test your code, you need to either simulate the target on the host, or you can download 
+ the compiled code to the target and test it there. This is an extra, but unavoidable, step.
+  
+ 76 
+ Embedded Controllers",NA
+16. Hardware Architecture ,NA,NA
+16.1 Introduction,"Arguably, the first commercial microprocessor was the Intel 4004 released in 1971. It was a four bit 
+ processor and was comprised of a series of 
+ IC
+ s. A year later, Intel released the 8008, an eight bit 
+ processor on a single chip. The remainder of the decade saw the development of numerous 
+ microprocessor and microcontroller lines from various manufacturers including the 8088, Z80, 6502, 
+ 6809 and 68000 to name a few. These served as the core of the first generation of home computers. Their 
+ performance, while impressive for the day, pales in comparison with modern processors. Many used 
+ clock frequencies in the 1 to 5 MHz region and could access only modest amounts of memory (typically 
+ less than one megabyte). Integration of electronic control into everyday consumer items such as cars, 
+ microwave ovens and TVs, gained momentum during this time yielding the 
+ microcontroller
+ . A 
+ microcontroller can be thought of as a specialized microprocessor. Typically, they do not have the 
+ computational power of microprocessors but instead feature other functional blocks that are useful when 
+ interfacing to sensors, actuators, display devices and the like that are found in consumer or industrial 
+ electronics.
+  
+ While the design of any particular microcontroller will be unique, there are certain themes and elements 
+ that are consistent. Unlike a microprocessor used in a personal computer, a microcontroller is generally an 
+ all-in-one solution designed to reduce cost and save space. For example, the code and data space 
+ requirements for an embedded application tend to be quite small compared to traditional desktop 
+ applications. Consequently, all memory is included on the microcontroller (not to be confused with the 
+ cache memory
+  found on microprocessors which exists primarily to increase the computational speed of 
+ the unit). Further, the microcontroller will include functional blocks such as independent programmable 
+ timers, general purpose digital input/output (
+ GPIO
+ ) ports and analog input ports featuring 
+ ADC
+ s with eight 
+ or more bits of resolution. Some controllers also contain digital to analog converters for direct analog 
+ signal generation or other specialized blocks for dealing with serial communications, wireless 
+  
+ communications and so forth. As a microcontroller can have a large number of these interface blocks, it is 
+ not always cost effective to dedicate external 
+ IC
+  pins for each and every input and output function. 
+ Consequently, pins are usually multiplexed, each offering multiple possible uses. For example, a specific 
+ pin might be programmed for digital input, digital output or a pulse-width modulated output (obviously, 
+ not simultaneously). 
+  
+ As mentioned in Chapter Two, processors might use a shared memory scheme for code and data (Von 
+ Neumann architecture) or a split memory scheme (Harvard architecture). Harvard architecture is 
+ somewhat less flexible but it allows for faster processing as the processor can fetch new instructions very 
+ quickly and without any collision with data access. In the case of microcontrollers, it is worth noting that 
+ the memory holding the code must be 
+ non-volatile
+  otherwise the control program will cease to exist once 
+ power is cycled. 
+  
+ The other major item of importance in microprocessor/microcontroller architecture is the type of 
+ instruction set used. The two basic choices are 
+ CISC
+  (Complex Instruction Set Computing) and 
+ RISC 
+ (Reduced Instruction Set Computing). A 
+ CISC
+  processor contains instructions that might offer several 
+ low-level steps rolled into one. While this sounds very convenient, the down side is that these instructions 
+ often take several clock cycles to execute. By comparison, 
+ RISC
+  architectures do not use these complex 
+ instructions, instead focusing on getting each instruction to execute in a single cycle. These are usually 
+ pipelined
+  as well, meaning that while one instruction is executed, the next instruction is being loaded 
+ from program memory. 
+ RISC
+  processors are used in everything from simple embedded applications to 
+ cell",NA
+16.2 Atmel AVR Core,"The Atmel 
+ AVR
+  processor core uses Harvard architecture with simple pipelining. A block diagram of 
+ the 
+ AVR
+  series core is shown below. 
+  
+  
+ Figure 16.1, AVR block diagram (Atmel 2014)
+  
+ Embedded Controllers 
+  
+ 79",NA
+16.3 Memory,"Another important aspect is memory. Note that the 
+ AVR
+  contains several different kinds of memory 
+ including flash program memory, static data memory or 
+ SRAM
+  (Static Random Access Memory) and 
+ EEPROM
+  (Electrically Erasable Programmable Read-Only Memory). Typical embedded applications run 
+ a single program repeatedly. This program must run from the moment the device is turned on until it is 
+ turned off. In many applications, this program is never updated (a microwave oven, perhaps). In other 
+ applications, it may be updated but only by qualified technicians, not by the consumer (for example, an 
+ automotive engine management system). Consequently, the program memory needs to be non-volatile, 
+ that is, it must be able to survive without power. Historically, this was done via 
+ ROM
+  (Read-Only 
+ Memory) or 
+ PROM
+  (Programmable Read-Only Memory). In both of these, individual bits can be set or 
+ cleared through the use of fuse/anti-fuse links. The difference is that 
+ ROM
+ s are programmed at the time of 
+ manufacture while 
+ PROM
+ s are programmed after manufacture. Both are permanent and cannot be 
+ reprogrammed. 
+ ROM
+  is less expensive for large production runs but more expensive in small quantities. 
+ EEPROM
+  has the advantage of being erasable and thus is a form of non-volatile read/write storage. Flash 
+ RAM
+  is similar but is much less expensive. It has the downside that it must be programmed in blocks 
+ whereas 
+ EEPROM
+  is byte-programmable. Therefore, Flash 
+ RAM
+  (also called 
+ NVRAM
+ ) is ideal as a storage 
+ medium for the main program and 
+ EEPROM
+  is useful as a medium for storing data that must survive a 
+ power cycle. A possible example use of 
+ EEPROM
+  would involve saving user preference settings for a 
+ digital camera. When power is turned off and back on, the user expects the device to be “as they left it”, 
+ not reverting back to a default state. Typically, special instructions or procedures are needed to write to or 
+ read from 
+ EEPROM
+ . 
+  
+ In contrast to Flash 
+ RAM
+  and 
+ EEPROM
+ , 
+ SRAM
+  is volatile, just like the common 
+ DRAM
+  (Dynamic 
+ RAM
+ ) 
+ variants found in personal computers. Static 
+ RAM
+  typically is made of six transistors arranged as a flip-
+ flop for each bit of storage. 
+ DRAM
+ , by comparison, typically consists of a single transistor-capacitor 
+ combination per bit. 
+ SRAM
+  is less dense and more expensive per bit than 
+ DRAM
+  but it is very fast and 
+ does not need to refreshed (the charge in a 
+ DRAM
+  cell will leak over time requiring the cell to be 
+ refreshed at regular intervals). As a result, 
+ SRAM
+  is used for general purpose registers and special 
+ purpose/IO registers. The ATmega 328P used in the Arduino Uno development board features 32k bytes 
+  
+ Embedded Controllers
+  
+ 81",NA
+17. AVR ATmega 328P Overview ,NA,NA
+Or “Controlablanca: A Film Noir Microcontroller”,"11
+  
+ “I need some assistance.” Rick peered over the top of his work bench. It wasn’t often that a dame walked 
+ into the lab, and a real looker at that. Beautiful, intelligent women had a way of turning his life into a 
+ burning hell and this one was a potential forest fire in heels. “Damn!” he cussed as he shook his finger, 
+ now blistering from its unfortunate collision with the hot soldering iron. Rick sidled up to her, somewhat 
+ wary. She was a knock-out, that’s for sure; the kind of woman who could make Ingrid Bergman look bad 
+ on her best day and from her demeanor Rick assumed she was a grad from the polytechnical institute. 
+ Confident, tall and slender, she had the longest legs Rick had ever seen. “From her hips all the way down 
+ to the floor”, as his companion, Frankie the lab rat, would say. What could she possibly want from his 
+ little lab? “What can I do you for, er, I mean, what can I do for you?” he stammered. “I’ve got a 
+ problem”, she said in a voice so husky it could pull a dog sled. “I’ve got control issues and I need an 
+ expert.”  “Expert, eh? I think I know someone, Miss…Miss…What did you say your name was?” “I 
+ didn’t”, she responded. “It’s Miss C.” Rick furrowed his brow. “Missy? Missy who?” “Just Miss C”, 
+ came her curt reply. 
+  
+ Rick looked over his shoulder at his lab partner. “Frankie, we’re going down the hall to visit The Italian. 
+  
+ Finish up the prototype but don’t Bogart that ‘scope ‘cause Louie needs it.” He turned to the dame, 
+ “Follow me”, he said. They walked down the hall in silence until they came to a door with a small red, 
+ white and green flag sticker on it. Rick knocked. The door opened revealing a young man with dark hair 
+ and a five day old beard that was perfectly trimmed around the edges. Inside the office sat a large framed 
+ photo of a Ferrari, a few postcards from San Marino and what appeared to be spare parts for some manner 
+ of medieval coffee machine. “Si?” said the young man, one eyebrow raised, looking like a cross between 
+ a GQ model and Mr. Spock. 
+  
+ “Arduino, this is Missy”, said Rick. “Che?” came the young man’s response. “Not Kay, C”, said the 
+ dame. Arduino looked at her and asked, “Not Casey, but who?” She sensed a possible language barrier 
+ and tried to meet him halfway. “Miss C, si?” she said.  “Missy C”, nodded Arduino. “No”, she replied, 
+ her exasperation increasing, “Not CC, what am I, a compiler?” Arduino was getting confused now. “Nazi 
+ see what??” he asked, his eyes scanning up and down the hallway. The dame tried a different approach. 
+ “OK, suppose I was your mother’s sister. I’d be aunt C”, she countered. “Yeah, well if you was my 
+ mother’s sister I’d be antsy, too”, added Rick. The dame moved in close to Arduino and almost whispered 
+ through clenched teeth, “Look, just call me Miss C, see?” “Got it!” said Arduino. “Please come in. How 
+ can I help you Miss Seesi?” Rick shook his head as he lowered his gaze to the ground. How had the script 
+ devolved into a bad parody of an Abbott and Costello routine? Puns were more to his liking. Surely he’d 
+ have to Warn her Brothers about this. Of all the labs in all the colleges and universities in the world, why 
+ did she have to walk into his? 
+  
+ “What seems to be the problem, Miss Seesi?” asked Arduino. The dame was beginning to get a headache, 
+ the kind that builds from behind the eyes until it feels like your skull is filled with monkeys playing 
+ dodge ball. She took a deep breath and exhaled slowly. “I’ve got an application that’s in trouble”, she 
+ said. 
+  
+ “
+ Trouble
+ ,” thought Rick, “yeah, I’ll bet this dame knows all about 
+ trouble
+ . It’s part of the package with 
+ these ones, must be in their 
+ DNA
+ . Why, if I was a bug she’d be a regular 
+ Venus De Flytrap
+  – beautiful 
+ and
+  
+ 11
+  If you’re not familiar with the 1942 film classic 
+ Casablanca
+  starring Humphrey Bogart and Ingrid Bergman, as 
+ well as the 
+ film noir
+  genre, it is strongly suggested that you watch the movie and a film noir title before proceeding. 
+ The attitudes expressed here are not necessarily those of the author. 
+  
+ 84 
+ Embedded Controllers",NA
+18. Bits & Pieces: #include and #define,NA,NA
+18.1 Introduction,"Welcome to Bits & Pieces (catchy name, eh?). This sequence of chapters delves into a variety of aspects 
+ of programming the Atmel 
+ AVR
+  ATmega 328P microcontroller via the Arduino Uno board and associated 
+ libraries. The focus is on IO (Input-Output) programming. Specifically, we’ll be looking at ways of 
+ coding the interface between the Uno and external circuitry. This is code-only; the hardware aspect is 
+ dealt with separately in lab. We will be exploring the IO code used to read to and write from digital and 
+ analog ports so that we can perform tasks such as reading the state of switches, lighting 
+ LED
+ s, reading 
+ continuously variable data such as force or temperature, timing or counting events, and controlling 
+ devices such as motors. The simplest way of performing these items is via the library functions that come 
+ with the Arduino system
+ 13
+ . Sometimes, though, these functions are not fast or efficient enough, or we 
+ need to use a non-Arduino platform. For those reasons, we’ll be diving down into the library functions 
+ themselves to see how they work. To the uninitiated, scouring through library source code can be a 
+ daunting task, so think of Bits & Pieces as a series of guided tours covering major parts of the library. 
+  
+ Granted, it’s probably not as much fun as, say, a series of guided tours of tropical islands of the South 
+ Pacific, but you can only get so much for your tuition. And while there is little doubt that there might be 
+ interesting uses for embedded controllers on said islands, a field trip is 
+ right out
+ .
+  
+ The first things we need to examine are some commonly used include files. Recall that include files (also 
+ known as header files, i.e., the ones that end in “.h”) are used to collect up function prototypes, 
+ references to global variables, structure definitions, and those wonderful (and sometimes confusing) 
+ #define
+ s. 
+  
+ Remember, the C language is fairly “skinny” and the functions that we call are either written by us or 
+ come from a library. Prototypes for the functions are found in the library’s header file. An interesting 
+ twist to this is that some so-called library functions aren’t functions at all. Instead, they are simply inline 
+ expansions via 
+ #define
+ s. Many different libraries are available, so to make life even easier, systems 
+ often include a “master” include file that contains directives to reference other include files (boy, those 
+ professional programmers are constantly looking for ways to make every keystroke count).",NA
+"18.2 Universal Stuff, Common to All Controllers ","Let’s start with the biggie: 
+ arduino.h
+ . Here are the first few lines (some parts omitted):
+  
+ #ifndef Arduino_h 
+  
+ #define Arduino_h
+  
+ #include 
+ <stdlib.h> 
+  
+ #include 
+ <string.h> 
+  
+ #include <math.h>
+  
+ #include <avr/pgmspace.h> 
+  
+ #include <avr/io.h> 
+  
+ #include <avr/interrupt.h> 
+  
+ #include ""binary.h"" 
+  
+ #define HIGH  0x1
+  
+ 13
+  Complete details on the library and lots of other goodies including example code can be found at 
+ www.arduino.cc
+ . 
+ The Reference page in particular will prove useful.",NA
+18.3 Controller Specific Stuff,"Moving on to other header files, we must recall that there are dozens and dozens of models in a given 
+ processor series like the 
+ AVR
+ . Each of these controllers will have different memory capacities, 
+ IO 
+ capabilities and so forth, so we need to distinguish which one we’re using while also trying to keep the 
+ code as generic as possible. Normally, this is done by creating specific header files for each controller. 
+ The 
+ IDE
+  then gives you an option to select which controller you’re using and 
+ #define
+ s a controller 
+ ID 
+ for it (see the list in the Arduino 
+ IDE
+  under 
+ Tools>>Board
+ ). Consider the following chunk of 
+ avr/io.h
+ :
+  
+ #ifndef _AVR_IO_H_ 
+  
+ #define _AVR_IO_H_
+  
+ #include <avr/sfr_defs.h>
+  
+ We find a (huge) series of conditional includes, each looking for the one pre-defined processor symbol set 
+ by the Arduino 
+ IDE
+ :
+  
+ #if defined (__AVR_AT94K__) 
+  
+ #  include <avr/ioat94k.h> 
+  
+ #elif defined (__AVR_AT43USB320__) 
+  
+ #  include <avr/io43u32x.h> 
+  
+ #elif defined (__AVR_AT43USB355__) 
+  
+ #  include <avr/io43u35x.h>
+  
+ … and so on until we get to the ATmega 328P for the Arduino Uno:
+  
+ #elif defined (__AVR_ATmega328P__) 
+  
+ #  include <avr/iom328p.h>
+  
+ … and we continue until we get to the end:
+  
+ #elif defined (__AVR_ATxmega256A3B__) 
+  
+ #  include <avr/iox256a3b.h> 
+  
+ #else 
+  
+ #  if !defined(__COMPILING_AVR_LIBC__) 
+  
+ #    warning ""device type not defined"" 
+  
+ #  endif 
+  
+ #endif
+  
+ #include <avr/portpins.h> 
+  
+ #include <avr/common.h> 
+  
+ #include <avr/version.h>
+  
+ #endif /* _AVR_IO_H_ */
+  
+ So what’s in 
+ avr/iom328p.h
+  you ask? This includes a bunch of things that will make our programming 
+ lives much easier such as definitions for ports, registers and bits. We’re going to be seeing these over and 
+ over:
+  
+ #ifndef _AVR_IOM328P_H_ 
+  
+ #define _AVR_IOM328P_H_ 1
+  
+ Embedded Controllers 
+  
+ 93",NA
+19. Bits & Pieces: Digital Output Circuitry ,NA,NA
+19.1 Introduction,"To fully appreciate the software interface to microcontrollers and to gain insight into how to interface 
+ controllers to external devices, it is useful to examine the underlying circuitry. In this chapter we shall 
+ investigate the basic digital output circuitry. Anything that can be controlled with a simple logical yes/no, 
+ true/false input can be a target. Although controllers usually have limited output current and voltage 
+ capability, they can control devices such as power transistors which can in turn control more demanding 
+ loads. A simplified diagram of the General Purpose Input-Output (
+ GPIO
+ ) circuitry can be seen in Figure 
+ 19.1.
+  
+  
+ Figure 19.1, 
+ GPIO
+  circuitry (from Atmel 2014)
+  
+ 98 
+ Embedded Controllers",NA
+19.2 Output Circuitry,"Figure 19.2 presents a further simplification focusing solely on the output portion.
+  
+  
+ Figure 19.2, output circuitry simplified (from Atmel 2014)
+  
+ Embedded Controllers 
+  
+ 99",NA
+20. Bits & Pieces: Digital Input Circuitry ,NA,NA
+20.1 Introduction,"In this chapter we shall investigate the basic digital input circuitry. This can be used to sense the state of 
+ external switches and other two-state devices. These devices can be active, that is, generating a high or 
+ low voltage, or they can be simple passive switches connecting to ground through the use of an optional 
+ internal pull-up resistor. A simplified diagram of the General Purpose Input-Output (
+ GPIO
+ ) circuitry can 
+ be seen in Figure 20.1. As in the previous chapter, this is for a single bit. Once again, we shall remove 
+ sections that are not pertinent to the input function or for enhanced clarity.
+  
+  
+ Figure 20.1, 
+ GPIO
+  circuitry (from Atmel 2014)
+  
+ 102 
+ Embedded Controllers",NA
+20.2 Input Circuitry ,"Figure 20.2 presents a further simplification focusing solely on the input portion.
+  
+  
+ Figure 20.2, input circuitry simplified (from Atmel 2014)
+  
+ Once again we have removed the gates surrounding 
+ PORT
+ xn that create the bit toggle function. Further, 
+ we have removed the 
+ PUD
+ , 
+ SLEEP
+  and 
+ CLK
+  signals and simplified the lower section leaving just the 
+ Schmitt Trigger. The read process will be similar to the write process examined in the previous chapter. 
+ To read a signal on an external pin, we will need to write a logic low to the data direction bit 
+ DD
+ xn. This 
+ will disconnect 
+ PORT
+ xn from the physical pin, Pxn, because the tri-state buffer will go to high-Z state. If 
+  
+ Embedded Controllers 
+  
+ 103",NA
+21. Bits & Pieces: pinMode() ,NA,NA
+Or “Programming Port Directions and Your Bicycle”,"In this tour, we’re going to start looking at digital 
+ IO
+ . Digital 
+ IO
+  will allow us to read the state of an input 
+ pin as well as produce a logical high or low at an output pin. Examples include reading the state of an 
+ external switch and turning an 
+ LED
+  or motor on and off. 
+  
+ If every potential external connection between a microcontroller and the outside world had a dedicated 
+ wire, the pin count for controller packages would be huge. The ATmega 328P in the Uno board has four 8 
+ bit ports plus connections for power, ground and the like, yet it only has 28 physical pins. How is this 
+ possible? Simple, we’ll 
+ multiplex
+  the pins, that is, make multiple uses for each. If, for example, we were 
+ to look at the 0
+ th
+  bit of 
+ IO
+  port B, this leads to a single external pin. This pin can be programmed to 
+ behave in either input (read) mode or output (write) mode. In general, each bit of a port can be 
+ programmed independently; some for input, some for output, or all of them the same. Obviously, before 
+ we use a port we need to tell the controller which way it should behave. In the Arduino system this is 
+ usually done via a call to the library function 
+ pinMode()
+ . Here is the description of the function from the 
+ on-line 
+  
+ reference
+ 15
+ : 
+  
+ pinMode()
+  
+ Description 
+  
+ Configures the specified pin to behave either as an input or an output. See the description of 
+ digital pins 
+ for details on the functionality of the pins. 
+  
+ As of Arduino 1.0.1, it is possible to enable the internal pullup resistors with the mode INPUT_PULLUP. 
+ Additionally, the INPUT mode explicitly disables the internal pullups. 
+  
+ Syntax 
+  
+ pinMode(pin, mode) 
+  
+ Parameters 
+  
+ pin: the number of the pin whose mode you wish to set 
+  
+ mode: 
+ INPUT
+ , 
+ OUTPUT
+ , or 
+ INPUT_PULLUP
+ . (see the 
+ digital pins
+  page for a more complete description 
+ of the functionality.) 
+  
+ Returns 
+  
+ None 
+  
+ Figure 21.1, pinMode docs
+  
+ 15
+ http://www.arduino
+  
+ 106
+  
+ .cc/en/Reference/PinMode
+  
+ Embedded Controllers",NA
+22. Bits & Pieces: digitalWrite(),"“Writing to a port” implies that we wish to control some external device. This might involve setting or 
+ clearing a single bit to turn on an 
+ LED
+  or motor. A set of bits might also be required, for example, to send 
+ out 
+ ASCII
+  code byte-by-byte or to write data words to an external digital to analog converter (
+ DAC
+ ). It is 
+ important to remember that the microcontroller has a limited amount of sink/source current available per 
+ pin (40 mA for each pin of the ATmega 328P but no more than 200 mA total for the chip). Thus, it is 
+ possible to drive a handful of 
+ LED
+ s to 10 mA each with a direct connection consisting of a current limiting 
+ resistor and the 
+ LED
+ , but not possible to turn on even a relatively small 
+ DC
+  motor. Higher current (or 
+ voltage) loads will require some manner of driver or interface circuit. We will forgo that discussion and 
+ just focus on the code portion here.
+  
+ As the output port pins can only be in either a high or low state, they are referred to as digital outputs. 
+ While it is possible to generate analog signals, either through pulse width modulation or additional 
+ external circuitry, the digital high/low nature of port pins is all there is. Generally speaking, most 
+ microcontrollers do not produce continuously variable analog voltages at their port pins. There are 
+ exceptions to this, though. For example, the Arduino Due
+ 18
+  board utilizes the Atmel 
+ SAM3X8EARM 
+ Cortex-M3 
+ CPU
+  which contains two internal 12 bit 
+ DAC
+ s. 
+  
+ Before writing, the port has to be set up for the proper direction. This means using either 
+ pinMode()
+  or 
+ the associated data direction register, 
+ DDRx
+ , to set the mode to output 
+ before
+  we can consider writing data 
+ to an external device. If a single port bit is all that’s required, 
+ pinMode()
+  is very straightforward and 
+ robust. If several bits need to be controlled together, it may be easier to go directly to 
+ DDRx
+ . 
+  
+ Just as there are two methods to set the output mode, the same is true for writing the data itself; one 
+ effective method for single bits and another for sets of bits. 
+  
+ To write a single bit, the 
+ digitalWrite()
+  function is a good choice. Here is the on-line documentation 
+ for it, found at 
+ http://arduino.cc/en/Reference/DigitalWrite
+ : 
+  
+ digitalWrite()
+  
+ Description 
+  
+ Write a 
+ HIGH
+  or a 
+ LOW
+  value to a digital pin. 
+  
+ If the pin has been configured as an OUTPUT with 
+ pinMode
+ (), its voltage will be set to the 
+ corresponding value: 5V (or 3.3V on 3.3V boards) for HIGH, 0V (ground) for LOW.
+  
+ If the pin is configured as an INPUT, writing a HIGH value with digitalWrite() will enable an internal 
+ 20K pullup resistor (see the 
+ tutorial on digital pins
+ ). Writing LOW will disable the pullup. The pullup 
+ resistor is enough to light an LED dimly, so if LEDs appear to work, but very dimly, this is a likely 
+ cause. The remedy is to set the pin to an output with the pinMode() function. 
+  
+  
+ 18
+ http://arduino.cc/en/Main/
+ A
+  
+ 112
+  
+ rduinoBoardDue
+  
+ Embedded Controllers",NA
+23. Bits & Pieces: delay(),NA,NA
+or How to Waste Time,"Sometimes our code needs to wait for things or time events. For example, we might want to turn an 
+ LED 
+ on for a few seconds and then turn it off. We’ve seen how to control an 
+ LED
+  with 
+ digitalWrite()
+  but 
+ how do we wait for a few seconds? One simple method is to create an empty loop. This is a loop that 
+ really does nothing but waste time. For example, if we know that simply incrementing, testing and 
+ branching in a loop takes a microsecond, we could write a function like this:
+  
+ void CheesyDelay( unsigned long msec ) 
+  
+ {
+  
+  
+  volatile unsigned long i; 
+  
+  
+  unsigned long endmsec = msec * 1000;
+  
+  
+  for( i=0; i<endmsec; i++ ); 
+  
+ }
+  
+ Note that we specify the number of milliseconds we’d like to waste. Since each iteration of the loop takes 
+ one microsecond, we multiply by 1000 to achieve milliseconds. The 
+ volatile
+  modifier is important 
+ here. This tells the compiler not to aggressively optimize the code for us because I could be changed by 
+ code running elsewhere (for example, in an interrupt). Otherwise, the compiler might figure out that it can 
+ achieve the same end result by ignoring the loop and doing a simple addition. The problem with this 
+ function is that the resulting delay is highly dependent on the microcontroller used and its clock 
+ frequency. If you just need a quick and dirty delay this will work fine, but a far more accurate delay is 
+ available with the 
+ delay()
+  function and its sibling 
+ delayMicroseconds()
+ , whose reference material 
+ is repeated below.
+  
+ delay()
+ 20
+  
+ Description 
+  
+ Pauses the program for the amount of time (in miliseconds) specified as parameter. (There are 1000 
+ milliseconds in a second.) 
+  
+ Syntax 
+  
+ delay( ms ) 
+  
+ Parameters 
+  
+ ms: the number of milliseconds to pause (
+ unsigned long
+ ) 
+  
+ Returns 
+  
+ nothing 
+  
+  
+ 20
+ http://arduino.cc/en/Refere
+  
+ 116
+  
+ nce/Delay
+  
+ Embedded Controllers",NA
+24. Bits & Pieces: digitalRead() ,NA,NA
+24.1 Introduction,"The discussion that follows deals strictly with two-state high/low logic level sensing. For continuously 
+ variable analog signals see the Bits & Pieces entry covering 
+ analogRead()
+ . Through the 
+ pinMode() 
+ function, or by directly accessing the appropriate data direction register bits (
+ DDRx
+ ), the general purpose 
+ IO connections can be configured to read the state of external switches or logic levels. With the Arduino 
+ Uno, 5 volts represents a logic high while 0 volts represents a logic low. An added capacity of the 
+ ATmega 328P on the Uno is the ability to include an optional internal pull-up resistor at the input pin. 
+ This allows connection of a simple passive short-to-ground switch (i.e. the input pin floats high when the 
+ switch is open and goes low when the switch is engaged). 
+  
+ To read individual pin inputs the Arduino system offers the 
+ digitalRead()
+  function. Multiple pins can 
+ be read simultaneously by directly accessing the appropriate register, which we will examine afterward. 
+  
+ Below is a copy of the online documentation for the 
+ digitalRead()
+  function:
+  
+ digitalRead()
+ 21
+  
+ Description
+  
+ Reads the value from a specified digital pin, either 
+ HIGH
+  or 
+ LOW
+ . 
+  
+ Syntax
+  
+ digitalRead( pin ) 
+  
+ Parameters
+  
+ pin: the number of the digital pin you want to read (
+ int
+ ) 
+  
+ Returns
+  
+ HIGH
+  or 
+ LOW
+  
+ Example 
+  
+ int ledPin = 13; // LED connected to digital pin 13 
+  
+ int inPin = 7;   // pushbutton connected to digital pin 7 
+ int val = 0;     // variable to store the read value
+  
+ void setup() 
+  
+ {
+  
+  
+  pinMode(ledPin, OUTPUT);    // sets the digital pin 13 as output
+  
+  pinMode(inPin, INPUT);      // sets the digital pin 7 as input } 
+  
+ void loop() 
+  
+ {
+  
+  
+  val = digitalRead(inPin);   // read the input pin
+  
+  
+  digitalWrite(ledPin, val);  // sets the LED to the button's value 
+ }
+  
+  
+ 21
+ http://arduino.cc/en/Refere
+  
+ 124
+  
+ nce/DigitalRead
+  
+ Embedded Controllers",NA
+24.2 A Practical Example: Round-Robin Switch,"Let’s take a look at how we might implement a 
+ round-robin
+  switch. A round-robin switch works in a 
+ circular manner; stepping through a sequence of settings and returning back to the start once the sequence 
+ is completed. For our example, we shall consider a single momentary contact pushbutton that cycles 
+ through a series of fan speeds: off, low, medium and high. The system will start in the off state and each 
+ successive press of the button will advance the state from low through high. Once high is reached, a 
+ further press will cycle the state back to off and the process continues in like manner. Each speed setting 
+ will be indicated via its own 
+ LED
+  and only one 
+ LED
+  will be on at any given time. To keep the code clean, 
+ will only examine the pushbutton and 
+ LED
+  portion of the code and not consider how we might control the 
+ speed of a fan. Further, we shall assume that an appropriate hardware debounce circuit is incorporated 
+ with the pushbutton (e.g., a 74HC14 Schmitt with RC network) and that depressing the button will 
+ produce a logical high at our Arduino input pin. Also, the 
+ LED
+  drivers are assumed to be active high (i.e., 
+ a high on an output pin of the Arduino will light an 
+ LED
+ ). 
+  
+ The first thing to remember is that a typical microcontroller is capable of checking the state of an input 
+ pin in a fraction of a microsecond. Consequently, we cannot simply check the pin to see if it is a logical 
+ high, and if so, cycle through to the next fan speed. In the fraction of a second it would take for a human 
+ to press and release the button, the microcontroller could loop through the pin checking code thousands of 
+ times, cycling the fan speed for each loop’s check. The final fan speed would be anyone’s guess. Instead, 
+ we need to look for the low to high transition as this happens only once with each button press. Indeed, 
+ this also points up the need for switch debouncing. Without it, a single press could result in over a dozen 
+ low to high edges due to switch contact chatter resulting in a random fan setting. One way to perform the 
+ positive going edge detection is to use two variables, one for the current state of the switch and a second 
+ for the prior state of the switch (i.e., the state that was measured immediately prior to the current state). If 
+ the current state is high (on or pressed) and the prior state is low (off or not pressed) then we know we 
+ have detected a positive going edge and we can perform our processing. Note that on the next iteration of 
+ the loop, the current state will be high but the prior state will now also be high (i.e., the former current 
+ state from the prior loop iteration) and thus no processing is performed. At this point it would not matter 
+ how long the user kept their finger on the button as all current and prior states will be high. When the user
+  
+ Embedded Controllers 
+  
+ 127",NA
+24.3 Exercise,"In closing, here’s an interesting question. If the round-robin switch had numerous states, say a dozen or 
+ so, a single increment button might prove a little frustrating to the user. For example, if they accidentally 
+ go past the desired setting then they’re forced to go all the way around again to effectively “back up”. To 
+ alleviate this we could add a decrement pushbutton alongside our existing increment pushbutton. How 
+ would the code example presented above need to be altered to respond to a two button configuration? If at 
+ first this appears to be too daunting of a challenge, then break it into two parts. Initially, consider how the 
+ preceding code would need to be altered in order to change the operation of the fan speed increment 
+ button into a fan speed decrement button. That is, instead of button pushes producing the sequence 
+ off-
+ low-med-high-off
+  etc., implement the button to produce 
+ off-high-med-low-off
+  etc. Once this is completed, 
+ determine how to combine this new implementation with the existing example code. 
+  
+ 130 
+ Embedded Controllers",NA
+25. Bits & Pieces: Analog Input Circuitry ,NA,NA
+25.1 Introduction,"As useful as digital input/output ports are, there is also a need for continuously variable or analog ports. 
+ Controllers are, of course, inherently digital devices but that doesn’t mean that analog signals are out of 
+ bounds. There is considerable variation in what is available on any given microcontroller, though. On 
+ some units, analog to digital and digital to analog circuitry must be added to the controller system as 
+ peripheral devices. This is particularly true for less expensive controllers or for more specialized 
+ applications that require extreme performance (for example, a high definition digital audio recorder or 
+ playback device). Most general purpose controllers have an analog to digital converter (
+ ADC
+ ) and some 
+ also include a digital to analog converter (
+ DAC
+ ). The resolution and speed of these converters can vary 
+ quite a bit from controller to controller.  In this chapter we shall focus on the 
+ ADC
+  system found in the 
+ ATmega series. While our discussion will be quite specific, the concepts presented apply to many other 
+ controllers made by other manufacturers. Only the performance and operational details may differ.
+  
+ A typical use of an 
+ ADC
+  is to capture the value of an external sensor or user input device at a particular 
+ point in time. For instance, we may wish to measure the output voltage from a temperature or light sensor.
+  
+ Regarding a user interface device, one possibility is to measure the voltage developed across a 
+  
+ potentiometer (the outer terminals connected to power and ground, the wiper attached to the analog input 
+ port). As the user rotates the pot, the voltage shifts. This voltage could represent all manner of variables 
+ from the loudness setting for music playback to the speed of a motor. These sorts of applications can be 
+ considered “snapshot” or single conversion uses. That is, we don’t spend all of our time continuously 
+ converting the port voltage to digital values the way we would with, say, a waveform capture device. In 
+ the case of something like a temperature sensor, we simply perform conversions as we need them. For 
+ user interface devices, as long as we can obtain values at a sufficiently fast rate, the control will appear 
+ continuous to the user. In some applications this may require no more than a dozen or so conversions per 
+ second. This is compared to tens of thousands of conversions per second for something like digitizing 
+ audio signals. 
+  
+ Of course, we may need to have several user interface devices. Consider something as common as a 
+ stereo receiver. Typically we would find knobs for volume, balance, bass, treble and so forth. It would be 
+ very impractical to have a single knob that controls everything and a series of buttons alongside it to 
+ indicate the current function of the knob. Alternately, in an industrial setting we might need to monitor 
+ temperatures at several locations along with other environmental parameters. While we could use one 
+ ADC
+  for each of these, it makes far more sense to use a single 
+ ADC
+  and multiplex it to several external 
+ pins. Think of these as multiple input channels. We select the channel (sensor) we want, make the 
+ measurement and continue on.
+  
+ This is not to say that we only use this “snapshot” mode. There are other applications that require 
+ continuous monitoring of the external signal and other techniques of obtaining the measurement. 
+ Consequently, 
+ ADC
+  systems can be configured for a single on-demand conversion as above, they can be 
+ free-running or the conversion can be triggered by some other event. Because of these demands, the 
+ circuitry and programming interface for analog inputs tends to be much more involved (and much more 
+ flexible) than we’ve seen for digital inputs. For example, 
+ ADC
+  systems often have several registers and 
+ bits devoted to specifying parameters such as the sample acquisition mode, the conversion speed, data 
+ justification, pin muxing and so forth.
+  
+ 132 
+ Embedded Controllers",NA
+25.2 ATmega ADC system ,"A block diagram of the ATmega 
+ ADC
+  system is found in Figure 25.1. 
+  
+  
+ Figure 25.1, ADC circuitry (Atmel 2014)
+  
+ Embedded Controllers 
+  
+ 133",NA
+26. Bits & Pieces: analogRead(),NA,NA
+26.1 Introduction,"Just as we would like to read the state of simple on/off switches, we also need to read continuously 
+ variable (i.e. analog) data. Usually this means the output voltage caused by some form of sensor such as a 
+ temperature sensor, force sensor, light sensor, etc. Very often simple passive devices such as CdS cells or 
+ FSR
+ s are placed into a resistive bridge network, the output voltage of which will shift with changes in the 
+ environment. An even simpler application would be the use of a potentiometer hooked up to a fixed 
+ voltage supply. The position of the pot would be controlled by the user and could represent a setting of 
+ almost any conceivable parameter such as volume, brightness, time delay, frequency, etc. In order to read 
+ analog quantities, the ATmega 328P contains a single 10 bit analog-to-digital converter multiplexed 
+ across six input channels. On the Arduino Uno board, the inputs to these 
+ ADC
+ s are found at the pins 
+ labeled A0 through A5. The Arduino development environment contains two useful functions to access 
+ theses, namely 
+ analogRead()
+  and 
+ analogReference()
+ . The on-line function descriptions are 
+ repeated below:
+  
+ analogRead()
+ 22
+  
+ Description 
+  
+ Reads the value from the specified analog pin. The Arduino board contains a 6 channel (8 channels on the 
+ Mini and Nano, 16 on the Mega), 10-bit analog to digital converter. This means that it will map input 
+ voltages between 0 and 5 volts into integer values between 0 and 1023. This yields a resolution between 
+ readings of: 5 volts / 1024 units or, 0.0049 volts (4.9 mV) per unit. The input range and resolution can be 
+ changed using 
+ analogReference
+ (). 
+  
+ It takes about 100 microseconds (0.0001 s) to read an analog input, so the maximum reading rate is 
+ about 10,000 times a second. 
+  
+ Syntax 
+  
+ analogRead( pin ) 
+  
+ Parameters 
+  
+ pin: the number of the analog input pin to read from (0 to 5 on most boards, 0 to 7 on the Mini and 
+ Nano, 0 to 15 on the Mega) 
+  
+ Returns 
+  
+ int (0 to 1023) 
+  
+ Note 
+  
+ If the analog input pin is not connected to anything, the value returned by analogRead() will fluctuate 
+ based on a number of factors (e.g. the values of the other analog inputs, how close your hand is to the 
+ board, etc.). 
+  
+  
+ 22
+ http://arduino.cc/en/Refere
+  
+ 136
+  
+ nce/AnalogRead
+  
+ Embedded Controllers",NA
+26.2 A Practical Example: Mapping a Sensor,"As mentioned at the outset, the analog input system may be used to obtain data from a variety of sensors. 
+  
+ One potential issue is that the range of sensor output voltages may not conveniently “line up” with the 
+ ADC
+  input range, thus requiring some form of data scaling and offsetting. That is, the input voltages will 
+  
+ 140 
+ Embedded Controllers",NA
+26.3 Exercise,"Using a sensor that produces two volts at freezing and four volts at boiling, describe a circuit that will 
+ scale the sensor output to a zero-to-five volt input range along with the code required to display the 
+ associated values in Celsius (i.e., two volts displays 0 and four volts displays 100). 
+  
+ Embedded Controllers 
+  
+ 141",NA
+27. Bits & Pieces: analogWrite(),"While some more advanced microcontrollers contain a digital to analog converter (
+ DAC
+ ) to produce a 
+ continuously variable analog output signal, most do not. The ATmega 328P on the Uno is one of those 
+ that don’t. How then can we get the controller to produce analog signals? One method is to use an entire 
+ bank of port pins, say all eight bits of port B, and feed these directly to an external parallel-input 
+ DAC
+ . 
+ We then write each byte to the port at the desired rate. The 
+ DAC
+  (along with a low-pass reconstruction 
+ filter) reconstructs these data into a smooth signal. The second method relies on pulse width modulation. 
+ This scheme is employed on the Uno and many other Arduino boards. Note that not all loads will operate 
+ properly with a simple 
+ PWM
+  signal. Some loads may require further processing of the 
+ PWM
+  signal (such 
+ as filtering).
+  
+ The key to understanding pulse width modulation is to consider the “area under the curve”. Suppose we 
+ have a one volt pulse signal that lasts for a period of five seconds, goes low for five seconds and then 
+ repeats. The same area would be achieved by a five volt pulse that stayed high for just one second out of 
+ ten. That is, the average value of either pulse over the course of ten seconds is one half volt. Similarly, if 
+ that five volt pulse stayed high for two seconds, then over the course of the ten second period the average 
+ value would be one volt. In other words; the greater the duty cycle, the higher the average voltage level. If 
+ we sped this up and the pulses were milliseconds or microseconds in width and repeated over and over, 
+ we could low pass filter the pulse train and achieve smoothly varying results. For some loads, we 
+ wouldn’t even have to filter the result. Examples would include driving a resistive heating element to 
+ control temperature or driving an 
+ LED
+  to control brightness. 
+  
+ The Uno achieves 
+ PWM
+  through the use of its three internal counters. Each of these has an A and B 
+ component, so it’s possible to generate six 
+ PWM
+  signals. The Arduino system pre-configures these for 
+ you. You can tell which pins are 
+ PWM
+ -capable just by looking at the board. 
+ PWM
+  pins will have a tilde 
+ (~) next to their Arduino pin number. The 
+ analogWrite()
+  function takes a great deal of work off your 
+ shoulders. Here is the on-line documentation repeated for your convenience:
+  
+ analogWrite()
+ 24
+  
+ Description
+  
+ Writes an analog value (
+ PWM wave
+ ) to a pin. Can be used to light a LED at varying brightnesses or drive 
+ a motor at various speeds. After a call to 
+ analogWrite()
+ , the pin will generate a steady square wave of the 
+ specified duty cycle until the next call to 
+ analogWrite()
+  (or a call to 
+ digitalRead()
+  or 
+  
+ digitalWrite()
+  on the same pin). The frequency of the PWM signal is approximately 490 Hz. 
+  
+ On most Arduino boards (those with the ATmega168 or ATmega328), this function works on pins 3, 5, 6, 
+ 9, 10, and 11. On the Arduino Mega, it works on pins 2 through 13. Older Arduino boards with an 
+ ATmega8 only support analogWrite() on pins 9, 10, and 11. 
+  
+ The Arduino Due supports analogWrite() on pins 2 through 13, plus pins DAC0 and DAC1. Unlike the 
+ PWM pins, DAC0 and DAC1 are Digital to Analog converters, and act as true analog outputs. 
+  
+ You do not need to call pinMode() to set the pin as an output before calling analogWrite(). 
+  
+  
+ 24
+ http://arduino.cc/en/Refere
+  
+ 142
+  
+ nce/AnalogWrite
+  
+ Embedded Controllers",NA
+28. Bits & Pieces: Timer/Counters,NA,NA
+28.1 Introduction,"Virtually all microcontrollers contain one or more hardware timer/counter function blocks. These can be 
+ used for a variety of functions including generating time delays, counting input events, generating simple 
+ pulse or 
+ PWM
+  waveforms, and triggering software interrupts. In general, there are multiple ways to 
+ configure these blocks. Often, they are set up as simple up counters that are clocked by the system clock. 
+ In some instances they may be run asynchronously from an external clock source. 
+  
+ The ATmega 328P contains three of these blocks: two eight bit units named 
+ TC0
+  and 
+ TC2
+  (Timer Counter 
+ 0 and 2), and one 16 bit unit, 
+ TC1
+ . A functional block diagram of an eight bit unit is shown in Figure 
+ 28.1. The 16 bit unit is similar but offers extended abilities.
+  
+  
+ Figure 28.1, timer/counter functional block diagram (eight bit)
+  
+ 146 
+ Embedded Controllers",NA
+28.2 Normal Mode,"Normal mode (
+ WGM22:0
+  are clear) is the simplest mode of operation. The 
+ TC
+  simply counts up until it 
+ overflows and wraps around back to zero. On overflow, the 
+ TOV2
+  flag (Timer OVerflow) is set in the 
+ TIFR2
+  flag register. More precisely, this bit will be set in the same clock cycle as when the timer/counter 
+ register 
+ TCNT2
+  becomes zero. There are no access restrictions on 
+ TCNT2
+ . Your code may overwrite the 
+ contents of this register at any time in order to alter the counting behavior. 
+  
+ A short code example follows. The program uses 
+ TC2
+  to create a time delay similar to the 
+ delay() 
+ function. This delay is then used to blink an 
+ LED
+  connected to 
+ PORTB.0
+ .
+  
+ /* Simple LED blinker using TC2 to create a time delay
+  
+  Active high LED connected to PORTB.0 */
+  
+ #define LEDMASK 0x01 
+  
+ #define COUNTOFFSET 15
+  
+ void setup() 
+  
+ {
+  
+  
+  DDRB |= LEDMASK;
+  
+  
+  TCCR2A=0;    // normal mode
+  
+  
+  TCCR2B=0x07; // 1024x prescale 
+  
+ }
+  
+ void mydelay(int x) 
+  
+ {
+  
+  
+  while(x)
+  
+  
+  {
+  
+   
+  TCNT2=COUNTOFFSET;  //count up from here to 255 then overflow
+  
+  
+  TIFR2=1<<TOV2;      // clear flag, bit is set on overflow
+   
+  
+ while( !(TIFR2&(1<<TOV2)) ); // wait for overflow bit
+  
+   
+  x--;
+  
+  
+  } 
+  
+ }
+  
+ void loop() 
+  
+ {
+  
+  
+  PORTB |= LEDMASK;
+  
+  
+  mydelay(120);
+  
+  
+  PORTB &= ~LEDMASK;
+  
+  
+  mydelay(30); 
+  
+ }
+  
+ The 
+ setup()
+  function sets the direction for the 
+ LED
+  driver pin to output, places 
+ TC2
+  into normal mode 
+ and sets the clock prescaler to 1024. This means that each count will occur at a rate just slower than 16 
+ kHz given the 16 MHz clock of the Uno. The 
+ mydelay()
+  function initializes the counter’s main register 
+ at a predefined value (
+ COUNTOFFSET
+ ). It will count from there to 255 after which point it will overflow 
+ and set the 
+ TOV2
+  flag. We ensure that this bit is clear before continuing using the seemingly backward 
+ command 
+ TIFR2=1<<TOV2; 
+ It first appears that this command should set the flag bit but it does indeed 
+ clear it (as verified in the Atmel documentation). At this point we busy-wait on this bit waiting for it to be 
+ set. In this example it will take 241 counts to overflow or about 15 milliseconds. This 
+  
+ Embedded Controllers 
+  
+ 151",NA
+28.3 Fast PWM Mode,"This is the “fast” pulse width modulation mode that can drive an output pin directly. Fast 
+ PWM
+  is faster 
+ than phase correct 
+ PWM
+  because fast 
+ PWM
+  performs a single slope (i.e., up only) count. Phase correct 
+ PWM
+  uses an up-then-down dual slope counting technique. We will not examine phase correct 
+ PWM
+  here.
+  
+ To use fast 
+ PWM
+  mode to drive an output pin, first remember to set the corresponding 
+ DDR
+  bit to output 
+ mode (see Figure 28.3). Following this, the 
+ WGM
+  and 
+ COM
+  bits need to be set according to Figures 28.7 and 
+ 28.9 as well as the desired prescaler 
+ CS
+  bits from Figure 28.6. Finally a value for the output compare 
+ registers (
+ OCR2A
+  and 
+ OCR2B
+ ) needs to be set. The value of the 
+ OCR2x
+  registers will determine the duty 
+ cycles of the resulting pulse waveform. Basically, 
+ TCNT2
+  will count up in the normal fashion, overflowing 
+ and recycling as usual. When the contents of 
+ TCNT2
+  match those of an associated output compare register, 
+ then the corresponding output pin will change to the appropriate state. The duty cycle is defined by the 
+ total count range (256) and the compare register value plus one. An example is seen below.
+  
+ /* Waveform at external pins OC2A and OC2B (PORTB.3/PORTD.3)
+  
+  Fast PWM mode, non-inverting */
+  
+ void setup() 
+  
+ {
+  
+  
+  // enable output drivers for OC2A/B!
+  
+  DDRB |= 0x08;
+  
+  DDRD |= 0x08;
+  
+  // the following is done in two steps for clarity
+  
+  TCCR2A = (1<<WGM21) | (1<<WGM20);     // specify fast PWM
+  
+  TCCR2A|= ((1<<COM2A1) | (1<<COM2B1)); // add in non-inverting output
+  
+  TCCR2B = (1<<CS22);                   // prescale by 64x
+  
+  
+  OCR2A = 128; // set duty cycles (0 through 255)
+  
+  OCR2B = 100; 
+  
+ }
+  
+ void loop() 
+  
+ {
+  
+ }
+  
+  // nothing to do here!
+  
+ An interesting new twist here is that there is nothing in the main 
+ loop()
+  function! Once the 
+  
+ timer/counter is set up it runs without further attention, truly “set and forget” operation. In this case, the 
+ output frequency will be the main clock of 16 MHz divided by the 64x prescaler and then divided by the 
+ total count of 256. This yields approximately 977 Hz. The duty cycle for output A is (128+1)/256 or about 
+ 50.4%. For output B the result is (100+1)/256 or approximately 39.5%. 
+  
+ 152 
+ Embedded Controllers",NA
+29. Bits & Pieces: Interrupts,NA,NA
+29.1 Introduction,"Interrupts may be thought of as small snippets of code that are of such high priority that the main program 
+ flow is momentarily halted so that the interrupt code can be run. Once the interrupt code (referred to as an 
+ interrupt service routine
+ , or 
+ ISR
+ ) is finished, the main code picks up where it left off. When dealing with 
+ interrupts always keep in mind that they could happen at any time, even in the middle of a line of C code 
+ (this is due to the fact that a single line of C might generate several lines of native machine code and the 
+ interrupt could occur in between machine code instructions). 
+  
+ Interrupts usually come from two sources: an externally triggered event such as a physical pin changing 
+ state or via an internally triggered event. For example, an external switch could be used to force the 
+ program to reset itself from the start. Alternately, the overflow and compare match events of internal 
+ timer/counters are often used to create internal interrupts that can control the timing of other events. 
+  
+ When an interrupt occurs, the current state and location in the executing code is saved. The 
+  
+ microcontroller then jumps to the starting address of the 
+ ISR
+ . The 
+ ISR
+  code is executed and upon 
+ completion program flow reverts back to where it left off in the main sequence. As the main program flow 
+ is being halted temporarily, 
+ ISR
+ s are designed to be short and to execute quickly so as to have minimal 
+ timing impact on the main code. As most microcontrollers have numerous sources for interrupts, 
+ interrupts are usually prioritized, some being more important than others. This means it is possible for one 
+ interrupt to interrupt another interrupt (i.e., nested interrupts having different priorities). In this way, 
+ something like a fire alarm sensor could take precedence over a more mundane sensor input such as a 
+ volume control. 
+  
+ It is quite possible for a complicated application to have over a dozen possible interrupt sources. Each of 
+ these will have its own 
+ ISR
+ . The starting locations of the 
+ ISR
+ s are found in a 
+ vector table
+ . A vector table is 
+ basically an array of pointers. In this case, these pointers point to the starting address of some code rather 
+ than to the addresses of variables. Some programmers will use the word “vector” as a verb as in “the code 
+ flow 
+ vectors off 
+ to the 
+ ISR
+ ”.
+  
+ To simplify programming, the names of the 
+ ISR
+ s are predetermined. As a programmer you simply need to 
+ fill in the code for the 
+ ISR
+ . This might be as simple as setting a global variable. When the program is 
+ compiled, the predetermined name is noted in your code and then expanded into the vector table for you 
+ automatically. Generally speaking, 
+ ISR
+ s do not take arguments nor do you need to create function 
+ prototypes for them. A list of 
+ ISR
+  names for the ATmega 328P series is shown in Figure 29.1. This list is 
+ taken directly from the hardware profile file 
+ include/avr/iom328p.h
+ . Note that each 
+ ISR
+  name ends 
+ in 
+ _vect
+  while the first portion of the name indicates the hardware with which it associated. A quick scan 
+ of the list should reveal a number of hardware elements covered earlier such as the three timer/counters 
+ and the analog to digital converter. 
+  
+ Finally, before these interrupts can be used the desired interrupt must be enabled by setting the 
+  
+ appropriate bit in the associated register (
+ EIMSK
+ , External Interrupt MaSK; 
+ TIMSKx
+ , Timer Interrupt 
+ MaSKx; etc., see the Appendix and following examples for details). Of course, the global interrupt enable 
+ must also be set (which can be accomplished via the 
+ sei()
+  call) although this is already the case in the 
+ Arduino system.
+  
+ 154 
+ Embedded Controllers",NA
+29.2 External Interrupts,"Let’s consider an external interrupt first. In this case, the state change seen at an external pin causes an 
+ interrupt. We will use External Interrupt Request 0, also known as the 
+ INT0
+  vector. This interrupt 
+ examines state changes at 
+ PORTD.2
+ , Uno pin 2. Our example will be fairly simple: we attach a passive 
+ switch using the internal pull-up to pin 2. When the switch is activated it will toggle an 
+ LED
+  connected to 
+ Uno pin 8 (
+ PORTB.0
+ ). The code follows:
+  
+ /* External Interrupt Example, INT0
+  
+  
+  External interrupt pin lights an LED
+  
+  
+  Active high LED attached to PORTB.0
+  
+  
+  Switch on Uno pin 2, falling edge triggers external pin interrupt 0, 
+  
+  ISR toggles LED at PORTB.0 
+  
+ */
+  
+ #define LEDMASK 0x01
+  
+ void setup() 
+  
+ {
+  
+  
+  DDRB |= LEDMASK;
+  
+ Embedded Controllers 
+  
+ 155",NA
+29.3 Internal Interrupts: Blinking LED,"In this section we shall examine a series of examples using interrupts trigger by the internal 
+  
+ timer/counters. This technique makes use of either the overflow or compare match events. It is usually 
+ used when you wish to have events occur at predictable times but without the penalty and limitations of 
+ using a simple 
+ delay()
+  style approach. That is, the triggers for these events will not need your attention 
+ in the main program loop but will generally be of a “set and forget” variety. There is a Timer Interrupt 
+ MaSK register for each of the counters (
+ TIMSK0
+ , 
+ TIMSK1
+  and 
+ TIMSK2
+ ). The appropriate bit(s) must be 
+ set to enable the desired interrupt.
+  
+ The first example shows a simple method of blinking an 
+ LED
+  “hands off”. The duty cycle of the blink will 
+ always be 50% although it is possible to alter this. The example also shows how to generate long time 
+ intervals from an eight bit timer/counter through the use of a global variable. The example is shown 
+ below.
+  
+ /* Timer/Counter Interrupt Example
+  
+  
+  Shows how to blink an LED ""hands off"" using overflow
+  
+  
+  Also shows how to get a large timing value from an 8 bit counter
+  
+  normal count mode 
+  
+ */ 
+  
+ volatile int g_time = 0;
+  
+ #define LEDMASK 0x01
+  
+ 156 
+ Embedded Controllers",NA
+29.4 Internal Interrupts: Hand Wrought PWM,"Our next example shows how a timer/counter overflow can be used to create a 
+ PWM
+  signal at an arbitrary 
+ pin (i.e., not just at the 
+ OC
+ nx pins). For this example we shall forego the use of an 
+ LED
+  indicator and 
+ simply inspect the signal with an oscilloscope. The output frequency is slightly over 60 Hz and the duty 
+ cycle is set by a 
+ #define
+  although it could just as easily be set by a variable. The duty cycle is 
+ (OVF_COUNT_START+1)/256
+ . Thus, a value of 128 yields approximately 50% while a value of 50 yields 
+ nearly 20%. The output pin is set to Uno pin 8 or 
+ PORTB.0
+ . The code follows:
+  
+ /* Timer/Counter Interrupt Example
+  
+  
+  Shows how to create hand wrought PWM at an arbitrary pin 
+ */
+  
+ Embedded Controllers 
+  
+ 157",NA
+29.5 Internal Interrupts: CTC Mode,"This example also involves toggling an arbitrary output pin although the 
+ OCnx
+  pin could be piggybacked 
+ if desired. Instead of 
+ PWM
+ , this example varies the frequency of a square wave using Clear Timer on 
+ Compare (
+ CTC
+ ) mode. This mode simply counts up to the value stored in the output compare match 
+ register (
+ OCR2A
+ ) and then resets back to zero.
+  
+ /* Timer/Counter Interrupt Example
+  
+  
+  Uses CTC mode (Clear Timer on Compare) 
+ */
+  
+ #define ARBPINMASK 0x01 
+  
+ #define COMPARE_MATCH 128
+  
+ void setup() 
+  
+ {
+  
+  
+  DDRB |= ARBPINMASK;
+  
+ 158 
+ Embedded Controllers",NA
+Appendix A ,NA,NA
+ATmega 328P Register Map ,"Derived from the October, 2014 version of the Atmel 328P documentation which may 
+ be found at 
+ http://www.atmel.com/devices/ATMEGA328P.aspx
+  
+ Address
+  
+ Name
+  
+ Bit 7
+  
+ Bit 6
+  
+ Bit 5
+  
+ Bit 4
+  
+ Bit 3
+  
+ Bit 2
+  
+ Bit 1
+  
+ Bit 0
+  
+ 0x23
+  
+ PINB
+  
+ PINB7
+  
+ PINB6
+  
+ PINB5
+  
+ PINB4
+  
+ PINB3
+  
+ PINB2
+  
+ PINB1
+  
+ PINB0
+  
+ 0x24
+  
+ DDRB
+  
+ DDB7
+  
+ DDB6
+  
+ DDB5
+  
+ DDB4
+  
+ DDB3
+  
+ DDB2
+  
+ DDB1
+  
+ DDB0
+  
+ 0x25
+  
+ PORTB
+  
+ PORTB7
+  
+ PORTB6
+  
+ PORTB5
+  
+ PORTB4
+  
+ PORTB3
+  
+ PORTB2
+  
+ PORTB1
+  
+ PORTB0
+  
+ 0x26
+  
+ PINC
+  
+ -
+  
+ PINC6
+  
+ PINC5
+  
+ PINC4
+  
+ PINC3
+  
+ PINC2
+  
+ PINC1
+  
+ PINC0
+  
+ 0x27
+  
+ DDRC
+  
+ -
+  
+ DDC6
+  
+ DDC5
+  
+ DDC4
+  
+ DDC3
+  
+ DDC2
+  
+ DDC1
+  
+ DDC0
+  
+ 0x28
+  
+ PORTC
+  
+ -
+  
+ PORTC6
+  
+ PORTC5
+  
+ PORTC4
+  
+ PORTC3
+  
+ PORTC2
+  
+ PORTC1
+  
+ PORTC0
+  
+ 0x29
+  
+ PIND
+  
+ PIND7
+  
+ PIND6
+  
+ PIND5
+  
+ PIND4
+  
+ PIND3
+  
+ PIND2
+  
+ PIND1
+  
+ PIND0
+  
+ 0x2A
+  
+ DDRD
+  
+ DDD7
+  
+ DDD6
+  
+ DDD5
+  
+ DDD4
+  
+ DDD3
+  
+ DDD2
+  
+ DDD1
+  
+ DDD0
+  
+ 0x2B
+  
+ PORTD
+  
+ PORT7
+  
+ PORT6
+  
+ PORTD5
+  
+ PORTD4
+  
+ PORTD3
+  
+ PORTD2
+  
+ PORTD1
+  
+ PORTD0
+  
+ 0x2C–34
+  
+ Reserved
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ 0x35
+  
+ TIFR0
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ OCF0B
+  
+ OCF0A
+  
+ TOV0
+  
+ 0x36
+  
+ TIFR1
+  
+ -
+  
+ -
+  
+ ICF1
+  
+ -
+  
+ -
+  
+ OCF1B
+  
+ OCF1A
+  
+ TOV1
+  
+ 0x37
+  
+ TIFR2
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ OCF2B
+  
+ OCF2A
+  
+ TOV2
+  
+ 0x38–3A
+  
+ Reserved
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ 0x3B
+  
+ PCIFR
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ PCIF2
+  
+ PCIF1
+  
+ PCIF0
+  
+ 0x3C
+  
+ EIFR
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ INT1
+  
+ INT0
+  
+ 0x3D
+  
+ EIMSK
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ INTF1
+  
+ INTF0
+  
+ 0x3E
+  
+ GPIOR0
+  
+ General Purpose I/O Register 0
+  
+ 0x3F
+  
+ EECR
+  
+ -
+  
+ -
+  
+ EEPM1
+  
+ EEPM0
+  
+ EERIE
+  
+ EEMPE
+  
+ EEPE
+  
+ EERE
+  
+ 0x40
+  
+ EEDR
+  
+ EEPROM Data Register
+  
+ 0x41
+  
+ EEARL
+  
+ EEPROM Address Register Low Byte
+  
+ 0x42
+  
+ EEARH
+  
+ EEPROM Address Register High Byte
+  
+ 0x43
+  
+ GTCCR
+  
+ TSM
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ PSRASY
+  
+ PSRSYNC
+  
+ 0x44
+  
+ TCCR0A
+  
+ COM0A1
+  
+ COM0A0
+  
+ COM0B1
+  
+ COM0B0
+  
+ -
+  
+ -
+  
+ WGM01
+  
+ WGM00
+  
+ 0x45
+  
+ TCCR0B
+  
+ FOC0A
+  
+ FOC0B
+  
+ -
+  
+ -
+  
+ WGM02
+  
+ CS02
+  
+ CS01
+  
+ CS00
+  
+ 0x46
+  
+ TCNT0
+  
+ Timer/Counter0 (8-bit)
+  
+ 0x47
+  
+ OCR0A
+  
+ Timer/Counter0 Output Compare Register A
+  
+ 0x48
+  
+ OCR0B
+  
+ Timer/Counter0 Output Compare Register B
+  
+ 0x49
+  
+ Reserved
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ 0x4A
+  
+ GPIOR1
+  
+ General Purpose I/O Register 1
+  
+ 0x4B
+  
+ GPIOR2
+  
+ General Purpose I/O Register 1
+  
+ 0x4C
+  
+ SPCR
+  
+ SPIE
+  
+ SPE
+  
+ DORD
+  
+ MSTR
+  
+ CPOL
+  
+ CPHA
+  
+ SPR1
+  
+ SPR0
+  
+ 0x4D
+  
+ SPSR
+  
+ SPIF
+  
+ WCOL
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ SPI2X
+  
+ 0x4E
+  
+ SPDR
+  
+ SPI Data Register
+  
+ 0x4F
+  
+ Reserved
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+ -
+  
+  
+ 160
+  
+ Embedded Controllers",NA
+Appendix B,NA,NA
+Answers to Selected Problems,"Chapter 3 
+  
+ 1. 
+  
+ /* Ralph Johnson, June 31, 2112 */ 
+  
+ // Ralph Johnson, June 31, 2112
+  
+ 3.
+  
+ #include <stdio.h>
+  
+ int main(void) 
+  
+ {
+  
+ }
+  
+  printf(""Ralph Johnson"");
+  
+ Chapter 4 
+  
+ 1.
+  
+ printf(""The result is %f volts"", output_voltage);
+  
+ 3.
+  
+ int x;
+  
+ x = sizeof(POWER_SUPPLY);
+  
+ 5.
+  
+ Y = Y|0x01;
+  
+ 7.
+  
+ W = ~W;
+  
+ 9. a) 0xf1, b) 0x10, c) 0x0f, d) 0x11
+  
+ Chapter 7 
+  
+ 1.
+  
+ if(X<0)
+  
+  
+  printf(""negative value"");
+  
+ 3.
+  
+ // This assumes the variables are integers 
+ if(X>Y)
+  
+  
+  printf(""%d"",X); 
+  
+ else
+  
+  
+  printf(""%d"",Y);
+  
+ 5.
+  
+ for(i=0;i<6;i++)
+  
+  
+  printf(""Error!"");
+  
+ Embedded Controllers 
+  
+ 163",NA
+Index,"74HC14 127
+  
+ ADC
+ , 54, 75, 78, 94, 107, 132–140 
+  
+ Arduino home, 4, 8 
+  
+ ARM
+  Coretex, 112 
+  
+ ASCII
+ , 14, 36, 39, 72, 112 
+  
+ auto class variable, 12, 32
+  
+ Biscotti, 85 
+  
+ Bitwise operators, 27, 29, 41, 92 
+  
+ Boolean, 41, 91 
+  
+ Bus, 12, 80, 100, 104 
+  
+ Byte, 10, 15
+  
+ C Compiler (free), 8 
+  
+ Cast, 26, 95, 96 
+  
+ char
+  keyword, 11, 14, 15, 32, 36 
+  
+ CISC
+ , 78, 80 
+  
+ const
+  keyword, 30, 33, 110 
+  
+ CTC
+  mode, 158
+  
+ DAC
+ , 53, 112, 132, 134, 142, 145 
+  
+ DDR
+  (Data Direction Register), 27–29, 92, 100, 104, 104–112 
+ debounce, 127 
+  
+ double
+  (float) keyword, 11, 14, 15, 25, 26, 48, 49, 52 
+  
+ DRAM
+  (Dynamic 
+ RAM
+ ), 81
+  
+ EEPROM
+ , 81, 82, 85 
+  
+ extern
+  keyword, 30, 34
+  
+ Flip-Flop, 81, 100, 104 
+  
+ float
+  keyword, 15, 25, 26, 30 
+  
+ Global declaration, 11, 18, 21, 33, 34 
+  
+ Global Interrupt Enable, 80, 115, 121 
+  
+ GPIO
+ , 78, 98, 99, 102
+  
+ Harvard architecture, 12, 78, 79, 85, 110 
+  
+ Header files, 19, 20, 28, 34, 39, 43, 57, 64, 90–96 
+  
+ Hex (hexadecimal), 24, 28, 69, 70
+  
+ Include files, see 
+ Header files 
+  
+ int
+  keyword (long vs. short), 14, 25, 26 
+  
+ ISR
+  (interrupt service routine), 154–159
+  
+ LED
+ , 29, 74, 100, 112, 113, 117, 124, 142, 156
+  
+ Embedded Controllers 
+  
+ 165",NA
